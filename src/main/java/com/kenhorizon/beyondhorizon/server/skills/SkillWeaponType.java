@@ -1,6 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.item.base;
-
-import com.kenhorizon.beyondhorizon.server.skills.Skill;
+package com.kenhorizon.beyondhorizon.server.skills;
 
 import java.util.function.Predicate;
 

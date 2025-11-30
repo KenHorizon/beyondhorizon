@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.effect.*;
-import com.kenhorizon.libs.registry.RegistryEntry;
+import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -61,6 +61,6 @@ public class BHEffects {
             RegistryHelper.registerEffects("wounded", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0xFF8206));
 
     public static void register(IEventBus eventBus) {
-        RegistryEntry.MOB_EFFECTS.register(eventBus);
+        RegistryEntries.MOB_EFFECTS.register(eventBus);
     }
 }

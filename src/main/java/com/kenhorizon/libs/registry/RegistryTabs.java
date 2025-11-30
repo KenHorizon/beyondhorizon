@@ -40,10 +40,8 @@ public class RegistryTabs {
     public static List<RegistryObject<?>> AXE_LIST = new ArrayList<>();
     public static List<RegistryObject<?>> REFINED_SWORD_LIST = new ArrayList<>();
 
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, BeyondHorizon.ID);
-
     public static RegistryObject<CreativeModeTab> registerCreativeTabs(String name, Supplier<CreativeModeTab> supplier) {
-        return CREATIVE_MODE_TABS.register(name, supplier);
+        return RegistryEntries.CREATIVE_MODE_TABS.register(name, supplier);
     }
 
 

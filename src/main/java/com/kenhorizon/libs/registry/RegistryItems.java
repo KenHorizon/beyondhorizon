@@ -124,7 +124,7 @@ public class RegistryItems<T extends Item> {
         }
 
         public RegistryItems<T> register() {
-            this.registryObject = RegistryEntry.ITEMS.register(this.name, this::createEntry);
+            this.registryObject = RegistryEntries.ITEMS.register(this.name, this::createEntry);
             return new RegistryItems<>(this);
         }
     }

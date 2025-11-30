@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.item.materials;
 
-import com.kenhorizon.beyondhorizon.server.item.base.SkillBuilder;
+import com.kenhorizon.beyondhorizon.server.skills.SkillBuilder;
 import com.kenhorizon.beyondhorizon.server.skills.Skill;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.LazyLoadedValue;
@@ -67,6 +67,15 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
             0.0F,
             22,
             true, () -> {
+        return Ingredient.of(Items.AIR);
+    }),
+    ZENITH("zenith",
+                                          0,
+                                          2251,
+                                          2.0F,
+                                          0.0F,
+                                          22,
+                                          true, () -> {
         return Ingredient.of(Items.AIR);
     });
 

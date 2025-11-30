@@ -2,8 +2,10 @@ package com.kenhorizon.beyondhorizon;
 
 import com.kenhorizon.beyondhorizon.client.ClientProxy;
 import com.kenhorizon.beyondhorizon.compat.ModCompats;
+import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.init.BHPotions;
 import com.kenhorizon.beyondhorizon.server.skills.Skills;
@@ -51,9 +53,11 @@ public class BeyondHorizon
         eventBus.addListener(this::reloadListener);
         eventBus.addListener(this::registerLayerDefinitions);
         eventBus.addListener(this::completeSetup);
-        Skills.register(eventBus);
+        MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
         BHAttributes.register(eventBus);
+        BHCreativeTabs.register(eventBus);
         BHItems.register(eventBus);
+        Skills.register(eventBus);
         PROXY.serverHandler();
         MinecraftForge.EVENT_BUS.register(this);
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> "ANY", (a, b) -> true));
@@ -61,6 +65,7 @@ public class BeyondHorizon
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
+        BeyondHorizon.loggers().info("Setting up {} {}!!", BeyondHorizon.NAME, BeyondHorizon.VERSION);
         event.enqueueWork(() -> {
             BHPotions.setup();
             this.modCompatible();

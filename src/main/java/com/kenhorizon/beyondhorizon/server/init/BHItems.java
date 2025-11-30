@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.item.base.WeaponBuilder;
 import com.kenhorizon.libs.client.model.item.ItemModels;
-import com.kenhorizon.libs.registry.RegistryEntry;
+import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryItems;
 import com.kenhorizon.libs.registry.RegistryTabs;
 import net.minecraft.world.item.Item;
@@ -117,8 +117,14 @@ public class BHItems {
             .model(ItemModels.BIG_HANDHELD)
             .register()
             .build();
+    public static final RegistryObject<Item> ZENITH = RegistryItems
+            .register("zenith", item -> WeaponBuilder.ZENITH.create(MeleeWeaponMaterials.ZENITH, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG_HANDHELD)
+            .register()
+            .build();
 
     public static void register(IEventBus eventBus) {
-        RegistryEntry.ITEMS.register(eventBus);
+        RegistryEntries.ITEMS.register(eventBus);
     }
 }

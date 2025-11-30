@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.util.Maths;
-import com.kenhorizon.libs.registry.RegistryEntry;
+import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ItemStack;
@@ -53,15 +53,15 @@ public class BHPotions {
 
 
     private static <T extends Potion> RegistryObject<Potion> potion(String name, Supplier<T> supplier) {
-        return RegistryEntry.POTIONS.register(name, supplier);
+        return RegistryEntries.POTIONS.register(name, supplier);
     }
 
     private static <T extends Potion> RegistryObject<Potion> potionLong(String name, Supplier<T> supplier) {
-        return RegistryEntry.POTIONS.register("long_" + name, supplier);
+        return RegistryEntries.POTIONS.register("long_" + name, supplier);
     }
 
     private static <T extends Potion> RegistryObject<Potion> potionStrong(String name, Supplier<T> supplier) {
-        return RegistryEntry.POTIONS.register("strong_" + name, supplier);
+        return RegistryEntries.POTIONS.register("strong_" + name, supplier);
     }
 
     public static void setup() {
@@ -99,6 +99,6 @@ public class BHPotions {
     }
 
     public static void register(IEventBus eventBus) {
-        RegistryEntry.POTIONS.register(eventBus);
+        RegistryEntries.POTIONS.register(eventBus);
     }
 }

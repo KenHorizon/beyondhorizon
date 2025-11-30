@@ -2,14 +2,18 @@ package com.kenhorizon.beyondhorizon.server.item.base;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.skills.Skill;
+import com.kenhorizon.beyondhorizon.server.skills.SkillBuilder;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -20,20 +24,22 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseItem>, IReloadable {
-    private float attackDamage;
-    private float attackSpeed;
-    private float attackRange;
+    private final float attackDamage;
+    private final float attackSpeed;
+    private final float attackRange;
     protected List<Skill> skills = ImmutableList.of();
     public final MeleeWeaponMaterials materials;
     protected final SkillBuilder skillBuilder;
+    protected Multimap<Attribute, AttributeModifier> attributeModifiers;
+
     public SwordBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, float attackRange, Properties properties, SkillBuilder skillbuilder) {
-        super(materials, 0, 0, materials.fireImmune() ? properties.fireResistant() : properties);
+        super(materials, 0, attackSpeed, materials.fireImmune() ? properties.fireResistant() : properties);
         this.materials = materials;
         this.skillBuilder = skillbuilder;
         this.attackDamage = materials.getAttackDamageBonus() + attackDamage - 1.0f;
@@ -61,21 +67,32 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         if (this.attackRange > 0) {
             mapBuilder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(UUID.fromString("8604572b-e75f-470d-8b7b-227b3017c83a"), "Weapon Modifier", (double) this.attackRange, AttributeModifier.Operation.ADDITION));
         }
+        if (this.skills != null) {
+            this.skills.forEach((abilityTraits) -> {
+                abilityTraits.IItemGeneric().ifPresent(callback -> {
+                    callback.addAttributes(mapBuilder);
+                });
+            });
+        }
+        this.attributeModifiers = mapBuilder.build();
+    }
+
+    @Override
+    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
+        return equipmentSlot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getDefaultAttributeModifiers(equipmentSlot);
     }
 
     @Override
     public void reload() {
         this.skills = this.registerSkills();
+        BeyondHorizon.loggers().debug("Setting up the skills {}", this.skills);
         this.setupDefault();
     }
 
     private ImmutableList<Skill> registerSkills() {
         ImmutableList.Builder<Skill> builder = ImmutableList.builder();
-        List<Skill> list = new ArrayList<>(new HashSet<>());
-        if (this.skillBuilder != null) {
-            list.addAll(this.skillBuilder.getSkills());
-        }
-        builder.addAll(list);
+        builder.addAll(this.skillBuilder.getSkills());
+        builder.addAll(this.materials.getSkills());
         return builder.build();
     }
 
@@ -137,7 +154,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         if (this.skills.isEmpty()) return ImmutableList.of();
         return this.skills.stream().filter((_skill) ->
                 _skill == skill
-        ).collect(Collectors.toUnmodifiableList());
+        ).toList();
     }
 
     @Override

@@ -48,18 +48,16 @@ public class ServerEventHandler {
                 }
             }
         }
+        StatModifiers totalDamageTaken = new StatModifiers(1.0F, (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get()), 0.0F, 0.0F);
+        damageDealt = totalDamageTaken.applyTo(damageDealt);
         event.setAmount(damageDealt);
-
     }
+
     @SubscribeEvent
     public void onLivingHurtEvent(LivingHurtEvent event) {
         float damageDealt = event.getAmount();
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
-        StatModifiers totalDamageDealt = new StatModifiers(0.0F, (float) target.getAttributeValue(BHAttributes.DAMAGE_DEALT.get()), 0.0F, 0.0F);
-        damageDealt = totalDamageDealt.applyTo(damageDealt);
-        StatModifiers totalDamageTaken = new StatModifiers(0.0F, (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get()), 0.0F, 0.0F);
-        damageDealt = totalDamageTaken.applyTo(damageDealt);
         if (source.getDirectEntity() == source.getEntity() && source.getEntity() instanceof LivingEntity && target != null) {
             if (source.getEntity() instanceof Player attacker) {
                 double getAttackSpeed = attacker.getAttributeValue(Attributes.ATTACK_SPEED);
@@ -77,6 +75,8 @@ public class ServerEventHandler {
                         }
                     }
                 }
+                StatModifiers totalDamageDealt = new StatModifiers(1.0F, (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get()), 0.0F, 0.0F);
+                damageDealt = totalDamageDealt.applyTo(damageDealt);
             }
         }
         event.setAmount(damageDealt);

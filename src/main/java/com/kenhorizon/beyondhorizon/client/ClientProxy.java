@@ -1,10 +1,13 @@
 package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -13,6 +16,7 @@ public class ClientProxy extends ServerProxy {
     @Override
     public void serverHandler() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        bus.addListener(this::onEntityAttributeModification);
     }
 
     @Override
@@ -21,7 +25,36 @@ public class ClientProxy extends ServerProxy {
 
         Raid.RaiderType.create("ILLUSIONER", EntityType.ILLUSIONER, new int[]{0, 0, 1, 2, 2, 3, 4, 5});
     }
-
+    public void onEntityAttributeModification(EntityAttributeModificationEvent event) {
+        for (EntityType<? extends LivingEntity> type : event.getTypes()) {
+            event.add(type, BHAttributes.LETHALITY.get());
+            event.add(type, BHAttributes.DAMAGE_DEALT.get());
+            event.add(type, BHAttributes.DAMAGE_TAKEN.get());
+            event.add(type, BHAttributes.MAGIC_RESISTANCE.get());
+            event.add(type, BHAttributes.RANGED_DAMAGE.get());
+            event.add(type, BHAttributes.ABILITY_POWER.get());
+            event.add(type, BHAttributes.EVADE.get());
+            event.add(type, BHAttributes.ARMOR_PENETRATION.get());
+            event.add(type, BHAttributes.MAGIC_PENETRATION.get());
+            event.add(type, BHAttributes.OMNIVAMP.get());
+            event.add(type, BHAttributes.PHYSICALVAMP.get());
+            event.add(type, BHAttributes.SPELLVAMP.get());
+            event.add(type, BHAttributes.HEALING.get());
+            event.add(type, BHAttributes.SHIELDING.get());
+            if (type == EntityType.PLAYER) {
+                event.add(type, BHAttributes.STEALTH.get());
+                event.add(type, BHAttributes.CAST_TIME.get());
+                event.add(type, BHAttributes.COOLDOWN.get());
+                event.add(type, BHAttributes.CRITICAL_STRIKE.get());
+                event.add(type, BHAttributes.CRITICAL_DAMAGE.get());
+                event.add(type, BHAttributes.MINING_SPEED.get());
+                event.add(type, BHAttributes.MAX_MANA.get());
+                event.add(type, BHAttributes.MANA_COST.get());
+                event.add(type, BHAttributes.MANA_REGENERATION.get());
+                event.add(type, BHAttributes.HEALTH_REGENERATION.get());
+            }
+        }
+    }
     @Override
     public Player clientPlayer() {
         return Minecraft.getInstance().player;

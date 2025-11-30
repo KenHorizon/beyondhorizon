@@ -24,23 +24,23 @@ import java.util.function.Supplier;
 
 public class RegistryHelper {
     public static RegistryObject<Enchantment> registerEnchantments(String name, Supplier<Enchantment> supplier) {
-        RegistryObject<Enchantment> register = RegistryEntry.ENCHANTMENTS.register(name, supplier);
+        RegistryObject<Enchantment> register = RegistryEntries.ENCHANTMENTS.register(name, supplier);
         registerEnchantmentLang(name, register);
         return register;
     }
 
     public static RegistryObject<MobEffect> registerEffects(String name, Supplier<MobEffect> supplier) {
-        RegistryObject<MobEffect> register = RegistryEntry.MOB_EFFECTS.register(name, supplier);
+        RegistryObject<MobEffect> register = RegistryEntries.MOB_EFFECTS.register(name, supplier);
         reigsterEffectLang(name, register);
         return register;
     }
     public static RegistryObject<SoundEvent> registerSounds(String name) {
         ResourceLocation id = BeyondHorizon.resource(name);
-        return RegistryEntry.SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
+        return RegistryEntries.SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
     }
     public static RegistryObject<SoundEvent> registerSounds(String name, String subtitleName) {
         ResourceLocation id = BeyondHorizon.resource(name);
-        RegistryObject<SoundEvent> object = RegistryEntry.SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
+        RegistryObject<SoundEvent> object = RegistryEntries.SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
         String localization = String.format("subtitle.%s.", BeyondHorizon.ID);
         RegistryLanguage.ADD_SOUNDS_TRANSLATION.put(localization + name, subtitleName);
         return object;

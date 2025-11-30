@@ -38,5 +38,11 @@
   "item.beyondhorizon.raw_silver": "Raw Silver",
   "item.beyondhorizon.raw_titanium": "Raw Titanium",
   "item.beyondhorizon.silver_ingot": "Silver Ingot",
-  "item.beyondhorizon.titanium_ingot": "Titanium Ingot"
+  "item.beyondhorizon.titanium_ingot": "Titanium Ingot",
+  "item.beyondhorizon.zenith": "Zenith",
+  "skills.beyondhorizon.blade_edge": "Blade Edge",
+  "skills.beyondhorizon.blade_edge.desc": "Deal additional +%s%% target's Max HP",
+  "skills.beyondhorizon.ruined_blade": "Ruined Blade",
+  "skills.beyondhorizon.ruined_blade.desc": "Deal additional +%s%% target's Current HP",
+  "tooltip.beyondhorizon.skill_type": "%s"
 }

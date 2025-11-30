@@ -35,8 +35,6 @@ public interface IAttack {
 
     default void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {}
 
-    default void addAttributes(ImmutableMultimap.Builder<Attribute, AttributeModifier> builder) {}
-
     default int expDrop(int dropExperience, int originalAmount, LivingEntity target, Player player) {
         return dropExperience;
     }

@@ -11,9 +11,9 @@ public interface ISkillItems<T extends Item> {
 
     boolean hasSkill(Skill skill);
 
-    Skill getSkill(Skill skill);
+    Skill getFirstSkill(Skill skill);
 
-    List<Skill> getAllSkillPresent(Skill skill);
+    List<Skill> getSkillOf(Skill skill);
 
     int skillPresent();
 

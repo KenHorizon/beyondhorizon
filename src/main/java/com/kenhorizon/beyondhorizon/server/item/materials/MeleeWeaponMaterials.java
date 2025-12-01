@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.item.materials;
 
+import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.skills.SkillBuilder;
 import com.kenhorizon.beyondhorizon.server.skills.Skill;
 import net.minecraft.tags.ItemTags;
@@ -15,51 +16,85 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWeaponMaterials> {
-    BAMBOO("bamboo", 0, 39, 2.0F, 0.0F, 12, () -> {
+    BAMBOO("bamboo", 0,
+            39,
+            2.0F,
+            0.0F,
+            12, () -> {
         return Ingredient.of(ItemTags.PLANKS);
     }),
-    WOOD("wooden", 0, 59, 2.0F, 0.0F, 15, () -> {
+    WOOD("wooden",
+            0,
+            59,
+            2.0F,
+            0.0F,
+            15, () -> {
         return Ingredient.of(ItemTags.PLANKS);
     }),
-    STONE("stone", 1, 131, 4.0F, 1.0F, 5, () -> {
+    STONE("stone",
+            1,
+            131,
+            4.0F,
+            1.0F,
+            5, () -> {
         return Ingredient.of(ItemTags.STONE_TOOL_MATERIALS);
     }),
-    IRON("iron", 2, 250, 6.0F, 2.0F, 14, () -> {
+    IRON("iron",
+            2,
+            250,
+            6.0F,
+            2.0F,
+            14, () -> {
         return Ingredient.of(Items.IRON_INGOT);
     }),
-    //    EMERALD("emerald", 2, 765, 4.0F, 1.5F, 16, () -> {
-//        return Ingredient.of(BHItems.EMERALD_INGOT.get());
-//    }),
-//    SILVER("silver", 3, 235, 5.5F, 2.0F, 22, () -> {
-//        return Ingredient.of(Items.AIR);
-//    }, AbilityTraitBuilder.DOUBLE_DAMAGE_TO_UNDEAD),
-//    COBALT("cobalt", 3, 434, 10.0F, 2.5F, 30, () -> {
-//        return Ingredient.of(Items.AIR);
-//    }, AbilityTraitBuilder.COBALT),
-//    HELLSTONE("hellstone", 3, 734, 7.5F, 2.0F, 15, true, () -> {
-//        return Ingredient.of(Items.AIR);
-//    }, AbilityTraitBuilder.HELLSTONE_AND_HELLFIRE),
-//    HELLFIRE("hellfire", 3, 1334, 7.5F, 3.5F, 25, true, () -> {
-//        return Ingredient.of(Items.AIR);
-//    }, AbilityTraitBuilder.HELLSTONE_AND_HELLFIRE),
-//    GOLD("golden", 0, 32, 12.0F, 0.0F, 22, () -> {
-//        return Ingredient.of(Items.GOLD_INGOT);
-//    }),
-//    DIAMOND("diamond", 3, 1561, 8.0F, 3.0F, 10, () -> {
-//        return Ingredient.of(Items.DIAMOND);
-//    }),
-//    PALLADIUM("palladium", 3, 1034, 7.5F, 3.5F, 14, true, () -> {
-//        return Ingredient.of(BHItems.PALLADIUM_INGOT.get());
-//    }, AbilityTraitBuilder.PALLADIUM),
-//    NETHERITE("netherite", 3, 2031, 9.0F, 4.0F, 15, true, () -> {
-//        return Ingredient.of(Items.NETHERITE_INGOT);
-//    }),
-//    ADAMANTITE("adamantite", 3, 1234, 9.5F, 4.5F, 16, true, () -> {
-//        return Ingredient.of(BHItems.ADAMANTITE_INGOT.get());
-//    }, AbilityTraitBuilder.ADAMANTITE),
-//    TITANIUM("titanium", 3, 834, 9.5F, 4.5F, 15, true, () -> {
-//        return Ingredient.of(BHItems.TITANIUM_INGOT.get());
-//    }, AbilityTraitBuilder.TITANIUM),
+    SILVER("silver",
+            3,
+            235,
+            5.5F,
+            2.0F,
+            16, () -> {
+        return Ingredient.of(BHItems.SILVER_INGOT.get());
+    }),
+    COBALT("cobalt",
+            3,
+            451,
+            8.0F,
+            3.0F,
+            24, () -> {
+        return Ingredient.of(BHItems.COBALT_INGOT.get());
+    }),
+    HELLSTONE("hellstone",
+            3,
+            451,
+            8.5F,
+            3.0F,
+            24, () -> {
+        return Ingredient.of(BHItems.HELLSTONE_INGOT.get());
+    }),
+    PALLADIUM("palladium",
+            3,
+            1034,
+            8.0F,
+            3.0F,
+            27, () -> {
+        return Ingredient.of(BHItems.PALLADIUM_INGOT.get());
+    }),
+    ADAMANTITE("adamantite",
+            3,
+            2034,
+            9.0F,
+            3.0F,
+            27, () -> {
+        return Ingredient.of(BHItems.ADAMANTITE_INGOT.get());
+    }),
+    TITANIUM("titanium",
+            3,
+            2034,
+            9.0F,
+            3.0F,
+            27, () -> {
+        return Ingredient.of(BHItems.TITANIUM_INGOT.get());
+    }),
     BLADE_OF_THE_ENDERLORD("blade_of_the_enderlord",
             0,
             3251,
@@ -70,12 +105,12 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
         return Ingredient.of(Items.AIR);
     }),
     ZENITH("zenith",
-                                          0,
-                                          2251,
-                                          2.0F,
-                                          0.0F,
-                                          22,
-                                          true, () -> {
+          0,
+          2251,
+          2.0F,
+          0.0F,
+          22,
+          true, () -> {
         return Ingredient.of(Items.AIR);
     });
 

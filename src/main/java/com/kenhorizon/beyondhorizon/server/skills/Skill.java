@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.skills;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
@@ -11,14 +12,26 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.ForgeRegistry;
+import net.minecraftforge.registries.RegistryManager;
+import net.minecraftforge.registries.tags.ITag;
+import net.minecraftforge.registries.tags.ITagManager;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -51,6 +64,8 @@ public abstract class Skill {
         }
     }
     protected String MODID = Skills.REGISTRY.getRegistryName().getNamespace();
+    public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
+
     protected boolean isSkill = false;
     protected boolean tooltipEnable = true;
     protected boolean tooltipDescriptionEnable = true;
@@ -160,9 +175,72 @@ public abstract class Skill {
         return Optional.empty();
     }
 
+    public Skill addAttributeModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
+        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
+        this.attributeModifiers.put(attribute, attributemodifier);
+        return this;
+    }
+
+    public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, ItemStack itemStack) {
+        if (this.getAttributeModifierByTags(itemStack).isEmpty()) return;
+        for (Map.Entry<Attribute, AttributeModifier> entry : this.getAttributeModifierByTags(itemStack).entries()) {
+            AttributeInstance attributeinstance = attributeMap.getInstance(entry.getKey());
+            if (attributeinstance != null) {
+                attributeinstance.removeModifier(entry.getValue());
+            }
+        }
+    }
+
+    public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, ItemStack itemStack) {
+        if (this.getAttributeModifierByTags(itemStack).isEmpty()) return;
+        for (Map.Entry<Attribute, AttributeModifier> entry : this.getAttributeModifierByTags(itemStack).entries()) {
+            AttributeInstance attributeinstance = attributeMap.getInstance(entry.getKey());
+            if (attributeinstance != null) {
+                AttributeModifier attributemodifier = entry.getValue();
+                attributeinstance.removeModifier(attributemodifier);
+                attributeinstance.addPermanentModifier(new AttributeModifier(attributemodifier.getId(), "Attribute Modifier", getAttributeModifierValue(attributemodifier), attributemodifier.getOperation()));
+            }
+        }
+    }
+
+    public Multimap<Attribute, AttributeModifier> getAttributeModifierByTags(ItemStack itemStack) {
+        CompoundTag nbt = itemStack.getOrCreateTag();
+        Multimap<Attribute, AttributeModifier> multimap;
+        if ((!itemStack.isEmpty() && !nbt.isEmpty()) && nbt.contains(ATTRIBUTES_TAGS, 9)) {
+            multimap = HashMultimap.create();
+            ListTag nbtList = nbt.getList(ATTRIBUTES_TAGS, 10);
+            for (int i = 0; i < nbtList.size(); ++i) {
+                CompoundTag tags = nbtList.getCompound(i);
+                Optional<Attribute> optional = Optional.ofNullable(ForgeRegistries.ATTRIBUTES.getValue(ResourceLocation.tryParse(tags.getString("attribute_name"))));
+                if (optional.isPresent()) {
+                    AttributeModifier attributeModifier = AttributeModifier.load(tags);
+                    if (attributeModifier != null && attributeModifier.getId().getLeastSignificantBits() != 0L && attributeModifier.getId().getMostSignificantBits() != 0L) {
+                        multimap.put(optional.get(), attributeModifier);
+                    }
+                }
+            }
+        } else {
+            multimap = this.attributeModifiers.isEmpty() ? this.getDefaultAttributeModifiers() : this.attributeModifiers;
+        }
+        return multimap;
+    }
+
+    public double getAttributeModifierValue(AttributeModifier modifier) {
+        return modifier.getAmount();
+    }
+
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
+        return this.attributeModifiers;
+    }
+
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers() {
+        return ImmutableMultimap.of();
+    }
+
     public String toString() {
         return String.format("Skill:{Type: %s:%s, Type: %s}", this.MODID, this.getName(), this.getSkillType());
     }
+
     public final String getSkillId() {
         if (this.MODID == null) {
             var id = Objects.requireNonNull(BeyondHorizon.resource(this.getName()));
@@ -170,6 +248,7 @@ public abstract class Skill {
         }
         return this.MODID;
     }
+
     public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed) {
         this.addTooltip(itemStack, tooltip, isShiftPressed, true);
     }

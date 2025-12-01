@@ -1,8 +1,10 @@
-// 1.20.1	2025-11-30T18:18:40.9449453	Item Models: beyondhorizon
+// 1.20.1	2025-11-30T18:48:27.9392479	Item Models: beyondhorizon
 8a8ce68bd28d9994f0df749e8177a704dd895bee assets/beyondhorizon/models/item/adamantite_ingot.json
 f022045ce29f9a43dcec8a282abd2108896881b8 assets/beyondhorizon/models/item/blade_of_the_enderlord.json
 f262f6dd5af2d28e9dd0926ab3939c3d9d78dea8 assets/beyondhorizon/models/item/chain_plate.json
 336c3eee5f7984d224b292e7e79f0d0cab0d6d4f assets/beyondhorizon/models/item/cobalt_ingot.json
+f59b8406bb7e664a001ca5e500800ba779b34476 assets/beyondhorizon/models/item/debug0.json
+f067ccde0fbe79a96370293f0849fa7134d3cbf4 assets/beyondhorizon/models/item/debug1.json
 9d681e26b0ad036957a5bb96435719ca3c286090 assets/beyondhorizon/models/item/hellstone_ingot.json
 b125e3f4deb091bbc5863a3655ba2a117f3f600a assets/beyondhorizon/models/item/iron_plate.json
 d4657e758b273391baac3410c246667d61933054 assets/beyondhorizon/models/item/palladium_ingot.json

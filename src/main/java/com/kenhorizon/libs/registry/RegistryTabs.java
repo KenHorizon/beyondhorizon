@@ -39,6 +39,7 @@ public class RegistryTabs {
     public static List<RegistryObject<?>> SWORD_LIST = new ArrayList<>();
     public static List<RegistryObject<?>> AXE_LIST = new ArrayList<>();
     public static List<RegistryObject<?>> REFINED_SWORD_LIST = new ArrayList<>();
+    public static List<RegistryObject<?>> DEBUGS = new ArrayList<>();
 
     public static RegistryObject<CreativeModeTab> registerCreativeTabs(String name, Supplier<CreativeModeTab> supplier) {
         return RegistryEntries.CREATIVE_MODE_TABS.register(name, supplier);
@@ -137,7 +138,8 @@ public class RegistryTabs {
         SWORDS(SWORD_LIST),
         AXE(AXE_LIST),
         TOOLS(TOOLS_LIST),
-        REFINED_SWORD(REFINED_SWORD_LIST);
+        REFINED_SWORD(REFINED_SWORD_LIST),
+        DEBUGS(RegistryTabs.DEBUGS);
         private final List<RegistryObject<?>> objects;
         private Category(List<RegistryObject<?>> objects) {
             this.objects = objects;

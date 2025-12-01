@@ -34,6 +34,16 @@ public class BHAttributes {
     public static final RegistryObject<Attribute> SHIELDING = registerAttributes("shielding", 1.0D, -MAX_VALUE, MAX_VALUE, true);
     public static final RegistryObject<Attribute> SPELLVAMP = registerAttributes("spell_vamp", 0.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> STEALTH = registerAttributes("stealth", 0.0D, 0.0D, 1.0D, true);
+    /**
+    * Integrated from 1.20.2++ attributes changes
+    * */
+    public static final RegistryObject<Attribute> MINING_EFFICIENCY = registerAttributes("mining_efficiency", 1.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> MOVEMENT_EFFICIENCY = registerAttributes("movement_efficiency", 1.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> BURNING_TIME = registerAttributes("burning_time", 1.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> OXYGEN_BONUS = registerAttributes("oxygen_bonus", 1.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> FALLDAMAGE_MULTIPLIER = registerAttributes("fall_damage_multiplier", 1.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> SNEAKING_SPEED = registerAttributes("sneaking_speed", 1.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> SWEEP_DAMAGE = registerAttributes("sweep_damage", 1.0D, -MAX_VALUE, MAX_VALUE, true);
 
     static RegistryObject<Attribute> registerAttributes(String name, double defaultValue, double min, double max) {
         String attributesName = String.format("attribute.%s.%s", BeyondHorizon.ID, name);

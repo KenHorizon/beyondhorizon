@@ -6,6 +6,9 @@ import net.minecraft.ChatFormatting;
 public class Tooltips {
     //
     public static final String SKILL_TYPE = String.format("tooltip.%s.skill_type", BeyondHorizon.ID);
+    public static final String TOOLTIP_ACCESSORY_SLOT = String.format("tooltip.%s.accessory", BeyondHorizon.ID);
+    public static final String TOOLTIP_ACCESSORY = String.format("item.%s.accessory", BeyondHorizon.ID);
+    public static final String TOOLTIP_INVENTORY = String.format("tooltip.%s.inventory", BeyondHorizon.ID);
 
     public static final String TOOLTIP_PREFIX = String.format("tooltip.%s.", BeyondHorizon.ID);
     public static final ChatFormatting[] ATTRIBUTES = {ChatFormatting.DARK_GREEN, ChatFormatting.RED};

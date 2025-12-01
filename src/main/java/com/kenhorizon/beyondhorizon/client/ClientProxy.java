@@ -2,11 +2,15 @@ package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundAccessoryInventoryPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -59,5 +63,8 @@ public class ClientProxy extends ServerProxy {
     public Player clientPlayer() {
         return Minecraft.getInstance().player;
     }
-
+    @Override
+    public void syncAccessoryToPlayer(int slot, ItemStack itemStack, ServerPlayer player) {
+        NetworkHandler.sendToPlayer(new ServerBoundAccessoryInventoryPacket(slot, player.getId(), itemStack), player);
+    }
 }

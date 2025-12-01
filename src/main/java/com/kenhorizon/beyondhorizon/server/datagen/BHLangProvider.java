@@ -41,6 +41,7 @@ public class BHLangProvider extends LanguageProvider {
         creativeTabs(BHCreativeTabs.BH_WEAPONS, "Beyond Horizon: Weapons");
         creativeTabs(BHCreativeTabs.BH_BLOCKS, "Beyond Horizon: Blocks");
         creativeTabs(BHCreativeTabs.BH_SPAWN_EGG, "Beyond Horizon: Spawn Egg");
+        creativeTabs(BHCreativeTabs.BH_DEBUG_ITEMS, "Beyond Horizon: Debug Items");
     }
 
     private void addSkills(Skill skill, String name) {

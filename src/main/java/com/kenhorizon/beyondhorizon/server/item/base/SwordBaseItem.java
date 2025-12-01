@@ -140,7 +140,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     }
 
     @Override
-    public Skill getSkill(Skill skill) {
+    public Skill getFirstSkill(Skill skill) {
         for (Skill skills : this.skills) {
             if (skills == skill) {
                 return skills;
@@ -150,7 +150,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     }
 
     @Override
-    public List<Skill> getAllSkillPresent(Skill skill) {
+    public List<Skill> getSkillOf(Skill skill) {
         if (this.skills.isEmpty()) return ImmutableList.of();
         return this.skills.stream().filter((_skill) ->
                 _skill == skill
@@ -163,7 +163,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     }
 
     @Override
-    public Collection<Skill> getSkills() {
+    public List<Skill> getSkills() {
         return this.skills;
     }
 }

@@ -39,7 +39,6 @@ public class BHCreativeTabs {
                     .withTabsBefore(BHCreativeTabs.BH_TOOLS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.weapons"))
                     .displayItems((parameters, output) -> {
-
                         RegistryTabs.REFINED_SWORD_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
                         RegistryTabs.SWORD_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
                         RegistryTabs.AXE_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
@@ -60,13 +59,22 @@ public class BHCreativeTabs {
     public static final RegistryObject<CreativeModeTab> BH_SPAWN_EGG = RegistryTabs.registerCreativeTabs("beyond_horizon_tabs_spawn_egg",
             () -> CreativeModeTab.builder()
                     .icon(() -> new ItemStack(BHItems.ADAMANTITE_INGOT.get()))
-                    .withTabsBefore(BHCreativeTabs.BH_BLOCKS.getKey())
+                    .withTabsBefore(BHCreativeTabs.BH_WEAPONS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.spawn_eggs"))
                     .displayItems((parameters, output) -> {
                         RegistryTabs.SPAWN_EGG_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
                     })
                     .build());
 
+    public static final RegistryObject<CreativeModeTab> BH_DEBUG_ITEMS = RegistryTabs.registerCreativeTabs("beyond_horizon_tabs_debug_items",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(BHItems.ADAMANTITE_INGOT.get()))
+                    .withTabsBefore(BHCreativeTabs.BH_BLOCKS.getKey())
+                    .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.debug_items"))
+                    .displayItems((parameters, output) -> {
+                        RegistryTabs.SPAWN_EGG_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
+                    })
+                    .build());
 
     public static void register(IEventBus eventBus) {
         RegistryEntries.CREATIVE_MODE_TABS.register(eventBus);

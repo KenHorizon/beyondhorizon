@@ -1,19 +1,20 @@
 package com.kenhorizon.beyondhorizon;
 
 import com.kenhorizon.beyondhorizon.client.ClientProxy;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeReaderResourceParser;
 import com.kenhorizon.beyondhorizon.compat.ModCompats;
 import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
-import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
-import com.kenhorizon.beyondhorizon.server.init.BHItems;
-import com.kenhorizon.beyondhorizon.server.init.BHPotions;
+import com.kenhorizon.beyondhorizon.server.init.*;
+import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.util.attributes.AttributeModify;
 import com.kenhorizon.beyondhorizon.server.util.attributes.AttributeRegistryHelper;
 import com.kenhorizon.beyondhorizon.server.util.attributes.IAttributeRegistryHelper;
 import com.mojang.logging.LogUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.ReloadableResourceManager;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -34,6 +35,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +58,8 @@ public class BeyondHorizon
         MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
         BHAttributes.register(eventBus);
         BHCreativeTabs.register(eventBus);
+        BHMenu.register(eventBus);
+        //  BHPotions.register(eventBus);
         BHItems.register(eventBus);
         Skills.register(eventBus);
         PROXY.serverHandler();
@@ -63,9 +67,9 @@ public class BeyondHorizon
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> "ANY", (a, b) -> true));
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
+    private void commonSetup(final FMLCommonSetupEvent event) {
         BeyondHorizon.loggers().info("Setting up {} {}!!", BeyondHorizon.NAME, BeyondHorizon.VERSION);
+        NetworkHandler.register();
         event.enqueueWork(() -> {
             BHPotions.setup();
             this.modCompatible();
@@ -110,12 +114,20 @@ public class BeyondHorizon
     }
 
     @SubscribeEvent
-    public void onServerStarting(ServerStartingEvent event)
-    {
+    public void onServerStarting(ServerStartingEvent event) {
         LOGGER.info("HELLO from server starting");
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            Minecraft minecraft = Minecraft.getInstance();
+            if (minecraft != null) {
+                if (minecraft.getResourceManager() instanceof ReloadableResourceManager resourceManager) {
+                    resourceManager.registerReloadListener(AttributeReaderResourceParser.INSTANCE);
+                }
+            }
+        }
         event.enqueueWork(() -> {
             PROXY.clientHandler();
         });

@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.network.packet.client;
 
 import com.kenhorizon.beyondhorizon.server.inventory.provider.AccessoryContainerProvider;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundGrabbedItemPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -34,7 +35,7 @@ public class ClientBoundAccessoryInventoryPacket {
                 sender.openMenu(new AccessoryContainerProvider());
                 if (!itemStack.isEmpty()) {
                     sender.containerMenu.setCarried(itemStack);
-                    NetworkHandler.sendToPlayer(new GrabbedItemPacket(this.itemStack), sender);
+                    NetworkHandler.sendToPlayer(new ServerBoundGrabbedItemPacket(this.itemStack), sender);
                 }
             }
         });

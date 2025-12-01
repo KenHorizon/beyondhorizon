@@ -1,5 +1,6 @@
-package com.kenhorizon.beyondhorizon.server.skills.accessory;
+package com.kenhorizon.beyondhorizon.server.accessory;
 
+import com.kenhorizon.beyondhorizon.server.skills.Skill;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -7,9 +8,9 @@ import java.util.List;
 
 public interface IAccessoryItems<T extends Item> {
 
-    boolean has(Accessory accessory);
+    boolean has(Accessory skill);
 
-    List<Accessory> getAllAccessory();
+    List<Accessory> getAccessories();
 
     T getItem();
 

@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.inventory;
 
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.skills.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.server.skills.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;

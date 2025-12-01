@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
+import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -15,8 +17,8 @@ import javax.annotation.Nullable;
 
 public class AccessoryInventoryCap implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static ResourceLocation NAME = BeyondHorizon.resource("accessory");
-    private final LazyOptional<AccessoryItemStackHandler> handler = LazyOptional.of(
-            () -> new AccessoryItemStackHandler(6));
+    private final LazyOptional<AccessoryContainer> handler = LazyOptional.of(
+            () -> new AccessoryContainer(6));
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {

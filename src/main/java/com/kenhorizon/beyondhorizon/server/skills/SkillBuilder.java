@@ -12,21 +12,19 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-
-@SuppressWarnings("unchecked")
 public class SkillBuilder implements IReloadable {
-    public static final SkillBuilder NONE = new SkillBuilder(SkillWeaponType.UNIVERSAL, List.of(Skills.NONE));
-    public static final SkillBuilder RUINED_BLADE = new SkillBuilder(SkillWeaponType.MELEE, List.of(Skills.RUINED_BLADE));
-    public static final SkillBuilder BLADE_EDGE = new SkillBuilder(SkillWeaponType.MELEE, List.of(Skills.BLADE_EDGE));
+    public static final SkillBuilder NONE = new SkillBuilder(SkillTypes.UNIVERSAL, List.of(Skills.NONE));
+    public static final SkillBuilder RUINED_BLADE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.RUINED_BLADE));
+    public static final SkillBuilder BLADE_EDGE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.BLADE_EDGE));
 
     protected List<Supplier<? extends Skill>> suppliers = new ArrayList<>();
     protected List<Skill> skills = new ArrayList<>();
     protected List<Skill> filter = new ArrayList<>();
     protected Optional<Skill> actionSkills = Optional.empty();
-    protected SkillWeaponType skillWeaponType;
+    protected SkillTypes skillTypes;
 
-    public SkillBuilder(SkillWeaponType skillWeaponType, List<Supplier<? extends Skill>> skills) {
-        this.skillWeaponType = skillWeaponType;
+    public SkillBuilder(SkillTypes skillTypes, List<Supplier<? extends Skill>> skills) {
+        this.skillTypes = skillTypes;
         this.suppliers = skills;
         ReloadableHandler.addToReloadList(this);
     }
@@ -42,7 +40,7 @@ public class SkillBuilder implements IReloadable {
         });
 
         this.skills = this.filter.stream().filter(skill -> {
-            boolean isValid = this.skillWeaponType.getFilter().test(skill) && skill != Skills.NONE.get();
+            boolean isValid = this.skillTypes.getFilter().test(skill) && skill != Skills.NONE.get();
             BeyondHorizon.loggers().error("Skill is : {} : {}", skill, isValid);
             if (isValid) {
                 if (builder.get() == null) {

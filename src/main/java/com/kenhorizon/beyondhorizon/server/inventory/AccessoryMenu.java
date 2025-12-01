@@ -2,13 +2,9 @@ package com.kenhorizon.beyondhorizon.server.inventory;
 
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
-import com.kenhorizon.beyondhorizon.server.skills.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.inventory.slot.AccessorySlot;
+import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
 import com.mojang.datafixers.util.Pair;
-import net.kenhorizon.beyondhorizon.common.api.accessory.util.IAccessoryItemHandler;
-import net.kenhorizon.beyondhorizon.common.capability.BHCapabilties;
-import net.kenhorizon.beyondhorizon.common.capability.CapabilityCaller;
-import net.kenhorizon.beyondhorizon.common.init.BHMenu;
-import net.kenhorizon.beyondhorizon.common.inventory.container.AccessorySlot;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
 import net.minecraft.resources.ResourceLocation;
@@ -29,7 +25,6 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nonnull;
 import java.util.Optional;
 
 public class AccessoryMenu extends InventoryMenu {

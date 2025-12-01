@@ -1,12 +1,8 @@
-package com.kenhorizon.beyondhorizon.server.skills.accessory;
+package com.kenhorizon.beyondhorizon.server.accessory;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.skills.ISkillItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class AccessoryHelper {
     public static boolean getAccessory(Player player, Accessory accessory) {
@@ -29,7 +24,7 @@ public class AccessoryHelper {
         for (int i = 0; i < handler.getSlots(); i++) {
             ItemStack itemStack = handler.getStackInSlot(i);
             if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> caller) {
-                result.addAll(caller.getAllAccessory());
+                result.addAll(caller.getAccessories());
             }
         }
         return result;
@@ -50,7 +45,7 @@ public class AccessoryHelper {
 
     public static List<Accessory> getAccessories(ItemStack itemStack) {
         if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> container) {
-            return container.getAllAccessory();
+            return container.getAccessories();
         }
         return List.of();
     }

@@ -1,12 +1,13 @@
-package com.kenhorizon.beyondhorizon.server.skills;
+package com.kenhorizon.beyondhorizon.server.accessory;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.util.Tooltips;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -17,90 +18,61 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
-import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
-import net.minecraftforge.registries.RegistryManager;
-import net.minecraftforge.registries.tags.ITag;
-import net.minecraftforge.registries.tags.ITagManager;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public abstract class Skill {
-    public enum Type implements StringRepresentable {
-        PASSIVE,
-        ACTIVE;
-
-        @Override
-        public String getSerializedName() {
-            return this.name().toLowerCase(Locale.ROOT);
-        }
-        public String getName() {
-            return Utils.capitalize(this.name().toLowerCase(Locale.ROOT));
-        }
-    }
-    public enum Format {
-        NEGATIVE(ChatFormatting.RED),
-        NORMAL(ChatFormatting.YELLOW);
-
-        private final ChatFormatting chatFormatting;
-
-        private Format(ChatFormatting chatFormatting) {
-            this.chatFormatting = chatFormatting;
-        }
-
-        public ChatFormatting getChatFormatting() {
-            return this.chatFormatting;
-        }
-    }
-    protected String MODID = Skills.REGISTRY.getRegistryName().getNamespace();
-    public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
-
-    protected boolean isSkill = false;
+public class Accessory {
+    private final AttributeTooltips attributeTooltip = new AttributeTooltips();
+    private float magnitude = 0.0F;
+    private int level = 1;
     protected boolean tooltipEnable = true;
+    protected boolean tooltipEnableName = true;
     protected boolean tooltipDescriptionEnable = true;
-    protected boolean isMelee = false;
-    protected boolean isRanged = false;
-    protected boolean isThrowing = false;
-    protected boolean isAccessory = false;
-    protected Format format = Format.NORMAL;
-    protected Type skillType = Type.PASSIVE;
-    protected int cooldown = 0;
-    protected int manaCost = 0;
+    protected boolean attributeTooltipEnable = true;
+    private List<Accessory> accessoryList;
+    protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
+    protected String MODID = Accessories.REGISTRY.getRegistryName().getNamespace();
+    public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
     @Nullable
     private String descriptionId;
-    protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
 
-    public Skill format(Format format) {
-        this.format = format;
-        return this;
+    public Accessory(float magnitude, int level) {
+        this.magnitude = magnitude;
+        this.level = level;
     }
 
-    public Skill type(Type type) {
-        this.skillType = type;
-        return this;
+    public Accessory() {
+        this(0, 0);
     }
 
-    public Type getSkillType() {
-        return this.skillType;
+    public void setMagnitude(float magnitude) {
+        this.magnitude = magnitude;
+    }
+    public void setLevel(int level) {
+        this.level = level;
+    }
+    public int getLevel() {
+        return level;
+    }
+    public float getMagnitude() {
+        return magnitude;
     }
 
     public String getName() {
-        return Skills.SUPPLIER_KEY.get().getKey(this).getPath();
+        return Accessories.SUPPLIER_KEY.get().getKey(this).getPath();
     }
 
     public String getDescriptionId() {
         return this.getOrCreateDescriptionId();
+    }
+
+    public String getId() {
+        return Accessories.SUPPLIER_KEY.get().getKey(this).getNamespace();
     }
 
     protected String getOrCreateDescriptionId() {
@@ -111,68 +83,12 @@ public abstract class Skill {
 
     }
 
-    public String getId() {
-        return Skills.SUPPLIER_KEY.get().getKey(this).getNamespace();
-    }
-
-    public boolean isSkill() {
-        return this.skillType != Type.ACTIVE;
-    }
-
-    public Skill melee() {
-        this.isMelee = true;
-        return this;
-    }
-
-    public Skill ranged() {
-        this.isRanged = true;
-        return this;
-    }
-
-    public Skill setUniversal() {
-        this.isThrowing = true;
-        this.isRanged = true;
-        this.isMelee = true;
-        return this;
-    }
-
-    public Skill throwing() {
-        this.isThrowing = true;
-        return this;
-    }
-    public Skill accessory() {
-        this.isAccessory = true;
-        return this;
-    }
-    public final boolean isMeleeAbility() {
-        return this.isMelee;
-    }
-
-    public final boolean isRangedAbility() {
-        return this.isRanged;
-    }
-
-    public final boolean isThrowingAbility() {
-        return this.isThrowing;
-    }
-    public final boolean isAccessory() {
-        return this.isAccessory;
-    }
-
-    public final boolean isUniversal() {
-        return this.isMelee && this.isRanged && this.isThrowing;
-    }
-
-    public boolean isEnchantmentCompatible(Enchantment enchantIn) {
-        return false;
-    }
-
-    public boolean isEnchantmentIncompatible(Enchantment enchantIn) {
-        return false;
-    }
-
-    public boolean canPerformToolAction(ItemStack stack, ToolAction action) {
-        return false;
+    public final String getSkillId() {
+        if (this.MODID == null) {
+            var id = Objects.requireNonNull(BeyondHorizon.resource(this.getName()));
+            this.MODID = id.toString().intern();
+        }
+        return this.MODID;
     }
 
     public Optional<IAttack> IAttackCallback() {
@@ -183,9 +99,10 @@ public abstract class Skill {
         return Optional.empty();
     }
 
-    public Skill addAttributeModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
+    public Accessory addAttributeModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
         AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
         this.attributeModifiers.put(attribute, attributemodifier);
+        this.attributeTooltipEnable = true;
         return this;
     }
 
@@ -245,31 +162,31 @@ public abstract class Skill {
         return ImmutableMultimap.of();
     }
 
-    public String toString() {
-        return String.format("Skill:{Type: %s:%s, Type: %s}", this.MODID, this.getName(), this.getSkillType());
+    public boolean isAttributeTooltipEnable() {
+        return this.attributeTooltipEnable;
     }
 
-    public final String getSkillId() {
-        if (this.MODID == null) {
-            var id = Objects.requireNonNull(BeyondHorizon.resource(this.getName()));
-            this.MODID = id.toString().intern();
-        }
-        return this.MODID;
+    public boolean isEnalbeTooltipName() {
+        return this.tooltipEnableName;
     }
 
     public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed) {
-        this.addTooltip(itemStack, tooltip, isShiftPressed, true);
-    }
-
-    public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed, boolean firstType) {
         if (!this.isTooltipEnable()) return;
-        this.addTooltipTitle(itemStack, tooltip, firstType);
+        if (this.isEnalbeTooltipName()) {
+            addTooltipTitle(itemStack, tooltip);
+        }
         if (!this.isTooltipDescriptionEnable()) return;
+        if (this.isAttributeTooltipEnable()) {
+            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
+        }
         if (isShiftPressed && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
+            this.appendDescription(itemStack, tooltip);
         }
     }
+    protected void appendDescription(ItemStack itemStack, List<Component> tooltip) {
 
+    }
     protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip) {
         this.addTooltipTitle(itemStack, tooltip, false);
     }
@@ -278,12 +195,10 @@ public abstract class Skill {
         Component abilityTrait;
         if (firstType) {
             abilityTrait = CommonComponents.space()
-                    .append(Component.translatable(Tooltips.SKILL_TYPE,
-                            this.getSkillType().getName())).withStyle(Tooltips.TOOLTIP[1])
                     .append(CommonComponents.space()
-                            .append(Component.translatable(this.getDescriptionId()).withStyle(this.format.getChatFormatting())));
+                            .append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD)));
         } else {
-            abilityTrait = CommonComponents.space().append(Component.translatable(this.getDescriptionId()).withStyle(this.format.getChatFormatting()));
+            abilityTrait = CommonComponents.space().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
         }
         tooltip.add(abilityTrait);
     }
@@ -341,18 +256,26 @@ public abstract class Skill {
     protected String createId() {
         return createId(0);
     }
-    public boolean registerIcons() {
-        return false;
+    protected List<Attribute> randomAttributes() {
+        List<Attribute> attributes = new ArrayList<>(new HashSet<>());
+        attributes.add(Attributes.ATTACK_DAMAGE);
+        attributes.add(Attributes.ATTACK_SPEED);
+        attributes.add(Attributes.ATTACK_KNOCKBACK);
+        attributes.add(Attributes.ARMOR);
+        attributes.add(Attributes.MOVEMENT_SPEED);
+        attributes.add(Attributes.MAX_HEALTH);
+        attributes.add(BHAttributes.ABILITY_POWER.get());
+        attributes.add(BHAttributes.CRITICAL_STRIKE.get());
+        attributes.add(BHAttributes.CRITICAL_DAMAGE.get());
+        attributes.add(BHAttributes.DAMAGE_DEALT.get());
+        attributes.add(BHAttributes.DAMAGE_TAKEN.get());
+        attributes.add(BHAttributes.MANA_REGENERATION.get());
+        return attributes;
     }
 
     public boolean isTooltipEnable() {
         return this.tooltipEnable;
     }
-
-//    public Component addKeyBinds() {
-//        return CommonComponents.space()
-//                .append(Component.translatable(TooltipUtil.TOOLTIP_KEYBIND, KeyBindings.ABILITY_TRAIT_SKILLS.getKey().getDisplayName()).withStyle(ChatFormatting.GOLD));
-//    }
 
     public boolean isTooltipDescriptionEnable() {
         return this.tooltipDescriptionEnable;

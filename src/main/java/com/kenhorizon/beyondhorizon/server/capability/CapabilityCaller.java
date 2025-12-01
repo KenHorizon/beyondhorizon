@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.skills.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

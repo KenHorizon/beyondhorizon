@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
 import com.kenhorizon.beyondhorizon.server.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.skills.Skills;
@@ -35,7 +37,8 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.SKILL_TYPE, "%s");
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional +%s%% target's Current HP");
         this.addSkills(Skills.BLADE_EDGE.get(), "Blade Edge", "Deal additional +%s%% target's Max HP");
-
+        //
+        //
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon: Ingredients");
         creativeTabs(BHCreativeTabs.BH_TOOLS, "Beyond Horizon: Tools");
         creativeTabs(BHCreativeTabs.BH_WEAPONS, "Beyond Horizon: Weapons");
@@ -43,7 +46,21 @@ public class BHLangProvider extends LanguageProvider {
         creativeTabs(BHCreativeTabs.BH_SPAWN_EGG, "Beyond Horizon: Spawn Egg");
         creativeTabs(BHCreativeTabs.BH_DEBUG_ITEMS, "Beyond Horizon: Debug Items");
     }
+    private void addAccessory(Accessory accessory, String name) {
+        this.add(accessory.getDescriptionId(), name);
+    }
 
+    private void addAccessory(Accessory accessory, String name, String... descriptions) {
+        this.add(accessory.getDescriptionId(), name);
+        for (int i = 0; i < descriptions.length; i++) {
+            if (i == 0) {
+                this.add(accessory.getDescriptionId() + ".desc", descriptions[i]);
+            } else {
+                this.add(accessory.getDescriptionId() + ".desc." + i, descriptions[i]);
+            }
+
+        }
+    }
     private void addSkills(Skill skill, String name) {
         this.add(skill.getDescriptionId(), name);
     }

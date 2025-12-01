@@ -1,17 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.inventory.slot;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.skills.accessory.AccessoryHelper;
-import com.kenhorizon.beyondhorizon.server.skills.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.accessory.AccessoryHelper;
+import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class AccessorySlot extends SlotItemHandler {

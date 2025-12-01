@@ -1,10 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
+import com.kenhorizon.beyondhorizon.server.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
+import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealthCheckerItems;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugWeaponItems;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.item.base.WeaponBuilder;
+import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import com.kenhorizon.libs.client.model.item.ItemModels;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryItems;
@@ -127,82 +130,108 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register()
             .build();
+    //
+
+    public static final RegistryObject<Item> BROKEN_HERO_SWORD = RegistryItems
+            .register("broken_hero_sword", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.BROKEN_HERO_SWORD))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> BOOTS = RegistryItems
+            .register("boots", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.BOOTS))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> GOLDEN_BOOTS = RegistryItems
+            .register("golden_boots", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.BOOTS_UPGRADED))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+    //
     public static final RegistryObject<Item> SILVER_SWORD = RegistryItems
-            .register("silver_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.SILVER, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("silver_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.SILVER, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> HELLSTONE_SWORD = RegistryItems
-            .register("hellstone_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.SILVER, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("hellstone_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.HELLSTONE, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> COBALT_SWORD = RegistryItems
-            .register("cobalt_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.SILVER, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("cobalt_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.COBALT, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> ADAMANTITE_SWORD = RegistryItems
-            .register("adamantite_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.SILVER, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("adamantite_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.ADAMANTITE, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> TITANIUM_SWORD = RegistryItems
-            .register("titanium_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.SILVER, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("titanium_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.TITANIUM, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
 
     public static final RegistryObject<Item> COBALT_AXE = RegistryItems
-            .register("cobalt_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.COBALT, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("cobalt_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.COBALT, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> HELLSTONE_AXE = RegistryItems
-            .register("hellstone_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.HELLSTONE, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("hellstone_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.HELLSTONE, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> ADAMANTITE_AXE = RegistryItems
-            .register("adamantite_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.ADAMANTITE, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("adamantite_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.ADAMANTITE, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> TITANIUM_AXE = RegistryItems
-            .register("titanium_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.TITANIUM, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("titanium_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.TITANIUM, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
 
     public static final RegistryObject<Item> COBALT_PICKAXE = RegistryItems
-            .register("cobalt_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.COBALT, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("cobalt_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.COBALT, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> HELLSTONE_PICKAXE = RegistryItems
-            .register("hellstone_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.HELLSTONE, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("hellstone_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.HELLSTONE, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> ADAMANTITE_PICKAXE = RegistryItems
-            .register("adamantite_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.ADAMANTITE, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("adamantite_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.ADAMANTITE, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> TITANIUM_PICKAXE = RegistryItems
-            .register("titanium_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.TITANIUM, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("titanium_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.TITANIUM, new Item.Properties()))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register()

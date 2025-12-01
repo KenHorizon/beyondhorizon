@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.skills.accessory;
+package com.kenhorizon.beyondhorizon.server.accessory;
 
 import net.minecraftforge.common.IExtensibleEnum;
 

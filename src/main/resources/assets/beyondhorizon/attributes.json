@@ -1,0 +1,33 @@
+{
+  "attributes": [
+    {
+      "percentage_attributes": [
+        "minecraft:generic.knockback_resistance",
+        "minecraft:generic.movement_speed",
+        "beyondhorizon:critical_strike",
+        "beyondhorizon:critical_damage",
+        "beyondhorizon:cooldown",
+        "beyondhorizon:cast_time",
+        "beyondhorizon:omnivamp",
+        "beyondhorizon:physical_vamp",
+        "beyondhorizon:spell_vamp",
+        "beyondhorizon:armor_penetration",
+        "beyondhorizon:damage_multiplier",
+        "beyondhorizon:mining_speed",
+        "beyondhorizon:evade",
+        "beyondhorizon:damage_reduction",
+        "beyondhorizon:healing",
+        "beyondhorizon:shielding",
+        "beyondhorizon:mana_cost",
+        "beyondhorizon:stealth"
+      ],
+      "player_stats_blacklist_attributes": [
+        "minecraft:generic.attack_knockback",
+        "forge:step_height_addition",
+        "forge:nametag_distance",
+        "forge:swim_speed",
+        "forge:entity_gravity"
+      ]
+    }
+  ]
+}

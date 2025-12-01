@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
+import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -29,14 +31,6 @@ public class BHItemTagsProvider extends ItemTagsProvider {
             this.tag(tags).add(object.get());
         });
     }
-
-//    private void getAccessory() {
-//        for (Item item : ForgeRegistries.ITEMS) {
-//            if (item instanceof AccessoryItem) {
-//                this.tag(BHItemTags.ONLY_ACCESSORY).add(item);
-//            }
-//        }
-//    }
     @Override
     public @NotNull String getName() {
         return "Item Tags";

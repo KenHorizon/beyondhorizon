@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.accessory.AccessoryBuilder;
+import com.kenhorizon.beyondhorizon.server.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealthCheckerItems;
@@ -131,7 +132,6 @@ public class BHItems {
             .register()
             .build();
     //
-
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = RegistryItems
             .register("broken_hero_sword", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.BROKEN_HERO_SWORD))
             .tab(RegistryTabs.Category.ACCESSORY)
@@ -141,7 +141,7 @@ public class BHItems {
             .build();
 
     public static final RegistryObject<Item> BOOTS = RegistryItems
-            .register("boots", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.BOOTS))
+            .register("boots", item -> new AccessoryItem(AccessoryItemGroup.BOOTS, new Item.Properties(), AccessoryBuilder.BOOTS_0))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
@@ -149,12 +149,68 @@ public class BHItems {
             .build();
 
     public static final RegistryObject<Item> GOLDEN_BOOTS = RegistryItems
-            .register("golden_boots", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.BOOTS_UPGRADED))
+            .register("golden_boots", item -> new AccessoryItem(AccessoryItemGroup.BOOTS, new Item.Properties(), AccessoryBuilder.BOOTS_0))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
+
+    public static final RegistryObject<Item> BERSERKER_BOOTS = RegistryItems
+            .register("berserker_boots", item -> new AccessoryItem(AccessoryItemGroup.BOOTS, new Item.Properties(), AccessoryBuilder.BERSERKER_BOOTS))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> IRON_PLATED_BOOTS = RegistryItems
+            .register("iron_plated_boots", item -> new AccessoryItem(AccessoryItemGroup.BOOTS, new Item.Properties(), AccessoryBuilder.IRON_PLATED_BOOTS))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> MINER_BOOTS = RegistryItems
+            .register("miner_boots", item -> new AccessoryItem(AccessoryItemGroup.BOOTS, new Item.Properties(), AccessoryBuilder.MINING_BOOTS))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> ANCIENT_PICKAXE = RegistryItems
+            .register("ancient_axe", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.ANCIENT_PICKAXE))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+    public static final RegistryObject<Item> ANCIENT_CHISEL = RegistryItems
+            .register("ancient_chisel", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.ANCIENT_CHISEL))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> LUCKY_HORSE_SHOE = RegistryItems
+            .register("lucky_horse_shoe", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.NEGATE_FALL_DAMAGE))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> HEART_OF_THE_TREE = RegistryItems
+            .register("heart_of_the_tree", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.OVERGROWTH))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
     //
     public static final RegistryObject<Item> SILVER_SWORD = RegistryItems
             .register("silver_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.SILVER, new Item.Properties()))

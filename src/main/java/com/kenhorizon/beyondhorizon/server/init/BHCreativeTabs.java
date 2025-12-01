@@ -72,7 +72,7 @@ public class BHCreativeTabs {
                     .withTabsBefore(BHCreativeTabs.BH_BLOCKS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.debug_items"))
                     .displayItems((parameters, output) -> {
-                        RegistryTabs.SPAWN_EGG_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
+                        RegistryTabs.DEBUGS.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
                     })
                     .build());
 

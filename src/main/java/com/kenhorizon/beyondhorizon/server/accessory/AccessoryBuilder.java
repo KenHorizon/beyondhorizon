@@ -1,24 +1,25 @@
 package com.kenhorizon.beyondhorizon.server.accessory;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.skills.Skill;
-import com.kenhorizon.beyondhorizon.server.skills.SkillTypes;
-import com.kenhorizon.beyondhorizon.server.skills.Skills;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder NONE = new AccessoryBuilder(List.of(Accessories.NONE));
-    public static final AccessoryBuilder BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_0));
-    public static final AccessoryBuilder BOOTS_UPGRADED = new AccessoryBuilder(List.of(Accessories.BOOTS_1));
+    public static final AccessoryBuilder BOOTS_0 = new AccessoryBuilder(List.of(Accessories.BOOTS_0));
+    public static final AccessoryBuilder NEGATE_FALL_DAMAGE = new AccessoryBuilder(List.of(Accessories.FEATHER_FEET));
+
+    public static final AccessoryBuilder BERSERKER_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_1, Accessories.BERSERKER_BOOTS));
+    public static final AccessoryBuilder IRON_PLATED_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_1, Accessories.IRON_PLATED_BOOTS));
+    public static final AccessoryBuilder MINING_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_1, Accessories.MINING_BOOTS));
+    public static final AccessoryBuilder ANCIENT_PICKAXE = new AccessoryBuilder(List.of(Accessories.ANCIENT_PICKAXE));
+    public static final AccessoryBuilder ANCIENT_CHISEL = new AccessoryBuilder(List.of(Accessories.ANCIENT_CHISEL));
+    public static final AccessoryBuilder OVERGROWTH = new AccessoryBuilder(List.of(Accessories.OVERGROWTH));
     public static final AccessoryBuilder BROKEN_HERO_SWORD = new AccessoryBuilder(List.of(Accessories.BRAVERY));
 
     protected List<Supplier<? extends Accessory>> suppliers = new ArrayList<>();

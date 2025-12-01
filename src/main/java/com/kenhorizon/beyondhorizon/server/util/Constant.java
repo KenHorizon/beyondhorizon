@@ -20,4 +20,17 @@ public class Constant {
     public static float[] SICKLE = {4.5F, 1.65F};
     public static float[] ZENITH = {5.0F, 1.7F};
     public static float[] BLADE_OF_THE_ENDERLORD = {8.0F, 1.7F};
+    //
+    public static double ANCIENT_PICK_MINING_EFFECIENCY = 0.12D;
+    public static double ANCIENT_PICK_MINING_SPEED = 0.10D;
+    public static double ANCIENT_CHISEL_MINING_SPEED = 0.20D;
+    public static double BRAVERY_DAMAGE = 0.1D;
+    public static double BOOTS_TIER_1 = 0.020D;
+    public static double BOOTS_TIER_2 = 0.040D;
+    public static double BOOTS_TIER_3 = 0.050D;
+    public static double BERSERKER_BOOTS = 0.12D;
+    public static double IRON_PLATED_BOOTS = 0.10D;
+    public static double MINING_BOOTS = 0.10D;
+    public static double OVERGROWTH_BONUS_HEALTH = 0.12D;
+     //
 }

@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeReaderResourc
 import com.kenhorizon.beyondhorizon.compat.ModCompats;
 import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
+import com.kenhorizon.beyondhorizon.server.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.skills.Skills;
@@ -62,9 +63,19 @@ public class BeyondHorizon
         //  BHPotions.register(eventBus);
         BHItems.register(eventBus);
         Skills.register(eventBus);
+        Accessories.register(eventBus);
         PROXY.serverHandler();
         MinecraftForge.EVENT_BUS.register(this);
         ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> "ANY", (a, b) -> true));
+
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            Minecraft minecraft = Minecraft.getInstance();
+            if (minecraft != null) {
+                if (minecraft.getResourceManager() instanceof ReloadableResourceManager resourceManager) {
+                    resourceManager.registerReloadListener(AttributeReaderResourceParser.INSTANCE);
+                }
+            }
+        }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -119,15 +130,6 @@ public class BeyondHorizon
     }
 
     private void clientSetup(FMLClientSetupEvent event) {
-
-        if (FMLEnvironment.dist == Dist.CLIENT) {
-            Minecraft minecraft = Minecraft.getInstance();
-            if (minecraft != null) {
-                if (minecraft.getResourceManager() instanceof ReloadableResourceManager resourceManager) {
-                    resourceManager.registerReloadListener(AttributeReaderResourceParser.INSTANCE);
-                }
-            }
-        }
         event.enqueueWork(() -> {
             PROXY.clientHandler();
         });

@@ -1,17 +1,55 @@
 package com.kenhorizon.beyondhorizon.mixins.server;
 
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.ProtectionEnchantment;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
 public abstract class EntityMixins {
+    @Shadow
+    @Final
+    public RandomSource random;
+    @Shadow
+    @Final
+    public int remainingFireTicks;
+
+    @Inject(method = "setSecondsOnFire", at = @At("RETURN"), cancellable = true)
+    private void modifiedSetSecondOnFire(int seconds, CallbackInfo ci) {
+        int i = seconds * 20;
+        if (_this() instanceof LivingEntity entity) {
+            float multiplier = (float) entity.getAttributeValue(BHAttributes.BURNING_TIME.get());
+            i = ProtectionEnchantment.getFireAfterDampener(entity, i);
+            i *= (int) multiplier;
+        }
+        if (this.remainingFireTicks < i) {
+            this.setRemainingFireTicks(i);
+        }
+        ci.cancel();
+    }
+    @Unique
+    private Entity _this() {
+        return (Entity) (Object) this;
+    }
+
+    @Shadow public void setRemainingFireTicks(int remainingFireTicks) {
+        throw new IllegalStateException("Mixin failed to shadow the \"Entity.setRemainingFireTicks()\" method!");
+    }
 
     @Shadow public Vec3 position() {
         throw new IllegalStateException("Mixin failed to shadow the \"Entity.position()\" method!");
@@ -40,8 +78,6 @@ public abstract class EntityMixins {
     @Shadow public double getRandomX(double scale) {
         throw new IllegalStateException("Mixin failed to shadow the \"Entity.getRandomX(double scale)\" method!");
     }
-
-    @Shadow @Final protected RandomSource random;
 
     @Shadow public boolean fireImmune()  {
         throw new IllegalStateException("Mixin failed to shadow the \"Entity.fireImmune()\" method!");

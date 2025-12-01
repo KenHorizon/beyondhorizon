@@ -50,12 +50,27 @@ public class Accessory {
         this(0, 0);
     }
 
+    public Accessory disableTooltip() {
+        this.tooltipEnable = false;
+        return this;
+    }
+    public Accessory disableTooltipName() {
+        this.tooltipEnableName = false;
+        return this;
+    }
+    public Accessory disableAttributeTooltip() {
+        this.attributeTooltipEnable = false;
+        return this;
+    }
+
     public void setMagnitude(float magnitude) {
         this.magnitude = magnitude;
     }
+
     public void setLevel(int level) {
         this.level = level;
     }
+
     public int getLevel() {
         return level;
     }
@@ -99,10 +114,29 @@ public class Accessory {
         return Optional.empty();
     }
 
+    public Optional<IAccessoryEvent> IAccessory() {
+        return Optional.empty();
+    }
+
+    public void setTooltipEnable(boolean tooltipEnable) {
+        this.tooltipEnable = tooltipEnable;
+    }
+
+    public void setAttributeTooltipEnable(boolean attributeTooltipEnable) {
+        this.attributeTooltipEnable = attributeTooltipEnable;
+    }
+
+    public void setTooltipDescriptionEnable(boolean tooltipDescriptionEnable) {
+        this.tooltipDescriptionEnable = tooltipDescriptionEnable;
+    }
+
+    public void setTooltipEnableName(boolean tooltipEnableName) {
+        this.tooltipEnableName = tooltipEnableName;
+    }
+
     public Accessory addAttributeModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
         AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
         this.attributeModifiers.put(attribute, attributemodifier);
-        this.attributeTooltipEnable = true;
         return this;
     }
 
@@ -173,7 +207,7 @@ public class Accessory {
     public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed) {
         if (!this.isTooltipEnable()) return;
         if (this.isEnalbeTooltipName()) {
-            addTooltipTitle(itemStack, tooltip);
+            this.addTooltipTitle(itemStack, tooltip);
         }
         if (!this.isTooltipDescriptionEnable()) return;
         if (this.isAttributeTooltipEnable()) {
@@ -192,15 +226,15 @@ public class Accessory {
     }
 
     protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
-        Component abilityTrait;
+        Component text;
         if (firstType) {
-            abilityTrait = CommonComponents.space()
+            text = CommonComponents.space()
                     .append(CommonComponents.space()
                             .append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD)));
         } else {
-            abilityTrait = CommonComponents.space().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
+            text = CommonComponents.space().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
         }
-        tooltip.add(abilityTrait);
+        tooltip.add(text);
     }
 
     protected void prefixTooltipDesc(ItemStack itemStack, List<Component> tooltip) {

@@ -38,6 +38,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional +%s%% target's Current HP");
         this.addSkills(Skills.BLADE_EDGE.get(), "Blade Edge", "Deal additional +%s%% target's Max HP");
         //
+        this.addAccessory(Accessories.OVERGROWTH.get(), "Overgrowth", "Increase Bonus Max HP by %s%% (%s)");
         //
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon: Ingredients");
         creativeTabs(BHCreativeTabs.BH_TOOLS, "Beyond Horizon: Tools");
@@ -45,6 +46,20 @@ public class BHLangProvider extends LanguageProvider {
         creativeTabs(BHCreativeTabs.BH_BLOCKS, "Beyond Horizon: Blocks");
         creativeTabs(BHCreativeTabs.BH_SPAWN_EGG, "Beyond Horizon: Spawn Egg");
         creativeTabs(BHCreativeTabs.BH_DEBUG_ITEMS, "Beyond Horizon: Debug Items");
+        //
+        this.add(Tooltips.TOOLTIP_ACCESSORY, "Accessory");
+        this.add(Tooltips.TOOLTIP_INVENTORY, "Inventory");
+        this.add(Tooltips.TOOLTIP_HEALTH_RECOVERY_POTION, "Restore %s Health");
+        this.add(Tooltips.TOOLTIP_MANA_RECOVERY_POTION, "Restore %s Mana");
+
+        this.add(BeyondHorizon.ID + ".attributes.plus.percent", "+%s%% %s");
+        this.add(BeyondHorizon.ID + ".attributes.take.percent", "-%s%% %s");
+        this.add(BeyondHorizon.ID + ".attributes.plus.0", "+%s %s");
+        this.add(BeyondHorizon.ID + ".attributes.plus.1", "+%s%% %s");
+        this.add(BeyondHorizon.ID + ".attributes.plus.2", "+%s%% %s");
+        this.add(BeyondHorizon.ID + ".attributes.take.0", "-%s %s");
+        this.add(BeyondHorizon.ID + ".attributes.take.1", "-%s%% %s");
+        this.add(BeyondHorizon.ID + ".attributes.take.2", "-%s%% %s");
     }
     private void addAccessory(Accessory accessory, String name) {
         this.add(accessory.getDescriptionId(), name);

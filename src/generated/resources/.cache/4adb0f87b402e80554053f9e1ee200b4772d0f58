@@ -1,1 +1,5 @@
-// 1.20.1	2025-11-30T13:46:28.9969671	Beyond Horizon: Datapack Registries
+// 1.20.1	2025-12-02T06:35:46.4343505	Beyond Horizon: Datapack Registries
+40892efc51eadc232f99a3cc979407590646320e data/beyondhorizon/damage_type/armor_penetration.json
+7bf9ca402ad3183994d0cf76dff12b61a73c8fc7 data/beyondhorizon/damage_type/lethality.json
+f4f3fd39d00c86075c3c68ce8e429b082f8133a4 data/beyondhorizon/damage_type/magic_penetration.json
+3946e79599744034bc889ae5a13086ae1dac5134 data/beyondhorizon/damage_type/true_damage.json

@@ -1,10 +1,13 @@
 package com.kenhorizon.beyondhorizon.mixins.server;
 
+import com.kenhorizon.beyondhorizon.server.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.core.Holder;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.CombatRules;
@@ -12,15 +15,18 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
@@ -28,6 +34,34 @@ import javax.annotation.Nullable;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixins extends EntityMixins {
 
+    @Inject(method = "decreaseAirSupply", at = @At("RETURN"), cancellable = true)
+    private void modifiedDecreaseAirSupply(int currentAir, CallbackInfoReturnable<Integer> cir) {
+        AttributeInstance respiration = _this().getAttribute(BHAttributes.OXYGEN_BONUS.get());
+        float respirationBonus = EnchantmentHelper.getRespiration(_this());
+        float bonusOxygen;
+        if (respiration != null) {
+            bonusOxygen = (float) (respirationBonus + respiration.getValue());
+        } else {
+            bonusOxygen = 0.0F;
+        }
+        int air = bonusOxygen > 0 && _this().getRandom().nextDouble() >= (double) 1.0F / (bonusOxygen + (double) 1.0F) ? currentAir : currentAir - 1;
+        cir.setReturnValue(air);
+    }
+
+    @Inject(method = "calculateFallDamage", at = @At("RETURN"), cancellable = true)
+    private void modifiedCalculateFallDamage(float fallDistance, float damageMultiplier, CallbackInfoReturnable<Integer> cir) {
+        if (_this().getType().is(EntityTypeTags.FALL_DAMAGE_IMMUNE)) {
+            cir.setReturnValue(0);
+        } else {
+            int damage = 0;
+            MobEffectInstance instance = _this().getEffect(MobEffects.JUMP);
+            float distance = instance == null ? 0.0F : (float) (instance.getAmplifier() + 1);
+            double baseDamage = fallDistance - 3 - distance;
+            damage = Mth.floor(baseDamage * damageMultiplier * _this().getAttributeValue(BHAttributes.FALLDAMAGE_MULTIPLIER.get()));
+            cir.setReturnValue(damage);
+
+        }
+    }
     @Inject(at = @At("HEAD"), method = "getDamageAfterArmorAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F", cancellable = true)
     private void beyondHorizon$getDamageAfterArmorAbsorb(DamageSource damageSource, float amount, CallbackInfoReturnable<Float> cir) {
         if (damageSource.is(BHDamageTypeTags.IS_MAGIC_PENETRATION) && !damageSource.is(DamageTypeTags.BYPASSES_ARMOR) && damageSource.is(DamageTypes.MAGIC)) {

@@ -1,24 +1,35 @@
 package com.kenhorizon.beyondhorizon.server;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
+import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryEvent;
+import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.capability.AccessoryInventoryCap;
+import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
+import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
 import com.kenhorizon.beyondhorizon.server.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingHealEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.Optional;
@@ -50,6 +61,122 @@ public class ServerEventHandler {
     public void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player) {
             AccessoryContainer.dropContent(player);
+        }
+    }
+
+    @SubscribeEvent
+    public void playerStartTracking(PlayerEvent.StartTracking event) {
+        Entity target = event.getTarget();
+        Player player = event.getEntity();
+        if (player instanceof ServerPlayer serverPlayer) {
+            this.syncSlot(serverPlayer);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerCloned(PlayerEvent.Clone event) {
+        Player player = event.getEntity();
+        Player oldPlayer = event.getOriginal();
+        if (event.isWasDeath()) {
+            oldPlayer.revive();
+            oldPlayer.getCapability(BHCapabilties.ACCESSORY).ifPresent(oldData -> {
+                player.getCapability(BHCapabilties.ACCESSORY).ifPresent(newData -> {
+                    newData.deserializeNBT(oldData.serializeNBT());
+                });
+            });
+            oldPlayer.invalidateCaps();
+        }
+    }
+
+    private void syncSlot(ServerPlayer player) {
+        player.getCapability(BHCapabilties.ACCESSORY).ifPresent(handler -> {
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack itemStack = handler.getStackInSlot(i);
+                BeyondHorizon.PROXY.syncAccessoryToPlayer(i, itemStack, player);
+            }
+        });
+    }
+
+    private void onPlayerTick(Player player) {
+        player.getCapability(BHCapabilties.ACCESSORY).ifPresent(handler -> {
+            for (int inv = 0; inv < player.getInventory().getContainerSize(); inv++) {
+                ItemStack itemStacks = player.getInventory().getItem(inv);
+                if (!itemStacks.isEmpty() && itemStacks.getItem() instanceof IAccessoryItems<?>) {
+                    itemStacks.inventoryTick(player.level(), player, -1, false);
+                }
+            }
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack itemStacks = handler.getStackInSlot(i);
+                if (!itemStacks.isEmpty()) {
+                    itemStacks.inventoryTick(player.level(), player, -1, true);
+                }
+                if (itemStacks.getItem() instanceof IAccessoryItems<?> items) {
+                    for (Accessory accessory : items.getAccessories()) {
+                        Optional<IItemGeneric> optional = accessory.IItemGeneric();
+                        optional.ifPresent(callback -> callback.onEntityUpdate(player, itemStacks));
+                    }
+                }
+                if (!player.level().isClientSide()) {
+                    ItemStack prevItemStack = handler.getPreviousItemStack(i);
+                    if (!ItemStack.matches(itemStacks, prevItemStack)) {
+                        if (!prevItemStack.isEmpty()) {
+                            if (prevItemStack.getItem() instanceof IAccessoryItems<?> container) {
+                                for (Accessory accessory : container.getAccessories()) {
+                                    accessory.removeAttributeModifiers(player, player.getAttributes(), prevItemStack);
+                                    Optional<IAccessoryEvent> optional = accessory.IAccessory();
+                                    optional.ifPresent(callback -> callback.onChangePrevAccessorySlot(player, prevItemStack));
+                                }
+                            }
+                        }
+                        if (!itemStacks.isEmpty()) {
+                            if (itemStacks.getItem() instanceof IAccessoryItems<?> container) {
+                                for (Accessory accessory : container.getAccessories()) {
+                                    accessory.addAttributeModifiers(player, player.getAttributes(), itemStacks);
+                                    Optional<IAccessoryEvent> optional = accessory.IAccessory();
+                                    optional.ifPresent(callback -> callback.onChangePostAccessorySlot(player, itemStacks));
+                                }
+                            }
+                        }
+                        handler.setPreviousItemStack(i, itemStacks.copy());
+                    }
+                }
+            }
+        });
+    }
+
+    @SubscribeEvent
+    public void onLivingTick(LivingEvent.LivingTickEvent event) {
+        LivingEntity entity = event.getEntity();
+        ItemStack itemStack = entity.getMainHandItem();
+        if (entity instanceof Player player) {
+            this.onPlayerTick(player);
+        }
+        if (entity instanceof Mob mobs) {
+            LivingEntity target = mobs.getTarget();
+            LivingEntity getLastHurtByMob = mobs.getLastHurtByMob();
+            double followRange = mobs.getAttributeValue(Attributes.FOLLOW_RANGE);
+            if (mobs.hasEffect(MobEffects.BLINDNESS)) {
+                if (target != null) {
+                    if (entity.distanceToSqr(target) > 5) {
+                        mobs.setTarget(null);
+                        mobs.setLastHurtByMob(null);
+                    }
+                }
+            }
+            if (getLastHurtByMob instanceof Player player) {
+                double stealth = player.getAttributeValue(BHAttributes.STEALTH.get());
+                if (stealth == 0.0D) return;
+                if (entity.distanceToSqr(player) < (Math.max(followRange - (followRange * stealth), 5))) {
+                    mobs.setLastHurtByMob(null);
+                }
+            }
+            if (target instanceof Player player) {
+                double stealth = player.getAttributeValue(BHAttributes.STEALTH.get());
+                if (stealth == 0.0D) return;
+                if (entity.distanceToSqr(player) < (Math.max(followRange - (followRange * stealth), 5))) {
+                    mobs.setTarget(null);
+                }
+            }
         }
     }
 
@@ -109,5 +236,39 @@ public class ServerEventHandler {
             }
         }
         event.setAmount(damageDealt);
+    }
+    @SubscribeEvent
+    public void onMiningSpeedUpdate(PlayerEvent.BreakSpeed event) {
+        Player player = event.getEntity();
+        double originalSpeed = event.getOriginalSpeed();
+        if (player != null) {
+            Level level = player.level();
+            BlockPos blockPos = player.getOnPos();
+            BlockState blockState = event.getState();
+            double miningEfficiency;
+            double miningSpeed = player.getAttributeValue(BHAttributes.MINING_SPEED.get());
+            if (blockState.requiresCorrectToolForDrops()) {
+                miningEfficiency = player.getAttributeValue(BHAttributes.MINING_EFFICIENCY.get());
+            } else {
+                miningEfficiency = 1.0D;
+            }
+            double bonusMiningSpeed = originalSpeed * miningSpeed * miningEfficiency;
+            IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+            if (handler != null) {
+                for (int i = 0; i < handler.getSlots(); i++) {
+                    final ItemStack itemStack = handler.getStackInSlot(i);
+                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+                        for (Accessory trait : accessoryItems.getAccessories()) {
+                            Optional<IItemGeneric> optional = trait.IItemGeneric();
+                            if (optional.isPresent()) {
+                                originalSpeed = optional.get().onModifyMiningSpeed(player, blockState, blockPos, originalSpeed);
+                            }
+                        }
+                    }
+                }
+            }
+            originalSpeed += bonusMiningSpeed;
+        }
+        event.setNewSpeed((float) originalSpeed);
     }
 }

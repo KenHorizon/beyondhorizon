@@ -1,0 +1,6 @@
+// 1.20.1	2025-12-02T06:35:46.4313471	Tags for minecraft:damage_type mod id beyondhorizon
+1d698bf2646553f7136d1705610eb5c4ee046a4f data/beyondhorizon/tags/damage_type/is_armor_penetration.json
+8ca2a364c4aa35aa5d60cf2c1a78650d600a740f data/beyondhorizon/tags/damage_type/is_magic_penetration.json
+585d589fb6b18b983c5d7d9744cfff127fd9f856 data/beyondhorizon/tags/damage_type/is_true_damage.json
+1a2488cc939d02218c30126a39025fcecc66fd3e data/beyondhorizon/tags/damage_type/true_damage.json
+4751ac33f840f8909bb06a13caf3bb0fff366376 data/minecraft/tags/damage_type/bypasses_armor.json

@@ -9,6 +9,7 @@ import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -33,8 +34,10 @@ public class DataGenProvider {
         //Data Gen.
 
         DatapackEntryProvider datapackEntryProvider = new DatapackEntryProvider(packOutput, lookupProvider);
-//        BlockTagsProvider blockTagsProvider = new BHBlocksTagsProvider(packOutput, lookupProvider, existingFileHelper);
-//        generator.addProvider(true, blockTagsProvider);
+        BlockTagsProvider blockTagsProvider = new BHBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
+        generator.addProvider(true, blockTagsProvider);
+        generator.addProvider(event.includeServer(), new BHDamageTypesTagProvider(packOutput, datapackEntryProvider.getRegistryProvider(), existingFileHelper));
+        generator.addProvider(event.includeServer(), new BHItemTagsProvider(packOutput, datapackEntryProvider.getRegistryProvider(), blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), datapackEntryProvider);
         generator.addProvider(event.includeClient(), new BHLangProvider(packOutput));
         generator.addProvider(event.includeClient(), new BHItemModelProvider(packOutput, existingFileHelper));
@@ -43,6 +46,5 @@ public class DataGenProvider {
                 Component.literal("Resources for Beyond Horizon"),
                 DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
                 Arrays.stream(PackType.values()).collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion)))));
-
     }
 }

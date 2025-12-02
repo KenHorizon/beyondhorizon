@@ -17,6 +17,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.*;
@@ -34,7 +35,6 @@ public class Accessory {
     protected boolean tooltipEnableName = true;
     protected boolean tooltipDescriptionEnable = true;
     protected boolean attributeTooltipEnable = true;
-    private List<Accessory> accessoryList;
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
     protected String MODID = Accessories.REGISTRY.getRegistryName().getNamespace();
     public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
@@ -221,6 +221,7 @@ public class Accessory {
     protected void appendDescription(ItemStack itemStack, List<Component> tooltip) {
 
     }
+
     protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip) {
         this.addTooltipTitle(itemStack, tooltip, false);
     }
@@ -243,45 +244,16 @@ public class Accessory {
     protected void suffixTooltipDesc(ItemStack itemStack, List<Component> tooltip) {
 
     }
+
+    public MutableComponent spacing() {
+        return Component.literal("     ");
+    }
+
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
-        tooltip.add(Component.literal("     ").append(Component.translatable(this.createId()).withStyle(Tooltips.TOOLTIP[0])));
-        this.prefixTooltipDesc(itemStack, tooltip);
-        if (!this.addBulletDescription(itemStack).isEmpty()) {
-            for (Component components : this.addBulletDescription(itemStack)) {
-                List<Component> text = this.wrapperText(components, 150);
-                tooltip.addAll(text);
-            }
-        }
+        tooltip.add(this.spacing().append(Component.translatable(this.createId()).withStyle(Tooltips.TOOLTIP[0])));
         this.suffixTooltipDesc(itemStack, tooltip);
     }
 
-    private List<Component> wrapperText(Component text, int maxWidth) {
-        Font font = Minecraft.getInstance().font;
-        List<Component> result = new ArrayList<>();
-
-        List<String> lines = font.split(text, maxWidth)
-                .stream()
-                .map(sequence ->  text.getString())
-                .toList();
-
-        for (String line : lines) {
-            // Optional: Add indent to first line
-            if (result.isEmpty()) line = "     " + line;
-            result.add(Component.literal(line).withStyle(ChatFormatting.GRAY));
-        }
-
-        return result;
-    }
-
-    protected List<Component> addDescription(ItemStack itemStack) {
-        List<Component> tooltip = new ArrayList<>();
-        tooltip.add(Component.literal("     ")
-                .append(Component.translatable(this.createId()).withStyle(Tooltips.TOOLTIP[0])));
-        return tooltip;
-    }
-    protected List<Component> addBulletDescription(ItemStack itemStack) {
-        return new ArrayList<>();
-    }
     protected String createId(int lines) {
         return lines == 0 ? String.format("%s.desc", this.getDescriptionId()) :
                 String.format("%s.desc.%s", this.getDescriptionId(), lines);
@@ -290,6 +262,7 @@ public class Accessory {
     protected String createId() {
         return createId(0);
     }
+
     protected List<Attribute> randomAttributes() {
         List<Attribute> attributes = new ArrayList<>(new HashSet<>());
         attributes.add(Attributes.ATTACK_DAMAGE);

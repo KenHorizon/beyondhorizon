@@ -45,7 +45,7 @@ public class AttributeTooltips {
             Attribute attribute = pair.getFirst();
             AttributeModifier attributeModifier = pair.getSecond();
             double attributeAmount = attributeModifier.getAmount();
-            makeTooltips(tooltip, attribute, attributeModifier, attributeAmount);
+            this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount);
         }
     }
 
@@ -55,7 +55,7 @@ public class AttributeTooltips {
             AttributeModifier attributeModifier = entry.getValue();
             Attribute attribute = entry.getKey();
             double attributeAmount = attributeModifier.getAmount();
-            makeTooltips(tooltip, attribute, attributeModifier, attributeAmount);
+            this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount);
         }
     }
 
@@ -65,7 +65,7 @@ public class AttributeTooltips {
             AttributeModifier attributeModifier = entry.getValue();
             Attribute attribute = entry.getKey();
             double attributeAmount = attributeModifier.getAmount();
-            makeTooltips(tooltip, attribute, attributeModifier, attributeAmount);
+            this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount);
         }
     }
 

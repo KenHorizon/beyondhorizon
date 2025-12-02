@@ -1,9 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.accessory;
 
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.beyondhorizon.server.util.Tooltips;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -12,6 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GainBonusHealthAccessory extends AccessorySkill {
@@ -38,10 +41,8 @@ public class GainBonusHealthAccessory extends AccessorySkill {
         double bonusHp = 0;
         if (itemStack.hasTag() && itemStack.getTag().contains("bonus_hp")) {
             bonusHp = itemStack.getTag().getDouble("bonus_hp");
-
         }
-        tooltip.add(Component.translatable(this.createId(), this.getMagnitude() * 100.0F, bonusHp).withStyle(Tooltips.TOOLTIP[1]));
-
+        tooltip.add(this.spacing().append(Component.translatable(this.createId(), Maths.FORMAT.format(this.getMagnitude()), Mth.ceil(bonusHp)).withStyle(Tooltips.TOOLTIP[0])));
     }
 
     @Override

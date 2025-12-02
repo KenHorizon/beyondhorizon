@@ -89,6 +89,8 @@
   "item.beyondhorizon.zenith": "Zenith",
   "skills.beyondhorizon.blade_edge": "Blade Edge",
   "skills.beyondhorizon.blade_edge.desc": "Deal additional +%s%% target's Max HP",
+  "skills.beyondhorizon.feather_feet": "Feather Feet",
+  "skills.beyondhorizon.feather_feet.desc": "Negate fall damage",
   "skills.beyondhorizon.overgrowth": "Overgrowth",
   "skills.beyondhorizon.overgrowth.desc": "Increase Bonus Max HP by %s%% (%s)",
   "skills.beyondhorizon.ruined_blade": "Ruined Blade",

@@ -9,8 +9,6 @@ import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
 import com.kenhorizon.beyondhorizon.server.util.Tooltips;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -18,7 +16,6 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -29,10 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
-import net.minecraftforge.registries.RegistryManager;
-import net.minecraftforge.registries.tags.ITag;
-import net.minecraftforge.registries.tags.ITagManager;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -69,6 +62,7 @@ public abstract class Skill {
 
     protected boolean isSkill = false;
     protected boolean tooltipEnable = true;
+    protected boolean tooltipNameEnable = true;
     protected boolean tooltipDescriptionEnable = true;
     protected boolean isMelee = false;
     protected boolean isRanged = false;
@@ -112,6 +106,16 @@ public abstract class Skill {
 
     }
 
+    public Skill disableTooltipName() {
+        this.tooltipDescriptionEnable = false;
+        return this;
+    }
+
+    public Skill disableTooltip() {
+        this.tooltipEnable = false;
+        return this;
+    }
+
     public String getId() {
         return Skills.SUPPLIER_KEY.get().getKey(this).getNamespace();
     }
@@ -130,7 +134,7 @@ public abstract class Skill {
         return this;
     }
 
-    public Skill setUniversal() {
+    public Skill universal() {
         this.isThrowing = true;
         this.isRanged = true;
         this.isMelee = true;
@@ -246,8 +250,9 @@ public abstract class Skill {
         return ImmutableMultimap.of();
     }
 
+    @Override
     public String toString() {
-        return String.format("Skill:{Type: %s:%s, Type: %s}", this.MODID, this.getName(), this.getSkillType());
+        return String.format("Skill:{Type: %s:%s, Type: %s, Settings:{Tooltip:%s, TooltipName:%s, TooltipDescription:%s}}", this.MODID, this.getName(), this.getSkillType(), this.isTooltipEnable(), this.isTooltipNameEnable(), this.isTooltipDescriptionEnable());
     }
 
     public final String getSkillId() {
@@ -264,11 +269,17 @@ public abstract class Skill {
 
     public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed, boolean firstType) {
         if (!this.isTooltipEnable()) return;
-        this.addTooltipTitle(itemStack, tooltip, firstType);
-        if (!this.isTooltipDescriptionEnable()) return;
-        if (isShiftPressed && I18n.exists(this.createId())) {
-            this.addTooltipDescription(itemStack, tooltip);
+        if (this.isTooltipNameEnable()) {
+            this.addTooltipTitle(itemStack, tooltip, firstType);
+            if (!this.isTooltipDescriptionEnable()) return;
+            if (isShiftPressed && I18n.exists(this.createId())) {
+                this.addTooltipDescription(itemStack, tooltip);
+            }
         }
+    }
+
+    public boolean isTooltipNameEnable() {
+        return this.tooltipNameEnable;
     }
 
     protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip) {
@@ -295,10 +306,15 @@ public abstract class Skill {
     protected void suffixTooltipDesc(ItemStack itemStack, List<Component> tooltip) {
 
     }
+
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
-        tooltip.add(this.spacing().append(Component.translatable(this.createId()).withStyle(Tooltips.TOOLTIP[0])));
+        tooltip.add(this.spacing().append(addTooltipDescription()).withStyle(Tooltips.TOOLTIP[0]));
         this.prefixTooltipDesc(itemStack, tooltip);
         this.suffixTooltipDesc(itemStack, tooltip);
+    }
+
+    protected MutableComponent addTooltipDescription() {
+        return Component.empty();
     }
 
     protected String createId(int lines) {

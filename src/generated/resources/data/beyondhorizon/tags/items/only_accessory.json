@@ -1,14 +1,20 @@
 {
   "values": [
-    "beyondhorizon:lucky_horse_shoe",
-    "beyondhorizon:golden_boots",
     "beyondhorizon:miner_boots",
-    "beyondhorizon:iron_plated_boots",
-    "beyondhorizon:ancient_chisel",
+    "beyondhorizon:ancient_pickaxe",
     "beyondhorizon:boots",
     "beyondhorizon:berserker_boots",
-    "beyondhorizon:ancient_axe",
     "beyondhorizon:heart_of_the_tree",
+    "beyondhorizon:lucky_horse_shoe",
+    "beyondhorizon:golden_boots",
+    "beyondhorizon:rectrix",
+    "beyondhorizon:iron_plated_boots",
+    "beyondhorizon:ancient_chisel",
+    "beyondhorizon:swift_dagger",
+    "beyondhorizon:aether_wisp",
+    "beyondhorizon:power_gloves",
+    "beyondhorizon:fortune_shikigami",
+    "beyondhorizon:mask_of_agony",
     "beyondhorizon:broken_hero_sword"
   ]
 }

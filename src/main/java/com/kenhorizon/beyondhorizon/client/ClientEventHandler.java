@@ -15,7 +15,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ClientEventHandler {
     @SubscribeEvent
-    public void onInventoryGuiInit(ScreenEvent.Init.Post event) {
+    public void onInventoryGui(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();
         RecipeBookComponent component = new RecipeBookComponent();
         Player player = BeyondHorizon.PROXY.clientPlayer();

@@ -5,6 +5,6 @@ public class EmptySkills extends Skill {
         this.format = Format.NORMAL;
         this.skillType = Type.PASSIVE;
         this.tooltipEnable = false;
-        this.setUniversal();
+        this.universal();
     }
 }

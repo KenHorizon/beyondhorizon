@@ -54,7 +54,7 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
             2.0F,
             16, () -> {
         return Ingredient.of(BHItems.SILVER_INGOT.get());
-    }),
+    }, SkillBuilder.RADIANT),
     COBALT("cobalt",
             3,
             451,

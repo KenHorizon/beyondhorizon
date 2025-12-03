@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.server.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
+import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealItems;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealthCheckerItems;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugWeaponItems;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
@@ -117,6 +118,7 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register()
             .build();
+    //
     public static final RegistryObject<Item> DEBUG0 = RegistryItems
             .register("debug0", DebugHealthCheckerItems::new)
             .itemName("Debug: Health Checker")
@@ -127,6 +129,13 @@ public class BHItems {
     public static final RegistryObject<Item> DEBUG1 = RegistryItems
             .register("debug1", DebugWeaponItems::new)
             .itemName("Debug: One Tap One Kill")
+            .tab(RegistryTabs.Category.DEBUGS)
+            .model(ItemModels.GENERATED)
+            .register()
+            .build();
+    public static final RegistryObject<Item> DEBUG2 = RegistryItems
+            .register("debug2", DebugHealItems::new)
+            .itemName("Debug: Max Health Heal")
             .tab(RegistryTabs.Category.DEBUGS)
             .model(ItemModels.GENERATED)
             .register()
@@ -181,7 +190,7 @@ public class BHItems {
             .build();
 
     public static final RegistryObject<Item> ANCIENT_PICKAXE = RegistryItems
-            .register("ancient_axe", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.ANCIENT_PICKAXE))
+            .register("ancient_pickaxe", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.ANCIENT_PICKAXE))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
@@ -203,8 +212,56 @@ public class BHItems {
             .register()
             .build();
 
+    public static final RegistryObject<Item> POWER_GLOVES = RegistryItems
+            .register("power_gloves", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.POWER_GLOVES))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> SWIFT_DAGGER = RegistryItems
+            .register("swift_dagger", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.SWIFT_DAGGER))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> AETHER_WISP = RegistryItems
+            .register("aether_wisp", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.AETHER_WISP))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
     public static final RegistryObject<Item> HEART_OF_THE_TREE = RegistryItems
             .register("heart_of_the_tree", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.OVERGROWTH))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> RECTRIX = RegistryItems
+            .register("rectrix", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.RECTRIX))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> FORTUNE_SHIKIGAMI = RegistryItems
+            .register("fortune_shikigami", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.FORTUNE_SHIKIGAMI))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> MASK_OF_AGONY = RegistryItems
+            .register("mask_of_agony", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.DESPAIR_AND_DEFY))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
@@ -243,52 +300,118 @@ public class BHItems {
             .register()
             .build();
 
+    public static final RegistryObject<Item> SILVER_AXE = RegistryItems
+            .register("silver_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.SILVER, new Item.Properties()))
+            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.AXE, RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
     public static final RegistryObject<Item> COBALT_AXE = RegistryItems
             .register("cobalt_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.COBALT, new Item.Properties()))
-            .tab(RegistryTabs.Category.COMBAT)
+            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.AXE, RegistryTabs.Category.TOOLS)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> HELLSTONE_AXE = RegistryItems
             .register("hellstone_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.HELLSTONE, new Item.Properties()))
-            .tab(RegistryTabs.Category.COMBAT)
+            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.AXE, RegistryTabs.Category.TOOLS)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> ADAMANTITE_AXE = RegistryItems
             .register("adamantite_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.ADAMANTITE, new Item.Properties()))
-            .tab(RegistryTabs.Category.COMBAT)
+            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.AXE, RegistryTabs.Category.TOOLS)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> TITANIUM_AXE = RegistryItems
             .register("titanium_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.TITANIUM, new Item.Properties()))
-            .tab(RegistryTabs.Category.COMBAT)
+            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.AXE, RegistryTabs.Category.TOOLS)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
 
+    public static final RegistryObject<Item> SILVER_PICKAXE = RegistryItems
+            .register("silver_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.SILVER, new Item.Properties()))
+            .tab(RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
     public static final RegistryObject<Item> COBALT_PICKAXE = RegistryItems
             .register("cobalt_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.COBALT, new Item.Properties()))
-            .tab(RegistryTabs.Category.COMBAT)
+            .tab(RegistryTabs.Category.TOOLS)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> HELLSTONE_PICKAXE = RegistryItems
             .register("hellstone_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.HELLSTONE, new Item.Properties()))
-            .tab(RegistryTabs.Category.COMBAT)
+            .tab(RegistryTabs.Category.TOOLS)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> ADAMANTITE_PICKAXE = RegistryItems
             .register("adamantite_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.ADAMANTITE, new Item.Properties()))
-            .tab(RegistryTabs.Category.COMBAT)
+            .tab(RegistryTabs.Category.TOOLS)
             .model(ItemModels.HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> TITANIUM_PICKAXE = RegistryItems
             .register("titanium_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.TITANIUM, new Item.Properties()))
-            .tab(RegistryTabs.Category.COMBAT)
+            .tab(RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
+    public static final RegistryObject<Item> SILVER_SHOVEL = RegistryItems
+            .register("silver_shovel", item -> WeaponBuilder.SHOVEL.create(MeleeWeaponMaterials.SILVER, new Item.Properties()))
+            .tab(RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
+    public static final RegistryObject<Item> COBALT_SHOVEL = RegistryItems
+            .register("cobalt_shovel", item -> WeaponBuilder.SHOVEL.create(MeleeWeaponMaterials.COBALT, new Item.Properties()))
+            .tab(RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
+    public static final RegistryObject<Item> HELLSTONE_SHOVEL = RegistryItems
+            .register("hellstone_shovel", item -> WeaponBuilder.SHOVEL.create(MeleeWeaponMaterials.HELLSTONE, new Item.Properties()))
+            .tab(RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
+    public static final RegistryObject<Item> ADAMANTITE_SHOVEL = RegistryItems
+            .register("adamantite_shovel", item -> WeaponBuilder.SHOVEL.create(MeleeWeaponMaterials.ADAMANTITE, new Item.Properties()))
+            .tab(RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
+    public static final RegistryObject<Item> TITANIUM_SHOVEL = RegistryItems
+            .register("titanium_shovel", item -> WeaponBuilder.SHOVEL.create(MeleeWeaponMaterials.TITANIUM, new Item.Properties()))
+            .tab(RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
+    public static final RegistryObject<Item> COBALT_HOE = RegistryItems
+            .register("cobalt_hoe", item -> WeaponBuilder.HOE.create(MeleeWeaponMaterials.COBALT, new Item.Properties()))
+            .tab(RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
+    public static final RegistryObject<Item> HELLSTONE_HOE = RegistryItems
+            .register("hellstone_hoe", item -> WeaponBuilder.HOE.create(MeleeWeaponMaterials.HELLSTONE, new Item.Properties()))
+            .tab(RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
+    public static final RegistryObject<Item> ADAMANTITE_HOE = RegistryItems
+            .register("adamantite_hoe", item -> WeaponBuilder.HOE.create(MeleeWeaponMaterials.ADAMANTITE, new Item.Properties()))
+            .tab(RegistryTabs.Category.TOOLS)
+            .model(ItemModels.HANDHELD)
+            .register()
+            .build();
+    public static final RegistryObject<Item> TITANIUM_HOE = RegistryItems
+            .register("titanium_hoe", item -> WeaponBuilder.HOE.create(MeleeWeaponMaterials.TITANIUM, new Item.Properties()))
+            .tab(RegistryTabs.Category.TOOLS)
             .model(ItemModels.HANDHELD)
             .register()
             .build();

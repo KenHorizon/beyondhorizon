@@ -14,6 +14,10 @@ public class RoleClass {
     protected String MODID = RoleClasses.REGISTRY.getRegistryName().getNamespace();
     public static final String CLASSES_TAGS = "role_class";
     public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
+    public RoleClassTypes roleClassTypes;
+    public RoleClass(RoleClassTypes types) {
+        this.roleClassTypes = types;
+    }
 
     public String getName() {
         return RoleClasses.SUPPLIER_KEY.get().getKey(this).getPath();

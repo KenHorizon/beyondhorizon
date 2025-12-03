@@ -3,6 +3,8 @@ package com.kenhorizon.beyondhorizon.server.util;
 import com.kenhorizon.beyondhorizon.server.StatModifiers;
 
 public class Constant {
+    public static int FIRE_EFFECT = 5;
+    public static float RADIANT = 0.20F;
     public static float BLADE_EDGE = 0.10F;
     public static float RUINED_BLADE = 0.05F;
     public static float[] HAMMER = {5.5F, 0.85F};
@@ -21,6 +23,13 @@ public class Constant {
     public static float[] ZENITH = {5.0F, 1.7F};
     public static float[] BLADE_OF_THE_ENDERLORD = {8.0F, 1.7F};
     //
+    public static double SWIFT_DAGGER_ATTACK_SPEED = 0.05D;
+    public static double POWER_GLOVES_ATTACK_DAMAGE = 3;
+    public static double POWER_GLOVES_KNOCBACK = 0.10D;
+    public static double AETHER_WISP_ABILITY_POWER = 5;
+    public static double DESPAIR_AND_DEFY = 0.30D;
+    public static double FORTUNE_SHIKIGAMI = 2;
+    public static double RECTRIX_ATTACK_SPEED = 0.12D;
     public static double ANCIENT_PICK_MINING_EFFECIENCY = 0.12D;
     public static double ANCIENT_PICK_MINING_SPEED = 0.10D;
     public static double ANCIENT_CHISEL_MINING_SPEED = 0.20D;

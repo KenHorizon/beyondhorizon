@@ -37,12 +37,15 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.SKILL_TYPE, "%s");
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional +%s%% target's Current HP");
         this.addSkills(Skills.BLADE_EDGE.get(), "Blade Edge", "Deal additional +%s%% target's Max HP");
+        this.addSkills(Skills.RADIANT.get(), "Radiant", "Deal additional damage to undead by +%s%%");
         //
         this.addAccessory(Accessories.FEATHER_FEET.get(), "Feather Feet", "Negate fall damage");
         this.addAccessory(Accessories.OVERGROWTH.get(), "Overgrowth", "Increase Bonus Max HP by %s%% (%s)");
+        this.addAccessory(Accessories.DESPAIR_AND_DEFY.get(), "Despair And Defy", "Reduces %s%% post-mitigaion damage and stored it and bleed per second of stored damage");
         //
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon: Ingredients");
         creativeTabs(BHCreativeTabs.BH_TOOLS, "Beyond Horizon: Tools");
+        creativeTabs(BHCreativeTabs.BH_ACCESSORY, "Beyond Horizon: Accessorry");
         creativeTabs(BHCreativeTabs.BH_WEAPONS, "Beyond Horizon: Weapons");
         creativeTabs(BHCreativeTabs.BH_BLOCKS, "Beyond Horizon: Blocks");
         creativeTabs(BHCreativeTabs.BH_SPAWN_EGG, "Beyond Horizon: Spawn Egg");

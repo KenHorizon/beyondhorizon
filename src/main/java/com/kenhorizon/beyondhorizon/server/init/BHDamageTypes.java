@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 
 public class BHDamageTypes {
 
+    public static final ResourceKey<DamageType> BLEED = createKey("bleed");
     public static final ResourceKey<DamageType> TRUE_DAMAGE = createKey("true_damage");
     public static final ResourceKey<DamageType> LETHALITY = createKey("lethality");
     public static final ResourceKey<DamageType> ARMOR_PENETRATION = createKey("armor_penetration");
@@ -23,6 +24,7 @@ public class BHDamageTypes {
     private static Registry<DamageType> damageTypes;
 
     public static void bootstrap(BootstapContext<DamageType> context) {
+        context.register(BLEED, new DamageType("bleed", 0.1F));
         context.register(TRUE_DAMAGE, new DamageType("true_damage", 0.1F));
         context.register(LETHALITY, new DamageType("lethality", 0.1F));
         context.register(MAGIC_PENETRATION, new DamageType("magic_penetration", 0.1F));
@@ -41,6 +43,9 @@ public class BHDamageTypes {
 
     private static DamageSource source(ResourceKey<DamageType> damageType, @Nullable Entity causingEntity, @Nullable Entity directEntity) {
         return new DamageSource(BHDamageTypes.damageTypes.getHolderOrThrow(damageType), causingEntity, directEntity);
+    }
+    public static DamageSource bleed() {
+        return new ExtraDamageSource(damageTypes.getHolderOrThrow(BLEED));
     }
 
     public static DamageSource armorPenetration(Entity source) {

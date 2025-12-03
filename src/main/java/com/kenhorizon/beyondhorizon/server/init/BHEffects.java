@@ -17,10 +17,6 @@ public class BHEffects {
             RegistryHelper.registerEffects("bleed", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x4F0000));
     public static final RegistryObject<MobEffect> LETHAL_POISON =
             RegistryHelper.registerEffects("lethal_poison", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x1A3000));
-    public static final RegistryObject<MobEffect> ANTIDOTE =
-            RegistryHelper.registerEffects("antidote", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x8CFF00));
-    public static final RegistryObject<MobEffect> FROSTBITE =
-            RegistryHelper.registerEffects("frostbite", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0xA3D8FF));
     public static final RegistryObject<MobEffect> LIGHTNING =
             RegistryHelper.registerEffects("lightning", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x0094FF));
     public static final RegistryObject<MobEffect> THORNS =
@@ -45,8 +41,6 @@ public class BHEffects {
             RegistryHelper.registerEffects("fear", () -> new FearEffect(MobEffectCategory.NEUTRAL, 0x303030));
     public static final RegistryObject<MobEffect> RAGE =
             RegistryHelper.registerEffects("rage", () -> new ModifierEffect(MobEffectCategory.BENEFICIAL, 0xFF0000, 0.05D).addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "0b962cab-73cc-4159-970d-f4354c51bd18", (double) 0.05D, AttributeModifier.Operation.ADDITION).addAttributeModifier(Attributes.MOVEMENT_SPEED, "2547b4b4-4ac2-4085-b503-564c00835e39", (double) 0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL));
-    public static final RegistryObject<MobEffect> HUNGER_BOOST =
-            RegistryHelper.registerEffects("hunger_boost", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x3D0000));
     public static final RegistryObject<MobEffect> VULNERABLE =
             RegistryHelper.registerEffects("vulnerable", () -> new ModifierEffect(MobEffectCategory.HARMFUL, 0x4040400, 0.05F).addAttributeModifier(BHAttributes.DAMAGE_TAKEN.get(), "9a5dcc14-4692-42ef-8304-3985a91f5220", (double)-0.05F, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<MobEffect> HEALING_SICKNESS =

@@ -1,10 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.skills;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.skills.skill.ExtraDamageSkill;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.MobType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -26,6 +26,14 @@ public class Skills {
             .type(Skill.Type.PASSIVE));
     public static final RegistryObject<Skill> BLADE_EDGE = registerSkill("blade_edge", () -> new ExtraDamageSkill(Constant.BLADE_EDGE, ExtraDamageSkill.MAX_HEALTH)
             .melee()
+            .format(Skill.Format.NORMAL)
+            .type(Skill.Type.PASSIVE));
+    public static final RegistryObject<Skill> RADIANT = registerSkill("radiant", () -> new ExtraDamageSkill(Constant.RADIANT, MobType.UNDEAD, ExtraDamageSkill.BONUS_DAMAGE)
+            .melee()
+            .format(Skill.Format.NORMAL)
+            .type(Skill.Type.PASSIVE));
+    public static final RegistryObject<Skill> FIRE_EFFECT = registerSkill("fire_effect", () -> new InflictFireAttackOnHitSkill(Constant.FIRE_EFFECT)
+            .universal()
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));
 

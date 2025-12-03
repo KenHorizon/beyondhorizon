@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class BHCreativeTabs {
     public static final RegistryObject<CreativeModeTab> BH_INGREDIENTS = RegistryTabs.registerCreativeTabs("beyond_horizon_tab_ingredients",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHItems.COBALT_INGOT.get()))
+                    .icon(() -> new ItemStack(BHItems.RAW_COBALT.get()))
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.ingredients"))
                     .displayItems((parameters, output) -> {
                         RegistryTabs.MISC_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
@@ -24,12 +24,21 @@ public class BHCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BH_TOOLS = RegistryTabs.registerCreativeTabs("beyond_horizon_tab_tools",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHItems.HELLSTONE_INGOT.get()))
+                    .icon(() -> new ItemStack(BHItems.TITANIUM_PICKAXE.get()))
                     .withTabsBefore(BHCreativeTabs.BH_INGREDIENTS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.tools"))
                     .displayItems((parameters, output) -> {
-                        RegistryTabs.ACCESSORY_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
                         RegistryTabs.TOOLS_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
+                    })
+                    .build());
+
+    public static final RegistryObject<CreativeModeTab> BH_ACCESSORY = RegistryTabs.registerCreativeTabs("beyond_horizon_tab_accessory",
+            () -> CreativeModeTab.builder()
+                    .icon(() -> new ItemStack(BHItems.POWER_GLOVES.get()))
+                    .withTabsBefore(BHCreativeTabs.BH_TOOLS.getKey())
+                    .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.accessory"))
+                    .displayItems((parameters, output) -> {
+                        RegistryTabs.ACCESSORY_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
                     })
                     .build());
 

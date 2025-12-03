@@ -2,7 +2,10 @@ package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
@@ -12,6 +15,12 @@ import javax.annotation.Nullable;
 public class CapabilityCaller {
     public static IAccessoryItemHandler accessory(Player player) {
         return getCapability(player, BHCapabilties.ACCESSORY);
+    }
+    public static IDamageInfo damageInfo(LivingEntity entity) {
+        return getCapability(entity, BHCapabilties.DAMAGE_INFOS);
+    }
+    public static ICombatCore combat(LivingEntity entity) {
+        return getCapability(entity, BHCapabilties.COMBAT_CORE);
     }
 
     @Nullable

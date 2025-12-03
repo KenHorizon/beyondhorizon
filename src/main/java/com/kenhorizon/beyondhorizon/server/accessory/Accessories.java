@@ -12,6 +12,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
+import org.w3c.dom.Attr;
 
 import java.util.function.Supplier;
 
@@ -45,6 +46,19 @@ public class Accessories {
             .addAttributeModifier(BHAttributes.MINING_SPEED.get(), "a132412a-f5ae-4eed-a4e9-d143b5229aba", Constant.ANCIENT_PICK_MINING_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
     public static final RegistryObject<Accessory> ANCIENT_CHISEL = registerSkill("ancient_chisel", () -> new AccessorySkill().disableTooltipName()
             .addAttributeModifier(BHAttributes.MINING_SPEED.get(), "9921072b-3bab-418c-961a-6d34074a457d", Constant.ANCIENT_CHISEL_MINING_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
+    public static final RegistryObject<Accessory> RECTRIX = registerSkill("rectrix", () -> new AccessorySkill().disableTooltipName()
+            .addAttributeModifier(Attributes.ATTACK_SPEED, "02c0a38d-4292-464d-b1e5-353e7a739793", Constant.RECTRIX_ATTACK_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
+    public static final RegistryObject<Accessory> FORTUNE_SHIKIGAMI = registerSkill("fortune_shikigami", () -> new AccessorySkill().disableTooltipName()
+            .addAttributeModifier(Attributes.LUCK, "be27e0c1-b96f-467a-8026-83c372ec590d", Constant.FORTUNE_SHIKIGAMI, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> AETHER_WISP = registerSkill("aether_wisp", () -> new AccessorySkill().disableTooltipName()
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "8da8b801-b5fe-4b2a-9cc9-9d5746181d61", Constant.AETHER_WISP_ABILITY_POWER, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> POWER_GLOVES = registerSkill("power_gloves", () -> new AccessorySkill().disableTooltipName()
+            .addAttributeModifier(Attributes.ATTACK_DAMAGE, "847a9dc2-56ee-4ebc-a892-0e5095012667", Constant.POWER_GLOVES_ATTACK_DAMAGE, AttributeModifier.Operation.ADDITION)
+            .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, "c71ca564-8178-4ca2-bc63-29a4f90361e3", Constant.POWER_GLOVES_KNOCBACK, AttributeModifier.Operation.MULTIPLY_TOTAL));
+    public static final RegistryObject<Accessory> SWIFT_DAGGER = registerSkill("swift_dagger", () -> new AccessorySkill().disableTooltipName()
+            .addAttributeModifier(Attributes.ATTACK_SPEED, "847a9dc2-56ee-4ebc-a892-0e5095012667", Constant.SWIFT_DAGGER_ATTACK_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
+
+    public static final RegistryObject<Accessory> DESPAIR_AND_DEFY = registerSkill("despair_and_defy", () -> new BleedingEffectAccessory(Constant.DESPAIR_AND_DEFY));
 
     public static final RegistryObject<Accessory> OVERGROWTH = registerSkill("overgrowth", () -> new GainBonusHealthAccessory((float) Constant.OVERGROWTH_BONUS_HEALTH, GainBonusHealthAccessory.Type.TOTAL).disableAttributeTooltip());
     public static final RegistryObject<Accessory> FEATHER_FEET = registerSkill("feather_feet", AccessorySkill::new);

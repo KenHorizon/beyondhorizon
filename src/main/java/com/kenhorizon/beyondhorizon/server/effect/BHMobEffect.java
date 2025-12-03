@@ -50,25 +50,11 @@ public class BHMobEffect extends MobEffect {
             Vec3 vec3 = entity.getDeltaMovement();
             entity.setDeltaMovement(0, vec3.y() > 0 ? 0 : vec3.y(), 0);
         }
-        if (this == BHEffects.FROSTBITE.get()) {
-            double posX = entity.getX();
-            double posY = entity.getY();
-            double posZ = entity.getZ();
-            if (entity instanceof Player player) {
-                if (player.isCreative()) return;
-            }
-            entity.hurt(entity.damageSources().freeze(), 2.0F);
-            entity.teleportTo(posX, posY, posZ);
-            entity.setDeltaMovement(0.0D, 0.0D, 0.0D);
-        }
         if (this == BHEffects.LETHAL_POISON.get()) {
             int level = amplifier / 2;
             if (entity.getHealth() > 0.0F) {
                 entity.hurt(entity.damageSources().magic(), 0.5F + level);
             }
-        }
-        if (this == BHEffects.HUNGER_BOOST.get()) {
-            this.hungerBoostRange(entity, amplifier);
         }
         super.applyEffectTick(entity, amplifier);
     }
@@ -105,8 +91,7 @@ public class BHMobEffect extends MobEffect {
                 BHEffects.NATURE_HEAL.get(),
                 BHEffects.FEAR.get(),
                 BHEffects.STUN.get(),
-                BHEffects.DRAGON_FLAME.get(),
-                BHEffects.FROSTBITE.get()
+                BHEffects.DRAGON_FLAME.get()
         );
     }
 

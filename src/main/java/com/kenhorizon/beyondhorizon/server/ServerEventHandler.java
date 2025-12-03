@@ -6,14 +6,19 @@ import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.capability.AccessoryInventoryCap;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.CombatCoreCap;
+import com.kenhorizon.beyondhorizon.server.capability.DamageInfoCap;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
+import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -35,7 +40,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.util.Optional;
 
 public class ServerEventHandler {
-
     @SubscribeEvent
     public void onLivingHealEvent(LivingHealEvent event) {
         float heal = event.getAmount();
@@ -44,16 +48,26 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
-    public void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event) {
+    public void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
         Entity entity = event.getObject();
         if (AccessoryInventoryCap.canAttachTo(entity)) {
             event.addCapability(AccessoryInventoryCap.NAME, new AccessoryInventoryCap());
+        }
+        if (entity instanceof LivingEntity) {
+            if (DamageInfoCap.canAttachTo(entity)) {
+                event.addCapability(DamageInfoCap.NAME, new DamageInfoCap());
+            }
+            if (CombatCoreCap.canAttachTo(entity)) {
+                event.addCapability(CombatCoreCap.NAME, new CombatCoreCap());
+            }
         }
     }
 
     @SubscribeEvent
     public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
         event.register(IAccessoryItemHandler.class);
+        event.register(ICombatCore.class);
+        event.register(IDamageInfo.class);
     }
 
 
@@ -148,6 +162,17 @@ public class ServerEventHandler {
     public void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         ItemStack itemStack = entity.getMainHandItem();
+        ICombatCore combatCore = CapabilityCaller.combat(entity);
+        if (combatCore != null) {
+            combatCore.tick();
+            IDamageInfo damageInfo = CapabilityCaller.damageInfo(entity);
+            if (damageInfo != null && !combatCore.OnCombat()) {
+                damageInfo.setPostDamage(0.0F);
+                damageInfo.setPreDamage(0.0F);
+                damageInfo.setPreStoredDamage(0.0F);
+                damageInfo.setPostStoredDamage(0.0F);
+            }
+        }
         if (entity instanceof Player player) {
             this.onPlayerTick(player);
         }
@@ -185,6 +210,7 @@ public class ServerEventHandler {
         float damageDealt = event.getAmount();
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
+        ICombatCore targetCombatCore = CapabilityCaller.combat(target);
         if (source.getEntity() instanceof LivingEntity attacker) {
             ItemStack attackerStack = attacker.getMainHandItem();
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
@@ -205,8 +231,32 @@ public class ServerEventHandler {
                 }
             }
         }
+        if (target instanceof Player player) {
+            IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+            if (handler != null) {
+                for (int i = 0; i < handler.getSlots(); i++) {
+                    final ItemStack itemStack = handler.getStackInSlot(i);
+                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+                        for (Accessory trait : accessoryItems.getAccessories()) {
+                            Optional<IAttack> weaponCallback = trait.IAttackCallback();
+                            if (weaponCallback.isPresent()) {
+                                damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         StatModifiers totalDamageTaken = new StatModifiers(1.0F, (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get()), 0.0F, 0.0F);
         damageDealt = totalDamageTaken.applyTo(damageDealt);
+        IDamageInfo damageInfo = CapabilityCaller.damageInfo(target);
+        if (damageInfo != null) {
+            damageInfo.setPostDamage(damageDealt);
+            if (!source.is(BHDamageTypeTags.CANT_STORE_DAMAGE)) {
+                damageInfo.setPostStoredDamage(damageInfo.postDamage() + damageDealt);
+            }
+        }
+        targetCombatCore.activated();
         event.setAmount(damageDealt);
     }
 
@@ -222,6 +272,7 @@ public class ServerEventHandler {
                 target.invulnerableTime = target.invulnerableDuration - (int) getAttackSpeed;
             }
             if (source.getEntity() instanceof LivingEntity attacker) {
+                ICombatCore attackerCombatCore = CapabilityCaller.combat(attacker);
                 ItemStack attackerStack = attacker.getMainHandItem();
                 if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                     for (Skill trait : container.getSkills()) {
@@ -233,6 +284,19 @@ public class ServerEventHandler {
                 }
                 StatModifiers totalDamageDealt = new StatModifiers(1.0F, (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get()), 0.0F, 0.0F);
                 damageDealt = totalDamageDealt.applyTo(damageDealt);
+                attackerCombatCore.activated();
+            }
+        }
+        if (target != null) {
+            IDamageInfo damageInfo = CapabilityCaller.damageInfo(target);
+            if (damageInfo != null) {
+                damageInfo.setPreDamage(damageDealt);
+                if (!source.is(BHDamageTypeTags.CANT_STORE_DAMAGE)) {
+                    damageInfo.setPreStoredDamage(damageInfo.preDamage() + damageDealt);
+                }
+                if (source.getEntity() instanceof LivingEntity attacker) {
+                    damageInfo.setLastAttacker(attacker);
+                }
             }
         }
         event.setAmount(damageDealt);

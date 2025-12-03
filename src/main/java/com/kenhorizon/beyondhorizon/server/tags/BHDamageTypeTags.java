@@ -14,6 +14,7 @@ public class BHDamageTypeTags {
     public static final TagKey<DamageType> PHYSICAL_DAMAGE = create("physical_damage");
     public static final TagKey<DamageType> TRUE_DAMAGE = create("true_damage");
     public static final TagKey<DamageType> RANGED_DAMAGE = create("ranged_damage");
+    public static final TagKey<DamageType> CANT_STORE_DAMAGE = create("cant_store_damage");
 
     public static TagKey<DamageType> create(ResourceLocation loc) {
         return TagKey.create(Registries.DAMAGE_TYPE, loc);

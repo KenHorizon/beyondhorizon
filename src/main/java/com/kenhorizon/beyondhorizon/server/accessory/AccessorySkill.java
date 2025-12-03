@@ -2,12 +2,9 @@ package com.kenhorizon.beyondhorizon.server.accessory;
 
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
-import com.kenhorizon.beyondhorizon.server.util.Tooltips;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.List;
 import java.util.Optional;
 
 public class AccessorySkill extends Accessory implements IItemGeneric, IAttack {

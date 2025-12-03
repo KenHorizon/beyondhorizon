@@ -1,11 +1,13 @@
 package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundAccessoryInventoryPacket;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,6 +29,8 @@ public class ClientProxy extends ServerProxy {
     public void serverHandler() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::onEntityAttributeModification);
+        IconAttributesTooltip.registerFactory();
+        Tooltips.TitleBreakComponent.registerFactory();
     }
 
     @OnlyIn(Dist.CLIENT)

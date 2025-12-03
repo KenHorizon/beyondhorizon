@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientBoundAccessoryInventoryPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientBoundInventoryPacket;
-import com.kenhorizon.beyondhorizon.server.util.Tooltips;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;

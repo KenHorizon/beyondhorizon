@@ -1,13 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.accessory;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
-import com.kenhorizon.beyondhorizon.server.util.Tooltips;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;

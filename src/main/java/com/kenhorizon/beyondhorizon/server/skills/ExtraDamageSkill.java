@@ -1,7 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.skills;
 
-import com.kenhorizon.beyondhorizon.server.util.Tooltips;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -66,13 +67,22 @@ public class ExtraDamageSkill extends WeaponSkills {
     }
 
     @Override
-    protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
+    protected MutableComponent addTooltipDescription() {
         if (this.magnitude > 0.0F && this.level > 0.0F) {
-            tooltip.add(Component.translatable(this.createId(), this.magnitude, this.level).withStyle(Tooltips.TOOLTIP[1]));
+            return Component.translatable(this.createId(), this.magnitude * 10.0F, this.level);
         } else {
-            tooltip.add(Component.translatable(this.createId(), this.magnitude).withStyle(Tooltips.TOOLTIP[1]));
+            return Component.translatable(this.createId(), this.magnitude * 10.0F);
         }
     }
+
+//    @Override
+//    protected void addTooltipDescription() {
+//        if (this.magnitude > 0.0F && this.level > 0.0F) {
+//            tooltip.add(Component.translatable(this.createId(), this.magnitude, this.level).withStyle(Tooltips.TOOLTIP[1]));
+//        } else {
+//            tooltip.add(Component.translatable(this.createId(), this.magnitude).withStyle(Tooltips.TOOLTIP[1]));
+//        }
+//    }
     @Override
     public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (attacker == null || target == null) return damageDealt;

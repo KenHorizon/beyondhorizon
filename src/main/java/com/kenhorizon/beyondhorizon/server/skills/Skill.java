@@ -7,15 +7,20 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
-import com.kenhorizon.beyondhorizon.server.util.Tooltips;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -272,7 +277,7 @@ public abstract class Skill {
         if (this.isTooltipNameEnable()) {
             this.addTooltipTitle(itemStack, tooltip, firstType);
             if (!this.isTooltipDescriptionEnable()) return;
-            if (isShiftPressed && I18n.exists(this.createId())) {
+            if (I18n.exists(this.createId())) {
                 this.addTooltipDescription(itemStack, tooltip);
             }
         }
@@ -308,7 +313,13 @@ public abstract class Skill {
     }
 
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
-        tooltip.add(this.spacing().append(addTooltipDescription()).withStyle(Tooltips.TOOLTIP[0]));
+        Minecraft minecraft = Minecraft.getInstance();
+        Font font = minecraft.font;
+        List<FormattedCharSequence> wrappedText = font.split(this.addTooltipDescription(), 150);
+        for (FormattedCharSequence format : wrappedText) {
+            List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
+            tooltip.add(this.spacing().append(Component.literal(texts.get(0).getString())).withStyle(Tooltips.TOOLTIP[0]));
+        }
         this.prefixTooltipDesc(itemStack, tooltip);
         this.suffixTooltipDesc(itemStack, tooltip);
     }

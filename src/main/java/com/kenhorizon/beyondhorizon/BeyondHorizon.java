@@ -60,6 +60,7 @@ public class BeyondHorizon
         BHAttributes.register(eventBus);
         BHCreativeTabs.register(eventBus);
         BHMenu.register(eventBus);
+        BHParticle.register(eventBus);
         //  BHPotions.register(eventBus);
         BHItems.register(eventBus);
         Skills.register(eventBus);

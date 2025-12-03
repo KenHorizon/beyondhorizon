@@ -109,7 +109,7 @@
   "skills.beyondhorizon.blade_edge": "Blade Edge",
   "skills.beyondhorizon.blade_edge.desc": "Deal additional +%s%% target's Max HP",
   "skills.beyondhorizon.despair_and_defy": "Despair And Defy",
-  "skills.beyondhorizon.despair_and_defy.desc": "Reduces %s%% post-mitigaion damage and stored it and bleed per second of stored damage",
+  "skills.beyondhorizon.despair_and_defy.desc": "Reduces %s%% post-mitigation damage and stored it and bleed per second of stored damage",
   "skills.beyondhorizon.feather_feet": "Feather Feet",
   "skills.beyondhorizon.feather_feet.desc": "Negate fall damage",
   "skills.beyondhorizon.overgrowth": "Overgrowth",

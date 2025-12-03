@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItems;
@@ -19,8 +20,20 @@ import com.kenhorizon.beyondhorizon.server.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.mojang.datafixers.util.Either;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -28,18 +41,63 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-import java.util.Optional;
+import java.util.*;
 
 public class ServerEventHandler {
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onRegisterTooltipGatherComponents(RenderTooltipEvent.GatherComponents event) {
+        ItemStack itemStack = event.getItemStack();
+
+        List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
+        if (!itemStack.isEmpty()) {
+            for (int i = 0; i < elements.size(); i++) {
+                if (elements.get(i).left().isPresent()) {
+                    FormattedText text = elements.get(i).left().get();
+                    if (text instanceof MutableComponent component) {
+                        if (this.getComponents(Tooltips.TOOLTIP_ACCESSORY, component, itemStack)) {
+                            this.addIcons(BeyondHorizon.resource("textures/gui/hud/icon/accessory_icon.png"), false, elements, i, itemStack, text);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void addIcons(ResourceLocation texture, boolean removeText, List<Either<FormattedText, TooltipComponent>> elements, int index, ItemStack itemStack, FormattedText text) {
+        FormattedCharSequence paddedTitle = FormattedCharSequence.fromList(List.of(FormattedCharSequence.forward("   ", Style.EMPTY),Language.getInstance().getVisualOrder(text), FormattedCharSequence.forward("  ", Style.EMPTY)));
+        List<FormattedText> recomposedTitle = Tooltips.recompose(List.of(ClientTooltipComponent.create(paddedTitle)));
+        if (!recomposedTitle.isEmpty()) {
+            if (!removeText) {
+                elements.set(index, Either.left(recomposedTitle.get(0)));
+            }
+            elements.add(index, Either.right(new IconAttributesTooltip(text, texture)));
+        }
+    }
+
+    private boolean getComponents(String textFind, MutableComponent component, ItemStack itemStack) {
+        for (Component vanillaAttribute : component.getSiblings()) {
+            if (vanillaAttribute.getContents() instanceof TranslatableContents translatableContents) {
+                return translatableContents.getKey().startsWith(textFind);
+            }
+        }
+        if (component.getContents() instanceof TranslatableContents translatableContents) {
+            return translatableContents.getKey().startsWith(textFind);
+        }
+        return false;
+    }
+
     @SubscribeEvent
     public void onLivingHealEvent(LivingHealEvent event) {
         float heal = event.getAmount();

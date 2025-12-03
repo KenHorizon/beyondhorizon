@@ -3,11 +3,9 @@ package com.kenhorizon.beyondhorizon.client.level.tooltips;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
-import com.kenhorizon.beyondhorizon.server.util.Tooltips;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -17,13 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.ForgeRegistry;
-import net.minecraftforge.registries.RegistryManager;
-import net.minecraftforge.registries.tags.ITag;
-import net.minecraftforge.registries.tags.ITagManager;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

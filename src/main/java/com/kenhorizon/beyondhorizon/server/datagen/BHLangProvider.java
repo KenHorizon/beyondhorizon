@@ -6,7 +6,7 @@ import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
 import com.kenhorizon.beyondhorizon.server.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.skills.Skills;
-import com.kenhorizon.beyondhorizon.server.util.Tooltips;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -41,7 +41,7 @@ public class BHLangProvider extends LanguageProvider {
         //
         this.addAccessory(Accessories.FEATHER_FEET.get(), "Feather Feet", "Negate fall damage");
         this.addAccessory(Accessories.OVERGROWTH.get(), "Overgrowth", "Increase Bonus Max HP by %s%% (%s)");
-        this.addAccessory(Accessories.DESPAIR_AND_DEFY.get(), "Despair And Defy", "Reduces %s%% post-mitigaion damage and stored it and bleed per second of stored damage");
+        this.addAccessory(Accessories.DESPAIR_AND_DEFY.get(), "Despair And Defy", "Reduces %s%% post-mitigation damage and stored it and bleed per second of stored damage");
         //
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon: Ingredients");
         creativeTabs(BHCreativeTabs.BH_TOOLS, "Beyond Horizon: Tools");

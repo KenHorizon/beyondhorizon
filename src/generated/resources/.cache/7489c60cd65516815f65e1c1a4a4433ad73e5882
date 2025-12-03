@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-03T13:13:51.0998732	Item Models: beyondhorizon
+// 1.20.1	2025-12-03T19:35:34.3956869	Item Models: beyondhorizon
 61bd62baa09e73293916ef2d5600d19c032d0f96 assets/beyondhorizon/models/item/adamantite_axe.json
 bd25a09e9bcfc47662d0a3f201203af5e078f985 assets/beyondhorizon/models/item/adamantite_hoe.json
 8a8ce68bd28d9994f0df749e8177a704dd895bee assets/beyondhorizon/models/item/adamantite_ingot.json
@@ -6,6 +6,7 @@ bd25a09e9bcfc47662d0a3f201203af5e078f985 assets/beyondhorizon/models/item/adaman
 130ca852dac9751191788aaf6f4ecda2dbfaa375 assets/beyondhorizon/models/item/adamantite_shovel.json
 06ee35ba27a4557da988ac26d5717e06abfa0fef assets/beyondhorizon/models/item/adamantite_sword.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
+bc4bd470691ac94e76d84763498ebdb51c69b6ef assets/beyondhorizon/models/item/agile_dagger.json
 17ccefc69b8ddac415566364b3271b9f2f30b3a5 assets/beyondhorizon/models/item/ancient_chisel.json
 cabd63f40b0d87a6db691286dc1e3d50cd1b5f95 assets/beyondhorizon/models/item/ancient_pickaxe.json
 142c6bc7e213af35d5c2e51239d068ec425b5bb1 assets/beyondhorizon/models/item/berserker_boots.json
@@ -33,6 +34,7 @@ d7e626d382998b6a7f36cb0950d591375ab862d0 assets/beyondhorizon/models/item/hellst
 371735e3272f3256b1289bff9d8988b8cf71a633 assets/beyondhorizon/models/item/hellstone_sword.json
 b125e3f4deb091bbc5863a3655ba2a117f3f600a assets/beyondhorizon/models/item/iron_plate.json
 4982b6ebb0e0cc0b2755b177dea0e167737993a7 assets/beyondhorizon/models/item/iron_plated_boots.json
+137c3bde9bb69c7f73788817307dc82f53abf192 assets/beyondhorizon/models/item/leather_agility.json
 29998f18418efdb64dd0ae7985a6318e3c9ce3af assets/beyondhorizon/models/item/lucky_horse_shoe.json
 f6ca3709d68e38f21a87b2cad5be9b5348c1e860 assets/beyondhorizon/models/item/mask_of_agony.json
 ad7deea38ea7f781b1e24c5223f796ffb35a9719 assets/beyondhorizon/models/item/miner_boots.json

@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.accessory;
 
-public class BootsAccessory extends AccessorySkill {
+public class BootsAccessory extends AttributeOnlyAccessory {
     public BootsAccessory() {
-        this.setTooltipEnableName(false);
     }
 }

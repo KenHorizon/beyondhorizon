@@ -11,6 +11,11 @@ public class Maths {
     public static final DecimalFormat FORMAT = Util.make(new DecimalFormat("#.##"), (decimalFormat) -> {
         decimalFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ROOT));
     });
+
+    public static String format(float value) {
+        return FORMAT.format(value * 100.0F);
+    }
+
     public static float toPercent(float a) {
         return a / 100.0F;
     }

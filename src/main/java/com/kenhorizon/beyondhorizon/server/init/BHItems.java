@@ -260,6 +260,22 @@ public class BHItems {
             .register()
             .build();
 
+    public static final RegistryObject<Item> LEATHER_AGILITY = RegistryItems
+            .register("leather_agility", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.BASIC_CRIT_0))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> AGILE_DAGGER = RegistryItems
+            .register("agile_dagger", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.AGILE_DAGGER))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
     public static final RegistryObject<Item> MASK_OF_AGONY = RegistryItems
             .register("mask_of_agony", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.DESPAIR_AND_DEFY))
             .tab(RegistryTabs.Category.ACCESSORY)

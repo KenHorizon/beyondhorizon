@@ -5,7 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
 public class InflictFireAttackOnHitSkill extends WeaponSkills {
-    private int magnitude;
+    private final int magnitude;
     public InflictFireAttackOnHitSkill(int magnitude) {
         this.magnitude = magnitude;
     }

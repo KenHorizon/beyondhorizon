@@ -5,18 +5,25 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeTooltips;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.ColorCodedText;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.item.ItemStack;
@@ -25,19 +32,19 @@ import net.minecraftforge.registries.ForgeRegistries;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class Accessory {
+public abstract class Accessory {
     private final AttributeTooltips attributeTooltip = new AttributeTooltips();
     private float magnitude = 0.0F;
     private int level = 1;
     protected boolean tooltipEnable = true;
-    protected boolean tooltipEnableName = true;
+    protected boolean tooltipNameEnable = true;
     protected boolean tooltipDescriptionEnable = true;
     protected boolean attributeTooltipEnable = true;
-    protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
-    protected String MODID = Accessories.REGISTRY.getRegistryName().getNamespace();
     public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
     @Nullable
-    private String descriptionId;
+    protected String descriptionId;
+    protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
+    protected String MODID = Accessories.REGISTRY.getRegistryName().getNamespace();
 
     public Accessory(float magnitude, int level) {
         this.magnitude = magnitude;
@@ -46,19 +53,6 @@ public class Accessory {
 
     public Accessory() {
         this(0, 0);
-    }
-
-    public Accessory disableTooltip() {
-        this.tooltipEnable = false;
-        return this;
-    }
-    public Accessory disableTooltipName() {
-        this.tooltipEnableName = false;
-        return this;
-    }
-    public Accessory disableAttributeTooltip() {
-        this.attributeTooltipEnable = false;
-        return this;
     }
 
     public void setMagnitude(float magnitude) {
@@ -76,13 +70,34 @@ public class Accessory {
         return magnitude;
     }
 
+    public Accessory disableTooltipName() {
+        this.tooltipNameEnable = false;
+        return this;
+    }
+
+    public Accessory disableAttributeTooltip() {
+        this.attributeTooltipEnable = false;
+        return this;
+    }
+
+    public Accessory disableTooltip() {
+        this.tooltipEnable = false;
+        return this;
+    }
+
+    public boolean isTooltipDescriptionEnable() {
+        return this.tooltipDescriptionEnable;
+    }
+
     public String getName() {
         return Accessories.SUPPLIER_KEY.get().getKey(this).getPath();
     }
 
+
     public String getDescriptionId() {
         return this.getOrCreateDescriptionId();
     }
+
 
     public String getId() {
         return Accessories.SUPPLIER_KEY.get().getKey(this).getNamespace();
@@ -104,16 +119,72 @@ public class Accessory {
         return this.MODID;
     }
 
-    public Optional<IAttack> IAttackCallback() {
-        return Optional.empty();
+    public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed) {
+        if (!this.isTooltipEnable()) return;
+        if (this.isTooltipNameEnable()) {
+            this.addTooltipTitle(itemStack, tooltip, true);
+        }
+        if (!this.isTooltipDescriptionEnable()) return;
+        if (this.isAttributeTooltipEnable()) {
+            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
+        }
+        if (isShiftPressed && I18n.exists(this.createId())) {
+            this.addTooltipDescription(itemStack, tooltip);
+        }
     }
 
-    public Optional<IItemGeneric> IItemGeneric() {
-        return Optional.empty();
+    protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
+        Component text;
+        if (firstType) {
+            text = CommonComponents.space()
+                    .append(CommonComponents.space()
+                            .append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD)));
+        } else {
+            text = CommonComponents.space().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
+        }
+        tooltip.add(text);
+    }
+    protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Font font = minecraft.font;
+        List<FormattedCharSequence> wrappedText = font.split(this.tooltipDescription(itemStack), Constant.TOOLTIP_MAX_TEXT_WITDH);
+        for (FormattedCharSequence format : wrappedText) {
+            List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
+            Component text = Component.literal(texts.get(0).getString());
+            tooltip.add(this.spacing().append(ColorCodedText.applyFormat(text)).withStyle(Tooltips.TOOLTIP[0]));
+        }
     }
 
-    public Optional<IAccessoryEvent> IAccessory() {
-        return Optional.empty();
+    protected MutableComponent tooltipDescription(ItemStack itemStack) {
+        return Component.translatable(this.createId());
+    }
+
+    protected String createId(int lines) {
+        return lines == 0 ? String.format("%s.desc", this.getDescriptionId()) : String.format("%s.desc.%s", this.getDescriptionId(), lines);
+    }
+
+    public MutableComponent spacing() {
+        return Component.literal("   ");
+    }
+
+    protected String createId() {
+        return createId(0);
+    }
+
+    public boolean registerIcons() {
+        return false;
+    }
+
+    public boolean isTooltipEnable() {
+        return this.tooltipEnable;
+    }
+
+    public boolean isAttributeTooltipEnable() {
+        return this.attributeTooltipEnable;
+    }
+
+    public boolean isTooltipNameEnable() {
+        return this.tooltipNameEnable;
     }
 
     public void setTooltipEnable(boolean tooltipEnable) {
@@ -129,8 +200,21 @@ public class Accessory {
     }
 
     public void setTooltipEnableName(boolean tooltipEnableName) {
-        this.tooltipEnableName = tooltipEnableName;
+        this.tooltipNameEnable = tooltipEnableName;
     }
+
+    public Optional<IAttack> IAttackCallback() {
+        return Optional.empty();
+    }
+
+    public Optional<IItemGeneric> IItemGeneric() {
+        return Optional.empty();
+    }
+
+    //    public Component addKeyBinds() {
+//        return CommonComponents.space()
+//                .append(Component.translatable(TooltipUtil.TOOLTIP_KEYBIND, KeyBindings.ABILITY_TRAIT_SKILLS.getKey().getDisplayName()).withStyle(ChatFormatting.GOLD));
+//    }
 
     public Accessory addAttributeModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
         AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
@@ -194,71 +278,8 @@ public class Accessory {
         return ImmutableMultimap.of();
     }
 
-    public boolean isAttributeTooltipEnable() {
-        return this.attributeTooltipEnable;
-    }
-
-    public boolean isEnalbeTooltipName() {
-        return this.tooltipEnableName;
-    }
-
-    public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed) {
-        if (!this.isTooltipEnable()) return;
-        if (this.isEnalbeTooltipName()) {
-            this.addTooltipTitle(itemStack, tooltip);
-        }
-        if (!this.isTooltipDescriptionEnable()) return;
-        if (this.isAttributeTooltipEnable()) {
-            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
-        }
-        if (isShiftPressed && I18n.exists(this.createId())) {
-            this.addTooltipDescription(itemStack, tooltip);
-            this.appendDescription(itemStack, tooltip);
-        }
-    }
-    protected void appendDescription(ItemStack itemStack, List<Component> tooltip) {
-
-    }
-
-    protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip) {
-        this.addTooltipTitle(itemStack, tooltip, false);
-    }
-
-    protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
-        Component text;
-        if (firstType) {
-            text = CommonComponents.space()
-                    .append(CommonComponents.space()
-                            .append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD)));
-        } else {
-            text = CommonComponents.space().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
-        }
-        tooltip.add(text);
-    }
-
-    protected void prefixTooltipDesc(ItemStack itemStack, List<Component> tooltip) {
-
-    }
-    protected void suffixTooltipDesc(ItemStack itemStack, List<Component> tooltip) {
-
-    }
-
-    public MutableComponent spacing() {
-        return Component.literal("     ");
-    }
-
-    protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
-        tooltip.add(this.spacing().append(Component.translatable(this.createId()).withStyle(Tooltips.TOOLTIP[0])));
-        this.suffixTooltipDesc(itemStack, tooltip);
-    }
-
-    protected String createId(int lines) {
-        return lines == 0 ? String.format("%s.desc", this.getDescriptionId()) :
-                String.format("%s.desc.%s", this.getDescriptionId(), lines);
-    }
-
-    protected String createId() {
-        return createId(0);
+    public Optional<IAccessoryEvent> IAccessory() {
+        return Optional.empty();
     }
 
     protected List<Attribute> randomAttributes() {
@@ -276,13 +297,5 @@ public class Accessory {
         attributes.add(BHAttributes.DAMAGE_TAKEN.get());
         attributes.add(BHAttributes.MANA_REGENERATION.get());
         return attributes;
-    }
-
-    public boolean isTooltipEnable() {
-        return this.tooltipEnable;
-    }
-
-    public boolean isTooltipDescriptionEnable() {
-        return this.tooltipDescriptionEnable;
     }
 }

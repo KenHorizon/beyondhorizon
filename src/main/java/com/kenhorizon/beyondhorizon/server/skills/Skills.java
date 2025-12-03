@@ -32,7 +32,7 @@ public class Skills {
             .melee()
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));
-    public static final RegistryObject<Skill> FIRE_EFFECT = registerSkill("fire_effect", () -> new InflictFireAttackOnHitSkill(Constant.FIRE_EFFECT)
+    public static final RegistryObject<Skill> BURN_EFFECT = registerSkill("fire_effect", () -> new InflictFireAttackOnHitSkill(Constant.FIRE_EFFECT)
             .universal()
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));

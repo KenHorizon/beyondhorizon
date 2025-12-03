@@ -12,8 +12,11 @@ import java.util.stream.Collectors;
 public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder NONE = new AccessoryBuilder(List.of(Accessories.NONE));
     public static final AccessoryBuilder BOOTS_0 = new AccessoryBuilder(List.of(Accessories.BOOTS_0));
+    public static final AccessoryBuilder BASIC_CRIT_0 = new AccessoryBuilder(List.of(Accessories.BASIC_CRIT));
+    public static final AccessoryBuilder BASIC_CRIT_1 = new AccessoryBuilder(List.of(Accessories.UPGRADED_CRIT));
     public static final AccessoryBuilder NEGATE_FALL_DAMAGE = new AccessoryBuilder(List.of(Accessories.FEATHER_FEET));
 
+    public static final AccessoryBuilder AGILE_DAGGER = new AccessoryBuilder(List.of(Accessories.BASIC_CRIT, Accessories.BASIC_MOVEMENT_SPEED));
     public static final AccessoryBuilder POWER_GLOVES = new AccessoryBuilder(List.of(Accessories.POWER_GLOVES));
     public static final AccessoryBuilder SWIFT_DAGGER = new AccessoryBuilder(List.of(Accessories.SWIFT_DAGGER));
     public static final AccessoryBuilder AETHER_WISP = new AccessoryBuilder(List.of(Accessories.AETHER_WISP));

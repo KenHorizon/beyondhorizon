@@ -3,6 +3,9 @@ package com.kenhorizon.beyondhorizon.server.util;
 import com.kenhorizon.beyondhorizon.server.StatModifiers;
 
 public class Constant {
+    public static final float PENALTY_DAMAGE = 30;
+    public static final int TOOLTIP_MAX_TEXT_WITDH = 200;
+
     public static int FIRE_EFFECT = 5;
     public static float RADIANT = 0.20F;
     public static float BLADE_EDGE = 0.10F;
@@ -23,6 +26,10 @@ public class Constant {
     public static float[] ZENITH = {5.0F, 1.7F};
     public static float[] BLADE_OF_THE_ENDERLORD = {8.0F, 1.7F};
     //
+    public static double MOVEMENT_SPEED_0 = 0.04D;
+    public static double MOVEMENT_SPEED_1 = 0.10D;
+    public static double CRITICAL_STRIKE_0 = 0.15D;
+    public static double CRITICAL_STRIKE_1 = 0.25D;
     public static double SWIFT_DAGGER_ATTACK_SPEED = 0.05D;
     public static double POWER_GLOVES_ATTACK_DAMAGE = 3;
     public static double POWER_GLOVES_KNOCBACK = 0.10D;

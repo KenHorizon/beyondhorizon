@@ -41,27 +41,6 @@ public class Tooltips {
     public static final ChatFormatting[] ENCHANTMENT = {ChatFormatting.GOLD, ChatFormatting.RED};
     public static final ChatFormatting[] TOOLTIP = {ChatFormatting.GRAY, ChatFormatting.DARK_GRAY};
 
-    public static final Map<String, ChatFormatting> TEXT_COLORED = new HashMap<>();
-    static {
-        TEXT_COLORED.put("HP", ChatFormatting.GREEN);
-        TEXT_COLORED.put("Current HP", ChatFormatting.GREEN);
-        TEXT_COLORED.put("Max HP", ChatFormatting.GREEN);
-        TEXT_COLORED.put("current health", ChatFormatting.GREEN);
-        TEXT_COLORED.put("max healt", ChatFormatting.GREEN);
-        TEXT_COLORED.put("post-mitigation damage", ChatFormatting.GOLD);
-        TEXT_COLORED.put("pre-mitigation damage", ChatFormatting.GOLD);
-        TEXT_COLORED.put("attack damage", ChatFormatting.GOLD);
-        TEXT_COLORED.put("attack speed", ChatFormatting.YELLOW);
-        TEXT_COLORED.put("ability power", ChatFormatting.DARK_AQUA);
-        TEXT_COLORED.put("mana", ChatFormatting.AQUA);
-        TEXT_COLORED.put("armor", ChatFormatting.AQUA);
-        TEXT_COLORED.put("armor penetration", ChatFormatting.DARK_RED);
-        TEXT_COLORED.put("magic penetration", ChatFormatting.LIGHT_PURPLE);
-        TEXT_COLORED.put("magic resistance", ChatFormatting.DARK_PURPLE);
-        TEXT_COLORED.put("cooldown", ChatFormatting.YELLOW);
-        TEXT_COLORED.put("critical strike", ChatFormatting.GOLD);
-        TEXT_COLORED.put("critical damage", ChatFormatting.DARK_RED);
-    }
 
     public static ChatFormatting attributeColorFormat(double amount) {
         return amount > 0.0D ? ATTRIBUTES[0] : ATTRIBUTES[1];

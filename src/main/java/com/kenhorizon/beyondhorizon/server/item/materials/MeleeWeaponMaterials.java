@@ -70,7 +70,7 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
             3.0F,
             24, () -> {
         return Ingredient.of(BHItems.HELLSTONE_INGOT.get());
-    }),
+    }, SkillBuilder.INFLICT_FIRE),
     PALLADIUM("palladium",
             3,
             1034,

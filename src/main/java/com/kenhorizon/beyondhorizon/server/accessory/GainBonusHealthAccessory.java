@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -33,12 +34,12 @@ public class GainBonusHealthAccessory extends AccessorySkill {
     }
 
     @Override
-    protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
-        double bonusHp = 0;
+    protected MutableComponent tooltipDescription(ItemStack itemStack) {
+        double bonusHp = 0.0D;
         if (itemStack.hasTag() && itemStack.getTag().contains("bonus_hp")) {
             bonusHp = itemStack.getTag().getDouble("bonus_hp");
         }
-        tooltip.add(this.spacing().append(Component.translatable(this.createId(), Maths.FORMAT.format(this.getMagnitude()), Mth.ceil(bonusHp)).withStyle(Tooltips.TOOLTIP[0])));
+        return Component.translatable(this.createId(), Maths.format(this.getMagnitude()), Mth.ceil(bonusHp));
     }
 
     @Override

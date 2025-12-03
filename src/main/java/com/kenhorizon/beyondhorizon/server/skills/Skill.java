@@ -4,10 +4,15 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeTooltips;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -22,10 +27,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -63,12 +65,7 @@ public abstract class Skill {
         }
     }
     protected String MODID = Skills.REGISTRY.getRegistryName().getNamespace();
-    public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
-
     protected boolean isSkill = false;
-    protected boolean tooltipEnable = true;
-    protected boolean tooltipNameEnable = true;
-    protected boolean tooltipDescriptionEnable = true;
     protected boolean isMelee = false;
     protected boolean isRanged = false;
     protected boolean isThrowing = false;
@@ -77,8 +74,14 @@ public abstract class Skill {
     protected Type skillType = Type.PASSIVE;
     protected int cooldown = 0;
     protected int manaCost = 0;
+    private final AttributeTooltips attributeTooltip = new AttributeTooltips();
+    protected boolean tooltipEnable = true;
+    protected boolean tooltipNameEnable = true;
+    protected boolean tooltipDescriptionEnable = true;
+    protected boolean attributeTooltipEnable = true;
+    public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
     @Nullable
-    private String descriptionId;
+    protected String descriptionId;
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
 
     public Skill format(Format format) {
@@ -95,6 +98,20 @@ public abstract class Skill {
         return this.skillType;
     }
 
+    public Skill disableTooltipName() {
+        this.tooltipDescriptionEnable = false;
+        return this;
+    }
+
+    public Skill disableTooltip() {
+        this.tooltipEnable = false;
+        return this;
+    }
+
+    public boolean isTooltipDescriptionEnable() {
+        return this.tooltipDescriptionEnable;
+    }
+
     public String getName() {
         return Skills.SUPPLIER_KEY.get().getKey(this).getPath();
     }
@@ -108,17 +125,6 @@ public abstract class Skill {
             this.descriptionId = String.format("skills.%s.%s", this.getId(), this.getName());
         }
         return this.descriptionId;
-
-    }
-
-    public Skill disableTooltipName() {
-        this.tooltipDescriptionEnable = false;
-        return this;
-    }
-
-    public Skill disableTooltip() {
-        this.tooltipEnable = false;
-        return this;
     }
 
     public String getId() {
@@ -185,42 +191,6 @@ public abstract class Skill {
         return false;
     }
 
-    public Optional<IAttack> IAttackCallback() {
-        return Optional.empty();
-    }
-
-    public Optional<IItemGeneric> IItemGeneric() {
-        return Optional.empty();
-    }
-
-    public Skill addAttributeModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
-        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
-        this.attributeModifiers.put(attribute, attributemodifier);
-        return this;
-    }
-
-    public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, ItemStack itemStack) {
-        if (this.getAttributeModifierByTags(itemStack).isEmpty()) return;
-        for (Map.Entry<Attribute, AttributeModifier> entry : this.getAttributeModifierByTags(itemStack).entries()) {
-            AttributeInstance attributeinstance = attributeMap.getInstance(entry.getKey());
-            if (attributeinstance != null) {
-                attributeinstance.removeModifier(entry.getValue());
-            }
-        }
-    }
-
-    public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, ItemStack itemStack) {
-        if (this.getAttributeModifierByTags(itemStack).isEmpty()) return;
-        for (Map.Entry<Attribute, AttributeModifier> entry : this.getAttributeModifierByTags(itemStack).entries()) {
-            AttributeInstance attributeinstance = attributeMap.getInstance(entry.getKey());
-            if (attributeinstance != null) {
-                AttributeModifier attributemodifier = entry.getValue();
-                attributeinstance.removeModifier(attributemodifier);
-                attributeinstance.addPermanentModifier(new AttributeModifier(attributemodifier.getId(), "Attribute Modifier", getAttributeModifierValue(attributemodifier), attributemodifier.getOperation()));
-            }
-        }
-    }
-
     public Multimap<Attribute, AttributeModifier> getAttributeModifierByTags(ItemStack itemStack) {
         CompoundTag nbt = itemStack.getOrCreateTag();
         Multimap<Attribute, AttributeModifier> multimap;
@@ -242,7 +212,6 @@ public abstract class Skill {
         }
         return multimap;
     }
-
     public double getAttributeModifierValue(AttributeModifier modifier) {
         return modifier.getAmount();
     }
@@ -268,29 +237,6 @@ public abstract class Skill {
         return this.MODID;
     }
 
-    public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed) {
-        this.addTooltip(itemStack, tooltip, isShiftPressed, true);
-    }
-
-    public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed, boolean firstType) {
-        if (!this.isTooltipEnable()) return;
-        if (this.isTooltipNameEnable()) {
-            this.addTooltipTitle(itemStack, tooltip, firstType);
-            if (!this.isTooltipDescriptionEnable()) return;
-            if (I18n.exists(this.createId())) {
-                this.addTooltipDescription(itemStack, tooltip);
-            }
-        }
-    }
-
-    public boolean isTooltipNameEnable() {
-        return this.tooltipNameEnable;
-    }
-
-    protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip) {
-        this.addTooltipTitle(itemStack, tooltip, false);
-    }
-
     protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
         Component abilityTrait;
         if (firstType) {
@@ -304,37 +250,40 @@ public abstract class Skill {
         }
         tooltip.add(abilityTrait);
     }
-
-    protected void prefixTooltipDesc(ItemStack itemStack, List<Component> tooltip) {
-
+    public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed) {
+        if (!this.isTooltipEnable()) return;
+        if (this.isTooltipNameEnable()) {
+            this.addTooltipTitle(itemStack, tooltip, true);
+        }
+        if (!this.isTooltipDescriptionEnable()) return;
+        if (this.isAttributeTooltipEnable()) {
+            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
+        }
+        if (isShiftPressed && I18n.exists(this.createId())) {
+            this.addTooltipDescription(itemStack, tooltip);
+        }
     }
-    protected void suffixTooltipDesc(ItemStack itemStack, List<Component> tooltip) {
-
-    }
-
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
-        List<FormattedCharSequence> wrappedText = font.split(this.addTooltipDescription(), 150);
+        List<FormattedCharSequence> wrappedText = font.split(this.tooltipDescription(itemStack), Constant.TOOLTIP_MAX_TEXT_WITDH);
         for (FormattedCharSequence format : wrappedText) {
             List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
-            tooltip.add(this.spacing().append(Component.literal(texts.get(0).getString())).withStyle(Tooltips.TOOLTIP[0]));
+            Component text = Component.literal(texts.get(0).getString());
+            tooltip.add(this.spacing().append(ColorCodedText.applyFormat(text)).withStyle(Tooltips.TOOLTIP[0]));
         }
-        this.prefixTooltipDesc(itemStack, tooltip);
-        this.suffixTooltipDesc(itemStack, tooltip);
     }
 
-    protected MutableComponent addTooltipDescription() {
-        return Component.empty();
+    protected MutableComponent tooltipDescription(ItemStack itemStack) {
+        return Component.translatable(this.createId());
     }
 
     protected String createId(int lines) {
-        return lines == 0 ? String.format("%s.desc", this.getDescriptionId()) :
-                String.format("%s.desc.%s", this.getDescriptionId(), lines);
+        return lines == 0 ? String.format("%s.desc", this.getDescriptionId()) : String.format("%s.desc.%s", this.getDescriptionId(), lines);
     }
 
     public MutableComponent spacing() {
-        return Component.literal("     ");
+        return Component.literal("   ");
     }
 
     protected String createId() {
@@ -349,12 +298,35 @@ public abstract class Skill {
         return this.tooltipEnable;
     }
 
-//    public Component addKeyBinds() {
-//        return CommonComponents.space()
-//                .append(Component.translatable(TooltipUtil.TOOLTIP_KEYBIND, KeyBindings.ABILITY_TRAIT_SKILLS.getKey().getDisplayName()).withStyle(ChatFormatting.GOLD));
-//    }
+    public boolean isAttributeTooltipEnable() {
+        return this.attributeTooltipEnable;
+    }
 
-    public boolean isTooltipDescriptionEnable() {
-        return this.tooltipDescriptionEnable;
+    public boolean isTooltipNameEnable() {
+        return this.tooltipNameEnable;
+    }
+
+    public void setTooltipEnable(boolean tooltipEnable) {
+        this.tooltipEnable = tooltipEnable;
+    }
+
+    public void setAttributeTooltipEnable(boolean attributeTooltipEnable) {
+        this.attributeTooltipEnable = attributeTooltipEnable;
+    }
+
+    public void setTooltipDescriptionEnable(boolean tooltipDescriptionEnable) {
+        this.tooltipDescriptionEnable = tooltipDescriptionEnable;
+    }
+
+    public void setTooltipEnableName(boolean tooltipEnableName) {
+        this.tooltipNameEnable = tooltipEnableName;
+    }
+
+    public Optional<IAttack> IAttackCallback() {
+        return Optional.empty();
+    }
+
+    public Optional<IItemGeneric> IItemGeneric() {
+        return Optional.empty();
     }
 }

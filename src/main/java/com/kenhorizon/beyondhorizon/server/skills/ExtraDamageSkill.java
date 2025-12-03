@@ -1,12 +1,16 @@
 package com.kenhorizon.beyondhorizon.server.skills;
 
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.boss.wither.WitherBoss;
+import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -17,13 +21,21 @@ public class ExtraDamageSkill extends WeaponSkills {
         public float calculate(float magnitude, float level, MobType mobType, float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target);
     }
     public static final DamageTypeFunction CURRENT_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        return damageDealt + (target.getHealth() * (magnitude * level));
+
+        float finalDamage = damageDealt + (target.getHealth() * (magnitude * level));
+        if (target instanceof WitherBoss ||  target instanceof Warden) {
+            return Math.min(finalDamage, Constant.PENALTY_DAMAGE);
+        }
+        return finalDamage;
     });
     public static final DamageTypeFunction MAX_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        return damageDealt + (target.getMaxHealth() * (magnitude * level));
+        float finalDamage = damageDealt + (target.getMaxHealth() * (magnitude * level));
+        if (target instanceof WitherBoss ||  target instanceof Warden) {
+            return Math.min(finalDamage, Constant.PENALTY_DAMAGE);
+        }
+        return finalDamage;
     });
     public static final DamageTypeFunction BONUS_DAMAGE_TO = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-
         return damageDealt;
     });
     public static final DamageTypeFunction MISSING_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
@@ -48,14 +60,12 @@ public class ExtraDamageSkill extends WeaponSkills {
     });
 
     private final DamageTypeFunction damageFunction;
-    private final float magnitude;
-    private final float level;
     private MobType mobType;
 
     public ExtraDamageSkill(float magnitude, float level, MobType mobType, DamageTypeFunction damageFunction) {
         this.damageFunction = damageFunction;
-        this.magnitude = magnitude;
-        this.level = level;
+        this.setMagnitude(magnitude);
+        this.setLevel(level);
         this.mobType = mobType;
     }
 
@@ -67,26 +77,18 @@ public class ExtraDamageSkill extends WeaponSkills {
     }
 
     @Override
-    protected MutableComponent addTooltipDescription() {
-        if (this.magnitude > 0.0F && this.level > 0.0F) {
-            return Component.translatable(this.createId(), this.magnitude * 10.0F, this.level);
+    protected MutableComponent tooltipDescription(ItemStack itemStack) {
+        if (this.getMagnitude() > 0.0F && this.getLevel() > 0.0F) {
+            return Component.translatable(this.createId(), Maths.format(this.getMagnitude()), this.getLevel());
         } else {
-            return Component.translatable(this.createId(), this.magnitude * 10.0F);
+            return Component.translatable(this.createId(), Maths.format(this.getMagnitude()));
         }
     }
 
-//    @Override
-//    protected void addTooltipDescription() {
-//        if (this.magnitude > 0.0F && this.level > 0.0F) {
-//            tooltip.add(Component.translatable(this.createId(), this.magnitude, this.level).withStyle(Tooltips.TOOLTIP[1]));
-//        } else {
-//            tooltip.add(Component.translatable(this.createId(), this.magnitude).withStyle(Tooltips.TOOLTIP[1]));
-//        }
-//    }
     @Override
     public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (attacker == null || target == null) return damageDealt;
-        return this.damageFunction.calculate(this.magnitude, this.level, this.mobType, damageDealt, source, attacker, target);
+        return this.damageFunction.calculate(this.getMagnitude(), this.getLevel(), this.mobType, damageDealt, source, attacker, target);
     }
 }
 

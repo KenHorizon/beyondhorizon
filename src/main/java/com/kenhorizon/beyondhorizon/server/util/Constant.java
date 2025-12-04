@@ -4,7 +4,9 @@ import com.kenhorizon.beyondhorizon.server.StatModifiers;
 
 public class Constant {
     public static final float PENALTY_DAMAGE = 30;
-    public static final int TOOLTIP_MAX_TEXT_WITDH = 200;
+    public static final int TOOLTIP_MAX_TEXT_WITDH = 280;
+    public static final int MEDUIM_TOOLTIP_MAX_TEXT_WITDH = 220;
+    public static final int SMALL_TOOLTIP_MAX_TEXT_WITDH = 180;
 
     public static int FIRE_EFFECT = 5;
     public static float RADIANT = 0.20F;

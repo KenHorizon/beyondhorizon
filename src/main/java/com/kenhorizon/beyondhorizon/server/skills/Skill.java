@@ -266,11 +266,20 @@ public abstract class Skill {
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
-        List<FormattedCharSequence> wrappedText = font.split(this.tooltipDescription(itemStack), Constant.TOOLTIP_MAX_TEXT_WITDH);
+        int screenWidth = minecraft.getWindow().getScreenWidth();
+        int maxWidth;
+        if (screenWidth < 860) {
+            maxWidth = Constant.SMALL_TOOLTIP_MAX_TEXT_WITDH;
+        } else if (screenWidth > 860 && screenWidth < 1280) {
+            maxWidth = Constant.MEDUIM_TOOLTIP_MAX_TEXT_WITDH;
+        } else {
+            maxWidth = Constant.TOOLTIP_MAX_TEXT_WITDH;
+        }
+        List<FormattedCharSequence> wrappedText = font.split(this.tooltipDescription(itemStack), maxWidth);
         for (FormattedCharSequence format : wrappedText) {
             List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
             Component text = Component.literal(texts.get(0).getString());
-            tooltip.add(this.spacing().append(ColorCodedText.applyFormat(text)).withStyle(Tooltips.TOOLTIP[0]));
+            tooltip.add(this.spacing().append(ColorCodedText.applyFormat(text)).withStyle(Tooltips.TOOLTIP[0]).append(this.spacing()));
         }
     }
 

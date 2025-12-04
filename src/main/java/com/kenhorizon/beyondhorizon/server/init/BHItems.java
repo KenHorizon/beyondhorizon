@@ -19,6 +19,12 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BHItems {
+    public static final RegistryObject<Item> HANDLE = RegistryItems
+            .register("handle", BasicItem::new)
+            .tab(RegistryTabs.Category.INGREDIENTS)
+            .model(ItemModels.GENERATED)
+            .register()
+            .build();
     public static final RegistryObject<Item> RAW_ADAMANTITE = RegistryItems
             .register("raw_adamantite", BasicItem::new)
             .tab(RegistryTabs.Category.INGREDIENTS)

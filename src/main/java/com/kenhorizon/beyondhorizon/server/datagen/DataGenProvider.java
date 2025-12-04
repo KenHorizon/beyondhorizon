@@ -39,6 +39,7 @@ public class DataGenProvider {
         generator.addProvider(event.includeServer(), new BHDamageTypesTagProvider(packOutput, datapackEntryProvider.getRegistryProvider(), existingFileHelper));
         generator.addProvider(event.includeServer(), new BHItemTagsProvider(packOutput, datapackEntryProvider.getRegistryProvider(), blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), datapackEntryProvider);
+        generator.addProvider(event.includeServer(), new BHRecipeProvider(packOutput));
         generator.addProvider(event.includeClient(), new BHLangProvider(packOutput));
         generator.addProvider(event.includeClient(), new BHItemModelProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new ForgeAdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of()));

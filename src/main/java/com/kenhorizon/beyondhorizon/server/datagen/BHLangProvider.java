@@ -38,6 +38,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional +%s%% target's Current HP");
         this.addSkills(Skills.BLADE_EDGE.get(), "Blade Edge", "Deal additional +%s%% target's Max HP");
         this.addSkills(Skills.RADIANT.get(), "Radiant", "Deal additional damage to undead by +%s%%");
+        this.addSkills(Skills.TRANNY.get(), "Tranny", "Gain Attack Damage equal to %s%% Max HP (%s)");
+        this.addSkills(Skills.RETRIBUTION.get(), "Retribution", "Increase damage dealt 0-%s%% based on Missing HP");
         //
         this.addAccessory(Accessories.FEATHER_FEET.get(), "Feather Feet", "Negate fall damage");
         this.addAccessory(Accessories.OVERGROWTH.get(), "Overgrowth", "Increase Bonus Max HP by %s%% (%s)");

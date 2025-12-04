@@ -32,6 +32,14 @@ public class Skills {
             .melee()
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));
+    public static final RegistryObject<Skill> TRANNY = registerSkill("tranny", () -> new HealthToDamageSkill(Constant.TRANNY_HEALTH_SCALE)
+            .universal()
+            .format(Skill.Format.NORMAL)
+            .type(Skill.Type.PASSIVE));
+    public static final RegistryObject<Skill> RETRIBUTION = registerSkill("retribution", () -> new ExtraDamageSkill(Constant.TRANNY_MISSING_HEALTH_SCALE, ExtraDamageSkill.USER_MISSING_HEALTH)
+            .universal()
+            .format(Skill.Format.NORMAL)
+            .type(Skill.Type.PASSIVE));
     public static final RegistryObject<Skill> BURN_EFFECT = registerSkill("fire_effect", () -> new InflictFireAttackOnHitSkill(Constant.FIRE_EFFECT)
             .universal()
             .format(Skill.Format.NORMAL)

@@ -38,7 +38,21 @@ public class ExtraDamageSkill extends WeaponSkills {
     public static final DamageTypeFunction BONUS_DAMAGE_TO = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
         return damageDealt;
     });
-    public static final DamageTypeFunction MISSING_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
+    public static final DamageTypeFunction USER_MISSING_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
+        float damageMultiplier = (attacker.getMaxHealth() - attacker.getHealth() / attacker.getMaxHealth());
+        float amplifier = 0.0F;
+        if ((magnitude * level) != 0) {
+            for (int i = 0; i < (100 * magnitude); ++i) {
+                if (i % magnitude == 0) {
+                    amplifier++;
+                    float perDamage = (amplifier / 100.0F);
+                    return (1.0F + perDamage) * damageDealt;
+                }
+            }
+        }
+        return (float) (damageDealt * (1.0F + (Mth.clamp(damageMultiplier, 0.0F, 1.0F))));
+    });
+    public static final DamageTypeFunction TARGET_MISSING_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
         float damageMultiplier = (target.getMaxHealth() - target.getHealth() / target.getMaxHealth());
         float amplifier = 0.0F;
         if ((magnitude * level) != 0) {
@@ -52,11 +66,17 @@ public class ExtraDamageSkill extends WeaponSkills {
         }
         return (float) (damageDealt * (1.0F + (Mth.clamp(damageMultiplier, 0.0F, 1.0F))));
     });
+
     public static final DamageTypeFunction BONUS_DAMAGE = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
         if (mobType != null && mobType == target.getMobType()) {
             return damageDealt + (magnitude * level);
         }
         return damageDealt + (magnitude * level);
+    });
+
+    public static final DamageTypeFunction KINETIC_WEAPON = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
+        float extraDamage = damageDealt * ((attacker.getSpeed() * magnitude) * level);
+        return damageDealt + extraDamage;
     });
 
     private final DamageTypeFunction damageFunction;

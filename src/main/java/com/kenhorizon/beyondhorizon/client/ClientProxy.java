@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
+import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -37,6 +38,7 @@ public class ClientProxy extends ServerProxy {
     @Override
     public void clientHandler() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+        MinecraftForge.EVENT_BUS.register(new GameHudDisplay());
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         Raid.RaiderType.create("ILLUSIONER", EntityType.ILLUSIONER, new int[]{0, 0, 1, 2, 2, 3, 4, 5});

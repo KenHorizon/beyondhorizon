@@ -444,6 +444,12 @@ public class BHItems {
             .model(ItemModels.BIG_HANDHELD)
             .register()
             .build();
+    public static final RegistryObject<Item> GIANT_SLAYER_SWORD = RegistryItems
+            .register("giant_slayer_sword", item -> WeaponBuilder.GIANT_SLAYER_SWORD.create(MeleeWeaponMaterials.GIANT_SLAYER_SWORD, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG_HANDHELD)
+            .register()
+            .build();
     public static final RegistryObject<Item> ZENITH = RegistryItems
             .register("zenith", item -> WeaponBuilder.ZENITH.create(MeleeWeaponMaterials.ZENITH, new Item.Properties().rarity(BHRarity.MYTHICAL)))
             .tab(RegistryTabs.Category.COMBAT)

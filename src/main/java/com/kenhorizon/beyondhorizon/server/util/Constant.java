@@ -9,6 +9,8 @@ public class Constant {
     public static final int SMALL_TOOLTIP_MAX_TEXT_WITDH = 180;
 
     public static int FIRE_EFFECT = 5;
+    public static float TRANNY_MISSING_HEALTH_SCALE = 0.75F;
+    public static float TRANNY_HEALTH_SCALE = 0.25F;
     public static float RADIANT = 0.20F;
     public static float BLADE_EDGE = 0.10F;
     public static float RUINED_BLADE = 0.05F;
@@ -27,6 +29,7 @@ public class Constant {
     public static float[] SICKLE = {4.5F, 1.65F};
     public static float[] ZENITH = {5.0F, 1.7F};
     public static float[] BLADE_OF_THE_ENDERLORD = {8.0F, 1.7F};
+    public static float[] GIANT_SLAYER = {8.0F, 1.7F, 2.6F};
     //
     public static double MOVEMENT_SPEED_0 = 0.04D;
     public static double MOVEMENT_SPEED_1 = 0.10D;

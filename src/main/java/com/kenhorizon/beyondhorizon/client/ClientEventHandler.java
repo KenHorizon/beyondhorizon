@@ -4,16 +4,23 @@ package com.kenhorizon.beyondhorizon.client;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotButton;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
+import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHudDisplay;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class ClientEventHandler {
+
     @SubscribeEvent
     public void onInventoryGui(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();

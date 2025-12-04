@@ -18,11 +18,11 @@ public class SkillBuilder implements IReloadable {
     public static final SkillBuilder BLADE_EDGE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.BLADE_EDGE));
     public static final SkillBuilder RADIANT = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.RADIANT));
     public static final SkillBuilder INFLICT_FIRE = new SkillBuilder(SkillTypes.UNIVERSAL, List.of(Skills.BURN_EFFECT));
+    public static final SkillBuilder GIANT_SLAYER_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.TRANNY, Skills.RETRIBUTION));
 
     protected List<Supplier<? extends Skill>> suppliers = new ArrayList<>();
     protected List<Skill> skills = new ArrayList<>();
     protected List<Skill> filter = new ArrayList<>();
-    protected Optional<Skill> actionSkills = Optional.empty();
     protected SkillTypes skillTypes;
 
     public SkillBuilder(SkillTypes skillTypes, List<Supplier<? extends Skill>> skills) {
@@ -33,7 +33,6 @@ public class SkillBuilder implements IReloadable {
 
     @Override
     public void reload() {
-        AtomicReference<Skill> builder = new AtomicReference<Skill>(null);
         this.suppliers.forEach(supplier -> {
             Skill skill = supplier.get();
             if (!this.filter.contains(skill)) {
@@ -43,39 +42,14 @@ public class SkillBuilder implements IReloadable {
 
         this.skills = this.filter.stream().filter(skill -> {
             boolean isValid = this.skillTypes.getFilter().test(skill) && skill != Skills.NONE.get();
-            BeyondHorizon.loggers().error("Skill is : {} : {}", skill, isValid);
-            if (isValid) {
-                if (builder.get() == null) {
-                    builder.set(skill);
-                } else {
-                    return false;
-                }
-            } else if (!isValid) {
-                String errorMsg = this.getError(skill);
-                BeyondHorizon.loggers().error("Skill is not match: {}", errorMsg);
+            if (!isValid) {
+                SkillLoggers.error(skill.errorNotMatch(skill));
             }
             return isValid;
         }).collect(Collectors.toUnmodifiableList());
-        Skill skill = builder.get();
-        this.actionSkills = skill != null ? Optional.of(builder.get()) : Optional.empty();
-    }
-
-    private @NotNull String getError(Skill skill) {
-        String errorMsg;
-        if (skill.isMeleeAbility()) {
-            errorMsg = String.format("Weapon is not melee - %s", skill.getName());
-        } else if (skill.isRangedAbility()) {
-            errorMsg = String.format("Weapon is not ranged - %s", skill.getName());
-        } else {
-            errorMsg = String.format("Weapon is not throwable - %s", skill.getName());
-        }
-        return errorMsg;
     }
 
     public List<Skill> getSkills() {
         return this.skills;
-    }
-    public Optional<Skill> getActionSkill() {
-        return this.actionSkills;
     }
 }

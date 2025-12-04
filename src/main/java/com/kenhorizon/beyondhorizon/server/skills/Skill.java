@@ -27,7 +27,10 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -178,6 +181,26 @@ public abstract class Skill {
     public final boolean isUniversal() {
         return this.isMelee && this.isRanged && this.isThrowing;
     }
+    public String errorNotMatch(Skill skill) {
+        if (skill.isMeleeAbility()) {
+            return String.format("Skill is not match with weapon type[melee]: %s", skill.getName());
+        }
+        if (skill.isRangedAbility()) {
+            return String.format("Skill is not match with weapon type[ranged]: %s", skill.getName());
+        }
+        if (skill.isThrowingAbility()) {
+            return String.format("Skill is not match with weapon type[throwable]: %s", skill.getName());
+        }
+        return String.format("Skill is not match with skillType %s", skill.getName());
+    }
+
+    public String errorInCompatibleMessages(Skill other0, Skill other1) {
+        return String.format("%s: other skill are not compatible each other %s and %s", other0.getName(), other1.getName());
+    }
+
+    public String errorMessages(String causing) {
+        return String.format("%s", causing);
+    }
 
     public boolean isEnchantmentCompatible(Enchantment enchantIn) {
         return false;
@@ -189,6 +212,27 @@ public abstract class Skill {
 
     public boolean canPerformToolAction(ItemStack stack, ToolAction action) {
         return false;
+    }
+    public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, ItemStack itemStack) {
+        if (this.getAttributeModifierByTags(itemStack).isEmpty()) return;
+        for (Map.Entry<Attribute, AttributeModifier> entry : this.getAttributeModifierByTags(itemStack).entries()) {
+            AttributeInstance attributeinstance = attributeMap.getInstance(entry.getKey());
+            if (attributeinstance != null) {
+                attributeinstance.removeModifier(entry.getValue());
+            }
+        }
+    }
+
+    public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, ItemStack itemStack) {
+        if (this.getAttributeModifierByTags(itemStack).isEmpty()) return;
+        for (Map.Entry<Attribute, AttributeModifier> entry : this.getAttributeModifierByTags(itemStack).entries()) {
+            AttributeInstance attributeinstance = attributeMap.getInstance(entry.getKey());
+            if (attributeinstance != null) {
+                AttributeModifier attributemodifier = entry.getValue();
+                attributeinstance.removeModifier(attributemodifier);
+                attributeinstance.addPermanentModifier(new AttributeModifier(attributemodifier.getId(), "Attribute Modifier", getAttributeModifierValue(attributemodifier), attributemodifier.getOperation()));
+            }
+        }
     }
 
     public Multimap<Attribute, AttributeModifier> getAttributeModifierByTags(ItemStack itemStack) {
@@ -259,7 +303,7 @@ public abstract class Skill {
         if (this.isAttributeTooltipEnable()) {
             this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
         }
-        if (isShiftPressed && I18n.exists(this.createId())) {
+        if (I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
         }
     }

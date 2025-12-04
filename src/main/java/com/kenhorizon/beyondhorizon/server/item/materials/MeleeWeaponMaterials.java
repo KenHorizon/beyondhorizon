@@ -104,6 +104,15 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
             true, () -> {
         return Ingredient.of(Items.AIR);
     }),
+    GIANT_SLAYER_SWORD("giant_slayer_sword",
+            0,
+            3251,
+            2.0F,
+            0.0F,
+            22,
+            true, () -> {
+        return Ingredient.of(Items.AIR);
+    }),
     ZENITH("zenith",
           0,
           2251,

@@ -43,13 +43,17 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -231,8 +235,37 @@ public class ServerEventHandler {
                 damageInfo.setPostStoredDamage(0.0F);
             }
         }
+        if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems<?> items) {
+            for (Skill skill : items.getSkills()) {
+                Optional<IItemGeneric> optional = skill.IItemGeneric();
+                optional.ifPresent(callback -> callback.onEntityUpdate(entity, itemStack));
+            }
+        }
         if (entity instanceof Player player) {
             this.onPlayerTick(player);
+            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+                ItemStack prevItemStacks = player.getInventory().getItem(i);
+                if (!ItemStack.matches(itemStack, prevItemStacks)) {
+                    if (!prevItemStacks.isEmpty()) {
+                        if (prevItemStacks.getItem() instanceof ISkillItems<?> skillItems) {
+                            for (Skill skill : skillItems.getSkills()) {
+                                Optional<IItemGeneric> optional = skill.IItemGeneric();
+                                skill.removeAttributeModifiers(player, player.getAttributes(), prevItemStacks);
+                                optional.ifPresent(iItemGeneric -> iItemGeneric.onChangeEquipment(player, itemStack, true));
+                            }
+                        }
+                    }
+                    if (!itemStack.isEmpty()) {
+                        if (itemStack.getItem() instanceof ISkillItems<?> skillItems) {
+                            for (Skill skill : skillItems.getSkills()) {
+                                Optional<IItemGeneric> optional = skill.IItemGeneric();
+                                skill.addAttributeModifiers(player, player.getAttributes(), itemStack);
+                                optional.ifPresent(iItemGeneric -> iItemGeneric.onChangeEquipment(player, itemStack, false));
+                            }
+                        }
+                    }
+                }
+            }
         }
         if (entity instanceof Mob mobs) {
             LivingEntity target = mobs.getTarget();
@@ -260,6 +293,21 @@ public class ServerEventHandler {
                     mobs.setTarget(null);
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onCriticalHit(CriticalHitEvent event) {
+        Player player = event.getEntity();
+        if (player != null) {
+            ItemStack itemStack = player.getMainHandItem();
+            double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_STRIKE.get());
+            double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
+            if (player.getRandom().nextDouble() <= criticalStrike) {
+                event.setResult(Event.Result.ALLOW);
+                event.setDamageModifier((float) criticalDamage);
+            }
+            event.setDamageModifier((float) criticalDamage);
         }
     }
 

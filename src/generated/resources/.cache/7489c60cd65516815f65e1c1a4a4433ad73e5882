@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-04T15:27:08.2328777	Item Models: beyondhorizon
+// 1.20.1	2025-12-04T18:49:25.307862	Item Models: beyondhorizon
 61bd62baa09e73293916ef2d5600d19c032d0f96 assets/beyondhorizon/models/item/adamantite_axe.json
 bd25a09e9bcfc47662d0a3f201203af5e078f985 assets/beyondhorizon/models/item/adamantite_hoe.json
 8a8ce68bd28d9994f0df749e8177a704dd895bee assets/beyondhorizon/models/item/adamantite_ingot.json
@@ -24,6 +24,7 @@ f59b8406bb7e664a001ca5e500800ba779b34476 assets/beyondhorizon/models/item/debug0
 f067ccde0fbe79a96370293f0849fa7134d3cbf4 assets/beyondhorizon/models/item/debug1.json
 8a7a95a438bf4d87e45d9b853b600eca97d354d4 assets/beyondhorizon/models/item/debug2.json
 c923bee1ccff397cdd4dca23ccc07fc5bce1d830 assets/beyondhorizon/models/item/fortune_shikigami.json
+d9c718afc0403d4be74867f1a668110ff6e2c197 assets/beyondhorizon/models/item/giant_slayer_sword.json
 a9eace5b43f130675b6bdea261da76bf2990409a assets/beyondhorizon/models/item/golden_boots.json
 ff20a4da36001e25665d870eeb155498c946cb9c assets/beyondhorizon/models/item/handle.json
 0b03039b7d2ae127924fe1b285c8c73cbfe6fc6c assets/beyondhorizon/models/item/heart_of_the_tree.json

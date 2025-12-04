@@ -3,6 +3,8 @@ package com.kenhorizon.beyondhorizon;
 import com.kenhorizon.beyondhorizon.client.ClientProxy;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeReaderResourceParser;
 import com.kenhorizon.beyondhorizon.compat.ModCompats;
+import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
+import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.accessory.Accessories;
@@ -51,6 +53,9 @@ public class BeyondHorizon
 
     public BeyondHorizon(FMLJavaModLoadingContext context) {
         IEventBus eventBus = context.getModEventBus();
+        final ModLoadingContext modContext = ModLoadingContext.get();
+        ModClientConfig.register(modContext);
+        ModServerConfig.register(modContext);
         eventBus.addListener(this::commonSetup);
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::reloadListener);
@@ -67,7 +72,7 @@ public class BeyondHorizon
         Accessories.register(eventBus);
         PROXY.serverHandler();
         MinecraftForge.EVENT_BUS.register(this);
-        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> "ANY", (a, b) -> true));
+        modContext.registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> "ANY", (a, b) -> true));
 
         if (FMLEnvironment.dist == Dist.CLIENT) {
             Minecraft minecraft = Minecraft.getInstance();

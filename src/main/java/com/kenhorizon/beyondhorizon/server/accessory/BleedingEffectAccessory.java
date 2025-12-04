@@ -42,14 +42,14 @@ public class BleedingEffectAccessory extends AccessorySkill {
     }
 
     @Override
-    public void onEntityUpdate(Player player, ItemStack itemStack) {
-        IDamageInfo damageInfo = CapabilityCaller.damageInfo(player);
+    public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
+        IDamageInfo damageInfo = CapabilityCaller.damageInfo(entity);
         if (this.duration >= 100) {
             this.duration = 0;
             this.activatedEffect = false;
         }
         if (this.activatedEffect) {
-            player.hurt(BHDamageTypes.bleed(), damageInfo.getPostStoredDamage() * this.getMagnitude());
+            entity.hurt(BHDamageTypes.bleed(), damageInfo.getPostStoredDamage() * this.getMagnitude());
             this.duration++;
         }
     }

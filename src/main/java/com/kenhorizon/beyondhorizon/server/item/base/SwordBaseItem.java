@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.skills.SkillBuilder;
 import com.kenhorizon.beyondhorizon.server.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.skills.Skill;
+import com.kenhorizon.beyondhorizon.server.skills.SkillLoggers;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.network.chat.Component;

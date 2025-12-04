@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -119,7 +120,7 @@ public abstract class Accessory {
         return this.MODID;
     }
 
-    public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed) {
+    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed) {
         if (!this.isTooltipEnable()) return;
         if (this.isTooltipNameEnable()) {
             this.addTooltipTitle(itemStack, tooltip, true);
@@ -128,7 +129,8 @@ public abstract class Accessory {
         if (this.isAttributeTooltipEnable()) {
             this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
         }
-        if (isShiftPressed && I18n.exists(this.createId())) {
+        boolean flag = size == 1;
+        if ((ModClientConfig.ADVANCED_TOOLTIP.get() || (isShiftPressed || !flag)) && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
         }
     }

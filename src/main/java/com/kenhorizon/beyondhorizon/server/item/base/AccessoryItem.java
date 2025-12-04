@@ -96,7 +96,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItems<Accessor
         tooltip.add(Component.translatable(Tooltips.TOOLTIP_ACCESSORY).withStyle(ChatFormatting.GOLD));
         if (!this.accessories.isEmpty()) {
             this.accessories.forEach((accessory) -> {
-                accessory.addTooltip(itemStack, tooltip, Utils.isShiftPressed());
+                accessory.addTooltip(itemStack, tooltip, this.accessories.size(), Utils.isShiftPressed());
             });
         }
     }

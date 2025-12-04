@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.configs.client;
 
+import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHuds;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -21,7 +22,12 @@ public class ModClientConfig {
 
     public ModClientConfig(ForgeConfigSpec.Builder builder) {
         builder.comment("client_mod_configs").push("Beyond Horizon: Client Configs");
-
+        ADVANCED_TOOLTIP = builder
+                .comment("Extend item's tooltip information")
+                .define("Show Advanced Tooltip", true);
+        GAME_HUD = builder
+                .comment("Change how your game's hud will be displayed")
+                .defineEnum("In-Game Hud", GameHuds.MOD, GameHuds.VANILLA, GameHuds.MOD);
         builder.pop();
     }
 

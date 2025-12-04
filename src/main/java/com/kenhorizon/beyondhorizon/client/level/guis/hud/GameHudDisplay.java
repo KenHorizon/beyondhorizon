@@ -2,6 +2,8 @@ package com.kenhorizon.beyondhorizon.client.level.guis.hud;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.util.BlitHelper;
+import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -21,6 +23,7 @@ import java.awt.*;
 public class GameHudDisplay extends Gui {
     private final HudInfo hud = new HudInfo();
     private final Minecraft minecraft;
+    private int leftHeight = 39;
     public GameHudDisplay() {
         super(Minecraft.getInstance(), Minecraft.getInstance().getItemRenderer());
         this.minecraft = Minecraft.getInstance();
@@ -29,18 +32,35 @@ public class GameHudDisplay extends Gui {
     @SubscribeEvent(receiveCanceled = true)
     public void onHealthBarRender(RenderGuiOverlayEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.PLAYER_HEALTH.type()) return;
+        if (ModClientConfig.GAME_HUD.get() == GameHuds.VANILLA || minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.PLAYER_HEALTH.type()) return;
         event.setCanceled(true);
         this.renderPlayerHearts(event.getGuiGraphics(), event.getPartialTick());
     }
-
+    @SubscribeEvent(receiveCanceled = true)
+    public void onArmorRender(RenderGuiOverlayEvent.Pre event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (ModClientConfig.GAME_HUD.get() == GameHuds.VANILLA || minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.ARMOR_LEVEL.type()) return;
+        event.setCanceled(true);
+        this.renderArmor(event.getGuiGraphics(), event.getPartialTick());
+    }
+    public void renderArmor(GuiGraphics guiGraphics, float partialTicks) {
+        minecraft.getProfiler().push("armor");
+        RenderSystem.enableBlend();
+        this.hud.update();
+        int x = this.hud.scaledWindowWidth / 2 - 91;
+        int y = this.hud.scaledWindowHeight - (this.leftHeight + 11);
+        BlitHelper.draw(guiGraphics, HudSprites.ARMOR_FULL, x, y - 1, 9.0F, 9, 9, 9, 9);
+        BlitHelper.drawStrings(guiGraphics, String.format("%.0f", this.hud.armor),x + (5 + 9), y, true);
+        RenderSystem.disableBlend();
+        minecraft.getProfiler().pop();
+    }
     public void renderPlayerHearts(GuiGraphics guiGraphics, float partialTicks) {
         this.minecraft.getProfiler().push("healthbar");
         this.hud.update();
         int x = this.hud.scaledWindowWidth / 2 - 91;
-        int y = this.hud.scaledWindowHeight - 39;
-        if (this.hud.hasAbsroption) {BlitHelper.draw(guiGraphics, HudSprites.ABSROPTION, x, y + 9, 9.0F, 9, 9, 9, 9);
-
+        int y = this.hud.scaledWindowHeight - this.leftHeight;
+        if (this.hud.hasAbsroption) {
+            BlitHelper.draw(guiGraphics, HudSprites.ABSROPTION, x, y + 9, 9.0F, 9, 9, 9, 9);
             BlitHelper.drawStrings(guiGraphics, String.format("%.0f", this.hud.absorption),x + (5 + 9), y + 10, true);
         }
         BlitHelper.draw(guiGraphics, HudSprites.HEALTH, x, y - 1, 9.0F, 9, 9, 9, 9);

@@ -11,6 +11,7 @@ public class HudInfo {
     public float maxHealth;
     public float absorption;
     public float maxAbsorption;
+    public float armor;
     public boolean hasAbsroption;
     public int scaledWindowWidth;
     public int scaledWindowHeight;
@@ -27,6 +28,7 @@ public class HudInfo {
         this.maxHealth = player.getMaxHealth();
         this.absorption = player.getAbsorptionAmount();
         this.hasAbsroption = this.absorption > 0.0F;
+        this.armor = player.getArmorValue();
         if (player.hasEffect(MobEffects.ABSORPTION)) {
             int absorptionLevel = player.getEffect(MobEffects.ABSORPTION).getAmplifier();
             this.maxAbsorption = (int) Math.min(255, ((absorptionLevel + 1) * 4));

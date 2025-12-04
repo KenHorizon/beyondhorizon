@@ -71,7 +71,7 @@ public class ServerEventHandler {
                     FormattedText text = elements.get(i).left().get();
                     if (text instanceof MutableComponent component) {
                         if (this.getComponents(Tooltips.TOOLTIP_ACCESSORY, component, itemStack)) {
-                            this.addIcons(BeyondHorizon.resource("textures/gui/hud/icon/accessory_icon.png"), false, elements, i, itemStack, text);
+                            this.addIcons(BeyondHorizon.resource("textures/gui/sprites/icon/tooltip/accessory_icon.png"), false, elements, i, itemStack, text);
                         }
                     }
                 }

@@ -24,77 +24,84 @@ public class BHBlocks {
             .register("adamantite_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_ADAMANTITE, 1, 3)
             .register()
             .build();
+
     public static final RegistryObject<Block> COBALT_ORE = RegistryBlocks
             .register("cobalt_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_COBALT, 1, 3)
             .register()
             .build();
+
     public static final RegistryObject<Block> DEEPSLATE_COBALT_ORE = RegistryBlocks
             .register("deepslate_cobalt_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_COBALT, 1, 3)
             .register()
             .build();
+
     public static final RegistryObject<Block> DEEPSLATE_RUBY_ORE = RegistryBlocks
             .register("deepslate_ruby_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_SILVER, 1, 3)
             .register()
             .build();
     public static final RegistryObject<Block> DEEPSLATE_SILVER_ORE = RegistryBlocks
             .register("deepslate_silver_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_SILVER, 1, 3)
             .register()
             .build();
+
     public static final RegistryObject<Block> HALITE_ORE = RegistryBlocks
             .register("halite_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_SILVER, 1, 5)
             .register()
             .build();
+
     public static final RegistryObject<Block> HELLSTONE_ORE = RegistryBlocks
             .register("hellstone_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_HELLSTONE, 1, 3)
             .register()
             .build();
+
     public static final RegistryObject<Block> NETHERRACK_HELLSTONE_ORE = RegistryBlocks
             .register("netherrack_hellstone_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_HELLSTONE, 1, 5)
             .register()
             .build();
     public static final RegistryObject<Block> PALLADIUM_ORE = RegistryBlocks
             .register("palladium_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_PALLADIUM, 1, 3)
             .register()
             .build();
+
     public static final RegistryObject<Block> RUBY_ORE = RegistryBlocks
             .register("ruby_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_SILVER, 1, 3)
             .register()
             .build();
     public static final RegistryObject<Block> SILVER_ORE = RegistryBlocks
             .register("silver_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_SILVER, 1, 3)
             .register()
             .build();
 
@@ -102,14 +109,15 @@ public class BHBlocks {
             .register("sulfur_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_ADAMANTITE, 1, 5)
             .register()
             .build();
+
     public static final RegistryObject<Block> TITANIUM_ORE = RegistryBlocks
             .register("titanium_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
-            .dropSelf()
+            .oreDrop(BHItems.RAW_TITANIUM, 1, 3)
             .register()
             .build();
 

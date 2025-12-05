@@ -1,9 +1,8 @@
 package com.kenhorizon.libs.registry;
 
 import com.google.common.collect.ImmutableList;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.google.common.collect.ImmutableMap;
 import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.datagen.BHBlockStateProvider;
 import com.kenhorizon.beyondhorizon.server.datagen.BHBlockTagsProvider;
 import com.kenhorizon.beyondhorizon.server.datagen.BHLootTableProvider;
 import com.kenhorizon.beyondhorizon.server.item.BasicBlockItem;
@@ -18,6 +17,7 @@ import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class RegistryBlocks<T extends Block> {
@@ -103,8 +103,11 @@ public class RegistryBlocks<T extends Block> {
         if (builder.tags != null) {
             BHBlockTagsProvider.TAGS.put(builder.registryObject, (TagKey<Block>) builder.tags);
         }
-        if (builder.dropSelf) {
+        if (builder.dropSelf && builder.drop == null) {
             BHLootTableProvider.Blocks.ADD_DROP_SELF.add(builder.registryObject);
+        }
+        if (!builder.dropSelf && builder.drop != null) {
+            builder.drop.apply(builder.registryObject);
         }
         RegistryTabs.register(builder.registryObject, RegistryTabs.Category.BLOCKS);
     }
@@ -130,6 +133,7 @@ public class RegistryBlocks<T extends Block> {
         private boolean dropSelf = false;
         private RegistryBlocks.Mineable mineable;
         private RegistryBlocks.ToolTiers toolTiers;
+        private Function<RegistryObject<T>, ?> drop = null;
         private List<RegistryTabs.Category> creativeTabs = ImmutableList.of();
 
         public Builder(String name, NonNullFunction<BlockBehaviour.Properties, T> factory) {
@@ -163,10 +167,12 @@ public class RegistryBlocks<T extends Block> {
             return this;
         }
 
-        public Builder<T> drop(Supplier<? extends Block> blocks) {
-            BHLootTableProvider.Blocks.ADD_DROP.add(blocks);
+        public Builder<T> oreDrop(Supplier<? extends Item> drops, int min, int max) {
+            this.drop = blocks -> BHLootTableProvider.Blocks.ADD_ORE_DROP.put(new OreDrops(blocks, drops), new MinMax(min, max));
+            this.dropSelf = false;
             return this;
         }
+
         public Builder<T> dropSelf() {
             this.dropSelf = true;
             return this;
@@ -204,4 +210,6 @@ public class RegistryBlocks<T extends Block> {
             return new RegistryBlocks<>(this);
         }
     }
+    public record OreDrops(Supplier<? extends Block> blocks, Supplier<? extends Item> items) {}
+    public record MinMax(int min, int max) {}
 }

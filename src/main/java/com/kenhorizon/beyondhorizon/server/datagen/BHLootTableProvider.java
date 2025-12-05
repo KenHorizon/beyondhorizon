@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.EntityPredicate;
@@ -108,8 +109,8 @@ public class BHLootTableProvider {
         public static List<Supplier<? extends Block>> ADD_DROP_SLAB = new ArrayList<>();
         public static List<Supplier<? extends Block>> ADD_LEAVES = new ArrayList<>();
         public static List<Supplier<? extends Block>> ADD_OAK_LEAVES = new ArrayList<>();
-        public static Map<Supplier<? extends Block>, Supplier<? extends Item>> ADD_ORE_DROP = new HashMap<>();
-        public static Map<Integer, Integer> ORE_DROP_VALUE = new HashMap<>();
+        public static Map<RegistryBlocks.OreDrops, RegistryBlocks.MinMax> ADD_ORE_DROP = new HashMap<>();
+        public static Map<RegistryObject<? extends Block>, RegistryBlocks.MinMax> ORE_DROP_VALUE = new HashMap<>();
 
         protected static final LootItemCondition.Builder HAS_SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
         protected static final LootItemCondition.Builder HAS_NO_SILK_TOUCH = HAS_SILK_TOUCH.invert();
@@ -131,10 +132,8 @@ public class BHLootTableProvider {
             ADD_DROPS.forEach(this::dropSelf);
             ADD_DROP.forEach(add -> this.dropSelf(add.get()));
             ADD_DROP_SELF.forEach(add -> this.dropSelf(add.get()));
-            ADD_ORE_DROP.forEach((block, item) -> {
-                ORE_DROP_VALUE.forEach((min, max) -> {
-                    this.add(block.get(), properties -> createOreDrops(block.get(), item.get(), min, max));
-                });
+            ADD_ORE_DROP.forEach((provider, values) -> {
+                this.add(provider.blocks().get(), properties -> createOreDrops(provider.blocks().get(), provider.items().get(), values.min(), values.max()));
             });
         }
         private LootTable.Builder createOreDrops(Block block, Item itemDrop, float min, float max) {

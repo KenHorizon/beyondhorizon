@@ -22,6 +22,8 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.HELLSTONE_ORE);
         this.blockWithItem(BHBlocks.NETHERRACK_HELLSTONE_ORE);
         this.blockWithItem(BHBlocks.HALITE_ORE);
+        this.blockWithItem(BHBlocks.SULFUR_ORE);
+        this.blockWithItem(BHBlocks.PALLADIUM_ORE);
         this.fullFaceBlock(BHBlocks.WORKBENCH);
     }
 }

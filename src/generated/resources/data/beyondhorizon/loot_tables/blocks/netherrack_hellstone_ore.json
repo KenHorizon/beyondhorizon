@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "beyondhorizon:cobalt_ore"
+              "name": "beyondhorizon:netherrack_hellstone_ore"
             },
             {
               "type": "minecraft:item",
@@ -33,7 +33,7 @@
                   "add": false,
                   "count": {
                     "type": "minecraft:uniform",
-                    "max": 3.0,
+                    "max": 5.0,
                     "min": 1.0
                   },
                   "function": "minecraft:set_count"
@@ -47,7 +47,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "beyondhorizon:raw_cobalt"
+              "name": "beyondhorizon:raw_hellstone"
             }
           ]
         }
@@ -55,5 +55,5 @@
       "rolls": 1.0
     }
   ],
-  "random_sequence": "beyondhorizon:blocks/cobalt_ore"
+  "random_sequence": "beyondhorizon:blocks/netherrack_hellstone_ore"
 }

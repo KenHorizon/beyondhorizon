@@ -37,8 +37,9 @@ public class GainBonusHealthAccessory extends AccessorySkill {
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         double bonusHp = 0.0D;
-        if (itemStack.hasTag() && itemStack.getTag().contains("bonus_hp_overgrowth")) {
-            bonusHp = itemStack.getTag().getDouble("bonus_hp_overgrowth");
+        String tagName = String.format("bonus_hp_%s", this.getName());
+        if (itemStack.hasTag() && itemStack.getTag().contains(tagName)) {
+            bonusHp = itemStack.getTag().getDouble(tagName);
         }
         return Component.translatable(this.createId(), Maths.format(this.getMagnitude()), Mth.ceil(bonusHp));
     }
@@ -46,15 +47,16 @@ public class GainBonusHealthAccessory extends AccessorySkill {
     @Override
     public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
         if (entity instanceof ServerPlayer serverSide) {
-            updateHpBonus(serverSide, itemStack);
+            updateHpBonus(this.getName(), serverSide, itemStack);
         }
     }
 
-    public static void updateHpBonus(ServerPlayer player, ItemStack stack) {
+    public static void updateHpBonus(String name, ServerPlayer player, ItemStack stack) {
         double maxHp = player.getMaxHealth();
         double percent = Constant.OVERGROWTH_BONUS_HEALTH;
         double bonus = maxHp * percent;
 
-        stack.getOrCreateTag().putDouble("bonus_hp_overgrowth", bonus);
+        String tagName = String.format("bonus_hp_%s", name);
+        stack.getOrCreateTag().putDouble(tagName, bonus);
     }
 }

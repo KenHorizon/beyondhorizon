@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "beyondhorizon:block/workbench_top",
+    "east": "beyondhorizon:block/workbench_side_1",
+    "north": "beyondhorizon:block/workbench_side_0",
+    "particle": "beyondhorizon:block/workbench_side_0",
+    "south": "beyondhorizon:block/workbench_side_0",
+    "up": "beyondhorizon:block/workbench_bottom",
+    "west": "beyondhorizon:block/workbench_side_1"
+  }
+}

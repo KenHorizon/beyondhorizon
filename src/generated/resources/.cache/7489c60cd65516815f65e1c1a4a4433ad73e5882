@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-04T18:49:25.307862	Item Models: beyondhorizon
+// 1.20.1	2025-12-05T21:07:09.3646188	Item Models: beyondhorizon
 61bd62baa09e73293916ef2d5600d19c032d0f96 assets/beyondhorizon/models/item/adamantite_axe.json
 bd25a09e9bcfc47662d0a3f201203af5e078f985 assets/beyondhorizon/models/item/adamantite_hoe.json
 8a8ce68bd28d9994f0df749e8177a704dd895bee assets/beyondhorizon/models/item/adamantite_ingot.json
@@ -14,12 +14,14 @@ f022045ce29f9a43dcec8a282abd2108896881b8 assets/beyondhorizon/models/item/blade_
 dc3804f8766858ba7c08050177ed01830661ab8c assets/beyondhorizon/models/item/boots.json
 178bd6b4eebf361baf4543904cd1998143ed4bab assets/beyondhorizon/models/item/broken_hero_sword.json
 f262f6dd5af2d28e9dd0926ab3939c3d9d78dea8 assets/beyondhorizon/models/item/chain_plate.json
+cf2fa7ac02a93f111a965393ce3b2bfcece9f7af assets/beyondhorizon/models/item/cinder_stone.json
 e53a8d11e31bfcdde42aa50fdf6acfe776569a7e assets/beyondhorizon/models/item/cobalt_axe.json
 f2e3fc1428602b008048a640c637bf81eee52c6e assets/beyondhorizon/models/item/cobalt_hoe.json
 336c3eee5f7984d224b292e7e79f0d0cab0d6d4f assets/beyondhorizon/models/item/cobalt_ingot.json
 862de0e17b4e545d2351c3f858af317c5cba4a63 assets/beyondhorizon/models/item/cobalt_pickaxe.json
 51aabe01803619e1dc1212a92ff42d323ff406be assets/beyondhorizon/models/item/cobalt_shovel.json
 4a317f289ccdf598dddbf7584333bee5314da8d2 assets/beyondhorizon/models/item/cobalt_sword.json
+08f3f24e998dbe7a32d05f1080008929b8e553c2 assets/beyondhorizon/models/item/crystallized_plate.json
 f59b8406bb7e664a001ca5e500800ba779b34476 assets/beyondhorizon/models/item/debug0.json
 f067ccde0fbe79a96370293f0849fa7134d3cbf4 assets/beyondhorizon/models/item/debug1.json
 8a7a95a438bf4d87e45d9b853b600eca97d354d4 assets/beyondhorizon/models/item/debug2.json
@@ -62,4 +64,5 @@ d2a2ceda9ba46000c919f170805aca12294b6512 assets/beyondhorizon/models/item/titani
 6569007187df37fe5af3f9d41c5f26685925a53b assets/beyondhorizon/models/item/titanium_pickaxe.json
 ea8a38b309831b080521d6d8d35d8b8d1462851b assets/beyondhorizon/models/item/titanium_shovel.json
 0789ed9ae8afe97ddad8f0778cbcfedb0d46b413 assets/beyondhorizon/models/item/titanium_sword.json
+604d72d4a4e892b05266d1ab21ad191c3981ddeb assets/beyondhorizon/models/item/vitality_stone.json
 29ffea9408da2fb5a6e8c73067543f30bfcd31e6 assets/beyondhorizon/models/item/zenith.json

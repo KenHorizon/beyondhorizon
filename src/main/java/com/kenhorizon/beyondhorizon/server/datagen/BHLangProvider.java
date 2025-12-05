@@ -40,10 +40,12 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.RADIANT.get(), "Radiant", "Deal additional damage to undead by +%s%%");
         this.addSkills(Skills.TRANNY.get(), "Tranny", "Gain Attack Damage equal to %s%% Max HP (%s)");
         this.addSkills(Skills.RETRIBUTION.get(), "Retribution", "Increase damage dealt 0-%s%% based on Missing HP");
+        this.addSkills(Skills.BURN_EFFECT.get(), "Burn", "Set target on fire for %s seconds");
         //
         this.addAccessory(Accessories.FEATHER_FEET.get(), "Feather Feet", "Negate fall damage");
         this.addAccessory(Accessories.OVERGROWTH.get(), "Overgrowth", "Increase Bonus Max HP by %s%% (%s)");
         this.addAccessory(Accessories.DESPAIR_AND_DEFY.get(), "Despair And Defy", "Reduce %s%% post-mitigation damage and stored it and bleed per second of stored damage");
+        this.addAccessory(Accessories.BURN_EFFECT.get(), "Burn", "Set target on fire for %s seconds");
         //
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon: Ingredients");
         creativeTabs(BHCreativeTabs.BH_TOOLS, "Beyond Horizon: Tools");

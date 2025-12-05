@@ -107,7 +107,6 @@ public class RegistryItems<T extends Item> {
         }
 
         public Builder<T> tab(RegistryTabs.Category... creativeTabs) {
-//            RegistryTabs.register(this.registryObject, creativeTabs);
             this.categories = creativeTabs;
             return this;
         }

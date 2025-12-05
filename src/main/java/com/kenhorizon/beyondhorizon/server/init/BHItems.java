@@ -290,6 +290,30 @@ public class BHItems {
             .register()
             .build();
 
+    public static final RegistryObject<Item> VITALITY_STONE = RegistryItems
+            .register("vitality_stone", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.MAX_HEALTH_0))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> CINDER_STONE = RegistryItems
+            .register("cinder_stone", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.CINDER_STONE))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> CRYSTALLIZED_PLATE = RegistryItems
+            .register("crystallized_plate", item -> new AccessoryItem(new Item.Properties(), AccessoryBuilder.CRYSTALLIZED_PLATE))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
     //
     public static final RegistryObject<Item> SILVER_SWORD = RegistryItems
             .register("silver_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.SILVER, new Item.Properties()))
@@ -439,19 +463,22 @@ public class BHItems {
             .build();
 
     public static final RegistryObject<Item> BLADE_OF_THE_ENDERLORD = RegistryItems
-            .register("blade_of_the_enderlord", item -> WeaponBuilder.BLADE_OF_THE_ENDERLORD.create(MeleeWeaponMaterials.BLADE_OF_THE_ENDERLORD, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("blade_of_the_enderlord", item -> WeaponBuilder.BLADE_OF_THE_ENDERLORD.create(MeleeWeaponMaterials.BLADE_OF_THE_ENDERLORD, new Item.Properties()))
+            .properties(properties -> properties.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> GIANT_SLAYER_SWORD = RegistryItems
-            .register("giant_slayer_sword", item -> WeaponBuilder.GIANT_SLAYER_SWORD.create(MeleeWeaponMaterials.GIANT_SLAYER_SWORD, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("giant_slayer_sword", item -> WeaponBuilder.GIANT_SLAYER_SWORD.create(MeleeWeaponMaterials.GIANT_SLAYER_SWORD, new Item.Properties()))
+            .properties(properties -> properties.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> ZENITH = RegistryItems
-            .register("zenith", item -> WeaponBuilder.ZENITH.create(MeleeWeaponMaterials.ZENITH, new Item.Properties().rarity(BHRarity.MYTHICAL)))
+            .register("zenith", item -> WeaponBuilder.ZENITH.create(MeleeWeaponMaterials.ZENITH, new Item.Properties()))
+            .properties(properties -> properties.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register()

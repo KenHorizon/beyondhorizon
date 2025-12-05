@@ -5,6 +5,7 @@ import net.minecraft.DetectedVersion;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.metadata.PackMetadataGenerator;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.PackType;
@@ -39,6 +40,8 @@ public class DataGenProvider {
         generator.addProvider(event.includeServer(), new BHDamageTypesTagProvider(packOutput, datapackEntryProvider.getRegistryProvider(), existingFileHelper));
         generator.addProvider(event.includeServer(), new BHItemTagsProvider(packOutput, datapackEntryProvider.getRegistryProvider(), blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), datapackEntryProvider);
+        generator.addProvider(event.includeClient(), new BHBlockStateProvider(packOutput, existingFileHelper));
+        generator.addProvider(event.includeServer(), BHLootTableProvider.create(packOutput));
         generator.addProvider(event.includeServer(), new BHRecipeProvider(packOutput));
         generator.addProvider(event.includeClient(), new BHLangProvider(packOutput));
         generator.addProvider(event.includeClient(), new BHItemModelProvider(packOutput, existingFileHelper));

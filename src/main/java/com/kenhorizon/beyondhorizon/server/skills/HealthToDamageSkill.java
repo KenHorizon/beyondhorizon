@@ -25,8 +25,9 @@ public class HealthToDamageSkill extends WeaponSkills {
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         double bonusAttackDamage = 0.0D;
-        if (itemStack.hasTag() && itemStack.getTag().contains("bonus_damage_tranny")) {
-            bonusAttackDamage = itemStack.getTag().getDouble("bonus_damage_tranny");
+        String tagName = String.format("bonus_damage_%s", this.getName());
+        if (itemStack.hasTag() && itemStack.getTag().contains(tagName)) {
+            bonusAttackDamage = itemStack.getTag().getDouble(tagName);
         }
         return Component.translatable(this.createId(), Maths.format(this.getMagnitude()), Mth.ceil(bonusAttackDamage));
     }
@@ -34,7 +35,7 @@ public class HealthToDamageSkill extends WeaponSkills {
     @Override
     public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
         if (entity instanceof ServerPlayer serverPlayer) {
-            updateBonusAttackDamage(this.getMagnitude(), serverPlayer, itemStack);
+            updateBonusAttackDamage(this.getName(), this.getMagnitude(), serverPlayer, itemStack);
         }
         double maxHp = entity.getMaxHealth();
         double bonusAttackDamage = maxHp * (double) this.getMagnitude();
@@ -50,10 +51,11 @@ public class HealthToDamageSkill extends WeaponSkills {
         }
     }
 
-    public static void updateBonusAttackDamage(float magnitude, ServerPlayer player, ItemStack stack) {
+    public static void updateBonusAttackDamage(String name, float magnitude, ServerPlayer player, ItemStack stack) {
         double maxHp = player.getMaxHealth();
         double bonus = maxHp * (double) magnitude;
-        stack.getOrCreateTag().putDouble("bonus_damage_tranny", bonus);
+        String tagName = String.format("bonus_damage_%s", name);
+        stack.getOrCreateTag().putDouble(tagName, bonus);
     }
 
     private void addModifiers(float damage, AttributeInstance instance) {

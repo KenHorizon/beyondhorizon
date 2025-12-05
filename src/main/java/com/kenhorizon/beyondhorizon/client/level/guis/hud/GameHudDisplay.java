@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client.level.guis.hud;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.util.BlitHelper;
+import com.kenhorizon.beyondhorizon.client.level.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -43,28 +44,33 @@ public class GameHudDisplay extends Gui {
         event.setCanceled(true);
         this.renderArmor(event.getGuiGraphics(), event.getPartialTick());
     }
+
     public void renderArmor(GuiGraphics guiGraphics, float partialTicks) {
         minecraft.getProfiler().push("armor");
         RenderSystem.enableBlend();
         this.hud.update();
         int x = this.hud.scaledWindowWidth / 2 - 91;
         int y = this.hud.scaledWindowHeight - (this.leftHeight + 11);
+        String value = String.format("%.0f", this.hud.armor);
         BlitHelper.draw(guiGraphics, HudSprites.ARMOR_FULL, x, y - 1, 9.0F, 9, 9, 9, 9);
-        BlitHelper.drawStrings(guiGraphics, String.format("%.0f", this.hud.armor),x + (5 + 9), y, true);
+        BlitHelper.drawStrings(guiGraphics, value,x + (5 + 9), y, true);
         RenderSystem.disableBlend();
         minecraft.getProfiler().pop();
     }
+
     public void renderPlayerHearts(GuiGraphics guiGraphics, float partialTicks) {
         this.minecraft.getProfiler().push("healthbar");
         this.hud.update();
         int x = this.hud.scaledWindowWidth / 2 - 91;
         int y = this.hud.scaledWindowHeight - this.leftHeight;
         if (this.hud.hasAbsroption) {
+            String absorption = String.format("%.0f", this.hud.absorption);
             BlitHelper.draw(guiGraphics, HudSprites.ABSROPTION, x, y + 9, 9.0F, 9, 9, 9, 9);
-            BlitHelper.drawStrings(guiGraphics, String.format("%.0f", this.hud.absorption),x + (5 + 9), y + 10, true);
+            BlitHelper.drawStrings(guiGraphics, absorption,x + (5 + 9), y + 10, true);
         }
+        String health = String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth);
         BlitHelper.draw(guiGraphics, HudSprites.HEALTH, x, y - 1, 9.0F, 9, 9, 9, 9);
-        BlitHelper.drawStrings(guiGraphics, String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth),x + (5 + 9), y, true);
+        BlitHelper.drawStrings(guiGraphics, health,x + (5 + 9), y, ColorUtil.combineRGB(249, 87, 87), true);
         this.minecraft.getProfiler().pop();
     }
 

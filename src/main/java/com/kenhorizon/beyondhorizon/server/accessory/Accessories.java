@@ -64,7 +64,18 @@ public class Accessories {
             .addAttributeModifier(BHAttributes.CRITICAL_STRIKE.get(), "f5af9c27-d8cc-4ccf-8117-de088434a105", Constant.MOVEMENT_SPEED_0, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<Accessory> UPGRADED_MOVEMENT_SPEED = registerSkill("upgraded_movement_speed", () -> new AttributeOnlyAccessory()
             .addAttributeModifier(BHAttributes.CRITICAL_STRIKE.get(), "c36cdacd-3ce2-41f4-9d39-8327a810bba9", Constant.MOVEMENT_SPEED_1, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAX_HEALTH_0 = registerSkill("max_health_0", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.MAX_HEALTH, "f8cd02af-5eb4-47f6-a689-305716a26d5e", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAX_HEALTH_1 = registerSkill("max_health_1", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.MAX_HEALTH, "580a8f14-e8d2-42dc-990b-98016ebe9ecb", Constant.MAX_HEALTH_1, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAX_HEALTH_2 = registerSkill("max_health_2", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.MAX_HEALTH, "b35f9bdd-6178-481f-a0a9-9aa3eafa195e", Constant.MAX_HEALTH_2, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAX_HEALTH_3 = registerSkill("max_health_3", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.MAX_HEALTH, "4d4315e2-641e-4838-91c8-dbe64ff1a0d7", Constant.MAX_HEALTH_3, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAX_HEALTH_4 = registerSkill("max_health_4", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.MAX_HEALTH, "801a6faf-f1e0-4340-bbc0-ff6b7b8b4cae", Constant.MAX_HEALTH_4, AttributeModifier.Operation.ADDITION));
 
+    public static final RegistryObject<Accessory> BURN_EFFECT = registerSkill("burn_effect", AccessorySkill::new);
     public static final RegistryObject<Accessory> DESPAIR_AND_DEFY = registerSkill("despair_and_defy", () -> new BleedingEffectAccessory(Constant.DESPAIR_AND_DEFY));
 
     public static final RegistryObject<Accessory> OVERGROWTH = registerSkill("overgrowth", () -> new GainBonusHealthAccessory((float) Constant.OVERGROWTH_BONUS_HEALTH, GainBonusHealthAccessory.Type.TOTAL).disableAttributeTooltip());

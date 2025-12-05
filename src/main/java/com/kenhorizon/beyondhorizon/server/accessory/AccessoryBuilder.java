@@ -12,10 +12,19 @@ import java.util.stream.Collectors;
 public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder NONE = new AccessoryBuilder(List.of(Accessories.NONE));
     public static final AccessoryBuilder BOOTS_0 = new AccessoryBuilder(List.of(Accessories.BOOTS_0));
+    public static final AccessoryBuilder BOOTS_1 = new AccessoryBuilder(List.of(Accessories.BOOTS_1));
+    public static final AccessoryBuilder BOOTS_2 = new AccessoryBuilder(List.of(Accessories.BOOTS_2));
     public static final AccessoryBuilder BASIC_CRIT_0 = new AccessoryBuilder(List.of(Accessories.BASIC_CRIT));
     public static final AccessoryBuilder BASIC_CRIT_1 = new AccessoryBuilder(List.of(Accessories.UPGRADED_CRIT));
     public static final AccessoryBuilder NEGATE_FALL_DAMAGE = new AccessoryBuilder(List.of(Accessories.FEATHER_FEET));
+    public static final AccessoryBuilder MAX_HEALTH_0 = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_0));
+    public static final AccessoryBuilder MAX_HEALTH_1 = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_1));
+    public static final AccessoryBuilder MAX_HEALTH_2 = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_2));
+    public static final AccessoryBuilder MAX_HEALTH_3 = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_3));
+    public static final AccessoryBuilder MAX_HEALTH_4 = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_4));
 
+    public static final AccessoryBuilder CRYSTALLIZED_PLATE = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_1));
+    public static final AccessoryBuilder CINDER_STONE = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_0, Accessories.BURN_EFFECT));
     public static final AccessoryBuilder AGILE_DAGGER = new AccessoryBuilder(List.of(Accessories.BASIC_CRIT, Accessories.BASIC_MOVEMENT_SPEED));
     public static final AccessoryBuilder POWER_GLOVES = new AccessoryBuilder(List.of(Accessories.POWER_GLOVES));
     public static final AccessoryBuilder SWIFT_DAGGER = new AccessoryBuilder(List.of(Accessories.SWIFT_DAGGER));

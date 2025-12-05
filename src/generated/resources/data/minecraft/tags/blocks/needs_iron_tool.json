@@ -1,6 +1,18 @@
 {
   "values": [
     "beyondhorizon:workbench",
-    "beyondhorizon:cobalt_ore"
+    "beyondhorizon:adamantite_ore",
+    "beyondhorizon:cobalt_ore",
+    "beyondhorizon:deepslate_cobalt_ore",
+    "beyondhorizon:deepslate_ruby_ore",
+    "beyondhorizon:deepslate_silver_ore",
+    "beyondhorizon:halite_ore",
+    "beyondhorizon:hellstone_ore",
+    "beyondhorizon:netherrack_hellstone_ore",
+    "beyondhorizon:palladium_ore",
+    "beyondhorizon:ruby_ore",
+    "beyondhorizon:silver_ore",
+    "beyondhorizon:sulfur_ore",
+    "beyondhorizon:titanium_ore"
   ]
 }

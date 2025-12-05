@@ -11,6 +11,7 @@ public class WeaponBuilder {
         public abstract T create(MeleeWeaponMaterials materials, Item.Properties properties);
     }
 
+
     public static final MeleeBuilder<SwordBaseItem> SWORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.SWORD[0], Constant.SWORD[1], properties));
     public static final MeleeBuilder<SwordBaseItem> AXE = ((materials, properties) -> new SwordBaseItem(materials, Constant.AXE[0], Constant.AXE[1], properties));
     public static final MeleeBuilder<SwordBaseItem> PICKAXE = ((materials, properties) -> new SwordBaseItem(materials, Constant.PICKAXE[0], Constant.PICKAXE[1], properties));

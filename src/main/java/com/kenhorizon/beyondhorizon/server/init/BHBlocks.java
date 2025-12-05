@@ -20,6 +20,13 @@ public class BHBlocks {
             .register()
             .build();
 
+    public static final RegistryObject<Block> ADAMANTITE_ORE = RegistryBlocks
+            .register("adamantite_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
     public static final RegistryObject<Block> COBALT_ORE = RegistryBlocks
             .register("cobalt_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
@@ -27,6 +34,85 @@ public class BHBlocks {
             .dropSelf()
             .register()
             .build();
+    public static final RegistryObject<Block> DEEPSLATE_COBALT_ORE = RegistryBlocks
+            .register("deepslate_cobalt_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+    public static final RegistryObject<Block> DEEPSLATE_RUBY_ORE = RegistryBlocks
+            .register("deepslate_ruby_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+    public static final RegistryObject<Block> DEEPSLATE_SILVER_ORE = RegistryBlocks
+            .register("deepslate_silver_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+    public static final RegistryObject<Block> HALITE_ORE = RegistryBlocks
+            .register("halite_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+    public static final RegistryObject<Block> HELLSTONE_ORE = RegistryBlocks
+            .register("hellstone_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+    public static final RegistryObject<Block> NETHERRACK_HELLSTONE_ORE = RegistryBlocks
+            .register("netherrack_hellstone_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+    public static final RegistryObject<Block> PALLADIUM_ORE = RegistryBlocks
+            .register("palladium_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+    public static final RegistryObject<Block> RUBY_ORE = RegistryBlocks
+            .register("ruby_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+    public static final RegistryObject<Block> SILVER_ORE = RegistryBlocks
+            .register("silver_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+
+    public static final RegistryObject<Block> SULFUR_ORE = RegistryBlocks
+            .register("sulfur_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+    public static final RegistryObject<Block> TITANIUM_ORE = RegistryBlocks
+            .register("titanium_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE_IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register()
+            .build();
+
 
     public static void register(IEventBus eventBus) {
         RegistryEntries.BLOCKS.register(eventBus);

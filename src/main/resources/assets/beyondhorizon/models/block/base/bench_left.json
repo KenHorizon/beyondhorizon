@@ -1,0 +1,130 @@
+{
+	"credit": "Made with Blockbench",
+	"elements": [
+		{
+			"from": [2, 10, 12],
+			"to": [16, 22, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [10, 10, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 12, 12], "texture": "#chair"},
+				"east": {"uv": [0, 0, 2, 12], "texture": "#chair"},
+				"south": {"uv": [0, 0, 12, 12], "texture": "#chair"},
+				"west": {"uv": [0, 0, 2, 12], "texture": "#chair"},
+				"up": {"uv": [0, 0, 12, 2], "texture": "#chair"},
+				"down": {"uv": [0, 0, 12, 2], "texture": "#chair"}
+			}
+		},
+		{
+			"from": [2, 8, 3],
+			"to": [16, 10, 8],
+			"rotation": {"angle": 0, "axis": "y", "origin": [10, 10, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 14, 2], "texture": "#chair"},
+				"east": {"uv": [0, 0, 5, 2], "texture": "#chair"},
+				"south": {"uv": [0, 0, 14, 2], "texture": "#chair"},
+				"west": {"uv": [0, 0, 5, 2], "texture": "#chair"},
+				"up": {"uv": [0, 0, 14, 5], "texture": "#chair"},
+				"down": {"uv": [0, 0, 14, 5], "texture": "#chair"}
+			}
+		},
+		{
+			"from": [0, 14, 3],
+			"to": [2, 16, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [1, 13, 6.25]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 2], "texture": "#handle"},
+				"east": {"uv": [0, 0, 11, 2], "texture": "#handle"},
+				"south": {"uv": [0, 0, 2, 2], "texture": "#handle"},
+				"west": {"uv": [0, 0, 11, 2], "texture": "#handle"},
+				"up": {"uv": [0, 0, 2, 11], "texture": "#handle"},
+				"down": {"uv": [0, 0, 2, 11], "texture": "#handle"}
+			}
+		},
+		{
+			"from": [0, 8, 3],
+			"to": [2, 14, 5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [1, 13, 6.25]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 6], "texture": "#handle"},
+				"east": {"uv": [0, 0, 2, 6], "texture": "#handle"},
+				"south": {"uv": [0, 0, 2, 6], "texture": "#handle"},
+				"west": {"uv": [0, 0, 2, 6], "texture": "#handle"},
+				"up": {"uv": [0, 0, 2, 2], "texture": "#handle"},
+				"down": {"uv": [0, 0, 2, 2], "texture": "#handle"}
+			}
+		},
+		{
+			"from": [2, 0, 3],
+			"to": [4, 8, 5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-2, 10, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 8], "texture": "#feet"},
+				"east": {"uv": [0, 0, 2, 8], "texture": "#feet"},
+				"south": {"uv": [0, 0, 2, 8], "texture": "#feet"},
+				"west": {"uv": [0, 0, 2, 8], "texture": "#feet"},
+				"up": {"uv": [0, 0, 2, 2], "texture": "#feet"},
+				"down": {"uv": [0, 0, 2, 2], "texture": "#feet"}
+			}
+		},
+		{
+			"from": [2, 0, 12],
+			"to": [4, 8, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-2, 10, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 8], "texture": "#feet"},
+				"east": {"uv": [0, 0, 2, 8], "texture": "#feet"},
+				"south": {"uv": [0, 0, 2, 8], "texture": "#feet"},
+				"west": {"uv": [0, 0, 2, 8], "texture": "#feet"},
+				"up": {"uv": [0, 0, 2, 2], "texture": "#feet"},
+				"down": {"uv": [0, 0, 2, 2], "texture": "#feet"}
+			}
+		},
+		{
+			"from": [2, 8, 9],
+			"to": [16, 10, 14],
+			"rotation": {"angle": 0, "axis": "y", "origin": [10, 10, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 14, 2], "texture": "#chair"},
+				"east": {"uv": [0, 0, 5, 2], "texture": "#chair"},
+				"south": {"uv": [0, 0, 14, 2], "texture": "#chair"},
+				"west": {"uv": [0, 0, 5, 2], "texture": "#chair"},
+				"up": {"uv": [0, 0, 14, 5], "texture": "#chair"},
+				"down": {"uv": [0, 0, 14, 5], "texture": "#chair"}
+			}
+		},
+		{
+			"from": [2, 6, 5],
+			"to": [4, 8, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8]},
+			"faces": {
+				"north": {"uv": [2, 0, 0, 2], "texture": "#chair"},
+				"east": {"uv": [7, 0, 0, 2], "texture": "#chair"},
+				"south": {"uv": [2, 0, 0, 2], "texture": "#chair"},
+				"west": {"uv": [0, 0, 7, 2], "texture": "#chair"},
+				"up": {"uv": [2, 0, 0, 7], "texture": "#chair"},
+				"down": {"uv": [2, 0, 0, 7], "texture": "#chair"}
+			}
+		},
+		{
+			"from": [12, 6, 5],
+			"to": [14, 8, 12],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 10, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 2], "texture": "#chair"},
+				"east": {"uv": [0, 0, 7, 2], "texture": "#chair"},
+				"south": {"uv": [0, 0, 2, 2], "texture": "#chair"},
+				"west": {"uv": [0, 0, 7, 2], "texture": "#chair"},
+				"up": {"uv": [0, 0, 2, 7], "texture": "#chair"},
+				"down": {"uv": [0, 0, 2, 7], "texture": "#chair"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "VoxelShapes",
+			"origin": [13, 7, 8.5],
+			"color": 0,
+			"children": [0, 1, 2, 3, 4, 5, 6, 7, 8]
+		}
+	]
+}

@@ -65,7 +65,7 @@ public class RegistryItems<T extends Item> {
         private T entry;
         private RegistryObject<T> registryObject;
         private TagKey<T> tags = null;
-        private final NonNullFunction<Item.Properties, T> factory;
+        private NonNullFunction<Item.Properties, T> factory;
         private NonNullSupplier<Item.Properties> initialProperties = Item.Properties::new;
         private ModifiedNonNullFunction<Item.Properties, Item.Properties> propertiesCallback = ModifiedNonNullUnaryOperator.identity();
         private String customName = "";
@@ -79,7 +79,6 @@ public class RegistryItems<T extends Item> {
             this.name = name;
             this.factory = factory;
         }
-
         public Builder<T> properties(ModifiedNonNullUnaryOperator<Item.Properties> function) {
             this.propertiesCallback = this.propertiesCallback.andThen(function);
             return this;

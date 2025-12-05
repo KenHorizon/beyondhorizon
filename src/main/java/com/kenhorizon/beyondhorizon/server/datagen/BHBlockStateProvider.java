@@ -11,7 +11,17 @@ public class BHBlockStateProvider extends BlockStateBuilder {
     }
     @Override
     protected void registerStatesAndModels() {
+        this.blockWithItem(BHBlocks.ADAMANTITE_ORE);
         this.blockWithItem(BHBlocks.COBALT_ORE);
+        this.blockWithItem(BHBlocks.DEEPSLATE_COBALT_ORE);
+        this.blockWithItem(BHBlocks.RUBY_ORE);
+        this.blockWithItem(BHBlocks.DEEPSLATE_RUBY_ORE);
+        this.blockWithItem(BHBlocks.SILVER_ORE);
+        this.blockWithItem(BHBlocks.DEEPSLATE_SILVER_ORE);
+        this.blockWithItem(BHBlocks.TITANIUM_ORE);
+        this.blockWithItem(BHBlocks.HELLSTONE_ORE);
+        this.blockWithItem(BHBlocks.NETHERRACK_HELLSTONE_ORE);
+        this.blockWithItem(BHBlocks.HALITE_ORE);
         this.fullFaceBlock(BHBlocks.WORKBENCH);
     }
 }

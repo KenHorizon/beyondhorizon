@@ -1,0 +1,50 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/block",
+	"textures": {
+		"lattice": "beyondhorizon:block/iron_lattice",
+		"post": "beyondhorizon:block/iron_lattice_post",
+		"particle": "beyondhorizon:block/iron_fence"
+	},
+	"elements": [
+		{
+			"from": [7, 0, 14],
+			"to": [9, 16, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [-1, 0, 6]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#post"},
+				"east": {"uv": [0, 0, 2, 16], "texture": "#post"},
+				"south": {"uv": [0, 0, 2, 16], "texture": "#post"},
+				"west": {"uv": [0, 0, 2, 16], "texture": "#post"},
+				"up": {"uv": [2, 0, 4, 2], "texture": "#post"},
+				"down": {"uv": [2, 2, 4, 4], "texture": "#post"}
+			}
+		},
+		{
+			"from": [7, 0, 0],
+			"to": [9, 16, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 1]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 16], "texture": "#post"},
+				"east": {"uv": [0, 0, 2, 16], "texture": "#post"},
+				"south": {"uv": [0, 0, 2, 16], "texture": "#post"},
+				"west": {"uv": [0, 0, 2, 16], "texture": "#post"},
+				"up": {"uv": [2, 0, 4, 2], "texture": "#post"},
+				"down": {"uv": [2, 2, 4, 4], "texture": "#post"}
+			}
+		},
+		{
+			"from": [8, 0, 0],
+			"to": [8, 15, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 7.5, 8]},
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#lattice", "cullface": "up"},
+				"east": {"uv": [0, 0, 16, 16], "texture": "#lattice", "cullface": "up"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#lattice", "cullface": "up"},
+				"west": {"uv": [16, 0, 0, 16], "texture": "#lattice", "cullface": "up"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#lattice", "cullface": "up"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#lattice", "cullface": "up"}
+			}
+		}
+	]
+}

@@ -57,7 +57,7 @@ public class BHCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BH_BLOCKS = RegistryTabs.registerCreativeTabs("beyond_horizon_tabs_blocks",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHItems.COBALT_INGOT.get()))
+                    .icon(() -> new ItemStack(BHBlocks.COBALT_ORE.get()))
                     .withTabsBefore(BHCreativeTabs.BH_WEAPONS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.blocks"))
                     .displayItems((parameters, output) -> {

@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
+import com.kenhorizon.beyondhorizon.server.block.WorkbenchBlock;
 import com.kenhorizon.beyondhorizon.server.datagen.BHBlockTagsProvider;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
@@ -13,7 +14,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class BHBlocks {
 
     public static final RegistryObject<Block> WORKBENCH = RegistryBlocks
-            .register("workbench", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
+            .register("workbench", WorkbenchBlock::new)
+            .inialProperties(() -> BlockBehaviour.Properties.copy(Blocks.SMITHING_TABLE))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
             .dropSelf()

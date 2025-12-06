@@ -1,3 +1,11 @@
-// 1.20.1	2025-12-05T21:07:09.3726203	Recipes
+// 1.20.1	2025-12-06T11:30:51.9165482	Recipes
+e5d9b0d083e8c7398680c7b83789d60e056c0dcc data/beyondhorizon/advancements/recipes/berserker_boots.json
+36acb42eb3beafcc2e9623ebc6ee348c3e8b40cb data/beyondhorizon/advancements/recipes/boots.json
+2b1618c6c0910001211efa478d8aadddc993ad59 data/beyondhorizon/advancements/recipes/iron_plated_boots.json
 f6582b9afd300e0ca14e46036882ba6f0876936b data/beyondhorizon/advancements/recipes/misc/chain_plate.json
+c18944cb60ead7c0e4a924a4f08ef808e3c025b1 data/beyondhorizon/advancements/recipes/vitality_stone.json
+b516eec2085881712d970127e796feba7020b9ff data/beyondhorizon/recipes/berserker_boots_from_workbench.json
+8b9ebb122d62c77f51a8203f9b0a74a47af00047 data/beyondhorizon/recipes/boots_from_workbench.json
 cc0197b0c6c4c48257921fe32bc14563bac1a1bf data/beyondhorizon/recipes/chain_plate.json
+edaf42f32482dd7172faf67d1dc02a7722196b65 data/beyondhorizon/recipes/iron_plated_boots_from_workbench.json
+dd4bc7072dd8e51b06591f781ad7772a016cbd6c data/beyondhorizon/recipes/vitality_stone_from_workbench.json

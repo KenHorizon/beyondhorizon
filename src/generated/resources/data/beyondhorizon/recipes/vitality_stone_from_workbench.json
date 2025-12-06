@@ -1,0 +1,15 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    20
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:ruby"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:vitality_stone"
+  }
+}

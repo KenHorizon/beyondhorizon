@@ -126,6 +126,12 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register()
             .build();
+    public static final RegistryObject<Item> RUBY = RegistryItems
+            .register("ruby", BasicItem::new)
+            .tab(RegistryTabs.Category.INGREDIENTS)
+            .model(ItemModels.GENERATED)
+            .register()
+            .build();
     //
     public static final RegistryObject<Item> DEBUG0 = RegistryItems
             .register("debug0", DebugHealthCheckerItems::new)
@@ -151,6 +157,14 @@ public class BHItems {
     //
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = RegistryItems
             .register("broken_hero_sword", item -> new AccessoryItem(item, AccessoryBuilder.BROKEN_HERO_SWORD))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> DARK_ESSESNCE_CRYSTAL = RegistryItems
+            .register("dark_essence_crystal", item -> new AccessoryItem(item, AccessoryBuilder.MAGICAL_OPS))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)

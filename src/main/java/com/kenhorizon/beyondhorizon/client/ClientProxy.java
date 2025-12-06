@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.client;
 
+import com.kenhorizon.beyondhorizon.client.level.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
@@ -41,6 +42,7 @@ public class ClientProxy extends ServerProxy {
         MinecraftForge.EVENT_BUS.register(new GameHudDisplay());
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
+        MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
         Raid.RaiderType.create("ILLUSIONER", EntityType.ILLUSIONER, new int[]{0, 0, 1, 2, 2, 3, 4, 5});
     }
 

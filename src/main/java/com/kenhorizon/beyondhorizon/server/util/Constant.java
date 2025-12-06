@@ -50,6 +50,7 @@ public class Constant {
     public static double ANCIENT_PICK_MINING_EFFECIENCY = 0.12D;
     public static double ANCIENT_PICK_MINING_SPEED = 0.10D;
     public static double ANCIENT_CHISEL_MINING_SPEED = 0.20D;
+    public static double MAGICAL_OPS = 0.40D;
     public static double BRAVERY_DAMAGE = 0.1D;
     public static double BOOTS_TIER_1 = 0.020D;
     public static double BOOTS_TIER_2 = 0.040D;

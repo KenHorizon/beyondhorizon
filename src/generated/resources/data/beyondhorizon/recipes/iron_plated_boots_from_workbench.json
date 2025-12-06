@@ -1,0 +1,19 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    1,
+    3
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:boots"
+    },
+    {
+      "item": "beyondhorizon:chain_plate"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:iron_plated_boots"
+  }
+}

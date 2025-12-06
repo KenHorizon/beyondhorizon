@@ -23,6 +23,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder MAX_HEALTH_3 = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_3));
     public static final AccessoryBuilder MAX_HEALTH_4 = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_4));
 
+    public static final AccessoryBuilder MAGICAL_OPS = new AccessoryBuilder(List.of(Accessories.MAGICAL_OPS));
     public static final AccessoryBuilder CRYSTALLIZED_PLATE = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_1));
     public static final AccessoryBuilder CINDER_STONE = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_0, Accessories.BURN_EFFECT));
     public static final AccessoryBuilder AGILE_DAGGER = new AccessoryBuilder(List.of(Accessories.BASIC_CRIT, Accessories.BASIC_MOVEMENT_SPEED));

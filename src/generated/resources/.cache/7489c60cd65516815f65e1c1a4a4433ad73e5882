@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-05T21:07:09.3646188	Item Models: beyondhorizon
+// 1.20.1	2025-12-06T05:12:27.2749865	Item Models: beyondhorizon
 61bd62baa09e73293916ef2d5600d19c032d0f96 assets/beyondhorizon/models/item/adamantite_axe.json
 bd25a09e9bcfc47662d0a3f201203af5e078f985 assets/beyondhorizon/models/item/adamantite_hoe.json
 8a8ce68bd28d9994f0df749e8177a704dd895bee assets/beyondhorizon/models/item/adamantite_ingot.json
@@ -22,6 +22,7 @@ f2e3fc1428602b008048a640c637bf81eee52c6e assets/beyondhorizon/models/item/cobalt
 51aabe01803619e1dc1212a92ff42d323ff406be assets/beyondhorizon/models/item/cobalt_shovel.json
 4a317f289ccdf598dddbf7584333bee5314da8d2 assets/beyondhorizon/models/item/cobalt_sword.json
 08f3f24e998dbe7a32d05f1080008929b8e553c2 assets/beyondhorizon/models/item/crystallized_plate.json
+0c72a1a96f11e47ede9e9d15a449faf88730f8a9 assets/beyondhorizon/models/item/dark_essence_crystal.json
 f59b8406bb7e664a001ca5e500800ba779b34476 assets/beyondhorizon/models/item/debug0.json
 f067ccde0fbe79a96370293f0849fa7134d3cbf4 assets/beyondhorizon/models/item/debug1.json
 8a7a95a438bf4d87e45d9b853b600eca97d354d4 assets/beyondhorizon/models/item/debug2.json
@@ -52,6 +53,7 @@ e59f540937d661ac9f9c38bf25f75e73768ed88a assets/beyondhorizon/models/item/raw_pa
 5dd8af780e8432b106f1ba20b25dbd491d95d2ad assets/beyondhorizon/models/item/raw_silver.json
 db881670c5318fb2b92917f82465f1e69450c3e8 assets/beyondhorizon/models/item/raw_titanium.json
 b536f256d1bb90c9b4f99ed198a63eb31467ecd6 assets/beyondhorizon/models/item/rectrix.json
+533ab8d3a3371c5486acb82b5b88c9cf78b5e10d assets/beyondhorizon/models/item/ruby.json
 4803da661fed0e555ad166cd92be34ccc2c46ea7 assets/beyondhorizon/models/item/silver_axe.json
 d664ff5eeeb2ccd68d245c79e3647d3dfa5b157d assets/beyondhorizon/models/item/silver_ingot.json
 abc54ca7dd5fc3726d8d60c7a7cf17bc239ea44a assets/beyondhorizon/models/item/silver_pickaxe.json

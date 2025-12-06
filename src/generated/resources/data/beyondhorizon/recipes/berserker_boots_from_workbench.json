@@ -1,0 +1,23 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    1,
+    1,
+    1
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:boots"
+    },
+    {
+      "item": "beyondhorizon:swift_dagger"
+    },
+    {
+      "item": "beyondhorizon:swift_dagger"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:berserker_boots"
+  }
+}

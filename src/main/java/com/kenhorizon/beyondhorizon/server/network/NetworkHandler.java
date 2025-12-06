@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientBoundAcce
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientBoundInventoryPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundAccessoryInventoryPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundGrabbedItemPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundWorkbenchCraftPacket;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -36,7 +37,7 @@ public class NetworkHandler {
         // BUILDER
         net.registerMessage(id(), ClientBoundInventoryPacket.class, ClientBoundInventoryPacket::toBytes, ClientBoundInventoryPacket::new, ClientBoundInventoryPacket::handle);
         net.registerMessage(id(), ClientBoundAccessoryInventoryPacket.class, ClientBoundAccessoryInventoryPacket::toBytes, ClientBoundAccessoryInventoryPacket::new, ClientBoundAccessoryInventoryPacket::handle);
-
+        net.registerMessage(id(), ServerBoundWorkbenchCraftPacket.class, ServerBoundWorkbenchCraftPacket::toBytes, ServerBoundWorkbenchCraftPacket::new, ServerBoundWorkbenchCraftPacket::handle);
         net.registerMessage(id(), ServerBoundAccessoryInventoryPacket.class, ServerBoundAccessoryInventoryPacket::toBytes, ServerBoundAccessoryInventoryPacket::new, ServerBoundAccessoryInventoryPacket::handle);
         net.registerMessage(id(), ServerBoundGrabbedItemPacket.class, ServerBoundGrabbedItemPacket::toBytes, ServerBoundGrabbedItemPacket::new, ServerBoundGrabbedItemPacket::handle);
     }

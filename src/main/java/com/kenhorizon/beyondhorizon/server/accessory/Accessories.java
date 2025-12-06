@@ -74,6 +74,8 @@ public class Accessories {
             .addAttributeModifier(Attributes.MAX_HEALTH, "4d4315e2-641e-4838-91c8-dbe64ff1a0d7", Constant.MAX_HEALTH_3, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<Accessory> MAX_HEALTH_4 = registerSkill("max_health_4", () -> new AttributeOnlyAccessory()
             .addAttributeModifier(Attributes.MAX_HEALTH, "801a6faf-f1e0-4340-bbc0-ff6b7b8b4cae", Constant.MAX_HEALTH_4, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAGICAL_OPS = registerSkill("magical_ops", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "c54e0eef-b659-42fa-b9bb-41f1eede8019", Constant.MAGICAL_OPS, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Accessory> BURN_EFFECT = registerSkill("burn_effect", AccessorySkill::new);
     public static final RegistryObject<Accessory> DESPAIR_AND_DEFY = registerSkill("despair_and_defy", () -> new BleedingEffectAccessory(Constant.DESPAIR_AND_DEFY));

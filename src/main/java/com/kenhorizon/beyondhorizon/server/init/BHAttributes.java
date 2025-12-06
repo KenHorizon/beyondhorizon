@@ -19,7 +19,7 @@ public class BHAttributes {
     public static final RegistryObject<Attribute> DAMAGE_TAKEN = registerAttributes("damage_taken", 1.0D, -MAX_VALUE, MAX_VALUE, true);
     public static final RegistryObject<Attribute> EVADE = registerAttributes("evade", 0.0D, 0.0D, 100.0D, true);
     public static final RegistryObject<Attribute> HEALING = registerAttributes("healing", 1.0D, -MAX_VALUE, MAX_VALUE, true);
-    public static final RegistryObject<Attribute> HEALTH_REGENERATION = registerAttributes("health_regeneration", 0.0D, 0.0D, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> HEALTH_REGENERATION = registerAttributes("health_regeneration", 0.05D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> LETHALITY = registerAttributes("lethality", 0.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> ABILITY_POWER = registerAttributes("ability_power", 0.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> MAGIC_PENETRATION = registerAttributes("magic_penetration", 0.0D, 0.0D, 1.0D, true);

@@ -7,17 +7,17 @@
   ],
   "ingredients": [
     {
-      "item": "beyondhorizon:boots"
+      "item": "beyondhorizon:vitality_stone"
     },
     {
-      "item": "beyondhorizon:swift_dagger"
+      "item": "beyondhorizon:vitality_stone"
     },
     {
-      "item": "beyondhorizon:swift_dagger"
+      "item": "beyondhorizon:firefly_faye"
     }
   ],
   "result": {
     "count": 1,
-    "item": "beyondhorizon:berserker_boots"
+    "item": "beyondhorizon:cinder_stone"
   }
 }

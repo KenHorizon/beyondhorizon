@@ -1,0 +1,15 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    32
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:leather"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:tough_cloth"
+  }
+}

@@ -26,12 +26,87 @@ public class Accessories {
 
     public static final RegistryObject<Accessory> NONE = registerSkill("none", AccessorySkill::new);
 
+    public static final RegistryObject<Accessory> MAGIC_RESITANCE_0 = registerSkill("magic_resistance_0", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.MAGIC_RESISTANCE.get(), "a1b33cb3-2a7c-4005-a090-8a653506d7ad", Constant.MAGIC_RESISTANCE_0, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAGIC_RESITANCE_1 = registerSkill("magic_resistance_1", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.MAGIC_RESISTANCE.get(), "1711edc8-6f53-4238-8e26-fd779e2c4605", Constant.MAGIC_RESISTANCE_1, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAGIC_RESITANCE_2 = registerSkill("magic_resistance_2", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.MAGIC_RESISTANCE.get(), "ab8456cc-6944-412b-8212-97f73ea1dc8b", Constant.MAGIC_RESISTANCE_2, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAGIC_RESITANCE_3 = registerSkill("magic_resistance_3", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.MAGIC_RESISTANCE.get(), "8473b147-3efb-4e4e-9437-d049283ffe77", Constant.MAGIC_RESISTANCE_3, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAGIC_RESITANCE_4 = registerSkill("magic_resistance_4", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.MAGIC_RESISTANCE.get(), "91c6c1d6-fe58-466d-8637-d71ae3814ff7", Constant.MAGIC_RESISTANCE_4, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAGIC_RESITANCE_5 = registerSkill("magic_resistance_5", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.MAGIC_RESISTANCE.get(), "9f20143a-7dff-4207-b70b-7501035c44b4", Constant.MAGIC_RESISTANCE_5, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> ARMOR_0 = registerSkill("armor_0", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.ARMOR, "76e6d0b2-435d-48e8-a053-cbeed42d6ed4", Constant.ARMOR_0, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> ARMOR_1 = registerSkill("armor_1", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.ARMOR, "6bcdacf8-ed9c-4c76-b018-7b1579ea11c1", Constant.ARMOR_1, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> ARMOR_2 = registerSkill("armor_2", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.ARMOR, "bb611cb3-40c6-4f76-aa01-2de8d08d59f0", Constant.ARMOR_2, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> ARMOR_3 = registerSkill("armor_3", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.ARMOR, "2ebaeb2d-2667-44a8-b39e-a7debea9f619", Constant.ARMOR_3, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> ARMOR_4 = registerSkill("armor_4", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.ARMOR, "2e557669-9aef-4636-bfe5-ce87cec1cd93", Constant.ARMOR_4, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> ABILITY_POWER_0 = registerSkill("ability_power_0", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "ff8fbcf0-aa84-4748-9d3e-09b956fd6232", Constant.ABILITY_POWER_0, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> ABILITY_POWER_1 = registerSkill("ability_power_1", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "ff8fbcf0-aa84-4748-9d3e-09b956fd6232", Constant.ABILITY_POWER_1, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> ABILITY_POWER_2 = registerSkill("ability_power_2", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "ff8fbcf0-aa84-4748-9d3e-09b956fd6232", Constant.ABILITY_POWER_2, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> ABILITY_POWER_3 = registerSkill("ability_power_3", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "ff8fbcf0-aa84-4748-9d3e-09b956fd6232", Constant.ABILITY_POWER_3, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> ABILITY_POWER_4 = registerSkill("ability_power_4", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "ff8fbcf0-aa84-4748-9d3e-09b956fd6232", Constant.ABILITY_POWER_4, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> MAX_MANA_0 = registerSkill("max_mana_0", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.MAX_MANA.get(), "54191c52-cc38-4d55-a8db-61cb8913c8f7", Constant.MAX_MANA_0, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> COOLDOWN_0 = registerSkill("cooldown_0", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.COOLDOWN.get(), "97042264-a3e3-413f-8877-a23a8ae6fa97", Constant.COOLDOWN_0, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> COOLDOWN_1 = registerSkill("cooldown_1", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.COOLDOWN.get(), "bc4153a7-721d-4cf1-a99b-622c6cbe330d", Constant.COOLDOWN_1, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> COOLDOWN_2 = registerSkill("cooldown_2", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.COOLDOWN.get(), "316260c3-1f1f-4be4-be43-b8344524d2cb", Constant.COOLDOWN_2, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> COOLDOWN_3 = registerSkill("cooldown_3", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.COOLDOWN.get(), "4f4d1b55-6eab-4d50-a972-e8256b6f7de7", Constant.COOLDOWN_3, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> COOLDOWN_4 = registerSkill("cooldown_4", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.COOLDOWN.get(), "e03a4871-3885-479a-8ed3-1717f9e4e6e3", Constant.COOLDOWN_4, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> COOLDOWN_5 = registerSkill("cooldown_5", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.COOLDOWN.get(), "957ba304-82b7-4388-a142-e2659dc943da", Constant.COOLDOWN_5, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> HEALTH_REGEN = registerSkill("health_regen", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.HEALTH_REGENERATION.get(), "8cb9d2f9-2358-4681-a698-1e118332fec8", Constant.REGEN, AttributeModifier.Operation.MULTIPLY_BASE));
+
     public static final RegistryObject<Accessory> BOOTS_0 = registerSkill("boots_0", () -> new BootsAccessory()
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "c0003115-4354-4e84-b4ab-a364f530bf3b", Constant.BOOTS_TIER_1, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<Accessory> BOOTS_1 = registerSkill("boots_1", () -> new BootsAccessory()
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "0d9b4d17-2d64-4891-a0b2-8a5e998110ce", Constant.BOOTS_TIER_2, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<Accessory> BOOTS_2 = registerSkill("boots_2", () -> new BootsAccessory()
             .addAttributeModifier(Attributes.MOVEMENT_SPEED, "d0e2e6f1-58ed-4312-8b89-c97f2b124fd7", Constant.BOOTS_TIER_3, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> BASIC_CRIT = registerSkill("basic_crit", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.CRITICAL_STRIKE.get(), "9b64880a-586f-4ba2-9861-b30dbe823f56", Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> UPGRADED_CRIT = registerSkill("upgraded_crit", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.CRITICAL_STRIKE.get(), "20989fcb-6d4a-4c95-b838-d06f8c5cdf7d", Constant.CRITICAL_STRIKE_1, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> BASIC_MOVEMENT_SPEED = registerSkill("basic_movement_speed", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.CRITICAL_STRIKE.get(), "f5af9c27-d8cc-4ccf-8117-de088434a105", Constant.MOVEMENT_SPEED_0, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> UPGRADED_MOVEMENT_SPEED = registerSkill("upgraded_movement_speed", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(BHAttributes.CRITICAL_STRIKE.get(), "c36cdacd-3ce2-41f4-9d39-8327a810bba9", Constant.MOVEMENT_SPEED_1, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAX_HEALTH_0 = registerSkill("max_health_0", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.MAX_HEALTH, "f8cd02af-5eb4-47f6-a689-305716a26d5e", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAX_HEALTH_1 = registerSkill("max_health_1", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.MAX_HEALTH, "580a8f14-e8d2-42dc-990b-98016ebe9ecb", Constant.MAX_HEALTH_1, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAX_HEALTH_2 = registerSkill("max_health_2", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.MAX_HEALTH, "b35f9bdd-6178-481f-a0a9-9aa3eafa195e", Constant.MAX_HEALTH_2, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAX_HEALTH_3 = registerSkill("max_health_3", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.MAX_HEALTH, "4d4315e2-641e-4838-91c8-dbe64ff1a0d7", Constant.MAX_HEALTH_3, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> MAX_HEALTH_4 = registerSkill("max_health_4", () -> new AttributeOnlyAccessory()
+            .addAttributeModifier(Attributes.MAX_HEALTH, "801a6faf-f1e0-4340-bbc0-ff6b7b8b4cae", Constant.MAX_HEALTH_4, AttributeModifier.Operation.ADDITION));
+
+
     public static final RegistryObject<Accessory> BERSERKER_BOOTS = registerSkill("berserker_boots", () -> new BootsAccessory()
             .addAttributeModifier(Attributes.ATTACK_SPEED, "f9f8e054-4d00-4361-bae5-a92224ab6481", Constant.BERSERKER_BOOTS, AttributeModifier.Operation.MULTIPLY_TOTAL));
     public static final RegistryObject<Accessory> IRON_PLATED_BOOTS = registerSkill("iron_plated_boots", () -> new BootsAccessory()
@@ -56,24 +131,6 @@ public class Accessories {
             .addAttributeModifier(Attributes.ATTACK_KNOCKBACK, "c71ca564-8178-4ca2-bc63-29a4f90361e3", Constant.POWER_GLOVES_KNOCBACK, AttributeModifier.Operation.MULTIPLY_TOTAL));
     public static final RegistryObject<Accessory> SWIFT_DAGGER = registerSkill("swift_dagger", () -> new AttributeOnlyAccessory()
             .addAttributeModifier(Attributes.ATTACK_SPEED, "847a9dc2-56ee-4ebc-a892-0e5095012667", Constant.SWIFT_DAGGER_ATTACK_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
-    public static final RegistryObject<Accessory> BASIC_CRIT = registerSkill("basic_crit", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(BHAttributes.CRITICAL_STRIKE.get(), "9b64880a-586f-4ba2-9861-b30dbe823f56", Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION));
-    public static final RegistryObject<Accessory> UPGRADED_CRIT = registerSkill("upgraded_crit", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(BHAttributes.CRITICAL_STRIKE.get(), "20989fcb-6d4a-4c95-b838-d06f8c5cdf7d", Constant.CRITICAL_STRIKE_1, AttributeModifier.Operation.ADDITION));
-    public static final RegistryObject<Accessory> BASIC_MOVEMENT_SPEED = registerSkill("basic_movement_speed", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(BHAttributes.CRITICAL_STRIKE.get(), "f5af9c27-d8cc-4ccf-8117-de088434a105", Constant.MOVEMENT_SPEED_0, AttributeModifier.Operation.ADDITION));
-    public static final RegistryObject<Accessory> UPGRADED_MOVEMENT_SPEED = registerSkill("upgraded_movement_speed", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(BHAttributes.CRITICAL_STRIKE.get(), "c36cdacd-3ce2-41f4-9d39-8327a810bba9", Constant.MOVEMENT_SPEED_1, AttributeModifier.Operation.ADDITION));
-    public static final RegistryObject<Accessory> MAX_HEALTH_0 = registerSkill("max_health_0", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(Attributes.MAX_HEALTH, "f8cd02af-5eb4-47f6-a689-305716a26d5e", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
-    public static final RegistryObject<Accessory> MAX_HEALTH_1 = registerSkill("max_health_1", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(Attributes.MAX_HEALTH, "580a8f14-e8d2-42dc-990b-98016ebe9ecb", Constant.MAX_HEALTH_1, AttributeModifier.Operation.ADDITION));
-    public static final RegistryObject<Accessory> MAX_HEALTH_2 = registerSkill("max_health_2", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(Attributes.MAX_HEALTH, "b35f9bdd-6178-481f-a0a9-9aa3eafa195e", Constant.MAX_HEALTH_2, AttributeModifier.Operation.ADDITION));
-    public static final RegistryObject<Accessory> MAX_HEALTH_3 = registerSkill("max_health_3", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(Attributes.MAX_HEALTH, "4d4315e2-641e-4838-91c8-dbe64ff1a0d7", Constant.MAX_HEALTH_3, AttributeModifier.Operation.ADDITION));
-    public static final RegistryObject<Accessory> MAX_HEALTH_4 = registerSkill("max_health_4", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(Attributes.MAX_HEALTH, "801a6faf-f1e0-4340-bbc0-ff6b7b8b4cae", Constant.MAX_HEALTH_4, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<Accessory> MAGICAL_OPS = registerSkill("magical_ops", () -> new AttributeOnlyAccessory()
             .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "c54e0eef-b659-42fa-b9bb-41f1eede8019", Constant.MAGICAL_OPS, AttributeModifier.Operation.MULTIPLY_TOTAL));
 

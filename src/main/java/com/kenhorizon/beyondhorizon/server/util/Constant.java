@@ -1,7 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
-import com.kenhorizon.beyondhorizon.server.StatModifiers;
-
 public class Constant {
     public static final float PENALTY_DAMAGE = 30;
     public static final int TOOLTIP_MAX_TEXT_WITDH = 280;
@@ -31,6 +29,35 @@ public class Constant {
     public static float[] BLADE_OF_THE_ENDERLORD = {8.0F, 1.7F};
     public static float[] GIANT_SLAYER = {8.0F, 1.7F, 2.6F};
     //
+    public static double ARMOR_0 = 5;
+    public static double ARMOR_1 = 10;
+    public static double ARMOR_2 = 15;
+    public static double ARMOR_3 = 20;
+    public static double ARMOR_4 = 25;
+    public static double ABILITY_POWER_0 = 5;
+    public static double ABILITY_POWER_1 = 10;
+    public static double ABILITY_POWER_2 = 15;
+    public static double ABILITY_POWER_3 = 20;
+    public static double ABILITY_POWER_4 = 25;
+    public static double MAGIC_RESISTANCE_0 = 5;
+    public static double MAGIC_RESISTANCE_1 = 10;
+    public static double MAGIC_RESISTANCE_2 = 15;
+    public static double MAGIC_RESISTANCE_3 = 20;
+    public static double MAGIC_RESISTANCE_4 = 25;
+    public static double MAGIC_RESISTANCE_5 = 30;
+    public static double MAX_MANA_0 = 50;
+    public static double MAX_MANA_1 = 100;
+    public static double MAX_MANA_2 = 150;
+    public static double MAX_MANA_3 = 200;
+    public static double MAX_MANA_4 = 250;
+    public static double MAX_MANA_5 = 300;
+    public static double COOLDOWN_0 = 0.05D;
+    public static double COOLDOWN_1 = 0.10D;
+    public static double COOLDOWN_2 = 0.15D;
+    public static double COOLDOWN_3 = 0.20D;
+    public static double COOLDOWN_4 = 0.30D;
+    public static double COOLDOWN_5 = 0.35D;
+    public static double REGEN = 1.0D;
     public static double MAX_HEALTH_0 = 20;
     public static double MAX_HEALTH_1 = 40;
     public static double MAX_HEALTH_2 = 60;

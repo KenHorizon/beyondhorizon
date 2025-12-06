@@ -22,7 +22,24 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder MAX_HEALTH_2 = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_2));
     public static final AccessoryBuilder MAX_HEALTH_3 = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_3));
     public static final AccessoryBuilder MAX_HEALTH_4 = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_4));
+    public static final AccessoryBuilder COOLDOWN_0 = new AccessoryBuilder(List.of(Accessories.COOLDOWN_0));
+    public static final AccessoryBuilder COOLDOWN_1 = new AccessoryBuilder(List.of(Accessories.COOLDOWN_1));
+    public static final AccessoryBuilder COOLDOWN_2 = new AccessoryBuilder(List.of(Accessories.COOLDOWN_2));
+    public static final AccessoryBuilder COOLDOWN_3 = new AccessoryBuilder(List.of(Accessories.COOLDOWN_3));
+    public static final AccessoryBuilder COOLDOWN_4 = new AccessoryBuilder(List.of(Accessories.COOLDOWN_4));
+    public static final AccessoryBuilder REGEN_0 = new AccessoryBuilder(List.of(Accessories.HEALTH_REGEN));
+    public static final AccessoryBuilder MAX_MANA_0 = new AccessoryBuilder(List.of(Accessories.HEALTH_REGEN));
+    public static final AccessoryBuilder MAGIC_RESIST_0 = new AccessoryBuilder(List.of(Accessories.MAGIC_RESITANCE_0));
+    public static final AccessoryBuilder MAGIC_RESIST_1 = new AccessoryBuilder(List.of(Accessories.MAGIC_RESITANCE_1));
+    public static final AccessoryBuilder MAGIC_RESIST_2 = new AccessoryBuilder(List.of(Accessories.MAGIC_RESITANCE_2));
+    public static final AccessoryBuilder MAGIC_RESIST_3 = new AccessoryBuilder(List.of(Accessories.MAGIC_RESITANCE_3));
+    public static final AccessoryBuilder MAGIC_RESIST_4 = new AccessoryBuilder(List.of(Accessories.MAGIC_RESITANCE_4));
+    public static final AccessoryBuilder MAGIC_RESIST_5 = new AccessoryBuilder(List.of(Accessories.MAGIC_RESITANCE_5));
+    public static final AccessoryBuilder ARMOR_0 = new AccessoryBuilder(List.of(Accessories.ARMOR_0));
+    public static final AccessoryBuilder ARMOR_1 = new AccessoryBuilder(List.of(Accessories.ARMOR_1));
 
+    public static final AccessoryBuilder SPECTRAL_CLOAK = new AccessoryBuilder(List.of(Accessories.MAGIC_RESITANCE_0, Accessories.HEALTH_REGEN, Accessories.MAX_HEALTH_0));
+    public static final AccessoryBuilder UNSTABLE_RUNIC_TOME = new AccessoryBuilder(List.of(Accessories.ABILITY_POWER_0, Accessories.MAX_MANA_0));
     public static final AccessoryBuilder MAGICAL_OPS = new AccessoryBuilder(List.of(Accessories.MAGICAL_OPS));
     public static final AccessoryBuilder CRYSTALLIZED_PLATE = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_1));
     public static final AccessoryBuilder CINDER_STONE = new AccessoryBuilder(List.of(Accessories.MAX_HEALTH_0, Accessories.BURN_EFFECT));

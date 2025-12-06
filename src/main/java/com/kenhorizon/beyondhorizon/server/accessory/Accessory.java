@@ -130,7 +130,7 @@ public abstract class Accessory {
             this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
         }
         boolean flag = size == 1;
-        if ((ModClientConfig.ADVANCED_TOOLTIP.get() || (isShiftPressed || !flag)) && I18n.exists(this.createId())) {
+        if ((ModClientConfig.ADVANCED_TOOLTIP.get() || ModClientConfig.ADVANCED_TOOLTIP_ACCESSORY.get() || flag) && (!flag && isShiftPressed) && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
         }
     }

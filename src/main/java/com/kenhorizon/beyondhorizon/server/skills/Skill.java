@@ -6,6 +6,7 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.ColorCodedText;
+import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.accessory.Accessories;
@@ -294,7 +295,7 @@ public abstract class Skill {
         }
         tooltip.add(abilityTrait);
     }
-    public void addTooltip(ItemStack itemStack, List<Component> tooltip, boolean isShiftPressed) {
+    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed) {
         if (!this.isTooltipEnable()) return;
         if (this.isTooltipNameEnable()) {
             this.addTooltipTitle(itemStack, tooltip, true);
@@ -303,7 +304,8 @@ public abstract class Skill {
         if (this.isAttributeTooltipEnable()) {
             this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
         }
-        if (I18n.exists(this.createId())) {
+        boolean flag = size == 1;
+        if ((ModClientConfig.ADVANCED_TOOLTIP.get() || ModClientConfig.ADVANCED_TOOLTIP_SKILL.get() || flag) && (!flag && isShiftPressed) && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
         }
     }

@@ -147,6 +147,10 @@ public class ServerEventHandler {
         if (player instanceof ServerPlayer serverPlayer) {
             this.syncSlot(serverPlayer);
         }
+        float healthRegen = (float) player.getAttributeValue(BHAttributes.HEALTH_REGENERATION.get());
+        if (player.tickCount % 10 == 0) {
+            player.heal(healthRegen);
+        }
     }
 
     @SubscribeEvent

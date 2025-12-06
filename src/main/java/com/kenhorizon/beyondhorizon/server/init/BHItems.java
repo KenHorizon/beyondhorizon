@@ -4,7 +4,6 @@ import com.kenhorizon.beyondhorizon.server.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
-import com.kenhorizon.beyondhorizon.server.item.base.SwordBaseItem;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealItems;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealthCheckerItems;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugWeaponItems;
@@ -16,11 +15,33 @@ import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryItems;
 import com.kenhorizon.libs.registry.RegistryTabs;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.SwordItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BHItems {
+    //
+    public static final RegistryObject<Item> DEBUG0 = RegistryItems
+            .register("debug0", DebugHealthCheckerItems::new)
+            .itemName("Debug: Health Checker")
+            .tab(RegistryTabs.Category.DEBUGS)
+            .model(ItemModels.GENERATED)
+            .register()
+            .build();
+    public static final RegistryObject<Item> DEBUG1 = RegistryItems
+            .register("debug1", DebugWeaponItems::new)
+            .itemName("Debug: One Tap One Kill")
+            .tab(RegistryTabs.Category.DEBUGS)
+            .model(ItemModels.GENERATED)
+            .register()
+            .build();
+    public static final RegistryObject<Item> DEBUG2 = RegistryItems
+            .register("debug2", DebugHealItems::new)
+            .itemName("Debug: Max Health Heal")
+            .tab(RegistryTabs.Category.DEBUGS)
+            .model(ItemModels.GENERATED)
+            .register()
+            .build();
+    //
     public static final RegistryObject<Item> HANDLE = RegistryItems
             .register("handle", BasicItem::new)
             .tab(RegistryTabs.Category.INGREDIENTS)
@@ -132,29 +153,69 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register()
             .build();
-    //
-    public static final RegistryObject<Item> DEBUG0 = RegistryItems
-            .register("debug0", DebugHealthCheckerItems::new)
-            .itemName("Debug: Health Checker")
-            .tab(RegistryTabs.Category.DEBUGS)
-            .model(ItemModels.GENERATED)
-            .register()
-            .build();
-    public static final RegistryObject<Item> DEBUG1 = RegistryItems
-            .register("debug1", DebugWeaponItems::new)
-            .itemName("Debug: One Tap One Kill")
-            .tab(RegistryTabs.Category.DEBUGS)
-            .model(ItemModels.GENERATED)
-            .register()
-            .build();
-    public static final RegistryObject<Item> DEBUG2 = RegistryItems
-            .register("debug2", DebugHealItems::new)
-            .itemName("Debug: Max Health Heal")
-            .tab(RegistryTabs.Category.DEBUGS)
+    public static final RegistryObject<Item> AMPLIFLYING_TOME = RegistryItems
+            .register("ampliflying_tome", BasicItem::new)
+            .tab(RegistryTabs.Category.INGREDIENTS)
             .model(ItemModels.GENERATED)
             .register()
             .build();
     //
+    public static final RegistryObject<Item> TOUGH_CLOTH = RegistryItems
+            .register("tough_cloth", item -> new AccessoryItem(item, AccessoryBuilder.ARMOR_0))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+    public static final RegistryObject<Item> CHAIN_VEST = RegistryItems
+            .register("chain_vest", item -> new AccessoryItem(item, AccessoryBuilder.ARMOR_1))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+    public static final RegistryObject<Item> NULL_MAGIC_RUNE = RegistryItems
+            .register("null_magic_rune", item -> new AccessoryItem(item, AccessoryBuilder.MAGIC_RESIST_0))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+    public static final RegistryObject<Item> FIREFLY_FAYE = RegistryItems
+            .register("firefly_faye", item -> new AccessoryItem(item, AccessoryBuilder.REGEN_0))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+    public static final RegistryObject<Item> SAPPHIRE_CRYSTAL = RegistryItems
+            .register("sapphire_crystal", item -> new AccessoryItem(item, AccessoryBuilder.MAX_MANA_0))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+    public static final RegistryObject<Item> RUMINATIVE_BEADS = RegistryItems
+            .register("ruminative_beads", item -> new AccessoryItem(item, AccessoryBuilder.REGEN_0))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+    public static final RegistryObject<Item> SPECTRAL_CLOAK = RegistryItems
+            .register("spectral_cloak", item -> new AccessoryItem(item, AccessoryBuilder.SPECTRAL_CLOAK))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+    public static final RegistryObject<Item> UNSTABLE_RUNIC_TOME = RegistryItems
+            .register("unstable_runic_tome", item -> new AccessoryItem(item, AccessoryBuilder.UNSTABLE_RUNIC_TOME))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = RegistryItems
             .register("broken_hero_sword", item -> new AccessoryItem(item, AccessoryBuilder.BROKEN_HERO_SWORD))
             .tab(RegistryTabs.Category.ACCESSORY)
@@ -162,7 +223,6 @@ public class BHItems {
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
-
     public static final RegistryObject<Item> DARK_ESSESNCE_CRYSTAL = RegistryItems
             .register("dark_essence_crystal", item -> new AccessoryItem(item, AccessoryBuilder.MAGICAL_OPS))
             .tab(RegistryTabs.Category.ACCESSORY)

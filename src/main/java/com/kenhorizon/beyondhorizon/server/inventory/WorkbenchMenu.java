@@ -42,6 +42,7 @@ public class WorkbenchMenu extends AbstractContainerMenu {
         for (int k = 0; k < 9; ++k) {
             this.addSlot(new Slot(inventory, k, 8 + k * 18, 142));
         }
+        this.addDataSlot(this.selectedRecipeIndex);
     }
 
     @Override

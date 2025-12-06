@@ -1,0 +1,23 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:ampliflying_tome"
+    },
+    {
+      "item": "beyondhorizon:firefly_faye"
+    },
+    {
+      "item": "beyondhorizon:sapphire_crystal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:unstable_runic_tome"
+  }
+}

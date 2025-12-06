@@ -2,18 +2,18 @@
   "type": "beyondhorizon:workbench",
   "counts": [
     0,
-    3
+    0
   ],
   "ingredients": [
     {
-      "item": "beyondhorizon:boots"
+      "item": "beyondhorizon:ruminative_beads"
     },
     {
-      "item": "beyondhorizon:chain_plate"
+      "item": "beyondhorizon:null_magic_rune"
     }
   ],
   "result": {
     "count": 1,
-    "item": "beyondhorizon:iron_plated_boots"
+    "item": "beyondhorizon:spectral_cloak"
   }
 }

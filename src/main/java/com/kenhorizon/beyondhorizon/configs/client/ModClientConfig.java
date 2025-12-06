@@ -8,6 +8,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 @SuppressWarnings({"rawtypes", "ConstantConditions"})
 public class ModClientConfig {
+    public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_ACCESSORY;
+    public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_SKILL;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP;
     public static ForgeConfigSpec.EnumValue GAME_HUD;
 
@@ -25,6 +27,12 @@ public class ModClientConfig {
         ADVANCED_TOOLTIP = builder
                 .comment("Extend item's tooltip information")
                 .define("Show Advanced Tooltip", true);
+        ADVANCED_TOOLTIP_ACCESSORY = builder
+                .comment("Extend item's tooltip information only in accessory")
+                .define("Show Advanced Tooltip On Accessory", true);
+        ADVANCED_TOOLTIP_SKILL = builder
+                .comment("Extend item's tooltip information only in accessory")
+                .define("Show Advanced Tooltip On Skill", true);
         GAME_HUD = builder
                 .comment("Change how your game's hud will be displayed")
                 .defineEnum("In-Game Hud", GameHuds.MOD, GameHuds.VANILLA, GameHuds.MOD);

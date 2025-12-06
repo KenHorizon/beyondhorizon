@@ -1,0 +1,15 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    3
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:ampliflying_tome"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:aether_wisp"
+  }
+}

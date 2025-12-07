@@ -41,6 +41,13 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register()
             .build();
+    public static final RegistryObject<Item> DEBUG3 = RegistryItems
+            .register("debug3", DebugHealItems::new)
+            .itemName("Debug: Role Changer")
+            .tab(RegistryTabs.Category.DEBUGS)
+            .model(ItemModels.GENERATED)
+            .register()
+            .build();
     //
     public static final RegistryObject<Item> HANDLE = RegistryItems
             .register("handle", BasicItem::new)
@@ -539,21 +546,21 @@ public class BHItems {
             .build();
 
     public static final RegistryObject<Item> BLADE_OF_THE_ENDERLORD = RegistryItems
-            .register("blade_of_the_enderlord", item -> WeaponBuilder.BLADE_OF_THE_ENDERLORD.create(MeleeWeaponMaterials.BLADE_OF_THE_ENDERLORD, item))
+            .register("blade_of_the_enderlord", item -> WeaponBuilder.BLADE_OF_THE_ENDERLORD.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> GIANT_SLAYER_SWORD = RegistryItems
-            .register("giant_slayer_sword", item -> WeaponBuilder.GIANT_SLAYER_SWORD.create(MeleeWeaponMaterials.GIANT_SLAYER_SWORD, item))
+            .register("giant_slayer_sword", item -> WeaponBuilder.GIANT_SLAYER_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register()
             .build();
     public static final RegistryObject<Item> ZENITH = RegistryItems
-            .register("zenith", item -> WeaponBuilder.ZENITH.create(MeleeWeaponMaterials.ZENITH, item))
+            .register("zenith", item -> WeaponBuilder.ZENITH.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)

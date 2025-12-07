@@ -124,11 +124,20 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
         if (this.skills != null) {
-            this.skills.forEach((skill) -> {
-                skill.addTooltip(itemStack, tooltip, this.skills.size(), Utils.isShiftPressed());
-            });
+            for (int i = 0; i < this.skills.size(); i++) {
+                Skill skill = this.skills.get(i);
+                skill.addTooltip(itemStack, tooltip, this.skills.size(), Utils.isShiftPressed(), i == 0);
+            }
         }
         super.appendHoverText(itemStack, level, tooltip, isAdvanced);
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+        if (this.materials.getUses() < 0) {
+            super.setDamage(stack, 0);
+        }
+        super.setDamage(stack, damage);
     }
 
     @Override

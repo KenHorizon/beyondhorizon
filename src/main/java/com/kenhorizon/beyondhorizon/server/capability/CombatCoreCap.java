@@ -18,7 +18,6 @@ import org.jetbrains.annotations.Nullable;
 public class CombatCoreCap implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
     public static ResourceLocation NAME = BeyondHorizon.resource("combat_core");
     protected final LazyOptional<CombatCore> handler = LazyOptional.of(CombatCore::new);
-    public LivingEntity entity;
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {

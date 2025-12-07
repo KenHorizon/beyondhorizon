@@ -16,9 +16,9 @@ public class WeaponSkills extends Skill implements IAttack, IItemGeneric {
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this.getMagnitude() > 0.0F && this.getLevel() > 0.0F) {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude()), this.getLevel());
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), this.getLevel());
         } else {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude()));
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
         }
     }
 

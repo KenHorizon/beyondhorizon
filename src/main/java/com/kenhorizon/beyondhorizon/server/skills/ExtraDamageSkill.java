@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.skills;
 
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
@@ -12,8 +11,6 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.item.ItemStack;
-
-import java.util.List;
 
 public class ExtraDamageSkill extends WeaponSkills {
     @FunctionalInterface
@@ -98,9 +95,9 @@ public class ExtraDamageSkill extends WeaponSkills {
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this.getMagnitude() > 0.0F && this.getLevel() > 0.0F) {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude()), this.getLevel());
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), this.getLevel());
         } else {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude()));
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
         }
     }
 

@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.client;
 
+import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.level.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHudDisplay;
@@ -10,20 +11,33 @@ import com.kenhorizon.beyondhorizon.server.init.BHMenu;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundAccessoryInventoryPacket;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings({"removal"})
 public class ClientProxy extends ServerProxy {
@@ -31,6 +45,7 @@ public class ClientProxy extends ServerProxy {
     public void serverHandler() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::onEntityAttributeModification);
+        bus.addListener(this::registerKeybinds);
         IconAttributesTooltip.registerFactory();
         Tooltips.TitleBreakComponent.registerFactory();
     }
@@ -83,10 +98,34 @@ public class ClientProxy extends ServerProxy {
             }
         }
     }
+
+    private void registerKeybinds(RegisterKeyMappingsEvent event) {
+        event.register(Keybinds.LEVEL_SYSTEM);
+    }
+
+    @Override
+    public void openScreen(Screen screen) {
+        if (screen != null) {
+            Minecraft minecraft = Minecraft.getInstance();
+            minecraft.setScreen(screen);
+        }
+    }
+
+    @Override
+    public boolean isKeyDown(KeyMapping keyMapping) {
+        return keyMapping.isDown();
+    }
+
+    @Override
+    public boolean isKeyPressed(KeyMapping keyMapping) {
+        return keyMapping.consumeClick();
+    }
+
     @Override
     public Player clientPlayer() {
         return Minecraft.getInstance().player;
     }
+
     @Override
     public void syncAccessoryToPlayer(int slot, ItemStack itemStack, ServerPlayer player) {
         NetworkHandler.sendToPlayer(new ServerBoundAccessoryInventoryPacket(slot, player.getId(), itemStack), player);

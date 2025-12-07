@@ -35,11 +35,11 @@ public class AttributeModify {
                     final AttributeRangeAccessor rangeAccessor = (AttributeRangeAccessor) attribute;
                     attributeAccessor.setSyncable(true);
                     if (minValue != ranged.getMinValue()) {
-                        BeyondHorizon.loggers().debug("Modifying minimum value for {} from {} to {}.", attributeId, Maths.FORMAT.format(ranged.getMinValue()), Maths.FORMAT.format(minValue));
+                        BeyondHorizon.loggers().debug("Modifying minimum value for {} from {} to {}.", attributeId, Maths.format0(ranged.getMinValue()), Maths.format0(minValue));
                         rangeAccessor.setMinValue(minValue);
                     }
                     if (maxValue != ranged.getMaxValue()) {
-                        BeyondHorizon.loggers().debug("Modifying maximum value for {} from {} to {}.", attributeId, Maths.FORMAT.format(ranged.getMaxValue()), Maths.FORMAT.format(maxValue));
+                        BeyondHorizon.loggers().debug("Modifying maximum value for {} from {} to {}.", attributeId, Maths.format0(ranged.getMaxValue()), Maths.format0(maxValue));
                         rangeAccessor.setMaxValue(maxValue);
                     }
                 }

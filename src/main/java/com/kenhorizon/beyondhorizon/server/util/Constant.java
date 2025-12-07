@@ -1,10 +1,15 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static int LEVEL_SYSTEM_UNLOCKED = 5;
+
+
     public static final float PENALTY_DAMAGE = 30;
     public static final int TOOLTIP_MAX_TEXT_WITDH = 280;
     public static final int MEDUIM_TOOLTIP_MAX_TEXT_WITDH = 220;
     public static final int SMALL_TOOLTIP_MAX_TEXT_WITDH = 180;
+
+    public static final float ASSASSIN_DAMAGE_MULTIPLIER_AT_THE_BACK = 0.20F;
 
     public static int FIRE_EFFECT = 5;
     public static float TRANNY_MISSING_HEALTH_SCALE = 0.12F;

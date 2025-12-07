@@ -6,10 +6,8 @@ import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
@@ -36,9 +34,9 @@ public class AccessorySkill extends Accessory implements IItemGeneric, IAttack {
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this.getMagnitude() > 0.0F && this.getLevel() > 0.0F) {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude()), this.getLevel());
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), this.getLevel());
         } else {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude()));
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
         }
     }
 

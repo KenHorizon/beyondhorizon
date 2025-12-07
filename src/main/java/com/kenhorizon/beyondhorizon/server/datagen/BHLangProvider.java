@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.server.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
@@ -33,8 +34,10 @@ public class BHLangProvider extends LanguageProvider {
         RegistryLanguage.ADD_PAINTING_TRANSLATION_AUTHOR.forEach(this::addPaintingAuthor);
         RegistryLanguage.ADD_PAINTING_TRANSLATION_TITLE.forEach(this::addPaintingTitle);
         RegistryLanguage.ADD_ITEM_LORE.forEach(this::add);
+        Keybinds.KEYBINDING.forEach(this::add);
 
         this.add(Tooltips.SKILL_TYPE, "%s");
+        this.add(Tooltips.TOOLTIP_MINING_SPEED, "%s Mining Speed");
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional +%s%% target's Current HP");
         this.addSkills(Skills.BLADE_EDGE.get(), "Blade Edge", "Deal additional +%s%% target's Max HP");
         this.addSkills(Skills.RADIANT.get(), "Radiant", "Deal additional damage to undead by +%s%%");

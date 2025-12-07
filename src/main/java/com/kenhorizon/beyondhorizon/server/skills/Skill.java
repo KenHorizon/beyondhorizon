@@ -281,31 +281,26 @@ public abstract class Skill {
         }
         return this.MODID;
     }
-
     protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
-        Component abilityTrait;
+        Component text;
         if (firstType) {
-            abilityTrait = CommonComponents.space()
-                    .append(Component.translatable(Tooltips.SKILL_TYPE,
-                            this.getSkillType().getName())).withStyle(Tooltips.TOOLTIP[1])
-                    .append(CommonComponents.space()
-                            .append(Component.translatable(this.getDescriptionId()).withStyle(this.format.getChatFormatting())));
-        } else {
-            abilityTrait = CommonComponents.space().append(Component.translatable(this.getDescriptionId()).withStyle(this.format.getChatFormatting()));
+            tooltip.add(Component.translatable(Tooltips.SKILL_TYPE, this.getSkillType().getName()).withStyle(Tooltips.TOOLTIP[1]));
         }
-        tooltip.add(abilityTrait);
+        text = this.spacing().append(Component.translatable(this.getDescriptionId()).withStyle(this.format.getChatFormatting()));
+        tooltip.add(text);
     }
-    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed) {
+    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
         if (!this.isTooltipEnable()) return;
         if (this.isTooltipNameEnable()) {
-            this.addTooltipTitle(itemStack, tooltip, true);
+            this.addTooltipTitle(itemStack, tooltip, first);
         }
         if (!this.isTooltipDescriptionEnable()) return;
         if (this.isAttributeTooltipEnable()) {
             this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
         }
         boolean flag = size == 1;
-        if ((ModClientConfig.ADVANCED_TOOLTIP.get() || ModClientConfig.ADVANCED_TOOLTIP_SKILL.get() || flag) && (!flag && isShiftPressed) && I18n.exists(this.createId())) {
+        boolean alwayShow = (ModClientConfig.ADVANCED_TOOLTIP.get() || ModClientConfig.ADVANCED_TOOLTIP_SKILL.get()) && flag;
+        if ((alwayShow || isShiftPressed) && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
         }
     }

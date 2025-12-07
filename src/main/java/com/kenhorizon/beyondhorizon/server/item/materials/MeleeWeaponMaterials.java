@@ -95,31 +95,31 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
             27, () -> {
         return Ingredient.of(BHItems.TITANIUM_INGOT.get());
     }),
-    BLADE_OF_THE_ENDERLORD("blade_of_the_enderlord",
+    TIER_ONE("tier_one",
             0,
-            3251,
+            0,
             2.0F,
             0.0F,
-            22,
+            16,
             true, () -> {
         return Ingredient.of(Items.AIR);
     }),
-    GIANT_SLAYER_SWORD("giant_slayer_sword",
+    TIER_TWO("tier_one",
+            1,
             0,
-            3251,
             2.0F,
             0.0F,
-            22,
+            20,
             true, () -> {
         return Ingredient.of(Items.AIR);
     }),
-    ZENITH("zenith",
-          0,
-          2251,
-          2.0F,
-          0.0F,
-          22,
-          true, () -> {
+    TIER_THREE("tier_three",
+            2,
+            0,
+            2.0F,
+            0.0F,
+            24,
+            true, () -> {
         return Ingredient.of(Items.AIR);
     });
 

@@ -51,15 +51,15 @@ public class Accessories {
             .addAttributeModifier(Attributes.ARMOR, "2e557669-9aef-4636-bfe5-ce87cec1cd93", Constant.ARMOR_4, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> ABILITY_POWER_0 = registerSkill("ability_power_0", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "ff8fbcf0-aa84-4748-9d3e-09b956fd6232", Constant.ABILITY_POWER_0, AttributeModifier.Operation.ADDITION));
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "f67c37b4-cd99-41d7-9b74-47cdd8f19ea4", Constant.ABILITY_POWER_0, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<Accessory> ABILITY_POWER_1 = registerSkill("ability_power_1", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "ff8fbcf0-aa84-4748-9d3e-09b956fd6232", Constant.ABILITY_POWER_1, AttributeModifier.Operation.ADDITION));
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "a196dea6-6b56-40d3-b683-c9cca7483e0d", Constant.ABILITY_POWER_1, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<Accessory> ABILITY_POWER_2 = registerSkill("ability_power_2", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "ff8fbcf0-aa84-4748-9d3e-09b956fd6232", Constant.ABILITY_POWER_2, AttributeModifier.Operation.ADDITION));
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "fcab74b2-826f-434d-911e-ee8ba1f67be1", Constant.ABILITY_POWER_2, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<Accessory> ABILITY_POWER_3 = registerSkill("ability_power_3", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "ff8fbcf0-aa84-4748-9d3e-09b956fd6232", Constant.ABILITY_POWER_3, AttributeModifier.Operation.ADDITION));
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "371734eb-f19e-414e-b3c1-23f7d9548dc7", Constant.ABILITY_POWER_3, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<Accessory> ABILITY_POWER_4 = registerSkill("ability_power_4", () -> new AttributeOnlyAccessory()
-            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "ff8fbcf0-aa84-4748-9d3e-09b956fd6232", Constant.ABILITY_POWER_4, AttributeModifier.Operation.ADDITION));
+            .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), "0d5d1a15-fa57-4b68-b4bc-f78354787664", Constant.ABILITY_POWER_4, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> MAX_MANA_0 = registerSkill("max_mana_0", () -> new AttributeOnlyAccessory()
             .addAttributeModifier(BHAttributes.MAX_MANA.get(), "54191c52-cc38-4d55-a8db-61cb8913c8f7", Constant.MAX_MANA_0, AttributeModifier.Operation.ADDITION));

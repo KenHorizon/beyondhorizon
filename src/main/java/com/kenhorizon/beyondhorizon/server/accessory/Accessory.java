@@ -120,29 +120,29 @@ public abstract class Accessory {
         return this.MODID;
     }
 
-    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed) {
+    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
         if (!this.isTooltipEnable()) return;
         if (this.isTooltipNameEnable()) {
-            this.addTooltipTitle(itemStack, tooltip, true);
+            this.addTooltipTitle(itemStack, tooltip, first);
         }
         if (!this.isTooltipDescriptionEnable()) return;
-        if (this.isAttributeTooltipEnable()) {
-            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
-        }
         boolean flag = size == 1;
-        if ((ModClientConfig.ADVANCED_TOOLTIP.get() || ModClientConfig.ADVANCED_TOOLTIP_ACCESSORY.get() || flag) && (!flag && isShiftPressed) && I18n.exists(this.createId())) {
+        boolean alwayShow = (ModClientConfig.ADVANCED_TOOLTIP.get() || ModClientConfig.ADVANCED_TOOLTIP_ACCESSORY.get()) && flag;
+        if ((alwayShow || isShiftPressed) && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
         }
     }
-
+    public void addTooltipAttributes(ItemStack itemStack, List<Component> tooltip) {
+        if (this.isAttributeTooltipEnable()) {
+            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
+        }
+    }
     protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
         Component text;
         if (firstType) {
-            text = CommonComponents.space()
-                    .append(CommonComponents.space()
-                            .append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD)));
+            text = this.spacing().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
         } else {
-            text = CommonComponents.space().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
+            text = this.spacing().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
         }
         tooltip.add(text);
     }

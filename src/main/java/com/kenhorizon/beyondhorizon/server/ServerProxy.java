@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server;
 
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -28,6 +29,14 @@ public class ServerProxy {
     }
 
     public void renderBlockAndItemColors(RegisterColorHandlersEvent.Block event) {}
+
+    public boolean isKeyDown(KeyMapping keyMapping) {
+        return false;
+    }
+
+    public boolean isKeyPressed(KeyMapping keyMapping) {
+        return false;
+    }
 
     public void syncAccessoryToPlayer(int slot, ItemStack itemStack, ServerPlayer serverPlayer) {}
 

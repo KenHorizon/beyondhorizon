@@ -31,6 +31,7 @@ public class Tooltips {
 
     //
     public static final String SKILL_TYPE = String.format("tooltip.%s.skill_type", BeyondHorizon.ID);
+    public static final String TOOLTIP_MINING_SPEED = String.format("tooltip.%s.mining_speed", BeyondHorizon.ID);
     public static final String TOOLTIP_ACCESSORY = String.format("item.%s.accessory", BeyondHorizon.ID);
     public static final String TOOLTIP_INVENTORY = String.format("tooltip.%s.inventory", BeyondHorizon.ID);
     public static final String TOOLTIP_HEALTH_RECOVERY_POTION = String.format("tooltip.%s.recovery_potion.health", BeyondHorizon.ID);

@@ -150,7 +150,7 @@ public class BlitHelper {
         } else {
             coloredText = ColorUtil.combineRGB(255, 255, 255);
         }
-        drawStrings(guiGraphics, text, x, y, scale, coloredText, border);
+        drawStrings(guiGraphics, text, x, y, scale, coloredText, border, !border);
     }
     public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, boolean border) {
         int coloredText = 0;
@@ -159,7 +159,7 @@ public class BlitHelper {
         } else {
             coloredText = ColorUtil.combineRGB(255, 255, 255);
         }
-        drawStrings(guiGraphics, text, x, y, 16.0F, coloredText, border);
+        drawStrings(guiGraphics, text, x, y, 16.0F, coloredText, border, !border);
     }
     public static void drawStrings(GuiGraphics guiGraphics, Component text, float scale, int x, int y) {
         int coloredText = 0;
@@ -168,8 +168,9 @@ public class BlitHelper {
         } else {
             coloredText = ColorUtil.combineRGB(255, 255, 255);
         }
-        drawStrings(guiGraphics, text, x, y, scale, coloredText, false);
+        drawStrings(guiGraphics, text, x, y, scale, coloredText, false, true);
     }
+
     public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y) {
         int coloredText = 0;
         if (text.getStyle().getColor() != null) {
@@ -177,37 +178,14 @@ public class BlitHelper {
         } else {
             coloredText = ColorUtil.combineRGB(255, 255, 255);
         }
-        drawStrings(guiGraphics, text, x, y, 16.0F, coloredText, false);
+        drawStrings(guiGraphics, text, x, y, 16.0F, coloredText, false, true);
     }
 
-    public static void drawStrings(GuiGraphics guiGraphics, String text, float scale, int x, int y, boolean border) {
-        drawStrings(guiGraphics, text, x, y, scale, ColorUtil.combineRGB(255, 255, 255), border);
-    }
-    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, boolean border) {
-        drawStrings(guiGraphics, text, x, y, 16.0F, ColorUtil.combineRGB(255, 255, 255), border);
+    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color, boolean borderOrdropShadow) {
+        drawStrings(guiGraphics, text, x, y, 16.0F, color, borderOrdropShadow, !borderOrdropShadow);
     }
 
-    public static void drawStrings(GuiGraphics guiGraphics, String text, float scale, int x, int y, int color, boolean border) {
-        drawStrings(guiGraphics, text, x, y, scale, color, border);
-    }
-    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color, boolean border) {
-        drawStrings(guiGraphics, text, x, y, 16.0F, color, border);
-    }
-
-    public static void drawStrings(GuiGraphics guiGraphics, String text, float scale, int x, int y) {
-        drawStrings(guiGraphics, text, x, y, scale, ColorUtil.combineRGB(255, 255, 255), false);
-    }
-    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y) {
-        drawStrings(guiGraphics, text, x, y, 16.0F, ColorUtil.combineRGB(255, 255, 255), false);
-    }
-
-    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color) {
-        drawStrings(guiGraphics, text, x, y, 16.0F, color, false);
-    }
-    public static void drawStrings(GuiGraphics guiGraphics, String text, float scale, int x, int y, int color) {
-        drawStrings(guiGraphics, text, x, y, scale, color, false);
-    }
-    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, float scale, int color, boolean border) {
+    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, float scale, int color, boolean border, boolean dropShadow) {
         PoseStack poseStack = new PoseStack();
         poseStack.pushPose();
         poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
@@ -219,11 +197,11 @@ public class BlitHelper {
             guiGraphics.drawString(Minecraft.getInstance().font, componentString, x, y + 1, 0, false);
             guiGraphics.drawString(Minecraft.getInstance().font, componentString, x, y - 1, 0, false);
         }
-        guiGraphics.drawString(Minecraft.getInstance().font, componentString, x, y, color, false);
+        guiGraphics.drawString(Minecraft.getInstance().font, componentString, x, y, color, dropShadow);
         poseStack.popPose();
     }
 
-    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, float scale, int color, boolean border) {
+    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, float scale, int color, boolean border, boolean dropShadow) {
         PoseStack poseStack = new PoseStack();
         poseStack.pushPose();
         poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
@@ -234,26 +212,7 @@ public class BlitHelper {
             guiGraphics.drawString(Minecraft.getInstance().font, text, x, y + 1, ColorUtil.combineRGB(0, 0, 0), false);
             guiGraphics.drawString(Minecraft.getInstance().font, text, x, y - 1, ColorUtil.combineRGB(0, 0, 0), false);
         }
-        guiGraphics.drawString(Minecraft.getInstance().font, text, x, y, color, false);
+        guiGraphics.drawString(Minecraft.getInstance().font, text, x, y, color, dropShadow);
         poseStack.popPose();
-    }
-    public static void drawHorizontalGradient(GuiGraphics graphics, int left, int top, int right, int bottom, int startColor, int endColor) {
-        Matrix4f pose = graphics.pose().last().pose();
-        BufferBuilder buffer = Tesselator.getInstance().getBuilder();
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
-
-        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR);
-        // Top-left
-        buffer.vertex(pose, left, top, 0).color(startColor).endVertex();
-        // Top-right
-        buffer.vertex(pose, right, top, 0).color(endColor).endVertex();
-        // Bottom-right
-        buffer.vertex(pose, right, bottom, 0).color(endColor).endVertex();
-        // Bottom-left
-        buffer.vertex(pose, left, bottom, 0).color(startColor).endVertex();
-        BufferUploader.drawWithShader(buffer.end());
-        RenderSystem.disableBlend();
     }
 }

@@ -69,9 +69,9 @@ public class AttributeTooltips {
         amount *= attributeAmount > 0.0D ? 1.0D : -1.0D;
         if (amount == 0.0D) return;
         if (checkIfPercentage(attribute)) {
-            tooltip.add(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), Maths.FORMAT.format(amount), displayName).withStyle(color));
+            tooltip.add(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), Maths.format1(amount), displayName).withStyle(color));
         } else {
-            tooltip.add(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.FORMAT.format(amount), displayName).withStyle(color));
+            tooltip.add(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format1(amount), displayName).withStyle(color));
         }
     }
 

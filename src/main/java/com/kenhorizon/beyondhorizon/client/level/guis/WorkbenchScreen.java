@@ -126,7 +126,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
                 poseStack.pushPose();
                 poseStack.translate(0, 0, 200);
                 if (!(need == 1 || need == 0)) {
-                    BlitHelper.drawStrings(guiGraphics, "x" + need, x + 8, y + 8, ColorUtil.combineRGB(255, 255, 255), true);
+                    BlitHelper.drawStrings(guiGraphics, "x" + need, x + 8, y + 8, ColorUtil.combineRGB(255, 255, 255), false);
                 }
                 poseStack.popPose();
                 x += PADDING_INGREDIENTS;

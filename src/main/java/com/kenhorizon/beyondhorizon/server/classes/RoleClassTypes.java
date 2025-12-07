@@ -6,12 +6,12 @@ import net.minecraft.util.StringRepresentable;
 import java.util.Locale;
 
 public enum RoleClassTypes implements StringRepresentable {
+    NONE,
     ASSSASSIN,
     MARKSMAN,
     CASTER,
     STRIKER,
     VANGAURD,
-    DEFENDER,
     SUPPORT;
 
     @Override

@@ -5,10 +5,9 @@ import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItems;
-import com.kenhorizon.beyondhorizon.server.capability.AccessoryInventoryCap;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.capability.CombatCoreCap;
-import com.kenhorizon.beyondhorizon.server.capability.DamageInfoCap;
+import com.kenhorizon.beyondhorizon.server.capability.*;
+import com.kenhorizon.beyondhorizon.server.classes.IRoleClass;
+import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -115,13 +114,14 @@ public class ServerEventHandler {
         if (AccessoryInventoryCap.canAttachTo(entity)) {
             event.addCapability(AccessoryInventoryCap.NAME, new AccessoryInventoryCap());
         }
-        if (entity instanceof LivingEntity) {
-            if (DamageInfoCap.canAttachTo(entity)) {
-                event.addCapability(DamageInfoCap.NAME, new DamageInfoCap());
-            }
-            if (CombatCoreCap.canAttachTo(entity)) {
-                event.addCapability(CombatCoreCap.NAME, new CombatCoreCap());
-            }
+        if (DamageInfoCap.canAttachTo(entity)) {
+            event.addCapability(DamageInfoCap.NAME, new DamageInfoCap());
+        }
+        if (CombatCoreCap.canAttachTo(entity)) {
+            event.addCapability(CombatCoreCap.NAME, new CombatCoreCap());
+        }
+        if (RoleClassCap.canAttachTo(entity)) {
+            event.addCapability(RoleClassCap.NAME, new RoleClassCap((Player) entity));
         }
     }
 
@@ -130,6 +130,7 @@ public class ServerEventHandler {
         event.register(IAccessoryItemHandler.class);
         event.register(ICombatCore.class);
         event.register(IDamageInfo.class);
+        event.register(IRoleClass.class);
     }
 
 
@@ -247,6 +248,9 @@ public class ServerEventHandler {
         }
         if (entity instanceof Player player) {
             this.onPlayerTick(player);
+            IRoleClass roleCallback = CapabilityCaller.roleClass(player);
+            RoleClass roleClass = roleCallback.getInstance();
+            roleClass.tick();
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack prevItemStacks = player.getInventory().getItem(i);
                 if (!ItemStack.matches(itemStack, prevItemStacks)) {
@@ -384,6 +388,14 @@ public class ServerEventHandler {
             if (source.getEntity() instanceof LivingEntity attacker) {
                 ICombatCore attackerCombatCore = CapabilityCaller.combat(attacker);
                 ItemStack attackerStack = attacker.getMainHandItem();
+                if (attacker instanceof Player) {
+                    IRoleClass callback = CapabilityCaller.roleClass((Player) attacker);
+                    RoleClass roleClass = callback.getInstance();
+                    Optional<IAttack> attack = roleClass.IAttack();
+                    if (attack.isPresent()) {
+                        damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
+                    }
+                }
                 if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                     for (Skill trait : container.getSkills()) {
                         Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();

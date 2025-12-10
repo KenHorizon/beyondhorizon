@@ -5,10 +5,13 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -174,6 +177,10 @@ public class RoleClass implements IAttack {
         this.expPoints += 30;
     }
 
+    public void setExpPoints(float expPoints) {
+        this.expPoints = expPoints;
+    }
+
     public float getExpPoints() {
         return expPoints;
     }
@@ -263,6 +270,20 @@ public class RoleClass implements IAttack {
         return this.expRequired = this.maxRequiredXp + (100 * this.levels);
     }
 
+    public void resetEverything() {
+        this.setRoles(RoleClassTypes.NONE);
+        this.setPoints(0);
+        this.setLevel(0);
+        this.setExpPoints(0);
+        this.expProgress = 0.0F;
+        this.str = 0;
+        this.vit = 0;
+        this.cons = 0;
+        this.agi = 0;
+        this.dex = 0;
+        this.inte = 0;
+    }
+
     public void tick() {
         this.getXpNeededForNextLevel();
         this.expProgress += this.expPoints / this.expRequired;
@@ -273,12 +294,12 @@ public class RoleClass implements IAttack {
                 this.expProgress = (int) (1.0F + f / this.getXpNeededForNextLevel());
             } else {
                 this.setLevel(this.getLevel() - 1);
-                this.setPoints(this.getPoints() + 1);
                 this.expProgress = 0.0F;
             }
         }
         while (this.expProgress > 1.0F) {
             this.setLevel(Math.min(this.maxLevel, this.getLevel() + 1));
+            this.setPoints(this.getPoints() + 1);
             this.expProgress /= this.getXpNeededForNextLevel();
         }
         if (this.player.experienceLevel > this.REQUIRED_LEVEL && !this.alreadyReachedRequiredLevel) {
@@ -302,18 +323,25 @@ public class RoleClass implements IAttack {
         this.addModifiers(2, this.getPointOfSkills(AttributePoints.INTELLIGENGE), INTELLIGENCE_ID, abilityPower, AttributeModifier.Operation.ADDITION);
         this.addModifiers(0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, healthRegen, AttributeModifier.Operation.MULTIPLY_BASE);
         this.addModifiers(0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, manaRegen, AttributeModifier.Operation.MULTIPLY_BASE);
+        if (this.player instanceof ServerPlayer) {
+            NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(this.saveNbt()), (ServerPlayer) player);
+        }
     }
 
     private void addModifiers(float stats, int pts, UUID uuid, AttributeInstance instance, AttributeModifier.Operation operation) {
         if (instance == null) return;
-        float amount = stats + (stats * pts);
-        AttributeModifier modifier = new AttributeModifier(uuid, "Bonus Stats", amount, operation);
-        AttributeModifier prevModifier = instance.getModifier(uuid);
-        if (prevModifier == null) {
-            instance.addTransientModifier(modifier);
-        } else if (prevModifier.getAmount() != amount) {
+        float amount = stats * pts;
+        if (amount == 0) {
             instance.removeModifier(uuid);
-            instance.addTransientModifier(modifier);
+        } else {
+            AttributeModifier modifier = new AttributeModifier(uuid, "Bonus Stats", amount, operation);
+            AttributeModifier prevModifier = instance.getModifier(uuid);
+            if (prevModifier == null) {
+                instance.addTransientModifier(modifier);
+            } else if (prevModifier.getAmount() != amount) {
+                instance.removeModifier(uuid);
+                instance.addTransientModifier(modifier);
+            }
         }
     }
 

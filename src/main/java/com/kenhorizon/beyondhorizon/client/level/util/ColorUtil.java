@@ -7,7 +7,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 public class ColorUtil {
 
     public static int WHITE = combineRGB(255, 255, 255);
-    public static int GRAY = combineRGB(128, 128, 128);
+    public static int GRAY = combineRGB(64, 64, 64);
     private static int round(float value) {
         return (int) (value * 255.0F + 0.5F);
     }

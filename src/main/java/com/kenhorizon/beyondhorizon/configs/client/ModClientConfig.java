@@ -13,7 +13,7 @@ public class ModClientConfig {
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP;
     public static ForgeConfigSpec.EnumValue GAME_HUD;
 
-    private static final ForgeConfigSpec SPEC;
+    public static final ForgeConfigSpec SPEC;
     public static final ModClientConfig INSTANCE;
 
     static {

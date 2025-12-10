@@ -8,6 +8,7 @@ import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.command.RoleClassCommand;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.skills.Skills;
@@ -24,6 +25,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -39,6 +41,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
+import net.minecraftforge.server.command.ConfigCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -122,8 +125,14 @@ public class BeyondHorizon
     @SubscribeEvent
     public void onConfigLoad(final ModConfigEvent event) {
         final ModConfig config = event.getConfig();
-
+        if (config.getSpec() == ModServerConfig.SPEC) {
+            ModServerConfig.reset();
+        }
+        if (config.getSpec() == ModClientConfig.SPEC) {
+            ModClientConfig.reset();
+        }
     }
+
     public static Logger loggers() {
         return LoggerFactory.getLogger(ID);
     }
@@ -134,7 +143,13 @@ public class BeyondHorizon
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("HELLO from server starting");
+        BeyondHorizon.loggers().info("HELLO from server starting");
+    }
+
+    @SubscribeEvent
+    public void onCommandsRegister(RegisterCommandsEvent event) {
+        BeyondHorizon.loggers().info("Registering commands...");
+        RoleClassCommand.register(event.getDispatcher());
     }
 
     private void clientSetup(FMLClientSetupEvent event) {

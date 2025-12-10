@@ -9,7 +9,7 @@ import org.apache.commons.lang3.tuple.Pair;
 public class ModServerConfig {
     public static ForgeConfigSpec.BooleanValue BLOODMOON_SPAWN_FULLMOON;
 
-    private static final ForgeConfigSpec SPEC;
+    public static final ForgeConfigSpec SPEC;
     public static final ModServerConfig INSTANCE;
 
 

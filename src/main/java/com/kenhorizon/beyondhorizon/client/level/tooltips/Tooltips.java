@@ -30,6 +30,15 @@ public class Tooltips {
     public static final String HEALTH = "health";
 
     //
+    public static final String COMMAND_ROLE_SET_SUCCESS = String.format("command.%s.role_class.roles.succes", BeyondHorizon.ID);
+    public static final String COMMAND_ROLE_SET_FAILED = String.format("command.%s.role_class.roles.failure", BeyondHorizon.ID);
+    public static final String COMMAND_LEVEL_SET_SUCCESS = String.format("command.%s.role_class.level.succes", BeyondHorizon.ID);
+    public static final String COMMAND_LEVEL_SET_FAILED = String.format("command.%s.role_class.level.failure", BeyondHorizon.ID);
+    public static final String COMMAND_RESET_SUCCESS = String.format("command.%s.role_class.reset.succes", BeyondHorizon.ID);
+    public static final String COMMAND_RESET_FAILED = String.format("command.%s.role_class.reset.failure", BeyondHorizon.ID);
+    public static final String COMMAND_POINTS_SUCCESS = String.format("command.%s.role_class.points.succes", BeyondHorizon.ID);
+    public static final String COMMAND_POINTS_FAILED = String.format("command.%s.role_class.points.failure", BeyondHorizon.ID);
+    //
     public static final String SKILL_TYPE = String.format("tooltip.%s.skill_type", BeyondHorizon.ID);
     public static final String TOOLTIP_MINING_SPEED = String.format("tooltip.%s.mining_speed", BeyondHorizon.ID);
     public static final String TOOLTIP_ACCESSORY = String.format("item.%s.accessory", BeyondHorizon.ID);

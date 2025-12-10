@@ -36,6 +36,15 @@ public class BHLangProvider extends LanguageProvider {
         RegistryLanguage.ADD_ITEM_LORE.forEach(this::add);
         Keybinds.KEYBINDING.forEach(this::add);
 
+        this.add(Tooltips.COMMAND_ROLE_SET_FAILED, "Failed to change the role to %s");
+        this.add(Tooltips.COMMAND_ROLE_SET_SUCCESS, "Successfully changed the role to %s");
+        this.add(Tooltips.COMMAND_LEVEL_SET_FAILED, "Failed to set the level %s");
+        this.add(Tooltips.COMMAND_LEVEL_SET_SUCCESS, "Successfully set the level %s");
+        this.add(Tooltips.COMMAND_POINTS_FAILED, "Failed to set the points %s");
+        this.add(Tooltips.COMMAND_POINTS_SUCCESS, "Successfully set the points %s");
+        this.add(Tooltips.COMMAND_RESET_FAILED, "Failed to reset the roles");
+        this.add(Tooltips.COMMAND_RESET_SUCCESS, "Successfully reset the roles");
+
         this.add(Tooltips.SKILL_TYPE, "%s");
         this.add(Tooltips.TOOLTIP_MINING_SPEED, "%s Mining Speed");
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional +%s%% target's Current HP");

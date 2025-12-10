@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealItems;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealthCheckerItems;
+import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugRoleClassResetItems;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugWeaponItems;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.item.base.WeaponBuilder;
@@ -42,8 +43,8 @@ public class BHItems {
             .register()
             .build();
     public static final RegistryObject<Item> DEBUG3 = RegistryItems
-            .register("debug3", DebugHealItems::new)
-            .itemName("Debug: Role Changer")
+            .register("debug3", DebugRoleClassResetItems::new)
+            .itemName("Debug: Role Class Reset")
             .tab(RegistryTabs.Category.DEBUGS)
             .model(ItemModels.GENERATED)
             .register()

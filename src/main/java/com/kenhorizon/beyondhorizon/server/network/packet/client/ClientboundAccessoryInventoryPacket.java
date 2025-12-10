@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.network.packet.client;
 
 import com.kenhorizon.beyondhorizon.server.inventory.provider.AccessoryContainerProvider;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundGrabbedItemPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundGrabbedItemPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -10,14 +10,14 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ClientBoundAccessoryInventoryPacket {
+public class ClientboundAccessoryInventoryPacket {
     private final ItemStack itemStack;
 
-    public ClientBoundAccessoryInventoryPacket(ItemStack itemStack) {
+    public ClientboundAccessoryInventoryPacket(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
-    public ClientBoundAccessoryInventoryPacket(FriendlyByteBuf buf) {
+    public ClientboundAccessoryInventoryPacket(FriendlyByteBuf buf) {
         this.itemStack = buf.readItem();
     }
 
@@ -35,7 +35,7 @@ public class ClientBoundAccessoryInventoryPacket {
                 sender.openMenu(new AccessoryContainerProvider());
                 if (!itemStack.isEmpty()) {
                     sender.containerMenu.setCarried(itemStack);
-                    NetworkHandler.sendToPlayer(new ServerBoundGrabbedItemPacket(this.itemStack), sender);
+                    NetworkHandler.sendToPlayer(new ServerboundGrabbedItemPacket(this.itemStack), sender);
                 }
             }
         });

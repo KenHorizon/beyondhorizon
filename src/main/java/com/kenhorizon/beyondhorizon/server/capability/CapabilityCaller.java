@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
-import com.kenhorizon.beyondhorizon.server.classes.IRoleClass;
+import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
@@ -23,9 +23,11 @@ public class CapabilityCaller {
     public static ICombatCore combat(LivingEntity entity) {
         return getCapability(entity, BHCapabilties.COMBAT_CORE);
     }
-    public static IRoleClass roleClass(Player player) {
+
+    public static RoleClass roleClass(Player player) {
         return getCapability(player, BHCapabilties.ROLE_CLASS);
     }
+
     @Nullable
     private static <T> T getCapability(ItemStack itemStack, Capability<T> capability) {
         if (itemStack == null) return null;

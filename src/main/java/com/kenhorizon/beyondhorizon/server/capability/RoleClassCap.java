@@ -2,9 +2,7 @@ package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
-import com.kenhorizon.beyondhorizon.server.classes.RoleClassTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -29,24 +27,24 @@ public class RoleClassCap implements ICapabilityProvider, INBTSerializable<Compo
 
     public RoleClass createInstance() {
         if (this.roleClass == null) {
-            this.roleClass = new RoleClass(RoleClassTypes.NONE, this.player);
+            this.roleClass = new RoleClass(this.player);
         }
         return this.roleClass;
     }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return BHCapabilties.ROLE_CLASS.orEmpty(cap, handler.cast());
+        return BHCapabilties.ROLE_CLASS.orEmpty(cap, this.handler.cast());
     }
 
     @Override
     public CompoundTag serializeNBT() {
-        return this.handler.resolve().get().serializeNBT();
+        return this.handler.orElseThrow(NullPointerException::new).saveNbt();
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        this.handler.resolve().get().deserializeNBT(nbt);
+        this.handler.orElseThrow(NullPointerException::new).loadNbt(nbt);
     }
 
     public static boolean canAttachTo(ICapabilityProvider entity) {

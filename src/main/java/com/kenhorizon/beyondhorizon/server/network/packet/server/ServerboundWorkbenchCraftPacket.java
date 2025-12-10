@@ -2,8 +2,6 @@ package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.recipe.WorkbenchRecipe;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -16,13 +14,13 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class ServerBoundWorkbenchCraftPacket {
+public class ServerboundWorkbenchCraftPacket {
     private final ResourceLocation recipedId;
-    public ServerBoundWorkbenchCraftPacket(ResourceLocation recipedId) {
+    public ServerboundWorkbenchCraftPacket(ResourceLocation recipedId) {
         this.recipedId = recipedId;
     }
 
-    public ServerBoundWorkbenchCraftPacket(FriendlyByteBuf buf) {
+    public ServerboundWorkbenchCraftPacket(FriendlyByteBuf buf) {
         this.recipedId = buf.readResourceLocation();
     }
 

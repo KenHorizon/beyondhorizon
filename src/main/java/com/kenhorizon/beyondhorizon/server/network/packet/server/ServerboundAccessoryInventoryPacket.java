@@ -11,17 +11,17 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ServerBoundAccessoryInventoryPacket {
+public class ServerboundAccessoryInventoryPacket {
     private final int slot;
     private final ItemStack itemStack;
     private final int id;
-    public ServerBoundAccessoryInventoryPacket(int slot, int id, ItemStack itemStack) {
+    public ServerboundAccessoryInventoryPacket(int slot, int id, ItemStack itemStack) {
         this.slot = slot;
         this.id = id;
         this.itemStack = itemStack;
     }
 
-    public ServerBoundAccessoryInventoryPacket(FriendlyByteBuf buf) {
+    public ServerboundAccessoryInventoryPacket(FriendlyByteBuf buf) {
         this.slot = buf.readInt();
         this.id = buf.readInt();
         this.itemStack = buf.readItem();

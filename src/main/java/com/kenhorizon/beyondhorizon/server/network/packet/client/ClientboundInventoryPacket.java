@@ -1,8 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.client;
 
-import com.kenhorizon.beyondhorizon.server.inventory.provider.AccessoryContainerProvider;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundGrabbedItemPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundGrabbedItemPacket;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
@@ -10,14 +9,14 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ClientBoundInventoryPacket {
+public class ClientboundInventoryPacket {
     private final ItemStack itemStack;
 
-    public ClientBoundInventoryPacket(ItemStack itemStack) {
+    public ClientboundInventoryPacket(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
-    public ClientBoundInventoryPacket(FriendlyByteBuf buf) {
+    public ClientboundInventoryPacket(FriendlyByteBuf buf) {
         this.itemStack = buf.readItem();
     }
 
@@ -37,7 +36,7 @@ public class ClientBoundInventoryPacket {
                     if (!sender.isCreative()) {
                         sender.containerMenu.setCarried(itemStack);
                     }
-                    NetworkHandler.sendToPlayer(new ServerBoundGrabbedItemPacket(this.itemStack), sender);
+                    NetworkHandler.sendToPlayer(new ServerboundGrabbedItemPacket(this.itemStack), sender);
                 }
             }
         });

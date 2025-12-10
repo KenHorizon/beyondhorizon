@@ -1,12 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.network;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientBoundAccessoryInventoryPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientBoundInventoryPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundAccessoryInventoryPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundGrabbedItemPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundOpenLevelSystemPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundWorkbenchCraftPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryInventoryPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundInventoryPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -36,13 +34,16 @@ public class NetworkHandler {
 
         INSTANCE = net;
         // BUILDER
-        net.registerMessage(id(), ClientBoundInventoryPacket.class, ClientBoundInventoryPacket::toBytes, ClientBoundInventoryPacket::new, ClientBoundInventoryPacket::handle);
-        net.registerMessage(id(), ClientBoundAccessoryInventoryPacket.class, ClientBoundAccessoryInventoryPacket::toBytes, ClientBoundAccessoryInventoryPacket::new, ClientBoundAccessoryInventoryPacket::handle);
+        net.registerMessage(id(), ClientboundInventoryPacket.class, ClientboundInventoryPacket::toBytes, ClientboundInventoryPacket::new, ClientboundInventoryPacket::handle);
+        net.registerMessage(id(), ClientboundAccessoryInventoryPacket.class, ClientboundAccessoryInventoryPacket::toBytes, ClientboundAccessoryInventoryPacket::new, ClientboundAccessoryInventoryPacket::handle);
+        net.registerMessage(id(), ClientboundRoleClassSyncPacket.class, ClientboundRoleClassSyncPacket::toBytes, ClientboundRoleClassSyncPacket::new, ClientboundRoleClassSyncPacket::handle);
 
-        net.registerMessage(id(), ServerBoundWorkbenchCraftPacket.class, ServerBoundWorkbenchCraftPacket::toBytes, ServerBoundWorkbenchCraftPacket::new, ServerBoundWorkbenchCraftPacket::handle);
-        net.registerMessage(id(), ServerBoundAccessoryInventoryPacket.class, ServerBoundAccessoryInventoryPacket::toBytes, ServerBoundAccessoryInventoryPacket::new, ServerBoundAccessoryInventoryPacket::handle);
-        net.registerMessage(id(), ServerBoundGrabbedItemPacket.class, ServerBoundGrabbedItemPacket::toBytes, ServerBoundGrabbedItemPacket::new, ServerBoundGrabbedItemPacket::handle);
-        net.registerMessage(id(), ServerBoundOpenLevelSystemPacket.class, ServerBoundOpenLevelSystemPacket::toBytes, ServerBoundOpenLevelSystemPacket::new, ServerBoundOpenLevelSystemPacket::handle);
+        net.registerMessage(id(), ServerboundWorkbenchCraftPacket.class, ServerboundWorkbenchCraftPacket::toBytes, ServerboundWorkbenchCraftPacket::new, ServerboundWorkbenchCraftPacket::handle);
+        net.registerMessage(id(), ServerboundAccessoryInventoryPacket.class, ServerboundAccessoryInventoryPacket::toBytes, ServerboundAccessoryInventoryPacket::new, ServerboundAccessoryInventoryPacket::handle);
+        net.registerMessage(id(), ServerboundGrabbedItemPacket.class, ServerboundGrabbedItemPacket::toBytes, ServerboundGrabbedItemPacket::new, ServerboundGrabbedItemPacket::handle);
+        net.registerMessage(id(), ServerboundOpenLevelSystemPacket.class, ServerboundOpenLevelSystemPacket::toBytes, ServerboundOpenLevelSystemPacket::new, ServerboundOpenLevelSystemPacket::handle);
+        net.registerMessage(id(), ServerboundConsumePointsPacket.class, ServerboundConsumePointsPacket::toBytes, ServerboundConsumePointsPacket::new, ServerboundConsumePointsPacket::handle);
+        net.registerMessage(id(), ServerboundSkillPointsPacket.class, ServerboundSkillPointsPacket::toBytes, ServerboundSkillPointsPacket::new, ServerboundSkillPointsPacket::handle);
     }
 //
 

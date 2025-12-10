@@ -1,12 +1,13 @@
 package com.kenhorizon.beyondhorizon.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.client.entity.player.PlayerDataHandler;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.capability.*;
-import com.kenhorizon.beyondhorizon.server.classes.IRoleClass;
 import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
@@ -15,13 +16,14 @@ import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
+import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
 import com.kenhorizon.beyondhorizon.server.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.mojang.datafixers.util.Either;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.locale.Language;
@@ -42,13 +44,12 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -102,6 +103,28 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
+    public void onEntityJoin(EntityJoinLevelEvent event) {
+        if (!event.getLevel().isClientSide()) {
+            if (event.getEntity() instanceof Player player) {
+                RoleClass role = CapabilityCaller.roleClass(player);
+                NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) player);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        RoleClass role = CapabilityCaller.roleClass(event.getEntity());
+        NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
+    }
+
+    @SubscribeEvent
+    public void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        RoleClass role = CapabilityCaller.roleClass(event.getEntity());
+        NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
+    }
+
+    @SubscribeEvent
     public void onLivingHealEvent(LivingHealEvent event) {
         float heal = event.getAmount();
         float bonus = (float) (heal * event.getEntity().getAttributeValue(BHAttributes.HEALING.get()));
@@ -130,7 +153,7 @@ public class ServerEventHandler {
         event.register(IAccessoryItemHandler.class);
         event.register(ICombatCore.class);
         event.register(IDamageInfo.class);
-        event.register(IRoleClass.class);
+        event.register(RoleClass.class);
     }
 
 
@@ -248,9 +271,11 @@ public class ServerEventHandler {
         }
         if (entity instanceof Player player) {
             this.onPlayerTick(player);
-            IRoleClass roleCallback = CapabilityCaller.roleClass(player);
-            RoleClass roleClass = roleCallback.getInstance();
-            roleClass.tick();
+            PlayerData playerData = PlayerDataHandler.get(player);
+            if (playerData.roles() != null) {
+                RoleClass roleClass = playerData.roles();
+                roleClass.tick();
+            }
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack prevItemStacks = player.getInventory().getItem(i);
                 if (!ItemStack.matches(itemStack, prevItemStacks)) {
@@ -389,8 +414,7 @@ public class ServerEventHandler {
                 ICombatCore attackerCombatCore = CapabilityCaller.combat(attacker);
                 ItemStack attackerStack = attacker.getMainHandItem();
                 if (attacker instanceof Player) {
-                    IRoleClass callback = CapabilityCaller.roleClass((Player) attacker);
-                    RoleClass roleClass = callback.getInstance();
+                    RoleClass roleClass = CapabilityCaller.roleClass((Player) attacker);
                     Optional<IAttack> attack = roleClass.IAttack();
                     if (attack.isPresent()) {
                         damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);

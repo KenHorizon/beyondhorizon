@@ -10,7 +10,7 @@ import net.minecraft.world.entity.player.Player;
 public class CasterRole extends RoleClass {
 
     public CasterRole(Player player) {
-        super(RoleClassTypes.CASTER, player);
+        super(player);
     }
     @Override
     public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {

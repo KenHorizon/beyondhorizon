@@ -8,14 +8,14 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ServerBoundGrabbedItemPacket {
+public class ServerboundGrabbedItemPacket {
     private final ItemStack itemStack;
 
-    public ServerBoundGrabbedItemPacket(ItemStack itemStack) {
+    public ServerboundGrabbedItemPacket(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 
-    public ServerBoundGrabbedItemPacket(FriendlyByteBuf buf) {
+    public ServerboundGrabbedItemPacket(FriendlyByteBuf buf) {
         this.itemStack = buf.readItem();
     }
 

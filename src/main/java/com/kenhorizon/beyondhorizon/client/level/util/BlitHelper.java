@@ -143,6 +143,14 @@ public class BlitHelper {
     }
 
     // DRAW STRINGS
+    public static void drawStrings(GuiGraphics guiGraphics, Component text, float scale, int x, int y, int coloredText) {
+        if (text.getStyle().getColor() != null) {
+            coloredText = TextColor.fromRgb(text.getStyle().getColor().getValue()).getValue();
+        } else {
+            coloredText = ColorUtil.combineRGB(255, 255, 255);
+        }
+        drawStrings(guiGraphics, text, x, y, scale, coloredText, false, false);
+    }
     public static void drawStrings(GuiGraphics guiGraphics, Component text, float scale, int x, int y, boolean border) {
         int coloredText = 0;
         if (text.getStyle().getColor() != null) {
@@ -171,6 +179,16 @@ public class BlitHelper {
         drawStrings(guiGraphics, text, x, y, scale, coloredText, false, true);
     }
 
+    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, int color) {
+        int coloredText;
+        if (text.getStyle().getColor() != null) {
+            coloredText = TextColor.fromRgb(text.getStyle().getColor().getValue()).getValue();
+        } else {
+            coloredText = color;
+        }
+        drawStrings(guiGraphics, text, x, y, 16.0F, coloredText, false, false);
+    }
+
     public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y) {
         int coloredText = 0;
         if (text.getStyle().getColor() != null) {
@@ -181,6 +199,9 @@ public class BlitHelper {
         drawStrings(guiGraphics, text, x, y, 16.0F, coloredText, false, true);
     }
 
+    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color) {
+        drawStrings(guiGraphics, text, x, y, 16.0F, color, false, false);
+    }
     public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color, boolean borderOrdropShadow) {
         drawStrings(guiGraphics, text, x, y, 16.0F, color, borderOrdropShadow, !borderOrdropShadow);
     }

@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 public class AssassinRole extends RoleClass {
 
     public AssassinRole(Player player) {
-        super(RoleClassTypes.ASSSASSIN, player);
+        super(player);
     }
 
     @Override

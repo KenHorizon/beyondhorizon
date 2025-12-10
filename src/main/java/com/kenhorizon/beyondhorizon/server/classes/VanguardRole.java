@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 public class VanguardRole extends RoleClass {
 
     public VanguardRole(Player player) {
-        super(RoleClassTypes.VANGAURD, player);
+        super(player);
     }
 
     @Override

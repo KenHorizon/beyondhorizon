@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.skills;
+package com.kenhorizon.loggers;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.mojang.logging.LogUtils;

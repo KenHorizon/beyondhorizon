@@ -1,13 +1,13 @@
 package com.kenhorizon.beyondhorizon.client.level.util;
 
+import net.minecraft.ChatFormatting;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.math.NumberUtils;
 
 public class ColorUtil {
-    public static int getWhite() {
-        return combineRGB(255, 255, 255);
-    }
 
+    public static int WHITE = combineRGB(255, 255, 255);
+    public static int GRAY = combineRGB(128, 128, 128);
     private static int round(float value) {
         return (int) (value * 255.0F + 0.5F);
     }

@@ -53,7 +53,7 @@ public class GameHudDisplay extends Gui {
         int y = this.hud.scaledWindowHeight - (this.leftHeight + 11);
         String value = String.format("%.0f", this.hud.armor);
         BlitHelper.draw(guiGraphics, HudSprites.ARMOR_FULL, x, y - 1, 9.0F, 9, 9, 9, 9);
-        BlitHelper.drawStrings(guiGraphics, value,x + (5 + 9), y, ColorUtil.getWhite(), true);
+        BlitHelper.drawStrings(guiGraphics, value,x + (5 + 9), y, ColorUtil.WHITE, true);
         RenderSystem.disableBlend();
         minecraft.getProfiler().pop();
     }
@@ -66,7 +66,7 @@ public class GameHudDisplay extends Gui {
         if (this.hud.hasAbsroption) {
             String absorption = String.format("%.0f", this.hud.absorption);
             BlitHelper.draw(guiGraphics, HudSprites.ABSROPTION, x, y + 9, 9.0F, 9, 9, 9, 9);
-            BlitHelper.drawStrings(guiGraphics, absorption,x + (5 + 9), y + 10, ColorUtil.getWhite(), true);
+            BlitHelper.drawStrings(guiGraphics, absorption,x + (5 + 9), y + 10, ColorUtil.WHITE, true);
         }
         String health = String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth);
         BlitHelper.draw(guiGraphics, HudSprites.HEALTH, x, y - 1, 9.0F, 9, 9, 9, 9);

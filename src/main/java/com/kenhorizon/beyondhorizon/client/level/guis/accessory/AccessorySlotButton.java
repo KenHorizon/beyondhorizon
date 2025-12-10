@@ -2,8 +2,8 @@ package com.kenhorizon.beyondhorizon.client.level.guis.accessory;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientBoundAccessoryInventoryPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientBoundInventoryPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryInventoryPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundInventoryPacket;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -35,7 +35,7 @@ public class AccessorySlotButton extends Button {
                     InventoryScreen inventory = new InventoryScreen(mc.player);
                     mc.setScreen(inventory);
                     mc.player.containerMenu.setCarried(stack);
-                    NetworkHandler.sendToServer(new ClientBoundInventoryPacket(stack));
+                    NetworkHandler.sendToServer(new ClientboundInventoryPacket(stack));
                 } else {
                     if (parentGui instanceof InventoryScreen inventoryScreen) {
                         RecipeBookComponent recipeBookGui = inventoryScreen.getRecipeBookComponent();
@@ -44,7 +44,7 @@ public class AccessorySlotButton extends Button {
                             recipeBookGui.toggleVisibility();
                         }
                     }
-                    NetworkHandler.sendToServer(new ClientBoundAccessoryInventoryPacket(stack));
+                    NetworkHandler.sendToServer(new ClientboundAccessoryInventoryPacket(stack));
                 }
             }
         }, DEFAULT_NARRATION);

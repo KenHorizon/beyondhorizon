@@ -2,22 +2,17 @@ package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.guis.LevelSystemScreen;
-import com.kenhorizon.beyondhorizon.server.recipe.WorkbenchRecipe;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
-public class ServerBoundOpenLevelSystemPacket {
+public class ServerboundOpenLevelSystemPacket {
 
-    public ServerBoundOpenLevelSystemPacket() {
+    public ServerboundOpenLevelSystemPacket() {
     }
 
-    public ServerBoundOpenLevelSystemPacket(FriendlyByteBuf buf) {
+    public ServerboundOpenLevelSystemPacket(FriendlyByteBuf buf) {
     }
 
     public void toBytes(FriendlyByteBuf buf) {

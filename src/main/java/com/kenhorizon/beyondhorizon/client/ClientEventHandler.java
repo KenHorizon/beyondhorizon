@@ -8,8 +8,6 @@ import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotBut
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.item.util.ItemStackUtil;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundOpenLevelSystemPacket;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;

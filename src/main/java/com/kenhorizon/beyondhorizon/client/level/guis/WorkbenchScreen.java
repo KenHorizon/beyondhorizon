@@ -1,36 +1,26 @@
 package com.kenhorizon.beyondhorizon.client.level.guis;
 
-import com.google.common.collect.Lists;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.level.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerBoundWorkbenchCraftPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundWorkbenchCraftPacket;
 import com.kenhorizon.beyondhorizon.server.recipe.WorkbenchRecipe;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
-import it.unimi.dsi.fastutil.objects.ObjectSet;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.client.searchtree.SearchRegistry;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.List;
-import java.util.Locale;
 
 public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     private float scrollOffs;
@@ -156,7 +146,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             for (int i0 = 0; i0 < menu.recipes.size(); i0++) {
                 if (mouseX >= guiButtonX && mouseX <= guiButtonX + 146 && mouseY >= guiButtonY && mouseY <= guiButtonY + 20) {
                     WorkbenchRecipe recipe = menu.recipes.get(i0);
-                    NetworkHandler.sendToServer(new ServerBoundWorkbenchCraftPacket(recipe.getId()) );
+                    NetworkHandler.sendToServer(new ServerboundWorkbenchCraftPacket(recipe.getId()) );
                 }
             }
             int x = this.leftPos + 52;

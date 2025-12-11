@@ -42,6 +42,8 @@ public class RoleClass implements IAttack {
         }
     }
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
+    public static final String CLASS_TAGS = "class";
+    public static final String CLASS_TRAITS_LEVEL_TAGS = "class_and_traits_unlocked";
     public static final String REQUIRED_LEVEL_TAGS = "required_level";
     public static final String DEX_TAGS = "dex";
     public static final String INT_TAGS = "int";
@@ -77,9 +79,10 @@ public class RoleClass implements IAttack {
     public float expRequired = 0;
     public final int maxRequiredXp = 280;
     public final int maxLevel = 100;
-    public final int REQUIRED_LEVEL = Constant.LEVEL_SYSTEM_UNLOCKED;
-
+    public static final int REQUIRED_LEVEL_ATTRIBUTES = Constant.LEVEL_SYSTEM_UNLOCKED;
+    public static final int REQUIRED_LEVEL_CLASS_TRAITS = Constant.CLASS_SYSTEM_UNLOCKED;
     private boolean alreadyReachedRequiredLevel = false;
+    private boolean unlockedClassAndTraits = false;
     public RoleClass(Player player) {
         this.roleClassTypes = RoleClassTypes.NONE;
         this.player = player;
@@ -175,10 +178,35 @@ public class RoleClass implements IAttack {
 
     public void addExpPoints() {
         this.expPoints += 30;
+        this.expProgress += this.expPoints / this.expRequired;
+        while (this.expProgress < 0.0F) {
+            float f = this.expProgress * (float) this.getXpNeededForNextLevel();
+            if (this.levels > 0) {
+                this.setLevel(this.getLevel() - 1);
+                this.expProgress = (int) (1.0F + f / this.getXpNeededForNextLevel());
+            } else {
+                this.setLevel(this.getLevel() - 1);
+                this.expProgress = 0.0F;
+            }
+        }
+        while (this.expProgress > 1.0F) {
+            this.setLevel(Math.min(this.maxLevel, this.getLevel() + 1));
+            this.setPoints(this.getPoints() + 1);
+            this.expProgress /= this.getXpNeededForNextLevel();
+        }
+
     }
 
     public void setExpPoints(float expPoints) {
         this.expPoints = expPoints;
+    }
+
+    public boolean isUnlockedClassAndTraits() {
+        return unlockedClassAndTraits;
+    }
+
+    public void setUnlockedClassAndTraits(boolean unlockedClassAndTraits) {
+        this.unlockedClassAndTraits = unlockedClassAndTraits;
     }
 
     public float getExpPoints() {
@@ -204,6 +232,28 @@ public class RoleClass implements IAttack {
             }
             case INTELLIGENGE -> {
                 this.addInte(amount);
+            }
+        }
+    }
+    public void removePointOfAttributes(AttributePoints attributePoints, int amount) {
+        switch (attributePoints) {
+            case AGILITY -> {
+                this.removeAgi(amount);
+            }
+            case DEXERITY -> {
+                this.removeDex(amount);
+            }
+            case STRENGHT -> {
+                this.removeStr(amount);
+            }
+            case VITALITY -> {
+                this.removeVit(amount);
+            }
+            case CONSTITUION -> {
+                this.removeCons(amount);
+            }
+            case INTELLIGENGE -> {
+                this.removeInte(amount);
             }
         }
     }
@@ -285,25 +335,11 @@ public class RoleClass implements IAttack {
     }
 
     public void tick() {
-        this.getXpNeededForNextLevel();
-        this.expProgress += this.expPoints / this.expRequired;
-        while (this.expProgress < 0.0F) {
-            float f = this.expProgress * (float) this.getXpNeededForNextLevel();
-            if (this.levels > 0) {
-                this.setLevel(this.getLevel() - 1);
-                this.expProgress = (int) (1.0F + f / this.getXpNeededForNextLevel());
-            } else {
-                this.setLevel(this.getLevel() - 1);
-                this.expProgress = 0.0F;
-            }
-        }
-        while (this.expProgress > 1.0F) {
-            this.setLevel(Math.min(this.maxLevel, this.getLevel() + 1));
-            this.setPoints(this.getPoints() + 1);
-            this.expProgress /= this.getXpNeededForNextLevel();
-        }
-        if (this.player.experienceLevel > this.REQUIRED_LEVEL && !this.alreadyReachedRequiredLevel) {
+        if (this.player.experienceLevel > REQUIRED_LEVEL_ATTRIBUTES && !this.alreadyReachedRequiredLevel) {
             this.alreadyReachedRequiredLevel = true;
+        }
+        if (this.player.experienceLevel > REQUIRED_LEVEL_CLASS_TRAITS && !this.unlockedClassAndTraits) {
+            this.unlockedClassAndTraits = true;
         }
         AttributeInstance maxHealth = this.player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH);
         AttributeInstance attackDamage = this.player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
@@ -351,12 +387,19 @@ public class RoleClass implements IAttack {
         nbt.putInt(LEVELS_TAGS, this.getLevel());
         nbt.putInt(POINTS_TAGS, this.getPoints());
         nbt.putBoolean(REQUIRED_LEVEL_TAGS, this.alreadyReachedRequiredLevel);
+        nbt.putBoolean(CLASS_TRAITS_LEVEL_TAGS, this.unlockedClassAndTraits);
         nbt.put(ATTRIBUTE_TAGS, this.createListSkills());
+        nbt.put(CLASS_TAGS, this.createListClass());
         nbt.putFloat(EXP_TAGS, this.expProgress);
         nbt.putFloat(EXP_REQUIRED_TAGS, this.expRequired);
         return nbt;
     }
-
+    private ListTag createListClass() {
+        ListTag list = new ListTag();
+        CompoundTag nbt = new CompoundTag();
+        list.add(nbt);
+        return list;
+    }
     private ListTag createListSkills() {
         ListTag list = new ListTag();
         CompoundTag nbt = new CompoundTag();
@@ -385,6 +428,7 @@ public class RoleClass implements IAttack {
             this.inte = attributeTags.getInt(INT_TAGS);
         }
         this.alreadyReachedRequiredLevel = nbt.getBoolean(REQUIRED_LEVEL_TAGS);
+        this.unlockedClassAndTraits = nbt.getBoolean(CLASS_TRAITS_LEVEL_TAGS);
         this.expProgress = nbt.getFloat(EXP_TAGS);
         this.expRequired = nbt.getFloat(EXP_REQUIRED_TAGS);
     }

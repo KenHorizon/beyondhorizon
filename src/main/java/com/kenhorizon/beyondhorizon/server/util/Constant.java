@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
     public static int LEVEL_SYSTEM_UNLOCKED = 5;
+    public static int CLASS_SYSTEM_UNLOCKED = 20;
 
 
     public static final float PENALTY_DAMAGE = 30;

@@ -14,19 +14,23 @@ import java.util.function.Supplier;
 
 public class ServerboundSkillPointsPacket {
     private final int index;
+    private final int amount;
     private final RoleClass.AttributePoints attributePoints;
-    public ServerboundSkillPointsPacket(int index, RoleClass.AttributePoints attributePoints) {
+    public ServerboundSkillPointsPacket(int index, RoleClass.AttributePoints attributePoints, int amount) {
         this.index = index;
+        this.amount = amount;
         this.attributePoints = attributePoints;
     }
 
     public ServerboundSkillPointsPacket(FriendlyByteBuf buf) {
         this.index = buf.readInt();
+        this.amount = buf.readInt();
         this.attributePoints = buf.readEnum(RoleClass.AttributePoints.class);
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(this.index);
+        buf.writeInt(this.amount);
         buf.writeEnum(this.attributePoints);
     }
 
@@ -42,7 +46,13 @@ public class ServerboundSkillPointsPacket {
                 Entity entity = level.getEntity(this.index);
                 if (entity instanceof Player player) {
                     RoleClass role = CapabilityCaller.roleClass((Player) player);
-                    role.addPointOfAttributes(this.attributePoints, 1);
+                    if (this.amount > 0) {
+                        role.setPoints(role.getPoints() - 1);
+                        role.addPointOfAttributes(this.attributePoints, this.amount);
+                    } else {
+                        role.setPoints(role.getPoints() + 1);
+                        role.removePointOfAttributes(this.attributePoints, this.amount);
+                    }
                 }
             }
         });

@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.skills;
 
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
-import com.kenhorizon.loggers.SkillLoggers;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class SkillBuilder implements IReloadable {
         this.skills = this.filter.stream().filter(skill -> {
             boolean isValid = this.skillTypes.getFilter().test(skill) && skill != Skills.NONE.get();
             if (!isValid) {
-                SkillLoggers.error(skill.errorNotMatch(skill));
+                Skill.LOGGER.error(skill.errorNotMatch(skill));
             }
             return isValid;
         }).collect(Collectors.toUnmodifiableList());

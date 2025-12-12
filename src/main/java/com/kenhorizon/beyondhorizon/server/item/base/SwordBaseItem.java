@@ -85,7 +85,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     @Override
     public void reload() {
         this.skills = this.registerSkills();
-        BeyondHorizon.loggers().debug("Setting up the skills {}", this.skills);
+        BeyondHorizon.LOGGER.debug("Setting up the skills {}", this.skills);
         this.setupDefault();
     }
 

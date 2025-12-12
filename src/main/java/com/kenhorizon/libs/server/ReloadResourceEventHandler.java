@@ -15,11 +15,11 @@ public class ReloadResourceEventHandler {
     public static void onUpdateTags(AddReloadListenerEvent event) {
         ICondition.IContext context = event.getConditionContext();
         List<IReloadable> reloadList = ReloadableHandler.getReloadList();
-        BeyondHorizon.loggers().debug("Initaliasing reloadables for {} values", reloadList.size());
+        BeyondHorizon.LOGGER.debug("Initaliasing reloadables for {} values", reloadList.size());
         long start = System.nanoTime();
         reloadList.forEach(IReloadable::reload);
         long end = System.nanoTime();
         double milliseconds = (end - start) / 1000000.0d;
-        BeyondHorizon.loggers().info("Finished initialising! Took {}ms", milliseconds);
+        BeyondHorizon.LOGGER.info("Finished initialising! Took {}ms", milliseconds);
     }
 }

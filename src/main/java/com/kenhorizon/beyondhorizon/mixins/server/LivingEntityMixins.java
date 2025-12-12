@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.mixins.server;
 
 import com.kenhorizon.beyondhorizon.server.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageSource;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.core.Holder;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -32,7 +33,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import javax.annotation.Nullable;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixins extends EntityMixins {
+public abstract class LivingEntityMixins extends EntityMixins implements IDamageSource {
+    private boolean doTrueDamage;
+
+    @Override
+    public void setTrueDamage(boolean trueDamage) {
+        this.doTrueDamage = true;
+    }
+
+    @Override
+    public boolean isTrueDamage() {
+        return this.doTrueDamage;
+    }
 
     @Inject(method = "decreaseAirSupply", at = @At("RETURN"), cancellable = true)
     private void modifiedDecreaseAirSupply(int currentAir, CallbackInfoReturnable<Integer> cir) {
@@ -97,7 +109,7 @@ public abstract class LivingEntityMixins extends EntityMixins {
             float toughness = (float) getAttributeValue(Attributes.ARMOR_TOUGHNESS);
             float reducedDamage = CombatRules.getDamageAfterAbsorb(amount, (float) getArmorValue(), toughness);
             float resultDamage = trueDamage + reducedDamage;
-            //BeyondHorizon.loggers().debug("Damage: {} True Damage: {} Target's Armor: {} Damage Reduce: {}", amount, trueDamage, toughness, reducedDamage);
+            //BeyondHorizon.LOGGER.debug("Damage: {} True Damage: {} Target's Armor: {} Damage Reduce: {}", amount, trueDamage, toughness, reducedDamage);
             cir.setReturnValue(resultDamage);
         }
     }

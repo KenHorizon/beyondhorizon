@@ -28,18 +28,18 @@ public class AttributeModify {
                     final double minValue = configEntry.getValue().min.value;
                     final double maxValue = configEntry.getValue().max.value;
                     if (minValue > maxValue) {
-                        BeyondHorizon.loggers().error("Attribute {} was configured to have a minimum value higher than it's maximum. This is not permitted!", attributeId);
+                        BeyondHorizon.LOGGER.error("Attribute {} was configured to have a minimum value higher than it's maximum. This is not permitted!", attributeId);
                         continue;
                     }
                     final AttributeAccessor attributeAccessor = (AttributeAccessor) attribute;
                     final AttributeRangeAccessor rangeAccessor = (AttributeRangeAccessor) attribute;
                     attributeAccessor.setSyncable(true);
                     if (minValue != ranged.getMinValue()) {
-                        BeyondHorizon.loggers().debug("Modifying minimum value for {} from {} to {}.", attributeId, Maths.format0(ranged.getMinValue()), Maths.format0(minValue));
+                        BeyondHorizon.LOGGER.debug("Modifying minimum value for {} from {} to {}.", attributeId, Maths.format0(ranged.getMinValue()), Maths.format0(minValue));
                         rangeAccessor.setMinValue(minValue);
                     }
                     if (maxValue != ranged.getMaxValue()) {
-                        BeyondHorizon.loggers().debug("Modifying maximum value for {} from {} to {}.", attributeId, Maths.format0(ranged.getMaxValue()), Maths.format0(maxValue));
+                        BeyondHorizon.LOGGER.debug("Modifying maximum value for {} from {} to {}.", attributeId, Maths.format0(ranged.getMaxValue()), Maths.format0(maxValue));
                         rangeAccessor.setMaxValue(maxValue);
                     }
                 }

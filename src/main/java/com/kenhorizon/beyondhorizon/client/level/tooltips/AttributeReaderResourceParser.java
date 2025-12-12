@@ -45,7 +45,7 @@ public class AttributeReaderResourceParser implements ResourceManagerReloadListe
                 }
             }
         } catch (Exception e) {
-            BeyondHorizon.loggers().warn("An error occurred while parsing definitions data :\n {}", ExceptionUtils.getStackTrace(e));
+            BeyondHorizon.LOGGER.warn("An error occurred while parsing definitions data :\n {}", ExceptionUtils.getStackTrace(e));
         }
     }
 }

@@ -62,7 +62,7 @@ public class ServerboundWorkbenchCraftPacket {
             int need = recipe.getCounts().get(i);
             player.getInventory().clearOrCountMatchingItems(itemStacks -> itemStacks.is(item), need, player.inventoryMenu.getCraftSlots());
         }
-        BeyondHorizon.loggers().debug("Succcessfully crafted item from workbench...");
+        BeyondHorizon.LOGGER.debug("Succcessfully crafted item from workbench...");
         player.addItem(recipe.getResultItem(null).copy());
     }
 }

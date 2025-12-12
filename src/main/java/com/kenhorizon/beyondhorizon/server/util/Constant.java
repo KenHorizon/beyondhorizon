@@ -10,7 +10,10 @@ public class Constant {
     public static final int MEDUIM_TOOLTIP_MAX_TEXT_WITDH = 220;
     public static final int SMALL_TOOLTIP_MAX_TEXT_WITDH = 180;
 
-    public static final float ASSASSIN_DAMAGE_MULTIPLIER_AT_THE_BACK = 0.20F;
+    public static final float[] ASSASSIN_DAMAGE_MULTIPLIER_AT_THE_BACK = {0.20F, 0.50F};
+    public static final float[] VANGUARD_EXTRA_DAMAGE = {0.10F, 0.20F};
+    public static final float[] STRIKER_EXTRA_DAMAGE = {0.20F, 0.50F};
+    public static final float[] CASTER_EXTRA_DAMAGE = {0.05F, 0.15F};
 
     public static int FIRE_EFFECT = 5;
     public static float TRANNY_MISSING_HEALTH_SCALE = 0.12F;

@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
 public interface IDamageSource {
 
-    default boolean isTrueDamage() {
-        return false;
-    }
+    boolean isTrueDamage();
+
+    void setTrueDamage(boolean trueDamage);
 }

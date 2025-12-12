@@ -360,6 +360,13 @@ public class ServerEventHandler {
                     }
                 }
             }
+            if (attacker instanceof Player player) {
+                RoleClass roleClass = CapabilityCaller.roleClass(player);
+                Optional<IAttack> attack = roleClass.IAttack();
+                if (attack.isPresent()) {
+                    attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
+                }
+            }
         }
 
         if (!target.getMainHandItem().isEmpty() && target.getMainHandItem().getItem() instanceof ISkillItems<?> container) {
@@ -413,8 +420,8 @@ public class ServerEventHandler {
             if (source.getEntity() instanceof LivingEntity attacker) {
                 ICombatCore attackerCombatCore = CapabilityCaller.combat(attacker);
                 ItemStack attackerStack = attacker.getMainHandItem();
-                if (attacker instanceof Player) {
-                    RoleClass roleClass = CapabilityCaller.roleClass((Player) attacker);
+                if (attacker instanceof Player player) {
+                    RoleClass roleClass = CapabilityCaller.roleClass(player);
                     Optional<IAttack> attack = roleClass.IAttack();
                     if (attack.isPresent()) {
                         damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);

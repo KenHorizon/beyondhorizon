@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Player.class)
-public abstract class PlayerMixins extends LivingEntityMixins {
+public abstract class PlayerMixins extends LivingEntityMixins  {
 
     @Redirect(method = "attack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/enchantment/EnchantmentHelper;getSweepingDamageRatio(Lnet/minecraft/world/entity/LivingEntity;)F"))
     private float getSweepingDamageRatio(LivingEntity entityIn) {
@@ -37,17 +37,6 @@ public abstract class PlayerMixins extends LivingEntityMixins {
         AttributeInstance lethality = playerIn.getAttribute(BHAttributes.LETHALITY.get());
         AttributeInstance magicPenetration = playerIn.getAttribute(BHAttributes.MAGIC_PENETRATION.get());
         AttributeInstance armorPenetration = playerIn.getAttribute(BHAttributes.ARMOR_PENETRATION.get());
-        boolean trueDamage = false;
-//        if (weaponStack.getItem() instanceof ISkillItems<?> skillItems) {
-//            for(Skill skill : skillItems.getSkills()) {
-//                if (skill instanceof ExtraDamageSkill) {
-//
-//                }
-//            }
-//        }
-        if (damageSources instanceof IDamageSource extraInfo) {
-            trueDamage = extraInfo.isTrueDamage();
-        }
         if (lethality != null && lethality.getValue() > 0) {
             return BHDamageTypes.lethality(playerIn);
         }
@@ -56,9 +45,6 @@ public abstract class PlayerMixins extends LivingEntityMixins {
         }
         if (magicPenetration != null && magicPenetration.getValue() > 0) {
             return BHDamageTypes.magicPenetration(playerIn);
-        }
-        if (trueDamage) {
-            return BHDamageTypes.trueDamage(playerIn);
         }
         return damageSources.playerAttack(playerIn);
     }

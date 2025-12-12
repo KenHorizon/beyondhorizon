@@ -1,0 +1,26 @@
+{
+  "roles": [
+    {
+      "assassin": {
+        "passive": {
+          "assasin_pride": {
+            "description": "roleclass.assassin.passive.assassin_pride.desc"
+          },
+          "backstab": {
+            "description": "roleclass.assassin.passive.backstab.desc"
+          }
+        }
+      },
+      "marksman": {
+        "passive": {
+          "eagle_eye": {
+            "description": "roleclass.assassin.markman.eagle_eye.desc"
+          },
+          "skilled_marksman": {
+            "description": "roleclass.assassin.markman.skilled_marksman.desc"
+          }
+        }
+      }
+    }
+  ]
+}

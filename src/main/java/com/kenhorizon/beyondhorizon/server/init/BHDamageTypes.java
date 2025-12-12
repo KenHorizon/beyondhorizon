@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.ExtraDamageSource;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -45,23 +44,23 @@ public class BHDamageTypes {
         return new DamageSource(BHDamageTypes.damageTypes.getHolderOrThrow(damageType), causingEntity, directEntity);
     }
     public static DamageSource bleed() {
-        return new ExtraDamageSource(damageTypes.getHolderOrThrow(BLEED));
+        return source(BLEED);
     }
 
     public static DamageSource armorPenetration(Entity source) {
-        return new ExtraDamageSource(damageTypes.getHolderOrThrow(ARMOR_PENETRATION), source);
+        return source(ARMOR_PENETRATION, source);
     }
 
     public static DamageSource magicPenetration(Entity source) {
-        return new ExtraDamageSource(damageTypes.getHolderOrThrow(ARMOR_PENETRATION), source);
+        return source(ARMOR_PENETRATION, source);
     }
 
     public static DamageSource lethality(Entity source) {
-        return new ExtraDamageSource(damageTypes.getHolderOrThrow(LETHALITY), source);
+        return source(LETHALITY, source);
     }
 
-    public static DamageSource trueDamage(Entity source) {
-        return new ExtraDamageSource(damageTypes.getHolderOrThrow(TRUE_DAMAGE), source);
+    public static DamageSource trueDamage(Entity source, Entity target) {
+        return source(TRUE_DAMAGE, source, target);
     }
 
     private static ResourceKey<DamageType> createKey(String keyName) {

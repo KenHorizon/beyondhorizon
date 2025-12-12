@@ -128,7 +128,7 @@ public class BHLootTableProvider {
 
         @Override
         protected void generate() {
-            BeyondHorizon.loggers().debug("{}", ADD_DROP_SELF);
+            BeyondHorizon.LOGGER.debug("{}", ADD_DROP_SELF);
             ADD_DROPS.forEach(this::dropSelf);
             ADD_DROP.forEach(add -> this.dropSelf(add.get()));
             ADD_DROP_SELF.forEach(add -> this.dropSelf(add.get()));

@@ -52,8 +52,8 @@ public class BeyondHorizon
     public static final String NAME = "Beyond Horizon";
     public static final String VERSION = "v1.0";
     public static ServerProxy PROXY = (ServerProxy) DistExecutor.safeRunForDist(() -> ClientProxy::new, () -> ServerProxy::new);
-    private static final Logger LOGGER = LogUtils.getLogger();
-
+    public static final Logger LOGGER = LogUtils.getLogger();
+    
     public BeyondHorizon(FMLJavaModLoadingContext context) {
         IEventBus eventBus = context.getModEventBus();
         final ModLoadingContext modContext = ModLoadingContext.get();
@@ -90,7 +90,7 @@ public class BeyondHorizon
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        BeyondHorizon.loggers().info("Setting up {} {}!!", BeyondHorizon.NAME, BeyondHorizon.VERSION);
+        BeyondHorizon.LOGGER.info("Setting up {} {}!!", BeyondHorizon.NAME, BeyondHorizon.VERSION);
         NetworkHandler.register();
         event.enqueueWork(() -> {
             BHPotions.setup();
@@ -133,22 +133,18 @@ public class BeyondHorizon
         }
     }
 
-    public static Logger loggers() {
-        return LoggerFactory.getLogger(ID);
-    }
-
     public static ResourceLocation resource(String name) {
         return ResourceLocation.fromNamespaceAndPath(BeyondHorizon.ID, name);
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        BeyondHorizon.loggers().info("HELLO from server starting");
+        BeyondHorizon.LOGGER.info("HELLO from server starting");
     }
 
     @SubscribeEvent
     public void onCommandsRegister(RegisterCommandsEvent event) {
-        BeyondHorizon.loggers().info("Registering commands...");
+        BeyondHorizon.LOGGER.info("Registering commands...");
         RoleClassCommand.register(event.getDispatcher());
     }
 

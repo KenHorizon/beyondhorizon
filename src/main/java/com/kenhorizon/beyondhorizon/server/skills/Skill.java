@@ -14,6 +14,7 @@ import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -37,6 +38,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -68,6 +70,7 @@ public abstract class Skill {
             return this.chatFormatting;
         }
     }
+    public static final Logger LOGGER = LogUtils.getLogger();
     protected String MODID = Skills.REGISTRY.getRegistryName().getNamespace();
     protected boolean isSkill = false;
     protected boolean isMelee = false;

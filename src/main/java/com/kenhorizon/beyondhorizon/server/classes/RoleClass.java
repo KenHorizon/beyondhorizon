@@ -3,8 +3,12 @@ package com.kenhorizon.beyondhorizon.server.classes;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageSource;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
@@ -13,10 +17,14 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -74,7 +82,6 @@ public class RoleClass implements IAttack {
     private int str;
     private int levels;
     private int points;
-    public float expPoints = 0;
     public float expProgress = 0;
     public float expRequired = 0;
     public final int maxRequiredXp = 280;
@@ -176,9 +183,8 @@ public class RoleClass implements IAttack {
         this.dex = Math.max(0, amount);
     }
 
-    public void addExpPoints() {
-        this.expPoints += 30;
-        this.expProgress += this.expPoints / this.expRequired;
+    public void addExpPoints(int amount) {
+        this.expProgress += amount / this.expRequired;
         while (this.expProgress < 0.0F) {
             float f = this.expProgress * (float) this.getXpNeededForNextLevel();
             if (this.levels > 0) {
@@ -197,20 +203,12 @@ public class RoleClass implements IAttack {
 
     }
 
-    public void setExpPoints(float expPoints) {
-        this.expPoints = expPoints;
-    }
-
     public boolean isUnlockedClassAndTraits() {
         return unlockedClassAndTraits;
     }
 
     public void setUnlockedClassAndTraits(boolean unlockedClassAndTraits) {
         this.unlockedClassAndTraits = unlockedClassAndTraits;
-    }
-
-    public float getExpPoints() {
-        return expPoints;
     }
 
     public void addPointOfAttributes(AttributePoints attributePoints, int amount) {
@@ -324,7 +322,6 @@ public class RoleClass implements IAttack {
         this.setRoles(RoleClassTypes.NONE);
         this.setPoints(0);
         this.setLevel(0);
-        this.setExpPoints(0);
         this.expProgress = 0.0F;
         this.str = 0;
         this.vit = 0;
@@ -334,11 +331,48 @@ public class RoleClass implements IAttack {
         this.inte = 0;
     }
 
+    @Override
+    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (target == null || attacker == null) return damageDealt;
+        if (attacker instanceof Player player) {
+            RoleClass roleClass = CapabilityCaller.roleClass(player);
+            if (roleClass.getRoles() == RoleClassTypes.ASSSASSIN) {
+                float multiplier = Constant.ASSASSIN_DAMAGE_MULTIPLIER_AT_THE_BACK[0];
+                return CombatUtil.damageAtBack(multiplier, damageDealt, source, player, target);
+            }
+            if (roleClass.getRoles() == RoleClassTypes.STRIKER) {
+                float totalValue = (float) (player.getAttributeValue(Attributes.ATTACK_DAMAGE) - player.getAttributeBaseValue(Attributes.ATTACK_DAMAGE));
+                boolean succeed = player.getRandom().nextDouble() <= (totalValue * 0.5D);
+                float bonusDamage = damageDealt * Constant.STRIKER_EXTRA_DAMAGE[0];
+                return succeed ? damageDealt + bonusDamage : damageDealt;
+            }
+            if (roleClass.getRoles() == RoleClassTypes.CASTER) {
+                float totalValue = (float) (player.getAttributeValue(BHAttributes.MAX_MANA.get()) - player.getAttributeBaseValue(BHAttributes.MAX_MANA.get()));
+                float bonusDamage = totalValue * Constant.CASTER_EXTRA_DAMAGE[0];
+                return damageDealt + bonusDamage;
+            }
+        }
+        return damageDealt;
+    }
+
+    @Override
+    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+        if (target == null || attacker == null) return;
+        if (!attacker.level().isClientSide() && attacker instanceof Player player) {
+            RoleClass roleClass = CapabilityCaller.roleClass(player);
+            if (roleClass.getRoles() == RoleClassTypes.VANGAURD) {
+                float armor = (float) player.getAttributeValue(Attributes.ARMOR);
+                float bonus = Constant.VANGUARD_EXTRA_DAMAGE[0];
+                target.hurt(BHDamageTypes.trueDamage(player, target), armor * bonus);
+            }
+        }
+    }
+
     public void tick() {
-        if (this.player.experienceLevel > REQUIRED_LEVEL_ATTRIBUTES && !this.alreadyReachedRequiredLevel) {
+        if (this.player.experienceLevel >= REQUIRED_LEVEL_ATTRIBUTES && !this.alreadyReachedRequiredLevel) {
             this.alreadyReachedRequiredLevel = true;
         }
-        if (this.player.experienceLevel > REQUIRED_LEVEL_CLASS_TRAITS && !this.unlockedClassAndTraits) {
+        if (this.getLevel() >= REQUIRED_LEVEL_CLASS_TRAITS && !this.unlockedClassAndTraits) {
             this.unlockedClassAndTraits = true;
         }
         AttributeInstance maxHealth = this.player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH);

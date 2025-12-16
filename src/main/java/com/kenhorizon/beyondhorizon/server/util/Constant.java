@@ -10,12 +10,19 @@ public class Constant {
     public static final int MEDUIM_TOOLTIP_MAX_TEXT_WITDH = 220;
     public static final int SMALL_TOOLTIP_MAX_TEXT_WITDH = 180;
 
-    public static final float[] ASSASSIN_DAMAGE_MULTIPLIER_AT_THE_BACK = {0.20F, 0.50F};
-    public static final float[] VANGUARD_EXTRA_DAMAGE = {0.10F, 0.20F};
-    public static final float[] STRIKER_EXTRA_DAMAGE = {0.20F, 0.50F};
-    public static final float[] CASTER_EXTRA_DAMAGE = {0.05F, 0.15F};
+    public static final float ASSASIN_POISON_INFLICT = 0.20F;
+    public static final float LETHAL_STRIKE_DAMAGE_MODIFIER = 2.0F;
+    public static final float VANGUARD_EXTRA_DAMAGE = 0.10F;
+    public static final float STRIKER_EXTRA_DAMAGE = 0.20F;
+    public static final float CASTER_EXTRA_DAMAGE = 0.05F;
 
     public static int FIRE_EFFECT = 5;
+    public static float THORN_BASE_DAMAGE = 5;
+    public static float THORN_DAMAGE_MODIFIER = 0.10F;
+    public static float RAGE = 0.40F;
+    public static float LETHALITY = 0.12F;
+    public static float DEATH_HEALTH_THRESOHOLD = 0.12F;
+    public static float KINETIC_STRIKE_DAMAGE_MODIFIER = 1.0F;
     public static float TRANNY_MISSING_HEALTH_SCALE = 0.12F;
     public static float TRANNY_HEALTH_SCALE = 0.025F;
     public static float RADIANT = 0.20F;
@@ -38,6 +45,11 @@ public class Constant {
     public static float[] BLADE_OF_THE_ENDERLORD = {8.0F, 1.7F};
     public static float[] GIANT_SLAYER = {8.0F, 1.7F, 2.6F};
     //
+    public static double MANA_REGEN_0 = 1.0;
+    public static double MANA_REGEN_1 = 1.25;
+    public static double MANA_REGEN_2 = 1.50;
+    public static double MANA_REGEN_3 = 1.75;
+    public static double MANA_REGEN_4 = 2.0;
     public static double ARMOR_0 = 5;
     public static double ARMOR_1 = 10;
     public static double ARMOR_2 = 15;
@@ -86,6 +98,7 @@ public class Constant {
     public static double ANCIENT_PICK_MINING_EFFECIENCY = 0.12D;
     public static double ANCIENT_PICK_MINING_SPEED = 0.10D;
     public static double ANCIENT_CHISEL_MINING_SPEED = 0.20D;
+    public static double POWER_CLAW = 0.08D;
     public static double MAGICAL_OPS = 0.40D;
     public static double BRAVERY_DAMAGE = 0.1D;
     public static double BOOTS_TIER_1 = 0.020D;

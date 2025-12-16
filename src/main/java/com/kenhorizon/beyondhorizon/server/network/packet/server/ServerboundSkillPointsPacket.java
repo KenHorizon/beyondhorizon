@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;

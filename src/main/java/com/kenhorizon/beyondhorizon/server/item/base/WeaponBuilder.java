@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.item.base;
 
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
-import com.kenhorizon.beyondhorizon.server.skills.SkillBuilder;
+import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.item.Item;
 

@@ -100,4 +100,8 @@ public class Maths {
         }
         return (new Quaternionf()).rotationXYZ(x, y, z);
     }
+
+    public static double perValue(double number, double perValue, double increment) {
+        return (number / perValue) * increment;
+    }
 }

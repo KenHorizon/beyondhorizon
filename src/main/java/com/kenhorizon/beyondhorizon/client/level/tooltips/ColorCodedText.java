@@ -22,7 +22,9 @@ public class ColorCodedText {
         TEXT_COLORED.put("current health", ChatFormatting.GREEN);
         TEXT_COLORED.put("missing health", ChatFormatting.GREEN);
         TEXT_COLORED.put("physical", ChatFormatting.GOLD);
+        TEXT_COLORED.put("physical damage", ChatFormatting.GOLD);
         TEXT_COLORED.put("magic", ChatFormatting.DARK_AQUA);
+        TEXT_COLORED.put("magic damage", ChatFormatting.DARK_AQUA);
         TEXT_COLORED.put("attack damage", ChatFormatting.GOLD);
         TEXT_COLORED.put("true damage", ChatFormatting.GOLD);
         TEXT_COLORED.put("post-mitigation damage", ChatFormatting.GOLD);

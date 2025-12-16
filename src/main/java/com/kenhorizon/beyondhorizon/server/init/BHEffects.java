@@ -52,7 +52,9 @@ public class BHEffects {
     public static final RegistryObject<MobEffect> ROOTED =
             RegistryHelper.registerEffects("rooted", () -> new RootedEffect(MobEffectCategory.NEUTRAL, 0x9B4D00).addAttributeModifier(Attributes.MOVEMENT_SPEED, "0e530966-8625-4300-890c-3992a8198d6e", -Integer.MAX_VALUE, AttributeModifier.Operation.MULTIPLY_TOTAL));
     public static final RegistryObject<MobEffect> WOUNDED =
-            RegistryHelper.registerEffects("wounded", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0xFF8206));
+            RegistryHelper.registerEffects("wounded", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0xFF8206)
+                    .addAttributeModifier(BHAttributes.HEALING.get(), "4ca80eb7-871b-4751-af4e-c7ec47642425", 0.40D, AttributeModifier.Operation.MULTIPLY_BASE)
+                    .addAttributeModifier(BHAttributes.HEALTH_REGENERATION.get(), "1331d9ae-32f1-4a33-87d9-cf0621a72aa3", 0.40D, AttributeModifier.Operation.MULTIPLY_BASE));
 
     public static void register(IEventBus eventBus) {
         RegistryEntries.MOB_EFFECTS.register(eventBus);

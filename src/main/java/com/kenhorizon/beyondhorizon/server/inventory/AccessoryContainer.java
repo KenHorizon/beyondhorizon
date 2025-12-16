@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.inventory;
 
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -74,12 +74,11 @@ public class AccessoryContainer extends ItemStackHandler implements IAccessoryIt
         for (int i = 0; i < tagList.size(); i++) {
             CompoundTag itemTags = tagList.getCompound(i);
             int slot = itemTags.getInt("slot");
-
             if (slot >= 0 && slot < stacks.size()) {
                 stacks.set(slot, ItemStack.of(itemTags));
             }
         }
-        onLoad();
+        this.onLoad();
     }
 
     @Override

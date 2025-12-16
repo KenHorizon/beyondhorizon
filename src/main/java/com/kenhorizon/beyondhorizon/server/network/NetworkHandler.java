@@ -1,9 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryInventoryPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundInventoryPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.*;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.*;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,6 +35,8 @@ public class NetworkHandler {
         net.registerMessage(id(), ClientboundInventoryPacket.class, ClientboundInventoryPacket::toBytes, ClientboundInventoryPacket::new, ClientboundInventoryPacket::handle);
         net.registerMessage(id(), ClientboundAccessoryInventoryPacket.class, ClientboundAccessoryInventoryPacket::toBytes, ClientboundAccessoryInventoryPacket::new, ClientboundAccessoryInventoryPacket::handle);
         net.registerMessage(id(), ClientboundRoleClassSyncPacket.class, ClientboundRoleClassSyncPacket::toBytes, ClientboundRoleClassSyncPacket::new, ClientboundRoleClassSyncPacket::handle);
+        net.registerMessage(id(), ClientboundPlayerDataSyncPacket.class, ClientboundPlayerDataSyncPacket::toBytes, ClientboundPlayerDataSyncPacket::new, ClientboundPlayerDataSyncPacket::handle);
+        net.registerMessage(id(), ClientboundActiveSkillSyncPacket.class, ClientboundActiveSkillSyncPacket::toBytes, ClientboundActiveSkillSyncPacket::new, ClientboundActiveSkillSyncPacket::handle);
 
         net.registerMessage(id(), ServerboundWorkbenchCraftPacket.class, ServerboundWorkbenchCraftPacket::toBytes, ServerboundWorkbenchCraftPacket::new, ServerboundWorkbenchCraftPacket::handle);
         net.registerMessage(id(), ServerboundAccessoryInventoryPacket.class, ServerboundAccessoryInventoryPacket::toBytes, ServerboundAccessoryInventoryPacket::new, ServerboundAccessoryInventoryPacket::handle);
@@ -45,7 +45,6 @@ public class NetworkHandler {
         net.registerMessage(id(), ServerboundConsumePointsPacket.class, ServerboundConsumePointsPacket::toBytes, ServerboundConsumePointsPacket::new, ServerboundConsumePointsPacket::handle);
         net.registerMessage(id(), ServerboundSkillPointsPacket.class, ServerboundSkillPointsPacket::toBytes, ServerboundSkillPointsPacket::new, ServerboundSkillPointsPacket::handle);
     }
-//
 
     public static <MSG> void sendToServer(MSG msg) {
         INSTANCE.sendToServer(msg);

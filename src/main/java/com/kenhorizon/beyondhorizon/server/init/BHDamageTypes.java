@@ -15,6 +15,8 @@ import javax.annotation.Nullable;
 public class BHDamageTypes {
 
     public static final ResourceKey<DamageType> BLEED = createKey("bleed");
+    public static final ResourceKey<DamageType> PHYSICAL_DAMAGE = createKey("physical_damage");
+    public static final ResourceKey<DamageType> MAGIC_DAMAGE = createKey("magic_damage");
     public static final ResourceKey<DamageType> TRUE_DAMAGE = createKey("true_damage");
     public static final ResourceKey<DamageType> LETHALITY = createKey("lethality");
     public static final ResourceKey<DamageType> ARMOR_PENETRATION = createKey("armor_penetration");
@@ -24,6 +26,8 @@ public class BHDamageTypes {
 
     public static void bootstrap(BootstapContext<DamageType> context) {
         context.register(BLEED, new DamageType("bleed", 0.1F));
+        context.register(PHYSICAL_DAMAGE, new DamageType("physical_damage", 0.1F));
+        context.register(MAGIC_DAMAGE, new DamageType("magic_damage", 0.1F));
         context.register(TRUE_DAMAGE, new DamageType("true_damage", 0.1F));
         context.register(LETHALITY, new DamageType("lethality", 0.1F));
         context.register(MAGIC_PENETRATION, new DamageType("magic_penetration", 0.1F));
@@ -57,6 +61,14 @@ public class BHDamageTypes {
 
     public static DamageSource lethality(Entity source) {
         return source(LETHALITY, source);
+    }
+
+    public static DamageSource magicDamage(Entity source, Entity target) {
+        return source(MAGIC_DAMAGE, source, target);
+    }
+
+    public static DamageSource physicalDamage(Entity source, Entity target) {
+        return source(PHYSICAL_DAMAGE, source, target);
     }
 
     public static DamageSource trueDamage(Entity source, Entity target) {

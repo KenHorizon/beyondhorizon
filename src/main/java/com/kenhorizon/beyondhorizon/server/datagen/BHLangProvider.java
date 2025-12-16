@@ -2,11 +2,13 @@ package com.kenhorizon.beyondhorizon.server.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
-import com.kenhorizon.beyondhorizon.server.accessory.Accessories;
-import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClasses;
 import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
-import com.kenhorizon.beyondhorizon.server.skills.Skill;
-import com.kenhorizon.beyondhorizon.server.skills.Skills;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.data.PackOutput;
@@ -53,11 +55,24 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.TRANNY.get(), "Tranny", "Gain Attack Damage equal to %s%% Max HP (%s)");
         this.addSkills(Skills.RETRIBUTION.get(), "Retribution", "Increase damage dealt 0-%s%% based on Missing HP");
         this.addSkills(Skills.BURN_EFFECT.get(), "Burn", "Set target on fire for %s seconds");
+        this.addSkills(Skills.DEATH.get(), "Death", "Dealing post-mitigaion damage that would leave below %s%% of their Max HP, Execute them");
+        this.addSkills(Skills.LETHALITY.get(), "Lethality", "Grant %s%% increased physical damage");
+        this.addSkills(Skills.KINETIC_STRIKE.get(), "Kinetic Strike", "Grant %s%%(+%s%% per %s%%movement speed) increased damage");
         //
         this.addAccessory(Accessories.FEATHER_FEET.get(), "Feather Feet", "Negate fall damage");
         this.addAccessory(Accessories.OVERGROWTH.get(), "Overgrowth", "Increase Bonus Max HP by %s%% (%s)");
         this.addAccessory(Accessories.DESPAIR_AND_DEFY.get(), "Despair And Defy", "Reduce %s%% post-mitigation damage and stored it and bleed per second of stored damage");
         this.addAccessory(Accessories.BURN_EFFECT.get(), "Burn", "Set target on fire for %s seconds");
+        this.addAccessory(Accessories.FIRE_IMMUNITY.get(), "Fire Immunity", "Grant immunity from fire block");
+        this.addAccessory(Accessories.RAGE.get(), "Rage", "Grant 0-%s%%(based on Missing HP) increased damage");
+        this.addAccessory(Accessories.THORNS.get(), "Thorns", "When struck by basic attack on-hit, deal %s (+%s%% bonus Armor) magic damage to the attacker and inflict Wounded for 3 seconds");
+        //
+        this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");
+        this.addRole(RoleClasses.MARKSMAN.get(), "Marksman", "Specialize in precision, long range engagement and delivering consistent, high damage from safe distance");
+        this.addRole(RoleClasses.CASTER.get(), "Caster", "Caster or Mage, specialize the casting powerful spell and ability");
+        this.addRole(RoleClasses.VANGUARD.get(), "Vanguard", "Vanguard or Tank that specialize defense and utility control in combat");
+        this.addRole(RoleClasses.STRIKER.get(), "Striker", "A close combat class that specialize powerful strike and engage to the enemy");
+        this.addRole(RoleClasses.SUPPORT.get(), "Support", "A sub-class to the mage who specialize the casting powerful healing and buff to allied");
         //
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon: Ingredients");
         creativeTabs(BHCreativeTabs.BH_TOOLS, "Beyond Horizon: Tools");
@@ -92,6 +107,21 @@ public class BHLangProvider extends LanguageProvider {
                 this.add(accessory.getDescriptionId() + ".desc", descriptions[i]);
             } else {
                 this.add(accessory.getDescriptionId() + ".desc." + i, descriptions[i]);
+            }
+
+        }
+    }
+    private void addRole(RoleClass roleClass, String name) {
+        this.add(roleClass.getDescriptionId(), name);
+    }
+
+    private void addRole(RoleClass roleClass, String name, String... descriptions) {
+        this.add(roleClass.getDescriptionId(), name);
+        for (int i = 0; i < descriptions.length; i++) {
+            if (i == 0) {
+                this.add(roleClass.getDescriptionId() + ".desc", descriptions[i]);
+            } else {
+                this.add(roleClass.getDescriptionId() + ".desc." + i, descriptions[i]);
             }
 
         }

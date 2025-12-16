@@ -1,26 +1,27 @@
 package com.kenhorizon.beyondhorizon.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.client.entity.player.PlayerDataHandler;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
-import com.kenhorizon.beyondhorizon.server.accessory.Accessory;
-import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryEvent;
-import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItems;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryEvent;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.capability.*;
-import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
-import com.kenhorizon.beyondhorizon.server.data.IItemGeneric;
+import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataSyncPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
-import com.kenhorizon.beyondhorizon.server.skills.ISkillItems;
-import com.kenhorizon.beyondhorizon.server.skills.Skill;
-import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.skills.ActiveSkill;
+import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.mojang.datafixers.util.Either;
@@ -33,6 +34,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.damagesource.DamageSource;
@@ -49,6 +51,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.CriticalHitEvent;
@@ -107,7 +110,9 @@ public class ServerEventHandler {
         if (!event.getLevel().isClientSide()) {
             if (event.getEntity() instanceof Player player) {
                 RoleClass role = CapabilityCaller.roleClass(player);
+                PlayerData data = CapabilityCaller.data(player);
                 NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) player);
+                NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) player);
             }
         }
     }
@@ -115,13 +120,17 @@ public class ServerEventHandler {
     @SubscribeEvent
     public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         RoleClass role = CapabilityCaller.roleClass(event.getEntity());
+        PlayerData data = CapabilityCaller.data(event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
+        NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) event.getEntity());
     }
 
     @SubscribeEvent
     public void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         RoleClass role = CapabilityCaller.roleClass(event.getEntity());
+        PlayerData data = CapabilityCaller.data(event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
+        NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) event.getEntity());
     }
 
     @SubscribeEvent
@@ -144,7 +153,13 @@ public class ServerEventHandler {
             event.addCapability(CombatCoreCap.NAME, new CombatCoreCap());
         }
         if (RoleClassCap.canAttachTo(entity)) {
-            event.addCapability(RoleClassCap.NAME, new RoleClassCap((Player) entity));
+            event.addCapability(RoleClassCap.NAME, new RoleClassCap());
+        }
+        if (PlayerDataCap.canAttachTo(entity)) {
+            event.addCapability(PlayerDataCap.NAME, new PlayerDataCap((Player) entity));
+        }
+        if (ActiveSkillCap.canAttachTo(entity)) {
+            event.addCapability(ActiveSkillCap.NAME, new ActiveSkillCap());
         }
     }
 
@@ -154,6 +169,8 @@ public class ServerEventHandler {
         event.register(ICombatCore.class);
         event.register(IDamageInfo.class);
         event.register(RoleClass.class);
+        event.register(PlayerData.class);
+        event.register(ActiveSkill.class);
     }
 
 
@@ -161,6 +178,14 @@ public class ServerEventHandler {
     public void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player) {
             AccessoryContainer.dropContent(player);
+        }
+    }
+    @SubscribeEvent
+    public void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        Player player = event.getEntity();
+        PlayerData playerData = CapabilityCaller.data(player);
+        if (!event.isEndConquered()) {
+            playerData.setDefaults();
         }
     }
 
@@ -186,6 +211,11 @@ public class ServerEventHandler {
             oldPlayer.getCapability(BHCapabilties.ACCESSORY).ifPresent(oldData -> {
                 player.getCapability(BHCapabilties.ACCESSORY).ifPresent(newData -> {
                     newData.deserializeNBT(oldData.serializeNBT());
+                });
+            });
+            oldPlayer.getCapability(BHCapabilties.PLAYER_DATA).ifPresent(oldData -> {
+                player.getCapability(BHCapabilties.PLAYER_DATA).ifPresent(newData -> {
+                    newData.loadNbt(oldData.saveNbt());
                 });
             });
             oldPlayer.invalidateCaps();
@@ -216,7 +246,7 @@ public class ServerEventHandler {
                 }
                 if (itemStacks.getItem() instanceof IAccessoryItems<?> items) {
                     for (Accessory accessory : items.getAccessories()) {
-                        Optional<IItemGeneric> optional = accessory.IItemGeneric();
+                        Optional<IEntityProperties> optional = accessory.IEntityProperties();
                         optional.ifPresent(callback -> callback.onEntityUpdate(player, itemStacks));
                     }
                 }
@@ -249,6 +279,18 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
+    public void onLevelTick(TickEvent.LevelTickEvent event) {
+        if (event.level instanceof ServerLevel level) {
+            level.players().stream().toList().forEach(player -> {
+                if (player instanceof ServerPlayer) {
+                    PlayerData playerData = CapabilityCaller.data(player);
+                    playerData.tick(level);
+                }
+            });
+        }
+    }
+
+    @SubscribeEvent
     public void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         ItemStack itemStack = entity.getMainHandItem();
@@ -265,16 +307,16 @@ public class ServerEventHandler {
         }
         if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems<?> items) {
             for (Skill skill : items.getSkills()) {
-                Optional<IItemGeneric> optional = skill.IItemGeneric();
+                Optional<IEntityProperties> optional = skill.IEntityProperties();
                 optional.ifPresent(callback -> callback.onEntityUpdate(entity, itemStack));
             }
         }
         if (entity instanceof Player player) {
             this.onPlayerTick(player);
-            PlayerData playerData = PlayerDataHandler.get(player);
-            if (playerData.roles() != null) {
-                RoleClass roleClass = playerData.roles();
-                roleClass.tick();
+            RoleClass roleClass = CapabilityCaller.roleClass(player);
+            if (roleClass != null) {
+                Optional<IEntityProperties> optional = roleClass.IEntityProperties();
+                optional.ifPresent(callback -> callback.onEntityUpdate(entity, itemStack));
             }
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
                 ItemStack prevItemStacks = player.getInventory().getItem(i);
@@ -282,7 +324,7 @@ public class ServerEventHandler {
                     if (!prevItemStacks.isEmpty()) {
                         if (prevItemStacks.getItem() instanceof ISkillItems<?> skillItems) {
                             for (Skill skill : skillItems.getSkills()) {
-                                Optional<IItemGeneric> optional = skill.IItemGeneric();
+                                Optional<IEntityProperties> optional = skill.IEntityProperties();
                                 skill.removeAttributeModifiers(player, player.getAttributes(), prevItemStacks);
                                 optional.ifPresent(iItemGeneric -> iItemGeneric.onChangeEquipment(player, itemStack, true));
                             }
@@ -291,7 +333,7 @@ public class ServerEventHandler {
                     if (!itemStack.isEmpty()) {
                         if (itemStack.getItem() instanceof ISkillItems<?> skillItems) {
                             for (Skill skill : skillItems.getSkills()) {
-                                Optional<IItemGeneric> optional = skill.IItemGeneric();
+                                Optional<IEntityProperties> optional = skill.IEntityProperties();
                                 skill.addAttributeModifiers(player, player.getAttributes(), itemStack);
                                 optional.ifPresent(iItemGeneric -> iItemGeneric.onChangeEquipment(player, itemStack, false));
                             }
@@ -341,6 +383,27 @@ public class ServerEventHandler {
                 event.setDamageModifier((float) criticalDamage);
             }
             event.setDamageModifier((float) criticalDamage);
+        }
+    }
+
+    @SubscribeEvent
+    public void onLivingAttackEvent(LivingAttackEvent event) {
+        DamageSource source = event.getSource();
+        LivingEntity target = event.getEntity();
+        float damage = event.getAmount();
+        if (target instanceof Player player) {
+            IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+            if (handler != null) {
+                for (int i = 0; i < handler.getSlots(); i++) {
+                    final ItemStack itemStack = handler.getStackInSlot(i);
+                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> container) {
+                        for (Accessory trait : container.getAccessories()) {
+                            Optional<IAttack> optional = trait.IAttackCallback();
+                            optional.ifPresent(callback -> event.setCanceled(callback.canEntiyReceiveDamage(player, target, source)));
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -454,6 +517,28 @@ public class ServerEventHandler {
         }
         event.setAmount(damageDealt);
     }
+
+    @SubscribeEvent
+    public void onKilledEntiy(LivingDeathEvent event) {
+        LivingEntity target = event.getEntity();
+        DamageSource source = event.getSource();
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            ICombatCore attackerCombatCore = CapabilityCaller.combat(attacker);
+            ItemStack attackerStack = attacker.getMainHandItem();
+            if (attacker instanceof Player player) {
+                RoleClass roleClass = CapabilityCaller.roleClass(player);
+                Optional<IAttack> attack = roleClass.IAttack();
+                attack.ifPresent(iAttack -> iAttack.onEntityKilled(source, attacker, target));
+            }
+            if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
+                for (Skill trait : container.getSkills()) {
+                    Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
+                    meleeWeaponCallback.ifPresent(iAttack -> iAttack.onEntityKilled(source, attacker, target));
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public void onMiningSpeedUpdate(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
@@ -476,7 +561,7 @@ public class ServerEventHandler {
                     final ItemStack itemStack = handler.getStackInSlot(i);
                     if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
                         for (Accessory trait : accessoryItems.getAccessories()) {
-                            Optional<IItemGeneric> optional = trait.IItemGeneric();
+                            Optional<IEntityProperties> optional = trait.IEntityProperties();
                             if (optional.isPresent()) {
                                 originalSpeed = optional.get().onModifyMiningSpeed(player, blockState, blockPos, originalSpeed);
                             }

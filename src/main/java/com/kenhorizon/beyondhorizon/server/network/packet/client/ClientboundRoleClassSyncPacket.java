@@ -1,27 +1,18 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.client;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.client.entity.player.PlayerDataHandler;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ClientboundRoleClassSyncPacket {
-    private final CompoundTag nbt;
-    public ClientboundRoleClassSyncPacket(CompoundTag nbt) {
-        this.nbt = nbt;
-    }
+public record ClientboundRoleClassSyncPacket(CompoundTag nbt) {
 
     public ClientboundRoleClassSyncPacket(FriendlyByteBuf buf) {
-        this.nbt = buf.readNbt();
+        this(buf.readNbt());
     }
 
     public void toBytes(FriendlyByteBuf buf) {

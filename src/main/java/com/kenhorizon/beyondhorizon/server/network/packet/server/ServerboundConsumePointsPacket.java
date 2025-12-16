@@ -1,10 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.client.entity.player.PlayerDataHandler;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +35,6 @@ public class ServerboundConsumePointsPacket {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             Player sender = context.getSender();
-            PlayerData playerData = PlayerDataHandler.get(sender);
             if (sender != null) {
                 if (context.getDirection().getReceptionSide() == LogicalSide.CLIENT) {
                     sender = BeyondHorizon.PROXY.clientPlayer();

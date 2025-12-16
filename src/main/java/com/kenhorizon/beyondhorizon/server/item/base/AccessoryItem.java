@@ -2,9 +2,12 @@ package com.kenhorizon.beyondhorizon.server.item.base;
 
 import com.google.common.collect.ImmutableList;
 import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.accessory.*;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.ChatFormatting;
@@ -21,7 +24,7 @@ import java.util.List;
 public class AccessoryItem extends BasicItem implements IAccessoryItems<AccessoryItem>, IReloadable {
     protected List<Accessory> accessories = ImmutableList.of();
     protected final AccessoryBuilder builder;
-    protected AccessoryItemGroup accessoryItemGroup;
+    protected AccessoryItemGroup accessoryItemGroup = AccessoryItemGroup.UNIQUE;
     public AccessoryItem(AccessoryItemGroup accessoryItemGroup, Properties properties, AccessoryBuilder builder) {
         super(properties.stacksTo(1));
         this.builder = builder;
@@ -30,11 +33,11 @@ public class AccessoryItem extends BasicItem implements IAccessoryItems<Accessor
     }
 
     public AccessoryItem(Properties properties, AccessoryBuilder builder) {
-        this(AccessoryItemGroup.NONE, properties, builder);
+        this(AccessoryItemGroup.UNIQUE, properties, builder);
     }
 
     public AccessoryItem(Properties properties) {
-        this(AccessoryItemGroup.NONE, properties, AccessoryBuilder.NONE);
+        this(AccessoryItemGroup.UNIQUE, properties, AccessoryBuilder.NONE);
     }
 
     @Override
@@ -49,12 +52,12 @@ public class AccessoryItem extends BasicItem implements IAccessoryItems<Accessor
         return builder;
     }
 
-    public AccessoryItemGroup getAccessoryItemGroup() {
+    public AccessoryItemGroup getItemGroup() {
         return this.accessoryItemGroup;
     }
 
     public boolean noGroupItem() {
-        return this.getAccessoryItemGroup() == AccessoryItemGroup.NONE;
+        return this.getItemGroup() == AccessoryItemGroup.NONE;
     }
 
     @Override
@@ -75,13 +78,13 @@ public class AccessoryItem extends BasicItem implements IAccessoryItems<Accessor
     }
 
     protected boolean checkCompatible(ItemStack inSlot, ItemStack outside) {
-        return ((AccessoryItem) inSlot.getItem()).getAccessoryItemGroup() != ((AccessoryItem) outside.getItem()).getAccessoryItemGroup();
+        return ((AccessoryItem) inSlot.getItem()).getItemGroup() != ((AccessoryItem) outside.getItem()).getItemGroup();
     }
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
         if (entity instanceof Player player) {
             this.accessories.forEach((accessory) -> {
-                accessory.IItemGeneric().ifPresent(callback -> {
+                accessory.IEntityProperties().ifPresent(callback -> {
                     callback.onItemUpdate(itemStack, level, player, slot, isSelected);
                 });
             });

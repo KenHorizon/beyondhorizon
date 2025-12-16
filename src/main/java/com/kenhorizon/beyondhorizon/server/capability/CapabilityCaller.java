@@ -1,10 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
-import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
+import com.kenhorizon.beyondhorizon.server.player.PlayerData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +27,9 @@ public class CapabilityCaller {
 
     public static RoleClass roleClass(Player player) {
         return getCapability(player, BHCapabilties.ROLE_CLASS);
+    }
+    public static PlayerData data(Player player) {
+        return getCapability(player, BHCapabilties.PLAYER_DATA);
     }
 
     @Nullable

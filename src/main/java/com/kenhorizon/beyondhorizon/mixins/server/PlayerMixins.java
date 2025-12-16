@@ -2,7 +2,6 @@ package com.kenhorizon.beyondhorizon.mixins.server;
 
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.LivingEntity;

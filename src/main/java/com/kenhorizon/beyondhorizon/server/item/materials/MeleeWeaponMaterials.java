@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.item.materials;
 
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
-import com.kenhorizon.beyondhorizon.server.skills.SkillBuilder;
-import com.kenhorizon.beyondhorizon.server.skills.Skill;
+import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Items;
@@ -133,7 +133,6 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
     private final LazyLoadedValue<Ingredient> repairIngredient;
     private final SkillBuilder skillBuilder;
 
-    // Main
     MeleeWeaponMaterials(String name, int tier, int durability, float miningSpeed, float attackDamage, int enchantmentValue,
                          boolean haveFireResistance, Supplier<Ingredient> repairIngredient, SkillBuilder skillBuilder) {
         this.name = name;

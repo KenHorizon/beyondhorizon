@@ -10,15 +10,10 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ClientboundAccessoryInventoryPacket {
-    private final ItemStack itemStack;
-
-    public ClientboundAccessoryInventoryPacket(ItemStack itemStack) {
-        this.itemStack = itemStack;
-    }
+public record ClientboundAccessoryInventoryPacket(ItemStack itemStack) {
 
     public ClientboundAccessoryInventoryPacket(FriendlyByteBuf buf) {
-        this.itemStack = buf.readItem();
+        this(buf.readItem());
     }
 
     public void toBytes(FriendlyByteBuf buf) {

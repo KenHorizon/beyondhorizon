@@ -38,6 +38,12 @@ public class GameHudDisplay extends Gui {
         this.renderPlayerHearts(event.getGuiGraphics(), event.getPartialTick());
     }
     @SubscribeEvent(receiveCanceled = true)
+    public void onManaRender(RenderGuiOverlayEvent.Pre event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        if (minecraft.options.hideGui || !this.shouldDrawSurvivalElements()) return;
+        this.renderPlayerMana(event.getGuiGraphics(), event.getPartialTick());
+    }
+    @SubscribeEvent(receiveCanceled = true)
     public void onArmorRender(RenderGuiOverlayEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
         if (ModClientConfig.GAME_HUD.get() == GameHuds.VANILLA || minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.ARMOR_LEVEL.type()) return;
@@ -71,6 +77,17 @@ public class GameHudDisplay extends Gui {
         String health = String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth);
         BlitHelper.draw(guiGraphics, HudSprites.HEALTH, x, y - 1, 9.0F, 9, 9, 9, 9);
         BlitHelper.drawStrings(guiGraphics, health,x + (5 + 9), y, ColorUtil.combineRGB(249, 87, 87), true);
+        this.minecraft.getProfiler().pop();
+    }
+
+    public void renderPlayerMana(GuiGraphics guiGraphics, float partialTicks) {
+        this.minecraft.getProfiler().push("player_mana");
+        this.hud.update();
+        int x = this.hud.scaledWindowWidth / 2 - 91;
+        int y = this.hud.scaledWindowHeight - (this.leftHeight + 21);
+        String health = String.format("%.0f/%.0f", this.hud.mana, this.hud.maxMana);
+        BlitHelper.draw(guiGraphics, HudSprites.MANA, x, y - 1, 9.0F, 9, 9, 9, 9);
+        BlitHelper.drawStrings(guiGraphics, health,x + (5 + 9), y, ColorUtil.combineRGB(0, 148, 255), true);
         this.minecraft.getProfiler().pop();
     }
 

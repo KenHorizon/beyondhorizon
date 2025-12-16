@@ -2,8 +2,8 @@ package com.kenhorizon.beyondhorizon.server.command;
 
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
-import com.kenhorizon.beyondhorizon.server.classes.RoleClassTypes;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
+import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -27,28 +27,28 @@ public class RoleClassCommand {
                 })))).then(Commands.literal("reset").then(Commands.argument("target", EntityArgument.player()).executes(context -> {
                     return executeReset(context.getSource(), EntityArgument.getPlayer(context, "target"));
                 }))).then(Commands.literal("roles").then(Commands.argument("target", EntityArgument.player()).then(Commands.argument("role", StringArgumentType.word()).suggests((context, builder) -> {
-                    for (RoleClassTypes roleClassTypes : RoleClassTypes.values()) {
-                        builder.suggest(roleClassTypes.getName().toLowerCase(Locale.ROOT));
+                    for (RoleClass roleClass : BHRegistries.ROLE_CLASS_KEY.get().getValues()) {
+                        builder.suggest(roleClass.getName().toLowerCase(Locale.ROOT));
                     }
                     return builder.buildFuture();
                 }).executes(context -> {
-                    return executeSetRoles(context.getSource(), EntityArgument.getPlayer(context, "target"), context.getArgument("role", String.class));
+                    return executeSetRoles(context.getSource(), EntityArgument.getPlayer(context, "target"), context.getArgument("role", RoleClass.class));
                 }))))
         );
     }
 
-    private static int executeSetRoles(CommandSourceStack commandSource, ServerPlayer player, String roleType) {
-        RoleClassTypes roleClassTypes = RoleClassTypes.valueOf(roleType.toUpperCase(Locale.ROOT));
+    private static int executeSetRoles(CommandSourceStack commandSource, ServerPlayer player, RoleClass roleClass) {
         RoleClass role = CapabilityCaller.roleClass(player);
         if (role == null) {
-            commandSource.sendFailure(Component.translatable(Tooltips.COMMAND_ROLE_SET_FAILED, roleClassTypes.getName()));
+            commandSource.sendFailure(Component.translatable(Tooltips.COMMAND_ROLE_SET_FAILED, roleClass.getName()));
             return 0;
         } else {
-            role.setRoles(roleClassTypes);
-            commandSource.sendSuccess(() -> Component.translatable(Tooltips.COMMAND_ROLE_SET_SUCCESS, roleClassTypes.getName()), true);
+            role.setRoles(roleClass);
+            commandSource.sendSuccess(() -> Component.translatable(Tooltips.COMMAND_ROLE_SET_SUCCESS, roleClass.getName()), true);
             return 1;
         }
     }
+
     private static int executeSetLevels(CommandSourceStack commandSource, ServerPlayer player, int amount) {
         RoleClass role = CapabilityCaller.roleClass(player);
         if (role == null) {

@@ -7,11 +7,14 @@ import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
-import com.kenhorizon.beyondhorizon.server.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.api.classes.MasterySkillCategories;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClasses;
+import com.kenhorizon.beyondhorizon.server.api.classes.MasterySkills;
 import com.kenhorizon.beyondhorizon.server.command.RoleClassCommand;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.skills.Skills;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.util.attributes.AttributeModify;
 import com.kenhorizon.beyondhorizon.server.util.attributes.AttributeRegistryHelper;
 import com.kenhorizon.beyondhorizon.server.util.attributes.IAttributeRegistryHelper;
@@ -41,9 +44,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
-import net.minecraftforge.server.command.ConfigCommand;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Mod(BeyondHorizon.ID)
 public class BeyondHorizon
@@ -70,10 +71,14 @@ public class BeyondHorizon
         BHMenu.register(eventBus);
         BHParticle.register(eventBus);
         //  BHPotions.register(eventBus);
+        BHEffects.register(eventBus);
         BHRecipe.register(eventBus);
         BHBlocks.register(eventBus);
         BHItems.register(eventBus);
         Skills.register(eventBus);
+        MasterySkillCategories.register(eventBus);
+        MasterySkills.register(eventBus);
+        RoleClasses.register(eventBus);
         Accessories.register(eventBus);
         PROXY.serverHandler();
         MinecraftForge.EVENT_BUS.register(this);

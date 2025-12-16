@@ -6,9 +6,9 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
-import com.kenhorizon.beyondhorizon.server.skills.SkillBuilder;
-import com.kenhorizon.beyondhorizon.server.skills.ISkillItems;
-import com.kenhorizon.beyondhorizon.server.skills.Skill;
+import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
+import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.network.chat.Component;
@@ -69,7 +69,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         }
         if (this.skills != null) {
             this.skills.forEach((abilityTraits) -> {
-                abilityTraits.IItemGeneric().ifPresent(callback -> {
+                abilityTraits.IEntityProperties().ifPresent(callback -> {
                     callback.addAttributes(mapBuilder);
                 });
             });
@@ -111,7 +111,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         if (entity instanceof LivingEntity living) {
             if (this.skills != null) {
                 this.skills.forEach((skill) -> {
-                    skill.IItemGeneric().ifPresent(callback -> {
+                    skill.IEntityProperties().ifPresent(callback -> {
                         callback.onItemUpdate(itemStack, level, living, slot, isSelected);
                     });
                 });

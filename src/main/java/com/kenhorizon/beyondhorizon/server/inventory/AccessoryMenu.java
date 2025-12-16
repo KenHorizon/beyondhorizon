@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.inventory;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
 import com.kenhorizon.beyondhorizon.server.inventory.slot.AccessorySlot;
-import com.kenhorizon.beyondhorizon.server.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;

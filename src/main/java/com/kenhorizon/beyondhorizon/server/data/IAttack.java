@@ -1,11 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.data;
 
-import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -41,5 +38,9 @@ public interface IAttack {
 
     default boolean attackFullyCharged(Player player, ItemStack itemStack) {
         return player.getAttackStrengthScale(0.5F) > 0.9F;
+    }
+
+    default boolean canEntiyReceiveDamage(Player player, LivingEntity target, DamageSource source) {
+        return false;
     }
 }

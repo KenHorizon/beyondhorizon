@@ -51,19 +51,21 @@ public class AttributeTooltips {
         }
     }
 
-    public void makeAttributeTooltip(ItemStack stack, List<Component> tooltip, Multimap<Attribute, AttributeModifier> modifierMap) {
+    public void makeAttributeTooltip(ItemStack stack, List<Component> tooltip, Multimap<Attribute, AttributeModifier> modifierMap, ChatFormatting chatFormatting) {
         if (modifierMap.isEmpty()) return;
         for (Map.Entry<Attribute, AttributeModifier> entry : modifierMap.entries()) {
             AttributeModifier attributeModifier = entry.getValue();
             Attribute attribute = entry.getKey();
             double attributeAmount = attributeModifier.getAmount();
-            this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount);
+            this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, chatFormatting);
         }
     }
-
-    private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount) {
+    public void makeAttributeTooltip(ItemStack stack, List<Component> tooltip, Multimap<Attribute, AttributeModifier> modifierMap) {
+        makeAttributeTooltip(stack, tooltip, modifierMap, null);
+    }
+    private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount, ChatFormatting colors) {
         double amount = formatAttributeValues(attribute, attributeModifier, attributeAmount);
-        ChatFormatting color = Tooltips.attributeColorFormat(attributeAmount);
+        ChatFormatting color = colors == null ? Tooltips.attributeColorFormat(attributeAmount) : colors;
         Component displayName = Component.translatable(attribute.getDescriptionId());
         String isPositive = amount > 0.0D ? "plus" : "take";
         amount *= attributeAmount > 0.0D ? 1.0D : -1.0D;
@@ -73,6 +75,9 @@ public class AttributeTooltips {
         } else {
             tooltip.add(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format1(amount), displayName).withStyle(color));
         }
+    }
+    private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount) {
+         makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, null);
     }
 
     private boolean checkIfPercentage(Attribute attribute) {

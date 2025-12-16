@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -17,20 +17,7 @@ import javax.annotation.Nullable;
 
 public class RoleClassCap implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static ResourceLocation NAME = BeyondHorizon.resource("roles");
-    private final LazyOptional<RoleClass> handler = LazyOptional.of(this::createInstance);
-    private RoleClass roleClass = null;
-    private final Player player;
-
-    public RoleClassCap(Player player) {
-        this.player = player;
-    }
-
-    public RoleClass createInstance() {
-        if (this.roleClass == null) {
-            this.roleClass = new RoleClass(this.player);
-        }
-        return this.roleClass;
-    }
+    private final LazyOptional<RoleClass> handler = LazyOptional.of(RoleClass::new);
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {

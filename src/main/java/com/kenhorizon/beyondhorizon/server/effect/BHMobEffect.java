@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.effect;
 
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -39,6 +40,7 @@ public class BHMobEffect extends MobEffect {
                 } else if (entity.isFallFlying() || entity instanceof Player player && player.getAbilities().flying) {
                     damageOutput *= 1.25F;
                 }
+                entity.hurt(entity.level().damageSources().magic(), damageOutput);
             }
         }
         if (this == BHEffects.BLEED.get()) {

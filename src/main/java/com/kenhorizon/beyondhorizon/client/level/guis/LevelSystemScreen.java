@@ -4,9 +4,8 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.level.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.classes.RoleClass;
-import com.kenhorizon.beyondhorizon.server.classes.RoleClassTypes;
-import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
+import com.kenhorizon.beyondhorizon.server.api.classes.RoleClasses;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundClassSelectionPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundConsumePointsPacket;
@@ -54,7 +53,7 @@ public class LevelSystemScreen extends Screen {
 
     public record AttributePoint(int x, int y, RoleClass.AttributePoints attributePoints) {}
     public record AttributeRemovePoints(int x, int y, RoleClass.AttributePoints attributePoints) {}
-    public record SelectionClass(int x, int y, RoleClassTypes roleClassTypes) {}
+    public record SelectionClass(int x, int y, RoleClass roleClass) {}
 
     private int buttonCooldown;
     private final int buttonCooldownMax = 5;
@@ -68,10 +67,11 @@ public class LevelSystemScreen extends Screen {
     private LevelSystemScreen.Category category = Category.ATTRIBUTES;
     private LevelSystemScreen.SubCategory subCategory = SubCategory.NONE;
     private RoleClass role;
+    private RoleClass selectedRoles;
     public List<SelectionClass> selectionClass = new ArrayList<>();
     public List<AttributePoint> attributePoints = new ArrayList<>();
     public List<AttributeRemovePoints> attributeRemovePoints = new ArrayList<>();
-    public static final ResourceLocation ATTRIBUTE = BeyondHorizon.resource("textures/gui/level_system/level_system.png");
+    public static final ResourceLocation LOCATION = BeyondHorizon.resource("textures/gui/level_system/level_system.png");
     public static final ResourceLocation SKILL_TREE = BeyondHorizon.resource("textures/gui/level_system/skill_tree.png");
 
     public LevelSystemScreen() {
@@ -98,21 +98,22 @@ public class LevelSystemScreen extends Screen {
         int x = this.posX + 20;
         int y = this.posY + 10;
         RenderSystem.enableBlend();
-        guiGraphics.blit(ATTRIBUTE, this.posX, this.posY, 0, 0, this.imageW, this.imageH);
+        guiGraphics.blit(LOCATION, this.posX, this.posY, 0, 0, this.imageW, this.imageH);
         this.renderCategoryButtons(guiGraphics, this.category);
-        BlitHelper.drawStrings(guiGraphics, player.getName(), x, y, ColorUtil.GRAY);
-        RoleClass role = this.player.getCapability(BHCapabilties.ROLE_CLASS).orElseThrow(NullPointerException::new);
-        guiGraphics.blit(ATTRIBUTE, this.posX + 126, this.posY + 10, 200, 0, 20, 12);
-        boolean cantGainExp = role.getLevel() >= role.maxLevel;
-        guiGraphics.blit(ATTRIBUTE, this.posX + 149, this.posY + 10, 176, cantGainExp ? 0 : 12, 12, 12);
-        guiGraphics.blit(ATTRIBUTE, this.posX + 20, this.posY + 43, 79, 166, 131, 5);
-        guiGraphics.blit(ATTRIBUTE, this.posX + 20, this.posY + 43, 79, 171, (int) (role.expProgress * 131), 5);
-        String pts = String.format("%s", role.getPoints());
-        BlitHelper.drawStrings(guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 134, this.posY + 12, ColorUtil.WHITE, false);
-        String level = String.format("Level: %s", role.getLevel());
-        String roleclass = String.format("Class: %s", role.getRoles().getName());
-        BlitHelper.drawStrings(guiGraphics, level, x, y + 10, ColorUtil.GRAY);
-        BlitHelper.drawStrings(guiGraphics, roleclass, x, y + 20, ColorUtil.GRAY);
+        if (this.subCategory == SubCategory.NONE) {
+            BlitHelper.drawStrings(guiGraphics, player.getName(), x, y, ColorUtil.GRAY);
+            guiGraphics.blit(LOCATION, this.posX + 126, this.posY + 10, 200, 0, 20, 12);
+            boolean cantGainExp = role.getLevel() >= role.maxLevel;
+            guiGraphics.blit(LOCATION, this.posX + 149, this.posY + 10, 176, cantGainExp ? 0 : 12, 12, 12);
+            guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 166, 131, 5);
+            guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 171, (int) (role.expProgress * 131), 5);
+            String pts = String.format("%s", role.getPoints());
+            BlitHelper.drawStrings(guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 134, this.posY + 12, ColorUtil.WHITE, false);
+            String level = String.format("Level: %s", role.getLevel());
+            String roleclass = String.format("Class: %s", role.getRoles().getName());
+            BlitHelper.drawStrings(guiGraphics, level, x, y + 10, ColorUtil.GRAY);
+            BlitHelper.drawStrings(guiGraphics, roleclass, x, y + 20, ColorUtil.GRAY);
+        }
 
         if (this.category == Category.ATTRIBUTES) {
             this.addButtonSkill(guiGraphics, this.posX, this.posY, RoleClass.AttributePoints.STRENGHT);
@@ -129,14 +130,19 @@ public class LevelSystemScreen extends Screen {
         }
         if (this.category == Category.CLASS) {
             if (this.subCategory == SubCategory.CLASS_INFO) {
-                BlitHelper.drawStrings(guiGraphics, this.role.getRoles().getName(), this.posX + 7, this.posY + 60, ColorUtil.GRAY);
+                guiGraphics.blit(LOCATION, this.posX + 129, this.posY + 12, 220, 0, 18, 18);
+                BlitHelper.drawStrings(guiGraphics, this.selectedRoles.getRoles().getName(), this.posX + 7, this.posY + 60, ColorUtil.GRAY);
+                for (int i = 0 ; i < this.selectedRoles.getRoleDescription().size(); i++) {
+                    Component text = this.selectedRoles.getRoleDescription().get(i);
+                    BlitHelper.drawStrings(guiGraphics, text, this.posX + 7, this.posY + 12 + (i * 9), ColorUtil.GRAY);
+                }
             } else {
-                this.addSelectionButton(guiGraphics, this.posX, this.posY, RoleClassTypes.ASSSASSIN);
-                this.addSelectionButton(guiGraphics, this.posX, this.posY + (33 * 1), RoleClassTypes.MARKSMAN);
-                this.addSelectionButton(guiGraphics, this.posX, this.posY + (33 * 2), RoleClassTypes.CASTER);
-                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY, RoleClassTypes.STRIKER);
-                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY + (33 * 1), RoleClassTypes.VANGAURD);
-                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY + (33 * 2), RoleClassTypes.SUPPORT);
+                this.addSelectionButton(guiGraphics, this.posX, this.posY, RoleClasses.ASSASSIN.get());
+                this.addSelectionButton(guiGraphics, this.posX, this.posY + (33 * 1), RoleClasses.MARKSMAN.get());
+                this.addSelectionButton(guiGraphics, this.posX, this.posY + (33 * 2), RoleClasses.CASTER.get());
+                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY, RoleClasses.STRIKER.get());
+                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY + (33 * 1), RoleClasses.VANGUARD.get());
+                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY + (33 * 2), RoleClasses.SUPPORT.get());
                 if (!role.isUnlockedClassAndTraits()) {
                     guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, ColorUtil.combineARGB(100, 0, 0,0));
                     String warningText = String.format("You need to be level %s", Constant.CLASS_SYSTEM_UNLOCKED);
@@ -158,8 +164,8 @@ public class LevelSystemScreen extends Screen {
             if (categorys.isSubCategory()) continue;
             i++;
             boolean selected = category == categorys;
-            guiGraphics.blit(ATTRIBUTE, this.posX - 26, this.posY + (6 + (28 * (i - 1))), selected ? 203 : 176, 36, selected ? 32 : 26, 28);
-            guiGraphics.blit(ATTRIBUTE, this.posX - 20, this.posY + (12 + (28 * (i - 1))), 176 + (16 * (i - 1)), 64, 16, 16);
+            guiGraphics.blit(LOCATION, this.posX - 26, this.posY + (6 + (28 * (i - 1))), selected ? 203 : 176, 36, selected ? 32 : 26, 28);
+            guiGraphics.blit(LOCATION, this.posX - 20, this.posY + (12 + (28 * (i - 1))), 176 + (16 * (i - 1)), 64, 16, 16);
         }
     }
 
@@ -174,7 +180,7 @@ public class LevelSystemScreen extends Screen {
     private void addButtonSkill(GuiGraphics guiGraphics, int x, int y, RoleClass.AttributePoints attributePoints) {
         int pts = role.getPointOfSkills(attributePoints);
         int attributePts = role.getPoints();
-        guiGraphics.blit(ATTRIBUTE, x + 7, y + 60, 0, 166, 79, 32);
+        guiGraphics.blit(LOCATION, x + 7, y + 60, 0, 166, 79, 32);
         String text = attributePoints.getName();
         String lvl = String.format("%s", pts);
         BlitHelper.drawStrings(guiGraphics, text, x + 12, y + 65, ColorUtil.WHITE, false);
@@ -184,23 +190,23 @@ public class LevelSystemScreen extends Screen {
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 200.0F);
-        guiGraphics.blit(ATTRIBUTE, x + 7 + 62, y + 64 + 10, 188, pts > 0 ? 12 : 0, 12, 12);
-        guiGraphics.blit(ATTRIBUTE, x + 7 + 48, y + 64 + 10, 176, attributePts > 0 ? 12 : 0, 12, 12);
+        guiGraphics.blit(LOCATION, x + 7 + 62, y + 64 + 10, 188, pts > 0 ? 12 : 0, 12, 12);
+        guiGraphics.blit(LOCATION, x + 7 + 48, y + 64 + 10, 176, attributePts > 0 ? 12 : 0, 12, 12);
         poseStack.popPose();
         this.attributePoints.add(new AttributePoint(x + 7 + 48, y + 64 + 10, attributePoints));
         this.attributeRemovePoints.add(new AttributeRemovePoints(x + 7 + 64, y + 62 + 10, attributePoints));
     }
 
-    private void addSelectionButton(GuiGraphics guiGraphics, int x, int y, RoleClassTypes roleClassTypes) {
-        boolean isMatched = roleClassTypes.equals(this.role.getRoles());
+    private void addSelectionButton(GuiGraphics guiGraphics, int x, int y, RoleClass roleClass) {
+        boolean isMatched = roleClass.equals(this.role.getRoles());
         if (isMatched) {
-            guiGraphics.blit(ATTRIBUTE, x + 7, y + 60, 0, 198, 79, 32);
+            guiGraphics.blit(LOCATION, x + 7, y + 60, 0, 198, 79, 32);
         } else {
-            guiGraphics.blit(ATTRIBUTE, x + 7, y + 60, 0, 166, 79, 32);
+            guiGraphics.blit(LOCATION, x + 7, y + 60, 0, 166, 79, 32);
         }
-        String format = String.format("%s", roleClassTypes.getName());
+        String format = String.format("%s", roleClass.getName());
         BlitHelper.drawStrings(guiGraphics, format, x + 12, y + 65, ColorUtil.WHITE, false);
-        this.selectionClass.add(new SelectionClass(x + 7, y + 60, roleClassTypes));
+        this.selectionClass.add(new SelectionClass(x + 7, y + 60, roleClass.getRoles()));
     }
 
     @Override
@@ -223,12 +229,22 @@ public class LevelSystemScreen extends Screen {
                     this.mouseSkillSets(this.attributePoints, mouseX, mouseY);
                 }
             }
-            if (this.category == Category.CLASS || this.subCategory == SubCategory.CLASS_INFO) {
-                boolean isUnlocked = this.category.getFilter().test(role);
-                boolean jobless = this.role.getRoles() == RoleClassTypes.NONE;
-                if (isUnlocked) {
-                    this.mouseClassSelectionInfo(this.selectionClass, mouseX, mouseY);
+            if (this.category == Category.CLASS) {
+                if (this.subCategory == SubCategory.CLASS_INFO) {
+                    int backX = this.posX + 9;
+                    int backY = this.posY + 11;
+                    if (mouseX >= backX && mouseX <= backX + 12 && mouseY >= backY && mouseY <= backY + 12) {
+                        this.subCategory = SubCategory.NONE;
+                    }
+                    int confirmX = this.posX + 128;
+                    int confirmY = this.posY + 12;
+                    if (mouseX >= confirmX && mouseX <= confirmX + 12 && mouseY >= confirmY && mouseY <= confirmY + 12) {
+                        NetworkHandler.sendToServer(new ServerboundClassSelectionPacket(this.player.getId(), this.selectedRoles));
+                    }
                 }
+                boolean isUnlocked = this.category.getFilter().test(role);
+                boolean jobless = this.role.getRoles() == RoleClasses.NONE.get();
+                this.mouseClassSelectionInfo(this.selectionClass, mouseX, mouseY);
             }
             if (this.category == Category.TRAIT) {
                 boolean isUnlocked = this.category.getFilter().test(role);
@@ -254,6 +270,7 @@ public class LevelSystemScreen extends Screen {
             SelectionClass sets = list.get(i);
             if (this.buttonCooldown == 0 && mouseX >= sets.x() && mouseX <= sets.x() + 79 && mouseY >= sets.y() && mouseY <= sets.y() + 32) {
                 this.subCategory = SubCategory.CLASS_INFO;
+                this.selectedRoles = sets.roleClass();
                 this.buttonCooldown = this.buttonCooldownMax;
             }
         }
@@ -265,7 +282,7 @@ public class LevelSystemScreen extends Screen {
             for (int i = 0; i < list.size(); i++) {
                 SelectionClass sets = list.get(i);
                 if (this.buttonCooldown == 0 && mouseX >= sets.x() && mouseX <= sets.x() + 12 && mouseY >= sets.y() && mouseY <= sets.y() + 12) {
-                    NetworkHandler.sendToServer(new ServerboundClassSelectionPacket(this.player.getId(), sets.roleClassTypes));
+                    NetworkHandler.sendToServer(new ServerboundClassSelectionPacket(this.player.getId(), sets.roleClass()));
                     this.buttonCooldown = this.buttonCooldownMax;
                 }
             }

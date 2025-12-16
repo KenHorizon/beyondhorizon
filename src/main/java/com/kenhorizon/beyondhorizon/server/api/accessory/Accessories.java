@@ -1,8 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
+import com.kenhorizon.beyondhorizon.server.api.skills.SinglePassiveAccessory;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -74,19 +77,17 @@ public class Accessories {
 
     public static final RegistryObject<Accessory> MINING_BOOTS = registerSkill("mining_boots", () -> new BootsAccessory()
             .addAttributes(Attributes.MOVEMENT_SPEED, "3ff3046e-dcaf-47a4-b3f7-f57eb9fa141c", Constant.BOOTS_TIER_2, AttributeModifier.Operation.ADDITION)
-            .addAttributes(BHAttributes.MINING_SPEED.get(), "16f527b1-3dc4-4db0-9c22-8e8e0aea6b07", Constant.MINING_BOOTS, AttributeModifier.Operation.MULTIPLY_TOTAL));
-
-    public static final RegistryObject<Accessory> FIRE_IMMUNITY = registerSkill("fire_immunity", AccessorySkill::new);
+            .addAttributes(BHAttributes.MINING_SPEED.get(), "16f527b1-3dc4-4db0-9c22-8e8e0aea6b07", Constant.MINING_SPEED_BASIC, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> BRAVERY = registerSkill("bravery", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.DAMAGE_DEALT.get(), "ec9a9f57-2a3d-4165-93d2-ce335791aaf6", Constant.BRAVERY_DAMAGE, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Accessory> ANCIENT_PICKAXE = registerSkill("ancient_pickaxe", () -> new AttributeOnlyAccessory()
-            .addAttributes(BHAttributes.MINING_EFFICIENCY.get(), "4e9adf0a-14ec-4115-82f8-9ef0c9d0cb90", Constant.ANCIENT_PICK_MINING_EFFECIENCY, AttributeModifier.Operation.MULTIPLY_TOTAL)
-            .addAttributes(BHAttributes.MINING_SPEED.get(), "a132412a-f5ae-4eed-a4e9-d143b5229aba", Constant.ANCIENT_PICK_MINING_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            .addAttributes(BHAttributes.MINING_EFFICIENCY.get(), "4e9adf0a-14ec-4115-82f8-9ef0c9d0cb90", Constant.ANCIENT_PICK_MINING_EFFECIENCY, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MINING_SPEED.get(), "a132412a-f5ae-4eed-a4e9-d143b5229aba", Constant.ANCIENT_PICK_MINING_SPEED, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> ANCIENT_CHISEL = registerSkill("ancient_chisel", () -> new AttributeOnlyAccessory()
-            .addAttributes(BHAttributes.MINING_SPEED.get(), "9921072b-3bab-418c-961a-6d34074a457d", Constant.ANCIENT_CHISEL_MINING_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            .addAttributes(BHAttributes.MINING_SPEED.get(), "9921072b-3bab-418c-961a-6d34074a457d", Constant.ANCIENT_CHISEL_MINING_SPEED, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> RECTRIX = registerSkill("rectrix", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_SPEED, "02c0a38d-4292-464d-b1e5-353e7a739793", Constant.RECTRIX_ATTACK_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
@@ -110,10 +111,21 @@ public class Accessories {
     public static final RegistryObject<Accessory> POWER_CLAW = registerSkill("power_claw", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.DAMAGE_DEALT.get(), "dc5d5e4a-378e-49cc-90ee-daae66bb2609", Constant.POWER_CLAW, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-    public static final RegistryObject<Accessory> BURN_EFFECT = registerSkill("burn_effect", AccessorySkill::new);
+    public static final RegistryObject<Accessory> MINER_GLOVES = registerSkill("miner_gloves", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.MINING_SPEED.get(), "031ded39-1d76-4e88-a277-f2adf5c289e4", Constant.MINING_SPEED_BASIC, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> DWARF_MINER_RING = registerSkill("dwarf_miner_ring", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.MINING_SPEED.get(), "a58ef541-8de1-4ec3-b647-17fcf9466ff3", Constant.MINING_SPEED_BASIC, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> KNOWLEDGE = registerSkill("knowledge", () -> new ExperienceAccessory(Constant.KNOWLEDGE_XP_MODIFIER));
+    public static final RegistryObject<Accessory> VENOM = registerSkill("venom", () -> new ApplyEffectAccessory((int) Constant.VENOM_DURATION, (int) Constant.VENOM_POISON_LEVEL, MobEffects.POISON, BHEffects.LETHAL_POISON.get())
+            .chances(Constant.VENOM_INFLICT_CHANCE));
+
+    public static final RegistryObject<Accessory> FIRE_IMMUNITY = registerSkill("fire_immunity", SinglePassiveAccessory::new);
+    public static final RegistryObject<Accessory> BURN_EFFECT = registerSkill("burn_effect", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> DESPAIR_AND_DEFY = registerSkill("despair_and_defy", () -> new BleedingEffectAccessory(Constant.DESPAIR_AND_DEFY));
     public static final RegistryObject<Accessory> OVERGROWTH = registerSkill("overgrowth", () -> new GainBonusHealthAccessory((float) Constant.OVERGROWTH_BONUS_HEALTH, GainBonusHealthAccessory.Type.TOTAL).disableAttributeTooltip());
-    public static final RegistryObject<Accessory> FEATHER_FEET = registerSkill("feather_feet", AccessorySkill::new);
+    public static final RegistryObject<Accessory> FEATHER_FEET = registerSkill("feather_feet", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> RAGE = registerSkill("rage", () -> new ExtraDamageAccessory(Constant.RAGE, ExtraDamageAccessory.USER_MISSING_HEALTH));
     public static final RegistryObject<Accessory> THORNS = registerSkill("thorns", () -> new ThornsAccessory(Constant.THORN_BASE_DAMAGE, Constant.THORN_DAMAGE_MODIFIER));
 

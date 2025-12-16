@@ -1,9 +1,10 @@
-// 1.20.1	2025-12-05T21:07:09.37162	Tags for minecraft:damage_type mod id beyondhorizon
+// 1.20.1	2025-12-16T13:57:22.5662008	Tags for minecraft:damage_type mod id beyondhorizon
 3f3b06c2790be4ac8da468e79bd0170fe5088a51 data/beyondhorizon/tags/damage_type/cant_store_damage.json
 1d698bf2646553f7136d1705610eb5c4ee046a4f data/beyondhorizon/tags/damage_type/is_armor_penetration.json
 8ca2a364c4aa35aa5d60cf2c1a78650d600a740f data/beyondhorizon/tags/damage_type/is_magic_penetration.json
 585d589fb6b18b983c5d7d9744cfff127fd9f856 data/beyondhorizon/tags/damage_type/is_true_damage.json
-6d1b2738792b9689096a05e6ad1ca338f2bcf05f data/beyondhorizon/tags/damage_type/physical_damage.json
+4ea725f8c13a44741fa29b3e2513ddd4fa8a4274 data/beyondhorizon/tags/damage_type/magic_damage.json
+42f849445d38774c76fea842f1cac4a6238c4193 data/beyondhorizon/tags/damage_type/physical_damage.json
 1a2488cc939d02218c30126a39025fcecc66fd3e data/beyondhorizon/tags/damage_type/true_damage.json
 ac1150de495fd85f1f3491c60ed0e9ae376edd85 data/minecraft/tags/damage_type/bypasses_armor.json
 3f3b06c2790be4ac8da468e79bd0170fe5088a51 data/minecraft/tags/damage_type/is_explosion.json

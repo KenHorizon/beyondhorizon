@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.classes;
 
 import com.kenhorizon.beyondhorizon.server.api.classes.classes.*;
-import com.kenhorizon.beyondhorizon.server.classes.classes.*;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;

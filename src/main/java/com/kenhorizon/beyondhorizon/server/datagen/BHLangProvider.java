@@ -66,6 +66,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.FIRE_IMMUNITY.get(), "Fire Immunity", "Grant immunity from fire block");
         this.addAccessory(Accessories.RAGE.get(), "Rage", "Grant 0-%s%%(based on Missing HP) increased damage");
         this.addAccessory(Accessories.THORNS.get(), "Thorns", "When struck by basic attack on-hit, deal %s (+%s%% bonus Armor) magic damage to the attacker and inflict Wounded for 3 seconds");
+        this.addAccessory(Accessories.KNOWLEDGE.get(), "Knowledge", "Increase drop experience by %s%%");
+        this.addAccessory(Accessories.VENOM.get(), "Venom", "Attacks have %s%% chance inflict Poison for %s seconds");
         //
         this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");
         this.addRole(RoleClasses.MARKSMAN.get(), "Marksman", "Specialize in precision, long range engagement and delivering consistent, high damage from safe distance");
@@ -83,6 +85,7 @@ public class BHLangProvider extends LanguageProvider {
         creativeTabs(BHCreativeTabs.BH_DEBUG_ITEMS, "Beyond Horizon: Debug Items");
         //
         this.add(Tooltips.TOOLTIP_ACCESSORY, "Accessory");
+        this.add(Tooltips.TOOLTIP_ACCESSORY_TYPE, "Unique");
         this.add(Tooltips.TOOLTIP_INVENTORY, "Inventory");
         this.add(Tooltips.TOOLTIP_HEALTH_RECOVERY_POTION, "Restore %s Health");
         this.add(Tooltips.TOOLTIP_MANA_RECOVERY_POTION, "Restore %s Mana");

@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -55,8 +56,7 @@ public class AccessoryHelper {
         List<ItemStack> list = AccessoryHelper.getAccessoryItems(handler);
         boolean isValid = list.isEmpty();
         if (!list.isEmpty()) {
-            for (int index = 0; index < list.size(); index++) {
-                ItemStack inSlotItemStack = list.get(index);
+            for (ItemStack inSlotItemStack : list) {
                 if (!inSlotItemStack.isEmpty() && inSlotItemStack.getItem() instanceof IAccessoryItems<?> inSlotContainer) {
                     if (!(!ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack))) {
                         return false;

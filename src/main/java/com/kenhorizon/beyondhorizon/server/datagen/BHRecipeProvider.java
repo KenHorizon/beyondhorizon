@@ -47,6 +47,22 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                         inventoryTrigger(ItemPredicate.Builder.item().of(Blocks.CRAFTING_TABLE).build()))
                 .save(consumer);
 
+        WorkbenchRecipeProvider.create(BHItems.NULL_MAGIC_RUNE.get(), 1)
+                .required(Items.EMERALD, 20)
+                .required(BHItems.RUBY.get(), 20)
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.RUMINATIVE_BEADS.get(), 1)
+                .required(Items.EMERALD, 20)
+                .required(Items.LEAD, 6)
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.TOUGH_CLOTH.get(), 1)
+                .required(Items.LEATHER, 32)
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.CHAIN_VEST.get(), 1)
+                .required(BHItems.TOUGH_CLOTH.get())
+                .required(BHItems.TOUGH_CLOTH.get())
+                .required(BHItems.CHAIN_PLATE.get(), 20)
+                .save(consumer);
         WorkbenchRecipeProvider.create(BHItems.VITALITY_STONE.get(), 1)
                 .required(BHItems.RUBY.get(), 20)
                 .save(consumer);
@@ -69,14 +85,6 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         WorkbenchRecipeProvider.create(BHItems.SPECTRAL_CLOAK.get(), 1)
                 .required(BHItems.RUMINATIVE_BEADS.get())
                 .required(BHItems.NULL_MAGIC_RUNE.get())
-                .save(consumer);
-        WorkbenchRecipeProvider.create(BHItems.TOUGH_CLOTH.get(), 1)
-                .required(Items.LEATHER, 32)
-                .save(consumer);
-        WorkbenchRecipeProvider.create(BHItems.CHAIN_VEST.get(), 1)
-                .required(BHItems.TOUGH_CLOTH.get())
-                .required(BHItems.TOUGH_CLOTH.get())
-                .required(BHItems.CHAIN_PLATE.get(), 20)
                 .save(consumer);
         WorkbenchRecipeProvider.create(BHItems.CINDER_STONE.get(), 1)
                 .required(BHItems.VITALITY_STONE.get())

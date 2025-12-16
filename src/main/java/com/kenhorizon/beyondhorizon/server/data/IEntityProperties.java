@@ -23,4 +23,8 @@ public interface IEntityProperties {
     default double onModifyMiningSpeed(Player player, BlockState blockState, BlockPos blockPos, double originalSpeed) {
         return 0.0D;
     }
+
+    default int modifyExprienceDrop(int dropExperience, LivingEntity target, Player player) {
+        return dropExperience;
+    }
 }

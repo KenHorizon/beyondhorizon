@@ -143,23 +143,7 @@ public class BlitHelper {
     }
 
     // DRAW STRINGS
-    public static void drawStrings(GuiGraphics guiGraphics, Component text, float scale, int x, int y, int coloredText) {
-        if (text.getStyle().getColor() != null) {
-            coloredText = TextColor.fromRgb(text.getStyle().getColor().getValue()).getValue();
-        } else {
-            coloredText = ColorUtil.combineRGB(255, 255, 255);
-        }
-        drawStrings(guiGraphics, text, x, y, scale, coloredText, false, false);
-    }
-    public static void drawStrings(GuiGraphics guiGraphics, Component text, float scale, int x, int y, boolean border) {
-        int coloredText = 0;
-        if (text.getStyle().getColor() != null) {
-            coloredText = TextColor.fromRgb(text.getStyle().getColor().getValue()).getValue();
-        } else {
-            coloredText = ColorUtil.combineRGB(255, 255, 255);
-        }
-        drawStrings(guiGraphics, text, x, y, scale, coloredText, border, !border);
-    }
+
     public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, boolean border) {
         int coloredText = 0;
         if (text.getStyle().getColor() != null) {
@@ -167,16 +151,7 @@ public class BlitHelper {
         } else {
             coloredText = ColorUtil.combineRGB(255, 255, 255);
         }
-        drawStrings(guiGraphics, text, x, y, 16.0F, coloredText, border, !border);
-    }
-    public static void drawStrings(GuiGraphics guiGraphics, Component text, float scale, int x, int y) {
-        int coloredText = 0;
-        if (text.getStyle().getColor() != null) {
-            coloredText = TextColor.fromRgb(text.getStyle().getColor().getValue()).getValue();
-        } else {
-            coloredText = ColorUtil.combineRGB(255, 255, 255);
-        }
-        drawStrings(guiGraphics, text, x, y, scale, coloredText, false, true);
+        drawStrings(guiGraphics, text, x, y, coloredText, border, !border);
     }
 
     public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, int color) {
@@ -186,7 +161,7 @@ public class BlitHelper {
         } else {
             coloredText = color;
         }
-        drawStrings(guiGraphics, text, x, y, 16.0F, coloredText, false, false);
+        drawStrings(guiGraphics, text, x, y, coloredText, false, false);
     }
 
     public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y) {
@@ -196,21 +171,16 @@ public class BlitHelper {
         } else {
             coloredText = ColorUtil.combineRGB(255, 255, 255);
         }
-        drawStrings(guiGraphics, text, x, y, 16.0F, coloredText, false, true);
+        drawStrings(guiGraphics, text, x, y, coloredText, false, true);
     }
 
     public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color) {
-        drawStrings(guiGraphics, text, x, y, 16.0F, color, false, false);
+        drawStrings(guiGraphics, text, x, y, color, false, false);
     }
     public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color, boolean borderOrdropShadow) {
-        drawStrings(guiGraphics, text, x, y, 16.0F, color, borderOrdropShadow, !borderOrdropShadow);
+        drawStrings(guiGraphics, text, x, y, color, borderOrdropShadow, !borderOrdropShadow);
     }
-
-    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, float scale, int color, boolean border, boolean dropShadow) {
-        PoseStack poseStack = new PoseStack();
-        poseStack.pushPose();
-        poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
-        poseStack.scale(scale, scale, scale);
+    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, int color, boolean border, boolean dropShadow) {
         String componentString = text.getString();
         if (border) {
             guiGraphics.drawString(Minecraft.getInstance().font, componentString, x + 1, y, 0, false);
@@ -219,14 +189,9 @@ public class BlitHelper {
             guiGraphics.drawString(Minecraft.getInstance().font, componentString, x, y - 1, 0, false);
         }
         guiGraphics.drawString(Minecraft.getInstance().font, componentString, x, y, color, dropShadow);
-        poseStack.popPose();
     }
 
-    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, float scale, int color, boolean border, boolean dropShadow) {
-        PoseStack poseStack = new PoseStack();
-        poseStack.pushPose();
-        poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
-        poseStack.scale(scale, scale, scale);
+    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color, boolean border, boolean dropShadow) {
         if (border) {
             guiGraphics.drawString(Minecraft.getInstance().font, text, x + 1, y, ColorUtil.combineRGB(0, 0, 0), false);
             guiGraphics.drawString(Minecraft.getInstance().font, text, x - 1, y, ColorUtil.combineRGB(0, 0, 0), false);
@@ -234,6 +199,5 @@ public class BlitHelper {
             guiGraphics.drawString(Minecraft.getInstance().font, text, x, y - 1, ColorUtil.combineRGB(0, 0, 0), false);
         }
         guiGraphics.drawString(Minecraft.getInstance().font, text, x, y, color, dropShadow);
-        poseStack.popPose();
     }
 }

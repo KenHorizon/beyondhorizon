@@ -12,6 +12,10 @@ import java.util.stream.Collectors;
 public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder NONE = new AccessoryBuilder(List.of(Accessories.NONE));
 
+    public static final AccessoryBuilder POISON_VILE = new AccessoryBuilder(List.of(Accessories.VENOM));
+    public static final AccessoryBuilder DWARF_MINER_RING = new AccessoryBuilder(List.of(Accessories.DWARF_MINER_RING));
+    public static final AccessoryBuilder MINER_GLOVES = new AccessoryBuilder(List.of(Accessories.MINER_GLOVES));
+    public static final AccessoryBuilder BOOK_OF_KNOWLEDGE = new AccessoryBuilder(List.of(Accessories.KNOWLEDGE));
     public static final AccessoryBuilder POWER_CLAW = new AccessoryBuilder(List.of(Accessories.POWER_CLAW));
     public static final AccessoryBuilder THORNMAIL = new AccessoryBuilder(List.of(Accessories.THORNS));
     public static final AccessoryBuilder BLOOD_OF_BERSERKER = new AccessoryBuilder(List.of(Accessories.RAGE));

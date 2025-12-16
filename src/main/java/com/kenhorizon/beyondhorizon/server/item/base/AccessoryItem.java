@@ -24,7 +24,7 @@ import java.util.List;
 public class AccessoryItem extends BasicItem implements IAccessoryItems<AccessoryItem>, IReloadable {
     protected List<Accessory> accessories = ImmutableList.of();
     protected final AccessoryBuilder builder;
-    protected AccessoryItemGroup accessoryItemGroup = AccessoryItemGroup.UNIQUE;
+    protected AccessoryItemGroup accessoryItemGroup;
     public AccessoryItem(AccessoryItemGroup accessoryItemGroup, Properties properties, AccessoryBuilder builder) {
         super(properties.stacksTo(1));
         this.builder = builder;
@@ -33,11 +33,11 @@ public class AccessoryItem extends BasicItem implements IAccessoryItems<Accessor
     }
 
     public AccessoryItem(Properties properties, AccessoryBuilder builder) {
-        this(AccessoryItemGroup.UNIQUE, properties, builder);
+        this(AccessoryItemGroup.NONE, properties, builder);
     }
 
     public AccessoryItem(Properties properties) {
-        this(AccessoryItemGroup.UNIQUE, properties, AccessoryBuilder.NONE);
+        this(AccessoryItemGroup.NONE, properties, AccessoryBuilder.NONE);
     }
 
     @Override
@@ -96,6 +96,11 @@ public class AccessoryItem extends BasicItem implements IAccessoryItems<Accessor
         tooltip.add(Component.translatable(Tooltips.TOOLTIP_ACCESSORY).withStyle(ChatFormatting.GOLD));
         for (int i = 0; i < this.accessories.size(); i++) {
             Accessory accessory = this.accessories.get(i);
+            if (i == 0) {
+                if (this.getItemGroup() != AccessoryItemGroup.NONE) {
+                    tooltip.add(Component.translatable(Tooltips.TOOLTIP_ACCESSORY_TYPE).withStyle(ChatFormatting.GRAY));
+                }
+            }
             if (!accessory.getAttributeModifiers().isEmpty()) {
                 accessory.addTooltipAttributes(itemStack, tooltip);
             }

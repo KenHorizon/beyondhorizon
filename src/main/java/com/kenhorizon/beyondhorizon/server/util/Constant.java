@@ -17,6 +17,9 @@ public class Constant {
     public static final float CASTER_EXTRA_DAMAGE = 0.05F;
 
     public static int FIRE_EFFECT = 5;
+    public static float MINING_SPEED_BASIC = 0.10F;
+    public static float MINING_SPEED_UPGRADED = 0.20F;
+    public static float KNOWLEDGE_XP_MODIFIER = 1.20F;
     public static float THORN_BASE_DAMAGE = 5;
     public static float THORN_DAMAGE_MODIFIER = 0.10F;
     public static float RAGE = 0.40F;
@@ -106,7 +109,9 @@ public class Constant {
     public static double BOOTS_TIER_3 = 0.050D;
     public static double BERSERKER_BOOTS = 0.12D;
     public static double IRON_PLATED_BOOTS = 0.10D;
-    public static double MINING_BOOTS = 0.10D;
     public static double OVERGROWTH_BONUS_HEALTH = 0.12D;
+    public static double  VENOM_DURATION = 5;
+    public static double VENOM_POISON_LEVEL = 2;
+    public static double VENOM_INFLICT_CHANCE = 0.5D;
      //
 }

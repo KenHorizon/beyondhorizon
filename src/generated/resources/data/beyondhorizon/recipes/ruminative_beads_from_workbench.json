@@ -1,0 +1,19 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    20,
+    6
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:emerald"
+    },
+    {
+      "item": "minecraft:lead"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:ruminative_beads"
+  }
+}

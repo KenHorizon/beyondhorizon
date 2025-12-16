@@ -1,0 +1,19 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    20,
+    20
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:emerald"
+    },
+    {
+      "item": "beyondhorizon:ruby"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:null_magic_rune"
+  }
+}

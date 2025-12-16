@@ -20,7 +20,7 @@ import java.util.*;
 
 public abstract class Accessory extends Skill {
     private float magnitude;
-    private int level;
+    private int level = 1;
     public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
 
     public Accessory(float magnitude, int level) {
@@ -31,7 +31,7 @@ public abstract class Accessory extends Skill {
     }
 
     public Accessory() {
-        this(0, 0);
+        this(0, 1);
     }
     @Override
     public String getName() {

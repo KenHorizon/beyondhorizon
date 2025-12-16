@@ -22,7 +22,7 @@ public class AccessorySkill extends Accessory implements IEntityProperties, IAtt
     }
 
     public AccessorySkill() {
-        super(0, 0);
+        super(0, 1);
     }
 
     @Override
@@ -41,28 +41,5 @@ public class AccessorySkill extends Accessory implements IEntityProperties, IAtt
         } else {
             return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
         }
-    }
-
-    @Override
-    public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
-        if (this == Accessories.FEATHER_FEET.get()) {
-            entity.fallDistance = -1;
-        }
-    }
-
-    @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
-        if (target == null || attacker == null) return;
-        if (this == Accessories.BURN_EFFECT.get()) {
-            target.setSecondsOnFire(Constant.FIRE_EFFECT);
-        }
-    }
-
-    @Override
-    public boolean canEntiyReceiveDamage(Player player, LivingEntity target, DamageSource source) {
-        if (this == Accessories.FIRE_IMMUNITY.get() && source.is(DamageTypeTags.IS_FIRE)) {
-            return source.is(DamageTypes.HOT_FLOOR);
-        }
-        return false;
     }
 }

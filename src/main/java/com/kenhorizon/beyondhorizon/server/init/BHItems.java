@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
+import com.kenhorizon.beyondhorizon.server.item.base.BasicAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealItems;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealthCheckerItems;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugRoleClassResetItems;
@@ -169,47 +170,48 @@ public class BHItems {
             .build();
     //
     public static final RegistryObject<Item> TOUGH_CLOTH = RegistryItems
-            .register("tough_cloth", item -> new AccessoryItem(item, AccessoryBuilder.TOUGH_CLOTH))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register()
-            .build();
-    public static final RegistryObject<Item> CHAIN_VEST = RegistryItems
-            .register("chain_vest", item -> new AccessoryItem(item, AccessoryBuilder.CHAIN_VEST))
+            .register("tough_cloth", item -> new BasicAccessoryItem(item, AccessoryBuilder.TOUGH_CLOTH))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
     public static final RegistryObject<Item> NULL_MAGIC_RUNE = RegistryItems
-            .register("null_magic_rune", item -> new AccessoryItem(item, AccessoryBuilder.NULL_MAGIC_RUNE))
+            .register("null_magic_rune", item -> new BasicAccessoryItem(item, AccessoryBuilder.NULL_MAGIC_RUNE))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
     public static final RegistryObject<Item> FIREFLY_FAYE = RegistryItems
-            .register("firefly_faye", item -> new AccessoryItem(item, AccessoryBuilder.FIREFLY_FAYE))
+            .register("firefly_faye", item -> new BasicAccessoryItem(item, AccessoryBuilder.FIREFLY_FAYE))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
     public static final RegistryObject<Item> SAPPHIRE_CRYSTAL = RegistryItems
-            .register("sapphire_crystal", item -> new AccessoryItem(item, AccessoryBuilder.SAPPHIRE_CRYSTAL))
+            .register("sapphire_crystal", item -> new BasicAccessoryItem(item, AccessoryBuilder.SAPPHIRE_CRYSTAL))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+    public static final RegistryObject<Item> CHAIN_VEST = RegistryItems
+            .register("chain_vest", item -> new BasicAccessoryItem(item, AccessoryBuilder.CHAIN_VEST))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
     public static final RegistryObject<Item> RUMINATIVE_BEADS = RegistryItems
-            .register("ruminative_beads", item -> new AccessoryItem(item, AccessoryBuilder.RUMINATIVE_BEADS))
+            .register("ruminative_beads", item -> new BasicAccessoryItem(item, AccessoryBuilder.RUMINATIVE_BEADS))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
+
     public static final RegistryObject<Item> SPECTRAL_CLOAK = RegistryItems
             .register("spectral_cloak", item -> new AccessoryItem(item, AccessoryBuilder.SPECTRAL_CLOAK))
             .tab(RegistryTabs.Category.ACCESSORY)
@@ -279,6 +281,14 @@ public class BHItems {
             .register()
             .build();
 
+    public static final RegistryObject<Item> BOOK_OF_KNOWLEDGE = RegistryItems
+            .register("book_of_knowledge", item -> new AccessoryItem(AccessoryItemGroup.NONE, item, AccessoryBuilder.BOOK_OF_KNOWLEDGE))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
     public static final RegistryObject<Item> ANCIENT_PICKAXE = RegistryItems
             .register("ancient_pickaxe", item -> new AccessoryItem(item, AccessoryBuilder.ANCIENT_PICKAXE))
             .tab(RegistryTabs.Category.ACCESSORY)
@@ -286,8 +296,33 @@ public class BHItems {
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
+
     public static final RegistryObject<Item> ANCIENT_CHISEL = RegistryItems
             .register("ancient_chisel", item -> new AccessoryItem(item, AccessoryBuilder.ANCIENT_CHISEL))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> MINER_GLOVES = RegistryItems
+            .register("miner_gloves", item -> new AccessoryItem(item, AccessoryBuilder.MINER_GLOVES))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> DWARF_MINER_RING = RegistryItems
+            .register("dwarf_miner_ring", item -> new AccessoryItem(item, AccessoryBuilder.DWARF_MINER_RING))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
+
+    public static final RegistryObject<Item> POISON_VILE = RegistryItems
+            .register("poison_vile", item -> new AccessoryItem(item, AccessoryBuilder.POISON_VILE))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
@@ -309,6 +344,7 @@ public class BHItems {
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
+
     public static final RegistryObject<Item> BLOOD_OF_BERSERKER = RegistryItems
             .register("blood_of_berserker", item -> new AccessoryItem(item, AccessoryBuilder.BLOOD_OF_BERSERKER))
             .tab(RegistryTabs.Category.ACCESSORY)
@@ -316,6 +352,7 @@ public class BHItems {
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
+
     public static final RegistryObject<Item> THORNMAIL = RegistryItems
             .register("thornmail", item -> new AccessoryItem(item, AccessoryBuilder.THORNMAIL))
             .tab(RegistryTabs.Category.ACCESSORY)
@@ -323,6 +360,7 @@ public class BHItems {
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register()
             .build();
+
     public static final RegistryObject<Item> POWER_GLOVES = RegistryItems
             .register("power_gloves", item -> new AccessoryItem(item, AccessoryBuilder.POWER_GLOVES))
             .tab(RegistryTabs.Category.ACCESSORY)

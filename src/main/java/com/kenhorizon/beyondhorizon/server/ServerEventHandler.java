@@ -63,48 +63,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.util.*;
 
 public class ServerEventHandler {
-    @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onRegisterTooltipGatherComponents(RenderTooltipEvent.GatherComponents event) {
-        ItemStack itemStack = event.getItemStack();
-
-        List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
-        if (!itemStack.isEmpty()) {
-            for (int i = 0; i < elements.size(); i++) {
-                if (elements.get(i).left().isPresent()) {
-                    FormattedText text = elements.get(i).left().get();
-                    if (text instanceof MutableComponent component) {
-                        if (this.getComponents(Tooltips.TOOLTIP_ACCESSORY, component, itemStack)) {
-                            this.addIcons(BeyondHorizon.resource("textures/gui/sprites/icon/tooltip/accessory_icon.png"), false, elements, i, itemStack, text);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private void addIcons(ResourceLocation texture, boolean removeText, List<Either<FormattedText, TooltipComponent>> elements, int index, ItemStack itemStack, FormattedText text) {
-        FormattedCharSequence paddedTitle = FormattedCharSequence.fromList(List.of(FormattedCharSequence.forward("   ", Style.EMPTY),Language.getInstance().getVisualOrder(text), FormattedCharSequence.forward("  ", Style.EMPTY)));
-        List<FormattedText> recomposedTitle = Tooltips.recompose(List.of(ClientTooltipComponent.create(paddedTitle)));
-        if (!recomposedTitle.isEmpty()) {
-            if (!removeText) {
-                elements.set(index, Either.left(recomposedTitle.get(0)));
-            }
-            elements.add(index, Either.right(new IconAttributesTooltip(text, texture)));
-        }
-    }
-
-    private boolean getComponents(String textFind, MutableComponent component, ItemStack itemStack) {
-        for (Component vanillaAttribute : component.getSiblings()) {
-            if (vanillaAttribute.getContents() instanceof TranslatableContents translatableContents) {
-                return translatableContents.getKey().startsWith(textFind);
-            }
-        }
-        if (component.getContents() instanceof TranslatableContents translatableContents) {
-            return translatableContents.getKey().startsWith(textFind);
-        }
-        return false;
-    }
-
     @SubscribeEvent
     public void onEntityJoin(EntityJoinLevelEvent event) {
         if (!event.getLevel().isClientSide()) {
@@ -429,6 +387,21 @@ public class ServerEventHandler {
                 if (attack.isPresent()) {
                     attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
                 }
+                IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+                if (handler != null) {
+                    for (int i = 0; i < handler.getSlots(); i++) {
+                        final ItemStack itemStack = handler.getStackInSlot(i);
+                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+                            for (Accessory trait : accessoryItems.getAccessories()) {
+                                Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
+                                if (meleeWeaponCallback.isPresent()) {
+                                    damageDealt = meleeWeaponCallback.get().postMigitationDamage(damageDealt, source, attacker, target);
+                                    meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -489,6 +462,20 @@ public class ServerEventHandler {
                     if (attack.isPresent()) {
                         damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
                     }
+                    IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+                    if (handler != null) {
+                        for (int i = 0; i < handler.getSlots(); i++) {
+                            final ItemStack itemStack = handler.getStackInSlot(i);
+                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> container) {
+                                for (Accessory trait : container.getAccessories()) {
+                                    Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
+                                    if (meleeWeaponCallback.isPresent()) {
+                                        damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
                 if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                     for (Skill trait : container.getSkills()) {
@@ -516,6 +503,40 @@ public class ServerEventHandler {
             }
         }
         event.setAmount(damageDealt);
+    }
+
+    @SubscribeEvent
+    public void onExperienceDropEvent(LivingExperienceDropEvent event) {
+        LivingEntity target = event.getEntity();
+        Player player = event.getAttackingPlayer();
+        if (player == null || target == null) return;
+        int droppedExperience = event.getDroppedExperience();
+        int originalExperience = event.getOriginalExperience();
+        int modifiyDropExperience = 0;
+        ItemStack itemStack = player.getMainHandItem();
+        if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems<?> skillItems) {
+            for (Skill skill : skillItems.getSkills()) {
+                Optional<IEntityProperties> callback = skill.IEntityProperties();
+                if (callback.isPresent()) {
+                    modifiyDropExperience = callback.get().modifyExprienceDrop(droppedExperience, target, player);
+                }
+            }
+        }
+        IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+        if (handler != null) {
+            for (int i = 0; i < handler.getSlots(); i++) {
+                final ItemStack stackInSlot = handler.getStackInSlot(i);
+                if (!stackInSlot.isEmpty() && stackInSlot.getItem() instanceof IAccessoryItems<?> container) {
+                    for (Accessory trait : container.getAccessories()) {
+                        Optional<IEntityProperties> callback = trait.IEntityProperties();
+                        if (callback.isPresent()) {
+                            modifiyDropExperience = callback.get().modifyExprienceDrop(droppedExperience, target, player);
+                        }
+                    }
+                }
+            }
+        }
+        event.setDroppedExperience(modifiyDropExperience);
     }
 
     @SubscribeEvent

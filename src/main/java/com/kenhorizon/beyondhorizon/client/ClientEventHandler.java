@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
+import com.kenhorizon.beyondhorizon.client.level.guis.hud.BHBossBar;
 import com.kenhorizon.beyondhorizon.client.level.guis.LevelSystemScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotButton;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
@@ -17,6 +18,7 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.*;
@@ -27,7 +29,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientEventHandler {
-
+    @SubscribeEvent
+    public void registerCustomBossBar(CustomizeGuiOverlayEvent.BossEventProgress event) {
+        ResourceLocation bossRegistryName = ClientProxy.BOSS_BAR_REGISTRY.getOrDefault(event.getBossEvent().getId(), null);
+        if (bossRegistryName == null) return;
+        BHBossBar bossBar = BHBossBar.BOSS_BARS.getOrDefault(bossRegistryName, null);
+        if (bossBar == null) return;
+        event.setCanceled(true);
+        bossBar.renderBossBar(event);
+    }
 
     @SubscribeEvent
     public void addTootipOnItems(ItemTooltipEvent event) {

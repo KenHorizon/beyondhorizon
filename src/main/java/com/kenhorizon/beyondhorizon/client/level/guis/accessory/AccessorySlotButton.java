@@ -22,8 +22,8 @@ import java.util.List;
 
 public class AccessorySlotButton extends Button {
     private final Screen parentGui;
-    protected static final ResourceLocation BUTTON = BeyondHorizon.resource("textures/gui/button/accessory.png");
-    protected static final ResourceLocation CANCEL = BeyondHorizon.resource("textures/gui/button/accessory.png");
+    protected static final ResourceLocation BUTTON = BeyondHorizon.resourceGui("button/accessory.png");
+    protected static final ResourceLocation CANCEL = BeyondHorizon.resourceGui("button/accessory.png");
 
     public AccessorySlotButton(Screen parentGui, int x, int y) {
         super(x, y, 16, 16, CommonComponents.EMPTY, pButton -> {

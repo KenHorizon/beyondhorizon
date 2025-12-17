@@ -16,7 +16,7 @@
   "accessory.beyondhorizon.thorns": "Thorns",
   "accessory.beyondhorizon.thorns.desc": "When struck by basic attack on-hit, deal %s (+%s%% bonus Armor) magic damage to the attacker and inflict Wounded for 3 seconds",
   "accessory.beyondhorizon.venom": "Venom",
-  "accessory.beyondhorizon.venom.desc": "Attacks have %s%% chance inflict Poison for %s seconds",
+  "accessory.beyondhorizon.venom.desc": "Attacks have %s%% chance inflict either Poison or Lethal Poison for %s seconds",
   "attribute.beyondhorizon.ability_power": "Ability Power",
   "attribute.beyondhorizon.armor_penetration": "Armor Penetration",
   "attribute.beyondhorizon.burning_time": "Burning Time",

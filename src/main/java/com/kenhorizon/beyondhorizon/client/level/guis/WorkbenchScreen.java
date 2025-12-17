@@ -8,8 +8,10 @@ import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundWorkbenchCraftPacket;
 import com.kenhorizon.beyondhorizon.server.recipe.WorkbenchRecipe;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -21,22 +23,67 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.joml.Matrix4f;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     private float scrollOffs;
+    private boolean visible;
     private boolean scrolling;
     private int startIndex;
     public static int ROW = 1;
     public static int COLUMN = 5;
     public static int PADDING_INGREDIENTS = 22;
     public static int PADDING_Y = 20;
-    public static final ResourceLocation LOCATION = BeyondHorizon.resource("textures/gui/container/workbench.png");
+    public static final ResourceLocation LOCATION = BeyondHorizon.resourceGui("container/workbench.png");
+    private int timesInventoryChanged;
+    @Nullable
+    private EditBox searchBox;
+    private String lastSearch = "";
+    private static final Component SEARCH_HINT = Component.translatable("gui.recipebook.search_hint").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
 
     public WorkbenchScreen(WorkbenchMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
         this.imageWidth = 176;
         this.imageHeight = 166;
+    }
+
+    public void initVisuals() {
+        String searchBarText = this.searchBox != null ? this.searchBox.getValue() : "";
+        this.searchBox = new EditBox(this.minecraft.font, this.leftPos, this.topPos - (36 + 12), 79, 9 + 3, Component.translatable("itemGroup.search"));
+        this.searchBox.setMaxLength(50);
+        this.searchBox.setVisible(true);
+        this.searchBox.setTextColor(16777215);
+        this.searchBox.setValue(searchBarText);
+        this.searchBox.setHint(SEARCH_HINT);
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        this.timesInventoryChanged = this.minecraft.player.getInventory().getTimesChanged();
+        this.initVisuals();
+    }
+
+    @Override
+    protected void containerTick() {
+        super.containerTick();
+
+    }
+
+    public void updateContent() {
+        if (this.timesInventoryChanged != this.minecraft.player.getInventory().getTimesChanged()) {
+            this.updateStackedContents();
+            this.timesInventoryChanged = this.minecraft.player.getInventory().getTimesChanged();
+        }
+        this.searchBox.tick();
+    }
+
+    private void updateStackedContents() {
+    }
+
+    public boolean isVisible() {
+        return this.visible;
     }
 
     @Override
@@ -45,6 +92,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         this.renderBackground(guiGraphics);
         this.renderBg(guiGraphics, partialTick, mouseX, mouseY);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
+        this.searchBox.render(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     @Override

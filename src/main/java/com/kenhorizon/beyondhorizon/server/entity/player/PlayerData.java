@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.player;
+package com.kenhorizon.beyondhorizon.server.entity.player;
 
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;

@@ -44,6 +44,7 @@ public class NetworkHandler {
         net.registerMessage(id(), ServerboundOpenLevelSystemPacket.class, ServerboundOpenLevelSystemPacket::toBytes, ServerboundOpenLevelSystemPacket::new, ServerboundOpenLevelSystemPacket::handle);
         net.registerMessage(id(), ServerboundConsumePointsPacket.class, ServerboundConsumePointsPacket::toBytes, ServerboundConsumePointsPacket::new, ServerboundConsumePointsPacket::handle);
         net.registerMessage(id(), ServerboundSkillPointsPacket.class, ServerboundSkillPointsPacket::toBytes, ServerboundSkillPointsPacket::new, ServerboundSkillPointsPacket::handle);
+        net.registerMessage(id(), ServerboundBossbarPacket.class, ServerboundBossbarPacket::toBytes, ServerboundBossbarPacket::new, ServerboundBossbarPacket::handle);
     }
 
     public static <MSG> void sendToServer(MSG msg) {
@@ -52,12 +53,6 @@ public class NetworkHandler {
 
     public static <MSG> void sendToPlayer(MSG msg, ServerPlayer player) {
         INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), msg);
-    }
-
-    public static <MSG> void sendMSGToAll(MSG message) {
-        for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
-            sendNonLocal(message, player);
-        }
     }
 
     public static <MSG> void sendNonLocal(MSG msg, ServerPlayer player) {
@@ -70,9 +65,5 @@ public class NetworkHandler {
 
     public static <MSG> void sendToClient(MSG msg) {
         INSTANCE.send(PacketDistributor.ALL.noArg(), msg);
-    }
-
-    public static <MSG> void sendToClientsInLevel(MSG message, ResourceKey<Level> levelResourceKey) {
-        INSTANCE.send(PacketDistributor.DIMENSION.with(() -> levelResourceKey), message);
     }
 }

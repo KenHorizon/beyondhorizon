@@ -67,7 +67,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.RAGE.get(), "Rage", "Grant 0-%s%%(based on Missing HP) increased damage");
         this.addAccessory(Accessories.THORNS.get(), "Thorns", "When struck by basic attack on-hit, deal %s (+%s%% bonus Armor) magic damage to the attacker and inflict Wounded for 3 seconds");
         this.addAccessory(Accessories.KNOWLEDGE.get(), "Knowledge", "Increase drop experience by %s%%");
-        this.addAccessory(Accessories.VENOM.get(), "Venom", "Attacks have %s%% chance inflict Poison for %s seconds");
+        this.addAccessory(Accessories.VENOM.get(), "Venom", "Attacks have %s%% chance inflict either Poison or Lethal Poison for %s seconds");
         //
         this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");
         this.addRole(RoleClasses.MARKSMAN.get(), "Marksman", "Specialize in precision, long range engagement and delivering consistent, high damage from safe distance");

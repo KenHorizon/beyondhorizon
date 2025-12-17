@@ -610,8 +610,8 @@ public class BHItems {
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
-            .register()
-            .build();
+            .registers();
+
     public static final RegistryObject<Item> GIANT_SLAYER_SWORD = RegistryItems
             .register("giant_slayer_sword", item -> WeaponBuilder.GIANT_SLAYER_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))

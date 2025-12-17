@@ -71,8 +71,8 @@ public class LevelSystemScreen extends Screen {
     public List<SelectionClass> selectionClass = new ArrayList<>();
     public List<AttributePoint> attributePoints = new ArrayList<>();
     public List<AttributeRemovePoints> attributeRemovePoints = new ArrayList<>();
-    public static final ResourceLocation LOCATION = BeyondHorizon.resource("textures/gui/level_system/level_system.png");
-    public static final ResourceLocation SKILL_TREE = BeyondHorizon.resource("textures/gui/level_system/skill_tree.png");
+    public static final ResourceLocation LOCATION = BeyondHorizon.resourceGui("level_system/level_system.png");
+    public static final ResourceLocation SKILL_TREE = BeyondHorizon.resourceGui("level_system/skill_tree.png");
 
     public LevelSystemScreen() {
         super(Component.empty());

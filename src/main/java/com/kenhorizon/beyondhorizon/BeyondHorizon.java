@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon;
 
 import com.kenhorizon.beyondhorizon.client.ClientProxy;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeReaderResourceParser;
+import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.compat.ModCompats;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
@@ -71,6 +72,7 @@ public class BeyondHorizon
         BHMenu.register(eventBus);
         BHParticle.register(eventBus);
         //  BHPotions.register(eventBus);
+        BHEntity.register(eventBus);
         BHEffects.register(eventBus);
         BHRecipe.register(eventBus);
         BHBlocks.register(eventBus);
@@ -124,7 +126,7 @@ public class BeyondHorizon
     }
 
     private void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event) {
-
+        BHModelLayers.register(event);
     }
 
     @SubscribeEvent
@@ -140,6 +142,10 @@ public class BeyondHorizon
 
     public static ResourceLocation resource(String name) {
         return ResourceLocation.fromNamespaceAndPath(BeyondHorizon.ID, name);
+    }
+
+    public static ResourceLocation resourceGui(String name) {
+        return ResourceLocation.fromNamespaceAndPath(BeyondHorizon.ID, String.format("textures/gui/%s", name));
     }
 
     @SubscribeEvent

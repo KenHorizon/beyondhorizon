@@ -1,12 +1,17 @@
 package com.kenhorizon.beyondhorizon.client;
 
+import com.google.common.collect.ImmutableList;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.level.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
+import com.kenhorizon.beyondhorizon.client.render.entity.BlazingInfernoRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
+import com.kenhorizon.beyondhorizon.server.entity.boss.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAccessoryInventoryPacket;
@@ -15,27 +20,42 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"removal"})
 public class ClientProxy extends ServerProxy {
+    public static final Map<UUID, ResourceLocation> BOSS_BAR_REGISTRY = new HashMap<>();
     @Override
     public void serverHandler() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        bus.addListener(this::onEntityAttributeModification);
         bus.addListener(this::registerKeybinds);
+        bus.addListener(this::entityCreationAttribute);
+        bus.addListener(this::onEntityAttributeModification);
         IconAttributesTooltip.registerFactory();
         Tooltips.TitleBreakComponent.registerFactory();
     }
@@ -46,10 +66,47 @@ public class ClientProxy extends ServerProxy {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForge.EVENT_BUS.register(new GameHudDisplay());
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+
+        //bus.addListener(this::addRegisteredLayers);
+
+        EntityRenderers.register(BHEntity.BLAZING_INFERNO.get(), BlazingInfernoRenderer::new);
+
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
         Raid.RaiderType.create("ILLUSIONER", EntityType.ILLUSIONER, new int[]{0, 0, 1, 2, 2, 3, 4, 5});
     }
+
+    public void entityCreationAttribute(EntityAttributeCreationEvent event) {
+        event.put(BHEntity.BLAZING_INFERNO.get(), BlazingInferno.createAttributes());
+    }
+
+//    @OnlyIn(Dist.CLIENT)
+//    public void addRegisteredLayers(final EntityRenderersEvent.AddLayers event) {
+//        List<EntityType<? extends LivingEntity>> entityTypes = ImmutableList.copyOf(ForgeRegistries.ENTITY_TYPES.getValues().stream()
+//                .filter(DefaultAttributes::hasSupplier)
+//                .map(entityType -> (EntityType<? extends LivingEntity>) entityType)
+//                .collect(Collectors.toList()));
+//        entityTypes.forEach((entityType -> {
+//            addLayerIfApplicable(entityType, event);
+//        }));
+//
+//        for (String skinType : event.getSkins()) {
+//            event.getSkin(skinType).addLayer(new BHEntitiesLayer(event.getSkin(skinType)));
+//        }
+//    }
+//    private void addLayerIfApplicable(EntityType<? extends LivingEntity> entityType, EntityRenderersEvent.AddLayers event) {
+//        LivingEntityRenderer renderer = null;
+//        if (entityType != EntityType.ENDER_DRAGON) {
+//            try {
+//                renderer = event.getRenderer(entityType);
+//            } catch (Exception e) {
+//                BeyondHorizon.LOGGER.warn("Could not apply radiation glow layer to {}, has custom renderer that is not LivingEntityRenderer.", ForgeRegistries.ENTITY_TYPES.getKey(entityType));
+//            }
+//            if (renderer != null) {
+//                renderer.addLayer(new BHEntitiesLayer(renderer));
+//            }
+//        }
+//    }
 
     public void onEntityAttributeModification(EntityAttributeModificationEvent event) {
         for (EntityType<? extends LivingEntity> type : event.getTypes()) {

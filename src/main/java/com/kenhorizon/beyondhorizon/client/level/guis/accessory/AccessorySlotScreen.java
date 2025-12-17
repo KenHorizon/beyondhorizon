@@ -17,7 +17,7 @@ import net.minecraft.world.inventory.Slot;
 import java.awt.*;
 
 public class AccessorySlotScreen extends EffectRenderingInventoryScreen<AccessoryMenu> implements RecipeUpdateListener {
-    public static final ResourceLocation ACCESSORY_LOCATION = BeyondHorizon.resource("textures/gui/container/accessory.png");
+    public static final ResourceLocation ACCESSORY_LOCATION = BeyondHorizon.resourceGui("container/accessory.png");
     private static final ResourceLocation RECIPE_BUTTON_LOCATION = ResourceLocation.parse("textures/gui/recipe_button.png");
     private final RecipeBookComponent recipeBookGui = new RecipeBookComponent();
     public float xMouse;

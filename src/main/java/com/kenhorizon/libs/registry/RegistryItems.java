@@ -13,6 +13,7 @@ import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class RegistryItems<T extends Item> {
     private RegistryObject<T> registryObject;
@@ -62,7 +63,6 @@ public class RegistryItems<T extends Item> {
 
     public static class Builder<T extends Item> {
         private String name;
-        private T entry;
         private RegistryObject<T> registryObject;
         private TagKey<T> tags = null;
         private NonNullFunction<Item.Properties, T> factory;
@@ -74,6 +74,7 @@ public class RegistryItems<T extends Item> {
         private ItemModels model;
         private List<RegistryTabs.Category> creativeTabs = ImmutableList.of();
         private RegistryTabs.Category[] categories;
+        private Function<RegistryObject<T>, ?> registerObjects = null;
 
         public Builder(String name, NonNullFunction<Item.Properties, T> factory) {
             this.name = name;
@@ -119,6 +120,10 @@ public class RegistryItems<T extends Item> {
             Item.Properties properties = this.initialProperties.get();
             properties = this.propertiesCallback.apply(properties);
             return this.factory.apply(properties);
+        }
+        public RegistryObject<T> registers() {
+            this.registryObject = RegistryEntries.ITEMS.register(this.name, this::createEntry);
+            return new RegistryItems<>(this).build();
         }
 
         public RegistryItems<T> register() {

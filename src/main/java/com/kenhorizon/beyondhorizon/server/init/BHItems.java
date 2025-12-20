@@ -1,14 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
+import com.kenhorizon.beyondhorizon.client.level.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
+import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
 import com.kenhorizon.beyondhorizon.server.item.base.BasicAccessoryItem;
-import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealItems;
-import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugHealthCheckerItems;
-import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugRoleClassResetItems;
-import com.kenhorizon.beyondhorizon.server.item.debug_items.DebugWeaponItems;
+import com.kenhorizon.beyondhorizon.server.item.debug_items.*;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.item.base.WeaponBuilder;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
@@ -17,6 +16,7 @@ import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryItems;
 import com.kenhorizon.libs.registry.RegistryTabs;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -50,9 +50,22 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register()
             .build();
-    //
+    public static final RegistryObject<Item> DEBUG4 = RegistryItems
+            .register("debug4", DebugBlazingInfernoItems::new)
+            .itemName("Debug: Spawn Inactive Blazing Inferno")
+            .tab(RegistryTabs.Category.DEBUGS)
+            .model(ItemModels.GENERATED)
+            .register()
+            .build();
+
     public static final RegistryObject<Item> HANDLE = RegistryItems
             .register("handle", BasicItem::new)
+            .tab(RegistryTabs.Category.INGREDIENTS)
+            .model(ItemModels.GENERATED)
+            .register()
+            .build();
+    public static final RegistryObject<Item> FLAME_CELL = RegistryItems
+            .register("flame_cell", BasicItem::new)
             .tab(RegistryTabs.Category.INGREDIENTS)
             .model(ItemModels.GENERATED)
             .register()
@@ -361,6 +374,13 @@ public class BHItems {
             .register()
             .build();
 
+    public static final RegistryObject<Item> SPRING_LOCK = RegistryItems
+            .register("spring_lock", item -> new AccessoryItem(item, AccessoryBuilder.SPRING_LOCK))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register()
+            .build();
     public static final RegistryObject<Item> POWER_GLOVES = RegistryItems
             .register("power_gloves", item -> new AccessoryItem(item, AccessoryBuilder.POWER_GLOVES))
             .tab(RegistryTabs.Category.ACCESSORY)
@@ -626,6 +646,17 @@ public class BHItems {
             .model(ItemModels.BIG_HANDHELD)
             .register()
             .build();
+    public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(139, 52, 1));
+
+
+    private static RegistryObject<Item> spawnEgg(String entityName, RegistryObject entityType, int backgroundColor, int highlightColor) {
+        String itemName = entityName + "_spawn_egg";
+        return RegistryItems.register(itemName,item -> new ForgeSpawnEggItem(entityType, backgroundColor, highlightColor, new Item.Properties()))
+                .tab(RegistryTabs.Category.SPAWN_EGG)
+                .model(ItemModels.SPAWN_EGG)
+                .register()
+                .build();
+    }
 
     public static void register(IEventBus eventBus) {
         RegistryEntries.ITEMS.register(eventBus);

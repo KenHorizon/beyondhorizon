@@ -41,8 +41,10 @@ public class DataGenProvider {
         generator.addProvider(event.includeServer(), new BHItemTagsProvider(packOutput, datapackEntryProvider.getRegistryProvider(), blockTagsProvider.contentsGetter(), existingFileHelper));
         generator.addProvider(event.includeServer(), datapackEntryProvider);
         generator.addProvider(event.includeServer(), BHLootTableProvider.create(packOutput));
+        generator.addProvider(event.includeServer(), new BHSoundProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeServer(), new BHEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new BHRecipeProvider(packOutput));
+        generator.addProvider(event.includeClient(), new BHParticleProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new BHLangProvider(packOutput));
         generator.addProvider(event.includeClient(), new BHBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new BHItemModelProvider(packOutput, existingFileHelper));

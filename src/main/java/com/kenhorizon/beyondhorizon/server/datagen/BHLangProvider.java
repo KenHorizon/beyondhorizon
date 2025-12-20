@@ -38,6 +38,8 @@ public class BHLangProvider extends LanguageProvider {
         RegistryLanguage.ADD_ITEM_LORE.forEach(this::add);
         Keybinds.KEYBINDING.forEach(this::add);
 
+        this.add(Tooltips.TOOLTIP_BUILTIN_RESOURCE, "Beyond Horizon: Builtin Resources");
+
         this.add(Tooltips.COMMAND_ROLE_SET_FAILED, "Failed to change the role to %s");
         this.add(Tooltips.COMMAND_ROLE_SET_SUCCESS, "Successfully changed the role to %s");
         this.add(Tooltips.COMMAND_LEVEL_SET_FAILED, "Failed to set the level %s");
@@ -68,6 +70,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.THORNS.get(), "Thorns", "When struck by basic attack on-hit, deal %s (+%s%% bonus Armor) magic damage to the attacker and inflict Wounded for 3 seconds");
         this.addAccessory(Accessories.KNOWLEDGE.get(), "Knowledge", "Increase drop experience by %s%%");
         this.addAccessory(Accessories.VENOM.get(), "Venom", "Attacks have %s%% chance inflict either Poison or Lethal Poison for %s seconds");
+        this.addAccessory(Accessories.JUMP_BOOST.get(), "Jump Boost", "Increase the jump height by %s%%");
         //
         this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");
         this.addRole(RoleClasses.MARKSMAN.get(), "Marksman", "Specialize in precision, long range engagement and delivering consistent, high damage from safe distance");

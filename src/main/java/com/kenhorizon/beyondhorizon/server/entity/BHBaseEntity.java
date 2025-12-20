@@ -1,13 +1,14 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
-import com.kenhorizon.beyondhorizon.client.entity.animation.IAnimateModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -23,11 +24,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.dimension.DimensionType;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class BHBaseEntity extends PathfinderMob {
@@ -41,42 +43,8 @@ public abstract class BHBaseEntity extends PathfinderMob {
     public float targetAngle = -1;
     private static final byte MUSIC_PLAY_ID = 67;
     private static final byte MUSIC_STOP_ID = 68;
-    private static final EntityDataAccessor<Boolean> ACTIVE = SynchedEntityData.defineId(BHBaseEntity.class, EntityDataSerializers.BOOLEAN);
-
-    public static final String NBT_ACTIVE = "active";
     public BHBaseEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
-    }
-
-    @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(ACTIVE, true);
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-        this.entityData.set(ACTIVE, active);
-    }
-
-    public boolean isActive() {
-        if (this.level().isClientSide()) {
-            return this.entityData.get(ACTIVE);
-        } else {
-            return this.active;
-        }
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.setActive(tag.getBoolean(NBT_ACTIVE));
-    }
-
-    @Override
-    public void addAdditionalSaveData(CompoundTag tag) {
-        super.addAdditionalSaveData(tag);
-        tag.putBoolean(NBT_ACTIVE, this.isActive());
     }
 
     public float getHealthRatio() {
@@ -143,7 +111,36 @@ public abstract class BHBaseEntity extends PathfinderMob {
     public boolean hasBossMusic() {
         return false;
     }
+    @Override
+    public void setCustomName(@Nullable Component nbt) {
+        super.setCustomName(nbt);
+        this.bossInfo().setName(this.getDisplayName());
+    }
 
+    @Override
+    public void tick() {
+        super.tick();
+        if (this.tickCount % 4 == 0) this.bossInfo().update();
+        if (!level().isClientSide() && this.hasBossMusic()) {
+            if (this.canPlayMusic()) {
+                this.level().broadcastEntityEvent(this, MUSIC_PLAY_ID);
+            } else {
+                this.level().broadcastEntityEvent(this, MUSIC_STOP_ID);
+            }
+        }
+    }
+
+    @Override
+    public void startSeenByPlayer(ServerPlayer player) {
+        super.startSeenByPlayer(player);
+        this.bossInfo().addPlayer(player);
+    }
+
+    @Override
+    public void stopSeenByPlayer(ServerPlayer player) {
+        super.stopSeenByPlayer(player);
+        this.bossInfo().removePlayer(player);
+    }
     protected boolean canPlayMusic() {
         return this.isAlive() && !this.isSilent() && this.getTarget() instanceof Player && getTarget() != null;
     }
@@ -215,6 +212,60 @@ public abstract class BHBaseEntity extends PathfinderMob {
 
                 }
             }
+        }
+    }
+    public List<LivingEntity> getEntityLivingBaseNearby(double distanceX, double distanceY, double distanceZ, double radius) {
+        return getEntitiesNearby(LivingEntity.class, distanceX, distanceY, distanceZ, radius);
+    }
+
+    public <T extends Entity> List<T> getEntitiesNearby(Class<T> entityClass, double r) {
+        return level().getEntitiesOfClass(entityClass, getBoundingBox().inflate(r, r, r), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f);
+    }
+
+    public <T extends Entity> List<T> getEntitiesNearby(Class<T> entityClass, double dX, double dY, double dZ, double r) {
+        return level().getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
+    }
+
+    protected void repelEntities(float x, float y, float z, float radius, LivingEntity owner) {
+        List<LivingEntity> nearbyEntities = this.getEntityLivingBaseNearby(x, y, z, radius);
+        for (LivingEntity entity : nearbyEntities) {
+            if (entity == owner) continue;
+            if (entity.isPickable() && !entity.noPhysics) {
+                double angle = (this.getAngleBetweenEntities(this, entity) + 90) * Math.PI / 180;
+                entity.setDeltaMovement(-0.1 * Math.cos(angle), entity.getDeltaMovement().y, -0.1 * Math.sin(angle));
+            }
+        }
+    }
+
+    public double getAngleBetweenEntities(Entity first, Entity second) {
+        return Math.atan2(second.getZ() - first.getZ(), second.getX() - first.getX()) * (180 / Math.PI) + 90;
+    }
+
+    public boolean hurtEntitiesAround(Vec3 center, float radius, float damageAmount, float knockbackAmount, boolean setsOnFire, boolean disablesShields){
+        AABB aabb = this.getBoundingBox().inflate(radius);
+        boolean flag = false;
+        DamageSource damageSource = this.damageSources().mobAttack(this);
+        for(LivingEntity living : level().getEntitiesOfClass(LivingEntity.class, aabb, EntitySelector.NO_CREATIVE_OR_SPECTATOR)){
+            if (!living.is(this) && !living.isAlliedTo(this) && living.getType() != this.getType()) {
+                if (living.isDamageSourceBlocked(damageSource) && disablesShields && living instanceof Player player){
+                    player.disableShield(true);
+                }
+                if (living.hurt(damageSource, damageAmount)){
+                    flag = true;
+                    if (setsOnFire){
+                        living.setSecondsOnFire(10);
+                    }
+                    living.knockback(knockbackAmount, center.x - living.getX(), center.z - living.getZ());
+                }
+            }
+        }
+        return flag;
+    }
+    public void disableShield(Player player, int disalbeDuration) {
+        if (player.isBlocking()) {
+            player.getCooldowns().addCooldown(this.getUseItem().getItem(), disalbeDuration);
+            player.stopUsingItem();
+            this.level().broadcastEntityEvent(this, (byte) 30);
         }
     }
 

@@ -8,9 +8,13 @@ import com.kenhorizon.beyondhorizon.client.level.guis.LevelSystemScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotButton;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
+import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
+import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.item.util.ItemStackUtil;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
@@ -19,6 +23,9 @@ import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.*;
@@ -63,7 +70,30 @@ public class ClientEventHandler {
             BeyondHorizon.PROXY.openScreen(new LevelSystemScreen());
         }
     }
-
+    @SubscribeEvent
+    public void computeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Entity player = minecraft.getCameraEntity();
+        float partialTick = minecraft.getPartialTick();
+        float delta = minecraft.getFrameTime();
+        float ticksExistedDelta = player.tickCount + delta;
+        if (ModClientConfig.SCREEN_SHAKE.get() && !minecraft.isPaused()) {
+            float shakeAmplitude = 0;
+            for (CameraShake cameraShake : player.level().getEntitiesOfClass(CameraShake.class, player.getBoundingBox().inflate(64))) {
+                if (cameraShake.distanceTo(player) < cameraShake.getRadius()) {
+                    shakeAmplitude += cameraShake.getShakeAmount((Player) player, delta);
+                    shakeAmplitude *= (Mth.clamp((float) ModClientConfig.SCREEN_SHAKE_AMOUNT.get() / 100, 0.0F, 1.0F));
+                }
+            }
+            if (shakeAmplitude > 1.0F) shakeAmplitude = 1.0F;
+            event.setPitch((float) (event.getPitch() + shakeAmplitude * Math.cos(ticksExistedDelta * 3 + 2) * 25));
+            event.setYaw((float) (event.getYaw() + shakeAmplitude * Math.cos(ticksExistedDelta * 5 + 1) * 25));
+            event.setRoll((float) (event.getRoll() + shakeAmplitude * Math.cos(ticksExistedDelta * 4) * 25));
+        }
+        if (player instanceof LivingEntity entity && entity.hasEffect(BHEffects.STUN.get())) {
+            event.setRoll((float) (Math.sin((player.tickCount + partialTick) * 0.2F) * 10F));
+        }
+    }
     @SubscribeEvent
     public void onInventoryGui(ScreenEvent.Init.Post event) {
         Screen screen = event.getScreen();

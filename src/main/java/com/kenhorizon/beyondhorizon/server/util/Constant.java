@@ -17,6 +17,7 @@ public class Constant {
     public static final float CASTER_EXTRA_DAMAGE = 0.05F;
 
     public static int FIRE_EFFECT = 5;
+    public static float JUMP_BOOST = 0.50F;
     public static float MINING_SPEED_BASIC = 0.10F;
     public static float MINING_SPEED_UPGRADED = 0.20F;
     public static float KNOWLEDGE_XP_MODIFIER = 1.20F;

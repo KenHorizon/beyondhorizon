@@ -24,7 +24,7 @@ public class RegistryEntity<T extends Entity> {
         this.name = builder.name;
     }
 
-    public static <M extends Entity> Builder<M> register(String name,EntityType.EntityFactory<M> factory) {
+    public static <M extends Entity> Builder<M> register(String name, EntityType.EntityFactory<M> factory) {
         return new Builder<M>(name, factory);
     }
 
@@ -55,23 +55,12 @@ public class RegistryEntity<T extends Entity> {
         }
     }
 
-
-    private static <T extends EntityType<?>> void reigsterLang(String name, RegistryObject<T> entity) {
-        String[] array = name.split("_");
-        StringBuilder splitName = new StringBuilder();
-        for (int i = 0; i < array.length; ++i) {
-            splitName.append(i == 0 ? array[i] : " " + array[i]);
-        }
-        RegistryLanguage.ADD_ENTITY_TRANSLATION.put((RegistryObject<EntityType<?>>) entity, Utils.capitalize(splitName.toString()));
-    }
-
     public static class Builder<T extends Entity>  {
         private String name;
         private String langName = "";
         private EntityType.EntityFactory<T> factory;
         private RegistryObject<EntityType<T>> registryObject;
         private ModifiedNonNullFunction<EntityType.Builder<T>, EntityType.Builder<T>> propertiesCallback = ModifiedNonNullUnaryOperator.identity();
-        private EntityType<T> entry;
         private TagKey<EntityType<?>> tags = null;
         private MobCategory mobCategory;
 

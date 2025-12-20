@@ -1,11 +1,11 @@
 package com.kenhorizon.beyondhorizon.client.render.entity;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
-import com.kenhorizon.beyondhorizon.server.entity.boss.BlazingInferno;
+import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.geom.builders.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -30,7 +30,6 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
     public static final ResourceLocation EXPLOSION = BeyondHorizon.resource("textures/entity/blazing_inferno/blazing_inferno_explosion.png");
     private static final RenderType DECAL = RenderType.entityDecal(TEXTURE);
     private static final float HALF_SQRT_3 = (float) (Math.sqrt(3.0D) / 2.0D);
-    private static final ResourceLocation GLOWING_LOCATION = BeyondHorizon.resource("textures/particle/glow.png");
 
     public BlazingInfernoRenderer(EntityRendererProvider.Context context) {
         super(context, new BlazingInfernoModel(context.bakeLayer(BHModelLayers.BLAZING_INFERNO)), 0.5F);
@@ -80,18 +79,12 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
             VertexConsumer renderModelDecal = buffer.getBuffer(entityDecal(entity));
             this.model.renderToBuffer(poseStack, renderModelDecal, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, 1.0F);
         } else {
-            if (entity.isEnraged()) {
-                poseStack.pushPose();
-                poseStack.translate(0.0F, -0.50F, 0.0F);
-                poseStack.scale(1.55F, 1.55F, 1.55F);
-                VertexConsumer vertexConsumer = buffer.getBuffer(BHRenderTypes.glowing(GLOWING_LOCATION));
-                poseStack.mulPose(Axis.YP.rotationDegrees(entityRenderDispatcher.camera.getYRot()));
-                renderGlowingParts(poseStack, vertexConsumer, 1.0F, 0.0F,0.55F, 1.0F, packedLight);
-                poseStack.mulPose(Axis.YP.rotationDegrees(entityRenderDispatcher.camera.getXRot()));
-                renderGlowingParts(poseStack, vertexConsumer, 1.0F, 0.0F,0.55F, 1.0F, packedLight);
-                poseStack.popPose();
+            if (entity.isSleep()) {
+                float alpha = Mth.lerp(partialTicks, Mth.clamp(((float) entity.getAnimationTick() / 100.0F), 0.0F, 1.0F), 1.0F);
+                VertexConsumer renderModelExplosion = buffer.getBuffer(BHRenderTypes.explosionDeathEntity(TEXTURE_INACTIVE));
+                this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
             }
-            VertexConsumer renderModel = buffer.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(entity)));
+            VertexConsumer renderModel = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
             this.model.renderToBuffer(poseStack, renderModel, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, 1.0F);
         }
         if (entity.deathTime > 0 && entity.isEnraged()) {
@@ -138,7 +131,7 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
     }
     @Override
     public ResourceLocation getTextureLocation(BlazingInferno entity) {
-        if (!entity.isPowered() && !entity.isActive()) {
+        if (entity.isSleep()) {
             return TEXTURE_INACTIVE;
         } else {
             return entity.isEnraged() ? TEXTURE_ENRAGED : TEXTURE;

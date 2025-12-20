@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.entity;
 
-import com.kenhorizon.beyondhorizon.server.entity.boss.BlazingInferno;
+import com.kenhorizon.beyondhorizon.client.render.animation.BlazingInfernoAnimation;
+import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.HierarchicalModel;
@@ -111,8 +112,27 @@ public class BlazingInfernoModel extends HierarchicalModel<BlazingInferno> {
 
     @Override
     public void setupAnim(BlazingInferno entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
+        this.root().getAllParts().forEach(ModelPart::resetPose);
+        this.animateHeadLookTarget(netHeadYaw, headPitch);
+        this.animate(entity.idleAnimation, BlazingInfernoAnimation.GENERAL, 0.55F, 1.0F);
+        if (entity.walkAnimation.isMoving()) {
+            this.applyStatic(BlazingInfernoAnimation.WALKING);
+        }
+        this.animate(entity.animationActive, BlazingInfernoAnimation.ACTIVE, ageInTicks);
+        this.animate(entity.animationInactive, BlazingInfernoAnimation.INACTIVE, ageInTicks);
+        this.animate(entity.animationDeath, BlazingInfernoAnimation.DEATH, ageInTicks);
+        this.animate(entity.animationPrepareDeathRay, BlazingInfernoAnimation.PREPARE_DEATH_RAY, ageInTicks);
+        this.animate(entity.animationDeathRay, BlazingInfernoAnimation.DEATH_RAY, ageInTicks);
+        this.animate(entity.animationDashes, BlazingInfernoAnimation.DASH, ageInTicks);
+        this.animate(entity.animationGroundSlam, BlazingInfernoAnimation.SHOCKWAVE, ageInTicks);
+        this.animate(entity.animationShockwave, BlazingInfernoAnimation.SHOCKWAVE, ageInTicks);
     }
+
+    private void animateHeadLookTarget(float yRot, float xRot) {
+        this.head.xRot += xRot * ((float) Math.PI / 180F);
+        this.head.yRot += yRot * ((float) Math.PI / 180F);
+    }
+
 
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {

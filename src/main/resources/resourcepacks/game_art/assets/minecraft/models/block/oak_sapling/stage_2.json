@@ -1,0 +1,8 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/template_sapling_stage_2",
+	"textures": {
+		"1": "rpg:block/oak_tree_stage_2",
+		"particle": "rpg:block/oak_tree"
+	}
+}

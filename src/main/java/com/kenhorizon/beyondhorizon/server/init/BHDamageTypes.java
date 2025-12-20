@@ -15,6 +15,7 @@ import javax.annotation.Nullable;
 public class BHDamageTypes {
 
     public static final ResourceKey<DamageType> BLEED = createKey("bleed");
+    public static final ResourceKey<DamageType> BLAZING_ROD = createKey("blazing_rod");
     public static final ResourceKey<DamageType> PHYSICAL_DAMAGE = createKey("physical_damage");
     public static final ResourceKey<DamageType> MAGIC_DAMAGE = createKey("magic_damage");
     public static final ResourceKey<DamageType> TRUE_DAMAGE = createKey("true_damage");
@@ -25,6 +26,7 @@ public class BHDamageTypes {
     private static Registry<DamageType> damageTypes;
 
     public static void bootstrap(BootstapContext<DamageType> context) {
+        context.register(BLAZING_ROD, new DamageType("blazing_rod", 0.1F));
         context.register(BLEED, new DamageType("bleed", 0.1F));
         context.register(PHYSICAL_DAMAGE, new DamageType("physical_damage", 0.1F));
         context.register(MAGIC_DAMAGE, new DamageType("magic_damage", 0.1F));
@@ -65,6 +67,10 @@ public class BHDamageTypes {
 
     public static DamageSource magicDamage(Entity source, Entity target) {
         return source(MAGIC_DAMAGE, source, target);
+    }
+    
+    public static DamageSource blazingRod(Entity source, Entity target) {
+        return source(BLAZING_ROD, source, target);
     }
 
     public static DamageSource physicalDamage(Entity source, Entity target) {

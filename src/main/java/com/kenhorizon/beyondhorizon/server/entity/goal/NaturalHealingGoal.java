@@ -1,22 +1,23 @@
 package com.kenhorizon.beyondhorizon.server.entity.goal;
 
 import com.kenhorizon.beyondhorizon.server.entity.BHBaseEntity;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public class NaturalHealingGoal<T extends BHBaseEntity> extends Goal {
+public class NaturalHealingGoal extends Goal {
     protected int timeCooldown;
     protected float maxHealthRecovery;
     protected int defaultTimeCooldown;
     public static int COOLDOWN = 200;
-    protected T entity;
+    protected BHBaseEntity entity;
 
-    public NaturalHealingGoal(T entity, int cooldown, float maxHealthRecovery) {
+    public NaturalHealingGoal(BHBaseEntity entity, int cooldown, float maxHealthRecovery) {
         this.entity = entity;
         this.defaultTimeCooldown = cooldown;
         this.maxHealthRecovery = maxHealthRecovery;
     }
-    public NaturalHealingGoal(T entity) {
+    public NaturalHealingGoal(BHBaseEntity entity) {
         this(entity, COOLDOWN, 0.10F);
     }
 

@@ -1,18 +1,25 @@
 package com.kenhorizon.beyondhorizon.client;
 
-import com.google.common.collect.ImmutableList;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
+import com.kenhorizon.beyondhorizon.client.level.ModResouces;
 import com.kenhorizon.beyondhorizon.client.level.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
-import com.kenhorizon.beyondhorizon.client.render.entity.BlazingInfernoRenderer;
+import com.kenhorizon.beyondhorizon.client.particle.BleedParticle;
+import com.kenhorizon.beyondhorizon.client.particle.DamageIndicatorParticle;
+import com.kenhorizon.beyondhorizon.client.particle.StunParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicator;
+import com.kenhorizon.beyondhorizon.client.render.entity.*;
+import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
-import com.kenhorizon.beyondhorizon.server.entity.boss.BlazingInferno;
+import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
+import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
+import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAccessoryInventoryPacket;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
@@ -21,31 +28,34 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.forgespi.language.IModFileInfo;
+import net.minecraftforge.forgespi.locating.IModFile;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @SuppressWarnings({"removal"})
 public class ClientProxy extends ServerProxy {
@@ -54,10 +64,24 @@ public class ClientProxy extends ServerProxy {
     public void serverHandler() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::registerKeybinds);
+        bus.addListener(this::registerParticles);
         bus.addListener(this::entityCreationAttribute);
         bus.addListener(this::onEntityAttributeModification);
+        bus.addListener(this::addResourcesBuiltin);
         IconAttributesTooltip.registerFactory();
         Tooltips.TitleBreakComponent.registerFactory();
+    }
+
+    private void addResourcesBuiltin(AddPackFindersEvent event) {
+        if (event.getPackType() == PackType.CLIENT_RESOURCES) {
+            IModFileInfo info = ModList.get().getModFileById(BeyondHorizon.ID);
+            IModFile file = info.getFile();
+            event.addRepositorySource(res -> {
+                Pack pack = Pack.readMetaAndCreate("beyondhorizon:game_art", Component.translatable(Tooltips.TOOLTIP_BUILTIN_RESOURCE)
+                ,false, id -> new ModResouces(id, file, "resourcepacks/game_art"), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN);
+                if (pack != null) res.accept(pack);
+            });
+        }
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -70,6 +94,10 @@ public class ClientProxy extends ServerProxy {
         //bus.addListener(this::addRegisteredLayers);
 
         EntityRenderers.register(BHEntity.BLAZING_INFERNO.get(), BlazingInfernoRenderer::new);
+        EntityRenderers.register(BHEntity.BLAZING_ROD.get(), BlazingRodRenderer::new);
+        EntityRenderers.register(BHEntity.INFERNO_SHIELD.get(), InfernoShieldRenderer::new);
+        EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
+        EntityRenderers.register(BHEntity.BLAZING_SPEAR.get(), BlazingSpearRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
@@ -78,6 +106,7 @@ public class ClientProxy extends ServerProxy {
 
     public void entityCreationAttribute(EntityAttributeCreationEvent event) {
         event.put(BHEntity.BLAZING_INFERNO.get(), BlazingInferno.createAttributes());
+        event.put(BHEntity.INFERNO_SHIELD.get(), InfernoShield.createAttributes());
     }
 
 //    @OnlyIn(Dist.CLIENT)
@@ -146,6 +175,15 @@ public class ClientProxy extends ServerProxy {
         }
     }
 
+    public void registerParticles(RegisterParticleProvidersEvent event) {
+        BeyondHorizon.LOGGER.info("Registering Particles!!");
+
+        event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
+
+        event.registerSpecial(BHParticle.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
+        event.registerSpecial(BHParticle.STUN_PARTICLES.get(),new StunParticles.Provider());
+
+    }
     private void registerKeybinds(RegisterKeyMappingsEvent event) {
         event.register(Keybinds.LEVEL_SYSTEM);
     }

@@ -67,7 +67,7 @@ public class BHCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BH_SPAWN_EGG = RegistryTabs.registerCreativeTabs("beyond_horizon_tabs_spawn_egg",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHItems.ADAMANTITE_INGOT.get()))
+                    .icon(() -> new ItemStack(BHItems.BLAZING_INFERNO_SPAWN_EGG.get()))
                     .withTabsBefore(BHCreativeTabs.BH_WEAPONS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.spawn_eggs"))
                     .displayItems((parameters, output) -> {

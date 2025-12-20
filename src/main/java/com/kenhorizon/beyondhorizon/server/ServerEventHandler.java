@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicator;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
@@ -22,10 +23,14 @@ import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,6 +40,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -234,6 +240,25 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
+    public void onLivingJump(LivingEvent.LivingJumpEvent event) {
+        LivingEntity entity = event.getEntity();
+        ItemStack itemStack = entity.getMainHandItem();
+        if (entity instanceof Player player) {
+            player.getCapability(BHCapabilties.ACCESSORY).ifPresent(handler -> {
+                for (int i = 0; i < handler.getSlots(); i++) {
+                    ItemStack itemStacks = handler.getStackInSlot(i);
+                    if (itemStacks.getItem() instanceof IAccessoryItems<?> items) {
+                        for (Accessory accessory : items.getAccessories()) {
+                            Optional<IEntityProperties> optional = accessory.IEntityProperties();
+                            optional.ifPresent(callback -> callback.onEntityJump(player, itemStacks));
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    @SubscribeEvent
     public void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         ItemStack itemStack = entity.getMainHandItem();
@@ -314,20 +339,20 @@ public class ServerEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public void onCriticalHit(CriticalHitEvent event) {
-        Player player = event.getEntity();
-        if (player != null) {
-            ItemStack itemStack = player.getMainHandItem();
-            double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_STRIKE.get());
-            double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
-            if (player.getRandom().nextDouble() <= criticalStrike) {
-                event.setResult(Event.Result.ALLOW);
-                event.setDamageModifier((float) criticalDamage);
-            }
-            event.setDamageModifier((float) criticalDamage);
-        }
-    }
+//    @SubscribeEvent
+//    public void onCriticalHit(CriticalHitEvent event) {
+//        Player player = event.getEntity();
+//        if (player != null) {
+//            ItemStack itemStack = player.getMainHandItem();
+//            double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_STRIKE.get());
+//            double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
+//            if (player.getRandom().nextDouble() <= criticalStrike) {
+//                event.setResult(Event.Result.ALLOW);
+//                event.setDamageModifier((float) criticalDamage);
+//            }
+//            event.setDamageModifier((float) criticalDamage);
+//        }
+//    }
 
     @SubscribeEvent
     public void onLivingAttackEvent(LivingAttackEvent event) {
@@ -356,6 +381,8 @@ public class ServerEventHandler {
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
         ICombatCore targetCombatCore = CapabilityCaller.combat(target);
+        if (event.isCanceled() || source.is(DamageTypes.GENERIC_KILL) || !(target.level() instanceof ServerLevel level)) return;
+        boolean isCrit = false;
         if (source.getEntity() instanceof LivingEntity attacker) {
             ItemStack attackerStack = attacker.getMainHandItem();
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
@@ -386,6 +413,13 @@ public class ServerEventHandler {
                             }
                         }
                     }
+                }
+                double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_STRIKE.get());
+                double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
+                if (player.getRandom().nextDouble() <= criticalStrike) {
+                    isCrit = true;
+                    damageDealt = (float) (damageDealt * criticalDamage);
+                    player.crit(target);
                 }
             }
         }
@@ -424,6 +458,12 @@ public class ServerEventHandler {
             }
         }
         targetCombatCore.activated();
+        float roundedAmount = Math.round(damageDealt * 10) / 10f;
+        int intAmount = (int) roundedAmount;
+        String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
+        Vec3 pos = target.getEyePosition();
+        MutableComponent component = Component.literal(text).withStyle(isCrit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
+        level.sendParticles(new DamageIndicator(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
         event.setAmount(damageDealt);
     }
 

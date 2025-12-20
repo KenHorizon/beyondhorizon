@@ -18,6 +18,8 @@ public interface IEntityProperties {
 
     default void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {}
 
+    default void onEntityJump(LivingEntity entity, ItemStack itemStack) {}
+
     default void onChangeEquipment(LivingEntity entity, ItemStack itemStack, boolean hasChanged) {}
 
     default double onModifyMiningSpeed(Player player, BlockState blockState, BlockPos blockPos, double originalSpeed) {

@@ -11,6 +11,8 @@ public class ModClientConfig {
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_ACCESSORY;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_SKILL;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP;
+    public static ForgeConfigSpec.BooleanValue SCREEN_SHAKE;
+    public static ForgeConfigSpec.IntValue SCREEN_SHAKE_AMOUNT;
     public static ForgeConfigSpec.EnumValue GAME_HUD;
 
     public static final ForgeConfigSpec SPEC;
@@ -33,6 +35,13 @@ public class ModClientConfig {
         ADVANCED_TOOLTIP_SKILL = builder
                 .comment("Extend item's tooltip information only in accessory")
                 .define("Show Advanced Tooltip On Skill", true);
+        SCREEN_SHAKE = builder
+                .comment("Allow to do screen shake")
+                .define("Screen Shake", true);
+        SCREEN_SHAKE_AMOUNT = builder
+                .comment("How much screen will shake by percentages")
+                .defineInRange("Screen Shake Multiplier", 100, 0, 100);
+
         GAME_HUD = builder
                 .comment("Change how your game's hud will be displayed")
                 .defineEnum("In-Game Hud", GameHuds.MOD, GameHuds.VANILLA, GameHuds.MOD);

@@ -1,0 +1,75 @@
+{
+  "generic.heavy_attack": {
+    "sounds": [
+      "beyondhorizon:generic/heavy_hit/heavyhit1",
+      "beyondhorizon:generic/heavy_hit/heavyhit2",
+      "beyondhorizon:generic/heavy_hit/heavyhit3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.generic.heavy_attack"
+  },
+  "mob.blazing_inferno.charge": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/charging/charging1",
+      "beyondhorizon:mob/blazing_inferno/charging/charging2",
+      "beyondhorizon:mob/blazing_inferno/charging/charging3",
+      "beyondhorizon:mob/blazing_inferno/charging/charging4"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.charge"
+  },
+  "mob.blazing_inferno.death": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/death/death1",
+      "beyondhorizon:mob/blazing_inferno/death/death2",
+      "beyondhorizon:mob/blazing_inferno/death/death3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.death"
+  },
+  "mob.blazing_inferno.growl": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/growl/growl1",
+      "beyondhorizon:mob/blazing_inferno/growl/growl2",
+      "beyondhorizon:mob/blazing_inferno/growl/growl3",
+      "beyondhorizon:mob/blazing_inferno/growl/growl4"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.growl"
+  },
+  "mob.blazing_inferno.hurt": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/hurt/hurt1",
+      "beyondhorizon:mob/blazing_inferno/hurt/hurt2",
+      "beyondhorizon:mob/blazing_inferno/hurt/hurt3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.hurt"
+  },
+  "mob.blazing_inferno.idle": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/idle/idle1",
+      "beyondhorizon:mob/blazing_inferno/idle/idle2",
+      "beyondhorizon:mob/blazing_inferno/idle/idle3",
+      "beyondhorizon:mob/blazing_inferno/idle/idle4"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.idle"
+  },
+  "mob.blazing_inferno.scream": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/scream"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.scream"
+  },
+  "mob.blazing_inferno.shoot": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/shoot/shoot1",
+      "beyondhorizon:mob/blazing_inferno/shoot/shoot2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.shoot"
+  },
+  "mob.blazing_inferno.step": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/step/step1",
+      "beyondhorizon:mob/blazing_inferno/step/step2",
+      "beyondhorizon:mob/blazing_inferno/step/step3",
+      "beyondhorizon:mob/blazing_inferno/step/step4"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.step"
+  }
+}

@@ -72,6 +72,7 @@ public class BeyondHorizon
         BHMenu.register(eventBus);
         BHParticle.register(eventBus);
         //  BHPotions.register(eventBus);
+        BHSounds.register(eventBus);
         BHEntity.register(eventBus);
         BHEffects.register(eventBus);
         BHRecipe.register(eventBus);
@@ -84,8 +85,6 @@ public class BeyondHorizon
         Accessories.register(eventBus);
         PROXY.serverHandler();
         MinecraftForge.EVENT_BUS.register(this);
-        modContext.registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> "ANY", (a, b) -> true));
-
         if (FMLEnvironment.dist == Dist.CLIENT) {
             Minecraft minecraft = Minecraft.getInstance();
             if (minecraft != null) {

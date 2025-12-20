@@ -11,7 +11,7 @@ public class DebugWeaponItems extends BasicItem {
 
     @Override
     public boolean hurtEnemy(ItemStack itemStack, LivingEntity target, LivingEntity attacker) {
-        target.kill();
+        target.hurt(target.level().damageSources().generic(), target.getMaxHealth());
         return super.hurtEnemy(itemStack, target, attacker);
     }
 }

@@ -2,6 +2,8 @@ package com.kenhorizon.beyondhorizon.client.render;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.entity.BlazingInfernoModel;
+import com.kenhorizon.beyondhorizon.client.render.entity.BlazingSpearModel;
+import com.kenhorizon.beyondhorizon.client.render.entity.InfernoShieldModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.resources.ResourceLocation;
@@ -12,10 +14,14 @@ public class BHModelLayers {
     public static final CubeDeformation INNER_ARMOR_DEFORMATION = new CubeDeformation(0.5F);
     public static final ModelLayerLocation WINGS = new ModelLayerLocation(ResourceLocation.parse("minecraft:player"), "wings");
     public static final ModelLayerLocation BLAZING_INFERNO = createLocation("blazing_inferno");
+    public static final ModelLayerLocation INFERNO_SHIELD = createLocation("inferno_shield");
+    public static final ModelLayerLocation BLAZING_SPEAR = createLocation("blazing_spear");
 
     public static void register(final EntityRenderersEvent.RegisterLayerDefinitions event) {
         BeyondHorizon.LOGGER.info("Registering Model Layers...");
         event.registerLayerDefinition(BLAZING_INFERNO, BlazingInfernoModel::createBodyLayer);
+        event.registerLayerDefinition(INFERNO_SHIELD, InfernoShieldModel::createBodyLayer);
+        event.registerLayerDefinition(BLAZING_SPEAR, BlazingSpearModel::createBodyLayer);
     }
     private static ModelLayerLocation createOuterArmor(String model) {
         return createLocation(model, "outer_armor");

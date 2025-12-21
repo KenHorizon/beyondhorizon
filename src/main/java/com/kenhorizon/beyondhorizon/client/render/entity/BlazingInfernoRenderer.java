@@ -79,13 +79,14 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
             VertexConsumer renderModelDecal = buffer.getBuffer(entityDecal(entity));
             this.model.renderToBuffer(poseStack, renderModelDecal, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, 1.0F);
         } else {
-            if (entity.isSleep()) {
-                float alpha = Mth.lerp(partialTicks, Mth.clamp(((float) entity.getAnimationTick() / 100.0F), 0.0F, 1.0F), 1.0F);
-                VertexConsumer renderModelExplosion = buffer.getBuffer(BHRenderTypes.explosionDeathEntity(TEXTURE_INACTIVE));
-                this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
-            }
+            float alpha = entity.getAwakenProgress(partialTicks);
+
             VertexConsumer renderModel = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
             this.model.renderToBuffer(poseStack, renderModel, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, 1.0F);
+            if (alpha != 1.0F) {
+                VertexConsumer renderModelExplosion = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_INACTIVE));
+                this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F - alpha);
+            }
         }
         if (entity.deathTime > 0 && entity.isEnraged()) {
             float f1 = ((float) entity.deathTime + partialTicks) / 200.0F;
@@ -125,10 +126,12 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
         }
         poseStack.popPose();
     }
+
     @Override
     protected float getFlipDegrees(BlazingInferno entity) {
         return 0;
     }
+
     @Override
     public ResourceLocation getTextureLocation(BlazingInferno entity) {
         if (entity.isSleep()) {

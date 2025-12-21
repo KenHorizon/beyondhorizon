@@ -116,8 +116,6 @@ public class BHBossEntity extends BHLibEntity implements Enemy {
             if (this.returnState <= 0) {
                 this.resetState();
             }
-        } else {
-            this.idleAnimation.start(this.tickCount);
         }
     }
 

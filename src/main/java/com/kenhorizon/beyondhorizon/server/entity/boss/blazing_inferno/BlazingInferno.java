@@ -25,6 +25,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -93,14 +94,17 @@ public class BlazingInferno extends BHBossEntity {
     public final int SHIELD_COOLDOWN = Maths.mins(1);
     public int jumpCooldown = 0;
     public final int JUMP_COOLDOWN = Maths.sec(25);
+    public final int AWAKEN_COOLDOWN = Maths.sec(5);
     public static final String NBT_POWERED = "is_powered";
     public static final String NBT_ENRAGED = "is_enraged";
     public static final String NBT_SHIELD_COUNT = "shield_count";
     public static final String NBT_SHIELD_ACTIVE = "shield_active";
+    public static final String NBT_AWAKEN_PROGRESS = "awaken_progress";
     public static final EntityDataAccessor<Boolean> POWERED = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> IS_DASHING = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> ENRAGED = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> SHIELD_COUNT = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> AWAKEN_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SHIELD_ACTIVE = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DEATH_RAY = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
 
@@ -163,6 +167,7 @@ public class BlazingInferno extends BHBossEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(AWAKEN_PROGRESS, 4);
         this.entityData.define(SHIELD_COUNT, 4);
         this.entityData.define(ENRAGED, false);
         this.entityData.define(SHIELD_ACTIVE, false);
@@ -191,6 +196,7 @@ public class BlazingInferno extends BHBossEntity {
         this.setIsEnraged(nbt.getBoolean(NBT_ENRAGED));
         this.setShieldCount(nbt.getInt(NBT_SHIELD_COUNT));
         this.setInfernoShieldActive(nbt.getBoolean(NBT_SHIELD_ACTIVE));
+        this.setAwakenProgress(nbt.getInt(NBT_AWAKEN_PROGRESS));
     }
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
@@ -199,6 +205,15 @@ public class BlazingInferno extends BHBossEntity {
         nbt.putBoolean(NBT_ENRAGED, this.isEnraged());
         nbt.putInt(NBT_SHIELD_COUNT, this.getShieldCount());
         nbt.putBoolean(NBT_SHIELD_ACTIVE, this.isInfernoShieldActive());
+        nbt.putInt(NBT_AWAKEN_PROGRESS, this.getAwakenProgress());
+    }
+
+    public void setAwakenProgress(int awakenProgress) {
+        this.entityData.set(AWAKEN_PROGRESS, Math.min(awakenProgress, 100));
+    }
+
+    public int getAwakenProgress() {
+        return this.entityData.get(AWAKEN_PROGRESS);
     }
 
     public boolean isSleep() {
@@ -207,27 +222,31 @@ public class BlazingInferno extends BHBossEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        boolean gotHurt = super.hurt(source, amount);
-        if (this.isInfernoShieldActive()) {
-            amount = CombatUtil.multiplier(amount, -0.85F);
-            if (source.getEntity() instanceof Player player) {
-                if (player.getMainHandItem().getItem() instanceof AxeItem) {
-                    amount *= 2.0F;
-                }
-            }
-            if (gotHurt) {
-                for (InfernoShield shield : this.infernoShields) {
-                    shield.hurt(source, amount);
-                }
-            }
+        if (source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL)) {
+            return super.hurt(source, amount);
         } else {
-            if (this.isSleep()) {
-                if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-                    return false;
+            boolean gotHurt = super.hurt(source, amount);
+            if (this.isInfernoShieldActive()) {
+                amount = CombatUtil.multiplier(amount, -0.85F);
+                if (source.getEntity() instanceof Player player) {
+                    if (player.getMainHandItem().getItem() instanceof AxeItem) {
+                        amount *= 2.0F;
+                    }
+                }
+                if (gotHurt) {
+                    for (InfernoShield shield : this.infernoShields) {
+                        shield.hurt(source, amount);
+                    }
+                }
+            } else {
+                if (this.isSleep()) {
+                    if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                        return false;
+                    }
                 }
             }
+            return gotHurt;
         }
-        return gotHurt;
     }
 
     @Override
@@ -318,6 +337,9 @@ public class BlazingInferno extends BHBossEntity {
         if (this.groundSlamCooldown > 0) this.groundSlamCooldown--;
         if (!this.isEnraged() && !this.isInfernoShieldActive() && this.shieldCooldown > 0) this.shieldCooldown--;
         if (this.fireballCooldown > 0) this.fireballCooldown--;
+        if (this.getAnimation() == 2) {
+            this.setAwakenProgress(this.getAwakenProgress() + 1);
+        }
     }
 
     @Override
@@ -343,7 +365,7 @@ public class BlazingInferno extends BHBossEntity {
             }
         }
         this.setInfernoShieldActive(!this.infernoShields.isEmpty());
-        if (this.getAnimation() != 18 && this.isPowered() && !this.isEnraged() && !this.isInfernoShieldActive() && this.shieldCooldown <= 0) {
+        if (!this.isSleep() && this.isPowered() && !this.isEnraged() && !this.isInfernoShieldActive() && this.shieldCooldown <= 0) {
             this.shieldCooldown = this.SHIELD_COOLDOWN;
             int shield = this.getShieldCount();
             this.setShieldCount(shield);
@@ -596,6 +618,13 @@ public class BlazingInferno extends BHBossEntity {
         projectile.shoot(d0, d1 + f, d2, 0.25F, 0.0F);
         projectile.setDelay(timer);
         this.level().addFreshEntity(projectile);
+    }
+
+    public float getAwakenProgress(float partialTicks) {
+        if (!this.isSleep()) {
+            return 1.0F;
+        }
+        return Mth.clamp((float) this.getAwakenProgress() / this.AWAKEN_COOLDOWN, 0.0F, 1.0F);
     }
 
     class BlazingInfernoInactive extends Goal {

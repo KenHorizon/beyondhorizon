@@ -1,8 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno;
 
+import com.kenhorizon.beyondhorizon.client.level.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.server.entity.boss.BHBossEntity;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
-import com.kenhorizon.beyondhorizon.server.entity.goal.*;
+import com.kenhorizon.beyondhorizon.server.entity.ai.*;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
@@ -10,13 +13,11 @@ import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
@@ -30,7 +31,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
@@ -42,7 +42,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.Vec3;
@@ -50,7 +49,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 
 public class BlazingInferno extends BHBossEntity {
@@ -76,6 +74,7 @@ public class BlazingInferno extends BHBossEntity {
     public AnimationState animationEnragedPhase = new AnimationState();
     public AnimationState animationJump = new AnimationState();
     public List<InfernoShield> infernoShields = new ArrayList<>();
+    public int enragedProgress = 0;
     public int fireballCooldown = 0;
     public final int FIREBALL_COOLDOWN = Maths.sec(6);
     public int spearCooldown = 0;
@@ -94,17 +93,20 @@ public class BlazingInferno extends BHBossEntity {
     public final int SHIELD_COOLDOWN = Maths.mins(1);
     public int jumpCooldown = 0;
     public final int JUMP_COOLDOWN = Maths.sec(25);
+    public final int ENRAGED_COOLDOWN = Maths.sec(5);
     public final int AWAKEN_COOLDOWN = Maths.sec(5);
-    public static final String NBT_POWERED = "is_powered";
-    public static final String NBT_ENRAGED = "is_enraged";
-    public static final String NBT_SHIELD_COUNT = "shield_count";
-    public static final String NBT_SHIELD_ACTIVE = "shield_active";
-    public static final String NBT_AWAKEN_PROGRESS = "awaken_progress";
+    public static final String NBT_POWERED = "IsPowered";
+    public static final String NBT_ENRAGED = "IsEnraged";
+    public static final String NBT_SHIELD_COUNT = "ShieldCount";
+    public static final String NBT_SHIELD_ACTIVE = "Shieldctive";
+    public static final String NBT_AWAKEN_PROGRESS = "AwakenProgress";
+    public static final String NBT_ENRAGED_PROGRESS = "EnragedProgress";
     public static final EntityDataAccessor<Boolean> POWERED = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> IS_DASHING = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Boolean> ENRAGED = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
     public static final EntityDataAccessor<Integer> SHIELD_COUNT = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> AWAKEN_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    public static final EntityDataAccessor<Integer> ENRAGED_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SHIELD_ACTIVE = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DEATH_RAY = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
 
@@ -139,7 +141,7 @@ public class BlazingInferno extends BHBossEntity {
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(0, new NaturalHealingGoal(this));
-        this.goalSelector.addGoal(0, new BlazingInfernoInactive());
+        this.goalSelector.addGoal(0, new BossInactiveGoal(!this.isPowered() && this.getAnimation() == 3));
         this.goalSelector.addGoal(4, new MobMoveGoal(this, false, 1.0F));
         this.goalSelector.addGoal(1, new MobStateGoal<>(this, 1,1, 0, 0, 0) {
             @Override
@@ -151,42 +153,30 @@ public class BlazingInferno extends BHBossEntity {
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
         this.targetSelector.addGoal(1, new FireballAttackGoal(this, 0, this.randomFireballAttack(), 0, 30, Maths.sec(3) ,32));
         this.targetSelector.addGoal(2, new SpearAttackGoal(this, 0, this.randomSpearAttack(), 0, 30, Maths.sec(3) ,32));
-        this.targetSelector.addGoal(3, new GroundSlamAttackGoal(this, 0, 9, 10, 30, Maths.sec(5) ,32));
+        this.targetSelector.addGoal(3, new GroundSlamAttackGoal(this, 0, 10, 11, 30, Maths.sec(5) ,32));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractGolem.class, true));
     }
     public int randomSpearAttack() {
-        int[] nums = {6, 7, 8};
+        int[] nums = {7, 8, 9};
         return nums[this.getRandom().nextInt(nums.length)];
     }
     public int randomFireballAttack() {
-        int[] nums = {3, 4, 5};
+        int[] nums = {4, 5, 6};
         return nums[this.getRandom().nextInt(nums.length)];
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(AWAKEN_PROGRESS, 4);
-        this.entityData.define(SHIELD_COUNT, 4);
+        this.entityData.define(ENRAGED_PROGRESS, 0);
+        this.entityData.define(AWAKEN_PROGRESS, 0);
+        this.entityData.define(SHIELD_COUNT, 0);
         this.entityData.define(ENRAGED, false);
         this.entityData.define(SHIELD_ACTIVE, false);
         this.entityData.define(IS_DASHING, false);
         this.entityData.define(POWERED, true);
         this.entityData.define(DEATH_RAY, false);
-    }
-    @Override
-    public void startSeenByPlayer(ServerPlayer player) {
-        if (this.isPowered()) {
-            this.bossInfo().addPlayer(player);
-        }
-    }
-
-    @Override
-    public void stopSeenByPlayer(ServerPlayer player) {
-        if (this.isPowered()) {
-            this.bossInfo().removePlayer(player);
-        }
     }
 
     @Override
@@ -197,6 +187,7 @@ public class BlazingInferno extends BHBossEntity {
         this.setShieldCount(nbt.getInt(NBT_SHIELD_COUNT));
         this.setInfernoShieldActive(nbt.getBoolean(NBT_SHIELD_ACTIVE));
         this.setAwakenProgress(nbt.getInt(NBT_AWAKEN_PROGRESS));
+        this.setEnragedProgress(nbt.getInt(NBT_ENRAGED_PROGRESS));
     }
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
@@ -206,6 +197,7 @@ public class BlazingInferno extends BHBossEntity {
         nbt.putInt(NBT_SHIELD_COUNT, this.getShieldCount());
         nbt.putBoolean(NBT_SHIELD_ACTIVE, this.isInfernoShieldActive());
         nbt.putInt(NBT_AWAKEN_PROGRESS, this.getAwakenProgress());
+        nbt.putInt(NBT_ENRAGED_PROGRESS, this.getEnragedProgress());
     }
 
     public void setAwakenProgress(int awakenProgress) {
@@ -215,7 +207,13 @@ public class BlazingInferno extends BHBossEntity {
     public int getAwakenProgress() {
         return this.entityData.get(AWAKEN_PROGRESS);
     }
+    public void setEnragedProgress(int enragedProgress) {
+        this.entityData.set(ENRAGED_PROGRESS, Math.min(enragedProgress, 100));
+    }
 
+    public int getEnragedProgress() {
+        return this.entityData.get(ENRAGED_PROGRESS);
+    }
     public boolean isSleep() {
         return this.getAnimation() == 1 || this.getAnimation() == 2;
     }
@@ -225,7 +223,13 @@ public class BlazingInferno extends BHBossEntity {
         if (source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL)) {
             return super.hurt(source, amount);
         } else {
+            if (this.getAnimation() == 3) {
+                return false;
+            }
             boolean gotHurt = super.hurt(source, amount);
+            if (gotHurt && this.isHalfHealth() && !this.isEnraged()) {
+                this.setAnimation(3);
+            }
             if (this.isInfernoShieldActive()) {
                 amount = CombatUtil.multiplier(amount, -0.85F);
                 if (source.getEntity() instanceof Player player) {
@@ -254,10 +258,10 @@ public class BlazingInferno extends BHBossEntity {
         return currentAir;
     }
 
-    @Override
-    protected void playStepSound(BlockPos blockPos, BlockState blockState) {
-        this.playSound(BHSounds.BLAZING_INFERNO_STEP.get());
-    }
+//    @Override
+//    protected void playStepSound(BlockPos blockPos, BlockState blockState) {
+//        this.playSound(BHSounds.BLAZING_INFERNO_STEP.get());
+//    }
 
     @Override
     public boolean isSensitiveToWater() {
@@ -329,6 +333,20 @@ public class BlazingInferno extends BHBossEntity {
     @Override
     public void tick() {
         super.tick();
+        this.setInfernoShieldActive(this.getShieldCount() > 0);
+        if (this.getAnimation() == 3) {
+            this.enragedProgress++;
+            if (this.enragedProgress >= Maths.sec(5)) {
+                this.setIsEnraged(true);
+                this.bossInfo().setRenderType(1);
+                this.setAnimation(11);
+            }
+        }
+        if (this.isEnraged()) {
+            this.bossInfo().setRenderType(1);
+        } else {
+            this.bossInfo().setRenderType(0);
+        }
         if (this.spearCooldown > 0) this.spearCooldown--;
         if (this.comboMeleeCooldown > 0) this.comboMeleeCooldown--;
         if (this.dashCooldown > 0) this.dashCooldown--;
@@ -364,7 +382,6 @@ public class BlazingInferno extends BHBossEntity {
                 this.setShieldCount(this.infernoShields.size());
             }
         }
-        this.setInfernoShieldActive(!this.infernoShields.isEmpty());
         if (!this.isSleep() && this.isPowered() && !this.isEnraged() && !this.isInfernoShieldActive() && this.shieldCooldown <= 0) {
             this.shieldCooldown = this.SHIELD_COOLDOWN;
             int shield = this.getShieldCount();
@@ -377,9 +394,17 @@ public class BlazingInferno extends BHBossEntity {
             }
         }
         LivingEntity target = this.getTarget();
-        if (this.getAnimation() == 18) {
+        if (this.getAnimation() == 2) {
             if (this.level().isClientSide()) {
                 if (this.getAnimationTick() == 90) {
+                    float yaw = (float) Math.toRadians(-this.getYRot());
+                    float pitch = (float) Math.toRadians(-this.getXRot());
+                    float r = ColorUtil.getFARGB(0xFFFFFF)[0];
+                    float g = ColorUtil.getFARGB(0xFFFFFF)[1];
+                    float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 11, r, g, b, 1.0F, 16.0F, false, RingParticles.RingBehavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw, pitch, 15, r, g, b, 1.0F, 32.0F, false, RingParticles.RingBehavior.SHRINK), this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ(), 0, 0, 0);
+
                     CameraShake.spawn(this.level(), this.position(), 24, 0.12F, 20, 10);
                     this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SCREAM.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
                     this.sphereParticle(12);
@@ -387,26 +412,26 @@ public class BlazingInferno extends BHBossEntity {
             }
         }
         if (target != null) {
-            if (this.getAnimation() == 2) {
+            if (this.getAnimation() == 4) {
                 if (this.getAnimationTick() % 5 == 0) {
                     this.playSound(BHSounds.BLAZING_INFERNO_SHOOT.get());
                     this.shoot(1, target, 1.0F, 0.2F);
                 }
             }
-            if (this.getAnimation() == 3) {
+            if (this.getAnimation() == 5) {
                 if (this.getAnimationTick() % 10 == 0) {
                     this.playSound(BHSounds.BLAZING_INFERNO_SHOOT.get());
                     this.shoot(3, target, 1.0F, 1.2F);
                 }
             }
-            if (this.getAnimation() == 4) {
+            if (this.getAnimation() == 6) {
                 if (this.getAnimationTick() % 10 == 0) {
                     this.playSound(BHSounds.BLAZING_INFERNO_SHOOT.get());
                     this.shoot(4, target, 1.0F, 2.2F);
                 }
             }
 
-            if (this.getAnimation() == 5) {
+            if (this.getAnimation() == 7) {
                 if (this.getAnimationTick() == 40) {
                     this.playSound(BHSounds.BLAZING_INFERNO_SHOOT.get());
                     CameraShake.spawn(this.level(), this.position(), 32.0F, 0.15F, 5, 20);
@@ -416,7 +441,7 @@ public class BlazingInferno extends BHBossEntity {
                     }
                 }
             }
-            if (this.getAnimation() == 6) {
+            if (this.getAnimation() == 8) {
                 if (this.getAnimationTick() == 40) {
                     this.playSound(BHSounds.BLAZING_INFERNO_SHOOT.get());
                     CameraShake.spawn(this.level(), this.position(), 32.0F, 0.15F, 5, 20);
@@ -426,7 +451,7 @@ public class BlazingInferno extends BHBossEntity {
                     }
                 }
             }
-            if (this.getAnimation() == 7) {
+            if (this.getAnimation() == 9) {
                 if (this.getAnimationTick() == 40) {
                     this.playSound(BHSounds.BLAZING_INFERNO_SHOOT.get());
                     this.shootSpear(new Vec3(2, 1, 0), Maths.sec(3), target);
@@ -434,7 +459,7 @@ public class BlazingInferno extends BHBossEntity {
                     this.shootSpear(new Vec3(0, 1, 0), Maths.sec(5), target);
                 }
             }
-            if (this.getAnimation() == 9) {
+            if (this.getAnimation() == 10) {
                 if (this.getAnimationTick() < 20) {
                     this.setDeltaMovement(0, 0, 0);
                 }
@@ -445,7 +470,7 @@ public class BlazingInferno extends BHBossEntity {
                     this.setDeltaMovement(posX, posY, posZ);
                 }
             }
-            if (this.getAnimation() == 10) {
+            if (this.getAnimation() == 11) {
                 if (this.getAnimationTick() == 5) {
                     this.setDeltaMovement(0, 0, 0);
                     CameraShake.spawn(this.level(), this.position(), 16.0F, 0.05F, 5, 20);
@@ -533,33 +558,37 @@ public class BlazingInferno extends BHBossEntity {
                 }
                 case 3 -> {
                     this.stopAnimations();
-                    this.animationFireballNormal.startIfStopped(this.tickCount);
+                    this.animationEnragedPhase.startIfStopped(this.tickCount);
                 }
                 case 4 -> {
                     this.stopAnimations();
-                    this.animationFireballSpread.startIfStopped(this.tickCount);
+                    this.animationFireballNormal.startIfStopped(this.tickCount);
                 }
                 case 5 -> {
                     this.stopAnimations();
-                    this.animationFireballBurst.startIfStopped(this.tickCount);
+                    this.animationFireballSpread.startIfStopped(this.tickCount);
                 }
                 case 6 -> {
                     this.stopAnimations();
-                    this.animationMelee0.startIfStopped(this.tickCount);
+                    this.animationFireballBurst.startIfStopped(this.tickCount);
                 }
                 case 7 -> {
                     this.stopAnimations();
-                    this.animationMelee1.startIfStopped(this.tickCount);
+                    this.animationMelee0.startIfStopped(this.tickCount);
                 }
                 case 8 -> {
                     this.stopAnimations();
-                    this.animationMelee2.startIfStopped(this.tickCount);
+                    this.animationMelee1.startIfStopped(this.tickCount);
                 }
                 case 9 -> {
                     this.stopAnimations();
-                    this.animationJump.startIfStopped(this.tickCount);
+                    this.animationMelee2.startIfStopped(this.tickCount);
                 }
                 case 10 -> {
+                    this.stopAnimations();
+                    this.animationJump.startIfStopped(this.tickCount);
+                }
+                case 11 -> {
                     this.stopAnimations();
                     this.animationGroundSlam.startIfStopped(this.tickCount);
                 }
@@ -619,22 +648,17 @@ public class BlazingInferno extends BHBossEntity {
         projectile.setDelay(timer);
         this.level().addFreshEntity(projectile);
     }
-
+    public float getEnragedProgress(float partialTicks) {
+        if (this.isEnraged()) {
+            return 1.0F;
+        }
+        return Mth.clamp((float) this.getAwakenProgress() / this.ENRAGED_COOLDOWN, 0.0F, 1.0F);
+    }
     public float getAwakenProgress(float partialTicks) {
         if (!this.isSleep()) {
             return 1.0F;
         }
         return Mth.clamp((float) this.getAwakenProgress() / this.AWAKEN_COOLDOWN, 0.0F, 1.0F);
-    }
-
-    class BlazingInfernoInactive extends Goal {
-        public BlazingInfernoInactive() {
-            this.setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.JUMP, Goal.Flag.LOOK));
-        }
-        @Override
-        public boolean canUse() {
-            return !BlazingInferno.this.isPowered();
-        }
     }
 
     public static class BlazingInfernoAwakenGoal extends MobStateGoal<BlazingInferno> {

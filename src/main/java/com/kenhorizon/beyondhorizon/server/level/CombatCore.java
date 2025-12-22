@@ -9,6 +9,8 @@ public class CombatCore implements ICombatCore {
     public int duration;
     public boolean inCombat;
     private final int COMBAT_DURATION_TIMEOUT = 5;
+    public static final String NBT_DURATION = "Duration";
+    public static final String NBT_INCOMBAT = "InCombat";
 
     public void setDuration(int duration) {
         this.duration = duration;
@@ -44,14 +46,14 @@ public class CombatCore implements ICombatCore {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putInt("duration", this.duration);
-        nbt.putBoolean("in_combat", this.inCombat);
+        nbt.putInt(NBT_DURATION, this.duration);
+        nbt.putBoolean(NBT_INCOMBAT, this.inCombat);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        this.duration = nbt.getInt("duration");
-        this.inCombat = nbt.getBoolean("in_combat");
+        this.duration = nbt.getInt(NBT_DURATION);
+        this.inCombat = nbt.getBoolean(NBT_INCOMBAT);
     }
 }

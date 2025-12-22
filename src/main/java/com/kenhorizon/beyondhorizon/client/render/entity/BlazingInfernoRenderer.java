@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.entity;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.model.entity.BlazingInfernoModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
@@ -79,13 +80,14 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
             VertexConsumer renderModelDecal = buffer.getBuffer(entityDecal(entity));
             this.model.renderToBuffer(poseStack, renderModelDecal, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, 1.0F);
         } else {
-            float alpha = entity.getAwakenProgress(partialTicks);
+            float enragedProgress = entity.getAwakenProgress(partialTicks);
+            float awakenProgress = entity.getAwakenProgress(partialTicks);
 
-            VertexConsumer renderModel = buffer.getBuffer(RenderType.entityCutoutNoCull(TEXTURE));
+            VertexConsumer renderModel = buffer.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(entity)));
             this.model.renderToBuffer(poseStack, renderModel, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, 1.0F);
-            if (alpha != 1.0F) {
+            if (awakenProgress != 1.0F) {
                 VertexConsumer renderModelExplosion = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_INACTIVE));
-                this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F - alpha);
+                this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F - awakenProgress);
             }
         }
         if (entity.deathTime > 0 && entity.isEnraged()) {
@@ -137,7 +139,7 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
         if (entity.isSleep()) {
             return TEXTURE_INACTIVE;
         } else {
-            return entity.isEnraged() ? TEXTURE_ENRAGED : TEXTURE;
+            return TEXTURE;
         }
     }
     public RenderType entityDecal(BlazingInferno entity) {

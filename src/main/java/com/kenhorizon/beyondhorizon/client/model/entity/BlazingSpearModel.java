@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.client.render.entity;
+package com.kenhorizon.beyondhorizon.client.model.entity;
 
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSpear;
 import com.mojang.blaze3d.vertex.PoseStack;

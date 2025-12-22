@@ -1,16 +1,21 @@
-package com.kenhorizon.beyondhorizon.client.level.guis.hud;
+package com.kenhorizon.beyondhorizon.client.level;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.level.guis.hud.HudSprites;
+import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.libs.registry.RegistryHelper;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,20 +27,34 @@ import java.util.Map;
  * @author bobmowzies
  * */
 public class BHBossBar {
-    public static Map<ResourceLocation, BHBossBar> BOSS_BARS = new HashMap<>();
+    public static Map<BHBossInfo.BossBar, BHBossBar> BOSS_BARS = new HashMap<>();
+    public static BHBossBar BLAZING_INFERNO = new BHBossBar(
+            BeyondHorizon.resourceGui("sprites/bossbar/overlay/blazing_inferno.png"),
+            15,
+            9,
+            15,
+            -3,
+            -8,
+            256,
+            23,
+            32,
+            ChatFormatting.YELLOW);
+    public static BHBossBar BLAZING_INFERNO_ENGRAGED = new BHBossBar(
+            BeyondHorizon.resourceGui("sprites/bossbar/overlay/blazing_inferno_enraged.png"),
+            15,
+            9,
+            15,
+            -3,
+            -8,
+            256,
+            23,
+            32,
+            ChatFormatting.BLUE);
     static  {
-        BOSS_BARS.put(ForgeRegistries.ENTITY_TYPES.getKey(BHEntity.BLAZING_INFERNO.get()), new BHBossBar(
-                BeyondHorizon.resourceGui("sprites/bossbar/overlay/blazing_inferno.png"),
-                15,
-                9,
-                15,
-                -3,
-                -8,
-                256,
-                23,
-                32,
-                ChatFormatting.YELLOW));
+        BOSS_BARS.put(new BHBossInfo.BossBar(0, RegistryHelper.getKeyOrThrow(BHEntity.BLAZING_INFERNO.get())), BLAZING_INFERNO);
+        BOSS_BARS.put(new BHBossInfo.BossBar(1, RegistryHelper.getKeyOrThrow(BHEntity.BLAZING_INFERNO.get())), BLAZING_INFERNO_ENGRAGED);
     }
+
     private final ResourceLocation container;
     private ResourceLocation base;
     private ResourceLocation overlay;
@@ -82,7 +101,7 @@ public class BHBossBar {
         int screenH = minecraft.getWindow().getScreenHeight();
         int guiX = screenW / 2 - 91;
         int guiY = y - 9;
-        minecraft.getProfiler().push("custom_bossbar");
+        minecraft.getProfiler().push("customBossbar");
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, this.base);
         this.drawBossBar(graphics, x + 1, y + baseY, event.getBossEvent());

@@ -1,7 +1,5 @@
-package com.kenhorizon.beyondhorizon.client.render.entity;
+package com.kenhorizon.beyondhorizon.client.model.entity;
 
-import com.kenhorizon.beyondhorizon.client.render.animation.BlazingInfernoAnimation;
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

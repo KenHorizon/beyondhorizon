@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.entity.goal;
+package com.kenhorizon.beyondhorizon.server.entity.ai;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;

@@ -85,7 +85,7 @@ public abstract class Skill extends AbstractSkill<Skill> {
     protected boolean tooltipNameEnable = true;
     protected boolean tooltipDescriptionEnable = true;
     protected boolean attributeTooltipEnable = true;
-    public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
+    public static final String ATTRIBUTES_TAGS = "AttributeModifiers";
     @Nullable
     protected String descriptionId;
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();

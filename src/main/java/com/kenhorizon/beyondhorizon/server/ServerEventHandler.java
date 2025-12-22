@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicator;
+import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
@@ -17,7 +17,7 @@ import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataSyncPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
-import com.kenhorizon.beyondhorizon.server.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.entity.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.skills.ActiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
@@ -46,9 +46,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.CriticalHitEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.*;
@@ -463,7 +461,7 @@ public class ServerEventHandler {
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
         Vec3 pos = target.getEyePosition();
         MutableComponent component = Component.literal(text).withStyle(isCrit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
-        level.sendParticles(new DamageIndicator(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
+        level.sendParticles(new DamageIndicatorOptions(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
         event.setAmount(damageDealt);
     }
 

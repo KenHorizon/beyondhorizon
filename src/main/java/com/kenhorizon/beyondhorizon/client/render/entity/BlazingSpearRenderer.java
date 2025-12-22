@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.entity;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.model.entity.BlazingSpearModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSpear;
 import com.mojang.blaze3d.vertex.PoseStack;

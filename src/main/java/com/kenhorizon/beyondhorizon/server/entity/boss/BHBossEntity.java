@@ -20,16 +20,17 @@ import org.jetbrains.annotations.Nullable;
 
 public class BHBossEntity extends BHLibEntity implements Enemy {
     public AnimationState idleAnimation = new AnimationState();
+    private int idleTime;
     private static final EntityDataAccessor<BlockPos> DATA_HOME_POS = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<String> DATA_DIMENSION_TYPE = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Integer> DATA_BOSS_PHASE = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> DATA_MAX_BOSS_PHASE = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.INT);
-    public static final String NBT_BOSS_PHASE = "bossPhase";
-    public static final String NBT_MAX_BOSS_PHASE = "bossPhaseMax";
-    public static final String NBT_HOME_X = "homeX";
-    public static final String NBT_HOME_Y = "homeY";
-    public static final String NBT_HOME_Z = "homeZ";
-    public static final String NBT_DIMENSION_TYPE = "dimensionType";
+    public static final String NBT_BOSS_PHASE = "BossPhase";
+    public static final String NBT_MAX_BOSS_PHASE = "BossPhaseMax";
+    public static final String NBT_HOME_X = "HomeX";
+    public static final String NBT_HOME_Y = "HomeY";
+    public static final String NBT_HOME_Z = "HomeZ";
+    public static final String NBT_DIMENSION_TYPE = "DimensionType";
     private int returnState;
     protected final int RETURN_STATE_COOLDOWN = 20;
     public BHBossEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
@@ -107,6 +108,13 @@ public class BHBossEntity extends BHLibEntity implements Enemy {
     @Override
     public void tick() {
         super.tick();
+        if (this.level().isClientSide()) {
+            this.idleTime++;
+            if (this.idleTime >= this.getIdleTime()) {
+                this.idleAnimation.startIfStopped(this.tickCount);
+                this.idleTime = 0;
+            }
+        }
         if (!this.level().isClientSide()) {
             LivingEntity target = this.getTarget();
             if (this.returnState > 0) this.returnState--;
@@ -117,6 +125,11 @@ public class BHBossEntity extends BHLibEntity implements Enemy {
                 this.resetState();
             }
         }
+    }
+
+
+    public int getIdleTime() {
+        return 20;
     }
 
     @Override

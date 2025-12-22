@@ -1,9 +1,9 @@
 package com.kenhorizon.beyondhorizon.client.render;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.render.entity.BlazingInfernoModel;
-import com.kenhorizon.beyondhorizon.client.render.entity.BlazingSpearModel;
-import com.kenhorizon.beyondhorizon.client.render.entity.InfernoShieldModel;
+import com.kenhorizon.beyondhorizon.client.model.entity.BlazingInfernoModel;
+import com.kenhorizon.beyondhorizon.client.model.entity.BlazingSpearModel;
+import com.kenhorizon.beyondhorizon.client.model.entity.InfernoShieldModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.resources.ResourceLocation;

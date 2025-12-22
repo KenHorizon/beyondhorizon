@@ -2,10 +2,12 @@ package com.kenhorizon.libs.registry;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.Item;
@@ -13,6 +15,7 @@ import net.minecraft.world.item.alchemy.Potion;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -23,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 public class RegistryHelper {
+
     public static RegistryObject<Enchantment> registerEnchantments(String name, Supplier<Enchantment> supplier) {
         RegistryObject<Enchantment> register = RegistryEntries.ENCHANTMENTS.register(name, supplier);
         registerEnchantmentLang(name, register);

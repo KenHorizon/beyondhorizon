@@ -21,7 +21,7 @@ import java.util.*;
 public abstract class Accessory extends Skill {
     private float magnitude;
     private int level = 1;
-    public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
+    public static final String ATTRIBUTES_TAGS = "AttributeModifiers";
 
     public Accessory(float magnitude, int level) {
         this.format = Format.NORMAL;

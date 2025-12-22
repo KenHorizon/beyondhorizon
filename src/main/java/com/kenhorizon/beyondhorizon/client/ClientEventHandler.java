@@ -3,16 +3,18 @@ package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
-import com.kenhorizon.beyondhorizon.client.level.guis.hud.BHBossBar;
+import com.kenhorizon.beyondhorizon.client.level.BHBossBar;
 import com.kenhorizon.beyondhorizon.client.level.guis.LevelSystemScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotButton;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
+import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.item.util.ItemStackUtil;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -31,6 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +41,9 @@ import java.util.List;
 public class ClientEventHandler {
     @SubscribeEvent
     public void registerCustomBossBar(CustomizeGuiOverlayEvent.BossEventProgress event) {
-        ResourceLocation bossRegistryName = ClientProxy.BOSS_BAR_REGISTRY.getOrDefault(event.getBossEvent().getId(), null);
-        if (bossRegistryName == null) return;
-        BHBossBar bossBar = BHBossBar.BOSS_BARS.getOrDefault(bossRegistryName, null);
-        if (bossBar == null) return;
+        BHBossInfo.BossBar entry = ClientProxy.BOSS_BAR_REGISTRY.getOrDefault(event.getBossEvent().getId(), null);
+        if (entry == null) return;
+        BHBossBar bossBar = BHBossBar.BOSS_BARS.getOrDefault(entry, null);
         event.setCanceled(true);
         bossBar.renderBossBar(event);
     }

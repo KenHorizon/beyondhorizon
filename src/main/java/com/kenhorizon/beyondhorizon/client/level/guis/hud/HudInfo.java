@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.client.level.guis.hud;
 
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.entity.PlayerData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;

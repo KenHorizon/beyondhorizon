@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.entity.player;
+package com.kenhorizon.beyondhorizon.server.api.entity;
 
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class PlayerData {
-    public static String MANA = "mana";
+    public static String MANA = "Mana";
     public double mana;
     public Player player;
     public int tick;

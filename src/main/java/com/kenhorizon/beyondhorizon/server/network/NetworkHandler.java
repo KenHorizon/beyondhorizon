@@ -60,6 +60,12 @@ public class NetworkHandler {
         INSTANCE.sendTo(msg, player.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
     }
 
+    public static <MSG> void sendAll(MSG msg) {
+        for (ServerPlayer player : ServerLifecycleHooks.getCurrentServer().getPlayerList().getPlayers()) {
+            sendNonLocal(msg, player);
+        }
+    }
+
     public static <MSG> void sendAll(MSG msg, Entity entity) {
         INSTANCE.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> entity), msg);
     }

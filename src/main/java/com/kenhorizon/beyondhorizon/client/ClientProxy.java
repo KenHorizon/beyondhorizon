@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
+import com.kenhorizon.beyondhorizon.client.level.BHBossBar;
 import com.kenhorizon.beyondhorizon.client.level.ModResouces;
 import com.kenhorizon.beyondhorizon.client.level.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
@@ -9,11 +10,12 @@ import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.client.particle.BleedParticle;
 import com.kenhorizon.beyondhorizon.client.particle.DamageIndicatorParticle;
+import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.StunParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicator;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
+import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -52,6 +54,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
+import com.mojang.datafixers.util.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,7 +62,7 @@ import java.util.UUID;
 
 @SuppressWarnings({"removal"})
 public class ClientProxy extends ServerProxy {
-    public static final Map<UUID, ResourceLocation> BOSS_BAR_REGISTRY = new HashMap<>();
+    public static final Map<UUID, BHBossInfo.BossBar> BOSS_BAR_REGISTRY = new HashMap<>();
     @Override
     public void serverHandler() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -179,6 +182,7 @@ public class ClientProxy extends ServerProxy {
         BeyondHorizon.LOGGER.info("Registering Particles!!");
 
         event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
+        event.registerSpriteSet(BHParticle.RING.get(), RingParticles.Provider::new);
 
         event.registerSpecial(BHParticle.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(BHParticle.STUN_PARTICLES.get(),new StunParticles.Provider());

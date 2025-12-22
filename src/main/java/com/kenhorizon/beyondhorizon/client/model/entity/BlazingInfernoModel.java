@@ -1,16 +1,13 @@
-package com.kenhorizon.beyondhorizon.client.render.entity;
+package com.kenhorizon.beyondhorizon.client.model.entity;
 
 import com.kenhorizon.beyondhorizon.client.render.animation.BlazingInfernoAnimation;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.animation.KeyframeAnimations;
 import net.minecraft.client.model.HierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -117,10 +114,10 @@ public class BlazingInfernoModel extends HierarchicalModel<BlazingInferno> {
     public void setupAnim(BlazingInferno entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
         this.animateHeadLookTarget(netHeadYaw, headPitch);
-        this.animateWalk(BlazingInfernoAnimation.GENERAL, limbSwing, limbSwingAmount, ageInTicks, 1.0F);
         if (entity.walkAnimation.isMoving()) {
             this.applyStatic(BlazingInfernoAnimation.WALKING);
         }
+        this.animate(entity.idleAnimation, BlazingInfernoAnimation.GENERAL, ageInTicks, 0.75F);
         this.animate(entity.animationActive, BlazingInfernoAnimation.ACTIVE, ageInTicks);
         this.animate(entity.animationInactive, BlazingInfernoAnimation.INACTIVE, ageInTicks);
         this.animate(entity.animationDeath, BlazingInfernoAnimation.DEATH, ageInTicks);

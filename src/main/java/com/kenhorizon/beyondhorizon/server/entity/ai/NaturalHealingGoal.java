@@ -1,7 +1,6 @@
-package com.kenhorizon.beyondhorizon.server.entity.goal;
+package com.kenhorizon.beyondhorizon.server.entity.ai;
 
 import com.kenhorizon.beyondhorizon.server.entity.BHBaseEntity;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 

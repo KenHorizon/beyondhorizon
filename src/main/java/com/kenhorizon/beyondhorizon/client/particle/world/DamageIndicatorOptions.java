@@ -14,10 +14,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Locale;
 
-public final class DamageIndicator implements ParticleOptions {
+public final class DamageIndicatorOptions implements ParticleOptions {
     private final Component damage;
     private final boolean big;
-    public DamageIndicator(Component damage, boolean big) {
+    public DamageIndicatorOptions(Component damage, boolean big) {
         this.damage = damage;
         this.big = big;
     }
@@ -44,26 +44,26 @@ public final class DamageIndicator implements ParticleOptions {
     public String writeToString() {
         return String.format(Locale.ROOT, "%s %s %d", ForgeRegistries.PARTICLE_TYPES.getKey(this.getType()), this.damage.getString(), this.big ? 1 : 0);
     }
-    public static final Codec<DamageIndicator> CODEC = RecordCodecBuilder.create(instance -> {
+    public static final Codec<DamageIndicatorOptions> CODEC = RecordCodecBuilder.create(instance -> {
         return instance.group(
                 ExtraCodecs.COMPONENT.fieldOf("damage").forGetter(option -> option.damage),
                 Codec.BOOL.fieldOf("bigText").forGetter(option -> option.big)
-        ).apply(instance, DamageIndicator::new);
+        ).apply(instance, DamageIndicatorOptions::new);
     });
     @SuppressWarnings("deprecation")
-    public static final Deserializer<DamageIndicator> DESERIALIZER = new Deserializer<>() {
+    public static final Deserializer<DamageIndicatorOptions> DESERIALIZER = new Deserializer<>() {
         @Override
-        public DamageIndicator fromCommand(ParticleType<DamageIndicator> particleType, StringReader reader) throws CommandSyntaxException {
+        public DamageIndicatorOptions fromCommand(ParticleType<DamageIndicatorOptions> particleType, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
             String text = reader.getString();
             reader.expect(' ');
             boolean big = reader.readBoolean();
-            return new DamageIndicator(Component.literal(text), big);
+            return new DamageIndicatorOptions(Component.literal(text), big);
         }
 
         @Override
-        public DamageIndicator fromNetwork(ParticleType<DamageIndicator> particleType, FriendlyByteBuf buf) {
-            return new DamageIndicator(buf.readComponent(), buf.readBoolean());
+        public DamageIndicatorOptions fromNetwork(ParticleType<DamageIndicatorOptions> particleType, FriendlyByteBuf buf) {
+            return new DamageIndicatorOptions(buf.readComponent(), buf.readBoolean());
         }
     };
 }

@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.entity.goal;
+package com.kenhorizon.beyondhorizon.server.entity.ai;
 
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import net.minecraft.world.entity.EntitySelector;

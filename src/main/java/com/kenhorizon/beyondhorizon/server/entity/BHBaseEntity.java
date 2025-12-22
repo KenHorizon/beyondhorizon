@@ -1,13 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -43,6 +39,7 @@ public abstract class BHBaseEntity extends PathfinderMob {
     public float targetAngle = -1;
     private static final byte MUSIC_PLAY_ID = 67;
     private static final byte MUSIC_STOP_ID = 68;
+    private BHBossInfo bossInfo = new BHBossInfo(this);
     public BHBaseEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
     }
@@ -89,7 +86,7 @@ public abstract class BHBaseEntity extends PathfinderMob {
     }
 
     protected BHBossInfo bossInfo() {
-        return new BHBossInfo(this);
+        return this.bossInfo;
     }
 
     public boolean hasBossBar() {
@@ -160,7 +157,7 @@ public abstract class BHBaseEntity extends PathfinderMob {
 //        }
 //    }
 
-    protected void afterBossIsDefeated(@Nullable LivingEntity entity) {}
+    protected void afterItDefeated(@Nullable LivingEntity entity) {}
 
     public boolean canBePushedByEntity(Entity entity) {
         return true;
@@ -178,6 +175,7 @@ public abstract class BHBaseEntity extends PathfinderMob {
         }
         return super.hurt(source, amount);
     }
+
     @Override
     public void push(Entity entityIn) {
         if (!this.isSleeping()) {

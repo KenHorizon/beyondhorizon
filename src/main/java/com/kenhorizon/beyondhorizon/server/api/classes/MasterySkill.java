@@ -45,10 +45,10 @@ public class MasterySkill implements IAttack, IEntityProperties {
         }
     }
     public static final String ID = "id";
-    public static final String SLOT_TAG = "slot";
-    public static final String POINTS_TAG = "points";
-    public static final String MAX_POINTS_TAG = "max_points";
-    public static final String ATTRIBUTES_TAGS = "attribute_modifiers";
+    public static final String SLOT_TAG = "Slot";
+    public static final String POINTS_TAG = "Points";
+    public static final String MAX_POINTS_TAG = "MaxPoints";
+    public static final String ATTRIBUTES_TAGS = "AttributeModifiers";
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
     @Nullable
     protected String descriptionId;

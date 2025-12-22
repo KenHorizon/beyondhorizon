@@ -12,6 +12,11 @@ public class DamageInfo implements IDamageInfo {
     private float postStoredDamage = 0.0F;
     private LivingEntity attacker;
 
+    public static final String NBT_PRE_DAMAGE = "PreDamage";
+    public static final String NBT_POST_DAMAGE = "PostDamage";
+    public static final String NBT_STORED_PRE_DAMAGE = "StoredPreDamage";
+    public static final String NBT_STORED_POST_DAMAGE = "StoredPostDamage";
+
     public static IDamageInfo getInstance(LivingEntity entity) {
         return CapabilityCaller.damageInfo(entity);
     }
@@ -66,18 +71,18 @@ public class DamageInfo implements IDamageInfo {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putFloat("pre_damage", this.preDamage);
-        nbt.putFloat("post_damage", this.postDamage);
-        nbt.putFloat("stored_pre_damage", this.preStoredDamage);
-        nbt.putFloat("stored_post_damage", this.postStoredDamage);
+        nbt.putFloat(NBT_PRE_DAMAGE, this.preDamage);
+        nbt.putFloat(NBT_POST_DAMAGE, this.postDamage);
+        nbt.putFloat(NBT_STORED_PRE_DAMAGE, this.preStoredDamage);
+        nbt.putFloat(NBT_STORED_POST_DAMAGE, this.postStoredDamage);
         return nbt;
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        this.preDamage = nbt.getFloat("pre_damage");
-        this.postDamage = nbt.getFloat("post_damage");
-        this.preStoredDamage = nbt.getFloat("stored_pre_damage");
-        this.postStoredDamage = nbt.getFloat("stored_post_damage");
+        this.preDamage = nbt.getFloat(NBT_PRE_DAMAGE);
+        this.postDamage = nbt.getFloat(NBT_POST_DAMAGE);
+        this.preStoredDamage = nbt.getFloat(NBT_STORED_PRE_DAMAGE);
+        this.postStoredDamage = nbt.getFloat(NBT_STORED_POST_DAMAGE);
     }
 }

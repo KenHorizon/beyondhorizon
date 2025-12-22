@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.particle;
 
-import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicator;
+import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.mixins.client.accessor.FontAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -102,10 +102,10 @@ public class DamageIndicatorParticle extends TextureSheetParticle {
     protected int getLightColor(float partialTick){
         return 15 << 20 | 15 << 4;
     }
-    public static class Provider implements ParticleProvider<DamageIndicator> {
+    public static class Provider implements ParticleProvider<DamageIndicatorOptions> {
         @Nullable
         @Override
-        public Particle createParticle(@NotNull DamageIndicator options, @NotNull ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed){
+        public Particle createParticle(@NotNull DamageIndicatorOptions options, @NotNull ClientLevel pLevel, double pX, double pY, double pZ, double pXSpeed, double pYSpeed, double pZSpeed){
             return new DamageIndicatorParticle(pLevel, pX, pY, pZ, options.getDamage(), options.isBig());
         }
     }

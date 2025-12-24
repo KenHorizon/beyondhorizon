@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.entity;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
@@ -47,7 +48,7 @@ public class BHLibEntity extends BHBaseEntity {
     public void handleEntityEvent(byte id) {
         if (id <= 0) {
             this.setAnimationTick(0);
-        }else {
+        } else {
             super.handleEntityEvent(id);
         }
     }
@@ -60,6 +61,14 @@ public class BHLibEntity extends BHBaseEntity {
 
     public int getAnimation() {
         return this.entityData.get(ANIMATION_STATE);
+    }
+
+    @Override
+    public void die(DamageSource cause) {
+        super.die(cause);
+        if (this.getAnimationDeath() == -1) {
+            this.setAnimation(this.getAnimationDeath());
+        }
     }
 
     public AnimationState[] getAnimations() {

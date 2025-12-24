@@ -36,10 +36,10 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity {
     private static final EntityDataAccessor<Optional<UUID>> ENTITY_UUID = SynchedEntityData.defineId(InfernoShield.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> ENTITY_ID = SynchedEntityData.defineId(InfernoShield.class, EntityDataSerializers.INT);
     private LivingEntity cachedCaster;
-    public static final String NBT_OWNER = "owner";
-    public static final String NBT_ORBIT_SCALE = "orbit_scale";
-    public static final String NBT_LIFESPAN = "life_span";
-    public static final String NBT_ROTATION_OFFSET = "rotation_offset";
+    public static final String NBT_OWNER = "Owner";
+    public static final String NBT_ORBIT_SCALE = "OrbitScale";
+    public static final String NBT_LIFESPAN = "LifeSpan";
+    public static final String NBT_ROTATION_OFFSET = "RotationOffset";
 
     public InfernoShield(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -56,7 +56,7 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity {
 
     public static AttributeSupplier createAttributes() {
         return createEntityAttributes()
-                .add(Attributes.MAX_HEALTH, 40.0D)
+                .add(Attributes.MAX_HEALTH, 100.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.4F)
                 .add(Attributes.ATTACK_DAMAGE, 1.0F)
                 .add(Attributes.FOLLOW_RANGE, 24.0F)

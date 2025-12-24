@@ -29,19 +29,18 @@ public class BlazingRod extends Projectile {
     public static final EntityDataAccessor<Boolean> CAN_LIGHT_FIRE = SynchedEntityData.defineId(BlazingRod.class, EntityDataSerializers.BOOLEAN);
     protected float baseDamage = 1.0F;
     protected boolean canLightFire;
+    public static final String NBT_CAN_LIGHT_FIRE = "CanLightFire";
+    public static final String NBT_DAMAGE = "Damage";
+
     public BlazingRod(EntityType<? extends Projectile> entityType, Level level) {
         super(entityType, level);
     }
 
-    public BlazingRod(EntityType<? extends Projectile> entityType, double x, double y, double z, Level level) {
-        this(entityType, level);
-        this.setPos(x, y, z);
-    }
-
-    public BlazingRod(Level level, LivingEntity shooter) {
-        this(BHEntity.BLAZING_ROD.get(),shooter.getX(), shooter.getEyeY(), shooter.getZ(), level);
+    public BlazingRod(Level level, double x, double y, double z, LivingEntity shooter) {
+        this(BHEntity.BLAZING_ROD.get(), level);
         this.setOwner(shooter);
         this.setCanLightFire(true);
+        this.setPos(x, y, z);
     }
 
     @Override
@@ -53,15 +52,15 @@ public class BlazingRod extends Projectile {
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setBaseDamage(tag.getFloat("damage"));
-        setCanLightFire(tag.getBoolean("can_light_fire"));
+        this.setBaseDamage(tag.getFloat(NBT_DAMAGE));
+        setCanLightFire(tag.getBoolean(NBT_CAN_LIGHT_FIRE));
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putFloat("damage", this.getBaseDamage());
-        tag.putBoolean("can_light_fire", this.isCanLightFire());
+        tag.putFloat(NBT_DAMAGE, this.getBaseDamage());
+        tag.putBoolean(NBT_CAN_LIGHT_FIRE, this.isCanLightFire());
     }
 
     @Override

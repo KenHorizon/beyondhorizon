@@ -340,10 +340,9 @@ public class BlazingSpear extends Projectile {
     }
 
     protected void tickDespawn() {
-        if (this.getLifeSpan() >= 1200) {
+        if (this.getLifeSpan() >= 1200 + this.getDelay()) {
             this.discard();
         }
-
     }
 
     private void projectileLogic() {

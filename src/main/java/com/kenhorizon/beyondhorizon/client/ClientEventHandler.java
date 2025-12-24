@@ -14,7 +14,6 @@ import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.item.util.ItemStackUtil;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -22,9 +21,9 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,7 +32,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,13 +95,13 @@ public class ClientEventHandler {
         }
     }
     @SubscribeEvent
-    public void onInventoryGui(ScreenEvent.Init.Post event) {
-        Screen screen = event.getScreen();
+    public void onScreenInit(ScreenEvent.Init.Post event) {
+        Screen eventScreen = event.getScreen();
         RecipeBookComponent component = new RecipeBookComponent();
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        if (screen instanceof InventoryScreen || screen instanceof CreativeModeInventoryScreen) {
-            AbstractContainerScreen<?> gui = (AbstractContainerScreen<?>) screen;
-            boolean isCreative = screen instanceof CreativeModeInventoryScreen;
+        if (eventScreen instanceof InventoryScreen || eventScreen instanceof CreativeModeInventoryScreen) {
+            AbstractContainerScreen<?> gui = (AbstractContainerScreen<?>) eventScreen;
+            boolean isCreative = eventScreen instanceof CreativeModeInventoryScreen;
             int x = (gui.width - gui.getXSize()) / 2;
             int y = (gui.height - gui.getYSize()) / 2;
             x += isCreative ? 173 : 58;
@@ -112,13 +110,13 @@ public class ClientEventHandler {
                 x += 10;
                 y += 10;
             }
-            event.addListener(new AccessorySlotButton(screen, x, y));
+            event.addListener(new AccessorySlotButton(eventScreen, x, y));
         }
-        if (screen instanceof AccessorySlotScreen) {
-            AbstractContainerScreen<?> gui = (AbstractContainerScreen<?>) screen;
+        if (eventScreen instanceof AccessorySlotScreen) {
+            AbstractContainerScreen<?> gui = (AbstractContainerScreen<?>) eventScreen;
             int x = (gui.width - gui.getXSize()) / 2;
             int y = (gui.height - gui.getYSize()) / 2;
-            event.addListener(new AccessorySlotButton(screen, x - 40, y + 4));
+            event.addListener(new AccessorySlotButton(eventScreen, x - 40, y + 4));
         }
     }
 

@@ -56,6 +56,14 @@
     ],
     "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.scream"
   },
+  "mob.blazing_inferno.shockwave": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/shockwave/shockwave1",
+      "beyondhorizon:mob/blazing_inferno/shockwave/shockwave2",
+      "beyondhorizon:mob/blazing_inferno/shockwave/shockwave3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.shockwave"
+  },
   "mob.blazing_inferno.shoot": {
     "sounds": [
       "beyondhorizon:mob/blazing_inferno/shoot/shoot1",

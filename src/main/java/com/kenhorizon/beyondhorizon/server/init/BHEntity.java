@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
+import com.kenhorizon.beyondhorizon.server.entity.ability.EruptionAbility;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSpear;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
@@ -27,6 +28,13 @@ public class BHEntity {
     public static final RegistryObject<EntityType<BlazingSpear>> BLAZING_SPEAR = RegistryEntity
             .<BlazingSpear>register("blazing_spear", BlazingSpear::new)
             .lang("Blazing Spear")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
+    public static final RegistryObject<EntityType<EruptionAbility>> ERUPTION = RegistryEntity
+            .register("eruption", EruptionAbility::new)
+            .lang("Eruption")
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();

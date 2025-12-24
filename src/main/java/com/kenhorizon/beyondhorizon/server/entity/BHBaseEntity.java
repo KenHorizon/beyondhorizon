@@ -1,9 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
@@ -11,17 +13,16 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.dimension.DimensionType;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 
 import javax.annotation.Nullable;
@@ -39,6 +40,10 @@ public abstract class BHBaseEntity extends PathfinderMob {
     public float targetAngle = -1;
     private static final byte MUSIC_PLAY_ID = 67;
     private static final byte MUSIC_STOP_ID = 68;
+    public DamageSource damageSource;
+    public Player dataLastHurtByPlayer;
+    public int dataLastHurtByPlayerTime;
+    public boolean dropLootAfterDeathAnimation = true;
     private BHBossInfo bossInfo = new BHBossInfo(this);
     public BHBaseEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -118,6 +123,11 @@ public abstract class BHBaseEntity extends PathfinderMob {
     public void tick() {
         super.tick();
         if (this.tickCount % 4 == 0) this.bossInfo().update();
+        LivingEntity target = this.getTarget();
+        if (target != null) {
+            this.targetDistance = distanceTo(getTarget()) - getTarget().getBbWidth() / 2.0F;
+            this.targetAngle = (float) getAngleBetweenEntities(this, getTarget());
+        }
         if (!level().isClientSide() && this.hasBossMusic()) {
             if (this.canPlayMusic()) {
                 this.level().broadcastEntityEvent(this, MUSIC_PLAY_ID);
@@ -125,6 +135,76 @@ public abstract class BHBaseEntity extends PathfinderMob {
                 this.level().broadcastEntityEvent(this, MUSIC_STOP_ID);
             }
         }
+    }
+
+    @Override
+    public void die(DamageSource cause) {
+        if (!ForgeHooks.onLivingDeath(this, cause)) {
+            if (!this.isRemoved() && !this.dead) {
+                Entity entity = cause.getEntity();
+                LivingEntity killCredit = this.getKillCredit();
+                if (this.deathScore >= 0 && killCredit != null) {
+                    killCredit.awardKillScore(this, this.deathScore, cause);
+                }
+                if (this.isSleeping()) {
+                    this.stopSleeping();
+                }
+                this.dead = true;
+                this.getCombatTracker().recheckStatus();
+                if (this.level() instanceof ServerLevel serverlevel) {
+                    if (entity == null || entity.killedEntity(serverlevel, this)) {
+                        this.gameEvent(GameEvent.ENTITY_DIE);
+                        this.afterItDefeated(this);
+                        this.createWitherRose(killCredit);
+                        if (this.dropLootAfterDeathAnimation) {
+                            this.dropAllDeathLoot(cause);
+                        }
+                    }
+                    this.level().broadcastEntityEvent(this, (byte) 3);
+                }
+                this.damageSource = cause;
+                this.dataLastHurtByPlayer = this.lastHurtByPlayer;
+                this.dataLastHurtByPlayerTime = this.lastHurtByPlayerTime;
+                this.setPose(Pose.DYING);
+            }
+        }
+        if (!this.isRemoved()) {
+            bossInfo.update();
+        }
+    }
+
+    public int getAnimationDeath() {
+        return -1;
+    }
+
+    public float getAttackDamage() {
+        return (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+    }
+
+    @Override
+    protected void tickDeath() {
+        ++this.deathTime;
+        int deathDuration = this.getDeathDuration();
+        if (this.deathTime >= deathDuration && !this.level().isClientSide() && !this.isRemoved()) {
+            this.lastHurtByPlayer = this.dataLastHurtByPlayer;
+            this.lastHurtByPlayerTime = this.dataLastHurtByPlayerTime;
+            if (this.dropLootAfterDeathAnimation && this.damageSource != null) {
+                this.dropAllDeathLoot(this.damageSource);
+            }
+            this.level().broadcastEntityEvent(this, (byte) 60);
+            this.remove(Entity.RemovalReason.KILLED);
+        }
+    }
+
+    @Override
+    protected void dropAllDeathLoot(DamageSource source) {
+        if (!this.dropLootAfterDeathAnimation || this.deathTime > 0) {
+            super.dropAllDeathLoot(source);
+        }
+    }
+
+    protected int getDeathDuration() {
+        return 20;
     }
 
     @Override

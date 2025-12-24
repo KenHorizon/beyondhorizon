@@ -13,6 +13,7 @@ import com.kenhorizon.beyondhorizon.client.particle.DamageIndicatorParticle;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.StunParticles;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
+import com.kenhorizon.beyondhorizon.client.render.entity.ability.EruptionRenderer;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
@@ -101,6 +102,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.INFERNO_SHIELD.get(), InfernoShieldRenderer::new);
         EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.BLAZING_SPEAR.get(), BlazingSpearRenderer::new);
+        EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);

@@ -34,6 +34,11 @@ public class BHSoundProvider extends SoundDefinitionsProvider {
                 this.addSounds("mob/blazing_inferno/shoot/shoot1"),
                 this.addSounds("mob/blazing_inferno/shoot/shoot2")
         );
+        this.add(BHSounds.BLAZING_INFERNO_SHOCKWAVE,
+                this.addSounds("mob/blazing_inferno/shockwave/shockwave1"),
+                this.addSounds("mob/blazing_inferno/shockwave/shockwave2"),
+                this.addSounds("mob/blazing_inferno/shockwave/shockwave3")
+        );
         this.add(BHSounds.BLAZING_INFERNO_GROWL,
                 this.addSounds("mob/blazing_inferno/growl/growl1"),
                 this.addSounds("mob/blazing_inferno/growl/growl2"),
@@ -70,6 +75,15 @@ public class BHSoundProvider extends SoundDefinitionsProvider {
                 this.addSounds("mob/blazing_inferno/charging/charging2"),
                 this.addSounds("mob/blazing_inferno/charging/charging3"),
                 this.addSounds("mob/blazing_inferno/charging/charging4")
+        );
+        this.add(BHSounds.BLAZING_INFERNO_EXPLOSION,
+                this.addSounds("mob/blazing_inferno/explosion")
+        );
+        this.add(BHSounds.BLAZING_INFERNO_DEATH_RAY,
+                this.addSounds("mob/blazing_inferno/death_ray")
+        );
+        this.add(BHSounds.BLAZING_INFERNO_DEATH_RAY_CHARGING,
+                this.addSounds("mob/blazing_inferno/death_ray_charging")
         );
     }
 

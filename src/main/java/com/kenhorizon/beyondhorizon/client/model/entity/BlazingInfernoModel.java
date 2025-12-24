@@ -123,6 +123,7 @@ public class BlazingInfernoModel extends HierarchicalModel<BlazingInferno> {
         this.animate(entity.animationDeath, BlazingInfernoAnimation.DEATH, ageInTicks);
         this.animate(entity.animationPrepareDeathRay, BlazingInfernoAnimation.PREPARE_DEATH_RAY, ageInTicks);
         this.animate(entity.animationDeathRay, BlazingInfernoAnimation.DEATH_RAY, ageInTicks);
+        this.animate(entity.animationEruption, BlazingInfernoAnimation.SHOCKWAVE, ageInTicks);
         this.animate(entity.animationDashes, BlazingInfernoAnimation.DASH, ageInTicks);
         this.animate(entity.animationGroundSlam, BlazingInfernoAnimation.SHOCKWAVE, ageInTicks);
         this.animate(entity.animationShockwave, BlazingInfernoAnimation.SHOCKWAVE, ageInTicks);

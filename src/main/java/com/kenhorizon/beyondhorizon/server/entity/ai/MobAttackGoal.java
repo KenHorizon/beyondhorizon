@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.entity.ai;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,16 +11,14 @@ import java.util.EnumSet;
 public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     protected final T entity;
     protected final int getAnimation;
-    protected final int startAnimation;
+    protected final int[] startAnimation;
     protected final int endAnimation;
-    protected final float chanceToUse;
     protected final float attackRange;
     protected final int attackMaxTick;
     protected final int attackSeeTick;
 
-    public MobAttackGoal(T entity, float chanceToUse, int getAnimation, int startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick, float attackRange, boolean interrupt) {
+    public MobAttackGoal(T entity, int getAnimation, int[] startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick, float attackRange, boolean interrupt) {
         this.entity = entity;
-        this.chanceToUse = chanceToUse;
         this.getAnimation = getAnimation;
         this.startAnimation = startAnimation;
         this.endAnimation = endAnimation;
@@ -30,16 +29,18 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
         }
     }
-    public MobAttackGoal(T entity, float chanceToUse, int getAnimation, int startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick, float attackRange) {
-        this(entity, chanceToUse, getAnimation, startAnimation, endAnimation, attackSeeTick, attackMaxTick, attackRange, false);
+    public MobAttackGoal(T entity, int getAnimation, int[] startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick, float attackRange) {
+        this(entity, getAnimation, startAnimation, endAnimation, attackSeeTick, attackMaxTick, attackRange, false);
     }
+
     public MobAttackGoal(T entity, int getAnimation, int startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick, float attackRange) {
-        this(entity, 1.0F, getAnimation, startAnimation, endAnimation, attackSeeTick, attackMaxTick, attackRange, false);
+        this(entity, getAnimation, new int[] {startAnimation}, endAnimation, attackSeeTick, attackMaxTick, attackRange, false);
     }
+
     @Override
     public void start() {
         super.start();
-        this.entity.setAnimation(this.startAnimation);
+        this.entity.setAnimation(this.startAnimation[this.entity.getRandom().nextInt(this.startAnimation.length)]);
         this.entity.getNavigation().stop();
     }
 
@@ -47,6 +48,7 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     public void stop() {
         super.stop();
         this.entity.setAnimation(this.endAnimation);
+        BeyondHorizon.LOGGER.info("Animation Id Used: {}", this.entity.getAnimation());
         LivingEntity target = this.entity.getTarget();
         if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.entity.setTarget(null);
@@ -65,7 +67,12 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
 
     @Override
     public boolean canContinueToUse() {
-        return this.entity.getAnimation() == this.startAnimation && this.entity.getAnimationTick() <= this.attackMaxTick;
+        for (int animationTick : this.startAnimation) {
+            if (this.entity.getAnimation() == animationTick) {
+                return this.entity.getAnimationTick() <= this.attackMaxTick;
+            }
+        }
+        return false;
     }
 
     @Override

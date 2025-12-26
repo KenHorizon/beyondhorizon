@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
+import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.EruptionAbility;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSpear;
@@ -8,7 +9,6 @@ import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoSh
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.libs.registry.RegistryEntity;
 import com.kenhorizon.libs.registry.RegistryEntries;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.common.Tags;
@@ -59,6 +59,13 @@ public class BHEntity {
             .lang("Camera Shake")
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(0.0F, 0.0F))
+            .register();
+
+    public static final RegistryObject<EntityType<BlazingInfernoRayAbility>> BLAZING_INFERNO_RAY = RegistryEntity
+            .<BlazingInfernoRayAbility>register("blazing_inferno_ray", BlazingInfernoRayAbility::new)
+            .lang("Blazing Inferno Ray")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
     public static void register(IEventBus eventBus) {

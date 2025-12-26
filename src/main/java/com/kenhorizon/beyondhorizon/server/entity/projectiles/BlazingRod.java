@@ -36,11 +36,16 @@ public class BlazingRod extends Projectile {
         super(entityType, level);
     }
 
+    public BlazingRod(EntityType<? extends Projectile> entityType, double x, double y, double z, Level level) {
+        this(entityType, level);
+        this.setPos(x, y, z);
+    }
+
     public BlazingRod(Level level, double x, double y, double z, LivingEntity shooter) {
         this(BHEntity.BLAZING_ROD.get(), level);
         this.setOwner(shooter);
-        this.setCanLightFire(true);
         this.setPos(x, y, z);
+        this.setCanLightFire(true);
     }
 
     @Override

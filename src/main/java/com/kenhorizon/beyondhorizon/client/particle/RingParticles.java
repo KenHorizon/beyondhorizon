@@ -24,9 +24,9 @@ public class RingParticles extends TextureSheetParticle {
     public float yaw;
     public float pitch;
     public float size;
-    private final RingBehavior behavior;
+    private final Behavior behavior;
 
-    public enum RingBehavior {
+    public enum Behavior {
         SHRINK,
         GROW,
         CONSTANT,
@@ -37,7 +37,7 @@ public class RingParticles extends TextureSheetParticle {
                          double motionX, double motionY, double motionZ,
                          float yaw, float pitch, int duration,
                          float r, float g, float b, float opacity, float size,
-                         boolean facesCamera, RingBehavior behavior) {
+                         boolean facesCamera, Behavior behavior) {
         super(level, x, y, z);
         this.setSize(1, 1);
         this.size = size * 0.1f;
@@ -123,11 +123,11 @@ public class RingParticles extends TextureSheetParticle {
     }
 
     private float particleBehavior(float var) {
-        if (this.behavior == RingBehavior.GROW) {
+        if (this.behavior == Behavior.GROW) {
             return this.size * var;
-        } else if (this.behavior == RingBehavior.SHRINK) {
+        } else if (this.behavior == Behavior.SHRINK) {
             return this.size * (1 - var);
-        } else if (this.behavior == RingBehavior.GROW_THEN_SHRINK) {
+        } else if (this.behavior == Behavior.GROW_THEN_SHRINK) {
             return (float) (size * (1 - var - Math.pow(2000, -var)));
         } else {
             return this.size;

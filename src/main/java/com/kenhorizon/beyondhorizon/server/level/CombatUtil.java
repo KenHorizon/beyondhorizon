@@ -14,16 +14,25 @@ public class CombatUtil {
     public static float additional(float damageDealt, float additionalDamage) {
         return damageDealt + additionalDamage;
     }
+
     public static float missingHealth(LivingEntity entity, float damageDealt, float perPercentage) {
         return CombatUtil.multiplier(damageDealt, (float) Maths.perValue(entity.getHealth(), perPercentage, perPercentage));
     }
-    public static float maxHealth(LivingEntity target, float damageDealt, float percentHealth, float damageCapAgainstMonster) {
-        float totalMaxHealth = target.getMaxHealth();
-        return additional(damageDealt,totalMaxHealth * percentHealth);
+
+    public static float maxHealth(LivingEntity target, float damageDealt, float percentHealth) {
+        return maxHealth(target, damageDealt, percentHealth, -1);
+    }
+
+    public static float maxHealth(LivingEntity target, float damageDealt, float percentHealth, float damageCap) {
+        return damageCap != -1 ? Math.min(damageCap, additional(damageDealt,target.getMaxHealth() * percentHealth)) : additional(damageDealt,target.getMaxHealth() * percentHealth);
+    }
+
+    public static float currentHealth(LivingEntity target, float damageDealt, float percentHealth, float damageCap) {
+        return damageCap > 0 ? Math.min(damageCap, additional(damageDealt, target.getHealth() * percentHealth)) : additional(damageDealt, target.getHealth() * percentHealth);
     }
 
     public static float currentHealth(LivingEntity target, float damageDealt, float percentHealth) {
-        return additional(damageDealt, target.getHealth() * percentHealth);
+        return currentHealth(target, damageDealt, percentHealth, -1);
     }
 
     public static float damageAtBack(float multiplier, float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {

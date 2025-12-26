@@ -2,7 +2,10 @@ package com.kenhorizon.beyondhorizon.server;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -40,8 +43,6 @@ public class ServerProxy {
 
     public void syncAccessoryToPlayer(int slot, ItemStack itemStack, ServerPlayer serverPlayer) {}
 
-    public void playSound(@Nullable Object sound, byte soundId) {}
-
     public Vec3 getCameraRotation() {
         return Vec3.ZERO;
     }
@@ -55,4 +56,6 @@ public class ServerProxy {
     }
 
     public void onAnimationHandler(int entityId, int index) {}
+
+    public void playSound(AbstractSoundInstance instance) {}
 }

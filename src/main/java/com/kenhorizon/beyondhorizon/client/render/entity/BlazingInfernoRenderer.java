@@ -80,7 +80,7 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
             VertexConsumer renderModelDecal = buffer.getBuffer(entityDecal(entity));
             this.model.renderToBuffer(poseStack, renderModelDecal, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, 1.0F);
         } else {
-            float enragedProgress = entity.getAwakenProgress(partialTicks);
+            float enragedProgress = entity.getEnragedProgress(partialTicks);
             float awakenProgress = entity.getAwakenProgress(partialTicks);
 
             VertexConsumer renderModel = buffer.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(entity)));

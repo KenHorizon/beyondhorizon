@@ -21,6 +21,7 @@ public class BHParticleProvider extends ParticleDescriptionProvider {
 
     @Override
     protected void addDescriptions() {
+        this.sprite(BHParticle.TRAILS.get(), register("orb"));
         this.sprite(BHParticle.RING.get(), register("ring"));
         this.sprite(BHParticle.STUN_PARTICLES.get(), register("stun_star"));
         this.spriteSet(BHParticle.BLEED.get(), register("bleed"), 4, false);

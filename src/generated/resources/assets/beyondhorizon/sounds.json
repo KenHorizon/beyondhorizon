@@ -24,6 +24,24 @@
     ],
     "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.death"
   },
+  "mob.blazing_inferno.death_ray": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/death_ray"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.death_ray"
+  },
+  "mob.blazing_inferno.death_ray_charging": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/death_ray_charging"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.death_ray_charging"
+  },
+  "mob.blazing_inferno.explosion": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/explosion"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.explosion"
+  },
   "mob.blazing_inferno.growl": {
     "sounds": [
       "beyondhorizon:mob/blazing_inferno/growl/growl1",

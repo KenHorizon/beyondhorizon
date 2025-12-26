@@ -1,20 +1,23 @@
 package com.kenhorizon.beyondhorizon.server.datagen;
 
+import com.kenhorizon.beyondhorizon.server.data.RecipeGenProviderHelper;
 import com.kenhorizon.beyondhorizon.server.datagen.recipes.WorkbenchRecipeProvider;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.recipe.WorkbenchRecipe;
+import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.data.recipes.*;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.common.crafting.conditions.IConditionBuilder;
 
 import java.util.List;
@@ -25,6 +28,17 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         super(output);
     }
 
+    private void woolFurToWoolBlock(Consumer<FinishedRecipe> consumer, ItemLike builder, ItemLike output, int count) {
+        RecipeGenProviderHelper.createGrid(builder, output, count, "has_white_wool_fur").save(consumer, this.getConversionRecipeNameTwoByTwo(output, builder));
+    }
+    private void woolFurToWoolBlock(Consumer<FinishedRecipe> consumer, ItemLike builder, ItemLike output) {
+        this.woolFurToWoolBlock(consumer, builder, output, 1);
+    }
+
+    protected String getConversionRecipeNameTwoByTwo(ItemLike result, ItemLike ingredient) {
+        return String.format("%s_from_%s", getItemName(result), getItemName(ingredient));
+    }
+
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHItems.CHAIN_PLATE.get())
@@ -33,6 +47,29 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .define('#', Items.IRON_NUGGET)
                 .unlockedBy("has_iron_nugget",
                         inventoryTrigger(ItemPredicate.Builder.item().of(Items.IRON_NUGGET).build()))
+                .save(consumer);
+
+        this.woolFurToWoolBlock(consumer, BHItems.WHITE_WOOL_FUR.get(), Blocks.WHITE_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.ORANGE_WOOL_FUR.get(), Blocks.ORANGE_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.MAGENTA_WOOL_FUR.get(), Blocks.MAGENTA_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.LIGHT_BLUE_WOOL_FUR.get(), Blocks.LIGHT_BLUE_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.YELLOW_WOOL_FUR.get(), Blocks.YELLOW_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.LIME_WOOL_FUR.get(), Blocks.LIME_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.PINK_WOOL_FUR.get(), Blocks.PINK_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.GRAY_WOOL_FUR.get(), Blocks.GRAY_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.LIGHT_GRAY_WOOL_FUR.get(), Blocks.LIGHT_GRAY_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.CYAN_WOOL_FUR.get(), Blocks.CYAN_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.PURPLE_WOOL_FUR.get(), Blocks.PURPLE_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.BLUE_WOOL_FUR.get(), Blocks.BLUE_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.BROWN_WOOL_FUR.get(), Blocks.BROWN_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.GREEN_WOOL_FUR.get(), Blocks.GREEN_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.RED_WOOL_FUR.get(), Blocks.RED_WOOL);
+        this.woolFurToWoolBlock(consumer, BHItems.BLACK_WOOL_FUR.get(), Blocks.BLACK_WOOL);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STRING, 4)
+                .requires(BHItemTags.WOOL_FUR)
+                .unlockedBy("has_wool_fur",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItemTags.WOOL_FUR).build()))
                 .save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BHBlocks.WORKBENCH.get())

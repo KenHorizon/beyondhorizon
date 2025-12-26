@@ -20,6 +20,7 @@ public class BHItemTags {
     public static final TagKey<Item> OPS_TAGS = create("ops_tags");
     public static final TagKey<Item> CAN_LIT_BASIN = create("can_lit_basin");
     public static final TagKey<Item> DAGGER = create("dagger");
+    public static final TagKey<Item> WOOL_FUR = create("dagger");
 
     public static TagKey<Item> create(String name) {
         return ItemTags.create(BeyondHorizon.resource(name));

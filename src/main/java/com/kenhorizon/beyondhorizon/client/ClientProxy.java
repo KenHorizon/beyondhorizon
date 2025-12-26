@@ -8,11 +8,9 @@ import com.kenhorizon.beyondhorizon.client.level.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
-import com.kenhorizon.beyondhorizon.client.particle.BleedParticle;
-import com.kenhorizon.beyondhorizon.client.particle.DamageIndicatorParticle;
-import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
-import com.kenhorizon.beyondhorizon.client.particle.StunParticles;
+import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
+import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.EruptionRenderer;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
@@ -31,12 +29,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -103,6 +104,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.BLAZING_SPEAR.get(), BlazingSpearRenderer::new);
         EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
+        EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
@@ -182,10 +184,9 @@ public class ClientProxy extends ServerProxy {
 
     public void registerParticles(RegisterParticleProvidersEvent event) {
         BeyondHorizon.LOGGER.info("Registering Particles!!");
-
         event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
         event.registerSpriteSet(BHParticle.RING.get(), RingParticles.Provider::new);
-
+        event.registerSpriteSet(BHParticle.TRAILS.get(), ParticleTrails.Provider::new);
         event.registerSpecial(BHParticle.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(BHParticle.STUN_PARTICLES.get(),new StunParticles.Provider());
 
@@ -200,6 +201,12 @@ public class ClientProxy extends ServerProxy {
             Minecraft minecraft = Minecraft.getInstance();
             minecraft.setScreen(screen);
         }
+    }
+
+    @Override
+    public void playSound(AbstractSoundInstance instance) {
+        Minecraft minecraft = Minecraft.getInstance();
+        minecraft.getSoundManager().play(instance);
     }
 
     @Override

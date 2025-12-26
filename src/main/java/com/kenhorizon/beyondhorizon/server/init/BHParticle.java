@@ -1,7 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
+import com.kenhorizon.beyondhorizon.client.particle.ParticleTrails;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.mojang.serialization.Codec;
@@ -23,6 +25,12 @@ public class BHParticle {
         @Override
         public Codec<RingParticleOptions> codec() {
             return RingParticleOptions.CODEC;
+        }
+    });
+    public static final RegistryObject<ParticleType<ParticleTrailOptions>> TRAILS = RegistryEntries.PARTICLE.register("trails", () -> new ParticleType<ParticleTrailOptions>(false, ParticleTrailOptions.DESERIALIZER) {
+        @Override
+        public Codec<ParticleTrailOptions> codec() {
+            return ParticleTrailOptions.CODEC;
         }
     });
 

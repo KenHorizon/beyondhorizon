@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class BHBaseEntity extends PathfinderMob {
-    private float damageCap;
     private boolean active;
     private boolean dodge;
     protected int dodgeAttempt = 0;
@@ -98,21 +97,10 @@ public abstract class BHBaseEntity extends PathfinderMob {
         return false;
     }
 
-    public void setDamageCap(float damageCap) {
-        this.damageCap = damageCap;
-    }
-
-    public float getDamageCap() {
-        return this.damageCap;
-    }
-
-    public boolean allowDamageCap() {
-        return this.getDamageCap() > 0;
-    }
-
     public boolean hasBossMusic() {
         return false;
     }
+
     @Override
     public void setCustomName(@Nullable Component nbt) {
         super.setCustomName(nbt);
@@ -248,13 +236,6 @@ public abstract class BHBaseEntity extends PathfinderMob {
 //        return null;
 //    }
 
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        if (!source.is(DamageTypeTags.BYPASSES_ARMOR) && this.allowDamageCap()) {
-            amount = Math.min(this.getDamageCap(), amount);
-        }
-        return super.hurt(source, amount);
-    }
 
     @Override
     public void push(Entity entityIn) {

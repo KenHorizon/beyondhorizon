@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
@@ -17,24 +18,24 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     protected final int attackMaxTick;
     protected final int attackSeeTick;
 
-    public MobAttackGoal(T entity, int getAnimation, int[] startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick, float attackRange, boolean interrupt) {
+    public MobAttackGoal(T entity, int getAnimation, int[] startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick, boolean interrupt) {
         this.entity = entity;
         this.getAnimation = getAnimation;
         this.startAnimation = startAnimation;
         this.endAnimation = endAnimation;
         this.attackSeeTick = attackSeeTick;
         this.attackMaxTick = attackMaxTick;
-        this.attackRange = attackRange;
+        this.attackRange = (float) this.entity.getAttributeValue(Attributes.FOLLOW_RANGE);
         if (interrupt) {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
         }
     }
-    public MobAttackGoal(T entity, int getAnimation, int[] startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick, float attackRange) {
-        this(entity, getAnimation, startAnimation, endAnimation, attackSeeTick, attackMaxTick, attackRange, false);
+    public MobAttackGoal(T entity, int getAnimation, int[] startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick) {
+        this(entity, getAnimation, startAnimation, endAnimation, attackSeeTick, attackMaxTick, false);
     }
 
-    public MobAttackGoal(T entity, int getAnimation, int startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick, float attackRange) {
-        this(entity, getAnimation, new int[] {startAnimation}, endAnimation, attackSeeTick, attackMaxTick, attackRange, false);
+    public MobAttackGoal(T entity, int getAnimation, int startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick) {
+        this(entity, getAnimation, new int[] {startAnimation}, endAnimation, attackSeeTick, attackMaxTick, false);
     }
 
     @Override

@@ -36,11 +36,11 @@ public class RingParticleOptions implements ParticleOptions {
             int duration = reader.readInt();
             reader.expect(' ');
             boolean facesCamera = reader.readBoolean();
-            return new RingParticleOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, RingParticles.RingBehavior.GROW);
+            return new RingParticleOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, RingParticles.Behavior.GROW);
         }
 
         public RingParticleOptions fromNetwork(ParticleType<RingParticleOptions> particleTypeIn, FriendlyByteBuf buffer) {
-            return new RingParticleOptions(buffer.readFloat(), buffer.readFloat(), buffer.readInt(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readBoolean(), RingParticles.RingBehavior.GROW);
+            return new RingParticleOptions(buffer.readFloat(), buffer.readFloat(), buffer.readInt(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readBoolean(), RingParticles.Behavior.GROW);
         }
     };
 
@@ -57,7 +57,7 @@ public class RingParticleOptions implements ParticleOptions {
                     Codec.BOOL.fieldOf("facesCamera").forGetter(RingParticleOptions::getFacesCamera),
                     Codec.STRING.fieldOf("behavior").forGetter((options) -> options.getBehavior().toString())
             ).apply(instance, (yaw, pitch, r, g, b, a, scale, duration, facesCamera, behavior) ->
-                    new RingParticleOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, RingParticles.RingBehavior.valueOf(behavior)))
+                    new RingParticleOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, RingParticles.Behavior.valueOf(behavior)))
     );
     private final float yaw;
     private final float pitch;
@@ -68,9 +68,9 @@ public class RingParticleOptions implements ParticleOptions {
     private final float scale;
     private final int duration;
     private final boolean facesCamera;
-    private final RingParticles.RingBehavior behavior;
+    private final RingParticles.Behavior behavior;
 
-    public RingParticleOptions(float yaw, float pitch, int duration, float r, float g, float b, float a, float scale, boolean facesCamera, RingParticles.RingBehavior behavior) {
+    public RingParticleOptions(float yaw, float pitch, int duration, float r, float g, float b, float a, float scale, boolean facesCamera, RingParticles.Behavior behavior) {
         this.yaw = yaw;
         this.pitch = pitch;
         this.r = r;
@@ -150,7 +150,7 @@ public class RingParticleOptions implements ParticleOptions {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public RingParticles.RingBehavior getBehavior() {
+    public RingParticles.Behavior getBehavior() {
         return this.behavior;
     }
 }

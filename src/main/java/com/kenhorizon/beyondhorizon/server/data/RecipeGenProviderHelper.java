@@ -495,11 +495,11 @@ public class RecipeGenProviderHelper {
     public static ShapedRecipeBuilder createPillar(ItemLike baseIngredients, ItemLike output, String criterionName) {
         return createPillar(baseIngredients, output, 2, criterionName);
     }
-    public static ShapedRecipeBuilder createGrid(ItemLike baseIngredients, ItemLike output, String criterionName) {
-        return createGrid(baseIngredients, output, 4, criterionName);
-    }
     public static ShapedRecipeBuilder createWall(ItemLike baseIngredients, ItemLike output, String criterionName) {
         return createWall(baseIngredients, output, 4, criterionName);
+    }
+    public static ShapedRecipeBuilder createGrid(ItemLike baseIngredients, ItemLike output, String criterionName) {
+        return createGrid(baseIngredients, output, 4, criterionName);
     }
     public static ShapedRecipeBuilder createSlab(ItemLike baseIngredients, ItemLike output, int count, String criterionName) {
         return ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, output, count)

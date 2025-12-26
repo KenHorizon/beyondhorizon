@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:gray_wool_from_gray_wool_fur"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_white_wool_fur": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:gray_wool_fur"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_white_wool_fur",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:gray_wool_from_gray_wool_fur"
+    ]
+  },
+  "sends_telemetry_event": false
+}

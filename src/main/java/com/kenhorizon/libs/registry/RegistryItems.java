@@ -121,14 +121,10 @@ public class RegistryItems<T extends Item> {
             properties = this.propertiesCallback.apply(properties);
             return this.factory.apply(properties);
         }
-        public RegistryObject<T> registers() {
+
+        public RegistryObject<T> register() {
             this.registryObject = RegistryEntries.ITEMS.register(this.name, this::createEntry);
             return new RegistryItems<>(this).build();
-        }
-
-        public RegistryItems<T> register() {
-            this.registryObject = RegistryEntries.ITEMS.register(this.name, this::createEntry);
-            return new RegistryItems<>(this);
         }
     }
 }

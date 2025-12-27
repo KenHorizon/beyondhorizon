@@ -13,6 +13,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.FormattedCharSink;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -39,6 +40,7 @@ public class Tooltips {
     public static final String COMMAND_POINTS_SUCCESS = String.format("command.%s.role_class.points.succes", BeyondHorizon.ID);
     public static final String COMMAND_POINTS_FAILED = String.format("command.%s.role_class.points.failure", BeyondHorizon.ID);
     //
+    public static final String BOSS_IS_DEFEATED = String.format("boss.%s.defeated", BeyondHorizon.ID);
     public static final String SKILL_TYPE = String.format("tooltip.%s.skill_type", BeyondHorizon.ID);
     public static final String TOOLTIP_MINING_SPEED = String.format("tooltip.%s.mining_speed", BeyondHorizon.ID);
     public static final String TOOLTIP_ACCESSORY = String.format("item.%s.accessory", BeyondHorizon.ID);
@@ -60,6 +62,14 @@ public class Tooltips {
 
     public static ChatFormatting enchantmentTooltip(boolean isCurseEnchantment) {
         return isCurseEnchantment ? ENCHANTMENT[1] : ENCHANTMENT[0];
+    }
+
+    public static String getBossMessage(EntityType<?> entityType) {
+        return String.format("boss.%s.defeated.%s", BeyondHorizon.ID, entityType.getDescriptionId());
+    }
+
+    public static String getBossMessage(EntityType<?> entityType, int line) {
+        return String.format("boss.%s.%s.defeated.%s", BeyondHorizon.ID, entityType.getDescriptionId(), line);
     }
 
     public static class TitleBreakComponent implements TooltipComponent, ClientTooltipComponent {

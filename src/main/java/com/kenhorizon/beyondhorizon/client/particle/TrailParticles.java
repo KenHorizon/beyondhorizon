@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class ParticleTrails extends TextureSheetParticle {
+public class TrailParticles extends TextureSheetParticle {
     public float r;
     public float g;
     public float b;
@@ -31,7 +31,7 @@ public class ParticleTrails extends TextureSheetParticle {
         FADE
     }
 
-    public ParticleTrails(ClientLevel world, double x, double y, double z, double motionX, double motionY, double motionZ, float yaw, float pitch, int duration, float r, float g, float b, float opacity, float size, boolean facesCamera, Behavior behavior, Vec3 target) {
+    public TrailParticles(ClientLevel world, double x, double y, double z, double motionX, double motionY, double motionZ, float yaw, float pitch, int duration, float r, float g, float b, float opacity, float size, boolean facesCamera, Behavior behavior, Vec3 target) {
         super(world, x, y, z);
         this.target = target;
         this.setSize(1, 1);
@@ -106,7 +106,7 @@ public class ParticleTrails extends TextureSheetParticle {
 
     @Override
     public int getLightColor(float delta) {
-        return 240 | super.getLightColor(delta) & 0xFF0000;
+        return super.getLightColor(delta);
     }
 
     @Override
@@ -140,7 +140,7 @@ public class ParticleTrails extends TextureSheetParticle {
 
         @Override
         public Particle createParticle(ParticleTrailOptions typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            ParticleTrails particle = new ParticleTrails(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getYaw(), typeIn.getPitch(), typeIn.getDuration(), typeIn.getR(), typeIn.getG(), typeIn.getB(), typeIn.getA(), typeIn.getScale(), typeIn.getFacesCamera(), typeIn.getBehavior(), typeIn.getTarget());
+            TrailParticles particle = new TrailParticles(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getYaw(), typeIn.getPitch(), typeIn.getDuration(), typeIn.getR(), typeIn.getG(), typeIn.getB(), typeIn.getA(), typeIn.getScale(), typeIn.getFacesCamera(), typeIn.getBehavior(), typeIn.getTarget());
             particle.setSpriteFromAge(spriteSet);
             return particle;
         }

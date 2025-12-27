@@ -19,6 +19,7 @@ public class BHSounds {
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_DEATH_RAY = RegistryHelper.registerSounds("mob.blazing_inferno.death_ray", "Death Ray Blast");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_DEATH_RAY_CHARGING = RegistryHelper.registerSounds("mob.blazing_inferno.death_ray_charging", "Death Ray Charging");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_DEATH = RegistryHelper.registerSounds("mob.blazing_inferno.death", "Blazing Inferno Death");
+    public static RegistryObject<SoundEvent> INFERNO_SHIELD_BREAK = RegistryHelper.registerSounds("mob.inferno_shield.break", "Blazing Inferno Death");
 
     public static RegistryObject<SoundEvent> HEAVY_ATTACK = RegistryHelper.registerSounds("generic.heavy_attack", "Heavy Attack");
 

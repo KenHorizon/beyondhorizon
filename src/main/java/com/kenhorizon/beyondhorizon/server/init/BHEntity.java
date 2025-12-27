@@ -36,7 +36,7 @@ public class BHEntity {
             .register("eruption", EruptionAbility::new)
             .lang("Eruption")
             .mobCategory(MobCategory.MISC)
-            .properties(p -> p.sized(0.5F, 0.5F))
+            .properties(p -> p.sized(1.0F, 1.0F))
             .register();
 
     public static final RegistryObject<EntityType<BlazingRod>> BLAZING_ROD = RegistryEntity

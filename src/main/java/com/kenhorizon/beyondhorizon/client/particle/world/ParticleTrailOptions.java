@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.particle.world;
 
-import com.kenhorizon.beyondhorizon.client.particle.ParticleTrails;
+import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -44,11 +44,11 @@ public class ParticleTrailOptions implements ParticleOptions {
             float targetY = reader.readInt();
             reader.expect(' ');
             float targetZ = reader.readInt();
-            return new ParticleTrailOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, ParticleTrails.Behavior.FADE, new Vec3(targetX, targetY, targetZ));
+            return new ParticleTrailOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, TrailParticles.Behavior.FADE, new Vec3(targetX, targetY, targetZ));
         }
 
         public ParticleTrailOptions fromNetwork(ParticleType<ParticleTrailOptions> particleTypeIn, FriendlyByteBuf buffer) {
-            return new ParticleTrailOptions(buffer.readFloat(), buffer.readFloat(), buffer.readInt(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readBoolean(), ParticleTrails.Behavior.FADE, new Vec3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()));
+            return new ParticleTrailOptions(buffer.readFloat(), buffer.readFloat(), buffer.readInt(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readBoolean(), TrailParticles.Behavior.FADE, new Vec3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()));
         }
     };
 
@@ -62,9 +62,9 @@ public class ParticleTrailOptions implements ParticleOptions {
     private final int duration;
     private final boolean facesCamera;
     private final Vec3 target;
-    private final ParticleTrails.Behavior behavior;
+    private final TrailParticles.Behavior behavior;
 
-    public ParticleTrailOptions(float yaw, float pitch, int duration, float r, float g, float b, float a, float scale, boolean facesCamera, ParticleTrails.Behavior behavior, Vec3 target) {
+    public ParticleTrailOptions(float yaw, float pitch, int duration, float r, float g, float b, float a, float scale, boolean facesCamera, TrailParticles.Behavior behavior, Vec3 target) {
         this.target = target;
         this.yaw = yaw;
         this.pitch = pitch;
@@ -145,7 +145,7 @@ public class ParticleTrailOptions implements ParticleOptions {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public ParticleTrails.Behavior getBehavior() {
+    public TrailParticles.Behavior getBehavior() {
         return this.behavior;
     }
 
@@ -166,10 +166,10 @@ public class ParticleTrailOptions implements ParticleOptions {
                         Codec.BOOL.fieldOf("facesCamera").forGetter(ParticleTrailOptions::getFacesCamera),
                         Codec.STRING.fieldOf("behavior").forGetter((ParticleTrailOptions) -> ParticleTrailOptions.getBehavior().toString())
                 ).apply(codecBuilder, (yaw, pitch, r, g, b, a, scale, duration, facesCamera, behavior) ->
-                        new ParticleTrailOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, ParticleTrails.Behavior.valueOf(behavior), null))
+                        new ParticleTrailOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, TrailParticles.Behavior.valueOf(behavior), null))
         );
 
-    public static void add(Level world, ParticleTrails.Behavior behavior, double x, double y, double z, double motionX, double motionY, double motionZ, float yaw, float pitch, float scale, float a, float r, float g, float b, boolean faceCamera, int duration, Vec3 destination) {
-        world.addParticle(new ParticleTrailOptions(yaw, pitch, duration,  a,  r,  g, b,  scale, faceCamera, behavior, destination), x, y, z, motionX, motionY, motionZ);
+    public static void add(Level level, TrailParticles.Behavior behavior, double x, double y, double z, double motionX, double motionY, double motionZ, float yaw, float pitch, float scale, float a, float r, float g, float b, boolean faceCamera, int duration, Vec3 destination) {
+        level.addParticle(new ParticleTrailOptions(yaw, pitch, duration,  a,  r,  g, b,  scale, faceCamera, behavior, destination), x, y, z, motionX, motionY, motionZ);
     }
 }

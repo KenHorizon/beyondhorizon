@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.client.render;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import net.minecraft.Util;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -12,6 +13,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.function.Function;
+
+@OnlyIn(Dist.CLIENT)
 public class BHRenderTypes extends RenderType {
     protected static final RenderStateShard.ShaderStateShard RENDERTYPE_TRAIL_SHADER = new RenderStateShard.ShaderStateShard(BHInternalShaders::getRenderTypeTrailShader);
     protected static final RenderStateShard.ShaderStateShard POSITION_MARKER = new RenderStateShard.ShaderStateShard(BHInternalShaders::getPositionMarker);
@@ -55,5 +59,19 @@ public class BHRenderTypes extends RenderType {
     public static RenderType movingTexture(ResourceLocation resourceLocation, float pU, float pV) {
         RenderType.CompositeState state = RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER).setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false)).setTexturingState(new RenderStateShard.OffsetTexturingStateShard(pU, pV)).setTransparencyState(TRANSLUCENT_TRANSPARENCY).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOutputState(RenderStateShard.ITEM_ENTITY_TARGET).setOverlayState(OVERLAY).setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE).createCompositeState(true);
         return RenderType.create("moving_texture", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false, state);
+    }
+
+    public static RenderType getTrailEffect(ResourceLocation location) {
+        CompositeState state = CompositeState.builder()
+                .setShaderState(RENDERTYPE_ITEM_ENTITY_TRANSLUCENT_CULL_SHADER)
+                .setTextureState(new TextureStateShard(location, false, false))
+                .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                .setOutputState(ITEM_ENTITY_TARGET)
+                .setLightmapState(LIGHTMAP)
+                .setCullState(NO_CULL)
+                .setOverlayState(OVERLAY)
+                .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
+                .createCompositeState(true);
+        return RenderType.create("entity_trail_effect", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 1536, true, true, state);
     }
 }

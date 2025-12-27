@@ -2,10 +2,11 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
-import com.kenhorizon.beyondhorizon.client.particle.ParticleTrails;
+import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRaySound;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
 import net.minecraft.core.Direction;
@@ -39,6 +40,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     public double laserBeamRange = 30;
     public LivingEntity caster;
     public LivingEntity source;
+    public int damagePerInterval;
     public int delay;
     public double endPosX;
     public double endPosY;
@@ -51,7 +53,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     public double prevCollidePosZ;
     public float renderYaw;
     public float renderPitch;
-    public float deathLaserBaseDamage = 2.0F;
+    public float baseDamage = 2.0F;
     public boolean scaleCurrentHealth;
     public float scaleCurrentHealthDamage = 0.02F;
     public boolean scaleMaxHealth;
@@ -69,6 +71,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
 
     private static final EntityDataAccessor<Float> YAW = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> PITCH = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Integer> DAMAGE_PER_INTERVAL = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DELAY = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> IGNORE_IMMUNITY_FRAME = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.BOOLEAN);
@@ -117,6 +120,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         getEntityData().define(PITCH, 0F);
         getEntityData().define(DELAY, 20);
         getEntityData().define(DURATION, 0);
+        getEntityData().define(DAMAGE_PER_INTERVAL, 20);
         getEntityData().define(HAS_PLAYER, false);
         getEntityData().define(IGNORE_IMMUNITY_FRAME, false);
         getEntityData().define(CAN_BURN_TARGET, false);
@@ -131,6 +135,15 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
 
     public int getDelay() {
         return this.level().isClientSide() ? this.entityData.get(DELAY) : this.delay;
+    }
+
+    public void setDamagePerInterval(int interval) {
+        this.damagePerInterval = interval;
+        this.entityData.set(DAMAGE_PER_INTERVAL, interval);
+    }
+
+    public int getDamagePerInterval() {
+        return this.level().isClientSide() ? this.entityData.get(DAMAGE_PER_INTERVAL) : this.damagePerInterval;
     }
 
     @Override
@@ -207,13 +220,15 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
                     if (this.source != null) {
                         if (this.source.isAlliedTo(target)) continue;
                     }
-                    if (this.isImmunityFrameIgnore()) {
-                        target.hurtDuration = -20;
-                        target.invulnerableTime = -20;
-                    }
-                    if (this.isCanBurnTarget()) {
-                        int fireAspectLevel = EnchantmentHelper.getFireAspect(caster);
-                        target.setSecondsOnFire(3 + fireAspectLevel);
+                    if (target.hurt(BHDamageTypes.deathRay(this, this.source != null ? this.source : this.caster), this.rayDamages(target))) {
+                        if (this.isImmunityFrameIgnore()) {
+                            target.hurtDuration = 0;
+                            target.invulnerableTime = 0;
+                        }
+                        if (this.isCanBurnTarget()) {
+                            int fireAspectLevel = EnchantmentHelper.getFireAspect(caster);
+                            target.setSecondsOnFire(3 + fireAspectLevel);
+                        }
                     }
                     this.knockbackTarget(target, 0.0F, this.getX() - target.getX(), this.getZ() - target.getZ(), true);
                 }
@@ -241,7 +256,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
             double o2x = (float) (-1 * Math.cos(getYaw()) * Math.cos(getPitch()));
             double o2y = (float) (-1 * Math.sin(getPitch()));
             double o2z = (float) (-1 * Math.sin(getYaw()) * Math.cos(getPitch()));
-            ParticleTrailOptions.add(level(), ParticleTrails.Behavior.FADE,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz, 0, 0, 0, 0, 0, 1.0F, this.getTrailA(), this.getTrailR(), this.getTrailG(), this.getTrailB(), true, 20, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
+            ParticleTrailOptions.add(level(), TrailParticles.Behavior.FADE,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz, 0, 0, 0, 0, 0, 1.0F, this.getTrailA(), this.getTrailR(), this.getTrailG(), this.getTrailB(), true, 20, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
         }
     }
 
@@ -465,34 +480,34 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         super.remove(reason);
     }
 
-    public float getDeathLaserBaseDamage() {
-        return deathLaserBaseDamage;
+    public float getBaseDamage() {
+        return baseDamage;
     }
 
-    public void setDeathLaserBaseDamage(float deathLaserBaseDamage) {
-        this.deathLaserBaseDamage = deathLaserBaseDamage;
+    public void setBaseDamage(float baseDamage) {
+        this.baseDamage = baseDamage;
     }
 
-    private float laserBeamDamageUitl(LivingEntity target) {
+    private float rayDamages(LivingEntity target) {
         switch (this.damageTypes) {
             case MAX_HEALTH -> {
-                return CombatUtil.maxHealth(target, getDeathLaserBaseDamage(), this.getScaleMaxHealthDamage());
+                return CombatUtil.maxHealth(target, getBaseDamage(), this.getScaleMaxHealthDamage());
             }
             case MISSING_HEALTH -> {
-                return CombatUtil.missingHealth(target, getDeathLaserBaseDamage(), this.getScaleMissingHealthDamage());
+                return CombatUtil.missingHealth(target, getBaseDamage(), this.getScaleMissingHealthDamage());
             }
             case CURRENT_HEALTH -> {
-                return CombatUtil.currentHealth(target, getDeathLaserBaseDamage(), this.getScaleCurrentHealthDamage());
+                return CombatUtil.currentHealth(target, getBaseDamage(), this.getScaleCurrentHealthDamage());
             }
             default -> {
-                return getDeathLaserBaseDamage();
+                return getBaseDamage();
             }
         }
     }
 
     public void laserBeamConfiguration(DamageTypes types, float deathLaserBaseDamage) {
         this.damageTypes = types;
-        this.deathLaserBaseDamage = deathLaserBaseDamage;
+        this.baseDamage = deathLaserBaseDamage;
     }
 
     public void scaleCurrentHealthDamage(float scaleCurrentHealth) {

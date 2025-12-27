@@ -89,10 +89,8 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
                 VertexConsumer renderModelExplosion = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_INACTIVE));
                 this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F - awakenProgress);
             }
-            if (enragedProgress != 1.0F) {
-                VertexConsumer renderModelExplosion = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_ENRAGED));
-                this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, enragedProgress);
-            }
+            VertexConsumer renderModelExplosion = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_ENRAGED));
+            this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, enragedProgress);
         }
         if (entity.deathTime > 0 && entity.isEnraged()) {
             float f1 = ((float) entity.deathTime + partialTicks) / 200.0F;
@@ -142,6 +140,8 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
     public ResourceLocation getTextureLocation(BlazingInferno entity) {
         if (entity.isSleep()) {
             return TEXTURE_INACTIVE;
+        } else if (entity.isEnraged()) {
+            return TEXTURE_ENRAGED;
         } else {
             return TEXTURE;
         }

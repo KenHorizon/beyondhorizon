@@ -85,6 +85,11 @@ public class BHSoundProvider extends SoundDefinitionsProvider {
         this.add(BHSounds.BLAZING_INFERNO_DEATH_RAY_CHARGING,
                 this.addSounds("mob/blazing_inferno/death_ray_charging")
         );
+        this.add(BHSounds.INFERNO_SHIELD_BREAK,
+                this.addSounds("mob/inferno_shield/break1"),
+                this.addSounds("mob/inferno_shield/break2"),
+                this.addSounds("mob/inferno_shield/break3")
+        );
     }
 
     protected void add(final Supplier<SoundEvent> soundEvent, final SoundDefinition.Sound... definition) {

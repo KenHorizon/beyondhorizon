@@ -11,45 +11,56 @@ import java.util.EnumSet;
 
 public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     protected final T entity;
-    protected final int getAnimation;
-    protected final int[] startAnimation;
-    protected final int endAnimation;
+    protected final int animation;
+    protected final int[] start;
+    protected final int[] end;
     protected final float attackRange;
-    protected final int attackMaxTick;
-    protected final int attackSeeTick;
+    protected final int seeTick;
+    protected final int maxDuration;
 
-    public MobAttackGoal(T entity, int getAnimation, int[] startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick, boolean interrupt) {
+    public MobAttackGoal(T entity, int animation, int[] start, int[] end, int seeTick, int maxDuration, boolean interrupt) {
         this.entity = entity;
-        this.getAnimation = getAnimation;
-        this.startAnimation = startAnimation;
-        this.endAnimation = endAnimation;
-        this.attackSeeTick = attackSeeTick;
-        this.attackMaxTick = attackMaxTick;
+        this.animation = animation;
+        this.start = start;
+        this.end = end;
+        this.seeTick = seeTick;
+        this.maxDuration = maxDuration;
         this.attackRange = (float) this.entity.getAttributeValue(Attributes.FOLLOW_RANGE);
         if (interrupt) {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
         }
     }
-    public MobAttackGoal(T entity, int getAnimation, int[] startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick) {
-        this(entity, getAnimation, startAnimation, endAnimation, attackSeeTick, attackMaxTick, false);
+    public MobAttackGoal(T entity, int animation, int[] start, int[] end, int seeTick, int maxDuration) {
+        this(entity, animation, start, end, seeTick, maxDuration, false);
     }
 
-    public MobAttackGoal(T entity, int getAnimation, int startAnimation, int endAnimation, int attackSeeTick, int attackMaxTick) {
-        this(entity, getAnimation, new int[] {startAnimation}, endAnimation, attackSeeTick, attackMaxTick, false);
+    public MobAttackGoal(T entity, int animation, int[] start, int end, int seeTick, int maxDuration) {
+        this(entity, animation, start, new int[] {end}, seeTick, maxDuration, false);
+    }
+
+    public MobAttackGoal(T entity, int animation, int start, int[] end, int seeTick, int maxDuration) {
+        this(entity, animation, new int[] {start}, end, seeTick, maxDuration, false);
+    }
+
+    public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, int maxDuration) {
+        this(entity, animation, new int[] {start}, new int[] {end}, seeTick, maxDuration, false);
     }
 
     @Override
     public void start() {
         super.start();
-        this.entity.setAnimation(this.startAnimation[this.entity.getRandom().nextInt(this.startAnimation.length)]);
+        int animationId = this.start[this.entity.getRandom().nextInt(this.start.length)];
+        this.entity.setAnimation(animationId);
+        BeyondHorizon.LOGGER.info("Start Animation ID: {}", animationId);
         this.entity.getNavigation().stop();
     }
 
     @Override
     public void stop() {
         super.stop();
-        this.entity.setAnimation(this.endAnimation);
-        BeyondHorizon.LOGGER.info("Animation Id Used: {}", this.entity.getAnimation());
+        int animationId = this.end[this.entity.getRandom().nextInt(this.end.length)];
+        this.entity.setAnimation(animationId);
+        BeyondHorizon.LOGGER.info("End Animation ID: {}", animationId);
         LivingEntity target = this.entity.getTarget();
         if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.entity.setTarget(null);
@@ -63,14 +74,14 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     @Override
     public boolean canUse() {
         LivingEntity target = this.entity.getTarget();
-        return target != null && target.isAlive() && this.entity.distanceTo(target) < this.attackRange && this.entity.getAnimation() == this.getAnimation;
+        return target != null && target.isAlive() && this.entity.distanceTo(target) < this.attackRange && this.entity.getAnimation() == this.animation;
     }
 
     @Override
     public boolean canContinueToUse() {
-        for (int animationTick : this.startAnimation) {
-            if (this.entity.getAnimation() == animationTick) {
-                return this.entity.getAnimationTick() <= this.attackMaxTick;
+        for (int animation : this.start) {
+            if (this.entity.getAnimation() == animation) {
+                return this.entity.getAnimationTick() <= this.maxDuration;
             }
         }
         return false;
@@ -80,7 +91,7 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     public void tick() {
         super.tick();
         LivingEntity target = this.entity.getTarget();
-        if (this.entity.getAnimationTick() < this.attackSeeTick && target != null) {
+        if (this.entity.getAnimationTick() < this.seeTick && target != null) {
             this.entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
             this.entity.lookAt(target, 30.0F, 30.0F);
         } else {

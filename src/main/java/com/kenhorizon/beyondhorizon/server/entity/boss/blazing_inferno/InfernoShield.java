@@ -2,7 +2,12 @@ package com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno;
 
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
+import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.init.BHSounds;
+import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilityEffectPacket;
 import net.minecraft.nbt.CompoundTag;
@@ -13,6 +18,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -25,11 +32,12 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public class InfernoShield extends BHLibEntity implements ILinkedEntity {
+public class InfernoShield extends BHLibEntity implements ILinkedEntity, TraceableEntity {
     private static final EntityDataAccessor<Float> LIFE_SPAN = SynchedEntityData.defineId(InfernoShield.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ROTATE_OFFSET = SynchedEntityData.defineId(InfernoShield.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> ORBIT_SCALE = SynchedEntityData.defineId(InfernoShield.class, EntityDataSerializers.FLOAT);
@@ -204,8 +212,13 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity {
         this.setXRot((float)(Mth.atan2(d6, d4) * (double)(180F / (float)Math.PI)));
         this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
         this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
-        Entity owner = this.getUsingEntity();
-        if (owner != null && !owner.isAlive()) discard();
+        Entity owner;
+        if (this.getUsingEntity() == null) {
+            owner = this.getOwner();
+        } else {
+            owner = this.getUsingEntity();
+        }
+        if (owner != null && !owner.isAlive()) this.discard();
         if (owner != null) {
             if (owner instanceof BlazingInferno blazingInferno) {
                 if (blazingInferno.deathTime > 0) {
@@ -215,6 +228,25 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity {
             Entity entity = this.getEntityId() == -1 ? null : level().getEntity(this.getEntityId());
             this.infernoShieldTicks(entity != null ? entity : owner);
         }
+    }
+    private void shoot(int count, BlazingInferno entity, float velocity, float inaccuracy) {
+        double d0 = this.getX();
+        double d1 = this.getY() + (this.getBbHeight() / 2) + 0.5D;
+        double d2 = this.getZ();
+        BlazingRod projectile = new BlazingRod(this.level(), d0, d1, d2, this);
+        projectile.setBaseDamage(entity.getAttackDamage(0.25F));
+        Vec3 vector3d = this.getViewVector(1.0F);
+        projectile.shoot(vector3d.x(), vector3d.y(), vector3d.z(), velocity, inaccuracy);
+        this.level().addFreshEntity(projectile);
+    }
+    @Override
+    protected @Nullable SoundEvent getHurtSound(DamageSource source) {
+        return SoundEvents.SHIELD_BLOCK;
+    }
+
+    @Override
+    protected @Nullable SoundEvent getDeathSound() {
+        return BHSounds.INFERNO_SHIELD_BREAK.get();
     }
 
     @Override
@@ -233,11 +265,6 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity {
         this.checkInsideBlocks();
     }
 
-//    @Override
-//    public SoundEvent getDeathAnimationSound() {
-//        return BHSounds.INFERNO_SHIELD_EXPLOSION.get();
-//    }
-
     protected static float lerpRotation(float pCurrentRotation, float pTargetRotation) {
         while(pTargetRotation - pCurrentRotation < -180.0F) {
             pCurrentRotation -= 360.0F;
@@ -252,9 +279,11 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity {
 
 
     private void infernoShieldTicks(Entity entity) {
-        float rot = this.getRotateOffset() + entity.tickCount * 7;
-        Vec3 orbitBy = new Vec3(0.0D, 0.5D, 2.0D).yRot((float) -Math.toRadians(rot));
-        Vec3 orbitTarget = entity.position().add(orbitBy).subtract(this.position());
+        float rotation = this.getRotateOffset() + entity.tickCount * 7;
+        Vec3 orbitBy = new Vec3(0.0D, 0.0D, 2.0D).yRot((float) -Math.toRadians(rotation));
+        Vec3 orbitTarget = entity.position().add(0, entity.getBbHeight() * 0.25D, 0).add(orbitBy).subtract(this.position());
+        this.setYRot(rotation);
+        this.yRotO = this.getYRot();
         this.setXRot(10.0F);
         this.setDeltaMovement(orbitTarget.scale(getOrbitScale()));
         this.noPhysics = true;
@@ -269,5 +298,10 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity {
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return new ClientboundAddEntityPacket(this);
+    }
+
+    @Override
+    public @Nullable Entity getOwner() {
+        return this.cachedCaster;
     }
 }

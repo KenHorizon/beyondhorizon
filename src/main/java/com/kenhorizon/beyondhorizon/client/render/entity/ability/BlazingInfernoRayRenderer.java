@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 public class BlazingInfernoRayRenderer extends AbstractLaserBeamRenderer {
     private final float beamSize;
     private final float startRadius;
-    private static final ResourceLocation TEXTURE = BeyondHorizon.resource("textures/entity/blazing_inferno_ray.png");
+    private static final ResourceLocation TEXTURE = BeyondHorizon.resource("textures/entity/effect/blazing_inferno_ray.png");
     public BlazingInfernoRayRenderer(EntityRendererProvider.Context context, float beamSize, float startRadius) {
         super(context);
         this.beamSize = beamSize;

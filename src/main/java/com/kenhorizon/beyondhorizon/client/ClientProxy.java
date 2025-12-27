@@ -2,7 +2,6 @@ package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
-import com.kenhorizon.beyondhorizon.client.level.BHBossBar;
 import com.kenhorizon.beyondhorizon.client.level.ModResouces;
 import com.kenhorizon.beyondhorizon.client.level.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
@@ -31,13 +30,10 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -56,7 +52,6 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
-import com.mojang.datafixers.util.Pair;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -186,7 +181,8 @@ public class ClientProxy extends ServerProxy {
         BeyondHorizon.LOGGER.info("Registering Particles!!");
         event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
         event.registerSpriteSet(BHParticle.RING.get(), RingParticles.Provider::new);
-        event.registerSpriteSet(BHParticle.TRAILS.get(), ParticleTrails.Provider::new);
+        event.registerSpriteSet(BHParticle.TRAILS.get(), TrailParticles.Provider::new);
+        event.registerSpriteSet(BHParticle.ROAR.get(), RoarParticles.Provider::new);
         event.registerSpecial(BHParticle.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(BHParticle.STUN_PARTICLES.get(),new StunParticles.Provider());
 

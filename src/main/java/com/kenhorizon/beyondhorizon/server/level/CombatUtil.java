@@ -24,7 +24,7 @@ public class CombatUtil {
     }
 
     public static float maxHealth(LivingEntity target, float damageDealt, float percentHealth, float damageCap) {
-        return damageCap != -1 ? Math.min(damageCap, additional(damageDealt,target.getMaxHealth() * percentHealth)) : additional(damageDealt,target.getMaxHealth() * percentHealth);
+        return damageCap > 0 ? Math.min(damageCap, additional(damageDealt,target.getMaxHealth() * percentHealth)) : additional(damageDealt,target.getMaxHealth() * percentHealth);
     }
 
     public static float currentHealth(LivingEntity target, float damageDealt, float percentHealth, float damageCap) {

@@ -26,8 +26,8 @@ public class BHDamageTypesTagProvider extends DamageTypeTagsProvider {
         this.tag(BHDamageTypeTags.IS_TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE).add(DamageTypes.INDIRECT_MAGIC);
         this.tag(BHDamageTypeTags.TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE);
         this.tag(DamageTypeTags.BYPASSES_ARMOR).add(BHDamageTypes.LETHALITY, BHDamageTypes.ARMOR_PENETRATION, BHDamageTypes.BLEED, BHDamageTypes.TRUE_DAMAGE);
-        this.tag(DamageTypeTags.IS_EXPLOSION).add(BHDamageTypes.BLEED, BHDamageTypes.BLAZING_ROD);
-        this.tag(DamageTypeTags.BYPASSES_COOLDOWN).add(BHDamageTypes.BLAZING_ROD);
+        this.tag(DamageTypeTags.IS_EXPLOSION).add(BHDamageTypes.BLEED, BHDamageTypes.BLAZING_ROD, BHDamageTypes.BEAM);
+        this.tag(DamageTypeTags.BYPASSES_COOLDOWN).add(BHDamageTypes.BLAZING_ROD, BHDamageTypes.BEAM);
         this.tag(DamageTypeTags.IS_PROJECTILE).add(BHDamageTypes.BLAZING_ROD);
         this.tag(BHDamageTypeTags.CANT_STORE_DAMAGE).add(BHDamageTypes.BLEED);
 

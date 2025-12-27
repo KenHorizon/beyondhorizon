@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
+import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import net.minecraft.core.particles.ParticleTypes;
@@ -9,31 +10,23 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
+import java.util.Optional;
 
 public class EruptionAbility extends AbstractAbilityEntity {
-
     public EruptionAbility(EntityType<?> entityType, Level level) {
         super(entityType, level);
         this.setDuration(100);
         this.setRadius(0.5F);
     }
 
-    public static EruptionAbility spawn(Level level, double x, double y, double z, float damage, float radius, int duration, LivingEntity entity) {
+    public static void spawn(Level level, double x, double y, double z, float damage, float radius, int duration, LivingEntity entity) {
         EruptionAbility ability = new EruptionAbility(BHEntity.ERUPTION.get(), level);
         ability.setBaseDamage(damage);
-        ability.setUUID(entity.getUUID());
+        ability.setCasterID(entity.getUUID());
         ability.setRadius(radius);
         ability.setDuration(duration);
         ability.setPos(x, y, z);
-        return ability;
-    }
-
-    @Override
-    protected void onStart() {
-        if (!this.sentSpikeEvent) {
-            this.level().broadcastEntityEvent(this, (byte) 4);
-            this.sentSpikeEvent = true;
-        }
+        level.addFreshEntity(ability);
     }
 
     @Override
@@ -51,7 +44,7 @@ public class EruptionAbility extends AbstractAbilityEntity {
             this.circleParticle(5);
         }
         LivingEntity attacker = this.getCaster();
-        List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(getRadius(), getRadius(), getRadius()));
+        List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(this.getRadius()));
         for (LivingEntity entityOnRange : entities) {
             if (entityOnRange == attacker) continue;
             if (entityOnRange.isAlliedTo(attacker)) continue;

@@ -11,6 +11,8 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
 
 public class BHLibEntity extends BHBaseEntity {
+    public AnimationState idleAnimation = new AnimationState();
+    private int idleTime;
     private float damageCap = -1;
     private int animationTick;
     public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(BHLibEntity.class, EntityDataSerializers.INT);
@@ -40,9 +42,20 @@ public class BHLibEntity extends BHBaseEntity {
     @Override
     public void tick() {
         super.tick();
+        if (this.level().isClientSide()) {
+            this.idleTime++;
+            if (this.idleTime >= this.getIdleTime()) {
+                this.idleAnimation.startIfStopped(this.tickCount);
+                this.idleTime = 0;
+            }
+        }
         if (this.getAnimation() > 0) {
             this.setAnimationTick(this.getAnimationTick() + 1);
         }
+    }
+
+    public int getIdleTime() {
+        return 20;
     }
 
     @Override
@@ -92,6 +105,15 @@ public class BHLibEntity extends BHBaseEntity {
             this.setAnimation(this.getAnimationDeath());
         }
     }
+
+    public boolean inBetweenHealth(float to, float from) {
+        return this.getHealthRatio() >= from && this.getHealthRatio() <= to;
+    }
+
+    public boolean getAnimationState(int id) {
+        return id == this.getAnimation();
+    }
+
 
     public AnimationState[] getAnimations() {
         return new AnimationState[0];

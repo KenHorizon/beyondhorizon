@@ -97,5 +97,13 @@
       "beyondhorizon:mob/blazing_inferno/step/step4"
     ],
     "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.step"
+  },
+  "mob.inferno_shield.break": {
+    "sounds": [
+      "beyondhorizon:mob/inferno_shield/break1",
+      "beyondhorizon:mob/inferno_shield/break2",
+      "beyondhorizon:mob/inferno_shield/break3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.inferno_shield.break"
   }
 }

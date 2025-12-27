@@ -16,24 +16,4 @@ public class BlazingInfernoRayAbility extends AbstractDeathRayAbility {
     public BlazingInfernoRayAbility(EntityType<? extends AbstractDeathRayAbility> type, Level world, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration, float range) {
         super(type, world, caster, x, y, z, yaw, pitch, duration, range);
     }
-
-    @Override
-    protected float getTrailA() {
-        return 1.0F;
-    }
-
-    @Override
-    protected float getTrailR() {
-        return 1.0F;
-    }
-
-    @Override
-    protected float getTrailG() {
-        return 0.0F;
-    }
-
-    @Override
-    protected float getTrailB() {
-        return 0.0F;
-    }
 }

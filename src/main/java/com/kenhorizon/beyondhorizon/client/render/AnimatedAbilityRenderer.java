@@ -13,28 +13,31 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-public abstract class AnimatedEntityRenderer<T extends AbstractAbilityEntity> extends EntityRenderer<T> {
+public abstract class AnimatedAbilityRenderer<T extends AbstractAbilityEntity> extends EntityRenderer<T> {
     private float alpha = 1.0F;
     private float height = 1.0F;
     private final float minTextureX;
     private final float maxTextureX;
     private final float minTextureY;
     private final float maxTextureY;
-    protected final ResourceLocation[] TEXTURE_PROGRESS = new ResourceLocation[this.NumberOfFrames()];
+    protected final ResourceLocation[] TEXTURE_PROGRESS;
     private T entity;
-    public AnimatedEntityRenderer(EntityRendererProvider.Context context) {
+    public AnimatedAbilityRenderer(EntityRendererProvider.Context context) {
         super(context);
+        this.TEXTURE_PROGRESS = new ResourceLocation[this.numberOfFrames()];
         this.minTextureX = (float) this.textureSize() / this.textureWidth();
         this.maxTextureX = this.minTextureX + (float) this.textureSize() / this.textureWidth();
         this.minTextureY = (float) this.textureSize() / this.textureHeight();
         this.maxTextureY = this.minTextureY + (float) this.textureSize() / this.textureHeight();
-
-        for (int i = 0; i < this.NumberOfFrames(); i++){
-            TEXTURE_PROGRESS[i] = this.getTextureLocation().withSuffix(String.valueOf(i));
+        if (this.numberOfFrames() == 1) {
+            TEXTURE_PROGRESS[0] = BeyondHorizon.resource(String.format("%s.png", this.getTextureLocation()));
+        } else {
+            for (int i = 0; i < this.numberOfFrames(); i++){
+                TEXTURE_PROGRESS[i] = BeyondHorizon.resource(String.format("%s%s.png", this.getTextureLocation(), i));
+            }
         }
     }
 
@@ -83,16 +86,16 @@ public abstract class AnimatedEntityRenderer<T extends AbstractAbilityEntity> ex
         return 16;
     }
 
-    public abstract ResourceLocation getTextureLocation();
+    public abstract String getTextureLocation();
 
-    public abstract int NumberOfFrames();
+    public abstract int numberOfFrames();
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return this.animatedTextureLocation(entity, entity.getLifeTime() * (TEXTURE_PROGRESS.length) / entity.getDuration());
+        return this.animatedTextureLocation(entity, entity.getLifeTime() * this.numberOfFrames() / entity.getDuration());
     }
 
     public ResourceLocation animatedTextureLocation(T entity, int age) {
-        return TEXTURE_PROGRESS[Mth.clamp(age, 0, (this.NumberOfFrames() - 1))];
+        return TEXTURE_PROGRESS[Mth.clamp(age, 0, (this.numberOfFrames() - 1))];
     }
 }

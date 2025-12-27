@@ -1,10 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.client.particle.ParticleTrails;
-import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.RoarParticleOptions;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleType;
@@ -33,7 +32,12 @@ public class BHParticle {
             return ParticleTrailOptions.CODEC;
         }
     });
-
+    public static final RegistryObject<ParticleType<RoarParticleOptions>> ROAR = RegistryEntries.PARTICLE.register("roar", () -> new ParticleType<RoarParticleOptions>(false, RoarParticleOptions.DESERIALIZER) {
+        @Override
+        public Codec<RoarParticleOptions> codec() {
+            return RoarParticleOptions.CODEC;
+        }
+    });
     public static void register(IEventBus eventBus) {
         RegistryEntries.PARTICLE.register(eventBus);
     }

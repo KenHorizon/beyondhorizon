@@ -18,9 +18,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class BHBossEntity extends BHLibEntity implements Enemy {
-    public AnimationState idleAnimation = new AnimationState();
-    private int idleTime;
+    public record BossState(int id, AnimationState animaiton) {}
     private static final EntityDataAccessor<BlockPos> DATA_HOME_POS = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<String> DATA_DIMENSION_TYPE = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Integer> DATA_BOSS_PHASE = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.INT);
@@ -105,16 +107,13 @@ public class BHBossEntity extends BHLibEntity implements Enemy {
         return super.finalizeSpawn(level, difficulty, reason, data, dataNbt);
     }
 
+    public void bossPhases() {
+    }
+
     @Override
     public void tick() {
         super.tick();
-        if (this.level().isClientSide()) {
-            this.idleTime++;
-            if (this.idleTime >= this.getIdleTime()) {
-                this.idleAnimation.startIfStopped(this.tickCount);
-                this.idleTime = 0;
-            }
-        }
+        this.bossPhases();
         if (!this.level().isClientSide()) {
             LivingEntity target = this.getTarget();
             if (this.returnState > 0) this.returnState--;
@@ -125,11 +124,6 @@ public class BHBossEntity extends BHLibEntity implements Enemy {
                 this.resetState();
             }
         }
-    }
-
-
-    public int getIdleTime() {
-        return 20;
     }
 
     @Override

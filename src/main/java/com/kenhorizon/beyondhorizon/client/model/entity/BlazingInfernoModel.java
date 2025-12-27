@@ -1,10 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
-import com.kenhorizon.beyondhorizon.client.render.animation.BlazingInfernoAnimation;
+import com.kenhorizon.beyondhorizon.client.model.animation.BlazingInfernoAnim;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.model.HierarchicalModel;
+import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
@@ -12,7 +10,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class BlazingInfernoModel extends HierarchicalModel<BlazingInferno> {
+public class BlazingInfernoModel extends AdvanceEntityModel<BlazingInferno> {
     private final ModelPart root;
     private final ModelPart body;
     private final ModelPart rod0;
@@ -111,33 +109,23 @@ public class BlazingInfernoModel extends HierarchicalModel<BlazingInferno> {
     }
 
     @Override
-    public void setupAnim(BlazingInferno entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.root().getAllParts().forEach(ModelPart::resetPose);
-        this.animateHeadLookTarget(netHeadYaw, headPitch);
+    public void setupAnim(BlazingInferno entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
+        this.resetModelDefault();
+        this.headLook(this.head, yaw, pitch);
         if (entity.walkAnimation.isMoving()) {
-            this.applyStatic(BlazingInfernoAnimation.WALKING);
+            this.applyStatic(BlazingInfernoAnim.WALKING);
         }
-        this.animate(entity.idleAnimation, BlazingInfernoAnimation.GENERAL, ageInTicks, 0.75F);
-        this.animate(entity.animationActive, BlazingInfernoAnimation.ACTIVE, ageInTicks);
-        this.animate(entity.animationInactive, BlazingInfernoAnimation.INACTIVE, ageInTicks);
-        this.animate(entity.animationDeath, BlazingInfernoAnimation.DEATH, ageInTicks);
-        this.animate(entity.animationPrepareDeathRay, BlazingInfernoAnimation.PREPARE_DEATH_RAY, ageInTicks);
-        this.animate(entity.animationDeathRay, BlazingInfernoAnimation.DEATH_RAY, ageInTicks);
-        this.animate(entity.animationEruption, BlazingInfernoAnimation.SHOCKWAVE, ageInTicks);
-        this.animate(entity.animationDashes, BlazingInfernoAnimation.DASH, ageInTicks);
-        this.animate(entity.animationGroundSlam, BlazingInfernoAnimation.SHOCKWAVE, ageInTicks);
-        this.animate(entity.animationShockwave, BlazingInfernoAnimation.SHOCKWAVE, ageInTicks);
-    }
-
-    private void animateHeadLookTarget(float yRot, float xRot) {
-        this.head.xRot += xRot * ((float) Math.PI / 180F);
-        this.head.yRot += yRot * ((float) Math.PI / 180F);
-    }
-
-
-    @Override
-    public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        this.root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.animateIdle(BlazingInfernoAnim.GENERAL, ageInTicks, 0.75F);
+        this.animate(entity.animationActive, BlazingInfernoAnim.ACTIVE, ageInTicks);
+        this.animate(entity.animationInactive, BlazingInfernoAnim.INACTIVE, ageInTicks);
+        this.animate(entity.animationDeath, BlazingInfernoAnim.DEATH, ageInTicks);
+        this.animate(entity.animationEnragedPhase, BlazingInfernoAnim.SECOND_PHASE, ageInTicks);
+        this.animate(entity.animationPrepareDeathRay, BlazingInfernoAnim.PREPARE_DEATH_RAY, ageInTicks);
+        this.animate(entity.animationDeathRay, BlazingInfernoAnim.DEATH_RAY, ageInTicks);
+        this.animate(entity.animationEruption, BlazingInfernoAnim.SHOCKWAVE, ageInTicks);
+        this.animate(entity.animationDashes, BlazingInfernoAnim.DASH, ageInTicks);
+        this.animate(entity.animationGroundSlam, BlazingInfernoAnim.SHOCKWAVE, ageInTicks);
+        this.animate(entity.animationShockwave, BlazingInfernoAnim.SHOCKWAVE, ageInTicks);
     }
 
     @Override

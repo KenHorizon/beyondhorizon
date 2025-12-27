@@ -10,8 +10,10 @@ import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -48,6 +50,9 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.COMMAND_POINTS_SUCCESS, "Successfully set the points %s");
         this.add(Tooltips.COMMAND_RESET_FAILED, "Failed to reset the roles");
         this.add(Tooltips.COMMAND_RESET_SUCCESS, "Successfully reset the roles");
+
+        this.add(Tooltips.BOSS_IS_DEFEATED, "The %s is defeated");
+        this.addBossMessage(BHEntity.BLAZING_INFERNO.get(), "The ocean and desert guardian has awoken...");
 
         this.add(Tooltips.SKILL_TYPE, "%s");
         this.add(Tooltips.TOOLTIP_MINING_SPEED, "%s Mining Speed");
@@ -143,6 +148,17 @@ public class BHLangProvider extends LanguageProvider {
                 this.add(skill.getDescriptionId() + ".desc", descriptions[i]);
             } else {
                 this.add(skill.getDescriptionId() + ".desc." + i, descriptions[i]);
+            }
+
+        }
+    }
+
+    private void addBossMessage(EntityType<?> entityType, String... descriptions) {
+        for (int i = 0; i < descriptions.length; i++) {
+            if (i == 0) {
+                this.add(Tooltips.getBossMessage(entityType), descriptions[i]);
+            } else {
+                this.add(Tooltips.getBossMessage(entityType) + "." + i, descriptions[i]);
             }
 
         }

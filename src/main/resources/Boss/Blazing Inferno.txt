@@ -1,0 +1,34 @@
+Blazing Inferno
+
+Health: 800
+Attack Damage: 15
+Armor: 15
+Damage Reduction: 15%
+Follow Range: 70
+
+Phase 1: 50% -> 100%
+Phase 2: 1% -> 50%
+
+Phase 1:
+Blazing Rod: Shoot blaze rod to player dealing 3 + 5% target current health (ignore iframe)
+Blazing Spear: Shoot a blazing spear that stay stationary for a seconds and shoot at target position after end of being stationary dealing 3 + 5% target current health
+Ground Slam: Blazing Inferno will stay stationary for 2 seconds and jump to target afterward, hit by jump will stunned
+Shockwave: Blazing Inferno will release a powerful blast that deal 15% attack damage and pushing away
+Eruption: Blazing Inferno stomp release magma below after few seconds will erupt dealing damage
+
+Phase 2:
+Gain Ultimate and set new attacks
+Removed Attacks:
+Ground Slam and Shockwave
+
+Replace Attack
+Eruption -> Eye of Destruction
+
+New Attacks:
+Eye of Destruction
+Shocking Orb
+Rite of Arcane
+
+Loot:
+Wildfire Fragments 15-30 (100%)
+Heart of the Inferno 1 (25%)

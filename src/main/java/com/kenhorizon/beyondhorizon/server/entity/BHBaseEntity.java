@@ -166,9 +166,11 @@ public abstract class BHBaseEntity extends PathfinderMob {
     }
 
     public float getAttackDamage() {
-        return (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        return this.getAttackDamage(1.0F);
     }
-
+    public float getAttackDamage(float percent) {
+        return (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * percent;
+    }
     @Override
     protected void tickDeath() {
         ++this.deathTime;
@@ -278,11 +280,11 @@ public abstract class BHBaseEntity extends PathfinderMob {
     }
 
     public <T extends Entity> List<T> getEntitiesNearby(Class<T> entityClass, double r) {
-        return level().getEntitiesOfClass(entityClass, getBoundingBox().inflate(r, r, r), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f);
+        return level().getEntitiesOfClass(entityClass, this.getBoundingBox().inflate(r, r, r), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f);
     }
 
     public <T extends Entity> List<T> getEntitiesNearby(Class<T> entityClass, double dX, double dY, double dZ, double r) {
-        return level().getEntitiesOfClass(entityClass, getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
+        return level().getEntitiesOfClass(entityClass, this.getBoundingBox().inflate(dX, dY, dZ), e -> e != this && distanceTo(e) <= r + e.getBbWidth() / 2f && e.getY() <= getY() + dY);
     }
 
     protected void repelEntities(float x, float y, float z, float radius, LivingEntity owner) {

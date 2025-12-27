@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client.level;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.guis.hud.HudSprites;
+import com.kenhorizon.beyondhorizon.client.level.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryHelper;
@@ -110,7 +111,7 @@ public class BHBossBar {
         int fontLenght = Minecraft.getInstance().font.width(bossBarName);
         int textX = screenW / 2 - fontLenght / 2;
         int textY = guiY;
-        graphics.drawString(minecraft.font, bossBarName, textX, textY, 16777215);
+        BlitHelper.drawStrings(graphics, bossBarName, textX, textY, true);
         if (this.hasOverlay) {
             minecraft.getProfiler().push("customBossBarOverlay");
             RenderSystem.setShaderTexture(0, this.overlay);

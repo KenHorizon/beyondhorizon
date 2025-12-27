@@ -3,7 +3,6 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilityEffectPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundBossbarPacket;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -12,11 +11,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.PushReaction;
@@ -24,8 +21,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -47,13 +42,14 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(AbstractAbilityEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> IGNORE_RESISTANCE = SynchedEntityData.defineId(AbstractAbilityEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IGNORE_IMMUNITY_FRAME = SynchedEntityData.defineId(AbstractAbilityEntity.class, EntityDataSerializers.BOOLEAN);
-    public static final String NBT_DURATION = "duration";
-    public static final String NBT_LIFESPAN = "lifeSpan";
-    public static final String NBT_RADIUS = "radius";
-    public static final String NBT_DAMGE = "damage";
-    public static final String NBT_IGNORE_KNOCKBACK = "ignore_knockback";
-    public static final String NBT_IGNORE_IMMUNITY_FRAME = "ignore_immunity_frame";
-    public static final String NBT_OWNER = "owner";
+    public static final String NBT_DURATION = "Duration";
+    public static final String NBT_DELAY = "Delay";
+    public static final String NBT_LIFESPAN = "LifeSpan";
+    public static final String NBT_RADIUS = "Radius";
+    public static final String NBT_DAMGE = "Damage";
+    public static final String NBT_IGNORE_KNOCKBACK = "IgnoreKnockback";
+    public static final String NBT_IGNORE_IMMUNITY_FRAME = "IgnoreImmunityFrame";
+    public static final String NBT_OWNER = "Owner";
     public AbstractAbilityEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
@@ -71,42 +67,45 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
         this.entityData.define(IGNORE_IMMUNITY_FRAME, false);
     }
     public Optional<UUID> getCasterID() {
-        return getEntityData().get(CASTER);
+        return this.entityData.get(CASTER);
     }
 
     public void setCasterID(UUID id) {
-        getEntityData().set(CASTER, Optional.of(id));
+        this.entityData.set(CASTER, Optional.of(id));
     }
 
     public Optional<UUID> getTargetID() {
-        return getEntityData().get(TARGET);
+        return this.entityData.get(TARGET);
     }
 
     public void setTargetID(UUID id) {
-        getEntityData().set(TARGET, Optional.of(id));
+        this.entityData.set(TARGET, Optional.of(id));
     }
+
     @Override
-    protected void addAdditionalSaveData(CompoundTag tag) {
-        tag.putInt(NBT_DURATION, this.getDuration());
-        tag.putInt(NBT_LIFESPAN, this.getLifeTime());
-        tag.putFloat(NBT_RADIUS, this.getRadius());
-        tag.putFloat(NBT_DAMGE, this.getBaseDamage());
-        tag.putBoolean(NBT_IGNORE_KNOCKBACK, this.isIgnoreResistance());
-        tag.putBoolean(NBT_IGNORE_IMMUNITY_FRAME, this.isIgnoreIFrame());
-        if (getCasterID().isPresent()) {
-            tag.putUUID(NBT_OWNER, getCasterID().get());
+    protected void addAdditionalSaveData(CompoundTag nbt) {
+        nbt.putInt(NBT_DURATION, this.getDuration());
+        nbt.putInt(NBT_LIFESPAN, this.getLifeTime());
+        nbt.putInt(NBT_DELAY, this.getDelay());
+        nbt.putFloat(NBT_RADIUS, this.getRadius());
+        nbt.putFloat(NBT_DAMGE, this.getBaseDamage());
+        nbt.putBoolean(NBT_IGNORE_KNOCKBACK, this.isIgnoreResistance());
+        nbt.putBoolean(NBT_IGNORE_IMMUNITY_FRAME, this.isIgnoreIFrame());
+        if (this.getCasterID().isPresent()) {
+            nbt.putUUID(NBT_OWNER, this.getCasterID().get());
         }
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag tag) {
-        this.setDuration(tag.getInt(NBT_DURATION));
-        this.setLifeTime(tag.getInt(NBT_LIFESPAN));
-        this.setRadius(tag.getInt(NBT_RADIUS));
-        this.setBaseDamage(tag.getFloat(NBT_DAMGE));
-        this.setIgnoreResistance(tag.getBoolean(NBT_IGNORE_KNOCKBACK));
-        this.setIgnoreIFrame(tag.getBoolean(NBT_IGNORE_IMMUNITY_FRAME));
-        this.setCasterID(tag.getUUID(NBT_OWNER));
+    protected void readAdditionalSaveData(CompoundTag nbt) {
+        this.setDuration(nbt.getInt(NBT_DURATION));
+        this.setLifeTime(nbt.getInt(NBT_LIFESPAN));
+        this.setDelay(nbt.getInt(NBT_DELAY));
+        this.setRadius(nbt.getFloat(NBT_RADIUS));
+        this.setBaseDamage(nbt.getFloat(NBT_DAMGE));
+        this.setIgnoreResistance(nbt.getBoolean(NBT_IGNORE_KNOCKBACK));
+        this.setIgnoreIFrame(nbt.getBoolean(NBT_IGNORE_IMMUNITY_FRAME));
+        this.setCasterID(nbt.getUUID(NBT_OWNER));
     }
 
     public void setBaseDamage(float baseDamage) {
@@ -139,14 +138,6 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
     }
 
     public boolean isIgnoreResistance()  {
-        return this.entityData.get(IGNORE_RESISTANCE);
-    }
-
-    public void setIgnoreImmunityFrame(boolean shallIgnoreResistance) {
-        this.entityData.set(IGNORE_IMMUNITY_FRAME, shallIgnoreResistance);
-    }
-
-    public boolean isIgnoreImmunityFrame()  {
         return this.entityData.get(IGNORE_RESISTANCE);
     }
 
@@ -222,6 +213,10 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
         if (this.tickCount > 1 && this.getCaster() == null) this.discard();
         if (getCaster() != null && !getCaster().isAlive()) this.discard();
         if (this.getLifeTime() <= (this.getDelay())) {
+            if (!this.sentSpikeEvent) {
+                this.level().broadcastEntityEvent(this, (byte) 4);
+                this.sentSpikeEvent = true;
+            }
             this.onStart();
         }
         this.setLifeTime(this.getLifeTime() + 1);
@@ -236,18 +231,13 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
     }
 
     @Override
-    public boolean isPickable() {
-        return false;
-    }
-
-    @Override
     public void link(Entity entity) {
         if (entity instanceof LivingEntity) {
-            cachedCaster = (LivingEntity) entity;
+            this.cachedCaster = (LivingEntity) entity;
         }
     }
 
-    public boolean raytraceCheckEntity(Entity entity) {
+    public boolean checkEntity(Entity entity) {
         Vec3 from = this.position();
         int numChecks = 3;
         for (int i = 0; i < numChecks; i++) {
@@ -273,6 +263,7 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
     public PushReaction getPistonPushReaction() {
         return PushReaction.IGNORE;
     }
+
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         LivingEntity entity = this.cachedCaster;

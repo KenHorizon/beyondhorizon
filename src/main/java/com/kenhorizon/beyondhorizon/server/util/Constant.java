@@ -4,6 +4,7 @@ public class Constant {
     public static int LEVEL_SYSTEM_UNLOCKED = 5;
     public static int CLASS_SYSTEM_UNLOCKED = 20;
 
+    public static final float TORMENT_EFFECT = 0.01F;
 
     public static final float PENALTY_DAMAGE = 30;
     public static final int TOOLTIP_MAX_TEXT_WITDH = 280;

@@ -39,16 +39,18 @@ public class ParticleTrailOptions implements ParticleOptions {
             reader.expect(' ');
             boolean facesCamera = reader.readBoolean();
             reader.expect(' ');
-            float targetX = reader.readInt();
+            int mode = reader.readInt();
             reader.expect(' ');
-            float targetY = reader.readInt();
+            float targetX = reader.readFloat();
             reader.expect(' ');
-            float targetZ = reader.readInt();
-            return new ParticleTrailOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, TrailParticles.Behavior.FADE, new Vec3(targetX, targetY, targetZ));
+            float targetY = reader.readFloat();
+            reader.expect(' ');
+            float targetZ = reader.readFloat();
+            return new ParticleTrailOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, TrailParticles.Behavior.values()[mode], new Vec3(targetX, targetY, targetZ));
         }
 
         public ParticleTrailOptions fromNetwork(ParticleType<ParticleTrailOptions> particleTypeIn, FriendlyByteBuf buffer) {
-            return new ParticleTrailOptions(buffer.readFloat(), buffer.readFloat(), buffer.readInt(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readBoolean(), TrailParticles.Behavior.FADE, new Vec3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()));
+            return new ParticleTrailOptions(buffer.readFloat(), buffer.readFloat(), buffer.readInt(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readBoolean(), TrailParticles.Behavior.values()[buffer.readInt()], new Vec3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()));
         }
     };
 
@@ -80,11 +82,19 @@ public class ParticleTrailOptions implements ParticleOptions {
 
     @Override
     public void writeToNetwork(FriendlyByteBuf buffer) {
+        buffer.writeFloat(this.yaw);
+        buffer.writeFloat(this.pitch);
         buffer.writeFloat(this.r);
         buffer.writeFloat(this.g);
         buffer.writeFloat(this.b);
+        buffer.writeFloat(this.a);
         buffer.writeFloat(this.scale);
         buffer.writeInt(this.duration);
+        buffer.writeBoolean(this.facesCamera);
+        buffer.writeInt(this.behavior.ordinal());
+        buffer.writeDouble(this.target.x);
+        buffer.writeDouble(this.target.y);
+        buffer.writeDouble(this.target.z);
     }
 
     @SuppressWarnings("deprecation")

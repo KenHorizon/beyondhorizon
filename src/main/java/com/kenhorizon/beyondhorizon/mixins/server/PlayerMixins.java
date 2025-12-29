@@ -36,15 +36,6 @@ public abstract class PlayerMixins extends LivingEntityMixins  {
         AttributeInstance lethality = playerIn.getAttribute(BHAttributes.LETHALITY.get());
         AttributeInstance magicPenetration = playerIn.getAttribute(BHAttributes.MAGIC_PENETRATION.get());
         AttributeInstance armorPenetration = playerIn.getAttribute(BHAttributes.ARMOR_PENETRATION.get());
-        if (lethality != null && lethality.getValue() > 0) {
-            return BHDamageTypes.lethality(playerIn);
-        }
-        if (armorPenetration != null && armorPenetration.getValue() > 0) {
-            return BHDamageTypes.armorPenetration(playerIn);
-        }
-        if (magicPenetration != null && magicPenetration.getValue() > 0) {
-            return BHDamageTypes.magicPenetration(playerIn);
-        }
         return damageSources.playerAttack(playerIn);
     }
 }

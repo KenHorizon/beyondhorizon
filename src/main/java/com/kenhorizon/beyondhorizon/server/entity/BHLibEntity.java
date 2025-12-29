@@ -5,10 +5,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 public class BHLibEntity extends BHBaseEntity {
     public AnimationState idleAnimation = new AnimationState();
@@ -82,6 +85,7 @@ public class BHLibEntity extends BHBaseEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        if (source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL)) return super.hurt(source, amount);
         if (!source.is(DamageTypeTags.BYPASSES_ARMOR) && this.allowDamageCap()) {
             amount = Math.min(this.getDamageCap(), amount);
         }
@@ -101,9 +105,7 @@ public class BHLibEntity extends BHBaseEntity {
     @Override
     public void die(DamageSource cause) {
         super.die(cause);
-        if (this.getAnimationDeath() == -1) {
-            this.setAnimation(this.getAnimationDeath());
-        }
+        this.setAnimation(this.getAnimationDeath());
     }
 
     public boolean inBetweenHealth(float to, float from) {
@@ -114,6 +116,17 @@ public class BHLibEntity extends BHBaseEntity {
         return id == this.getAnimation();
     }
 
+
+    protected boolean shouldFollowUp(float Range) {
+        LivingEntity target = this.getTarget();
+        if (target != null && target.isAlive()) {
+            Vec3 targetMoveVec = target.getDeltaMovement();
+            Vec3 betweenEntitiesVec = this.position().subtract(target.position());
+            boolean targetComingCloser = targetMoveVec.dot(betweenEntitiesVec) > 0;
+            return this.distanceTo(target) < Range || (this.distanceTo(target) < 5 + Range && targetComingCloser);
+        }
+        return false;
+    }
 
     public AnimationState[] getAnimations() {
         return new AnimationState[0];

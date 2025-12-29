@@ -11,6 +11,7 @@ import java.util.EnumSet;
 
 public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     protected final T entity;
+    protected final boolean isLoop;
     protected final int animation;
     protected final int[] start;
     protected final int[] end;
@@ -18,8 +19,9 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     protected final int seeTick;
     protected final int maxDuration;
 
-    public MobAttackGoal(T entity, int animation, int[] start, int[] end, int seeTick, int maxDuration, boolean interrupt) {
+    public MobAttackGoal(T entity, int animation, int[] start, int[] end, int seeTick, int maxDuration, boolean isLoop, boolean interrupt) {
         this.entity = entity;
+        this.isLoop = isLoop;
         this.animation = animation;
         this.start = start;
         this.end = end;
@@ -31,27 +33,42 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
         }
     }
     public MobAttackGoal(T entity, int animation, int[] start, int[] end, int seeTick, int maxDuration) {
-        this(entity, animation, start, end, seeTick, maxDuration, false);
+        this(entity, animation, start, end, seeTick, maxDuration, false, false);
     }
 
     public MobAttackGoal(T entity, int animation, int[] start, int end, int seeTick, int maxDuration) {
-        this(entity, animation, start, new int[] {end}, seeTick, maxDuration, false);
+        this(entity, animation, start, new int[] {end}, seeTick, maxDuration, false, false);
     }
 
     public MobAttackGoal(T entity, int animation, int start, int[] end, int seeTick, int maxDuration) {
-        this(entity, animation, new int[] {start}, end, seeTick, maxDuration, false);
+        this(entity, animation, new int[] {start}, end, seeTick, maxDuration, false, false);
     }
 
     public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, int maxDuration) {
-        this(entity, animation, new int[] {start}, new int[] {end}, seeTick, maxDuration, false);
+        this(entity, animation, new int[] {start}, new int[] {end}, seeTick, maxDuration, false, false);
     }
 
+    public MobAttackGoal(T entity, int animation, int[] start, int[] end, int seeTick, int maxDuration, boolean isLoop) {
+        this(entity, animation, start, end, seeTick, maxDuration, isLoop, false);
+    }
+
+    public MobAttackGoal(T entity, int animation, int[] start, int end, int seeTick, int maxDuration, boolean isLoop) {
+        this(entity, animation, start, new int[] {end}, seeTick, maxDuration, isLoop, false);
+    }
+
+    public MobAttackGoal(T entity, int animation, int start, int[] end, int seeTick, int maxDuration, boolean isLoop) {
+        this(entity, animation, new int[] {start}, end, seeTick, maxDuration, isLoop, false);
+    }
+
+    public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, int maxDuration, boolean isLoop) {
+        this(entity, animation, new int[] {start}, new int[] {end}, seeTick, maxDuration, isLoop, false);
+    }
     @Override
     public void start() {
         super.start();
         int animationId = this.start[this.entity.getRandom().nextInt(this.start.length)];
         this.entity.setAnimation(animationId);
-        BeyondHorizon.LOGGER.info("Start Animation ID: {}", animationId);
+//        BeyondHorizon.LOGGER.info("Start Animation ID: {}", animationId);
         this.entity.getNavigation().stop();
     }
 
@@ -60,7 +77,7 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
         super.stop();
         int animationId = this.end[this.entity.getRandom().nextInt(this.end.length)];
         this.entity.setAnimation(animationId);
-        BeyondHorizon.LOGGER.info("End Animation ID: {}", animationId);
+//        BeyondHorizon.LOGGER.info("End Animation ID: {}", animationId);
         LivingEntity target = this.entity.getTarget();
         if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.entity.setTarget(null);
@@ -81,7 +98,11 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     public boolean canContinueToUse() {
         for (int animation : this.start) {
             if (this.entity.getAnimation() == animation) {
-                return this.entity.getAnimationTick() <= this.maxDuration;
+                if (this.isLoop) {
+                    return true;
+                } else {
+                    return this.entity.getAnimationTick() <= this.maxDuration;
+                }
             }
         }
         return false;

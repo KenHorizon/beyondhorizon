@@ -1,6 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
+import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
+import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilityEffectPacket;
 import net.minecraft.nbt.CompoundTag;
@@ -11,6 +14,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +30,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 public abstract class AbstractAbilityEntity extends Entity implements ILinkedEntity {
+    public enum DamageTypes {
+        DEFAULT,
+        MAX_HEALTH,
+        MISSING_HEALTH,
+        CURRENT_HEALTH,
+        INSTANT_KILL,
+        TRUE_DAMAGE
+    }
     protected float damage;
     protected boolean sentSpikeEvent;
     protected int duration = 20;
@@ -33,6 +45,9 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
     protected int delay;
     private LivingEntity cachedCaster;
     private LivingEntity cachedTarget;
+    private ControlledAnimation animation = new ControlledAnimation(0);
+    protected DamageTypes damageTypes = DamageTypes.DEFAULT;
+    protected float damageModifiers = 0.0F;
     private static final EntityDataAccessor<Optional<UUID>> CASTER = SynchedEntityData.defineId(AbstractAbilityEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Optional<UUID>> TARGET = SynchedEntityData.defineId(AbstractAbilityEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> DELAY = SynchedEntityData.defineId(AbstractAbilityEntity.class, EntityDataSerializers.INT);
@@ -168,10 +183,6 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
         return this.level().isClientSide() ? this.entityData.get(LIFE_SPAN) : this.lifespan;
     }
 
-    protected float damage(LivingEntity target, float damage) {
-        return damage;
-    }
-
     public LivingEntity getCaster() {
         if (this.cachedCaster != null && !this.cachedCaster.isRemoved()) {
             return this.cachedCaster;
@@ -220,6 +231,7 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
             this.onStart();
         }
         this.setLifeTime(this.getLifeTime() + 1);
+        this.animation.increaseTimer();
         this.onDuration();
         if (this.getLifeTime() >= (this.getDuration() + this.getDelay()) - 1) {
             this.onEnd();
@@ -234,6 +246,31 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
     public void link(Entity entity) {
         if (entity instanceof LivingEntity) {
             this.cachedCaster = (LivingEntity) entity;
+        }
+    }
+
+    public void setDamageTypes(DamageTypes damageTypes, float damageModifiers) {
+        this.damageTypes = damageTypes;
+        this.damageModifiers = damageModifiers;
+    }
+
+    protected float dealDamage(LivingEntity entity, float damage) {
+        switch (this.damageTypes) {
+            default -> {
+                return damage;
+            }
+            case MAX_HEALTH -> {
+                return CombatUtil.maxHealth(entity, damage, this.damageModifiers);
+            }
+            case CURRENT_HEALTH -> {
+                return CombatUtil.currentHealth(entity, damage, this.damageModifiers);
+            }
+            case MISSING_HEALTH -> {
+                return CombatUtil.missingHealth(entity, damage, this.damageModifiers);
+            }
+            case INSTANT_KILL -> {
+                return entity.getMaxHealth();
+            }
         }
     }
 

@@ -11,11 +11,14 @@ import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.EruptionRenderer;
+import com.kenhorizon.beyondhorizon.client.render.entity.ability.FlameStrikeRenderer;
+import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
+import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
@@ -99,7 +102,9 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.BLAZING_SPEAR.get(), BlazingSpearRenderer::new);
         EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
+        EntityRenderers.register(BHEntity.FLAME_STRIKE.get(), FlameStrikeRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
+        EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
@@ -181,8 +186,8 @@ public class ClientProxy extends ServerProxy {
         BeyondHorizon.LOGGER.info("Registering Particles!!");
         event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
         event.registerSpriteSet(BHParticle.RING.get(), RingParticles.Provider::new);
-        event.registerSpriteSet(BHParticle.TRAILS.get(), TrailParticles.Provider::new);
         event.registerSpriteSet(BHParticle.ROAR.get(), RoarParticles.Provider::new);
+        event.registerSpriteSet(BHParticle.TRAILS.get(), TrailParticles.Provider::new);
         event.registerSpecial(BHParticle.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(BHParticle.STUN_PARTICLES.get(),new StunParticles.Provider());
 

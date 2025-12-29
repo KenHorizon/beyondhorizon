@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
@@ -162,7 +164,7 @@ public abstract class BHBaseEntity extends PathfinderMob {
     }
 
     public int getAnimationDeath() {
-        return -1;
+        return 0;
     }
 
     public float getAttackDamage() {
@@ -238,6 +240,41 @@ public abstract class BHBaseEntity extends PathfinderMob {
 //        return null;
 //    }
 
+    public void doShakeBlock(LivingEntity entity, int tick) {
+        this.doShakeBlock(entity, tick, 20);
+    }
+
+    public void doShakeBlock(LivingEntity entity, int tick, int range) {
+        double perpFacing = entity.yBodyRot * (Math.PI / 180);
+        double facingAngle = perpFacing + Math.PI / 2;
+        ServerLevel world = (ServerLevel) entity.level();
+        int hitY = Mth.floor(entity.getBoundingBox().minY - 0.5);
+        if (tick % 2 == 0) {
+            int distance = tick / 2 - range;
+            double spread = Math.PI * 2;
+            int arcLen = Mth.ceil(distance * spread);
+            for (int i = 0; i < arcLen; i++) {
+                double theta = (i / (arcLen - 1.0) - 0.5) * spread + facingAngle;
+                double vx = Math.cos(theta);
+                double vz = Math.sin(theta);
+                double px = entity.getX() + vx * distance;
+                double pz = entity.getZ() + vz * distance;
+                if (world.random.nextBoolean()) {
+                    int hitX = Mth.floor(px);
+                    int hitZ = Mth.floor(pz);
+                    BlockPos pos = new BlockPos(hitX, hitY, hitZ);
+                    BlockPos abovePos = new BlockPos(pos).above();
+                    BlockState block = world.getBlockState(pos);
+                    BlockState blockAbove = world.getBlockState(abovePos);
+                    if (!block.isAir() && block.isRedstoneConductor(world, pos) && !block.hasBlockEntity() && !blockAbove.blocksMotion()) {
+                        BHFallingBlocks fallingBlock = new BHFallingBlocks(world, hitX + 0.5, hitY + 1, hitZ + 0.5, block, 5);
+                        fallingBlock.push(0, 0.2D + getRandom().nextGaussian() * 0.04D, 0);
+                        world.addFreshEntity(fallingBlock);
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     public void push(Entity entityIn) {

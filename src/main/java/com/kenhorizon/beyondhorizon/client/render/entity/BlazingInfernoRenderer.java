@@ -19,6 +19,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraftforge.common.MinecraftForge;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import com.mojang.math.Axis;
@@ -84,13 +85,14 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
             float awakenProgress = entity.getAwakenProgress(partialTicks);
 
             VertexConsumer renderModel = buffer.getBuffer(RenderType.entityCutoutNoCull(this.getTextureLocation(entity)));
-            this.model.renderToBuffer(poseStack, renderModel, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, 1.0F);
+            int whiteOverlay = getOverlayCoords(entity, this.getWhiteOverlayProgress(entity, partialTicks));
+            this.model.renderToBuffer(poseStack, renderModel, packedLight, whiteOverlay, 1.0F, 1.0F, 1.0F, 1.0F);
             if (awakenProgress != 1.0F) {
                 VertexConsumer renderModelExplosion = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_INACTIVE));
-                this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F - awakenProgress);
+                this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, whiteOverlay, 1.0F, 1.0F, 1.0F, 1.0F - awakenProgress);
             }
             VertexConsumer renderModelExplosion = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_ENRAGED));
-            this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, enragedProgress);
+            this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, whiteOverlay, 1.0F, 1.0F, 1.0F, enragedProgress);
         }
         if (entity.deathTime > 0 && entity.isEnraged()) {
             float f1 = ((float) entity.deathTime + partialTicks) / 200.0F;
@@ -129,6 +131,18 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
             }
         }
         poseStack.popPose();
+        var renderNameTagEvent = new net.minecraftforge.client.event.RenderNameTagEvent(entity, entity.getDisplayName(), this, poseStack, buffer, packedLight, partialTicks);
+        net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(renderNameTagEvent);
+        if (renderNameTagEvent.getResult() != net.minecraftforge.eventbus.api.Event.Result.DENY && (renderNameTagEvent.getResult() == net.minecraftforge.eventbus.api.Event.Result.ALLOW || this.shouldShowName(entity))) {
+            this.renderNameTag(entity, renderNameTagEvent.getContent(), poseStack, buffer, packedLight);
+        }
+        MinecraftForge.EVENT_BUS.post(new net.minecraftforge.client.event.RenderLivingEvent.Post<>(entity, this, partialTicks, poseStack, buffer, packedLight));
+    }
+
+    @Override
+    protected float getWhiteOverlayProgress(BlazingInferno entity, float partialTicks) {
+        float isShockwave = entity.getShockwaveProgress(partialTicks);
+        return (int)(isShockwave * 10.0F) % 2 == 0 ? 0.0F : Mth.clamp(isShockwave, 0.5F, 1.0F);
     }
 
     @Override

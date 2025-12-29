@@ -19,19 +19,18 @@ import org.joml.Matrix4f;
 public abstract class AnimatedAbilityRenderer<T extends AbstractAbilityEntity> extends EntityRenderer<T> {
     private float alpha = 1.0F;
     private float height = 1.0F;
-    private final float minTextureX;
-    private final float maxTextureX;
-    private final float minTextureY;
-    private final float maxTextureY;
+    private float minTextureX;
+    private float maxTextureX;
+    private float minTextureY;
+    private float maxTextureY;
     protected final ResourceLocation[] TEXTURE_PROGRESS;
-    private T entity;
     public AnimatedAbilityRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.TEXTURE_PROGRESS = new ResourceLocation[this.numberOfFrames()];
         this.minTextureX = (float) this.textureSize() / this.textureWidth();
         this.maxTextureX = this.minTextureX + (float) this.textureSize() / this.textureWidth();
         this.minTextureY = (float) this.textureSize() / this.textureHeight();
         this.maxTextureY = this.minTextureY + (float) this.textureSize() / this.textureHeight();
+        this.TEXTURE_PROGRESS = new ResourceLocation[this.numberOfFrames()];
         if (this.numberOfFrames() == 1) {
             TEXTURE_PROGRESS[0] = BeyondHorizon.resource(String.format("%s.png", this.getTextureLocation()));
         } else {
@@ -48,7 +47,7 @@ public abstract class AnimatedAbilityRenderer<T extends AbstractAbilityEntity> e
         float radius = 0.05F * 12.85F;
         VertexConsumer vertexConsumer = buffer.getBuffer(BHRenderTypes.glowing(getTextureLocation(entity)));
         RenderSystem.setShader(GameRenderer::getRendertypeEntityTranslucentShader);
-        poseStack.scale(1.0F, 1.0F, 1.0F);
+        poseStack.scale(1.0F + entity.getRadius(), 1.0F, 1.0F + entity.getRadius());
         poseStack.mulPose(Axis.YP.rotationDegrees(90.0F - entity.getYRot()));
         poseStack.translate(0.0D, -0.95D, 0.0D);
         renderParts(poseStack, vertexConsumer, radius, height, alpha, minTextureX, maxTextureX, minTextureY, maxTextureY, packedLight);

@@ -27,7 +27,7 @@ Eruption -> Eye of Destruction
 New Attacks:
 Eye of Destruction
 Shocking Orb
-Rite of Arcane
+Hellfire
 
 Loot:
 Wildfire Fragments 15-30 (100%)

@@ -1,21 +1,19 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
-public class ArcaneMissle extends ExtendedThrowableProjectile {
+public class HellfireOrb extends ExtendedThrowableProjectile {
     public double prevDeltaMovementX;
     public double prevDeltaMovementY;
     public double prevDeltaMovementZ;
 
 
-    public ArcaneMissle(EntityType<? extends ThrowableProjectile> entityType, Level level) {
+    public HellfireOrb(EntityType<? extends ThrowableProjectile> entityType, Level level) {
         super(entityType, level);
         this.setBaseDamage(4);
     }

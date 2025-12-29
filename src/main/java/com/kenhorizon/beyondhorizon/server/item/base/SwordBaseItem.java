@@ -22,6 +22,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.MendingEnchantment;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
@@ -137,6 +139,22 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         }
         super.setDamage(stack, damage);
     }
+
+    @Override
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
+        for (Skill trait : this.skills) {
+            if (trait.isEnchantmentCompatible(enchantment)) {
+                return true;
+            } else if (trait.isEnchantmentIncompatible(enchantment)) {
+                return false;
+            }
+        }
+        if (enchantment instanceof MendingEnchantment && this.materials.getUses() < 0) {
+            return false;
+        }
+        return super.canApplyAtEnchantingTable(stack, enchantment);
+    }
+
 
     @Override
     public SwordBaseItem getItem() {

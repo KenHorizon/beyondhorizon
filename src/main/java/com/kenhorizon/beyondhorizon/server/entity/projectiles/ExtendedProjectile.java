@@ -5,6 +5,8 @@ import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSp
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.core.BlockPos;
@@ -127,16 +129,18 @@ public class ExtendedProjectile extends Projectile {
                 boolean flag;
                 switch (this.getDamageType()) {
                     case MAX_HEALTH -> {
-                        flag = target.hurt(this.setDamageSource(target), CombatUtil.maxHealth(target, this.getBaseDamage(), this.damageModifiers));
+                        flag = DamageHandler.damage(target, this.setDamageSource(target), this.getBaseDamage(), DamageTypes.TARGET_MAX_HEALTH, this.damageModifiers);
                     }
                     case MISSING_HEALTH -> {
+                        flag = DamageHandler.damage(target, this.setDamageSource(target), this.getBaseDamage(), DamageTypes.TARGET_MAX_HEALTH, this.damageModifiers);
                         flag = target.hurt(this.setDamageSource(target), CombatUtil.missingHealth(target, this.getBaseDamage(), this.damageModifiers));
                     }
                     case CURRENT_HEALTH -> {
+                        flag = DamageHandler.damage(target, this.setDamageSource(target), this.getBaseDamage(), DamageTypes.TARGET_MAX_HEALTH, this.damageModifiers);
                         flag = target.hurt(this.setDamageSource(target), CombatUtil.currentHealth(target, this.getBaseDamage(), this.damageModifiers));
                     }
                     case INSTANT_KILL -> {
-                        flag = target.hurt(this.setDamageSource(target), target.getMaxHealth());
+                        flag = DamageHandler.instantKill(target, this.setDamageSource(target));
                     }
                     case TRUE_DAMAGE -> {
                         flag = target.hurt(BHDamageTypes.trueDamage(this, target), target.getMaxHealth());

@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.particle;
 
+import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -45,7 +46,7 @@ public abstract class AbstractTrailParticle extends Particle {
     }
 
     public void tick() {
-        tickTrail();
+        this.tickTrail();
         this.xo = this.x;
         this.yo = this.y;
         this.zo = this.z;
@@ -73,10 +74,11 @@ public abstract class AbstractTrailParticle extends Particle {
         }
         this.trailPositions[this.trailPointer] = currentPosition;
     }
+
     public void render(VertexConsumer consumer, Camera camera, float partialTick) {
         if (trailPointer > -1) {
             MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
-            VertexConsumer vertexconsumer = bufferSource.getBuffer(RenderType.entityTranslucent(getTrailTexture()));
+            VertexConsumer vertexconsumer = bufferSource.getBuffer(BHRenderTypes.getTrailEffect(getTrailTexture()));
 
             Vec3 cameraPos = camera.getPosition();
             double x = (float) (Mth.lerp((double) partialTick, this.xo, this.x));

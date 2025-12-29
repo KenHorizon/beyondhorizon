@@ -35,8 +35,8 @@ public class BHRenderTypes extends RenderType {
     }
 
     public static RenderType beam(ResourceLocation resourceLocation) {
-        RenderType.CompositeState state = RenderType.CompositeState.builder().setShaderState(RENDERTYPE_BEACON_BEAM_SHADER).setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false)).setTransparencyState(TRANSLUCENT_TRANSPARENCY).setWriteMaskState(COLOR_DEPTH_WRITE).createCompositeState(true);
-        return RenderType.create("beam", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 256, false, false, state);
+        RenderType.CompositeState state = RenderType.CompositeState.builder().setShaderState(RENDERTYPE_BEACON_BEAM_SHADER).setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false)).setTransparencyState(TRANSLUCENT_TRANSPARENCY).setWriteMaskState(RenderStateShard.COLOR_WRITE).setCullState(NO_CULL).setOverlayState(OVERLAY).createCompositeState(false);
+        return RenderType.create("beam", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, state);
     }
 
     public static RenderType glowing(ResourceLocation resourceLocation) {

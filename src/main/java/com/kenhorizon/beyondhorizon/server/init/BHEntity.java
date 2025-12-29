@@ -3,10 +3,13 @@ package com.kenhorizon.beyondhorizon.server.init;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.EruptionAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.FlameStrikeAbility;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSpear;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
+import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireOrb;
 import com.kenhorizon.libs.registry.RegistryEntity;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.world.entity.EntityType;
@@ -66,6 +69,28 @@ public class BHEntity {
             .lang("Blazing Inferno Ray")
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
+    public static final RegistryObject<EntityType<FlameStrikeAbility>> FLAME_STRIKE = RegistryEntity
+            .<FlameStrikeAbility>register("flame_strike", FlameStrikeAbility::new)
+            .lang("Flame Strike")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
+    public static final RegistryObject<EntityType<HellfireOrb>> HELLFIRE_ORB = RegistryEntity
+            .<HellfireOrb>register("hellfire_orb", HellfireOrb::new)
+            .lang("Hellfire Orb")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
+    public static final RegistryObject<EntityType<BHFallingBlocks>> FALLING_BLOCKS = RegistryEntity
+            .<BHFallingBlocks>register("beyondhorizon_falling_block", BHFallingBlocks::new)
+            .lang("Falling Block")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(1.0F, 1.0F))
+            .properties(EntityType.Builder::noSummon)
             .register();
 
     public static void register(IEventBus eventBus) {

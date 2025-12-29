@@ -21,7 +21,7 @@ import org.joml.Matrix4f;
 public class BlazingRodRenderer extends EntityRenderer<BlazingRod> {
     private static final ResourceLocation TEXTURE_RED = BeyondHorizon.resource("textures/entity/projectiles/blazing_rod.png");
     private static final RenderType RENDER_TYPE_RED = RenderType.eyes(TEXTURE_RED);
-    private static final ResourceLocation TRAIL_TEXTURE = BeyondHorizon.resource("textures/particle/lightning.png");
+    private static final ResourceLocation TRAIL_TEXTURE = BeyondHorizon.resource("textures/particle/teletor_trail.png");
     private final RandomSource random = RandomSource.create();
 
     public BlazingRodRenderer(EntityRendererProvider.Context context) {
@@ -59,7 +59,7 @@ public class BlazingRodRenderer extends EntityRenderer<BlazingRod> {
         poseStack.popPose();
         if (entity.hasTrail()) {
             double x = Mth.lerp(partialTicks, entity.xOld, entity.getX());
-            double y = Mth.lerp(partialTicks, entity.yOld, entity.getY()) + 0.15F;
+            double y = Mth.lerp(partialTicks, entity.yOld, entity.getY()) + 0.25F;
             double z = Mth.lerp(partialTicks, entity.zOld, entity.getZ());
             float ran = 0.04f;
             float r = 195/255F + this.random.nextFloat() * ran * 1.5F;
@@ -74,7 +74,7 @@ public class BlazingRodRenderer extends EntityRenderer<BlazingRod> {
     }
     private void renderTrail(BlazingRod entityIn, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, float trailR, float trailG, float trailB, float trailA, int packedLightIn) {
         int sampleSize = 10;
-        float trailHeight = 0.5F;
+        float trailHeight = 0.2F;
         float trailYRot = 0;
         float trailZRot = 0;
         Vec3 topAngleVec = new Vec3(trailHeight, trailHeight, 0).yRot(trailYRot).zRot(trailZRot);

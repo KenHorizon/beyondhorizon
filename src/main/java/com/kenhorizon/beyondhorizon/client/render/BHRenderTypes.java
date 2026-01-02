@@ -40,16 +40,40 @@ public class BHRenderTypes extends RenderType {
     }
 
     public static RenderType glowing(ResourceLocation resourceLocation) {
-        RenderStateShard.TextureStateShard shard = new RenderStateShard.TextureStateShard(resourceLocation, false, false);
-        RenderType.CompositeState state = RenderType.CompositeState.builder().setShaderState(RENDERTYPE_BEACON_BEAM_SHADER).setTextureState(shard).setTransparencyState(TRANSLUCENT_TRANSPARENCY).setCullState(NO_CULL).setWriteMaskState(COLOR_WRITE).setOverlayState(OVERLAY).createCompositeState(false);
-        return RenderType.create("glowing", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, true, state);
+        return GLOWING_EFFECT.apply(resourceLocation);
     }
 
+    public static final Function<ResourceLocation, RenderType> GLOWING_EFFECT = Util.memoize(resourceLocation -> {
+                RenderType.CompositeState state = RenderType.CompositeState.builder()
+                        .setTextureState(new TextureStateShard(resourceLocation, false, false))
+                        .setShaderState(RENDERTYPE_BEACON_BEAM_SHADER)
+                        .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                        .setCullState(NO_CULL)
+                        .setOverlayState(OVERLAY)
+                        .setWriteMaskState(COLOR_WRITE)
+                        .createCompositeState(false);
+                return create("glowing", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256,true,true, state);
+            }
+    );
+
     public static RenderType positionMarker(ResourceLocation resourceLocation) {
-        RenderStateShard.TextureStateShard shard = new RenderStateShard.TextureStateShard(resourceLocation, false, false);
-        RenderType.CompositeState state = RenderType.CompositeState.builder().setShaderState(POSITION_MARKER).setTextureState(shard).setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).setDepthTestState(NO_DEPTH_TEST).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOutputState(RenderStateShard.OUTLINE_TARGET).setOverlayState(OVERLAY).setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE).createCompositeState(true);
-        return RenderType.create("position_marker", BHVertextFormat.POSITION_MARKER, VertexFormat.Mode.QUADS, 256, false, false, state);
+        return MARKER.apply(resourceLocation);
     }
+
+    public static final Function<ResourceLocation, RenderType> MARKER = Util.memoize(resourceLocation -> {
+        RenderType.CompositeState state = RenderType.CompositeState.builder()
+                .setShaderState(POSITION_MARKER)
+                .setTextureState(new TextureStateShard(resourceLocation, false, false))
+                .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+                .setDepthTestState(NO_DEPTH_TEST)
+                .setCullState(NO_CULL)
+                .setLightmapState(LIGHTMAP)
+                .setOutputState(RenderStateShard.OUTLINE_TARGET)
+                .setOverlayState(OVERLAY)
+                .setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
+                .createCompositeState(true);
+        return create("marker", BHVertextFormat.POSITION_MARKER, VertexFormat.Mode.QUADS, 256, false, false, state);
+    });
 
     public static RenderType swril(ResourceLocation resourceLocation, float pU, float pV) {
         RenderType.CompositeState state = RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER).setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false)).setTexturingState(new RenderStateShard.OffsetTexturingStateShard(pU, pV)).setTransparencyState(ADDITIVE_TRANSPARENCY).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).createCompositeState(false);

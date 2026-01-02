@@ -60,7 +60,7 @@ public class RegistryHelper {
     }
 
     public static void registerAttribiuteLang(String name, RegistryObject<Attribute> attributes) {
-        String[] array = name.split("_");
+        String[] array = name.split("[_.]");
         StringBuilder splitName = new StringBuilder();
         for (int i = 0; i < array.length; ++i) {
             splitName.append(i == 0 ? array[i] : " " + array[i]);

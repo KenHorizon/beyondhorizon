@@ -1,0 +1,6 @@
+{
+  "parent": "beyondhorizon:item/base/32xhandheld",
+  "textures": {
+    "layer0": "beyondhorizon:item/elucidator"
+  }
+}

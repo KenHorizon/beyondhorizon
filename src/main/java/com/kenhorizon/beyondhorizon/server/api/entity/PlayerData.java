@@ -9,7 +9,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class PlayerData {
-    public static String MANA = "Mana";
+    public static String NBT_MANA = "Mana";
+    public static String NBT_CRIT = "Crti";
+    public boolean crit;
     public double mana;
     public Player player;
     public int tick;
@@ -33,7 +35,13 @@ public class PlayerData {
     public double getMana() {
         return this.mana;
     }
+    public void setCrit(boolean crit) {
+        this.crit = crit;
+    }
 
+    public boolean isCrit() {
+        return this.crit;
+    }
     public void setDefaults() {
         this.mana = this.player.getAttributeBaseValue(BHAttributes.MAX_MANA.get());
     }
@@ -66,11 +74,13 @@ public class PlayerData {
 
     public CompoundTag saveNbt() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putDouble(MANA, this.mana);
+        nbt.putDouble(NBT_MANA, this.getMana());
+        nbt.putBoolean(NBT_CRIT, this.isCrit());
         return nbt;
     }
 
     public void loadNbt(CompoundTag nbt) {
-        this.mana = nbt.getDouble(MANA);
+        this.setMana(nbt.getDouble(NBT_MANA));
+        this.setCrit(nbt.getBoolean(NBT_CRIT));
     }
 }

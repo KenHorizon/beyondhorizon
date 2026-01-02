@@ -1,5 +1,7 @@
-// 1.20.1	2025-12-28T00:40:23.8438644	Particle Descriptions
+// 1.20.1	2026-01-01T13:50:48.0517107	Particle Descriptions
 e89608ac16258c3065f5950d1297133670bbcbc4 assets/beyondhorizon/particles/bleed.json
+e58b829b09084e6b99cb7b5fa57ff5351b9f835d assets/beyondhorizon/particles/hellfire_orb_explosion.json
+799ddf0f37c4aef95275e64c75a57a1989e50465 assets/beyondhorizon/particles/hellfire_orb_trail.json
 2f15a08a7836cef1ade0d345c773edc14823daf4 assets/beyondhorizon/particles/ring.json
 06a25bfc03d32b0e33c9ebd8cbd1303dd48f863e assets/beyondhorizon/particles/roar.json
 f9352fd5cab4af5724485a63cf47fe49dbcc14f3 assets/beyondhorizon/particles/stun_particles.json

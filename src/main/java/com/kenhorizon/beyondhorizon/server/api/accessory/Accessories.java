@@ -21,7 +21,7 @@ public class Accessories {
 
     public static final RegistryObject<Accessory> SPECTRAL_CLOAK = registerSkill("spectral_cloak", () -> new BootsAccessory()
             .addAttributes(Attributes.MAX_HEALTH, "56c926ec-6dae-4cc1-887a-bca94ad097f2", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION)
-            .addAttributes(BHAttributes.MAGIC_PENETRATION.get(), "29ebac4c-4845-44cf-aa07-2b9ef950c932", Constant.MAGIC_RESISTANCE_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MAGIC_RESISTANCE.get(), "29ebac4c-4845-44cf-aa07-2b9ef950c932", Constant.MAGIC_RESISTANCE_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.HEALTH_REGENERATION.get(), "81a1ce5c-e820-47f3-9165-3b467d712e56", Constant.REGEN, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Accessory> UNSTABLE_RUNIC_TOME = registerSkill("unstable_runic_tome", () -> new BootsAccessory()

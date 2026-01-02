@@ -1,5 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
+import com.kenhorizon.beyondhorizon.server.api.entity.PlayerData;
+import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.entity.IEntityDamageCap;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
@@ -26,12 +30,18 @@ public class ExtraDamageSkill extends WeaponSkills {
         if (target instanceof WitherBoss ||  target instanceof Warden) {
             return Math.min(finalDamage, Constant.PENALTY_DAMAGE);
         }
+        if (target instanceof IEntityDamageCap cap) {
+            return Math.min(finalDamage, cap.getDamageCap());
+        }
         return finalDamage;
     });
     public static final DamageTypeFunction MAX_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
         float finalDamage = damageDealt + (target.getMaxHealth() * (magnitude * level));
         if (target instanceof WitherBoss ||  target instanceof Warden) {
             return Math.min(finalDamage, Constant.PENALTY_DAMAGE);
+        }
+        if (target instanceof IEntityDamageCap cap) {
+            return Math.min(finalDamage, cap.getDamageCap());
         }
         return finalDamage;
     });
@@ -72,6 +82,24 @@ public class ExtraDamageSkill extends WeaponSkills {
         return damageDealt + (magnitude * level);
     });
 
+    public static final DamageTypeFunction ARMORED_DAMAGE = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
+        float targetArmor = target.getArmorValue();
+        float baseDamage = level;
+        float bonusDamage = baseDamage + (targetArmor * magnitude);
+        return damageDealt + bonusDamage;
+    });
+
+    public static final DamageTypeFunction PERFECTION = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
+        if (attacker instanceof Player player) {
+            PlayerData playerData = CapabilityCaller.data(player);
+            if (playerData.isCrit()) {
+                float lethalStrikeDamage = damageDealt * magnitude;
+                target.hurt(BHDamageTypes.trueDamage(attacker, target), lethalStrikeDamage);
+            }
+        }
+        return damageDealt;
+    });
+
     public static final DamageTypeFunction KINETIC_WEAPON = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
         Entity entity = attacker;
         if (!(entity instanceof Player) && attacker.isPassenger()) {
@@ -94,7 +122,9 @@ public class ExtraDamageSkill extends WeaponSkills {
         this.setLevel(level);
         this.mobType = mobType;
     }
-
+    public ExtraDamageSkill(float magnitude, float level, DamageTypeFunction damageTypeFunction) {
+        this(magnitude, level, null, damageTypeFunction);
+    }
     public ExtraDamageSkill(float magnitude, DamageTypeFunction damageTypeFunction) {
         this(magnitude, 1.0F, null, damageTypeFunction);
     }

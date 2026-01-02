@@ -1,5 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
+import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireOrb;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -10,6 +13,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -23,15 +27,18 @@ public class FlameStrikeAbility extends AbstractAbilityEntity {
     public static void spawn(Level level, double x, double y, double z, float damage, float radius, int duration, LivingEntity entity) {
         FlameStrikeAbility ability = new FlameStrikeAbility(BHEntity.FLAME_STRIKE.get(), level);
         ability.setBaseDamage(damage);
+        ability.setCaster(entity);
         ability.setCasterID(entity.getUUID());
         ability.setRadius(radius);
         ability.setDuration(duration);
         ability.setPos(x, y, z);
         level.addFreshEntity(ability);
     }
+
     public static void spawn(Level level, double x, double y, double z, float damage, LivingEntity entity) {
         FlameStrikeAbility ability = new FlameStrikeAbility(BHEntity.FLAME_STRIKE.get(), level);
         ability.setBaseDamage(damage);
+        ability.setCaster(entity);
         ability.setCasterID(entity.getUUID());
         ability.setPos(x, y, z);
         level.addFreshEntity(ability);
@@ -42,27 +49,38 @@ public class FlameStrikeAbility extends AbstractAbilityEntity {
         if (this.level().isClientSide()) {
             if (this.tickCount % 5 == 0) {
                 this.level().addParticle(ParticleTypes.FLAME, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+                this.particleTrail(32);
             }
+        }
+    }
+
+    private void particleTrail(int count) {
+        int particleCount = count;
+        while (particleCount --> 0) {
+            double radius = this.getRadius();
+            float yaw = (float) (this.random.nextFloat() * 2 * Math.PI);
+            float pitch = (float) (this.random.nextFloat() * 2 * Math.PI);
+            double ox = (float) (radius * Math.sin(yaw) * Math.sin(pitch));
+            double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
+            ParticleTrailOptions.add(this.level(), TrailParticles.Behavior.FADE, this.getX() + ox, this.getY(), this.getZ() + oz, 3.0F, 1, 0.0F, 0.0F, 1.0F, 20, new Vec3(this.getX() + ox, this.getY() + 10, this.getZ() + oz));
         }
     }
 
     @Override
     protected void onEnd() {
         if (this.level().isClientSide()) {
-            this.circleParticle(5);
+            this.circleParticle(6);
         }
-        LivingEntity attacker = this.getCaster();
-        List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(this.getRadius()));
-        for (LivingEntity entityOnRange : entities) {
-            if (entityOnRange == attacker) continue;
-            if (entityOnRange.isAlliedTo(attacker)) continue;
-            if (entityOnRange.isAlive() && !entityOnRange.isInvulnerable()) {
-                boolean flag = entityOnRange.hurt(BHDamageTypes.magicDamage(this, attacker), this.getBaseDamage());
-                if (flag) {
-                    entityOnRange.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, Maths.sec(1), 2));
-                }
-            }
-        }
+
+        HellfireOrb orb = new HellfireOrb(this.level(), HellfireOrb.EffectOnHit.SLOW, this.getCaster());
+        orb.setBaseDamage(this.getBaseDamage());
+        orb.setPosRaw(this.getX(), this.getY() + 10.0D, this.getZ());
+        double d0 = this.getX() - orb.getX();
+        double d1 = this.getBoundingBox().minY + this.getBbHeight() / 3.0F - orb.getY();
+        double d2 = this.getZ() - orb.getZ();
+        double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
+        orb.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 2.50F, 0);
+        this.level().addFreshEntity(orb);
     }
 
     private void circleParticle(int amount) {

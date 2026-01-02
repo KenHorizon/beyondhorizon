@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
@@ -45,11 +46,11 @@ public class ExtraDamageAccessory extends AccessorySkill {
                 if (i % magnitude == 0) {
                     amplifier++;
                     float perDamage = (amplifier / 100.0F);
-                    return CombatUtil.multiplier (damageDealt, perDamage);
+                    return DamageHandler.multiplier(damageDealt, perDamage);
                 }
             }
         }
-        return CombatUtil.multiplier(damageDealt, damageMultiplier);
+        return DamageHandler.multiplier(damageDealt, damageMultiplier);
     });
     public static final ExtraDamageAccessory.DamageTypeFunction TARGET_MISSING_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
         float damageMultiplier = (target.getMaxHealth() - target.getHealth() / target.getMaxHealth());
@@ -59,18 +60,18 @@ public class ExtraDamageAccessory extends AccessorySkill {
                 if (i % magnitude == 0) {
                     amplifier++;
                     float perDamage = (amplifier / 100.0F);
-                    return CombatUtil.multiplier (damageDealt, perDamage);
+                    return DamageHandler.multiplier (damageDealt, perDamage);
                 }
             }
         }
-        return CombatUtil.multiplier(damageDealt, damageMultiplier);
+        return DamageHandler.multiplier(damageDealt, damageMultiplier);
     });
 
     public static final ExtraDamageAccessory.DamageTypeFunction BONUS_DAMAGE = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
         if (mobType != null && mobType == target.getMobType()) {
-            return CombatUtil.multiplier(damageDealt, magnitude * level);
+            return DamageHandler.multiplier(damageDealt, magnitude * level);
         }
-        return CombatUtil.multiplier(damageDealt, magnitude * level);
+        return DamageHandler.multiplier(damageDealt, magnitude * level);
     });
 
     public static final ExtraDamageAccessory.DamageTypeFunction KINETIC_WEAPON = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
@@ -80,7 +81,7 @@ public class ExtraDamageAccessory extends AccessorySkill {
         }
         if (entity instanceof LivingEntity) {
             Vec3 vec3 = entity.getDeltaMovement().scale(20.0F);
-            return CombatUtil.multiplier(damageDealt, (float) Maths.perValue(vec3.length(), (magnitude * level), magnitude));
+            return DamageHandler.multiplier(damageDealt, (float) Maths.perValue(vec3.length(), (magnitude * level), magnitude));
         }
         return damageDealt;
     });

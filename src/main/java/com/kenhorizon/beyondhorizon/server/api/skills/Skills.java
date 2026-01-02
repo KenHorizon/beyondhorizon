@@ -1,8 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -58,6 +60,23 @@ public class Skills {
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));
 
+    public static final RegistryObject<Skill> DARK_BLADE = registerSkill("dark_blade", () -> new WeaponSkills()
+            .addAttributes(BHAttributes.ARMOR_PENETRATION.get(), "f8d72f64-418b-4b18-977a-e136661e1439", Constant.DARK_BLADE_PEN, AttributeModifier.Operation.ADDITION)
+            .universal()
+            .disableTooltipName()
+            .innate(Skills.PERFECTION)
+            .format(Skill.Format.NORMAL)
+            .type(Skill.Type.PASSIVE));
+
+    public static final RegistryObject<Skill> PERFECTION = registerSkill("perfection", () -> new ExtraDamageSkill(Constant.PERFECTION, ExtraDamageSkill.PERFECTION)
+            .universal()
+            .format(Skill.Format.NORMAL)
+            .type(Skill.Type.PASSIVE));
+
+    public static final RegistryObject<Skill> PIERCING_EDEGE = registerSkill("piercing_edge", () -> new ExtraDamageSkill(Constant.PIERCING_EDGE_DAMAGE, Constant.PIERCING_EDGE_SCALE_DAMAGE, ExtraDamageSkill.ARMORED_DAMAGE)
+            .universal()
+            .format(Skill.Format.NORMAL)
+            .type(Skill.Type.PASSIVE));
 
     public static RegistryObject<Skill> registerSkill(String name, Supplier<Skill> properties) {
         return BHRegistries.DEFERRED_SKILL.register(name, properties);

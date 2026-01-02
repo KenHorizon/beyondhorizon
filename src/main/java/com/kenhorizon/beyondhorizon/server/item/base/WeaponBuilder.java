@@ -21,4 +21,6 @@ public class WeaponBuilder {
     public static final MeleeBuilder<SwordBaseItem> BLADE_OF_THE_ENDERLORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.BLADE_OF_THE_ENDERLORD[0], Constant.BLADE_OF_THE_ENDERLORD[1], properties, SkillBuilder.RUINED_BLADE));
     public static final MeleeBuilder<SwordBaseItem> ZENITH = ((materials, properties) -> new SwordBaseItem(materials, Constant.ZENITH[0], Constant.ZENITH[1], properties, SkillBuilder.BLADE_EDGE));
     public static final MeleeBuilder<SwordBaseItem> GIANT_SLAYER_SWORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.GIANT_SLAYER[0], Constant.GIANT_SLAYER[1], Constant.GIANT_SLAYER[2], properties, SkillBuilder.GIANT_SLAYER_SWORD));
+    public static final MeleeBuilder<SwordBaseItem> ELUCIDATOR = ((materials, properties) -> new SwordBaseItem(materials, Constant.ELUCIDATOR[0], Constant.ELUCIDATOR[1], Constant.ELUCIDATOR[2], properties, SkillBuilder.ELUDICATOR));
+    public static final MeleeBuilder<SwordBaseItem> DARK_REPULSER = ((materials, properties) -> new SwordBaseItem(materials, Constant.DARK_REPULSER[0], Constant.DARK_REPULSER[1], Constant.DARK_REPULSER[2], properties, SkillBuilder.DARK_REPULSOR));
 }

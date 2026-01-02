@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-26T02:08:10.3903061	Item Models: beyondhorizon
+// 1.20.1	2026-01-02T10:26:59.4144033	Item Models: beyondhorizon
 61bd62baa09e73293916ef2d5600d19c032d0f96 assets/beyondhorizon/models/item/adamantite_axe.json
 bd25a09e9bcfc47662d0a3f201203af5e078f985 assets/beyondhorizon/models/item/adamantite_hoe.json
 8a8ce68bd28d9994f0df749e8177a704dd895bee assets/beyondhorizon/models/item/adamantite_ingot.json
@@ -32,12 +32,15 @@ f2e3fc1428602b008048a640c637bf81eee52c6e assets/beyondhorizon/models/item/cobalt
 08f3f24e998dbe7a32d05f1080008929b8e553c2 assets/beyondhorizon/models/item/crystallized_plate.json
 432c882104358a9688ab01e52f4138c64815bd1a assets/beyondhorizon/models/item/cyan_wool_fur.json
 0c72a1a96f11e47ede9e9d15a449faf88730f8a9 assets/beyondhorizon/models/item/dark_essence_crystal.json
+5768b4cb01f107fe8acb22721dbf74c9f941ceac assets/beyondhorizon/models/item/dark_repulser.json
 f59b8406bb7e664a001ca5e500800ba779b34476 assets/beyondhorizon/models/item/debug0.json
 f067ccde0fbe79a96370293f0849fa7134d3cbf4 assets/beyondhorizon/models/item/debug1.json
 8a7a95a438bf4d87e45d9b853b600eca97d354d4 assets/beyondhorizon/models/item/debug2.json
 129d032085700e22ac6a154628aa796da073833c assets/beyondhorizon/models/item/debug3.json
 b6d7905f963a962b22096b351fb5a25a074cc44b assets/beyondhorizon/models/item/debug4.json
+1d9e52bd8c1b56a42a9108f713087fae5dd112cd assets/beyondhorizon/models/item/debug5.json
 8378e7110a760b6399067781ffe496e0a4064340 assets/beyondhorizon/models/item/dwarf_miner_ring.json
+4936a8fe1baf590f02921d7f68d9ce4e3c50228c assets/beyondhorizon/models/item/elucidator.json
 035b7d601b8460735e57975e945be18c287fd89c assets/beyondhorizon/models/item/firefly_faye.json
 65f0489405fef913ab4bb6a384cf443555dc955b assets/beyondhorizon/models/item/flame_cell.json
 c923bee1ccff397cdd4dca23ccc07fc5bce1d830 assets/beyondhorizon/models/item/fortune_shikigami.json

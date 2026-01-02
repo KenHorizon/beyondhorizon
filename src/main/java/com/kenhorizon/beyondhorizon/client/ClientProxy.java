@@ -6,19 +6,20 @@ import com.kenhorizon.beyondhorizon.client.level.ModResouces;
 import com.kenhorizon.beyondhorizon.client.level.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHudDisplay;
+import com.kenhorizon.beyondhorizon.client.level.guis.hud.ManaHud;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.EruptionRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.FlameStrikeRenderer;
+import com.kenhorizon.beyondhorizon.client.render.projectiles.HellfireOrbRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
-import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
@@ -44,13 +45,16 @@ import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forgespi.language.IModFileInfo;
@@ -71,8 +75,13 @@ public class ClientProxy extends ServerProxy {
         bus.addListener(this::entityCreationAttribute);
         bus.addListener(this::onEntityAttributeModification);
         bus.addListener(this::addResourcesBuiltin);
+        bus.addListener(this::registerGuiOverlays);
         IconAttributesTooltip.registerFactory();
         Tooltips.TitleBreakComponent.registerFactory();
+    }
+
+    public void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+        event.registerBelow(VanillaGuiOverlay.ITEM_NAME.id(), "mana_hud", new ManaHud());
     }
 
     private void addResourcesBuiltin(AddPackFindersEvent event) {
@@ -93,7 +102,6 @@ public class ClientProxy extends ServerProxy {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForge.EVENT_BUS.register(new GameHudDisplay());
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
-
         //bus.addListener(this::addRegisteredLayers);
 
         EntityRenderers.register(BHEntity.BLAZING_INFERNO.get(), BlazingInfernoRenderer::new);
@@ -105,6 +113,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.FLAME_STRIKE.get(), FlameStrikeRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
         EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
+        EntityRenderers.register(BHEntity.HELLFIRE_ORB.get(), HellfireOrbRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
@@ -154,7 +163,8 @@ public class ClientProxy extends ServerProxy {
             event.add(type, BHAttributes.ABILITY_POWER.get());
             event.add(type, BHAttributes.EVADE.get());
             event.add(type, BHAttributes.ARMOR_PENETRATION.get());
-            event.add(type, BHAttributes.MAGIC_PENETRATION.get());
+            event.add(type, BHAttributes.FLAT_MAGIC_PENETRATION.get());
+            event.add(type, BHAttributes.PERCENTAGE_MAGIC_PENETRATION.get());
             event.add(type, BHAttributes.OMNIVAMP.get());
             event.add(type, BHAttributes.PHYSICALVAMP.get());
             event.add(type, BHAttributes.SPELLVAMP.get());
@@ -187,6 +197,8 @@ public class ClientProxy extends ServerProxy {
         event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
         event.registerSpriteSet(BHParticle.RING.get(), RingParticles.Provider::new);
         event.registerSpriteSet(BHParticle.ROAR.get(), RoarParticles.Provider::new);
+        event.registerSpriteSet(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), ExplodeParticles.HellfireOrb::new);
+        event.registerSpriteSet(BHParticle.HELLFIRE_ORB_TRAIL.get(), SimpleTrailParticles.HellfireOrb::new);
         event.registerSpriteSet(BHParticle.TRAILS.get(), TrailParticles.Provider::new);
         event.registerSpecial(BHParticle.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(BHParticle.STUN_PARTICLES.get(),new StunParticles.Provider());

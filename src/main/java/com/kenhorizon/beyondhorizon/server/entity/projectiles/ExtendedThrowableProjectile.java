@@ -2,10 +2,11 @@ package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -36,23 +37,26 @@ public class ExtendedThrowableProjectile extends ThrowableProjectile {
     public static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(ExtendedThrowableProjectile.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(ExtendedThrowableProjectile.class, EntityDataSerializers.FLOAT);
     public static final EntityDataAccessor<Boolean> CAN_LIGHT_FIRE = SynchedEntityData.defineId(ExtendedThrowableProjectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(ExtendedThrowableProjectile.class, EntityDataSerializers.FLOAT);
     protected int duration = 0;
     protected int lifespan = 0;
     protected float baseDamage = 1.0F;
     protected float speed = 0.25F;
-    protected float damageModifiers = 0.0F;
     protected boolean canLightFire;
     protected boolean inGround;
-    protected float fade = 0.0F;
+    protected float radius = 0.50F;
+    protected float fade = 1.0F;
     protected int delay = 0;
     private Vec3[] trailPositions = new Vec3[64];
     private int trailPointer = -1;
-    public ExtendedThrowableProjectile.DamageType damageType = ExtendedThrowableProjectile.DamageType.DEFAULT;
+    public DamageTags damageTags = DamageTags.DEFAULT;
+    protected float damageTagsModifiers = 0.0F;
     public static final String NBT_DURATION = "Duration";
     public static final String NBT_LIFESPAN = "Lifespan";
     public static final String NBT_FADE = "Fade";
     public static final String NBT_DAMAGE = "Damage";
     public static final String NBT_SPEED = "Speed";
+    public static final String NBT_RADIUS = "Radius";
     public static final String NBT_CAN_LIGHT_FIRE = "CanLightFire";
     public static final String NBT_IS_FIRED = "IsFired";
 
@@ -72,27 +76,38 @@ public class ExtendedThrowableProjectile extends ThrowableProjectile {
         this.entityData.define(DURATION, 160);
         this.entityData.define(LIFE_SPAN, 0);
         this.entityData.define(DELAY, 20);
-        this.entityData.define(FADE, 0.0F);
+        this.entityData.define(FADE, 1.0F);
         this.entityData.define(SPEED, 0.25F);
         this.entityData.define(FIRED, false);
         this.entityData.define(CAN_LIGHT_FIRE, false);
+        this.entityData.define(RADIUS,0.5F);
     }
     @Override
     public boolean isOnFire() {
         return false;
     }
 
-    public void setDamage(ExtendedThrowableProjectile.DamageType damageType, float damageModifiers) {
-        this.damageType = damageType;
-        this.damageModifiers = damageModifiers;
+    public void setRadius(float radius) {
+
+        this.getEntityData().set(RADIUS, Mth.clamp(radius, 0.0F, 32.0F));
+        this.radius = radius;
     }
 
-    public void setDamageType(ExtendedThrowableProjectile.DamageType damageType) {
-        this.damageType = damageType;
+    public float getRadius() {
+        return this.level().isClientSide() ? this.getEntityData().get(RADIUS) : this.radius;
     }
 
-    public ExtendedThrowableProjectile.DamageType getDamageType() {
-        return damageType;
+    public void setDamage(DamageTags damageType, float damageModifiers) {
+        this.damageTags = damageType;
+        this.damageTagsModifiers = damageModifiers;
+    }
+
+    public void setDamageTags(DamageTags damageTags) {
+        this.damageTags = damageTags;
+    }
+
+    public DamageTags getDamageTags() {
+        return damageTags;
     }
 
     @Override
@@ -105,27 +120,7 @@ public class ExtendedThrowableProjectile extends ThrowableProjectile {
                 if (this.isCanLightFire()) {
                     target.setSecondsOnFire(5);
                 }
-                boolean flag;
-                switch (this.getDamageType()) {
-                    case MAX_HEALTH -> {
-                        flag = target.hurt(this.setDamageSource(target), CombatUtil.maxHealth(target, this.getBaseDamage(), this.damageModifiers));
-                    }
-                    case MISSING_HEALTH -> {
-                        flag = target.hurt(this.setDamageSource(target), CombatUtil.missingHealth(target, this.getBaseDamage(), this.damageModifiers));
-                    }
-                    case CURRENT_HEALTH -> {
-                        flag = target.hurt(this.setDamageSource(target), CombatUtil.currentHealth(target, this.getBaseDamage(), this.damageModifiers));
-                    }
-                    case INSTANT_KILL -> {
-                        flag = target.hurt(this.setDamageSource(target), target.getMaxHealth());
-                    }
-                    case TRUE_DAMAGE -> {
-                        flag = target.hurt(BHDamageTypes.trueDamage(this, target), target.getMaxHealth());
-                    }
-                    default ->  {
-                        flag = target.hurt(this.setDamageSource(target), this.getBaseDamage());
-                    }
-                }
+                boolean flag = DamageHandler.damage(target, this.setDamageSource(target), this.getBaseDamage(), this.getDamageTags(), this.damageTagsModifiers);
                 if (flag) {
                     if (projectileOwner != null) {
                         this.afterGotHit(target);
@@ -145,12 +140,7 @@ public class ExtendedThrowableProjectile extends ThrowableProjectile {
         super.onHitBlock(hitResult);
         if (!this.level().isClientSide()) {
             Entity entity = this.getOwner();
-            if (isCanLightFire()) {
-                BlockPos blockPos = hitResult.getBlockPos().relative(hitResult.getDirection());
-                if (this.level().isEmptyBlock(blockPos)) {
-                    this.level().setBlockAndUpdate(blockPos, BaseFireBlock.getState(this.level(), blockPos));
-                }
-            } else {
+            if (this.isCanLightFire()) {
                 if (!(entity instanceof Mob) || ForgeEventFactory.getMobGriefingEvent(this.level(), entity)) {
                     BlockPos blockPos = hitResult.getBlockPos().relative(hitResult.getDirection());
                     if (this.level().isEmptyBlock(blockPos)) {
@@ -168,10 +158,14 @@ public class ExtendedThrowableProjectile extends ThrowableProjectile {
     @Override
     protected void onHit(HitResult hitResult) {
         super.onHit(hitResult);
+        if (!this.level().isClientSide()) {
+            this.discard();
+        }
     }
 
     @Override
     public void tick() {
+        super.tick();
         this.setLifeSpan(this.getLifeSpan() + 1);
         this.trail();
     }
@@ -203,30 +197,9 @@ public class ExtendedThrowableProjectile extends ThrowableProjectile {
         return d0.add(d1.scale(partialTick));
     }
 
-    protected boolean shouldFall() {
-        return this.inGround && this.level().noCollision((new AABB(this.position(), this.position())).inflate(0.06D));
+    public boolean hasTrail() {
+        return this.trailPointer != -1;
     }
-
-    protected void startFalling() {
-        this.inGround = false;
-        Vec3 vec3 = this.getDeltaMovement();
-        this.setDeltaMovement(vec3.multiply((double)(this.random.nextFloat() * 0.2F), (double)(this.random.nextFloat() * 0.2F), (double)(this.random.nextFloat() * 0.2F)));
-        this.setLifeSpan(0);
-    }
-
-    public void move(MoverType pType, Vec3 pPos) {
-        super.move(pType, pPos);
-        if (pType != MoverType.SELF && this.shouldFall()) {
-            this.startFalling();
-        }
-
-    }
-
-    public void setNoPhysics(boolean pNoPhysics) {
-        this.noPhysics = pNoPhysics;
-        this.setFlag(2, pNoPhysics);
-    }
-
 
     protected void setFlag(int id, boolean value) {
         byte idFlags = this.entityData.get(ID_FLAGS);
@@ -375,6 +348,7 @@ public class ExtendedThrowableProjectile extends ThrowableProjectile {
     protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
         return ProjectileUtil.getEntityHitResult(this.level(), this, start, end, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
     }
+
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -383,6 +357,7 @@ public class ExtendedThrowableProjectile extends ThrowableProjectile {
         tag.putFloat(NBT_FADE, this.getFade());
         tag.putFloat(NBT_DAMAGE, this.getBaseDamage());
         tag.putFloat(NBT_SPEED, this.getSpeed());
+        tag.putFloat(NBT_RADIUS, this.getRadius());
         tag.putBoolean(NBT_CAN_LIGHT_FIRE, this.isCanLightFire());
         tag.putBoolean(NBT_IS_FIRED, this.getFired());
     }
@@ -395,6 +370,7 @@ public class ExtendedThrowableProjectile extends ThrowableProjectile {
         this.setFade(tag.getFloat(NBT_FADE));
         this.setBaseDamage(tag.getFloat(NBT_DAMAGE));
         this.setSpeed(tag.getFloat(NBT_SPEED));
+        this.setRadius(tag.getFloat(NBT_RADIUS));
         this.setCanLightFire(tag.getBoolean(NBT_CAN_LIGHT_FIRE));
         this.setFired(tag.getBoolean(NBT_IS_FIRED));
     }
@@ -408,14 +384,5 @@ public class ExtendedThrowableProjectile extends ThrowableProjectile {
 
     public void recreateFromPacket(ClientboundAddEntityPacket packet) {
         super.recreateFromPacket(packet);
-    }
-
-    public enum DamageType {
-        DEFAULT,
-        MAX_HEALTH,
-        CURRENT_HEALTH,
-        MISSING_HEALTH,
-        INSTANT_KILL,
-        TRUE_DAMAGE
     }
 }

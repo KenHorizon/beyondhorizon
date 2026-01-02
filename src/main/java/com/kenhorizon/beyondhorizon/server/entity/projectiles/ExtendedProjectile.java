@@ -1,16 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSpear;
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypes;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.protocol.Packet;
@@ -21,7 +15,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
@@ -56,7 +49,6 @@ public class ExtendedProjectile extends Projectile {
     protected int lifespan = 0;
     protected float baseDamage = 1.0F;
     protected float speed = 0.25F;
-    protected float damageModifiers = 0.0F;
     protected boolean ignitedAttack;
     protected boolean canLightFire;
     protected boolean inGround;
@@ -67,7 +59,8 @@ public class ExtendedProjectile extends Projectile {
     public double zPower;
     private Vec3[] trailPositions = new Vec3[64];
     private int trailPointer = -1;
-    public DamageType damageType = DamageType.DEFAULT;
+    public DamageTags damageTags = DamageTags.DEFAULT;
+    protected float damageTypeModifiers = 0.0F;
     public static final String NBT_DURATION = "Duration";
     public static final String NBT_LIFESPAN = "Lifespan";
     public static final String NBT_FADE = "Fade";
@@ -103,17 +96,17 @@ public class ExtendedProjectile extends Projectile {
         return false;
     }
 
-    public void setDamage(DamageType damageType, float damageModifiers) {
-        this.damageType = damageType;
-        this.damageModifiers = damageModifiers;
+    public void setDamage(DamageTags damageType, float damageModifiers) {
+        this.damageTags = damageType;
+        this.damageTypeModifiers = damageModifiers;
     }
 
-    public void setDamageType(DamageType damageType) {
-        this.damageType = damageType;
+    public void setDamageTypes(DamageTags damageTags) {
+        this.damageTags = damageTags;
     }
 
-    public DamageType getDamageType() {
-        return damageType;
+    public DamageTags getDamageTypes() {
+        return damageTags;
     }
 
     @Override
@@ -126,29 +119,7 @@ public class ExtendedProjectile extends Projectile {
                 if (this.isIgnitedAttack()) {
                     target.setSecondsOnFire(5);
                 }
-                boolean flag;
-                switch (this.getDamageType()) {
-                    case MAX_HEALTH -> {
-                        flag = DamageHandler.damage(target, this.setDamageSource(target), this.getBaseDamage(), DamageTypes.TARGET_MAX_HEALTH, this.damageModifiers);
-                    }
-                    case MISSING_HEALTH -> {
-                        flag = DamageHandler.damage(target, this.setDamageSource(target), this.getBaseDamage(), DamageTypes.TARGET_MAX_HEALTH, this.damageModifiers);
-                        flag = target.hurt(this.setDamageSource(target), CombatUtil.missingHealth(target, this.getBaseDamage(), this.damageModifiers));
-                    }
-                    case CURRENT_HEALTH -> {
-                        flag = DamageHandler.damage(target, this.setDamageSource(target), this.getBaseDamage(), DamageTypes.TARGET_MAX_HEALTH, this.damageModifiers);
-                        flag = target.hurt(this.setDamageSource(target), CombatUtil.currentHealth(target, this.getBaseDamage(), this.damageModifiers));
-                    }
-                    case INSTANT_KILL -> {
-                        flag = DamageHandler.instantKill(target, this.setDamageSource(target));
-                    }
-                    case TRUE_DAMAGE -> {
-                        flag = target.hurt(BHDamageTypes.trueDamage(this, target), target.getMaxHealth());
-                    }
-                    default ->  {
-                        flag = target.hurt(this.setDamageSource(target), this.getBaseDamage());
-                    }
-                }
+                boolean flag = DamageHandler.damage(target, this.setDamageSource(target), this.getBaseDamage(), this.getDamageTypes(), this.damageTypeModifiers);
 
                 BeyondHorizon.LOGGER.info("Projectile Hit! {} Hurt {}", target, flag);
                 if (flag) {
@@ -170,7 +141,7 @@ public class ExtendedProjectile extends Projectile {
         super.onHitBlock(hitResult);
         if (!this.level().isClientSide()) {
             Entity entity = this.getOwner();
-            if (isCanLightFire()) {
+            if (this.isCanLightFire()) {
                 if (!(entity instanceof Mob) || ForgeEventFactory.getMobGriefingEvent(this.level(), entity)) {
                     BlockPos blockPos = hitResult.getBlockPos().relative(hitResult.getDirection());
                     if (this.level().isEmptyBlock(blockPos)) {
@@ -383,6 +354,7 @@ public class ExtendedProjectile extends Projectile {
     protected EntityHitResult findHitEntity(Vec3 start, Vec3 end) {
         return ProjectileUtil.getEntityHitResult(this.level(), this, start, end, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
     }
+
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -464,14 +436,5 @@ public class ExtendedProjectile extends Projectile {
             this.yPower = d1 / d3 * 0.1D;
             this.zPower = d2 / d3 * 0.1D;
         }
-    }
-
-    public enum DamageType {
-        DEFAULT,
-        MAX_HEALTH,
-        CURRENT_HEALTH,
-        MISSING_HEALTH,
-        INSTANT_KILL,
-        TRUE_DAMAGE
     }
 }

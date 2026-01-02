@@ -51,6 +51,12 @@ public class BHItems {
             .tab(RegistryTabs.Category.DEBUGS)
             .model(ItemModels.GENERATED)
             .register();
+    public static final RegistryObject<Item> DEBUG5 = RegistryItems
+            .register("debug5", DebugGodModeItems::new)
+            .itemName("Debug: GOD MODE")
+            .tab(RegistryTabs.Category.DEBUGS)
+            .model(ItemModels.GENERATED)
+            .register();
 
     public static final RegistryObject<Item> HANDLE = RegistryItems
             .register("handle", BasicItem::new)
@@ -570,6 +576,19 @@ public class BHItems {
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
+    public static final RegistryObject<Item> ELUCIDATOR = RegistryItems
+            .register("elucidator", item -> WeaponBuilder.ELUCIDATOR.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG_HANDHELD)
+            .register();
+    public static final RegistryObject<Item> DARK_REPULSER = RegistryItems
+            .register("dark_repulser", item -> WeaponBuilder.DARK_REPULSER.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG_HANDHELD)
+            .register();
+
     public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(139, 52, 1));
 
 

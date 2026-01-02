@@ -24,7 +24,9 @@ public class EruptionAbility extends AbstractAbilityEntity {
         ability.setBaseDamage(damage);
         ability.setCasterID(entity.getUUID());
         ability.setRadius(radius);
-        ability.setDuration(duration);
+        if (duration > 0) {
+            ability.setDuration(duration);
+        }
         ability.setPos(x, y, z);
         level.addFreshEntity(ability);
     }
@@ -47,7 +49,7 @@ public class EruptionAbility extends AbstractAbilityEntity {
         List<LivingEntity> entities = this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(this.getRadius()));
         for (LivingEntity entityOnRange : entities) {
             if (entityOnRange == attacker) continue;
-            if (entityOnRange.isAlliedTo(attacker)) continue;
+            if (attacker != null && entityOnRange.isAlliedTo(attacker)) continue;
             if (entityOnRange.isAlive() && !entityOnRange.isInvulnerable()) {
                 entityOnRange.hurt(BHDamageTypes.magicDamage(this, attacker), getBaseDamage());
             }

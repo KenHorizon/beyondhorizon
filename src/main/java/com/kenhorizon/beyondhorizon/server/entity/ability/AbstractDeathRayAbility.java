@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -256,7 +257,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
             double o2x = (float) (-1 * Math.cos(getYaw()) * Math.cos(getPitch()));
             double o2y = (float) (-1 * Math.sin(getPitch()));
             double o2z = (float) (-1 * Math.sin(getYaw()) * Math.cos(getPitch()));
-            ParticleTrailOptions.add(level(), TrailParticles.Behavior.FADE,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz, 0, 0, 0, 0, 0, 1.0F, this.getTrailA(), this.getTrailR(), this.getTrailG(), this.getTrailB(), true, 20, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
+            ParticleTrailOptions.add(level(), TrailParticles.Behavior.FADE,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz, 1.0F, this.getTrailA(), this.getTrailR(), this.getTrailG(), this.getTrailB(), true, 20, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
         }
     }
 
@@ -491,13 +492,13 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     private float rayDamages(LivingEntity target) {
         switch (this.damageTypes) {
             case MAX_HEALTH -> {
-                return CombatUtil.maxHealth(target, getBaseDamage(), this.getScaleMaxHealthDamage());
+                return DamageHandler.maxHealth(target, getBaseDamage(), this.getScaleMaxHealthDamage());
             }
             case MISSING_HEALTH -> {
-                return CombatUtil.missingHealth(target, getBaseDamage(), this.getScaleMissingHealthDamage());
+                return DamageHandler.missingHealth(target, getBaseDamage(), this.getScaleMissingHealthDamage());
             }
             case CURRENT_HEALTH -> {
-                return CombatUtil.currentHealth(target, getBaseDamage(), this.getScaleCurrentHealthDamage());
+                return DamageHandler.currentHealth(target, getBaseDamage(), this.getScaleCurrentHealthDamage());
             }
             default -> {
                 return getBaseDamage();

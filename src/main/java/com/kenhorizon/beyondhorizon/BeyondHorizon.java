@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.client.ClientProxy;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeReaderResourceParser;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.compat.ModCompats;
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
@@ -12,6 +13,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.classes.MasterySkillCategories;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClasses;
 import com.kenhorizon.beyondhorizon.server.api.classes.MasterySkills;
+import com.kenhorizon.beyondhorizon.server.api.handler.anvil_patch.AnvilPatchHandler;
 import com.kenhorizon.beyondhorizon.server.command.RoleClassCommand;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
@@ -66,6 +68,7 @@ public class BeyondHorizon
         eventBus.addListener(this::reloadListener);
         eventBus.addListener(this::registerLayerDefinitions);
         eventBus.addListener(this::completeSetup);
+        MinecraftForge.EVENT_BUS.register(new AnvilPatchHandler());
         MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
         BHAttributes.register(eventBus);
         BHCreativeTabs.register(eventBus);
@@ -131,6 +134,7 @@ public class BeyondHorizon
     @SubscribeEvent
     public void onConfigLoad(final ModConfigEvent event) {
         final ModConfig config = event.getConfig();
+        BHConfigs.bake(config);
         if (config.getSpec() == ModServerConfig.SPEC) {
             ModServerConfig.reset();
         }

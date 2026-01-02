@@ -25,6 +25,8 @@ public class BHParticleProvider extends ParticleDescriptionProvider {
         this.sprite(BHParticle.TRAILS.get(), register("orb"));
         this.sprite(BHParticle.RING.get(), register("ring"));
         this.sprite(BHParticle.STUN_PARTICLES.get(), register("stun_star"));
+        this.spriteSet(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), register("hellfire_orb_explosion"), 7, false);
+        this.spriteSet(BHParticle.HELLFIRE_ORB_TRAIL.get(), register("hellfire_orb_trail"), 12, false);
         this.spriteSet(BHParticle.BLEED.get(), register("bleed"), 4, false);
 
     }

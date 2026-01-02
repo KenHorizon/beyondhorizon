@@ -37,10 +37,12 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -53,6 +55,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import org.w3c.dom.Attr;
 
 import java.util.*;
 
@@ -88,7 +91,19 @@ public class ServerEventHandler {
     @SubscribeEvent
     public void onLivingHealEvent(LivingHealEvent event) {
         float heal = event.getAmount();
+        LivingEntity entity = event.getEntity();
         float bonus = (float) (heal * event.getEntity().getAttributeValue(BHAttributes.HEALING.get()));
+        if (entity.level() instanceof ServerLevel level) {
+            if (entity.getHealth() < entity.getMaxHealth()) {
+                float roundedAmount = Math.round(heal * 10) / 10f;
+                int intAmount = (int) roundedAmount;
+                String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
+                Vec3 pos = entity.getEyePosition();
+                MutableComponent component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
+                level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
+
+            }
+        }
         event.setAmount(heal + bonus);
     }
 
@@ -327,6 +342,22 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
+    public void onLivingAttack(LivingAttackEvent event) {
+        LivingEntity entity = event.getEntity();
+        DamageSource source = event.getSource();
+        float amount = event.getAmount();
+        AttributeInstance evade = entity.getAttribute(BHAttributes.EVADE.get());
+        double dodgeChance = 0;
+        if (evade != null) {
+            dodgeChance = evade.getValue();
+        }
+        boolean doDodge = entity.getRandom().nextDouble() <= dodgeChance;
+        if (doDodge) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
     public void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         ItemStack itemStack = entity.getMainHandItem();
@@ -451,6 +482,30 @@ public class ServerEventHandler {
         ICombatCore targetCombatCore = CapabilityCaller.combat(target);
         if (event.isCanceled() || source.is(DamageTypes.GENERIC_KILL) || !(target.level() instanceof ServerLevel level)) return;
         boolean isCrit = false;
+        if (!target.getMainHandItem().isEmpty() && target.getMainHandItem().getItem() instanceof ISkillItems<?> container) {
+            for (Skill trait : container.getSkills()) {
+                Optional<IAttack> weaponCallback = trait.IAttackCallback();
+                if (weaponCallback.isPresent()) {
+                    damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
+                }
+            }
+        }
+        if (target instanceof Player player) {
+            IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+            if (handler != null) {
+                for (int i = 0; i < handler.getSlots(); i++) {
+                    final ItemStack itemStack = handler.getStackInSlot(i);
+                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+                        for (Accessory trait : accessoryItems.getAccessories()) {
+                            Optional<IAttack> weaponCallback = trait.IAttackCallback();
+                            if (weaponCallback.isPresent()) {
+                                damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         if (source.getEntity() instanceof LivingEntity attacker) {
             ItemStack attackerStack = attacker.getMainHandItem();
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
@@ -491,31 +546,6 @@ public class ServerEventHandler {
                 }
             }
         }
-
-        if (!target.getMainHandItem().isEmpty() && target.getMainHandItem().getItem() instanceof ISkillItems<?> container) {
-            for (Skill trait : container.getSkills()) {
-                Optional<IAttack> weaponCallback = trait.IAttackCallback();
-                if (weaponCallback.isPresent()) {
-                    damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
-                }
-            }
-        }
-        if (target instanceof Player player) {
-            IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
-            if (handler != null) {
-                for (int i = 0; i < handler.getSlots(); i++) {
-                    final ItemStack itemStack = handler.getStackInSlot(i);
-                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
-                        for (Accessory trait : accessoryItems.getAccessories()) {
-                            Optional<IAttack> weaponCallback = trait.IAttackCallback();
-                            if (weaponCallback.isPresent()) {
-                                damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
-                            }
-                        }
-                    }
-                }
-            }
-        }
         StatModifiers totalDamageTaken = new StatModifiers(1.0F, (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get()), 0.0F, 0.0F);
         damageDealt = totalDamageTaken.applyTo(damageDealt);
         IDamageInfo damageInfo = CapabilityCaller.damageInfo(target);
@@ -526,6 +556,9 @@ public class ServerEventHandler {
             }
         }
         targetCombatCore.activated();
+        if (target instanceof Player player) {
+            CapabilityCaller.data(player).setCrit(isCrit);
+        }
         float roundedAmount = Math.round(damageDealt * 10) / 10f;
         int intAmount = (int) roundedAmount;
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);

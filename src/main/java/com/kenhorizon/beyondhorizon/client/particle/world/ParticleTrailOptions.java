@@ -179,7 +179,10 @@ public class ParticleTrailOptions implements ParticleOptions {
                         new ParticleTrailOptions(yaw, pitch, duration, r, g, b, a, scale, facesCamera, TrailParticles.Behavior.valueOf(behavior), null))
         );
 
-    public static void add(Level level, TrailParticles.Behavior behavior, double x, double y, double z, double motionX, double motionY, double motionZ, float yaw, float pitch, float scale, float a, float r, float g, float b, boolean faceCamera, int duration, Vec3 destination) {
-        level.addParticle(new ParticleTrailOptions(yaw, pitch, duration,  a,  r,  g, b,  scale, faceCamera, behavior, destination), x, y, z, motionX, motionY, motionZ);
+    public static void add(Level level, TrailParticles.Behavior behavior, double x, double y, double z, float scale, float a, float r, float g, float b, int duration, Vec3 destination) {
+        level.addParticle(new ParticleTrailOptions(0, 0, duration,  a,  r,  g, b,  scale, true, behavior, destination), x, y, z, 0, 0,0);
+    }
+    public static void add(Level level, TrailParticles.Behavior behavior, double x, double y, double z, float scale, float a, float r, float g, float b, boolean facesCamera, int duration, Vec3 destination) {
+        level.addParticle(new ParticleTrailOptions(0, 0, duration,  a,  r,  g, b,  scale, facesCamera, behavior, destination), x, y, z, 0, 0,0);
     }
 }

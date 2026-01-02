@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
 import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilityEffectPacket;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +19,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.PushReaction;
@@ -25,29 +27,20 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public abstract class AbstractAbilityEntity extends Entity implements ILinkedEntity {
-    public enum DamageTypes {
-        DEFAULT,
-        MAX_HEALTH,
-        MISSING_HEALTH,
-        CURRENT_HEALTH,
-        INSTANT_KILL,
-        TRUE_DAMAGE
-    }
-    protected float damage;
-    protected boolean sentSpikeEvent;
-    protected int duration = 20;
-    protected int lifespan;
-    protected int delay;
+public abstract class AbstractAbilityEntity extends Entity implements ILinkedEntity, TraceableEntity {
+    protected float damage = 5.0F;
+    protected boolean sentSpikeEvent = false;
+    protected int duration = 60;
+    protected int lifespan = 0;
+    protected int delay = 0;
     private LivingEntity cachedCaster;
     private LivingEntity cachedTarget;
     private ControlledAnimation animation = new ControlledAnimation(0);
-    protected DamageTypes damageTypes = DamageTypes.DEFAULT;
-    protected float damageModifiers = 0.0F;
     private static final EntityDataAccessor<Optional<UUID>> CASTER = SynchedEntityData.defineId(AbstractAbilityEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Optional<UUID>> TARGET = SynchedEntityData.defineId(AbstractAbilityEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> DELAY = SynchedEntityData.defineId(AbstractAbilityEntity.class, EntityDataSerializers.INT);
@@ -65,6 +58,7 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
     public static final String NBT_IGNORE_KNOCKBACK = "IgnoreKnockback";
     public static final String NBT_IGNORE_IMMUNITY_FRAME = "IgnoreImmunityFrame";
     public static final String NBT_OWNER = "Owner";
+
     public AbstractAbilityEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
@@ -74,7 +68,7 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
         this.entityData.define(CASTER, Optional.empty());
         this.entityData.define(TARGET, Optional.empty());
         this.entityData.define(DELAY, 0);
-        this.entityData.define(DURATION, 0);
+        this.entityData.define(DURATION, 60);
         this.entityData.define(LIFE_SPAN, 5);
         this.entityData.define(RADIUS, 1.0F);
         this.entityData.define(DAMAGE, 5.0F);
@@ -84,6 +78,11 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
     public Optional<UUID> getCasterID() {
         return this.entityData.get(CASTER);
     }
+
+    public void setCaster(LivingEntity caster) {
+        this.cachedCaster = caster;
+    }
+
 
     public void setCasterID(UUID id) {
         this.entityData.set(CASTER, Optional.of(id));
@@ -120,7 +119,9 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
         this.setBaseDamage(nbt.getFloat(NBT_DAMGE));
         this.setIgnoreResistance(nbt.getBoolean(NBT_IGNORE_KNOCKBACK));
         this.setIgnoreIFrame(nbt.getBoolean(NBT_IGNORE_IMMUNITY_FRAME));
-        this.setCasterID(nbt.getUUID(NBT_OWNER));
+        if (nbt.contains(NBT_OWNER)) {
+            this.setCasterID(nbt.getUUID(NBT_OWNER));
+        }
     }
 
     public void setBaseDamage(float baseDamage) {
@@ -221,8 +222,6 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
     @Override
     public void tick() {
         super.tick();
-        if (this.tickCount > 1 && this.getCaster() == null) this.discard();
-        if (getCaster() != null && !getCaster().isAlive()) this.discard();
         if (this.getLifeTime() <= (this.getDelay())) {
             if (!this.sentSpikeEvent) {
                 this.level().broadcastEntityEvent(this, (byte) 4);
@@ -249,29 +248,17 @@ public abstract class AbstractAbilityEntity extends Entity implements ILinkedEnt
         }
     }
 
-    public void setDamageTypes(DamageTypes damageTypes, float damageModifiers) {
-        this.damageTypes = damageTypes;
-        this.damageModifiers = damageModifiers;
+    @Override
+    public @Nullable Entity getOwner() {
+        return this.cachedCaster;
     }
 
-    protected float dealDamage(LivingEntity entity, float damage) {
-        switch (this.damageTypes) {
-            default -> {
-                return damage;
-            }
-            case MAX_HEALTH -> {
-                return CombatUtil.maxHealth(entity, damage, this.damageModifiers);
-            }
-            case CURRENT_HEALTH -> {
-                return CombatUtil.currentHealth(entity, damage, this.damageModifiers);
-            }
-            case MISSING_HEALTH -> {
-                return CombatUtil.missingHealth(entity, damage, this.damageModifiers);
-            }
-            case INSTANT_KILL -> {
-                return entity.getMaxHealth();
-            }
-        }
+    protected boolean dealDamage(LivingEntity entity, DamageTags damageTags, float damageTagsModifiers, float damage) {
+        return DamageHandler.damage(entity, false, this.setSourceDamage(entity), damageTags, damageTagsModifiers, damage);
+    }
+
+    public DamageSource setSourceDamage(LivingEntity entity) {
+        return this.level().damageSources().mobProjectile(this, entity);
     }
 
     public boolean checkEntity(Entity entity) {

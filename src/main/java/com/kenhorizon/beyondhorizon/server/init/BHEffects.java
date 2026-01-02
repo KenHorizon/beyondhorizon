@@ -28,7 +28,7 @@ public class BHEffects {
     public static final RegistryObject<MobEffect> ARMOR_BREAK =
             RegistryHelper.registerEffects("armor_break", () -> new ModifierEffect(MobEffectCategory.NEUTRAL, 0x808080, -0.05F).addAttributeModifier(Attributes.ARMOR, "afd508a1-981f-4cad-aaa5-4fda014e8c53", (double) -0.15F, AttributeModifier.Operation.MULTIPLY_BASE).addAttributeModifier(Attributes.ARMOR_TOUGHNESS, "d042bf31-085c-454e-94ef-31cee0c83ba8", (double) -0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> NATURE_HEAL =
-            RegistryHelper.registerEffects("nature_heal", () -> new ModifierEffect(MobEffectCategory.NEUTRAL, 0x808080, 0.05F).addAttributeModifier(BHAttributes.HEALTH_REGENERATION.get(), "2c23c41e-069d-48b1-88a6-6cc5bfeaedb2", (double) 0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
+            RegistryHelper.registerEffects("rapid_healing", () -> new ModifierEffect(MobEffectCategory.NEUTRAL, 0x808080, 0.05F).addAttributeModifier(BHAttributes.HEALTH_REGENERATION.get(), "2c23c41e-069d-48b1-88a6-6cc5bfeaedb2", (double) 0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> IMMUNITY =
             RegistryHelper.registerEffects("immunity", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0xFFEA82));
     public static final RegistryObject<MobEffect> RECOVERY =
@@ -51,6 +51,8 @@ public class BHEffects {
             RegistryHelper.registerEffects("dragon_flame", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0xFF25FF));
     public static final RegistryObject<MobEffect> ROOTED =
             RegistryHelper.registerEffects("rooted", () -> new RootedEffect(MobEffectCategory.NEUTRAL, 0x9B4D00).addAttributeModifier(Attributes.MOVEMENT_SPEED, "0e530966-8625-4300-890c-3992a8198d6e", -Integer.MAX_VALUE, AttributeModifier.Operation.MULTIPLY_TOTAL));
+    public static final RegistryObject<MobEffect> TORMENT =
+            RegistryHelper.registerEffects("torment", () -> new TormentEffect(MobEffectCategory.HARMFUL, 0xFF6A00));
     public static final RegistryObject<MobEffect> WOUNDED =
             RegistryHelper.registerEffects("wounded", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0xFF8206)
                     .addAttributeModifier(BHAttributes.HEALING.get(), "4ca80eb7-871b-4751-af4e-c7ec47642425", 0.40D, AttributeModifier.Operation.MULTIPLY_BASE)

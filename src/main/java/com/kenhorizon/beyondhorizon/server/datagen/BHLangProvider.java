@@ -65,6 +65,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.DEATH.get(), "Death", "Dealing post-mitigaion damage that would leave below %s%% of their Max HP, Execute them");
         this.addSkills(Skills.LETHALITY.get(), "Lethality", "Grant %s%% increased physical damage");
         this.addSkills(Skills.KINETIC_STRIKE.get(), "Kinetic Strike", "Grant %s%%(+%s%% per %s%%movement speed) increased damage");
+        this.addSkills(Skills.PERFECTION.get(), "Perfection", "When critically striking, convert %s%% critical strike damage to true damage");
+        this.addSkills(Skills.PIERCING_EDEGE.get(), "Piercing Edge", "Increase physical damage dealt by %s(%s%% target's armor)% to armored target");
         //
         this.addAccessory(Accessories.FEATHER_FEET.get(), "Feather Feet", "Negate fall damage");
         this.addAccessory(Accessories.OVERGROWTH.get(), "Overgrowth", "Increase Bonus Max HP by %s%% (%s)");

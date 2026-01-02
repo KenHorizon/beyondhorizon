@@ -52,15 +52,14 @@ public abstract class AnimatedAbilityRenderer<T extends AbstractAbilityEntity> e
         poseStack.translate(0.0D, -0.95D, 0.0D);
         renderParts(poseStack, vertexConsumer, radius, height, alpha, minTextureX, maxTextureX, minTextureY, maxTextureY, packedLight);
         poseStack.popPose();
-        super.render(entity, yaw, partialTicks, poseStack, buffer, packedLight);
     }
-    private void renderParts(PoseStack poseStack, VertexConsumer vertexConsumer, float radius, float height, float alpha, float minTextureX, float maxTextureX, float minTextureY, float maxTextureY, int packedLight) {
+    protected void renderParts(PoseStack poseStack, VertexConsumer vertexConsumer, float radius, float height, float alpha, float minTextureX, float maxTextureX, float minTextureY, float maxTextureY, int packedLight) {
         addQuads(poseStack, vertexConsumer, 0, 1.0F, 0 ,radius, height, alpha, minTextureX, maxTextureX, minTextureY, maxTextureY, packedLight);
     }
-    private void renderParts(PoseStack poseStack, VertexConsumer vertexConsumer, float nX, float nY, float nZ, float radius, float height, float alpha, float minTextureX, float maxTextureX, float minTextureY, float maxTextureY, int packedLight) {
+    protected void renderParts(PoseStack poseStack, VertexConsumer vertexConsumer, float nX, float nY, float nZ, float radius, float height, float alpha, float minTextureX, float maxTextureX, float minTextureY, float maxTextureY, int packedLight) {
         addQuads(poseStack, vertexConsumer, nX, nY, nZ, radius, height, alpha, minTextureX, maxTextureX, minTextureY, maxTextureY, packedLight);
     }
-    private void addQuads(PoseStack poseStack, VertexConsumer vertexConsumer, float nX, float nY, float nZ, float radius, float height, float alpha, float minTextureX, float maxTextureX, float minTextureY, float maxTextureY, int packedLight) {
+    protected void addQuads(PoseStack poseStack, VertexConsumer vertexConsumer, float nX, float nY, float nZ, float radius, float height, float alpha, float minTextureX, float maxTextureX, float minTextureY, float maxTextureY, int packedLight) {
         PoseStack.Pose pose = poseStack.last();
         Matrix4f matrix4f = pose.pose();
         Matrix3f matrix3f = pose.normal();
@@ -69,7 +68,7 @@ public abstract class AnimatedAbilityRenderer<T extends AbstractAbilityEntity> e
         this.vertex(matrix4f, matrix3f, vertexConsumer, radius, height, radius, maxTextureX, maxTextureY, nX, nY, nZ, packedLight, alpha);
         this.vertex(matrix4f, matrix3f, vertexConsumer, radius, height, -radius, maxTextureX, minTextureY, nX, nY, nZ, packedLight, alpha);
     }
-    public void vertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer consumer, float x, float y, float z, float textureX, float textureY, float nX, float nY, float nZ, int packedLight, float alpha) {
+    protected void vertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer consumer, float x, float y, float z, float textureX, float textureY, float nX, float nY, float nZ, int packedLight, float alpha) {
         consumer.vertex(matrix4f, (float) x, (float) y, (float) z).color(1.0F, 1.0F, 1.0F, alpha).uv(textureX, textureY).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(matrix3f, (float)nX, (float)nY, (float)nZ).endVertex();
     }
 

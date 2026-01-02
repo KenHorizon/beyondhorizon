@@ -1,12 +1,17 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.ColorCodedText;
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
+import com.kenhorizon.beyondhorizon.server.data.IAttack;
+import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.mojang.logging.LogUtils;
@@ -29,6 +34,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
@@ -36,7 +42,7 @@ import org.slf4j.Logger;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public abstract class Skill extends AbstractSkill<Skill> {
+public abstract class Skill {
     public enum Category {
         EQUIPPED,
         ITEMS,
@@ -89,9 +95,9 @@ public abstract class Skill extends AbstractSkill<Skill> {
     @Nullable
     protected String descriptionId;
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
-    protected List<RegistryObject<? extends Skill>> innateSkills = new ArrayList<>();
     public Category category;
     protected boolean isInnate = false;
+    protected List<RegistryObject<? extends Skill>> innateSkills = new ArrayList<>();
 
     public Skill format(Format format) {
         this.format = format;
@@ -105,6 +111,16 @@ public abstract class Skill extends AbstractSkill<Skill> {
 
     public Skill type(Type type) {
         this.type = type;
+        return this;
+    }
+
+    public Skill disableTooltipName() {
+        this.tooltipDescriptionEnable = false;
+        return this;
+    }
+
+    public Skill disableTooltip() {
+        this.tooltipEnable = false;
         return this;
     }
 
@@ -163,6 +179,10 @@ public abstract class Skill extends AbstractSkill<Skill> {
         return this;
     }
 
+    public Skill.Type getType() {
+        return this.type;
+    }
+
     public final boolean isMeleeAbility() {
         return this.isMelee;
     }
@@ -212,6 +232,13 @@ public abstract class Skill extends AbstractSkill<Skill> {
         return false;
     }
 
+
+    public Skill addAttributes(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
+        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
+        this.attributeModifiers.put(attribute, attributemodifier);
+        return this;
+    }
+
     public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, ItemStack itemStack) {
         if (this.getAttributeModifierByTags(itemStack).isEmpty()) return;
         for (Map.Entry<Attribute, AttributeModifier> entry : this.getAttributeModifierByTags(itemStack).entries()) {
@@ -229,7 +256,7 @@ public abstract class Skill extends AbstractSkill<Skill> {
             if (attributeinstance != null) {
                 AttributeModifier attributemodifier = entry.getValue();
                 attributeinstance.removeModifier(attributemodifier);
-                attributeinstance.addPermanentModifier(new AttributeModifier(attributemodifier.getId(), "Attribute Modifier", getAttributeModifierValue(attributemodifier), attributemodifier.getOperation()));
+                attributeinstance.addPermanentModifier(new AttributeModifier(attributemodifier.getId(), "Attribute Modifier", attributemodifier.getAmount(), attributemodifier.getOperation()));
             }
         }
     }
@@ -256,7 +283,6 @@ public abstract class Skill extends AbstractSkill<Skill> {
         return multimap;
     }
 
-    @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
         return this.attributeModifiers;
     }
@@ -267,7 +293,6 @@ public abstract class Skill extends AbstractSkill<Skill> {
         return String.format("Skill:{Type: %s:%s, Type: %s, Settings:{Tooltip:%s, TooltipName:%s, TooltipDescription:%s}}", this.getId(), this.getName(), this.getType(), this.isTooltipEnable(), this.isTooltipNameEnable(), this.isTooltipDescriptionEnable());
     }
 
-    @Override
     protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
         Component text;
         if (firstType) {
@@ -277,7 +302,6 @@ public abstract class Skill extends AbstractSkill<Skill> {
         tooltip.add(text);
     }
 
-    @Override
     public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
         if (!this.isTooltipEnable()) return;
         if (this.isTooltipNameEnable()) {
@@ -288,12 +312,12 @@ public abstract class Skill extends AbstractSkill<Skill> {
             this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
         }
         boolean flag = size == 1;
-        boolean alwayShow = (ModClientConfig.ADVANCED_TOOLTIP.get() || ModClientConfig.ADVANCED_TOOLTIP_SKILL.get()) && flag;
+        boolean alwayShow = (BHConfigs.ADVANCED_TOOLTIP || BHConfigs.ADVANCED_TOOLTIP_SKILL) && flag;
         if ((alwayShow || isShiftPressed) && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
         }
     }
-    @Override
+
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
@@ -314,7 +338,6 @@ public abstract class Skill extends AbstractSkill<Skill> {
         }
     }
 
-    @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         return Component.translatable(this.createId());
     }
@@ -327,4 +350,63 @@ public abstract class Skill extends AbstractSkill<Skill> {
         return createId(0);
     }
 
+    public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers() {
+        return ImmutableMultimap.of();
+    }
+
+    public MutableComponent spacing() {
+        return Component.literal("   ");
+    }
+
+    public boolean registerIcons() {
+        return false;
+    }
+
+    public boolean isTooltipEnable() {
+        return this.tooltipEnable;
+    }
+
+    public boolean isAttributeTooltipEnable() {
+        return this.attributeTooltipEnable;
+    }
+
+    public boolean isTooltipNameEnable() {
+        return this.tooltipNameEnable;
+    }
+
+    public boolean isTooltipDescriptionEnable() {
+        return this.tooltipDescriptionEnable;
+    }
+
+    public void setTooltipEnable(boolean tooltipEnable) {
+        this.tooltipEnable = tooltipEnable;
+    }
+
+    public void setAttributeTooltipEnable(boolean attributeTooltipEnable) {
+        this.attributeTooltipEnable = attributeTooltipEnable;
+    }
+
+    public void setTooltipDescriptionEnable(boolean tooltipDescriptionEnable) {
+        this.tooltipDescriptionEnable = tooltipDescriptionEnable;
+    }
+
+    public void setTooltipEnableName(boolean tooltipEnableName) {
+        this.tooltipNameEnable = tooltipEnableName;
+    }
+
+    public Optional<IAttack> IAttackCallback() {
+        return Optional.empty();
+    }
+
+    public Optional<IEntityProperties> IEntityProperties() {
+        return Optional.empty();
+    }
+
+    public boolean isEnchantmentCompatible(Enchantment enchant) {
+        return false;
+    }
+
+    public boolean isEnchantmentIncompatible(Enchantment enchant) {
+        return false;
+    }
 }

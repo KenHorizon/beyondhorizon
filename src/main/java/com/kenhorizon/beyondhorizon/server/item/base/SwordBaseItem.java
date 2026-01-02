@@ -5,6 +5,9 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.item.ICustomHitSound;
+import com.kenhorizon.beyondhorizon.server.item.ICustomSweepParticle;
+import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
@@ -18,6 +21,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,13 +29,15 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.MendingEnchantment;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
-public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseItem>, IReloadable {
+public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseItem>, IReloadable, ILeftClick, ICustomSweepParticle, ICustomHitSound {
     private final float attackDamage;
     private final float attackSpeed;
     private final float attackRange;
@@ -142,10 +148,10 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        for (Skill trait : this.skills) {
-            if (trait.isEnchantmentCompatible(enchantment)) {
+        for (Skill skill : this.skills) {
+            if (skill.isEnchantmentCompatible(enchantment)) {
                 return true;
-            } else if (trait.isEnchantmentIncompatible(enchantment)) {
+            } else if (skill.isEnchantmentIncompatible(enchantment)) {
                 return false;
             }
         }
@@ -192,5 +198,25 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     @Override
     public List<Skill> getSkills() {
         return this.skills;
+    }
+
+    @Override
+    public boolean onLeftClick(ItemStack stack, LivingEntity player) {
+        return false;
+    }
+
+    @Override
+    public boolean hitSound(Level level, Player player, LivingEntity entity) {
+        return false;
+    }
+
+    @Override
+    public boolean sweepParticles(Player player) {
+        return false;
+    }
+
+    @Override
+    public void initializeClient(java.util.function.Consumer<IClientItemExtensions> consumer) {
+        consumer.accept((IClientItemExtensions) BeyondHorizon.PROXY.getCustomItemRenderer());
     }
 }

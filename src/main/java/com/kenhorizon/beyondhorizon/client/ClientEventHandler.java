@@ -7,7 +7,9 @@ import com.kenhorizon.beyondhorizon.client.level.BHBossBar;
 import com.kenhorizon.beyondhorizon.client.level.guis.LevelSystemScreen;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotButton;
 import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
+import com.kenhorizon.beyondhorizon.client.level.guis.hud.ManaHud;
 import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
@@ -30,6 +32,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -37,6 +40,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientEventHandler {
+
+
+    @SubscribeEvent
+    public void onMovementInput(MovementInputUpdateEvent event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Player player = minecraft.player;
+        if (player != null) {
+            if (player.hasEffect(BHEffects.CURSED.get()) || player.hasEffect(BHEffects.FEAR.get())) {
+                if (minecraft.options.keyDown.isDown()) {
+                    event.getInput().forwardImpulse += 2F;
+                }
+                if (minecraft.options.keyLeft.isDown()) {
+                    event.getInput().leftImpulse -= 2F;
+                }
+                if (minecraft.options.keyRight.isDown()) {
+                    event.getInput().leftImpulse += 2F;
+                }
+                if (minecraft.options.keyUp.isDown()) {
+                    event.getInput().forwardImpulse -= 2F;
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public void registerCustomBossBar(CustomizeGuiOverlayEvent.BossEventProgress event) {
         BHBossInfo.BossBar entry = ClientProxy.BOSS_BAR_REGISTRY.getOrDefault(event.getBossEvent().getId(), null);
@@ -77,12 +104,12 @@ public class ClientEventHandler {
         float partialTick = minecraft.getPartialTick();
         float delta = minecraft.getFrameTime();
         float ticksExistedDelta = player.tickCount + delta;
-        if (ModClientConfig.SCREEN_SHAKE.get() && !minecraft.isPaused()) {
+        if (BHConfigs.SCREEN_SHAKE && !minecraft.isPaused()) {
             float shakeAmplitude = 0;
             for (CameraShake cameraShake : player.level().getEntitiesOfClass(CameraShake.class, player.getBoundingBox().inflate(64))) {
                 if (cameraShake.distanceTo(player) < cameraShake.getRadius()) {
                     shakeAmplitude += cameraShake.getShakeAmount((Player) player, delta);
-                    shakeAmplitude *= (Mth.clamp((float) ModClientConfig.SCREEN_SHAKE_AMOUNT.get() / 100, 0.0F, 1.0F));
+                    shakeAmplitude *= (Mth.clamp((float) BHConfigs.SCREEN_SHAKE_AMOUNT / 100, 0.0F, 1.0F));
                 }
             }
             if (shakeAmplitude > 1.0F) shakeAmplitude = 1.0F;

@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.particle.world.RoarParticleOptions;
 import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -16,6 +17,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -167,12 +169,36 @@ public abstract class BHBaseEntity extends PathfinderMob {
         return 0;
     }
 
+    public int getDifficulty() {
+        return this.level().getDifficulty().getId();
+    }
+
     public float getAttackDamage() {
         return this.getAttackDamage(1.0F);
     }
     public float getAttackDamage(float percent) {
         return (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * percent;
     }
+
+    public boolean getRandomChances(float value) {
+        float min = Math.min(value, 1.0F);
+        float max = Math.max(min, 0.0F);
+        float chance = Mth.clamp(max, 0.0F, 1.0F);
+        return this.getRandom().nextFloat() <= chance;
+    }
+
+    public boolean getRandomChances(int value) {
+        int minMax = Math.max(Math.min(value, 100), 0);
+        float chance = Mth.clamp((float) (minMax / 100), 0, 1);
+        return this.getRandom().nextFloat() <= chance;
+    }
+
+    protected void doRoarParticle(double x, double y, double z, int duration, int r, int g, int b, float a, float start, float end, float increase) {
+        if (this.level().isClientSide()) {
+            this.level().addParticle(new RoarParticleOptions(duration, r, g , b, a, start, increase, end), x, y, z, 0, 0, 0);
+        }
+    }
+
     @Override
     protected void tickDeath() {
         ++this.deathTime;

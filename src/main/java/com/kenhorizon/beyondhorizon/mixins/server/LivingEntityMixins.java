@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.mixins.server;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.core.Holder;
@@ -11,7 +12,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -25,12 +25,15 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixins extends EntityMixins  {
+public abstract class LivingEntityMixins extends EntityMixins {
+
+    @Shadow public abstract ItemStack getMainHandItem();
 
     @Inject(method = "decreaseAirSupply", at = @At("RETURN"), cancellable = true)
     private void modifiedDecreaseAirSupply(int currentAir, CallbackInfoReturnable<Integer> cir) {
@@ -60,36 +63,44 @@ public abstract class LivingEntityMixins extends EntityMixins  {
 
         }
     }
+
     @Inject(at = @At("HEAD"), method = "getDamageAfterArmorAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F", cancellable = true)
     private void beyondHorizon$getDamageAfterArmorAbsorb(DamageSource damageSource, float amount, CallbackInfoReturnable<Float> cir) {
+        float armorPenetration = 0;
+        float lethality = 0;
+        if (damageSource.getEntity() instanceof LivingEntity attacker) {
+            armorPenetration = (float) attacker.getAttributeValue(BHAttributes.ARMOR_PENETRATION.get());
+            lethality = (float) attacker.getAttributeValue(BHAttributes.LETHALITY.get());
+        }
         if (!damageSource.is(DamageTypeTags.BYPASSES_ARMOR)) {
             this.hurtArmor(damageSource, amount);
-            float armorPenetration = (float) getAttributeValue(BHAttributes.ARMOR_PENETRATION.get());
-            float lethality = (float) this.getAttributeValue(BHAttributes.LETHALITY.get());
             float toughness = (float) this.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
-            float totalDamage = (amount * armorPenetration) + lethality;
-            float damageTaken = amount - totalDamage;
-            float reducedDamage = CombatRules.getDamageAfterAbsorb(damageTaken, this.getArmorValue(), toughness);
-            float resultDamage = totalDamage + reducedDamage;
-            cir.setReturnValue(resultDamage);
-        }
-        if (damageSource.is(BHDamageTypeTags.IS_TRUE_DAMAGE)) {
-            this.hurtArmor(damageSource, amount);
-            float trueDamage = 0.0F;
-            if (damageSource.is(DamageTypes.INDIRECT_MAGIC)) {
-                trueDamage = 0;
-            } else {
-                trueDamage += 1.0F;
-            }
-            float toughness = (float) getAttributeValue(Attributes.ARMOR_TOUGHNESS);
-            float reducedDamage = CombatRules.getDamageAfterAbsorb(amount, (float) getArmorValue(), toughness);
-            float resultDamage = trueDamage + reducedDamage;
+            float armor = this.getArmorValue();
+            float reduceArmor = (armor * (1.0F - armorPenetration)) - lethality;
+            float resultDamage = CombatRules.getDamageAfterAbsorb(amount, reduceArmor, toughness);
+//            BeyondHorizon.LOGGER.info("Damage Info: Original {} -> {} Armor Pen:{}|{} Armor {} -> {}", amount, resultDamage, armorPenetration, lethality, armor, reduceArmor);
             cir.setReturnValue(resultDamage);
         }
     }
-
+    @Inject(at = @At("HEAD"), method = "getDamageAfterMagicAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F", cancellable = true)
+    private void beyondHorizon$getDamageAfterMagicAbsorb(DamageSource damageSource, float amount, CallbackInfoReturnable<Float> cir) {
+        float flatMagicPen = 0;
+        float perMagicPen = 0;
+        if (damageSource.getEntity() instanceof LivingEntity attacker) {
+            flatMagicPen = (float) attacker.getAttributeValue(BHAttributes.FLAT_MAGIC_PENETRATION.get());
+            perMagicPen = (float) attacker.getAttributeValue(BHAttributes.PERCENTAGE_MAGIC_PENETRATION.get());
+        }
+        if (damageSource.getEntity() instanceof LivingEntity entity && damageSource.getDirectEntity() == entity && damageSource.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
+            this.hurtArmor(damageSource, amount);
+            float toughness = (float) this.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
+            float armor = (float) this.getAttributeValue(BHAttributes.MAGIC_RESISTANCE.get());
+            float reduceArmor = (armor * (1.0F - perMagicPen)) - flatMagicPen;
+            float resultDamage = CombatRules.getDamageAfterAbsorb(amount, reduceArmor, toughness);
+            cir.setReturnValue(resultDamage);
+        }
+    }
     @Unique
-    private LivingEntity _this() {
+    protected LivingEntity _this() {
         return (LivingEntity) (Object) this;
     }
 

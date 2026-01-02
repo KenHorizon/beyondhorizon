@@ -13,7 +13,7 @@ public class ModClientConfig {
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP;
     public static ForgeConfigSpec.BooleanValue SCREEN_SHAKE;
     public static ForgeConfigSpec.IntValue SCREEN_SHAKE_AMOUNT;
-    public static ForgeConfigSpec.EnumValue GAME_HUD;
+    public static ForgeConfigSpec.EnumValue<GameHuds> GAME_HUD;
 
     public static final ForgeConfigSpec SPEC;
     public static final ModClientConfig INSTANCE;
@@ -27,23 +27,31 @@ public class ModClientConfig {
     public ModClientConfig(ForgeConfigSpec.Builder builder) {
         builder.comment("client_mod_configs").push("Beyond Horizon: Client Configs");
         ADVANCED_TOOLTIP = builder
-                .comment("Extend item's tooltip information")
+                .comment("  Extend item's tooltip information")
                 .define("Show Advanced Tooltip", true);
         ADVANCED_TOOLTIP_ACCESSORY = builder
-                .comment("Extend item's tooltip information only in accessory")
+                .comment("  Extend item's tooltip information only in accessory")
+                .comment("      [Disabling Advance Tooltip will automatic disabled this]")
                 .define("Show Advanced Tooltip On Accessory", true);
         ADVANCED_TOOLTIP_SKILL = builder
-                .comment("Extend item's tooltip information only in accessory")
+                .comment("  Extend item's tooltip information only in accessory")
+                .comment("      [Disabling Advance Tooltip will automatic disabled this]")
+                .comment("      [Disabling Advance Tooltip will automatic disabled this]")
                 .define("Show Advanced Tooltip On Skill", true);
         SCREEN_SHAKE = builder
-                .comment("Allow to do screen shake")
+                .comment("  Allow to do screen shake effect")
                 .define("Screen Shake", true);
         SCREEN_SHAKE_AMOUNT = builder
-                .comment("How much screen will shake by percentages")
+                .comment("  Change how much Sceen Shake Effectiveness")
+                .comment("      Screen Shake Effectivness [1-100%]")
                 .defineInRange("Screen Shake Multiplier", 100, 0, 100);
 
         GAME_HUD = builder
                 .comment("Change how your game's hud will be displayed")
+                .comment("  [Mod]")
+                .comment("      - Removed Vanilla Armor and Health Bar Instead Display Icons and their Values")
+                .comment("  [Vanilla]")
+                .comment("      - Vanilla Game Experience")
                 .defineEnum("In-Game Hud", GameHuds.MOD, GameHuds.VANILLA, GameHuds.MOD);
         builder.pop();
     }

@@ -1,9 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
-import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
-import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
-import com.kenhorizon.beyondhorizon.client.particle.world.RoarParticleOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.*;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.particles.ParticleType;
@@ -12,6 +9,8 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BHParticle {
+    public static final RegistryObject<SimpleParticleType> HELLFIRE_ORB_TRAIL = RegistryEntries.PARTICLE.register("hellfire_orb_trail", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> HELLFIRE_ORB_EXPLOSION = RegistryEntries.PARTICLE.register("hellfire_orb_explosion", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> BLEED = RegistryEntries.PARTICLE.register("bleed", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> STUN_PARTICLES = RegistryEntries.PARTICLE.register("stun_particles", () -> new SimpleParticleType(true));
     public static final RegistryObject<ParticleType<DamageIndicatorOptions>> DAMAGE_INDICATOR = RegistryEntries.PARTICLE.register("damage_indicator", () -> new ParticleType<DamageIndicatorOptions>(false, DamageIndicatorOptions.DESERIALIZER) {

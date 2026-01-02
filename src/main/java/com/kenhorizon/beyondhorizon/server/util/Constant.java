@@ -17,6 +17,8 @@ public class Constant {
     public static final float STRIKER_EXTRA_DAMAGE = 0.20F;
     public static final float CASTER_EXTRA_DAMAGE = 0.05F;
 
+    public static float PIERCING_EDGE_SCALE_DAMAGE = 0.08F;
+    public static int PIERCING_EDGE_DAMAGE = 8;
     public static int FIRE_EFFECT = 5;
     public static float JUMP_BOOST = 0.50F;
     public static float MINING_SPEED_BASIC = 0.10F;
@@ -25,6 +27,8 @@ public class Constant {
     public static float THORN_BASE_DAMAGE = 5;
     public static float THORN_DAMAGE_MODIFIER = 0.10F;
     public static float RAGE = 0.40F;
+    public static float DARK_BLADE_PEN = 0.15F;
+    public static float PERFECTION = 0.15F;
     public static float LETHALITY = 0.12F;
     public static float DEATH_HEALTH_THRESOHOLD = 0.12F;
     public static float KINETIC_STRIKE_DAMAGE_MODIFIER = 1.0F;
@@ -49,6 +53,8 @@ public class Constant {
     public static float[] ZENITH = {5.0F, 1.7F};
     public static float[] BLADE_OF_THE_ENDERLORD = {8.0F, 1.7F};
     public static float[] GIANT_SLAYER = {8.0F, 1.7F, 2.6F};
+    public static float[] ELUCIDATOR = {12.0F, 1.4F, 2F};
+    public static float[] DARK_REPULSER = {12.0F, 1.4F, 2F};
     //
     public static double MANA_REGEN_0 = 1.0;
     public static double MANA_REGEN_1 = 1.25;

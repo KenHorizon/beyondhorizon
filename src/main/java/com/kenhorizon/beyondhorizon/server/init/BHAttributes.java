@@ -17,12 +17,13 @@ public class BHAttributes {
     public static final RegistryObject<Attribute> CRITICAL_STRIKE = registerAttributes("critical_strike", 0.0D, -MAX_VALUE, MAX_VALUE, true);
     public static final RegistryObject<Attribute> DAMAGE_DEALT = registerAttributes("damage_dealt", 1.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> DAMAGE_TAKEN = registerAttributes("damage_taken", 1.0D, -MAX_VALUE, MAX_VALUE, true);
-    public static final RegistryObject<Attribute> EVADE = registerAttributes("evade", 0.0D, 0.0D, 100.0D, true);
+    public static final RegistryObject<Attribute> EVADE = registerAttributes("evade", 0.0D, 0.0D, 1.0D, true);
     public static final RegistryObject<Attribute> HEALING = registerAttributes("healing", 1.0D, -MAX_VALUE, MAX_VALUE, true);
     public static final RegistryObject<Attribute> HEALTH_REGENERATION = registerAttributes("health_regeneration", 0.1D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> LETHALITY = registerAttributes("lethality", 0.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> ABILITY_POWER = registerAttributes("ability_power", 0.0D, 0.0D, MAX_VALUE, true);
-    public static final RegistryObject<Attribute> MAGIC_PENETRATION = registerAttributes("magic_penetration", 0.0D, 0.0D, 1.0D, true);
+    public static final RegistryObject<Attribute> FLAT_MAGIC_PENETRATION = registerAttributes("flat.magic_penetration", 0.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> PERCENTAGE_MAGIC_PENETRATION = registerAttributes("percentage.magic_penetration", 0.0D, 0.0D, 1.0D, true);
     public static final RegistryObject<Attribute> MAGIC_RESISTANCE = registerAttributes("magic_resistance", 0.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> MANA_COST = registerAttributes("mana_cost", 0.0D, -1.0D, 1.0D, true);
     public static final RegistryObject<Attribute> MANA_REGENERATION = registerAttributes("mana_regeneration", 1.0D, 0.0D, MAX_VALUE, true);

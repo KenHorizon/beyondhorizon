@@ -10,10 +10,13 @@ import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class BHLibEntity extends BHBaseEntity {
+import java.util.List;
+
+public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
     public AnimationState idleAnimation = new AnimationState();
     private int idleTime;
     private float damageCap = -1;
@@ -75,6 +78,7 @@ public class BHLibEntity extends BHBaseEntity {
         this.damageCap = damageCap;
     }
 
+    @Override
     public float getDamageCap() {
         return this.damageCap;
     }
@@ -106,6 +110,47 @@ public class BHLibEntity extends BHBaseEntity {
     public void die(DamageSource cause) {
         super.die(cause);
         this.setAnimation(this.getAnimationDeath());
+    }
+
+    public void doDodge(int chance) {
+        this.doDodge(chance, 0);
+    }
+
+    public void doDodge(int chance, int animationId) {
+        if (this.getRandomChances(chance)) return;
+        this.performDodge(animationId);
+    }
+
+    public void doDodge(float chance) {
+        this.doDodge(chance, 0);
+    }
+
+    public void doDodge(float chance, int animationId) {
+        if (this.getRandomChances(chance)) return;
+        this.performDodge(animationId);
+    }
+
+    private void performDodge(int animationId) {
+        List<Projectile> projectilesNearby = this.getEntitiesNearby(Projectile.class, 30);
+        for (Projectile projectile : projectilesNearby) {
+            Vec3 aActualMotion = new Vec3(projectile.getX() - projectile.xo, projectile.getY() - projectile.yo, projectile.getZ() - projectile.zo);
+            if (aActualMotion.length() < 0.1 || projectile.tickCount <= 1) {
+                continue;
+            }
+            float dot = (float) projectile.getDeltaMovement().normalize().dot(this.position().subtract(projectile.position()).normalize());
+            if (dot > 0.96) {
+                Vec3 dodgeVec = projectile.getDeltaMovement().cross(new Vec3(0, 1, 0)).normalize().scale(1.2);
+                Vec3 newPosLeft = position().add(dodgeVec.scale(2));
+                Vec3 newPosRight = position().add(dodgeVec.scale(-2));
+                Vec3 diffLeft = newPosLeft.subtract(projectile.position());
+                Vec3 diffRight = newPosRight.subtract(projectile.position());
+                if (diffRight.dot(projectile.getDeltaMovement()) > diffLeft.dot(projectile.getDeltaMovement())) {
+                    dodgeVec = dodgeVec.scale(-1);
+                }
+                this.setDeltaMovement(getDeltaMovement().add(dodgeVec));
+                this.setAnimation(animationId);
+            }
+        }
     }
 
     public boolean inBetweenHealth(float to, float from) {

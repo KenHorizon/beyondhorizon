@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.client.level.guis.hud;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.level.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.level.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -33,20 +34,15 @@ public class GameHudDisplay extends Gui {
     @SubscribeEvent(receiveCanceled = true)
     public void onHealthBarRender(RenderGuiOverlayEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (ModClientConfig.GAME_HUD.get() == GameHuds.VANILLA || minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.PLAYER_HEALTH.type()) return;
+        if (BHConfigs.GAME_HUD == GameHuds.VANILLA || minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.PLAYER_HEALTH.type()) return;
         event.setCanceled(true);
         this.renderPlayerHearts(event.getGuiGraphics(), event.getPartialTick());
     }
-    @SubscribeEvent(receiveCanceled = true)
-    public void onManaRender(RenderGuiOverlayEvent.Pre event) {
-        Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.options.hideGui || !this.shouldDrawSurvivalElements()) return;
-        this.renderPlayerMana(event.getGuiGraphics(), event.getPartialTick());
-    }
+
     @SubscribeEvent(receiveCanceled = true)
     public void onArmorRender(RenderGuiOverlayEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (ModClientConfig.GAME_HUD.get() == GameHuds.VANILLA || minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.ARMOR_LEVEL.type()) return;
+        if (BHConfigs.GAME_HUD == GameHuds.VANILLA || minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.ARMOR_LEVEL.type()) return;
         event.setCanceled(true);
         this.renderArmor(event.getGuiGraphics(), event.getPartialTick());
     }
@@ -80,20 +76,10 @@ public class GameHudDisplay extends Gui {
         this.minecraft.getProfiler().pop();
     }
 
-    public void renderPlayerMana(GuiGraphics guiGraphics, float partialTicks) {
-        this.minecraft.getProfiler().push("player_mana");
-        this.hud.update();
-        int x = this.hud.scaledWindowWidth / 2 - 91;
-        int y = this.hud.scaledWindowHeight - (this.leftHeight + 21);
-        String health = String.format("%.0f/%.0f", this.hud.mana, this.hud.maxMana);
-        BlitHelper.draw(guiGraphics, HudSprites.MANA, x, y - 1, 9.0F, 9, 9, 9, 9);
-        BlitHelper.drawStrings(guiGraphics, health,x + (5 + 9), y, ColorUtil.combineRGB(0, 148, 255), true);
-        this.minecraft.getProfiler().pop();
-    }
-
     public ForgeGui getForgeGui() {
         return (ForgeGui) Minecraft.getInstance().gui;
     }
+
     public boolean shouldDrawSurvivalElements() {
         return minecraft.gameMode.canHurtPlayer() && minecraft.getCameraEntity() instanceof Player;
     }

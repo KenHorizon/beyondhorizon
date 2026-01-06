@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "beyondhorizon:block/polished_nether_slab"
+    },
+    "type=double": {
+      "model": "beyondhorizon:block/polished_nether"
+    },
+    "type=top": {
+      "model": "beyondhorizon:block/polished_nether_slab_top"
+    }
+  }
+}

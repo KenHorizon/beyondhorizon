@@ -6,6 +6,7 @@ public enum AccessoryItemGroup implements IExtensibleEnum {
     NONE,
     UNIQUE,
     INFORMATION,
+    HERO_SWORD,
     QUIVER,
     MOMENTUM,
     PROTECTION,

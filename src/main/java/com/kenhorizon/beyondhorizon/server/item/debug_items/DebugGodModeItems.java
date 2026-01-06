@@ -20,9 +20,9 @@ public class DebugGodModeItems extends BasicItem {
             player.heal(player.getMaxHealth());
             player.getFoodData().setFoodLevel(20);
             player.getFoodData().setSaturation(20);
-            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 15, false, true));
-            player.addEffect(new MobEffectInstance(MobEffects.SATURATION, -1, 15, false, true));
-            player.addEffect(new MobEffectInstance(MobEffects.HEAL, -1, 15, false, true));
+            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 15, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.SATURATION, -1, 15, false, false));
+            player.addEffect(new MobEffectInstance(MobEffects.HEAL, -1, 15, false, false));
             player.getAbilities().flying = !player.getAbilities().flying;
         }
         return super.use(level, player, hand);

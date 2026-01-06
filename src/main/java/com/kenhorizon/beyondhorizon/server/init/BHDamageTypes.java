@@ -16,6 +16,7 @@ public class BHDamageTypes {
 
     public static final ResourceKey<DamageType> BEAM = createKey("beam");
     public static final ResourceKey<DamageType> BLEED = createKey("bleed");
+    public static final ResourceKey<DamageType> IGNORE_ENCHANTMENT_PROTECTION = createKey("ignore_enchantment_protection");
     public static final ResourceKey<DamageType> BLAZING_ROD = createKey("blazing_rod");
     public static final ResourceKey<DamageType> PHYSICAL_DAMAGE = createKey("physical_damage");
     public static final ResourceKey<DamageType> MAGIC_DAMAGE = createKey("magic_damage");
@@ -27,6 +28,7 @@ public class BHDamageTypes {
     private static Registry<DamageType> damageTypes;
 
     public static void bootstrap(BootstapContext<DamageType> context) {
+        context.register(IGNORE_ENCHANTMENT_PROTECTION, new DamageType("ignore_enchantment_protection", 0.1F));
         context.register(BEAM, new DamageType("beam", 0.1F));
         context.register(BLAZING_ROD, new DamageType("blazing_rod", 0.1F));
         context.register(BLEED, new DamageType("bleed", 0.1F));
@@ -82,7 +84,9 @@ public class BHDamageTypes {
     public static DamageSource physicalDamage(Entity source, Entity target) {
         return source(PHYSICAL_DAMAGE, source, target);
     }
-
+    public static DamageSource nullify(Entity source, Entity target) {
+        return source(IGNORE_ENCHANTMENT_PROTECTION, source, target);
+    }
     public static DamageSource trueDamage(Entity source, Entity target) {
         return source(TRUE_DAMAGE, source, target);
     }

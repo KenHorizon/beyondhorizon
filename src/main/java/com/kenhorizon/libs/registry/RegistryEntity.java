@@ -1,19 +1,14 @@
 package com.kenhorizon.libs.registry;
 
 import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.datagen.BHEntityTypeTagsProvider;
-import com.kenhorizon.beyondhorizon.server.datagen.BHItemTagsProvider;
+import com.kenhorizon.beyondhorizon.datagen.BHEntityTypeTagsProvider;
 import com.kenhorizon.libs.server.ModifiedNonNullFunction;
 import com.kenhorizon.libs.server.ModifiedNonNullUnaryOperator;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RegistryEntity<T extends Entity> {
     protected String name;

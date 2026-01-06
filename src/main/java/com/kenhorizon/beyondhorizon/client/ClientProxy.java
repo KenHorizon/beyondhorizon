@@ -2,12 +2,11 @@ package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
-import com.kenhorizon.beyondhorizon.client.level.ModResouces;
-import com.kenhorizon.beyondhorizon.client.level.guis.WorkbenchScreen;
-import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
-import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHudDisplay;
-import com.kenhorizon.beyondhorizon.client.level.guis.hud.ManaHud;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.IconAttributesTooltip;
+import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
+import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.ManaHud;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
@@ -26,7 +25,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHMenu;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAccessoryInventoryPacket;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -54,7 +53,6 @@ import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forgespi.language.IModFileInfo;
@@ -81,7 +79,7 @@ public class ClientProxy extends ServerProxy {
     }
 
     public void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
-        event.registerBelow(VanillaGuiOverlay.ITEM_NAME.id(), "mana_hud", new ManaHud());
+        event.registerBelow(VanillaGuiOverlay.ARMOR_LEVEL.id(), "mana_hud", new ManaHud());
     }
 
     private void addResourcesBuiltin(AddPackFindersEvent event) {
@@ -108,6 +106,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.BLAZING_ROD.get(), BlazingRodRenderer::new);
         EntityRenderers.register(BHEntity.INFERNO_SHIELD.get(), InfernoShieldRenderer::new);
         EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
+        EntityRenderers.register(BHEntity.CLEAVE_ABILITY.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.BLAZING_SPEAR.get(), BlazingSpearRenderer::new);
         EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
         EntityRenderers.register(BHEntity.FLAME_STRIKE.get(), FlameStrikeRenderer::new);
@@ -181,7 +180,7 @@ public class ClientProxy extends ServerProxy {
                 event.add(type, BHAttributes.MINING_EFFICIENCY.get());
                 event.add(type, BHAttributes.CAST_TIME.get());
                 event.add(type, BHAttributes.COOLDOWN.get());
-                event.add(type, BHAttributes.CRITICAL_STRIKE.get());
+                event.add(type, BHAttributes.CRITICAL_CHANCE.get());
                 event.add(type, BHAttributes.CRITICAL_DAMAGE.get());
                 event.add(type, BHAttributes.MINING_SPEED.get());
                 event.add(type, BHAttributes.MAX_MANA.get());

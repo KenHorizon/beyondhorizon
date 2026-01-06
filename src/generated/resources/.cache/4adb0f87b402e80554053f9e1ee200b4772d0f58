@@ -1,8 +1,9 @@
-// 1.20.1	2025-12-27T10:10:24.317922	Beyond Horizon: Datapack Registries
+// 1.20.1	2026-01-03T17:18:35.0509458	Beyond Horizon: Datapack Registries
 40892efc51eadc232f99a3cc979407590646320e data/beyondhorizon/damage_type/armor_penetration.json
 bb7471859e13238f104a23a0d29ba35280ab6fc8 data/beyondhorizon/damage_type/beam.json
 308ca6500b1886799fdbf8df916b5f2f99d7a2f0 data/beyondhorizon/damage_type/blazing_rod.json
 2b581616c48fe0c833f919ad5ab58fb8db354e51 data/beyondhorizon/damage_type/bleed.json
+444c8a6dec939894037531001d452b5cd2a28bf9 data/beyondhorizon/damage_type/ignore_enchantment_protection.json
 7bf9ca402ad3183994d0cf76dff12b61a73c8fc7 data/beyondhorizon/damage_type/lethality.json
 db41d2e4b7199f0ba9bbf2f4f2eb560efa5bf408 data/beyondhorizon/damage_type/magic_damage.json
 f4f3fd39d00c86075c3c68ce8e429b082f8133a4 data/beyondhorizon/damage_type/magic_penetration.json

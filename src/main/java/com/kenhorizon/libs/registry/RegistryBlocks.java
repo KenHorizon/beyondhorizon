@@ -1,15 +1,17 @@
 package com.kenhorizon.libs.registry;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.datagen.BHBlockTagsProvider;
-import com.kenhorizon.beyondhorizon.server.datagen.BHLootTableProvider;
+import com.kenhorizon.beyondhorizon.datagen.BHBlockTagsProvider;
+import com.kenhorizon.beyondhorizon.datagen.BHLootTableProvider;
 import com.kenhorizon.beyondhorizon.server.item.BasicBlockItem;
 import com.kenhorizon.libs.server.ModifiedNonNullFunction;
 import com.kenhorizon.libs.server.ModifiedNonNullUnaryOperator;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.common.util.NonNullFunction;
@@ -66,39 +68,49 @@ public class RegistryBlocks<T extends Block> {
         } else {
             lang = builderName(this.name);
         }
-
-        this.registerBlockItems(builder.name, builder.registryObject);
+        if (!builder.dontCreateItemBlocks) {
+            BeyondHorizon.LOGGER.debug("is Stand Wall Block null ? {}", builder.standWallBlock == null);
+            if (builder.standWallBlock != null) {
+                this.registerStandingAndWallItems(builder.name, builder.registryObject, builder.standWallBlock);
+            } else {
+                this.registerBlockItems(builder.name, builder.registryObject);
+            }
+        }
         if (!builder.disalbeLang) {
             RegistryLanguage.ADD_BLOCK_TRANSLATION.put(builder.registryObject, lang);
         }
-        switch (builder.toolTiers) {
-            case STONE:
-                BHBlockTagsProvider.ADD_MINEABLE_FOR_STONE.add(builder.registryObject);
-                break;
-            case IRON:
-                BHBlockTagsProvider.ADD_MINEABLE_FOR_IRON.add(builder.registryObject);
-                break;
-            case DIAMOND:
-                BHBlockTagsProvider.ADD_MINEABLE_FOR_DIAMOND.add(builder.registryObject);
-                break;
-            default:
-                break;
+        if (builder.toolTiers != null) {
+            switch (builder.toolTiers) {
+                case STONE:
+                    BHBlockTagsProvider.ADD_MINEABLE_FOR_STONE.add(builder.registryObject);
+                    break;
+                case IRON:
+                    BHBlockTagsProvider.ADD_MINEABLE_FOR_IRON.add(builder.registryObject);
+                    break;
+                case DIAMOND:
+                    BHBlockTagsProvider.ADD_MINEABLE_FOR_DIAMOND.add(builder.registryObject);
+                    break;
+                default:
+                    break;
+            }
         }
-        switch (builder.mineable) {
-            case PICKAXE:
-                BHBlockTagsProvider.ADD_MINEABLE_FOR_PICKAXE.add(builder.registryObject);
-                break;
-            case AXE:
-                BHBlockTagsProvider.ADD_MINEABLE_FOR_AXE.add(builder.registryObject);
-                break;
-            case HOE:
-                BHBlockTagsProvider.ADD_MINEABLE_FOR_HOE.add(builder.registryObject);
-                break;
-            case SHOVEL:
-                BHBlockTagsProvider.ADD_MINEABLE_FOR_SHOVEL.add(builder.registryObject);
-                break;
-            default:
-                break;
+        if (builder.mineable != null) {
+            switch (builder.mineable) {
+                case PICKAXE:
+                    BHBlockTagsProvider.ADD_MINEABLE_FOR_PICKAXE.add(builder.registryObject);
+                    break;
+                case AXE:
+                    BHBlockTagsProvider.ADD_MINEABLE_FOR_AXE.add(builder.registryObject);
+                    break;
+                case HOE:
+                    BHBlockTagsProvider.ADD_MINEABLE_FOR_HOE.add(builder.registryObject);
+                    break;
+                case SHOVEL:
+                    BHBlockTagsProvider.ADD_MINEABLE_FOR_SHOVEL.add(builder.registryObject);
+                    break;
+                default:
+                    break;
+            }
         }
         if (builder.tags != null) {
             BHBlockTagsProvider.TAGS.put(builder.registryObject, (TagKey<Block>) builder.tags);
@@ -109,13 +121,17 @@ public class RegistryBlocks<T extends Block> {
         if (!builder.dropSelf && builder.drop != null) {
             builder.drop.apply(builder.registryObject);
         }
-        RegistryTabs.register(builder.registryObject, RegistryTabs.Category.BLOCKS);
+        if (!builder.removeFromTabs) {
+            RegistryTabs.register(builder.registryObject, RegistryTabs.Category.BLOCKS);
+        }
     }
 
     private void registerBlockItems(String name, Supplier<T> blockItem) {
         RegistryEntries.ITEMS.register(name, () -> new BasicBlockItem(blockItem.get(), new Item.Properties()));
     }
-
+    private void registerStandingAndWallItems(String name, Supplier<T> blockItem, Supplier<T> wallItem) {
+        RegistryEntries.ITEMS.register(name, () -> new StandingAndWallBlockItem(blockItem.get(), wallItem.get(), new Item.Properties(), Direction.DOWN));
+    }
     public static class Builder<T extends Block> {
         private String name;
         private T entry;
@@ -131,10 +147,14 @@ public class RegistryBlocks<T extends Block> {
         private boolean removeFromTabs = false;
         private boolean noLootTable = false;
         private boolean dropSelf = false;
+        private boolean customRegisrty = false;
+        private boolean standWall = false;
         private RegistryBlocks.Mineable mineable;
         private RegistryBlocks.ToolTiers toolTiers;
+        private Supplier<T> standWallBlock = null;
         private Function<RegistryObject<T>, ?> drop = null;
-        private List<RegistryTabs.Category> creativeTabs = ImmutableList.of();
+        private boolean hasInitialProperties = false;
+        private Supplier<BlockBehaviour.Properties> copyFromProperties = null;
 
         public Builder(String name, NonNullFunction<BlockBehaviour.Properties, T> factory) {
             this.factory = factory;
@@ -148,6 +168,11 @@ public class RegistryBlocks<T extends Block> {
 
         public Builder<T> inialProperties(NonNullSupplier<BlockBehaviour.Properties> properties) {
             this.initialProperties = properties;
+            this.hasInitialProperties = true;
+            return this;
+        }
+        public Builder<T> copyFrom(Supplier<BlockBehaviour.Properties> block) {
+            this.copyFromProperties = block;
             return this;
         }
 
@@ -172,7 +197,11 @@ public class RegistryBlocks<T extends Block> {
             this.dropSelf = false;
             return this;
         }
-
+        public Builder<T> standWall(Supplier<T> block) {
+            this.customRegisrty = true;
+            this.standWallBlock = block;
+            return this;
+        }
         public Builder<T> dropSelf() {
             this.dropSelf = true;
             return this;
@@ -200,14 +229,15 @@ public class RegistryBlocks<T extends Block> {
         }
 
         private T createEntry() {
-            BlockBehaviour.Properties properties = this.initialProperties.get();
+            BlockBehaviour.Properties properties;
+            properties = this.initialProperties.get();
             properties = this.propertiesCallback.apply(properties);
             return this.factory.apply(properties);
         }
 
-        public RegistryBlocks<T> register() {
+        public RegistryObject<T> register() {
             this.registryObject = RegistryEntries.BLOCKS.register(this.name, this::createEntry);
-            return new RegistryBlocks<>(this);
+            return new RegistryBlocks<>(this).build();
         }
     }
     public record OreDrops(Supplier<? extends Block> blocks, Supplier<? extends Item> items) {}

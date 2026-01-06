@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
-import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import net.minecraft.core.particles.ParticleTypes;
@@ -10,9 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
 import java.util.List;
-import java.util.Optional;
 
-public class EruptionAbility extends AbstractAbilityEntity {
+public class EruptionAbility extends AbilityEntity {
     public EruptionAbility(EntityType<?> entityType, Level level) {
         super(entityType, level);
         this.setDuration(100);

@@ -1,11 +1,12 @@
 package com.kenhorizon.beyondhorizon;
 
 import com.kenhorizon.beyondhorizon.client.ClientProxy;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeReaderResourceParser;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeReaderResourceParser;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.compat.ModCompats;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
+import com.kenhorizon.beyondhorizon.configs.common.ModCommonConfig;
 import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
@@ -36,7 +37,6 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
@@ -62,14 +62,14 @@ public class BeyondHorizon
         IEventBus eventBus = context.getModEventBus();
         final ModLoadingContext modContext = ModLoadingContext.get();
         ModClientConfig.register(modContext);
+        ModCommonConfig.register(modContext);
         ModServerConfig.register(modContext);
         eventBus.addListener(this::commonSetup);
         eventBus.addListener(this::clientSetup);
         eventBus.addListener(this::reloadListener);
         eventBus.addListener(this::registerLayerDefinitions);
         eventBus.addListener(this::completeSetup);
-        MinecraftForge.EVENT_BUS.register(new AnvilPatchHandler());
-        MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
+        eventBus.addListener(this::onConfigLoad);
         BHAttributes.register(eventBus);
         BHCreativeTabs.register(eventBus);
         BHMenu.register(eventBus);
@@ -88,6 +88,8 @@ public class BeyondHorizon
         Accessories.register(eventBus);
         PROXY.serverHandler();
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new AnvilPatchHandler());
+        MinecraftForge.EVENT_BUS.register(new ServerEventHandler());
         if (FMLEnvironment.dist == Dist.CLIENT) {
             Minecraft minecraft = Minecraft.getInstance();
             if (minecraft != null) {
@@ -134,13 +136,18 @@ public class BeyondHorizon
     @SubscribeEvent
     public void onConfigLoad(final ModConfigEvent event) {
         final ModConfig config = event.getConfig();
+        BeyondHorizon.LOGGER.info("Mod Config Fired!");
         BHConfigs.bake(config);
-        if (config.getSpec() == ModServerConfig.SPEC) {
-            ModServerConfig.reset();
-        }
         if (config.getSpec() == ModClientConfig.SPEC) {
             ModClientConfig.reset();
         }
+        if (config.getSpec() == ModCommonConfig.SPEC) {
+            ModCommonConfig.reset();
+        }
+        if (config.getSpec() == ModServerConfig.SPEC) {
+            ModServerConfig.reset();
+        }
+
     }
 
     public static ResourceLocation resource(String name) {

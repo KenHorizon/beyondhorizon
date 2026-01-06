@@ -14,7 +14,7 @@ public class BHAttributes {
     public static final RegistryObject<Attribute> COOLDOWN = registerAttributes("cooldown", 0.0D, -MAX_VALUE, 1.0D, true);
     public static final RegistryObject<Attribute> CAST_TIME = registerAttributes("cast_time", 0.0D, 0.0D, 1.0D, true);
     public static final RegistryObject<Attribute> CRITICAL_DAMAGE = registerAttributes("critical_damage", 1.5D, 0.0D, MAX_VALUE, true);
-    public static final RegistryObject<Attribute> CRITICAL_STRIKE = registerAttributes("critical_strike", 0.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> CRITICAL_CHANCE = registerAttributes("critical_chance", 0.0D, -MAX_VALUE, MAX_VALUE, true);
     public static final RegistryObject<Attribute> DAMAGE_DEALT = registerAttributes("damage_dealt", 1.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> DAMAGE_TAKEN = registerAttributes("damage_taken", 1.0D, -MAX_VALUE, MAX_VALUE, true);
     public static final RegistryObject<Attribute> EVADE = registerAttributes("evade", 0.0D, 0.0D, 1.0D, true);

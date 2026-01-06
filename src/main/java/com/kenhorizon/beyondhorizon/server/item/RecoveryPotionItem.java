@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.item;
 
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "beyondhorizon:block/siltstone_slab"
+    },
+    "type=double": {
+      "model": "beyondhorizon:block/siltstone"
+    },
+    "type=top": {
+      "model": "beyondhorizon:block/siltstone_slab_top"
+    }
+  }
+}

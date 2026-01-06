@@ -136,7 +136,7 @@ public class AnvilPatchHandler {
             output = ItemStack.EMPTY;
         }
         if (addedRepairCost == renameAddedCost && BHConfigs.ANVIL_COST_CAP >= 0 && totalRepairCost >= BHConfigs.ANVIL_COST_CAP) {
-            totalRepairCost = ModCommonConfig.ANVIL_COST_CAP.get() - 1;
+            totalRepairCost = BHConfigs.ANVIL_COST_CAP - 1;
         }
         if (BHConfigs.ANVIL_COST_CAP >= 0 && totalRepairCost >= BHConfigs.ANVIL_COST_CAP) {
             if (event.getOutput().isEmpty()) {

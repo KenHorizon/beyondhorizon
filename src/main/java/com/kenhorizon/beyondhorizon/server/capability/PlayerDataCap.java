@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.api.entity.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;

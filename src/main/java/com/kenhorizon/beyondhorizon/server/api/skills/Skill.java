@@ -3,13 +3,11 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.AttributeTooltips;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.ColorCodedText;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
@@ -113,9 +111,13 @@ public abstract class Skill {
         this.type = type;
         return this;
     }
+    public Skill disableTooltipDescription() {
+        this.tooltipDescriptionEnable = false;
+        return this;
+    }
 
     public Skill disableTooltipName() {
-        this.tooltipDescriptionEnable = false;
+        this.tooltipNameEnable = false;
         return this;
     }
 
@@ -308,9 +310,6 @@ public abstract class Skill {
             this.addTooltipTitle(itemStack, tooltip, first);
         }
         if (!this.isTooltipDescriptionEnable()) return;
-        if (this.isAttributeTooltipEnable()) {
-            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
-        }
         boolean flag = size == 1;
         boolean alwayShow = (BHConfigs.ADVANCED_TOOLTIP || BHConfigs.ADVANCED_TOOLTIP_SKILL) && flag;
         if ((alwayShow || isShiftPressed) && I18n.exists(this.createId())) {
@@ -337,7 +336,11 @@ public abstract class Skill {
             tooltip.add(this.spacing().append(ColorCodedText.applyFormat(text)).withStyle(Tooltips.TOOLTIP[0]).append(this.spacing()));
         }
     }
-
+    public void addTooltipAttributes(ItemStack itemStack, List<Component> tooltip) {
+        if (this.isAttributeTooltipEnable()) {
+            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
+        }
+    }
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         return Component.translatable(this.createId());
     }

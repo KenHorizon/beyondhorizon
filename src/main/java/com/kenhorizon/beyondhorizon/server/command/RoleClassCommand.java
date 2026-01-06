@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.command;
 
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;

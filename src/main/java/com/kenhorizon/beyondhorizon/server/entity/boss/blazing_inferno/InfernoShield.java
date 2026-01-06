@@ -1,5 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno;
 
+import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
@@ -220,6 +222,9 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
         }
         if (owner != null && !owner.isAlive()) this.discard();
         if (owner != null) {
+            if (this.level().isClientSide()) {
+                this.level().addParticle(new ParticleTrailOptions(0, 0, 20, 1.0F, 0.0F, 0.0F, 1.0F, 8.0F, true,  TrailParticles.Behavior.DEFAULT, owner.position().add(0, owner.getBbHeight() * 0.5D, 0)), this.getX(), this.getY() + (this.getBbHeight() / 2), this.getZ(), 0, 0, 0);
+            }
             if (owner instanceof BlazingInferno blazingInferno) {
                 if (blazingInferno.deathTime > 0) {
                     this.kill();

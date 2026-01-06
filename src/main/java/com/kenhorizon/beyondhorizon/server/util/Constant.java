@@ -17,11 +17,15 @@ public class Constant {
     public static final float STRIKER_EXTRA_DAMAGE = 0.20F;
     public static final float CASTER_EXTRA_DAMAGE = 0.05F;
 
-    public static float PIERCING_EDGE_SCALE_DAMAGE = 0.08F;
-    public static int PIERCING_EDGE_DAMAGE = 8;
+    public static float BLAZING_CLEAVE_DAMAGE = 0.55F;
+    public static float BLAZING_CLEAVE_RANGE = 2.5F;
+    public static float PIERCING_EDGE_SCALE_DAMAGE = 0.12F;
+    public static float PIERCING_EDGE_DAMAGE = 0.08F;
     public static int FIRE_EFFECT = 5;
+    public static float NULLIFY_DAMAGE_SCALE = 0.20F;
     public static float JUMP_BOOST = 0.50F;
     public static float MINING_SPEED_BASIC = 0.10F;
+    public static float LETHAL_BURST = 0.75F;
     public static float MINING_SPEED_UPGRADED = 0.20F;
     public static float KNOWLEDGE_XP_MODIFIER = 1.20F;
     public static float THORN_BASE_DAMAGE = 5;
@@ -52,9 +56,10 @@ public class Constant {
     public static float[] SICKLE = {4.5F, 1.65F};
     public static float[] ZENITH = {5.0F, 1.7F};
     public static float[] BLADE_OF_THE_ENDERLORD = {8.0F, 1.7F};
-    public static float[] GIANT_SLAYER = {8.0F, 1.7F, 2.6F};
-    public static float[] ELUCIDATOR = {12.0F, 1.4F, 2F};
-    public static float[] DARK_REPULSER = {12.0F, 1.4F, 2F};
+    public static float[] GIANT_SLAYER = {8.0F, 1.7F, 4.5F};
+    public static float[] ELUCIDATOR = {12.0F, 1.4F, 4F};
+    public static float[] DARK_REPULSER = {12.0F, 1.4F, 4F};
+    public static float[] ANCIENT_BLAZING_SWORD = {11.0F, 1.7F, 4.0F};
     //
     public static double MANA_REGEN_0 = 1.0;
     public static double MANA_REGEN_1 = 1.25;
@@ -97,11 +102,18 @@ public class Constant {
     public static double MAX_HEALTH_4 = 100;
     public static double MOVEMENT_SPEED_0 = 0.04D;
     public static double MOVEMENT_SPEED_1 = 0.10D;
+    public static double WEAPON_CRITICAL_STRIKE_0 = 0.04D;
+    public static double WEAPON_CRITICAL_STRIKE_1 = 0.08D;
+    public static double WEAPON_CRITICAL_STRIKE_2 = 0.16D;
+    public static double WEAPON_CRITICAL_STRIKE_3 = 0.24D;
     public static double CRITICAL_STRIKE_0 = 0.15D;
     public static double CRITICAL_STRIKE_1 = 0.25D;
     public static double SWIFT_DAGGER_ATTACK_SPEED = 0.05D;
     public static double POWER_GLOVES_ATTACK_DAMAGE = 3;
     public static double POWER_GLOVES_KNOCBACK = 0.10D;
+    public static double TRUE_HERO_SWORD_DMG = 0.15D;
+    public static double TRUE_HERO_SWORD_ATK_SPD = 0.25D;
+    public static double TRUE_HERO_SWORD_ATK_KNOCKBACK = 0.20D;
     public static double AETHER_WISP_ABILITY_POWER = 5;
     public static double DESPAIR_AND_DEFY = 0.30D;
     public static double FORTUNE_SHIKIGAMI = 2;

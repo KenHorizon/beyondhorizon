@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-02T10:26:59.4144033	Item Models: beyondhorizon
+// 1.20.1	2026-01-04T01:22:39.5308445	Item Models: beyondhorizon
 61bd62baa09e73293916ef2d5600d19c032d0f96 assets/beyondhorizon/models/item/adamantite_axe.json
 bd25a09e9bcfc47662d0a3f201203af5e078f985 assets/beyondhorizon/models/item/adamantite_hoe.json
 8a8ce68bd28d9994f0df749e8177a704dd895bee assets/beyondhorizon/models/item/adamantite_ingot.json
@@ -8,8 +8,10 @@ bd25a09e9bcfc47662d0a3f201203af5e078f985 assets/beyondhorizon/models/item/adaman
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
 bc4bd470691ac94e76d84763498ebdb51c69b6ef assets/beyondhorizon/models/item/agile_dagger.json
 81e672adaad488959227245db22ca6da1a6c7d5d assets/beyondhorizon/models/item/ampliflying_tome.json
+e2d30cc0e552a734f38e04bb48ea8bb97cbd0b5f assets/beyondhorizon/models/item/ancient_blazing_sword.json
 17ccefc69b8ddac415566364b3271b9f2f30b3a5 assets/beyondhorizon/models/item/ancient_chisel.json
 cabd63f40b0d87a6db691286dc1e3d50cd1b5f95 assets/beyondhorizon/models/item/ancient_pickaxe.json
+8e790f7e6bf97b5059be6991cbb14b560a7e684c assets/beyondhorizon/models/item/ascended_hero_sword.json
 142c6bc7e213af35d5c2e51239d068ec425b5bb1 assets/beyondhorizon/models/item/berserker_boots.json
 4a87309c6188e5c120a7bfce74bf8c2bfcfc58b1 assets/beyondhorizon/models/item/black_wool_fur.json
 f022045ce29f9a43dcec8a282abd2108896881b8 assets/beyondhorizon/models/item/blade_of_the_enderlord.json
@@ -56,6 +58,7 @@ ff20a4da36001e25665d870eeb155498c946cb9c assets/beyondhorizon/models/item/handle
 d7e626d382998b6a7f36cb0950d591375ab862d0 assets/beyondhorizon/models/item/hellstone_pickaxe.json
 761cb8ed2b8c1eb3de7893e5e117c62d9f948708 assets/beyondhorizon/models/item/hellstone_shovel.json
 371735e3272f3256b1289bff9d8988b8cf71a633 assets/beyondhorizon/models/item/hellstone_sword.json
+e8028c4201c3c27c867b7c515b379d57e441cba6 assets/beyondhorizon/models/item/infinity_sword.json
 b125e3f4deb091bbc5863a3655ba2a117f3f600a assets/beyondhorizon/models/item/iron_plate.json
 4982b6ebb0e0cc0b2755b177dea0e167737993a7 assets/beyondhorizon/models/item/iron_plated_boots.json
 137c3bde9bb69c7f73788817307dc82f53abf192 assets/beyondhorizon/models/item/leather_agility.json
@@ -68,6 +71,7 @@ f6ca3709d68e38f21a87b2cad5be9b5348c1e860 assets/beyondhorizon/models/item/mask_o
 ad7deea38ea7f781b1e24c5223f796ffb35a9719 assets/beyondhorizon/models/item/miner_boots.json
 ed31ccc37159ce9d10539435aa6dc901a8e2864b assets/beyondhorizon/models/item/miner_gloves.json
 e86bba503b61d6ac12ff1a92db83b9b2b6f4e2dc assets/beyondhorizon/models/item/null_magic_rune.json
+4769c4d9b28d5e9cdc90fc33d8ad77e3a8c92c5b assets/beyondhorizon/models/item/null_sword.json
 242cea373a6f165c99b359396b8764b19ca4ac0a assets/beyondhorizon/models/item/orange_wool_fur.json
 d4657e758b273391baac3410c246667d61933054 assets/beyondhorizon/models/item/palladium_ingot.json
 9441b29efd39bbb6bc359f26c94e6b6ef4400ba4 assets/beyondhorizon/models/item/pink_wool_fur.json
@@ -103,6 +107,7 @@ d2a2ceda9ba46000c919f170805aca12294b6512 assets/beyondhorizon/models/item/titani
 ea8a38b309831b080521d6d8d35d8b8d1462851b assets/beyondhorizon/models/item/titanium_shovel.json
 0789ed9ae8afe97ddad8f0778cbcfedb0d46b413 assets/beyondhorizon/models/item/titanium_sword.json
 1038351eb1c42e8c6f8d93312cae5c91d799c9e6 assets/beyondhorizon/models/item/tough_cloth.json
+f2515104bbd8ee5fd6c69c4ae418136a6f8871d5 assets/beyondhorizon/models/item/true_hero_sword.json
 12cb0db145a6cec5e5d92822f58a2cd11cb243ab assets/beyondhorizon/models/item/unstable_runic_tome.json
 604d72d4a4e892b05266d1ab21ad191c3981ddeb assets/beyondhorizon/models/item/vitality_stone.json
 8eb0372e30c619e32f4038852bbfebaede77e120 assets/beyondhorizon/models/item/white_wool_fur.json

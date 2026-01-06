@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/stairs",
+  "textures": {
+    "bottom": "beyondhorizon:block/siltstone",
+    "side": "beyondhorizon:block/siltstone",
+    "top": "beyondhorizon:block/siltstone"
+  }
+}

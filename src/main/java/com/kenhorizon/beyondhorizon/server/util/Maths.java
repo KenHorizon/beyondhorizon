@@ -11,6 +11,13 @@ public class Maths {
     private static final DecimalFormat FORMAT = Util.make(new DecimalFormat("#.##"), (decimalFormat) -> {
         decimalFormat.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ROOT));
     });
+    public static String format(float value) {
+        return FORMAT.format(value);
+    }
+
+    public static String format(double value) {
+        return FORMAT.format(value);
+    }
 
     public static String format0(float value) {
         return FORMAT.format(value * 100.0F);
@@ -18,12 +25,7 @@ public class Maths {
     public static String format0(double value) {
         return FORMAT.format(value * 100.0F);
     }
-    public static String format1(float value) {
-        return FORMAT.format(value);
-    }
-    public static String format1(double value) {
-        return FORMAT.format(value);
-    }
+
     public static float toPercent(float a) {
         return a / 100.0F;
     }

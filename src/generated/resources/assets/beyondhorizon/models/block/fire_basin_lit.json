@@ -1,0 +1,10 @@
+{
+  "parent": "beyondhorizon:block/base/stand_fire_basin_lit",
+  "render_type": "minecraft:cutout_mipped",
+  "textures": {
+    "base": "beyondhorizon:block/basin_base",
+    "flame": "beyondhorizon:block/basin_fire",
+    "magma": "beyondhorizon:block/basin_magma",
+    "particle": "beyondhorizon:block/basin_base"
+  }
+}

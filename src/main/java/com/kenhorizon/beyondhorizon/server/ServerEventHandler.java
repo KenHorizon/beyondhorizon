@@ -18,7 +18,7 @@ import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataSyncPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
-import com.kenhorizon.beyondhorizon.server.api.entity.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.skills.ActiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
@@ -42,7 +42,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -55,7 +54,6 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.w3c.dom.Attr;
 
 import java.util.*;
 
@@ -508,11 +506,21 @@ public class ServerEventHandler {
         }
         if (source.getEntity() instanceof LivingEntity attacker) {
             ItemStack attackerStack = attacker.getMainHandItem();
+            if (attacker instanceof Player player) {
+                double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_CHANCE.get());
+                double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
+                if (player.getRandom().nextDouble() <= criticalStrike) {
+                    isCrit = true;
+                    damageDealt = (float) (damageDealt * criticalDamage);
+                    player.crit(target);
+                }
+            }
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                 for (Skill trait : container.getSkills()) {
                     Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                     if (meleeWeaponCallback.isPresent()) {
                         damageDealt = meleeWeaponCallback.get().postMigitationDamage(damageDealt, source, attacker, target);
+                        meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
                     }
                 }
             }
@@ -536,13 +544,6 @@ public class ServerEventHandler {
                             }
                         }
                     }
-                }
-                double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_STRIKE.get());
-                double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
-                if (player.getRandom().nextDouble() <= criticalStrike) {
-                    isCrit = true;
-                    damageDealt = (float) (damageDealt * criticalDamage);
-                    player.crit(target);
                 }
             }
         }

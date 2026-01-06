@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractAbilityEntity;
+import com.kenhorizon.beyondhorizon.server.entity.ability.AbilityEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -16,7 +16,7 @@ import net.minecraft.util.Mth;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-public abstract class AnimatedAbilityRenderer<T extends AbstractAbilityEntity> extends EntityRenderer<T> {
+public abstract class AnimatedAbilityRenderer<T extends AbilityEntity> extends EntityRenderer<T> {
     private float alpha = 1.0F;
     private float height = 1.0F;
     private float minTextureX;

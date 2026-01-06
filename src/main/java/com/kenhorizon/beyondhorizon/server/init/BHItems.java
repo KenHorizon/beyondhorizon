@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.client.level.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
@@ -226,11 +226,40 @@ public class BHItems {
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register();
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = RegistryItems
-            .register("broken_hero_sword", item -> new AccessoryItem(item, AccessoryBuilder.BROKEN_HERO_SWORD))
+            .register("broken_hero_sword", item -> new AccessoryItem(AccessoryItemGroup.HERO_SWORD, item, AccessoryBuilder.BROKEN_HERO_SWORD))
             .tab(RegistryTabs.Category.ACCESSORY)
             .model(ItemModels.ACCESSORY)
             .tag(BHItemTags.ONLY_ACCESSORY)
             .register();
+
+    public static final RegistryObject<Item> TRUE_HERO_SWORD = RegistryItems
+            .register("true_hero_sword", item -> new AccessoryItem(AccessoryItemGroup.HERO_SWORD, item, AccessoryBuilder.TRUE_HERO_SWORD))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register();
+
+    public static final RegistryObject<Item> INFINITY_SWORD = RegistryItems
+            .register("infinity_sword", item -> new AccessoryItem(AccessoryItemGroup.HERO_SWORD, item, AccessoryBuilder.INFINITY_SWORD))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register();
+
+    public static final RegistryObject<Item> NULL_SWORD = RegistryItems
+            .register("null_sword", item -> new AccessoryItem(AccessoryItemGroup.HERO_SWORD, item, AccessoryBuilder.NULL_SWORD))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register();
+
+    public static final RegistryObject<Item> ASCENDED_HERO_SWORD = RegistryItems
+            .register("ascended_hero_sword", item -> new AccessoryItem(AccessoryItemGroup.HERO_SWORD, item, AccessoryBuilder.ASCENDED_HERO_SWORD))
+            .tab(RegistryTabs.Category.ACCESSORY)
+            .model(ItemModels.ACCESSORY)
+            .tag(BHItemTags.ONLY_ACCESSORY)
+            .register();
+
     public static final RegistryObject<Item> DARK_ESSESNCE_CRYSTAL = RegistryItems
             .register("dark_essence_crystal", item -> new AccessoryItem(item, AccessoryBuilder.MAGICAL_OPS))
             .tab(RegistryTabs.Category.ACCESSORY)
@@ -587,6 +616,12 @@ public class BHItems {
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
+            .register();
+    public static final RegistryObject<Item> ANCIENT_BLAZING_SWORD = RegistryItems
+            .register("ancient_blazing_sword", item -> WeaponBuilder.ANCIENT_BLAZING_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG32_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(139, 52, 1));

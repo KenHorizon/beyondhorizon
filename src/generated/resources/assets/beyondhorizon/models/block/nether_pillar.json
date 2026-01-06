@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "beyondhorizon:block/nether_pillar_end",
+    "east": "beyondhorizon:block/nether_pillar_side",
+    "end": "beyondhorizon:block/nether_pillar_end",
+    "north": "beyondhorizon:block/nether_pillar_side",
+    "particle": "beyondhorizon:block/nether_pillar_side",
+    "side": "beyondhorizon:block/nether_pillar_side",
+    "south": "beyondhorizon:block/nether_pillar_side",
+    "up": "beyondhorizon:block/nether_pillar_end",
+    "west": "beyondhorizon:block/nether_pillar_side"
+  }
+}

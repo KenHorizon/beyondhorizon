@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.level.guis.LevelSystemScreen;
+import com.kenhorizon.beyondhorizon.client.render.guis.LevelSystemScreen;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent;
 

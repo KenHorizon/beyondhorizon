@@ -1,7 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -9,6 +13,8 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -25,6 +31,14 @@ public class SinglePassiveAccessory extends AccessorySkill {
 
     public SinglePassiveAccessory(float magnitude) {
         super(magnitude, 1);
+    }
+
+    @Override
+    protected MutableComponent tooltipDescription(ItemStack itemStack) {
+        if (this == Accessories.NULLIFY.get()) {
+            return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F), Maths.format(this.getMagnitude() * 100.0F));
+        }
+        return super.tooltipDescription(itemStack);
     }
 
     @Override
@@ -79,6 +93,27 @@ public class SinglePassiveAccessory extends AccessorySkill {
         if (this == Accessories.BURN_EFFECT.get()) {
             target.setSecondsOnFire(Constant.FIRE_EFFECT);
         }
+        if (this == Accessories.NULLIFY.get()) {
+            for (ItemStack armor : target.getArmorSlots()) {
+                if (armor.isEnchanted() && armor.getEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION) > 0) {
+                    float damage = damageDealt * (this.getMagnitude() * this.getLevel());
+                    target.hurt(BHDamageTypes.nullify(attacker, target), damage);
+                }
+            }
+        }
+    }
+
+    @Override
+    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (attacker == null || target == null) return damageDealt;
+        if (this == Accessories.NULLIFY.get()) {
+            for (ItemStack armor : target.getArmorSlots()) {
+                if (armor.isEnchanted() && armor.getEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION) > 0) {
+                    return damageDealt * (this.getMagnitude() * this.getLevel());
+                }
+            }
+        }
+        return damageDealt;
     }
 
     @Override

@@ -3,14 +3,13 @@ package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
-import com.kenhorizon.beyondhorizon.client.level.BHBossBar;
-import com.kenhorizon.beyondhorizon.client.level.guis.LevelSystemScreen;
-import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotButton;
-import com.kenhorizon.beyondhorizon.client.level.guis.accessory.AccessorySlotScreen;
-import com.kenhorizon.beyondhorizon.client.level.guis.hud.ManaHud;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.client.render.BHBossBar;
+import com.kenhorizon.beyondhorizon.client.render.guis.LevelSystemScreen;
+import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotButton;
+import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
@@ -23,7 +22,6 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
-import net.minecraft.client.gui.screens.worldselection.CreateWorldScreen;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -32,7 +30,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.*;
-import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -79,16 +76,18 @@ public class ClientEventHandler {
         List<Component> tooltip = event.getToolTip();
         boolean isAdvanced = event.getFlags().isAdvanced();
         ItemStack itemStack = event.getItemStack();
-        float digSpeed = ItemStackUtil.getDestroySpeed(itemStack);
-        if (digSpeed > 0.0F) {
-            additions.add(CommonComponents.space().append(Component.translatable(Tooltips.TOOLTIP_MINING_SPEED, Maths.format1(digSpeed)).withStyle(ChatFormatting.DARK_GREEN)));
-        }
-        if (itemStack.isDamaged()) {
-            additions.add(Component.translatable("item.durability", itemStack.getMaxDamage() - itemStack.getDamageValue(), itemStack.getMaxDamage()).withStyle(ChatFormatting.DARK_GRAY));
-        }
-        if (!additions.isEmpty()) {
-            tooltip.addAll(ItemStackUtil.getInsertOffset(isAdvanced, tooltip.size(), itemStack), additions);
-        }
+        AttributeTooltips attributeTooltips = new AttributeTooltips();
+        attributeTooltips.addTooltips(itemStack, event.getEntity(), event.getFlags(), tooltip);
+//        float digSpeed = ItemStackUtil.getDestroySpeed(itemStack);
+//        if (digSpeed > 0.0F) {
+//            additions.add(CommonComponents.space().append(Component.translatable(Tooltips.TOOLTIP_MINING_SPEED, Maths.format1(digSpeed)).withStyle(ChatFormatting.DARK_GREEN)));
+//        }
+//        if (itemStack.isDamaged()) {
+//            additions.add(Component.translatable("item.durability", itemStack.getMaxDamage() - itemStack.getDamageValue(), itemStack.getMaxDamage()).withStyle(ChatFormatting.DARK_GRAY));
+//        }
+//        if (!additions.isEmpty()) {
+//            tooltip.addAll(ItemStackUtil.getInsertOffset(isAdvanced, tooltip.size(), itemStack), additions);
+//        }
     }
 
     @SubscribeEvent

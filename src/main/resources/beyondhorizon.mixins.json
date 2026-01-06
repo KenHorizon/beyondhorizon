@@ -5,14 +5,14 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "beyondhorizon.refmap.mixins.json",
   "mixins": [
-    "server.DamageSourcesMixins",
-    "server.EnchantmentMixins",
-    "server.EntityMixins",
-    "server.LivingEntityMixins",
-    "server.MobMixins",
-    "server.PlayerMixins",
-    "server.accessor.AttributeAccessor",
-    "server.accessor.AttributeRangeAccessor"
+    "common.DamageSourcesMixins",
+    "common.EnchantmentMixins",
+    "common.EntityMixins",
+    "common.LivingEntityMixins",
+    "common.MobMixins",
+    "common.PlayerMixins",
+    "common.accessor.AttributeAccessor",
+    "common.accessor.AttributeRangeAccessor"
   ],
   "client": [
     "client.accessor.FontAccessor"

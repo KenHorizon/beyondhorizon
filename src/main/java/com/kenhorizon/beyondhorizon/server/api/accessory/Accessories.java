@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
+import com.kenhorizon.beyondhorizon.datagen.BHLangProvider;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
@@ -14,7 +15,7 @@ import java.util.function.Supplier;
 
 
 /**
- * {@link com.kenhorizon.beyondhorizon.server.datagen.BHLangProvider}
+ * {@link BHLangProvider}
  * */
 public class Accessories {
     public static final RegistryObject<Accessory> NONE = registerSkill("none", AccessorySkill::new);
@@ -36,14 +37,14 @@ public class Accessories {
             .addAttributes(Attributes.MAX_HEALTH, "a65f31b4-c3f2-4f5a-bf60-9bae56e32c70", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> AGILE_DAGGER = registerSkill("agile_dagger", () -> new BootsAccessory()
-            .addAttributes(BHAttributes.CRITICAL_STRIKE.get(), "c65092cd-69fd-44b0-97d7-ffabe9c2db53", Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.CRITICAL_CHANCE.get(), "c65092cd-69fd-44b0-97d7-ffabe9c2db53", Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(Attributes.MOVEMENT_SPEED, "dafafcc2-2d26-49b1-af3a-386d69c03878", Constant.BOOTS_TIER_1, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> CHAIN_VEST = registerSkill("chain_vest", () -> new BootsAccessory()
             .addAttributes(Attributes.ARMOR, "7aa1a339-925d-4c55-bad7-d4b6efc3571d", Constant.ARMOR_0, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> LEATHER_AGILITY = registerSkill("leather_agility", () -> new BootsAccessory()
-            .addAttributes(BHAttributes.CRITICAL_STRIKE.get(), "3493efb1-52e6-48d7-a64f-4bbb77fe364d", Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION));
+            .addAttributes(BHAttributes.CRITICAL_CHANCE.get(), "3493efb1-52e6-48d7-a64f-4bbb77fe364d", Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> NULL_MAGIC_RUNE = registerSkill("null_magic_run", () -> new BootsAccessory()
             .addAttributes(BHAttributes.MAGIC_RESISTANCE.get(), "45683092-0b26-4572-b7bd-09393a010c2a", Constant.MAGIC_RESISTANCE_0, AttributeModifier.Operation.ADDITION));
@@ -116,10 +117,20 @@ public class Accessories {
     public static final RegistryObject<Accessory> DWARF_MINER_RING = registerSkill("dwarf_miner_ring", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.MINING_SPEED.get(), "a58ef541-8de1-4ec3-b647-17fcf9466ff3", Constant.MINING_SPEED_BASIC, AttributeModifier.Operation.ADDITION));
 
+    public static final RegistryObject<Accessory> LETHAL_BURST = registerSkill("lethal_burst", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.CRITICAL_DAMAGE.get(), "079d5345-009b-45a9-9b97-bb3b7f1e2196", Constant.LETHAL_BURST, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> TRUE_HERO_SWORD = registerSkill("true_lethal_sword", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.DAMAGE_DEALT.get(), "2c923a99-f0ef-4357-a51b-e7a5fdbc2ce4", Constant.TRUE_HERO_SWORD_DMG, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            .addAttributes(Attributes.ATTACK_SPEED, "d67d1352-3cfe-4d6a-b7f0-8eff52c5c2d9", Constant.TRUE_HERO_SWORD_ATK_SPD, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            .addAttributes(Attributes.ATTACK_KNOCKBACK, "d67d1352-3cfe-4d6a-b7f0-8eff52c5c2d9", Constant.TRUE_HERO_SWORD_ATK_KNOCKBACK, AttributeModifier.Operation.MULTIPLY_TOTAL));
+
     public static final RegistryObject<Accessory> KNOWLEDGE = registerSkill("knowledge", () -> new ExperienceAccessory(Constant.KNOWLEDGE_XP_MODIFIER));
+
     public static final RegistryObject<Accessory> VENOM = registerSkill("venom", () -> new ApplyEffectAccessory((int) Constant.VENOM_DURATION, (int) Constant.VENOM_POISON_LEVEL, MobEffects.POISON, BHEffects.LETHAL_POISON.get())
             .chances(Constant.VENOM_INFLICT_CHANCE));
 
+    public static final RegistryObject<Accessory> NULLIFY = registerSkill("nullify", () -> new SinglePassiveAccessory(Constant.JUMP_BOOST));
     public static final RegistryObject<Accessory> JUMP_BOOST = registerSkill("jump_boost", () -> new SinglePassiveAccessory(Constant.JUMP_BOOST));
     public static final RegistryObject<Accessory> FIRE_IMMUNITY = registerSkill("fire_immunity", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> BURN_EFFECT = registerSkill("burn_effect", SinglePassiveAccessory::new);

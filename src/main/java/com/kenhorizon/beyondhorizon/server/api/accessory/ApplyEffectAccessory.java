@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

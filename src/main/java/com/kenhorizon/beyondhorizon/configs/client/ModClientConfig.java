@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.configs.client;
 
-import com.kenhorizon.beyondhorizon.client.level.guis.hud.GameHuds;
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHuds;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 @SuppressWarnings({"rawtypes", "ConstantConditions"})
 public class ModClientConfig {
+    public static ForgeConfigSpec.BooleanValue ATTRIBUTE_TOOLTIP_OVERHAUl;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_ACCESSORY;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_SKILL;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP;
@@ -25,7 +26,11 @@ public class ModClientConfig {
     }
 
     public ModClientConfig(ForgeConfigSpec.Builder builder) {
-        builder.comment("client_mod_configs").push("Beyond Horizon: Client Configs");
+        builder.push("Beyond Horizon: Client Configs");
+        ATTRIBUTE_TOOLTIP_OVERHAUl = builder
+                .comment("  Replace all tooltips with new re-visual look and more dynamic")
+                .comment("  [Purpose of this to make the added attribute formatted dark green text instead of blue and replacing some attributes that are percentages like knockback resistance and etc.]")
+                .define("Attribute Tooltip Overhaul", true);
         ADVANCED_TOOLTIP = builder
                 .comment("  Extend item's tooltip information")
                 .define("Show Advanced Tooltip", true);

@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.client.level.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
@@ -176,6 +176,7 @@ public class BlazingInferno extends BHBossEntity {
         });
         this.goalSelector.addGoal(0, new BlazingInfernoAwakenGoal(this, 1,2, 0, 0, Maths.sec(5)));
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
+//        this.targetSelector.addGoal(1, new FireballAttackGoal(this, 14, 5, 0, 30, Maths.sec(5)));
 //        this.targetSelector.addGoal(1, new FireballAttackGoal(this, 0, 5, 0, 30, Maths.sec(5)));
 //        this.targetSelector.addGoal(1, new SpearAttackGoal(this, 0, new int[]{6, 7, 8}, 0, 30, Maths.sec(3)));
 //        this.targetSelector.addGoal(2, new GroundSlamAttackGoal(this, 0, 9, 0, 20));
@@ -183,7 +184,7 @@ public class BlazingInferno extends BHBossEntity {
 //        this.targetSelector.addGoal(2, new FlameStrikeAttackGoal(this, 0, 10, 0, 40, Maths.sec(3)));
 //        this.targetSelector.addGoal(2, new HellOrbAttackGoal(this, 0, 11, 0, 40, Maths.sec(3)));
         this.targetSelector.addGoal(2, new HellfireDownAttackGoal(this, 0, 17, 0, 40, Maths.sec(5)));
-//        this.targetSelector.addGoal(2, new ShockwaveAttackGoal(this, 0, 15, 0, 40, Maths.sec(3)));
+//        this.targetSelector.addGoal(2, new ShockwaveAttackGoal(this, 0, 15, 0, 40, Maths.sec(5)));
 //        this.targetSelector.addGoal(2, new DashAttackGoal(this, 0, 16, 0, 40, Maths.sec(3)));
 //        this.targetSelector.addGoal(3, new DeathRayAttackGoal(this, 0, 13, 14, Maths.sec(5)));
 
@@ -303,7 +304,12 @@ public class BlazingInferno extends BHBossEntity {
         if (this.getEnragedProgress() > 0 || this.getAnimationState(3)) {
             return false;
         }
-        if (this.isInfernoShieldActive()) {
+        if (this.isSleep()) {
+            if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
+                return false;
+            }
+        }
+        if (this.isInfernoShieldActive() && !flag) {
             float shieldDamage = amount;
             if (source.getEntity() instanceof LivingEntity entity) {
                 if (entity.getMainHandItem().getItem() instanceof AxeItem) {
@@ -316,12 +322,7 @@ public class BlazingInferno extends BHBossEntity {
             }
             return false;
         }
-        if (this.isSleep()) {
-            if (!source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
-                return false;
-            }
-        }
-        return gotHurt;
+        return super.hurt(source, amount);
     }
 
     @Override
@@ -507,7 +508,7 @@ public class BlazingInferno extends BHBossEntity {
             }
         }
         if (this.getAnimationState(5)) {
-            if (this.getAnimationTick() == 10) {
+            if (this.getAnimationTick() == 1) {
                 if (target != null) {
                     double distance = this.distanceTo(target);
                     if (distance < 10) {
@@ -764,7 +765,7 @@ public class BlazingInferno extends BHBossEntity {
                     float b = ColorUtil.getFARGB(0xFFFFFF)[2];
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 10, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
                 }
-                float damage = this.getAttackDamage(0.5F);
+                float damage = this.getAttackDamage(0.15F);
                 if (target != null && this.hurtEntitiesAround(this.position(), 10, damage, 2.75F, true, true)) {
                     target.addEffect(new MobEffectInstance(BHEffects.STUN.get(), 40, 0, true, true));
                     this.playSound(BHSounds.BLAZING_INFERNO_SHOCKWAVE.get());
@@ -805,19 +806,14 @@ public class BlazingInferno extends BHBossEntity {
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 11, r, g, b, 1.0F, 16.0F, true, RingParticles.Behavior.GROW), this.getX(), this.getBbHeight() / 2, this.getZ(), 0, 0, 0);
                 }
             }
-            int intervalAttack;
-            switch (this.getDifficulty()) {
-                case 1 -> intervalAttack = 20;
-                case 2 -> intervalAttack = 15;
-                case 3 -> intervalAttack = 10;
-                default -> intervalAttack = 25;
-            }
+            int intervalAttack = 10;
             if (target != null && this.getAnimationTick() % intervalAttack == 0) {
                 if (!this.isSilent()) {
                     this.level().playSound((Player)null, this.getX(), this.getY(), this.getZ(), BHSounds.BLAZING_INFERNO_SHOOT.get(), SoundSource.HOSTILE, 1.0F, 0.8F + this.random.nextFloat() * 0.4F);
                 }
                 HellfireOrb orb = new HellfireOrb(this.level(), HellfireOrb.EffectOnHit.STUN, this);
-                orb.setDamageType(DamageTags.INSTANT_KILL);
+                orb.setDamageTag(DamageTags.TARGET_CURRENT_HEALTH);
+                orb.setDamageTagModiifer(0.10F);
                 orb.setStartPos(new Vec3(this.getX(), this.getEyeY(), this.getZ()));
                 orb.setTargetPos(target.position());
                 orb.setBaseDamage(this.getAttackDamage(0.20F));

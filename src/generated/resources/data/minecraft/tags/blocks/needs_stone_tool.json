@@ -1,0 +1,27 @@
+{
+  "values": [
+    "beyondhorizon:dungeon_bricks",
+    "beyondhorizon:siltstone",
+    "beyondhorizon:siltstone_slab",
+    "beyondhorizon:siltstone_stair",
+    "beyondhorizon:siltstone_bricks",
+    "beyondhorizon:siltstone_brick_slab",
+    "beyondhorizon:siltstone_brick_stairs",
+    "beyondhorizon:wall_fire_basin",
+    "beyondhorizon:fire_basin",
+    "beyondhorizon:cut_nether_bricks",
+    "beyondhorizon:nether_pillar",
+    "beyondhorizon:nether_brick_lantern",
+    "beyondhorizon:polished_nether",
+    "beyondhorizon:polished_nether_slab",
+    "beyondhorizon:polished_nether_stair",
+    "beyondhorizon:black_nether_bricks",
+    "beyondhorizon:black_nether_brick_slab",
+    "beyondhorizon:black_nether_brick_stair",
+    "beyondhorizon:cut_black_nether_bricks",
+    "beyondhorizon:black_nether_pillar",
+    "beyondhorizon:polished_black_nether",
+    "beyondhorizon:chiselled_black_nether_bricks",
+    "beyondhorizon:radiance_crystal"
+  ]
+}

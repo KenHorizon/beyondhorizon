@@ -1,0 +1,61 @@
+package com.kenhorizon.beyondhorizon.mixins.common;
+
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
+import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeMap;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.enchantment.Enchantment;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+
+import java.util.Map;
+import java.util.Optional;
+
+@Mixin(Enchantment.class)
+public abstract class EnchantmentMixins implements IAttributeEnchantment, IAdditionalEnchantment {
+    Multimap<Attribute, AttributeModifier> MODIFIER = HashMultimap.create();
+
+    @Unique
+    @Override
+    public Optional<IAdditionalEnchantment> enchantmentCallback() {
+        return Optional.of(this);
+    }
+    @Unique
+    @Override
+    public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int level, double multiplier) {
+        for (Map.Entry<Attribute, AttributeModifier> entry : MODIFIER.entries()) {
+            AttributeInstance attributeInstance = attributeMap.getInstance(entry.getKey());
+            if (attributeInstance != null) {
+                AttributeModifier attributeModifier = entry.getValue();
+                attributeInstance.removeModifier(attributeModifier);
+                attributeInstance.addPermanentModifier(new AttributeModifier(attributeModifier.getId(), "Enchantment Attribute Modifiers", this.getAttributeModifierValue(level, attributeModifier) * multiplier, attributeModifier.getOperation()));
+            }
+        }
+    }
+
+    @Unique
+    @Override
+    public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap) {
+        for (Map.Entry<Attribute, AttributeModifier> entry : MODIFIER.entries()) {
+            AttributeInstance attributeInstance = attributeMap.getInstance(entry.getKey());
+            if (attributeInstance != null) {
+                attributeInstance.removeModifier(entry.getValue());
+            }
+        }
+    }
+    @Unique
+    @Override
+    public double getAttributeModifierValue(int level, AttributeModifier modifier) {
+        return modifier.getAmount() * level;
+    }
+    @Unique
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
+        return MODIFIER;
+    }
+}

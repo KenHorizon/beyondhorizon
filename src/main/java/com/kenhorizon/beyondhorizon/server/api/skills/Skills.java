@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
+import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
@@ -74,6 +75,11 @@ public class Skills {
             .type(Skill.Type.PASSIVE));
 
     public static final RegistryObject<Skill> PIERCING_EDEGE = registerSkill("piercing_edge", () -> new ExtraDamageSkill(Constant.PIERCING_EDGE_DAMAGE, Constant.PIERCING_EDGE_SCALE_DAMAGE, ExtraDamageSkill.ARMORED_DAMAGE)
+            .universal()
+            .format(Skill.Format.NORMAL)
+            .type(Skill.Type.PASSIVE));
+
+    public static final RegistryObject<Skill> BLAZING_CLEAVE = registerSkill("blazing_cleave", () -> new CleaveEffectSkill(Constant.BLAZING_CLEAVE_DAMAGE, Constant.BLAZING_CLEAVE_RANGE, CleaveAbility.Type.CIRCLE)
             .universal()
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));

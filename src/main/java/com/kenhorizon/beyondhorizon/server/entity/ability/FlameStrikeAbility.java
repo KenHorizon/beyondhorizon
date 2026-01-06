@@ -3,21 +3,15 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireOrb;
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.List;
-
-public class FlameStrikeAbility extends AbstractAbilityEntity {
+public class FlameStrikeAbility extends AbilityEntity {
     public FlameStrikeAbility(EntityType<?> entityType, Level level) {
         super(entityType, level);
         this.setDuration(40);

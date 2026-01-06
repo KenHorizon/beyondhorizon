@@ -1,0 +1,124 @@
+{
+  "variants": {
+    "facing=east,hanging=false,lit=false,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 90
+    },
+    "facing=east,hanging=false,lit=false,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 90
+    },
+    "facing=east,hanging=false,lit=true,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 90
+    },
+    "facing=east,hanging=false,lit=true,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 90
+    },
+    "facing=east,hanging=true,lit=false,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 90
+    },
+    "facing=east,hanging=true,lit=false,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 90
+    },
+    "facing=east,hanging=true,lit=true,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 90
+    },
+    "facing=east,hanging=true,lit=true,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 90
+    },
+    "facing=north,hanging=false,lit=false,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit"
+    },
+    "facing=north,hanging=false,lit=false,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit"
+    },
+    "facing=north,hanging=false,lit=true,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit"
+    },
+    "facing=north,hanging=false,lit=true,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit"
+    },
+    "facing=north,hanging=true,lit=false,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit"
+    },
+    "facing=north,hanging=true,lit=false,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit"
+    },
+    "facing=north,hanging=true,lit=true,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit"
+    },
+    "facing=north,hanging=true,lit=true,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit"
+    },
+    "facing=south,hanging=false,lit=false,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 180
+    },
+    "facing=south,hanging=false,lit=false,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 180
+    },
+    "facing=south,hanging=false,lit=true,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 180
+    },
+    "facing=south,hanging=false,lit=true,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 180
+    },
+    "facing=south,hanging=true,lit=false,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 180
+    },
+    "facing=south,hanging=true,lit=false,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 180
+    },
+    "facing=south,hanging=true,lit=true,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 180
+    },
+    "facing=south,hanging=true,lit=true,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 180
+    },
+    "facing=west,hanging=false,lit=false,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 270
+    },
+    "facing=west,hanging=false,lit=false,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 270
+    },
+    "facing=west,hanging=false,lit=true,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 270
+    },
+    "facing=west,hanging=false,lit=true,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 270
+    },
+    "facing=west,hanging=true,lit=false,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 270
+    },
+    "facing=west,hanging=true,lit=false,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_unlit",
+      "y": 270
+    },
+    "facing=west,hanging=true,lit=true,waterlogged=false": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 270
+    },
+    "facing=west,hanging=true,lit=true,waterlogged=true": {
+      "model": "beyondhorizon:block/wall_fire_basin_lit",
+      "y": 270
+    }
+  }
+}

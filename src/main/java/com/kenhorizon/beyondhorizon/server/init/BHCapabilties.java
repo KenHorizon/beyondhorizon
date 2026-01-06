@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
-import com.kenhorizon.beyondhorizon.server.api.entity.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.skills.ActiveSkill;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;

@@ -6,7 +6,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;

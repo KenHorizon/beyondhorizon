@@ -76,6 +76,7 @@ dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
     annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     runtimeOnly(fg.deobf("curse.maven:configured-457570:5180900"))
+    runtimeOnly(fg.deobf("curse.maven:effortless-building-302113:5805519"))
 }
 
 mixin {

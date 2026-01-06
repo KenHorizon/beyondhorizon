@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "beyondhorizon:block/siltstone_bricks",
+    "side": "beyondhorizon:block/siltstone_bricks",
+    "top": "beyondhorizon:block/siltstone_bricks"
+  }
+}

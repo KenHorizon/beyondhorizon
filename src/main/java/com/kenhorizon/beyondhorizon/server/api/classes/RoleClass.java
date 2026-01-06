@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.classes;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.client.level.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;

@@ -1,15 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.level.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
-import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -22,7 +19,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
@@ -32,8 +28,6 @@ import net.minecraft.world.phys.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.ForgeEventFactory;
-
-import javax.annotation.Nullable;
 
 public class MortalProjectile extends Projectile {
     public static final String NBT_GRAVITY = "Gravity";
@@ -356,7 +350,7 @@ public class MortalProjectile extends Projectile {
         return base.add(0, height, 0);
     }
 
-    public void setDamageType(DamageTags damageType) {
+    public void setDamageTag(DamageTags damageType) {
         this.damageTags = damageType;
     }
 
@@ -364,7 +358,7 @@ public class MortalProjectile extends Projectile {
         return damageTags;
     }
 
-    public void setDamageTypesModiifer(float damageTypesModiifer) {
+    public void setDamageTagModiifer(float damageTypesModiifer) {
         this.damageTypesModiifer = damageTypesModiifer;
     }
 

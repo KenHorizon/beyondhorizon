@@ -2,7 +2,7 @@ package com.kenhorizon.libs.registry;
 
 import com.google.common.collect.ImmutableList;
 import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.datagen.BHItemTagsProvider;
+import com.kenhorizon.beyondhorizon.datagen.BHItemTagsProvider;
 import com.kenhorizon.libs.client.model.item.ItemModels;
 import com.kenhorizon.libs.server.ModifiedNonNullFunction;
 import com.kenhorizon.libs.server.ModifiedNonNullUnaryOperator;

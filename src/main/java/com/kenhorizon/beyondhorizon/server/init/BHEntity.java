@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.EruptionAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.FlameStrikeAbility;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
@@ -91,6 +92,13 @@ public class BHEntity {
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(1.0F, 1.0F))
             .properties(EntityType.Builder::noSummon)
+            .register();
+
+    public static final RegistryObject<EntityType<CleaveAbility>> CLEAVE_ABILITY = RegistryEntity
+            .register("cleave_ability", CleaveAbility::new)
+            .lang("Cleave")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
     public static void register(IEventBus eventBus) {

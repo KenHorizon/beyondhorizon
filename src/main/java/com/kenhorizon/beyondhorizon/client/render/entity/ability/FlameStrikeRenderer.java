@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.entity.ability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.level.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.client.render.AnimatedAbilityRenderer;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.kenhorizon.beyondhorizon.client.render.tools.BeamRenderer;

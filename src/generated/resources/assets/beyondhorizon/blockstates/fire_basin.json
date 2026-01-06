@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "hanging=false,lit=false": {
+      "model": "beyondhorizon:block/fire_basin_unlit"
+    },
+    "hanging=false,lit=true": {
+      "model": "beyondhorizon:block/fire_basin_lit"
+    },
+    "hanging=true,lit=false": {
+      "model": "beyondhorizon:block/hanging_fire_basin_unlit"
+    },
+    "hanging=true,lit=true": {
+      "model": "beyondhorizon:block/hanging_fire_basin_lit"
+    }
+  }
+}

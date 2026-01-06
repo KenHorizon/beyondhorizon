@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "beyondhorizon:block/chiselled_black_nether_bricks"
+  }
+}

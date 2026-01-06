@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.item.base;
 
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
@@ -36,6 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 
 public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseItem>, IReloadable, ILeftClick, ICustomSweepParticle, ICustomHitSound {
     private final float attackDamage;
@@ -45,6 +47,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     public final MeleeWeaponMaterials materials;
     protected final SkillBuilder skillBuilder;
     protected Multimap<Attribute, AttributeModifier> attributeModifiers;
+    protected final Multimap<Attribute, AttributeModifier> otherAttributeModifiers = HashMultimap.create();
 
     public SwordBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, float attackRange, Properties properties, SkillBuilder skillbuilder) {
         super(materials, 0, attackSpeed, materials.fireImmune() ? properties.fireResistant() : properties);
@@ -72,9 +75,16 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         ImmutableMultimap.Builder<Attribute, AttributeModifier> mapBuilder = ImmutableMultimap.builder();
         mapBuilder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon Modifier", (double) this.attackDamage, AttributeModifier.Operation.ADDITION));
         mapBuilder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon Modifier", (double) this.attackSpeed, AttributeModifier.Operation.ADDITION));
+
         if (this.attackRange > 0) {
             mapBuilder.put(ForgeMod.ENTITY_REACH.get(), new AttributeModifier(UUID.fromString("8604572b-e75f-470d-8b7b-227b3017c83a"), "Weapon Modifier", (double) this.attackRange, AttributeModifier.Operation.ADDITION));
+            mapBuilder.put(ForgeMod.BLOCK_REACH.get(), new AttributeModifier(UUID.fromString("e5cb440a-e41a-44fa-8138-1354e5b7d75b"), "Weapon Modifier", (double) this.attackRange, AttributeModifier.Operation.ADDITION));
         }
+        this.otherAttributeModifiers.forEach((attribute, modifier) -> {
+            if (attribute != null && modifier != null) {
+                mapBuilder.put(attribute, modifier);
+            }
+        });
         if (this.skills != null) {
             this.skills.forEach((abilityTraits) -> {
                 abilityTraits.IEntityProperties().ifPresent(callback -> {
@@ -83,6 +93,12 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
             });
         }
         this.attributeModifiers = mapBuilder.build();
+    }
+
+    public SwordBaseItem addAttribues(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
+        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
+        this.otherAttributeModifiers.put(attribute, attributemodifier);
+        return this;
     }
 
     @Override
@@ -132,6 +148,9 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         if (this.skills != null) {
             for (int i = 0; i < this.skills.size(); i++) {
                 Skill skill = this.skills.get(i);
+                if (!skill.getAttributeModifiers().isEmpty()) {
+                    skill.addTooltipAttributes(itemStack, tooltip);
+                }
                 skill.addTooltip(itemStack, tooltip, this.skills.size(), Utils.isShiftPressed(), i == 0);
             }
         }
@@ -216,7 +235,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     }
 
     @Override
-    public void initializeClient(java.util.function.Consumer<IClientItemExtensions> consumer) {
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept((IClientItemExtensions) BeyondHorizon.PROXY.getCustomItemRenderer());
     }
 }

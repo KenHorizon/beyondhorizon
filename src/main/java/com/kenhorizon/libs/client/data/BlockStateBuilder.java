@@ -1,7 +1,7 @@
 package com.kenhorizon.libs.client.data;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.datagen.BHBlockStateProvider;
+import com.kenhorizon.beyondhorizon.datagen.BHBlockStateProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -213,34 +213,70 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         slabBlock((SlabBlock) block.get(), blockTexture(doubleBlock.get()), blockTexture(texture.get()));
         blockItem(block);
     }
-    public void horizontalActiveBlocks(RegistryObject<Block> block, ResourceLocation side) {
-        horizontalActiveBlock(block, side, BeyondHorizon.resource(String.format("block/%s", name(block.get()) + "_front")), side, BeyondHorizon.resource(String.format("block/%s", name(block.get()) + "_front_active")));
-        blockItem(block);
-    }
-    public void horizontalBlocks(RegistryObject<Block> block, ResourceLocation side) {
-        horizontalBlock(block.get(), side, BeyondHorizon.resource(String.format("block/%s", name(block.get()) + "_front")), side);
-        blockItem(block);
+    public void axisBlock(RegistryObject<Block> block) {
+        axisBlock(block, blockTexture(block.get()));
     }
 
-    public void horizontalActiveBlock(RegistryObject<Block> block, ResourceLocation side, ResourceLocation front, ResourceLocation top, ResourceLocation active) {
-        horizontalActiveBlock(block, models().orientable(name(block.get()), side, front, top), models().orientable(name(block.get()) + "_active", side, active, top));
+    public void axisBlock(RegistryObject<Block> block, ResourceLocation baseName) {
+        axisBlock((RotatedPillarBlock) block.get(), extend(baseName, "_side"), extend(baseName, "_end"));
+        axisBlockWithItem(block, extend(baseName, "_side"), extend(baseName, "_end"));
     }
-    public void horizontalActiveBlock(RegistryObject<Block> block, ModelFile idle, ModelFile active) {
-        horizontalActiveBlock(block, active, idle, 180);
+    protected void standWallBasinBlocks(RegistryObject<Block> block) {
+        ResourceLocation base = BeyondHorizon.resource("block/basin_base");
+        ResourceLocation flame = BeyondHorizon.resource("block/basin_fire");
+        ResourceLocation magma = BeyondHorizon.resource("block/basin_magma");
+        ResourceLocation chained = BeyondHorizon.resource("block/basin_chain");
+        this.standWallBasinBlocks(block, base, flame, magma, chained);
     }
+    protected void standWallBasinBlocks(RegistryObject<Block> block, ResourceLocation base, ResourceLocation flame, ResourceLocation magma, ResourceLocation chain) {
+        ModelFile lit = models().withExistingParent(name(block.get()) + "_lit", BeyondHorizon.resource("block/base/stand_fire_basin_side_lit"))
+                .texture("base", base).texture("flame", flame).texture("magma", magma).texture("chain", chain).texture("particle", base).renderType("cutout_mipped");
+        ModelFile off = models().withExistingParent(name(block.get()) + "_unlit", BeyondHorizon.resource("block/base/stand_fire_basin_side_unlit"))
+                .texture("base", base).texture("flame", flame).texture("magma", magma).texture("chain", chain).texture("particle", base).renderType("cutout_mipped");
 
-    public void horizontalActiveBlock(RegistryObject<Block> block, ModelFile active, ModelFile noActive, int angleOffset) {
+        standWallBasinBlocks(block, lit, off);
+        simpleBlockItem(block.get(), off);
+    }
+    protected void standWallBasinBlocks(RegistryObject<Block> block, ModelFile lit, ModelFile off) {
         getVariantBuilder(block.get())
                 .forAllStates(blockState -> {
-                    int yRot = ((int) blockState.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + angleOffset) % 360;
+                    int yRot = ((int) blockState.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + 180) % 360;
                     boolean isLit = blockState.getValue(BlockStateProperties.LIT);
                     return ConfiguredModel.builder()
                             .rotationY(yRot)
-                            .modelFile(isLit ? active : noActive)
+                            .modelFile(isLit ? lit : off)
                             .build();
                 });
     }
+    protected void standBasinBlocks(RegistryObject<Block> block) {
+        ResourceLocation base = BeyondHorizon.resource("block/basin_base");
+        ResourceLocation flame = BeyondHorizon.resource("block/basin_fire");
+        ResourceLocation magma = BeyondHorizon.resource("block/basin_magma");
+        ResourceLocation chained = BeyondHorizon.resource("block/basin_chain");
+        this.standBasinBlocks(block, base, flame, magma, chained);
+    }
 
+    protected void standBasinBlocks(RegistryObject<Block> block, ResourceLocation base, ResourceLocation flame, ResourceLocation magma, ResourceLocation chain) {
+        ModelFile lit = models().withExistingParent(name(block.get()) + "_lit", BeyondHorizon.resource("block/base/stand_fire_basin_lit"))
+                .texture("base", base).texture("flame", flame).texture("magma", magma).texture("particle", base).renderType("cutout_mipped");
+        ModelFile off = models().withExistingParent(name(block.get()) + "_unlit", BeyondHorizon.resource("block/base/stand_fire_basin_unlit"))
+                .texture("base", base).texture("flame", flame).texture("magma", magma).texture("particle", base).renderType("cutout_mipped");
+
+        ModelFile hangingLit = models().withExistingParent("hanging_" + name(block.get()) + "_lit", BeyondHorizon.resource("block/base/stand_hanging_fire_basin_lit"))
+                .texture("base", base).texture("flame", flame).texture("magma", magma).texture("chain", chain).texture("particle", base).renderType("cutout_mipped");
+        ModelFile hangingOff = models().withExistingParent("hanging_" + name(block.get()) + "_unlit", BeyondHorizon.resource("block/base/stand_hanging_fire_basin_unlit"))
+                .texture("base", base).texture("flame", flame).texture("magma", magma).texture("chain", chain).texture("particle", base).renderType("cutout_mipped");
+
+        standBasinBlocks(block, lit, off, hangingLit, hangingOff);
+        simpleBlockItem(block.get(), off);
+    }
+    protected void standBasinBlocks(RegistryObject<Block> block, ModelFile lit, ModelFile off, ModelFile hangingLit, ModelFile hangingOff) {
+        getVariantBuilder(block.get())
+                .partialState().with(BlockStateProperties.HANGING, true).with(BlockStateProperties.LIT, true).modelForState().modelFile(hangingLit).addModel()
+                .partialState().with(BlockStateProperties.HANGING, true).with(BlockStateProperties.LIT, false).modelForState().modelFile(hangingOff).addModel()
+                .partialState().with(BlockStateProperties.HANGING, false).with(BlockStateProperties.LIT, true).modelForState().modelFile(lit).addModel()
+                .partialState().with(BlockStateProperties.HANGING, false).with(BlockStateProperties.LIT, false).modelForState().modelFile(off).addModel();
+    }
     protected void flowerItem(RegistryObject<Block> flowerBlocks) {
         blockGeneratedItem(flowerBlocks);
         ModelFile flowerBlock = models().cross(blockTexture(flowerBlocks.get()).getPath(), blockTexture(flowerBlocks.get())).renderType("cutout");
@@ -336,7 +372,10 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         ModelFile models = models().cube(name(block.get()), bottom, top, side, side, side, side).texture("particle", side);
         simpleBlockWithItem(block.get(), models);
     }
-
+    protected void axisBlockWithItem(RegistryObject<Block> block, ResourceLocation side, ResourceLocation end) {
+        ModelFile models = models().cube(name(block.get()), end, end, side, side, side, side).texture("particle", side);
+        simpleBlockItem(block.get(), models);
+    }
     protected void blockWithItem(RegistryObject<Block> block, ResourceLocation top, ResourceLocation bottom) {
         ModelFile models = models().cube(name(block.get()), top, bottom, blockTexture(block.get()), blockTexture(block.get()), blockTexture(block.get()), blockTexture(block.get())).texture("particle", blockTexture(block.get()));
         simpleBlockWithItem(block.get(), models);
@@ -390,6 +429,10 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
 
     private @NotNull ResourceLocation getBlank() {
         return BeyondHorizon.resource(String.format("block/%s", "blank_block"));
+    }
+
+    private ResourceLocation extend(ResourceLocation rl, String suffix) {
+        return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath() + suffix);
     }
 
     private boolean isEmpty(String string) {

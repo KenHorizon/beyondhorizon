@@ -4,7 +4,7 @@
       "percentage_attributes": [
         "minecraft:generic.knockback_resistance",
         "minecraft:generic.movement_speed",
-        "beyondhorizon:critical_strike",
+        "beyondhorizon:critical_chance",
         "beyondhorizon:critical_damage",
         "beyondhorizon:cooldown",
         "beyondhorizon:cast_time",
@@ -12,6 +12,7 @@
         "beyondhorizon:physical_vamp",
         "beyondhorizon:spell_vamp",
         "beyondhorizon:armor_penetration",
+        "beyondhorizon:percentage.magic_penetration",
         "beyondhorizon:damage_dealt",
         "beyondhorizon:mining_speed",
         "beyondhorizon:evade",

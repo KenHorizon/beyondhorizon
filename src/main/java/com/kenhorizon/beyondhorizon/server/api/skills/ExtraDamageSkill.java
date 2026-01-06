@@ -1,13 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
-import com.kenhorizon.beyondhorizon.server.api.entity.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.entity.IEntityDamageCap;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -16,7 +15,6 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public class ExtraDamageSkill extends WeaponSkills {
@@ -83,10 +81,13 @@ public class ExtraDamageSkill extends WeaponSkills {
     });
 
     public static final DamageTypeFunction ARMORED_DAMAGE = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        float targetArmor = target.getArmorValue();
-        float baseDamage = level;
-        float bonusDamage = baseDamage + (targetArmor * magnitude);
-        return damageDealt + bonusDamage;
+        if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
+            float targetArmor = target.getArmorValue();
+            float baseDamage = level;
+            float bonusDamage = baseDamage + (targetArmor * magnitude);
+            return target.getArmorCoverPercentage() > 0 ? damageDealt * (1.0F + bonusDamage) : damageDealt;
+        }
+        return damageDealt;
     });
 
     public static final DamageTypeFunction PERFECTION = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
@@ -133,14 +134,6 @@ public class ExtraDamageSkill extends WeaponSkills {
         this(magnitude, 1.0F, mobType, damageTypeFunction);
     }
 
-    @Override
-    protected MutableComponent tooltipDescription(ItemStack itemStack) {
-        if (this.getMagnitude() > 0.0F && this.getLevel() > 0.0F) {
-            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), this.getLevel());
-        } else {
-            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
-        }
-    }
 
     @Override
     public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {

@@ -69,7 +69,7 @@ public class SimpleTrailParticles extends TextureSheetParticle {
         public Particle createParticle(SimpleParticleType particleType, ClientLevel level, double x, double y, double z, double dx, double dy, double dz) {
             SimpleTrailParticles particle = new SimpleTrailParticles(level, x, y, z, dx, this.sprites);
             particle.setSpriteFromAge(sprites);
-            particle.lifetime = 100;
+            particle.lifetime = 60;
             return particle;
         }
     }

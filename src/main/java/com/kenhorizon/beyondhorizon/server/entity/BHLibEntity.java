@@ -18,6 +18,7 @@ import java.util.List;
 
 public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
     public AnimationState idleAnimation = new AnimationState();
+    public static final int ID_ANIMATION_EMPTY = 0;
     private int idleTime;
     private float damageCap = -1;
     private int animationTick;

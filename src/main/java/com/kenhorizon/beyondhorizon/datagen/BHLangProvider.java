@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
+import com.kenhorizon.beyondhorizon.configs.Configs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
@@ -10,12 +11,14 @@ import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.common.data.LanguageProvider;
 
 import java.util.function.Supplier;
@@ -40,6 +43,8 @@ public class BHLangProvider extends LanguageProvider {
         RegistryLanguage.ADD_ITEM_LORE.forEach(this::add);
         Keybinds.KEYBINDING.forEach(this::add);
 
+        this.add(Configs.CHANGE_DAMAGE_CALCULATION, "Change Damage Calculation");
+
         this.add(Tooltips.TOOLTIP_BUILTIN_RESOURCE, "Beyond Horizon: Builtin Resources");
 
         this.add(Tooltips.COMMAND_ROLE_SET_FAILED, "Failed to change the role to %s");
@@ -54,6 +59,23 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.BOSS_IS_DEFEATED, "The %s is defeated");
         this.addBossMessage(BHEntity.BLAZING_INFERNO.get(), "The ocean and desert guardian has awoken...");
 
+
+
+        //
+        this.addEnchantmentDesc(BHEnchantments.LIFESTEAL, "Grant healing equal to percentage of the damage dealt");
+        this.addEnchantmentDesc(BHEnchantments.BUTCHERING, "Deal additional damage to animals");
+        this.addEnchantmentDesc(BHEnchantments.AQUATIC_BANE, "Increased post-mitigation damage dealt by percentage to aquatic creatures");
+        this.addEnchantmentDesc(BHEnchantments.ILLAGER_BANE, "Increased post-mitigation damage dealt by percentage to illagers");
+        this.addEnchantmentDesc(BHEnchantments.VOID_BANE, "Increased post-mitigation damage dealt by percentage to enderman");
+        this.addEnchantmentDesc(BHEnchantments.DYNAMO_HIT, "Increased critical damage but reduce attack effectiviness");
+        this.addEnchantmentDesc(BHEnchantments.PIERCE, "Gain armor penetration");
+        this.addEnchantmentDesc(BHEnchantments.CRITICAL_HIT, "Increased critical chances");
+        this.addEnchantmentDesc(BHEnchantments.CRITICAL_DAMAGE, "Increased critical strike damage");
+        this.addEnchantmentDesc(BHEnchantments.DRAGON_SLAYER, "Increased damage dealt and Increased damage against to dragons");
+        this.addEnchantmentDesc(BHEnchantments.VIBRANCY, "Increased total max health");
+        this.addEnchantmentDesc(BHEnchantments.SWIFTNESS, "Increased total movement speed");
+        this.addEnchantmentDesc(BHEnchantments.SPELL_BLADE, "Convert percentage of the physical damage dealt into magic damage");
+         //
         this.add(Tooltips.SKILL_TYPE, "%s");
         this.add(Tooltips.TOOLTIP_MINING_SPEED, "%s Mining Speed");
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional %.2f%% target's Current HP");
@@ -111,6 +133,10 @@ public class BHLangProvider extends LanguageProvider {
         this.add(BeyondHorizon.ID + ".attributes.take.1", "-%s%% %s");
         this.add(BeyondHorizon.ID + ".attributes.take.2", "-%s%% %s");
     }
+    private void addEnchantmentDesc(Supplier<? extends Enchantment> enchantments, String description) {
+        this.add(enchantments.get().getDescriptionId() + ".desc", description);
+    }
+
     private void addAccessory(Accessory accessory, String name) {
         this.add(accessory.getDescriptionId(), name);
     }

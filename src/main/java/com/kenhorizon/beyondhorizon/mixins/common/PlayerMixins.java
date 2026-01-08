@@ -28,7 +28,7 @@ public abstract class PlayerMixins extends LivingEntityMixins  {
         if (instance == null) {
             damageRatio = EnchantmentHelper.getSweepingDamageRatio(entityIn);
         } else {
-            float damage = (float)entityIn.getAttributeValue(Attributes.ATTACK_DAMAGE);
+            float damage = (float) entityIn.getAttributeValue(Attributes.ATTACK_DAMAGE);
             float resultDamage = (float) (damage * instance.getValue());
             damageRatio = (float) (((resultDamage - 1.0F) / resultDamage) * instance.getValue());
         }

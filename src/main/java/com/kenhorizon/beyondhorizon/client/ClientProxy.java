@@ -195,6 +195,8 @@ public class ClientProxy extends ServerProxy {
         BeyondHorizon.LOGGER.info("Registering Particles!!");
         event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
         event.registerSpriteSet(BHParticle.RING.get(), RingParticles.Provider::new);
+        event.registerSpriteSet(BHParticle.RING_BIG.get(), RingParticles.Provider::new);
+        event.registerSpriteSet(BHParticle.INDICATOR.get(), IndicatorRingParticles.Provider::new);
         event.registerSpriteSet(BHParticle.ROAR.get(), RoarParticles.Provider::new);
         event.registerSpriteSet(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), ExplodeParticles.HellfireOrb::new);
         event.registerSpriteSet(BHParticle.HELLFIRE_ORB_TRAIL.get(), SimpleTrailParticles.HellfireOrb::new);

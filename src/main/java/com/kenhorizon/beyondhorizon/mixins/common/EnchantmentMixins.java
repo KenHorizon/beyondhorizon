@@ -18,17 +18,21 @@ import java.util.Optional;
 
 @Mixin(Enchantment.class)
 public abstract class EnchantmentMixins implements IAttributeEnchantment, IAdditionalEnchantment {
-    Multimap<Attribute, AttributeModifier> MODIFIER = HashMultimap.create();
+    @Unique
+    private final Multimap<Attribute, AttributeModifier> enchantmentAttributeModifiers = HashMultimap.create();
+    @Unique
+    private double perLevel = 0.0D;
 
     @Unique
     @Override
     public Optional<IAdditionalEnchantment> enchantmentCallback() {
         return Optional.of(this);
     }
+
     @Unique
     @Override
     public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int level, double multiplier) {
-        for (Map.Entry<Attribute, AttributeModifier> entry : MODIFIER.entries()) {
+        for (Map.Entry<Attribute, AttributeModifier> entry : this.enchantmentAttributeModifiers.entries()) {
             AttributeInstance attributeInstance = attributeMap.getInstance(entry.getKey());
             if (attributeInstance != null) {
                 AttributeModifier attributeModifier = entry.getValue();
@@ -41,7 +45,7 @@ public abstract class EnchantmentMixins implements IAttributeEnchantment, IAddit
     @Unique
     @Override
     public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap) {
-        for (Map.Entry<Attribute, AttributeModifier> entry : MODIFIER.entries()) {
+        for (Map.Entry<Attribute, AttributeModifier> entry : this.enchantmentAttributeModifiers.entries()) {
             AttributeInstance attributeInstance = attributeMap.getInstance(entry.getKey());
             if (attributeInstance != null) {
                 attributeInstance.removeModifier(entry.getValue());
@@ -51,11 +55,17 @@ public abstract class EnchantmentMixins implements IAttributeEnchantment, IAddit
     @Unique
     @Override
     public double getAttributeModifierValue(int level, AttributeModifier modifier) {
-        return modifier.getAmount() * level;
+        return this.perLevel > 0.0D ? modifier.getAmount() + (this.perLevel * level) : modifier.getAmount() * level;
     }
     @Unique
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
-        return MODIFIER;
+        return this.enchantmentAttributeModifiers;
+    }
+
+    @Unique
+    @Override
+    public void perLevel(double perLevel) {
+        this.perLevel = perLevel;
     }
 }

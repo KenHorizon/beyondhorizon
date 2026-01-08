@@ -90,7 +90,7 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL)) return super.hurt(source, amount);
+        boolean flag = source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL);
         if (!source.is(DamageTypeTags.BYPASSES_ARMOR) && this.allowDamageCap()) {
             amount = Math.min(this.getDamageCap(), amount);
         }

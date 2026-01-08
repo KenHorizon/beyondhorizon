@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.client.ClientProxy;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeReaderResourceParser;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.compat.ModCompats;
+import com.kenhorizon.beyondhorizon.compat.ModLists;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.configs.common.ModCommonConfig;
@@ -75,6 +76,7 @@ public class BeyondHorizon
         BHMenu.register(eventBus);
         BHParticle.register(eventBus);
         //  BHPotions.register(eventBus);
+        BHEnchantments.register(eventBus);
         BHSounds.register(eventBus);
         BHEntity.register(eventBus);
         BHEffects.register(eventBus);
@@ -110,7 +112,7 @@ public class BeyondHorizon
     }
 
     private void modCompatible() {
-        if (!ModList.get().isLoaded(ModCompats.ATTRIBUTE_FIX)) {
+        if (!ModList.get().isLoaded(ModLists.ATTRIBUTE_FIX)) {
             IAttributeRegistryHelper<Attribute> register = new AttributeRegistryHelper();
             AttributeModify.load(register).applyChanges(register);
         }

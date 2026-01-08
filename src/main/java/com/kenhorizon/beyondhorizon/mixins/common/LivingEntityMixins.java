@@ -90,10 +90,9 @@ public abstract class LivingEntityMixins extends EntityMixins {
         }
         if (damageSource.getEntity() instanceof LivingEntity entity && damageSource.getDirectEntity() == entity && damageSource.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
             this.hurtArmor(damageSource, amount);
-            float toughness = (float) this.getAttributeValue(Attributes.ARMOR_TOUGHNESS);
             float armor = (float) this.getAttributeValue(BHAttributes.MAGIC_RESISTANCE.get());
             float reduceArmor = (armor * (1.0F - perMagicPen)) - flatMagicPen;
-            float resultDamage = CombatRules.getDamageAfterAbsorb(amount, reduceArmor, toughness);
+            float resultDamage = CombatRules.getDamageAfterAbsorb(amount, reduceArmor, 0);
             cir.setReturnValue(resultDamage);
         }
     }

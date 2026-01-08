@@ -9,6 +9,8 @@ import com.kenhorizon.beyondhorizon.server.capability.*;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
+import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
@@ -30,11 +32,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -44,6 +48,8 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -54,6 +60,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
 
@@ -338,28 +345,12 @@ public class ServerEventHandler {
             });
         }
     }
-
-    @SubscribeEvent
-    public void onLivingAttack(LivingAttackEvent event) {
-        LivingEntity entity = event.getEntity();
-        DamageSource source = event.getSource();
-        float amount = event.getAmount();
-        AttributeInstance evade = entity.getAttribute(BHAttributes.EVADE.get());
-        double dodgeChance = 0;
-        if (evade != null) {
-            dodgeChance = evade.getValue();
-        }
-        boolean doDodge = entity.getRandom().nextDouble() <= dodgeChance;
-        if (doDodge) {
-            event.setCanceled(true);
-        }
-    }
-
     @SubscribeEvent
     public void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         ItemStack itemStack = entity.getMainHandItem();
         ICombatCore combatCore = CapabilityCaller.combat(entity);
+        this.onEnchantmentTick(entity);
         if (combatCore != null) {
             combatCore.tick();
             IDamageInfo damageInfo = CapabilityCaller.damageInfo(entity);
@@ -435,22 +426,7 @@ public class ServerEventHandler {
             }
         }
     }
-
-//    @SubscribeEvent
-//    public void onCriticalHit(CriticalHitEvent event) {
-//        Player player = event.getEntity();
-//        if (player != null) {
-//            ItemStack itemStack = player.getMainHandItem();
-//            double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_STRIKE.get());
-//            double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
-//            if (player.getRandom().nextDouble() <= criticalStrike) {
-//                event.setResult(Event.Result.ALLOW);
-//                event.setDamageModifier((float) criticalDamage);
-//            }
-//            event.setDamageModifier((float) criticalDamage);
-//        }
-//    }
-
+    //TODO: On-Hit Effects
     @SubscribeEvent
     public void onLivingAttackEvent(LivingAttackEvent event) {
         DamageSource source = event.getSource();
@@ -470,8 +446,20 @@ public class ServerEventHandler {
                 }
             }
         }
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            this.enchantmentOnHitEffect(attacker, damage, source, target);
+        }
+        AttributeInstance evade = target.getAttribute(BHAttributes.EVADE.get());
+        double dodgeChance = 0;
+        if (evade != null) {
+            dodgeChance = evade.getValue();
+        }
+        boolean doDodge = target.getRandom().nextDouble() <= dodgeChance;
+        if (doDodge && !target.isInvulnerableTo(source)) {
+            event.setCanceled(true);
+        }
     }
-
+    // TODO: Post Mitigation Damage Handler
     @SubscribeEvent
     public void onLivingDamageEvent(LivingDamageEvent event) {
         float damageDealt = event.getAmount();
@@ -515,6 +503,7 @@ public class ServerEventHandler {
                     player.crit(target);
                 }
             }
+            damageDealt = this.enchantmentPostMitigationDamage(attacker, damageDealt, source, target);
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                 for (Skill trait : container.getSkills()) {
                     Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
@@ -568,7 +557,70 @@ public class ServerEventHandler {
         level.sendParticles(new DamageIndicatorOptions(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
         event.setAmount(damageDealt);
     }
+    //TODO: Enchantment Post Mitigation Damage
+    private float enchantmentPostMitigationDamage(LivingEntity attacker, float damageDealt, DamageSource source, LivingEntity target) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(attacker.getItemBySlot(slot));
+            for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
+                if (entry.getKey() instanceof IAdditionalEnchantment additionalEnchantment) {
+                    Optional<IAdditionalEnchantment> optional = additionalEnchantment.enchantmentCallback();
+                    if (optional.isPresent()) {
+                        damageDealt = optional.get().postMigitationDamage(entry.getValue(), damageDealt, source, attacker, target);
+                    }
+                }
+            }
+        }
+        return damageDealt;
+    }
+    //TODO: Enchantment Post Mitigation Damage
+    private void enchantmentOnHitEffect(LivingEntity attacker, float damageDealt, DamageSource source, LivingEntity target) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(attacker.getItemBySlot(slot));
+            for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
+                if (entry.getKey() instanceof IAdditionalEnchantment additionalEnchantment) {
+                    Optional<IAdditionalEnchantment> optional = additionalEnchantment.enchantmentCallback();
+                    if (optional.isPresent()) {
+                        optional.get().onHitAttack(entry.getValue(), source, attacker.getItemBySlot(slot), attacker, target, damageDealt);
+                    }
+                }
+            }
+        }
+    }
+    public void onEnchantmentTick(LivingEntity entity) {
+        if (entity == null) return;
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
+                int enchantmentLevels = EnchantmentHelper.getEnchantmentLevel(enchantment, entity);
+                if (enchantmentLevels > 0) {
+                    ((IAttributeEnchantment) enchantment).addAttributeModifiers(entity, entity.getAttributes(), enchantmentLevels, getArmorAttributeMultiplier(slot, entity));
+                } else {
+                    ((IAttributeEnchantment) enchantment).removeAttributeModifiers(entity, entity.getAttributes());
+                }
+            }
+        }
+    }
+    // TODO: Check if each armor slot have items if you have items will add one if not minus one
+    private int getArmorAttributeMultiplier(EquipmentSlot slot, LivingEntity entity) {
+        int armorAttributeMultiplier = 0;
+        if (slot.getType() == EquipmentSlot.Type.ARMOR) {
+            armorAttributeMultiplier += checkArmorAttributeMultiplier(EquipmentSlot.HEAD, entity);
+            armorAttributeMultiplier += checkArmorAttributeMultiplier(EquipmentSlot.CHEST, entity);
+            armorAttributeMultiplier += checkArmorAttributeMultiplier(EquipmentSlot.LEGS, entity);
+            armorAttributeMultiplier += checkArmorAttributeMultiplier(EquipmentSlot.FEET, entity);
+        }
+        return Mth.clamp(armorAttributeMultiplier, 0, 4);
+    }
 
+    private int checkArmorAttributeMultiplier(EquipmentSlot slot, LivingEntity entity) {
+        ItemStack checkStacks = entity.getItemBySlot(slot);
+        if (checkStacks.isEmpty() && checkStacks.isEnchanted()) {
+            return -1;
+        } else {
+            return 1;
+        }
+    }
+
+    // TODO: Pre Mitigation Damage Handler
     @SubscribeEvent
     public void onLivingHurtEvent(LivingHurtEvent event) {
         float damageDealt = event.getAmount();

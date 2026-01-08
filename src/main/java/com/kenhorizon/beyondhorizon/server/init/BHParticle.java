@@ -19,7 +19,19 @@ public class BHParticle {
             return DamageIndicatorOptions.CODEC;
         }
     });
+    public static final RegistryObject<ParticleType<IndicatorRingParticleOptions>> INDICATOR = RegistryEntries.PARTICLE.register("indicator", () -> new ParticleType<IndicatorRingParticleOptions>(false, IndicatorRingParticleOptions.DESERIALIZER) {
+        @Override
+        public Codec<IndicatorRingParticleOptions> codec() {
+            return IndicatorRingParticleOptions.CODEC;
+        }
+    });
     public static final RegistryObject<ParticleType<RingParticleOptions>> RING = RegistryEntries.PARTICLE.register("ring", () -> new ParticleType<RingParticleOptions>(false, RingParticleOptions.DESERIALIZER) {
+        @Override
+        public Codec<RingParticleOptions> codec() {
+            return RingParticleOptions.CODEC;
+        }
+    });
+    public static final RegistryObject<ParticleType<RingParticleOptions>> RING_BIG = RegistryEntries.PARTICLE.register("ring_big", () -> new ParticleType<RingParticleOptions>(false, RingParticleOptions.DESERIALIZER) {
         @Override
         public Codec<RingParticleOptions> codec() {
             return RingParticleOptions.CODEC;

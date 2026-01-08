@@ -1,5 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
+import com.kenhorizon.beyondhorizon.client.particle.IndicatorRingParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.IndicatorRingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
@@ -270,8 +272,9 @@ public class MortalProjectile extends Projectile {
             float delta = this.getDuration() / (float) this.getFlightTime();
             delta = Mth.clamp(delta, 0.0F, 1.0F);
             Vec3 movement = this.computeArcPosition(delta);
-            Vec3 warningPos = this.computeArcPosition(1);
-            this.makeWarningMarkers(warningPos);
+            if (tickCount == 1) {
+                this.makeWarningMarkers(this.computeArcPosition(1));
+            }
             Vec3 velocity = movement.subtract(this.position());
             double v0 = this.getX() + velocity.x;
             double v1 = this.getY() + velocity.y;
@@ -337,10 +340,14 @@ public class MortalProjectile extends Projectile {
 
     private void makeWarningMarkers(Vec3 targetPos) {
         if (this.level().isClientSide()) {
-            float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-            float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-            float b = ColorUtil.getFARGB(0xFFFFFF)[2];
-            this.level().addParticle(new RingParticleOptions(0, (float) Math.PI / 2, this.getFlightTime(), r, g, b, 1.0F, 16.0F * this.getRadius(), false, RingParticles.Behavior.CONSTANT), targetPos.x, targetPos.y + 0.01D, targetPos.z, 0,0,0);
+            float r = ColorUtil.getFARGB(0xFF0000)[0];
+            float g = ColorUtil.getFARGB(0xFF0000)[1];
+            float b = ColorUtil.getFARGB(0xFF0000)[2];
+            int particleDurations = (int) (this.getFlightTime() * 2.4F);
+            var attackTime = new IndicatorRingParticleOptions(0, (float) Math.PI / 2, particleDurations, r, g, b, 1.0F, (16.0F * this.getRadius()), IndicatorRingParticles.Behavior.GROW);
+            var rangeIndicator = new IndicatorRingParticleOptions(0, (float) Math.PI / 2, particleDurations, r, g, b, 1.0F, (16.0F * this.getRadius()), IndicatorRingParticles.Behavior.CONSTANT);
+            this.level().addParticle(attackTime, targetPos.x, targetPos.y + 0.01D, targetPos.z, 0,0,0);
+            this.level().addParticle(rangeIndicator, targetPos.x, targetPos.y + 0.01D, targetPos.z, 0,0,0);
         }
     }
 

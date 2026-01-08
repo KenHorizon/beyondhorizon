@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.common.ModCommonConfig;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
@@ -180,6 +181,6 @@ public class AnvilPatchHandler {
 
     @SubscribeEvent
     public static void onAnvilRepair(AnvilRepairEvent event) {
-        event.setBreakChance((float) BHConfigs.ANVIL_BREAK_CHANCES);
+        event.setBreakChance((float) Mth.clamp((BHConfigs.ANVIL_BREAK_CHANCES / 100.0D), 0.0D, 1.0D));
     }
 }

@@ -48,7 +48,7 @@ public class Tooltips {
     public static final String TOOLTIP_INVENTORY = String.format("tooltip.%s.inventory", BeyondHorizon.ID);
     public static final String TOOLTIP_HEALTH_RECOVERY_POTION = String.format("tooltip.%s.recovery_potion.health", BeyondHorizon.ID);
     public static final String TOOLTIP_MANA_RECOVERY_POTION = String.format("tooltip.%s.recovery_potion.mana", BeyondHorizon.ID);
-    public static final String TOOLTIP_BUILTIN_RESOURCE = String.format("resourcePack.%s.game_art", BeyondHorizon.ID);
+    public static final String TOOLTIP_BUILTIN_RESOURCE = String.format("resourcepack.%s.game_art", BeyondHorizon.ID);
 
     public static final String TOOLTIP_PREFIX = String.format("tooltip.%s.", BeyondHorizon.ID);
     public static final ChatFormatting[] ATTRIBUTES = {ChatFormatting.DARK_GREEN, ChatFormatting.RED};

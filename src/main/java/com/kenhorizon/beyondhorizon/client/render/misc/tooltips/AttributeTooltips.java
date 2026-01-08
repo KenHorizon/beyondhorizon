@@ -5,6 +5,8 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
+import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
+import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.item.util.ItemStackUtil;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -18,6 +20,7 @@ import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -25,6 +28,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.PotionUtils;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
 
@@ -40,6 +44,21 @@ public class AttributeTooltips {
                 Attribute attribute = entry.getKey();
                 double attributeAmount = getAttributeAmount(player, itemStack, attribute, attributeModifier.getAmount());
                 makeTooltips(tooltip, attribute, attributeModifier, attributeAmount);
+            }
+        }
+    }
+    public void makeEnchantmentAttributeTooltip(Player player, List<Component> tooltip, ItemStack itemStack) {
+        Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(itemStack);
+        for (Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
+            int level = enchantmentEntry.getValue();
+            if (enchantmentEntry.getKey() instanceof IAttributeEnchantment attributeEnchantment) {
+                for (Map.Entry<Attribute, AttributeModifier> entry : attributeEnchantment.getAttributeModifiers().entries()) {
+                    AttributeModifier attributeModifier = entry.getValue();
+                    Attribute attribute = entry.getKey();
+                    double amount = attributeEnchantment.getAttributeModifierValue(level, attributeModifier);
+                    double attributeAmount = this.getAttributeAmount(player, itemStack, attribute, amount);
+                    this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, ChatFormatting.GOLD);
+                }
             }
         }
     }
@@ -109,6 +128,7 @@ public class AttributeTooltips {
             this.makeAttributeTooltip(player, tooltip, itemStack);
             this.makePotionTooltip(itemStack, tooltip);
         }
+        this.makeEnchantmentAttributeTooltip(player, tooltip, itemStack);
     }
 
     public void makePotionTooltip(ItemStack itemStack, List<Component> tooltips) {
@@ -158,17 +178,17 @@ public class AttributeTooltips {
         return AttributeReader.INSTANCE.getAttributePercentages(attribute);
     }
 
-    private double getAttributeAmount(Player player, ItemStack itemStack, Attribute attribute, double attributeAmount) {
-        if (player != null) {
+    private double getAttributeAmount(LivingEntity entity, ItemStack itemStack, Attribute attribute, double attributeAmount) {
+        if (entity != null) {
             if (attribute.equals(Attributes.ATTACK_DAMAGE)) {
-                attributeAmount += player.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
+                attributeAmount += entity.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
                 attributeAmount += EnchantmentHelper.getDamageBonus(itemStack, MobType.UNDEFINED);
             }
             if (attribute.equals(Attributes.ATTACK_SPEED)) {
-                attributeAmount += player.getAttributeBaseValue(Attributes.ATTACK_SPEED);
+                attributeAmount += entity.getAttributeBaseValue(Attributes.ATTACK_SPEED);
             }
             if (attribute.equals(ForgeMod.ENTITY_REACH.get())) {
-                attributeAmount += player.getAttributeBaseValue(ForgeMod.ENTITY_REACH.get());
+                attributeAmount += entity.getAttributeBaseValue(ForgeMod.ENTITY_REACH.get());
             }
         }
         return attributeAmount;

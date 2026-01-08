@@ -100,7 +100,6 @@ public class RegistryHelper {
 //        ConnectedTextureBehaviour behavior = behaviorSupplier.get();
 //        ClientProxy.MODEL_SWAPPER.getCustomBlockModels().register(getKeyOrThrow(entry), model -> new CTModel(model, behavior));
 //    }
-
     @NotNull
     public static <V> ResourceLocation getKeyOrThrow(IForgeRegistry<V> registry, V value) {
         ResourceLocation key = registry.getKey(value);
@@ -148,5 +147,14 @@ public class RegistryHelper {
     @NotNull
     public static ResourceLocation getKeyOrThrow(RecipeSerializer<?> value) {
         return getKeyOrThrow(ForgeRegistries.RECIPE_SERIALIZERS, value);
+    }
+
+    @NotNull
+    public static <V> V getValueOrThrow(IForgeRegistry<V> registry, ResourceLocation value) {
+        V key = registry.getValue(value);
+        if (key == null) {
+            throw new IllegalArgumentException("Could not get value for value " + value + "!");
+        }
+        return key;
     }
 }

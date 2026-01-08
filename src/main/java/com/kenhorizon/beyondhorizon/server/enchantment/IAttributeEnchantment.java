@@ -39,7 +39,14 @@ public interface IAttributeEnchantment {
     double getAttributeModifierValue(int level, AttributeModifier modifier);
 
     /**
+     * Calculate how the attribute modifier amount per level <br>
+     * If set zero will be multiplied by level to the amount given in enchanment <br>
+     * */
+    default void perLevel(double perLevel) {}
+
+    /**
      * Get Attribute and Modifiers Map
      * */
      Multimap<Attribute, AttributeModifier> getAttributeModifiers();
+
 }

@@ -17,13 +17,13 @@ public class DebugGodModeItems extends BasicItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide()) {
+            player.kill();
             player.heal(player.getMaxHealth());
             player.getFoodData().setFoodLevel(20);
             player.getFoodData().setSaturation(20);
             player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, -1, 15, false, false));
             player.addEffect(new MobEffectInstance(MobEffects.SATURATION, -1, 15, false, false));
             player.addEffect(new MobEffectInstance(MobEffects.HEAL, -1, 15, false, false));
-            player.getAbilities().flying = !player.getAbilities().flying;
         }
         return super.use(level, player, hand);
     }

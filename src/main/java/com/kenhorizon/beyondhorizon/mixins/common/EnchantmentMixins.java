@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.mixins.common;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,20 +32,24 @@ public abstract class EnchantmentMixins implements IAttributeEnchantment, IAddit
 
     @Unique
     @Override
-    public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int level, double multiplier) {
+    public void addAttributeModifiers(LivingEntity entity, int level, double multiplier) {
+//        BeyondHorizon.LOGGER.debug("Attribute Added {} {}", level, multiplier);
+        AttributeMap attributeMap = entity.getAttributes();
         for (Map.Entry<Attribute, AttributeModifier> entry : this.enchantmentAttributeModifiers.entries()) {
             AttributeInstance attributeInstance = attributeMap.getInstance(entry.getKey());
             if (attributeInstance != null) {
                 AttributeModifier attributeModifier = entry.getValue();
                 attributeInstance.removeModifier(attributeModifier);
-                attributeInstance.addPermanentModifier(new AttributeModifier(attributeModifier.getId(), "Enchantment Attribute Modifiers", this.getAttributeModifierValue(level, attributeModifier) * multiplier, attributeModifier.getOperation()));
+                double amount = this.getAttributeModifierValue(level, attributeModifier) * multiplier;
+                attributeInstance.addPermanentModifier(new AttributeModifier(attributeModifier.getId(), "Enchantment Attribute Modifiers", amount, attributeModifier.getOperation()));
             }
         }
     }
 
     @Unique
     @Override
-    public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap) {
+    public void removeAttributeModifiers(LivingEntity entity) {
+        AttributeMap attributeMap = entity.getAttributes();
         for (Map.Entry<Attribute, AttributeModifier> entry : this.enchantmentAttributeModifiers.entries()) {
             AttributeInstance attributeInstance = attributeMap.getInstance(entry.getKey());
             if (attributeInstance != null) {

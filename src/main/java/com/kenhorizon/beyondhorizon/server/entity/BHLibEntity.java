@@ -74,7 +74,6 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
         }
     }
 
-
     public void setDamageCap(float damageCap) {
         this.damageCap = damageCap;
     }
@@ -86,6 +85,10 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
 
     public boolean allowDamageCap() {
         return this.getDamageCap() > 0;
+    }
+
+    public void setCantMoved() {
+        this.setDeltaMovement(0, this.getDeltaMovement().y(), 0);
     }
 
     @Override

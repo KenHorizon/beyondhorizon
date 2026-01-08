@@ -26,8 +26,10 @@ import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
+import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -586,15 +588,16 @@ public class ServerEventHandler {
             }
         }
     }
+
     public void onEnchantmentTick(LivingEntity entity) {
         if (entity == null) return;
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
-                int enchantmentLevels = EnchantmentHelper.getEnchantmentLevel(enchantment, entity);
-                if (enchantmentLevels > 0) {
-                    ((IAttributeEnchantment) enchantment).addAttributeModifiers(entity, entity.getAttributes(), enchantmentLevels, getArmorAttributeMultiplier(slot, entity));
+                int level = EnchantmentHelper.getEnchantmentLevel(enchantment, entity);
+                if (level > 0) {
+                    ((IAttributeEnchantment) enchantment).addAttributeModifiers(entity, level, this.getArmorAttributeMultiplier(slot, entity));
                 } else {
-                    ((IAttributeEnchantment) enchantment).removeAttributeModifiers(entity, entity.getAttributes());
+                    ((IAttributeEnchantment) enchantment).removeAttributeModifiers(entity);
                 }
             }
         }
@@ -602,24 +605,28 @@ public class ServerEventHandler {
     // TODO: Check if each armor slot have items if you have items will add one if not minus one
     private int getArmorAttributeMultiplier(EquipmentSlot slot, LivingEntity entity) {
         int armorAttributeMultiplier = 0;
-        if (slot.getType() == EquipmentSlot.Type.ARMOR) {
-            armorAttributeMultiplier += checkArmorAttributeMultiplier(EquipmentSlot.HEAD, entity);
-            armorAttributeMultiplier += checkArmorAttributeMultiplier(EquipmentSlot.CHEST, entity);
-            armorAttributeMultiplier += checkArmorAttributeMultiplier(EquipmentSlot.LEGS, entity);
-            armorAttributeMultiplier += checkArmorAttributeMultiplier(EquipmentSlot.FEET, entity);
+        if (slot.isArmor()) {
+            armorAttributeMultiplier += this.checkArmorAttributeMultiplier(EquipmentSlot.FEET, entity);
+            armorAttributeMultiplier += this.checkArmorAttributeMultiplier(EquipmentSlot.LEGS, entity);
+            armorAttributeMultiplier += this.checkArmorAttributeMultiplier(EquipmentSlot.CHEST, entity);
+            armorAttributeMultiplier += this.checkArmorAttributeMultiplier(EquipmentSlot.HEAD, entity);
         }
-        return Mth.clamp(armorAttributeMultiplier, 0, 4);
+        return armorAttributeMultiplier;
     }
 
     private int checkArmorAttributeMultiplier(EquipmentSlot slot, LivingEntity entity) {
-        ItemStack checkStacks = entity.getItemBySlot(slot);
-        if (checkStacks.isEmpty() && checkStacks.isEnchanted()) {
-            return -1;
-        } else {
-            return 1;
+        ItemStack itemStack = entity.getItemBySlot(slot);
+        if (itemStack.isEmpty()) {
+            return 0;
         }
+        return itemStack.isEnchanted() ? 1 : 0;
     }
-
+    @SubscribeEvent
+    public void onEquipmentChangeEvent(LivingEquipmentChangeEvent event) {
+        LivingEntity entity = event.getEntity();
+        ItemStack from = event.getFrom();
+        ItemStack to = event.getTo();
+    }
     // TODO: Pre Mitigation Damage Handler
     @SubscribeEvent
     public void onLivingHurtEvent(LivingHurtEvent event) {

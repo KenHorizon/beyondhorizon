@@ -528,6 +528,7 @@ public class BlazingInferno extends BHBossEntity {
             }
         }
         if (this.getAnimationState(ID_BLAZING_ROD)) {
+            this.setCantMoved();
             if (target != null) {
                 if (this.getAnimationTick() > 50 && this.isEnraged()) {
                     this.doRoarParticle(this.getX(), this.getEyeY(), this.getZ(), 10, 255, 0, 0, 1.0F, 1.0F, 5.0F, 0.1F);
@@ -709,7 +710,7 @@ public class BlazingInferno extends BHBossEntity {
         }
         if (this.getAnimationState(ID_DEATH_RAY)) {
             float radius = 0.8f;
-            this.setDeltaMovement(0, this.getDeltaMovement().y, 0);
+            this.setCantMoved();
             if (target != null && this.getAnimationTick() >= 2) {
                 this.getLookControl().setLookAt(target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), 4, 90.0F);
             }
@@ -801,7 +802,7 @@ public class BlazingInferno extends BHBossEntity {
         }
         // Hellfire Down
         if (this.getAnimationState(ID_HELLFIRE_DOWN)) {
-            this.setDeltaMovement(0, 0, 0);
+            this.setCantMoved();
             if (this.level().isClientSide()) {
                 if (this.getAnimationTick() == 1) {
                     this.playSound(BHSounds.BLAZING_INFERNO_SCREAM.get());

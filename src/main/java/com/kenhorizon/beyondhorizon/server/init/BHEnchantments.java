@@ -114,7 +114,7 @@ public class BHEnchantments {
                     .minCost(15)
                     .rarity(Enchantment.Rarity.RARE)
                     .category(EnchantmentCategory.ARMOR)
-                    .addAttributeModifier(Attributes.MAX_HEALTH, "15ae4f73-5158-45b3-a385-1438b3dd85fc", 0.10F, AttributeModifier.Operation.MULTIPLY_TOTAL)
+                    .addAttributeModifier(Attributes.MAX_HEALTH, "15ae4f73-5158-45b3-a385-1438b3dd85fc", 0.05F, AttributeModifier.Operation.MULTIPLY_TOTAL)
             ));
     public static RegistryObject<Enchantment> SWIFTNESS = RegistryHelper.registerEnchantments("swiftness",
             () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()

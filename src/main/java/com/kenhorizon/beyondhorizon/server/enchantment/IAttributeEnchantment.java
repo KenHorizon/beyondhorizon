@@ -22,14 +22,14 @@ public interface IAttributeEnchantment {
      *
      * @apiNote Only use on armors
      * */
-    void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int level, double multiplier);
+    void addAttributeModifiers(LivingEntity entity, int level, double multiplier);
 
     /**
      * Remove stored attributes to entity
      * @param entity Entity who have enchantments
      * @param attributeMap Entity's Attribute Map
      * */
-    void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap);
+    void removeAttributeModifiers(LivingEntity entity);
 
     /**
      * Get or Calculate given attribute/s amount

@@ -26,6 +26,7 @@ public class BHEntityTypeTagsProvider extends EntityTypeTagsProvider {
         TAGS.forEach((object, tags) -> {
             this.tag(tags).add((EntityType<?>) object.get());
         });
+        this.tag(BHEntityTypeTags.VOID_BANE_AFFECTED).add(EntityType.ENDERMAN, EntityType.ENDER_DRAGON, EntityType.ENDERMITE);
         super.addTags(provider);
     }
 

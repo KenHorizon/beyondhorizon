@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
+import com.kenhorizon.beyondhorizon.server.enchantment.ExtendedDamageEnchantment;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -32,7 +33,7 @@ public class BHEnchantments {
                     .category(EnchantmentCategory.WEAPON)
             ));
     public static RegistryObject<Enchantment> AQUATIC_BANE = RegistryHelper.registerEnchantments("aquatice_bane",
-            () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
+            () -> new ExtendedDamageEnchantment(new AdvancedEnchantment.Builder()
                     .maxLevel(5)
                     .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
                     .maxCost(10)
@@ -41,7 +42,7 @@ public class BHEnchantments {
                     .category(EnchantmentCategory.WEAPON)
             ));
     public static RegistryObject<Enchantment> ILLAGER_BANE = RegistryHelper.registerEnchantments("illager_bane",
-            () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
+            () -> new ExtendedDamageEnchantment(new AdvancedEnchantment.Builder()
                     .maxLevel(5)
                     .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
                     .maxCost(10)
@@ -50,7 +51,7 @@ public class BHEnchantments {
                     .category(EnchantmentCategory.WEAPON)
             ));
     public static RegistryObject<Enchantment> VOID_BANE = RegistryHelper.registerEnchantments("void_bane",
-            () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
+            () -> new ExtendedDamageEnchantment(new AdvancedEnchantment.Builder()
                     .maxLevel(5)
                     .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
                     .maxCost(10)

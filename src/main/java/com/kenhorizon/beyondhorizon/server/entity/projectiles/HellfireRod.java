@@ -92,7 +92,7 @@ public class HellfireRod extends ExtendedProjectile {
     }
 
     @Override
-    public DamageSource setDamageSource(LivingEntity entity) {
-        return BHDamageTypes.blazingRod(this, entity);
+    public DamageSource setDamageSource() {
+        return BHDamageTypes.blazingRod(this, this.getOwner());
     }
 }

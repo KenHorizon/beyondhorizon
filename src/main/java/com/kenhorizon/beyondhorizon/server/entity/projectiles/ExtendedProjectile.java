@@ -119,7 +119,7 @@ public class ExtendedProjectile extends Projectile {
                 if (this.isIgnitedAttack()) {
                     target.setSecondsOnFire(5);
                 }
-                boolean flag = DamageHandler.damage(target, this.setDamageSource(target), this.getBaseDamage(), this.getDamageTypes(), this.damageTypeModifiers);
+                boolean flag = DamageHandler.damage(target, this.setDamageSource(), this.getBaseDamage(), this.getDamageTypes(), this.damageTypeModifiers);
 
                 BeyondHorizon.LOGGER.info("Projectile Hit! {} Hurt {}", target, flag);
                 if (flag) {
@@ -152,8 +152,8 @@ public class ExtendedProjectile extends Projectile {
         }
     }
 
-    public DamageSource setDamageSource(LivingEntity entity) {
-        return entity.level().damageSources().mobProjectile(this, entity);
+    public DamageSource setDamageSource() {
+        return this.level().damageSources().mobProjectile((Entity) this, (LivingEntity) this.getOwner());
     }
 
     @Override

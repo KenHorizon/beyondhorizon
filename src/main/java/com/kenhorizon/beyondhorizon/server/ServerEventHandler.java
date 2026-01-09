@@ -582,7 +582,7 @@ public class ServerEventHandler {
                 if (entry.getKey() instanceof IAdditionalEnchantment additionalEnchantment) {
                     Optional<IAdditionalEnchantment> optional = additionalEnchantment.enchantmentCallback();
                     if (optional.isPresent()) {
-                        optional.get().onHitAttack(entry.getValue(), source, attacker.getItemBySlot(slot), attacker, target, damageDealt);
+                        optional.get().onHitAttack(entry.getValue(), source, attacker.getItemBySlot(slot), target, attacker, damageDealt);
                     }
                 }
             }

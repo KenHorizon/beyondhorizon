@@ -8,6 +8,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
+import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -57,7 +58,7 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
         if (this == BHEnchantments.SPELL_BLADE.get()) {
             if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
                 float applyDamage = damageDealt * (0.5F * (level + 1));
-                target.hurt(BHDamageTypes.magicDamage(attacker, target), applyDamage);
+                target.hurt(BHDamageTypes.magicDamage(attacker), applyDamage);
             }
         }
     }
@@ -106,7 +107,8 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
             }
         }
         if (this == BHEnchantments.VOID_BANE.get()) {
-            if (target instanceof EnderMan) {
+            boolean applyEffect = target.getType().is(BHEntityTypeTags.VOID_BANE_AFFECTED);
+            if (applyEffect) {
                 damageDealt = DamageHandler.multiplier(damageDealt, 0.10F * (level + 1));
             }
         }

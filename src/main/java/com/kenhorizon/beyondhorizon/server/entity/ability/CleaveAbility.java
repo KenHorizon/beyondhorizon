@@ -107,7 +107,7 @@ public class CleaveAbility extends AbilityEntity {
             if (entityOnRange instanceof LivingEntity targetOnRange) {
                 if (targetOnRange == attacker || targetOnRange == this.getTarget()) continue;
                 if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
-                    targetOnRange.hurt(BHDamageTypes.physicalDamage(attacker, entityOnRange), this.getBaseDamage());
+                    targetOnRange.hurt(BHDamageTypes.physicalDamage(this, attacker), this.getBaseDamage());
                 }
             }
         }

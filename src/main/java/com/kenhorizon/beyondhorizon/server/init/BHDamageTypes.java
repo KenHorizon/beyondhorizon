@@ -69,26 +69,39 @@ public class BHDamageTypes {
         return source(LETHALITY, source);
     }
 
-    public static DamageSource deathRay(Entity source, Entity target) {
-        return source(BEAM, source, target);
+    public static DamageSource deathRay(Entity source, Entity cause) {
+        return source(BEAM, source, cause);
     }
 
-    public static DamageSource magicDamage(Entity source, Entity target) {
-        return source(MAGIC_DAMAGE, source, target);
-    }
-    
-    public static DamageSource blazingRod(Entity source, Entity target) {
-        return source(BLAZING_ROD, source, target);
+    public static DamageSource deathRay(Entity source) {
+        return source(BEAM, source, source);
     }
 
-    public static DamageSource physicalDamage(Entity source, Entity target) {
-        return source(PHYSICAL_DAMAGE, source, target);
+    public static DamageSource magicDamage(Entity source, Entity cause) {
+        return source(MAGIC_DAMAGE, source, cause);
     }
+
+    public static DamageSource magicDamage(Entity source) {
+        return source(MAGIC_DAMAGE, source, source);
+    }
+
+    public static DamageSource blazingRod(Entity source, Entity cause) {
+        return source(BLAZING_ROD, source, cause);
+    }
+
+    public static DamageSource physicalDamage(Entity source, Entity cause) {
+        return source(PHYSICAL_DAMAGE, source, cause);
+    }
+
+    public static DamageSource physicalDamage(Entity source) {
+        return source(PHYSICAL_DAMAGE, source, source);
+    }
+
     public static DamageSource nullify(Entity source, Entity target) {
         return source(IGNORE_ENCHANTMENT_PROTECTION, source, target);
     }
-    public static DamageSource trueDamage(Entity source, Entity target) {
-        return source(TRUE_DAMAGE, source, target);
+    public static DamageSource trueDamage(Entity source, Entity cause) {
+        return source(TRUE_DAMAGE, source, cause);
     }
 
     private static ResourceKey<DamageType> createKey(String keyName) {

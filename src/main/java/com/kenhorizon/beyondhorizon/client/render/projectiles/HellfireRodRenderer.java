@@ -36,14 +36,12 @@ public class HellfireRodRenderer extends EntityRenderer<HellfireRod> {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
-//        poseStack.scale(0.05625F, 0.05625F, 0.05625F);
         poseStack.translate(-4.0F, 0.0F, 0.0F);
         poseStack.pushPose();
-//        poseStack.mulPose((new Quaternionf()).setAngleAxis(yaw * ((float)Math.PI / 180F), 0, -1.0F, 0));
         VertexConsumer builder0 = buffer.getBuffer(BHRenderTypes.glowing(this.getTextureLocation(entity)));
         VertexConsumer builder1 = buffer.getBuffer(BHRenderTypes.glowing(TEXTURE_LAYER));
         this.model.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, 0, 0);
-        this.model.renderToBuffer(poseStack, builder0, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        this.model.renderToBuffer(poseStack, builder0, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.50F);
         this.model.renderToBuffer(poseStack, builder1, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
         super.render(entity, yaw, partialTicks, poseStack, buffer, packedLight);

@@ -11,10 +11,13 @@ import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.CreativeModeTab;
@@ -132,6 +135,13 @@ public class BHLangProvider extends LanguageProvider {
         this.add(BeyondHorizon.ID + ".attributes.take.0", "-%s %s");
         this.add(BeyondHorizon.ID + ".attributes.take.1", "-%s%% %s");
         this.add(BeyondHorizon.ID + ".attributes.take.2", "-%s%% %s");
+        //
+        this.addDeathMessage(BHDamageTypes.PHYSICAL_DAMAGE, "%1$s was killed", "%1$s was killed by %2$s", "%1$s was killed by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.MAGIC_DAMAGE, "%1$s was killed by magic", "%1$s was killed by magic whilst trying to escape %2$s", "%1$s was killed by magic whilst trying to escape %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.TRUE_DAMAGE, "%%1$s was consumed", "%1$s was consumed by %2$s", "%1$s was consumed by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.BLEED, "%1$s was bleeding to death", "%1$s was bleeding to death while killed by %2$s", "%1$s was bleeding to death while killed by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.BEAM, "%1$s was evaporated", "%1$s was evaporated by %2$s", "%1$s was evaporated by %2$s using %3$s");
+
     }
     private void addEnchantmentDesc(Supplier<? extends Enchantment> enchantments, String description) {
         this.add(enchantments.get().getDescriptionId() + ".desc", description);
@@ -212,5 +222,11 @@ public class BHLangProvider extends LanguageProvider {
 
     private void creativeTabs(Supplier<? extends CreativeModeTab> creativeTabs, String name) {
         this.add(creativeTabs.get().getDisplayName().getString(), name);
+    }
+    private void addDeathMessage(ResourceKey<DamageType> damageTypes, String name, String player, String item) {
+        String path = damageTypes.location().getPath();
+        this.add(String.format("death.attack.%s", path), name);
+        this.add(String.format("death.attack.%s.player", path), player);
+        this.add(String.format("death.attack.%s.item", path), item);
     }
 }

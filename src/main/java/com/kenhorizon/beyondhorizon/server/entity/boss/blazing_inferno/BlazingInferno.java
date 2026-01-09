@@ -801,15 +801,17 @@ public class BlazingInferno extends BHBossEntity {
         }
         this.dashAttack();
         if (this.getAnimationState(ID_DASHES)) {
+            int dashStart = 45;
+            int dashEnd = 65;
             if (target != null) {
-                if (this.getAnimationTick() < 45) {
+                if (this.getAnimationTick() < dashStart) {
                     this.lookAt(target, 30.0F, 3.0F);
                     this.getLookControl().setLookAt(target, 30.0F, 30.0F);
                 } else {
                     this.setYRot(this.yRotO);
                 }
             }
-            if (this.getAnimationTick() < 55 && this.getAnimationTick() > 45) {
+            if (this.getAnimationTick() < dashEnd && this.getAnimationTick() > dashStart) {
                 this.setIsDashing(true);
                 Vec3 vec3 = this.getDeltaMovement();
                 this.playSound(BHSounds.BLAZING_INFERNO_GROWL.get());

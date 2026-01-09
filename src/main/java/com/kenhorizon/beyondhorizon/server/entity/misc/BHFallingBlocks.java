@@ -41,7 +41,6 @@ public class BHFallingBlocks extends Entity {
         this.setStartPos(this.blockPosition());
     }
 
-
     public void setStartPos(BlockPos blockPos) {
         this.entityData.set(DATA_START_POS, blockPos);
     }

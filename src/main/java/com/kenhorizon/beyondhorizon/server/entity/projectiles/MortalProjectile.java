@@ -72,12 +72,22 @@ public class MortalProjectile extends Projectile {
     protected MortalProjectile(EntityType<? extends Projectile> entityType, Level level) {
         super(entityType, level);
         this.setFlightTime(40);
+        if (this.getStartPos() == null) {
+            this.setStartPos(this.getX(), this.getY(), this.getZ());
+        }
+        if (this.getTargetPos() == null) {
+            this.setTargetPos(this.getX(), this.getY(), this.getZ());
+        }
     }
 
     protected MortalProjectile(EntityType<? extends Projectile> entityType, Level level, LivingEntity shooter) {
         this(entityType, level);
         this.reapplyPosition();
-        this.setPos(shooter.getX(), shooter.getEyeY(), shooter.getZ());
+        if (shooter == null) {
+            this.setPos(this.getX(), this.getY(), this.getZ());
+        } else {
+            this.setPos(shooter.getX(), shooter.getEyeY(), shooter.getZ());
+        }
         this.setOwner(shooter);
     }
 

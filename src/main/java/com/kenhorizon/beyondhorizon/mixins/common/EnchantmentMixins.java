@@ -40,7 +40,7 @@ public abstract class EnchantmentMixins implements IAttributeEnchantment, IAddit
             if (attributeInstance != null) {
                 AttributeModifier attributeModifier = entry.getValue();
                 attributeInstance.removeModifier(attributeModifier);
-                double amount = this.getAttributeModifierValue(level, attributeModifier) * multiplier;
+                double amount = this.getAttributeModifierValue(level, attributeModifier) * (multiplier == 0 ? 1.0D : multiplier);
                 attributeInstance.addPermanentModifier(new AttributeModifier(attributeModifier.getId(), "Enchantment Attribute Modifiers", amount, attributeModifier.getOperation()));
             }
         }

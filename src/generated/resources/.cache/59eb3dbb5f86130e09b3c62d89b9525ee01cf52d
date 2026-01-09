@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-05T15:15:59.3140341	Loot Tables
+// 1.20.1	2026-01-09T11:57:35.3524182	Loot Tables
 526c5ee647754cc0e643e4aeb492495bc3445bf0 data/beyondhorizon/loot_tables/blocks/adamantite_ore.json
 8b09cb1fe06d170e0264ba82bbc6c8b4067aa68a data/beyondhorizon/loot_tables/blocks/black_nether_bricks.json
 205c70737c2e30e621e2b811d8a5696aa3187f60 data/beyondhorizon/loot_tables/blocks/black_nether_brick_slab.json
@@ -46,3 +46,4 @@ e47c868678fd7b425203c5a5a5f084aa427c926d data/beyondhorizon/loot_tables/blocks/s
 5401ad849ca8f1fb18467917522d1d905861e9a9 data/beyondhorizon/loot_tables/blocks/voidstone.json
 8b972173b1e63fad3771dd6d6010124e223eddc7 data/beyondhorizon/loot_tables/blocks/wall_fire_basin.json
 48d89e7c826d617dd1d08ded3516a74334420742 data/beyondhorizon/loot_tables/blocks/workbench.json
+d4ab2511799f39169cea4eb13d8a19e09eb607ea data/beyondhorizon/loot_tables/entities/blazing_inferno.json

@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.datagen.loot.BlazingInfernoLootTable;
+import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
@@ -41,11 +43,14 @@ public class BHLootTableProvider {
     public static LootTableProvider create(PackOutput output) {
         return new LootTableProvider(output, Set.of(),
                 List.of(
+                        new LootTableProvider.SubProviderEntry(Entity::new, LootContextParamSets.ENTITY),
                         new LootTableProvider.SubProviderEntry(Blocks::new, LootContextParamSets.BLOCK)
                 ));
     }
 
     public static class Entity extends EntityLootSubProvider {
+
+        private final BlazingInfernoLootTable BLAZING_INFERNO = new BlazingInfernoLootTable(BHEntity.BLAZING_INFERNO.get());
 
         public Entity() {
             super(FeatureFlags.REGISTRY.allFlags());
@@ -53,7 +58,7 @@ public class BHLootTableProvider {
 
         @Override
         public void generate() {
-
+            this.add(BLAZING_INFERNO.getEntityType(), BLAZING_INFERNO.build());
         }
 
         private LootItemEntityPropertyCondition.Builder hasProperties(LootContext.EntityTarget entityTarget, EntityPredicate.Builder predicateBuilder) {

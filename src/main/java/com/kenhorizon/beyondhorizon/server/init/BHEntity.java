@@ -11,6 +11,7 @@ import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoSh
 import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireOrb;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireRod;
 import com.kenhorizon.libs.registry.RegistryEntity;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.world.entity.EntityType;
@@ -41,6 +42,13 @@ public class BHEntity {
             .lang("Eruption")
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(1.0F, 1.0F))
+            .register();
+
+    public static final RegistryObject<EntityType<HellfireRod>> HELLFIRE_ROD = RegistryEntity
+            .<HellfireRod>register("hellfire_rod", HellfireRod::new)
+            .lang("Hellfire Rod")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
     public static final RegistryObject<EntityType<BlazingRod>> BLAZING_ROD = RegistryEntity

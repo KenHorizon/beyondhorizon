@@ -69,7 +69,13 @@ public class BHItems {
             .tab(RegistryTabs.Category.INGREDIENTS)
             .model(ItemModels.GENERATED)
             .register();
-    
+
+    public static final RegistryObject<Item> WILDFIRE_FRAGMENT = RegistryItems
+            .register("wildfire_fragment", BasicItem::new)
+            .tab(RegistryTabs.Category.INGREDIENTS)
+            .model(ItemModels.GENERATED)
+            .register();
+
     public static final RegistryObject<Item> RAW_ADAMANTITE = RegistryItems
             .register("raw_adamantite", BasicItem::new)
             .tab(RegistryTabs.Category.INGREDIENTS)

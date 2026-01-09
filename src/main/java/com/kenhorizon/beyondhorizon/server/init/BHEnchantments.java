@@ -75,7 +75,7 @@ public class BHEnchantments {
                     .minCost(15)
                     .rarity(Enchantment.Rarity.RARE)
                     .category(EnchantmentCategory.WEAPON)
-                    .incompatible(enchantment -> enchantment == BHEnchantments.CRITICAL_DAMAGE.get())
+                    .incompatible(enchantment -> enchantment != BHEnchantments.CRITICAL_DAMAGE.get())
             ));
     public static RegistryObject<Enchantment> DRAGON_SLAYER = RegistryHelper.registerEnchantments("dragon_slayer",
             () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()

@@ -1,0 +1,85 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 20.0,
+                "min": 15.0
+              },
+              "function": "minecraft:set_count"
+            },
+            {
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 1.0,
+                "min": 0.0
+              },
+              "function": "minecraft:looting_enchant"
+            }
+          ],
+          "name": "beyondhorizon:wildfire_fragment"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.33,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 1.25
+            }
+          ],
+          "name": "beyondhorizon:ancient_blazing_sword"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.33,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 1.25
+            }
+          ],
+          "name": "beyondhorizon:cinder_stone"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.33,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 1.25
+            }
+          ],
+          "name": "beyondhorizon:firefly_faye"
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "chance": 0.33,
+              "condition": "minecraft:random_chance_with_looting",
+              "looting_multiplier": 1.25
+            }
+          ],
+          "name": "beyondhorizon:ruminative_beads"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "beyondhorizon:entities/blazing_inferno"
+}

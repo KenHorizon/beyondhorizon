@@ -24,16 +24,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.common.ForgeMod;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 import java.util.function.Predicate;
 
 public class AdvancedEnchantment extends Enchantment implements IAdditionalEnchantment {
-    protected int maxLevel;
-    protected int maxCost;
-    protected int minCost;
-    protected boolean isCursed;
-    protected Predicate<Enchantment> incompatibleEnchantments;
+    protected final int maxLevel;
+    protected final int maxCost;
+    protected final int minCost;
+    protected final boolean isCursed;
+    protected final Predicate<Enchantment> incompatibleEnchantments;
     public static final EnchantmentCategory CATEGORY_ALL = EnchantmentCategory.create("ALL", item -> {
         return true;
     });
@@ -144,7 +145,11 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
 
     @Override
     protected boolean checkCompatibility(Enchantment other) {
-        return super.checkCompatibility(other) && this.getIncompatibleEnchantments().test(other);
+        if (this.getIncompatibleEnchantments() == null) {
+            return super.checkCompatibility(other);
+        } else {
+            return  this.getIncompatibleEnchantments().test(other);
+        }
     }
 
     public Predicate<Enchantment> getIncompatibleEnchantments() {

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 1,
+  "ingredient": {
+    "item": "beyondhorizon:end_grey_bricks"
+  },
+  "result": "beyondhorizon:end_grey_brick_slab"
+}

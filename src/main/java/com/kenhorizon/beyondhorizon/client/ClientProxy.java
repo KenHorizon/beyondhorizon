@@ -15,10 +15,12 @@ import com.kenhorizon.beyondhorizon.client.render.entity.ability.FlameStrikeRend
 import com.kenhorizon.beyondhorizon.client.render.projectiles.HellfireOrbRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;
+import com.kenhorizon.beyondhorizon.client.render.projectiles.HellfireRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireRod;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
@@ -113,6 +115,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
         EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
         EntityRenderers.register(BHEntity.HELLFIRE_ORB.get(), HellfireOrbRenderer::new);
+        EntityRenderers.register(BHEntity.HELLFIRE_ROD.get(), HellfireRodRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);

@@ -19,6 +19,7 @@ import java.util.List;
 public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
     public AnimationState idleAnimation = new AnimationState();
     public static final int ID_ANIMATION_EMPTY = 0;
+    private int prevAnimationState;
     private int idleTime;
     private float damageCap = -1;
     private int animationTick;
@@ -103,7 +104,12 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
     public void setAnimation(int animation) {
         this.setAnimationTick(0);
         this.entityData.set(ANIMATION_STATE, animation);
+        this.prevAnimationState = this.getAnimation();
         this.level().broadcastEntityEvent(this, (byte) -animation);
+    }
+
+    public int getPrevAnimationState() {
+        return prevAnimationState;
     }
 
     public int getAnimation() {

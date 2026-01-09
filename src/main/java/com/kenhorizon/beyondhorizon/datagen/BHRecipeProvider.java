@@ -59,6 +59,17 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         this.woolFurToWoolBlock(consumer, BHItems.RED_WOOL_FUR.get(), Blocks.RED_WOOL);
         this.woolFurToWoolBlock(consumer, BHItems.BLACK_WOOL_FUR.get(), Blocks.BLACK_WOOL);
 
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_BRICKS.get(), BHBlocks.END_GREY_STONE.get());
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_PILLAR.get(), BHBlocks.END_GREY_STONE.get());
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_BRICK_SLAB.get(), BHBlocks.END_GREY_STONE.get());
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_BRICK_STAIRS.get(), BHBlocks.END_GREY_STONE.get());
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_BRICK_STAIRS.get(), BHBlocks.END_GREY_BRICKS.get());
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_BRICK_SLAB.get(), BHBlocks.END_GREY_BRICKS.get());
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_STONE_TILES.get(), Blocks.END_STONE);
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.CHISILLED_END_STONE.get(), Blocks.END_STONE);
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.CHISILLED_END_STONE_UNCARVED.get(), Blocks.END_STONE);
+
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STRING, 4)
                 .requires(BHItemTags.WOOL_FUR)
                 .unlockedBy("has_wool_fur",
@@ -75,6 +86,13 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .define('I', Items.IRON_INGOT)
                 .unlockedBy("has_crafting_table",
                         inventoryTrigger(ItemPredicate.Builder.item().of(Blocks.CRAFTING_TABLE).build()))
+                .save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BHItems.RAW_EMBED_HELLSTONE.get())
+                .requires(BHItems.RAW_HELLSTONE.get())
+                .requires(Blocks.OBSIDIAN)
+                .unlockedBy("has_raw_hellstone",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.RAW_HELLSTONE.get()).build()))
                 .save(consumer);
 
         WorkbenchRecipeProvider.create(BHItems.NULL_MAGIC_RUNE.get(), 1)

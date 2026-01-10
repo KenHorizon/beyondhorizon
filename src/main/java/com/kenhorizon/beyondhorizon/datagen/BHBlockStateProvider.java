@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.libs.client.data.BlockStateBuilder;
 import net.minecraft.data.PackOutput;
@@ -59,6 +60,6 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.NETHER_BRICK_LANTERN);
         this.standBasinBlocks(BHBlocks.FIRE_BASIN);
         this.standWallBasinBlocks(BHBlocks.WALL_FIRE_BASIN);
-
+        this.baseSpawnerBlocks(BHBlocks.SPAWNER, BeyondHorizon.resource("block/base_spawner_top"), BeyondHorizon.resource("block/base_spawner_bottom"), BeyondHorizon.resource("block/base_spawner_side"));
     }
 }

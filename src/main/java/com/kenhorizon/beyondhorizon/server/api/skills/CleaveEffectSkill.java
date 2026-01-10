@@ -50,23 +50,4 @@ public class CleaveEffectSkill extends WeaponSkills {
 //        CleaveAbility.spawn(attacker.level(), target, attacker, 999.99F, this.getCleaveRange(), this.getCleaveType());
         CleaveAbility.spawn(attacker.level(), target , attacker, damageDealt * this.getMagnitude(), this.getCleaveRange(), this.getCleaveType());
     }
-
-    private void shootBlazingCleave(ItemStack itemStack, Player player) {
-        BeyondHorizon.LOGGER.debug("Using Blazing Cleave");
-        Level level = player.level();
-        Vec3 vector3d = player.getViewVector(1.0F);
-        Vec3 vec3 = player.getHandHoldingItemAngle(itemStack.getItem());
-        BlazingRod projectile = new BlazingRod(player.level(), vec3.x, vec3.y, vec3.z, player);
-        projectile.setBaseDamage((float) (player.getAttributeValue(Attributes.ATTACK_DAMAGE) * 0.5F));
-        double d0 = player.getX() + vec3.x();
-        double d1 = player.getY() + vec3.y() + (player.getBbHeight() / 2) + 0.2D;
-        double d2 = player.getZ() + vec3.z();
-        projectile.shoot(vector3d.x(), vector3d.y(), vector3d.z(), 2.0F, 1.0F);
-        projectile.setPosRaw(d0, d1, d2);
-        level.addFreshEntity(projectile);
-        if (!level.isClientSide()) {
-            level.addFreshEntity(projectile);
-        }
-        player.awardStat(Stats.ITEM_USED.get(itemStack.getItem()));
-    }
 }

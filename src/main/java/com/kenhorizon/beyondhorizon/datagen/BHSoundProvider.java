@@ -90,6 +90,86 @@ public class BHSoundProvider extends SoundDefinitionsProvider {
                 this.addSounds("mob/inferno_shield/break2"),
                 this.addSounds("mob/inferno_shield/break3")
         );
+
+        this.add(BHSounds.SPAWNER_HIT,
+                this.addSounds("block/spawner_block/break1"),
+                this.addSounds("block/spawner_block/break2"),
+                this.addSounds("block/spawner_block/break3")
+        );
+        this.add(BHSounds.SPAWNER_BREAK,
+                this.addSounds("block/spawner_block/break1"),
+                this.addSounds("block/spawner_block/break2"),
+                this.addSounds("block/spawner_block/break3")
+        );
+        this.add(BHSounds.SPAWNER_FALL,
+                this.addSounds("block/spawner_block/step1"),
+                this.addSounds("block/spawner_block/step2"),
+                this.addSounds("block/spawner_block/step3"),
+                this.addSounds("block/spawner_block/step4"),
+                this.addSounds("block/spawner_block/step5")
+        );
+        this.add(BHSounds.SPAWNER_STEP,
+                this.addSounds("block/spawner_block/step1"),
+                this.addSounds("block/spawner_block/step2"),
+                this.addSounds("block/spawner_block/step3"),
+                this.addSounds("block/spawner_block/step4"),
+                this.addSounds("block/spawner_block/step5")
+        );
+        this.add(BHSounds.SPAWNER_PLACE,
+                this.addSounds("block/spawner_block/place1"),
+                this.addSounds("block/spawner_block/place2"),
+                this.addSounds("block/spawner_block/place3")
+        );
+        this.add(BHSounds.SPAWNER_AMBIENT,
+                this.addSounds("block/spawner_block/ambient1"),
+                this.addSounds("block/spawner_block/ambient2"),
+                this.addSounds("block/spawner_block/ambient3"),
+                this.addSounds("block/spawner_block/ambient4"),
+                this.addSounds("block/spawner_block/ambient5")
+        );
+        this.add(BHSounds.SPAWNER_AMBIENT_OMINOUS,
+                this.addSounds("block/spawner_block/ambient_ominous1"),
+                this.addSounds("block/spawner_block/ambient_ominous2"),
+                this.addSounds("block/spawner_block/ambient_ominous3"),
+                this.addSounds("block/spawner_block/ambient_ominous4"),
+                this.addSounds("block/spawner_block/ambient_ominous5")
+        );
+        this.add(BHSounds.SPAWNER_ABOUT_TO_SPAWN,
+                this.addSounds("block/spawner_block/about_to_spawn_item")
+        );
+        this.add(BHSounds.SPAWNER_SPAWN,
+                this.addSounds("block/spawner_block/spawn1"),
+                this.addSounds("block/spawner_block/spawn2"),
+                this.addSounds("block/spawner_block/spawn3"),
+                this.addSounds("block/spawner_block/spawn4")
+        );
+        this.add(BHSounds.SPAWNER_SPAWN_ITEM_BEGIN,
+                this.addSounds("block/spawner_block/spawn_item_begin1"),
+                this.addSounds("block/spawner_block/spawn_item_begin2"),
+                this.addSounds("block/spawner_block/spawn_item_begin3")
+        );
+        this.add(BHSounds.SPAWNER_SPAWN_ITEM,
+                this.addSounds("block/spawner_block/spawn_item1"),
+                this.addSounds("block/spawner_block/spawn_item2"),
+                this.addSounds("block/spawner_block/spawn_item3")
+        );
+        this.add(BHSounds.SPAWNER_EJECT_ITEM,
+                this.addSounds("block/spawner_block/eject_item")
+        );
+        this.add(BHSounds.SPAWNER_OMINOUS_ACTIVATE,
+                this.addSounds("block/spawner_block/ominous_activate")
+        );
+        this.add(BHSounds.SPAWNER_OPEN_SHUTTER,
+                this.addSounds("block/spawner_block/open_shutter")
+        );
+        this.add(BHSounds.SPAWNER_CLOSE_SHUTTER,
+                this.addSounds("block/spawner_block/close_shutter")
+        );
+        this.add(BHSounds.SPAWNER_DETECT_PLAYER,
+                this.addSounds("block/spawner_block/detect_player1"),
+                this.addSounds("block/spawner_block/detect_player2"),
+                this.addSounds("block/spawner_block/detect_player3")
+        );
     }
 
     protected void add(final Supplier<SoundEvent> soundEvent, final SoundDefinition.Sound... definition) {

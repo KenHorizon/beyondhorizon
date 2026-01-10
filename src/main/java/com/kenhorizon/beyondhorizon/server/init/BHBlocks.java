@@ -3,8 +3,11 @@ package com.kenhorizon.beyondhorizon.server.init;
 import com.kenhorizon.beyondhorizon.server.block.WorkbenchBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.FireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.WallFireBasinBlock;
+import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,7 +18,15 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class BHBlocks {
 
-    private static final BlockBehaviour.Properties NETHER_BRICKS = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.0F, 6.0F).sound(SoundType.NETHER_BRICKS);
+    public static final BlockBehaviour.Properties NETHER_BRICKS = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.0F, 6.0F).sound(SoundType.NETHER_BRICKS);
+    public static final BlockBehaviour.Properties SPAWNER_PROPERTIES = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).lightLevel(value -> value.getValue(BaseSpawnerBlock.SPAWNER_STATE).lightLevel()).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(50.0F).sound(BHSoundType.SPAWNER).noOcclusion().isViewBlocking(BHBlocks::never);
+
+    public static final RegistryObject<Block> SPAWNER = RegistryBlocks
+            .register("base_spawner_block", properties -> new BaseSpawnerBlock(SPAWNER_PROPERTIES))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
 
     public static final RegistryObject<Block> DUNGEON_BRICKS = RegistryBlocks
             .register("dungeon_bricks", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.BEDROCK)))
@@ -25,8 +36,7 @@ public class BHBlocks {
             .register();
     
     public static final RegistryObject<Block> WORKBENCH = RegistryBlocks
-            .register("workbench", WorkbenchBlock::new)
-            .inialProperties(() -> BlockBehaviour.Properties.copy(Blocks.SMITHING_TABLE))
+            .register("workbench", properties -> new WorkbenchBlock(BlockBehaviour.Properties.copy(Blocks.SMITHING_TABLE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .dropSelf()
             .register();
@@ -350,6 +360,12 @@ public class BHBlocks {
             .register();
 
 
+    public static boolean never(BlockState blockState, BlockGetter iBlockReader, BlockPos blockPos) {
+        return false;
+    }
+    public static boolean always(BlockState blockState, BlockGetter iBlockReader, BlockPos blockPos) {
+        return true;
+    }
     public static void register(IEventBus eventBus) {
         RegistryEntries.BLOCKS.register(eventBus);
     }

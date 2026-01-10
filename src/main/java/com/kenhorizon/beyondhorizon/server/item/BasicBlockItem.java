@@ -12,12 +12,15 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.plaf.ToolTipUI;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class BasicBlockItem extends BlockItem {
     public BasicBlockItem(Block block, Properties properties) {
         super(block, properties);
     }
-
+    public BasicBlockItem(Supplier<? extends Block> block, Properties properties) {
+        super(block.get(), properties);
+    }
 //    @Override
 //    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
 //        Tooltips.addTooltipBlockLabel(itemStack, BHBlocks.MONOBLOCK, tooltip);

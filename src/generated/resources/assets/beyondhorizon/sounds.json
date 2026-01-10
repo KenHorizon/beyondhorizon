@@ -1,4 +1,131 @@
 {
+  "block.base_spawner.about_to_spawn": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/about_to_spawn_item"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.about_to_spawn"
+  },
+  "block.base_spawner.ambient": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/ambient1",
+      "beyondhorizon:block/spawner_block/ambient2",
+      "beyondhorizon:block/spawner_block/ambient3",
+      "beyondhorizon:block/spawner_block/ambient4",
+      "beyondhorizon:block/spawner_block/ambient5"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.ambient"
+  },
+  "block.base_spawner.ambient.ominous": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/ambient_ominous1",
+      "beyondhorizon:block/spawner_block/ambient_ominous2",
+      "beyondhorizon:block/spawner_block/ambient_ominous3",
+      "beyondhorizon:block/spawner_block/ambient_ominous4",
+      "beyondhorizon:block/spawner_block/ambient_ominous5"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.ambient.ominous"
+  },
+  "block.base_spawner.break": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/break1",
+      "beyondhorizon:block/spawner_block/break2",
+      "beyondhorizon:block/spawner_block/break3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.break"
+  },
+  "block.base_spawner.close_shutter": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/close_shutter"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.close_shutter"
+  },
+  "block.base_spawner.detect_player": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/detect_player1",
+      "beyondhorizon:block/spawner_block/detect_player2",
+      "beyondhorizon:block/spawner_block/detect_player3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.detect_player"
+  },
+  "block.base_spawner.eject_item": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/eject_item"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.eject_item"
+  },
+  "block.base_spawner.fall": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/step1",
+      "beyondhorizon:block/spawner_block/step2",
+      "beyondhorizon:block/spawner_block/step3",
+      "beyondhorizon:block/spawner_block/step4",
+      "beyondhorizon:block/spawner_block/step5"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.fall"
+  },
+  "block.base_spawner.hit": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/break1",
+      "beyondhorizon:block/spawner_block/break2",
+      "beyondhorizon:block/spawner_block/break3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.hit"
+  },
+  "block.base_spawner.ominous_activate": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/ominous_activate"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.ominous_activate"
+  },
+  "block.base_spawner.open_shutter": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/open_shutter"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.open_shutter"
+  },
+  "block.base_spawner.place": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/place1",
+      "beyondhorizon:block/spawner_block/place2",
+      "beyondhorizon:block/spawner_block/place3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.place"
+  },
+  "block.base_spawner.spawn_item": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/spawn_item1",
+      "beyondhorizon:block/spawner_block/spawn_item2",
+      "beyondhorizon:block/spawner_block/spawn_item3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.spawn_item"
+  },
+  "block.base_spawner.spawn_item.begin": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/spawn_item_begin1",
+      "beyondhorizon:block/spawner_block/spawn_item_begin2",
+      "beyondhorizon:block/spawner_block/spawn_item_begin3"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.spawn_item.begin"
+  },
+  "block.base_spawner.spawn_mob": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/spawn1",
+      "beyondhorizon:block/spawner_block/spawn2",
+      "beyondhorizon:block/spawner_block/spawn3",
+      "beyondhorizon:block/spawner_block/spawn4"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.spawn_mob"
+  },
+  "block.base_spawner.step": {
+    "sounds": [
+      "beyondhorizon:block/spawner_block/step1",
+      "beyondhorizon:block/spawner_block/step2",
+      "beyondhorizon:block/spawner_block/step3",
+      "beyondhorizon:block/spawner_block/step4",
+      "beyondhorizon:block/spawner_block/step5"
+    ],
+    "subtitle": "subtitle.beyondhorizon.block.base_spawner.step"
+  },
   "generic.heavy_attack": {
     "sounds": [
       "beyondhorizon:generic/heavy_hit/heavyhit1",

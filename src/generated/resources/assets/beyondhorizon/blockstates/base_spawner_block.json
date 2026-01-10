@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "base_spawner_state=active": {
+      "model": "beyondhorizon:block/base_spawner_block_active"
+    },
+    "base_spawner_state=cooldown": {
+      "model": "beyondhorizon:block/base_spawner_block_cooldown"
+    },
+    "base_spawner_state=ejecting_reward": {
+      "model": "beyondhorizon:block/base_spawner_block_eject_reward"
+    },
+    "base_spawner_state=inactive": {
+      "model": "beyondhorizon:block/base_spawner_block_inactive"
+    },
+    "base_spawner_state=waiting_for_players": {
+      "model": "beyondhorizon:block/base_spawner_block_waiting_for_player"
+    },
+    "base_spawner_state=waiting_for_reward_ejection": {
+      "model": "beyondhorizon:block/base_spawner_block_waiting_for_reward_ejection"
+    }
+  }
+}

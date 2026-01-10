@@ -69,7 +69,6 @@ public class RegistryBlocks<T extends Block> {
             lang = builderName(this.name);
         }
         if (!builder.dontCreateItemBlocks) {
-            BeyondHorizon.LOGGER.debug("is Stand Wall Block null ? {}", builder.standWallBlock == null);
             if (builder.standWallBlock != null) {
                 this.registerStandingAndWallItems(builder.name, builder.registryObject, builder.standWallBlock);
             } else {
@@ -127,6 +126,7 @@ public class RegistryBlocks<T extends Block> {
     }
 
     private void registerBlockItems(String name, Supplier<T> blockItem) {
+//        BeyondHorizon.LOGGER.debug("Registered {}", blockItem.get());
         RegistryEntries.ITEMS.register(name, () -> new BasicBlockItem(blockItem.get(), new Item.Properties()));
     }
     private void registerStandingAndWallItems(String name, Supplier<T> blockItem, Supplier<T> wallItem) {

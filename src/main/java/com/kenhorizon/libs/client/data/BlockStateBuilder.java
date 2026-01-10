@@ -2,6 +2,8 @@ package com.kenhorizon.libs.client.data;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.datagen.BHBlockStateProvider;
+import com.kenhorizon.beyondhorizon.server.block.BlockProperties;
+import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -267,16 +269,60 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         ModelFile hangingOff = models().withExistingParent("hanging_" + name(block.get()) + "_unlit", BeyondHorizon.resource("block/base/stand_hanging_fire_basin_unlit"))
                 .texture("base", base).texture("flame", flame).texture("magma", magma).texture("chain", chain).texture("particle", base).renderType("cutout_mipped");
 
-        standBasinBlocks(block, lit, off, hangingLit, hangingOff);
-        simpleBlockItem(block.get(), off);
+        this.standBasinBlocks(block, lit, off, hangingLit, hangingOff);
+        this.simpleBlockItem(block.get(), off);
     }
     protected void standBasinBlocks(RegistryObject<Block> block, ModelFile lit, ModelFile off, ModelFile hangingLit, ModelFile hangingOff) {
-        getVariantBuilder(block.get())
+        this.getVariantBuilder(block.get())
                 .partialState().with(BlockStateProperties.HANGING, true).with(BlockStateProperties.LIT, true).modelForState().modelFile(hangingLit).addModel()
                 .partialState().with(BlockStateProperties.HANGING, true).with(BlockStateProperties.LIT, false).modelForState().modelFile(hangingOff).addModel()
                 .partialState().with(BlockStateProperties.HANGING, false).with(BlockStateProperties.LIT, true).modelForState().modelFile(lit).addModel()
                 .partialState().with(BlockStateProperties.HANGING, false).with(BlockStateProperties.LIT, false).modelForState().modelFile(off).addModel();
     }
+    protected void baseSpawnerBlocks(RegistryObject<Block> block, ResourceLocation top, ResourceLocation bottom, ResourceLocation side) {
+        ResourceLocation inactiveTop = top.withSuffix("_inactive");
+        ResourceLocation inactiveSide = side.withSuffix("_inactive");
+        ResourceLocation activeTop = top.withSuffix("_active");
+        ResourceLocation activeSide = side.withSuffix("_active");
+
+        String inactiveName = String.format("%s_inactive", name(block.get()));
+        ModelFile inactive = models().cube(inactiveName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).renderType("cutout_mipped");;
+
+        String activeName = String.format("%s_active", name(block.get()));
+        ModelFile active = models().cube(activeName, bottom, activeTop, activeSide, activeSide, activeSide, activeSide).renderType("cutout_mipped");;
+
+        String cooldownName = String.format("%s_cooldown", name(block.get()));
+        ModelFile cooldown = models().cube(cooldownName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).renderType("cutout_mipped");;
+
+        String ejectRewardName = String.format("%s_eject_reward", name(block.get()));
+        ModelFile ejectReward = models().cube(ejectRewardName, bottom, top.withSuffix("_ejecting_reward"), activeSide, activeSide, activeSide, activeSide).renderType("cutout_mipped");;
+
+        String waitingForPlayerName = String.format("%s_waiting_for_player", name(block.get()));
+        ModelFile waitingForPlayer = models().cube(waitingForPlayerName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).renderType("cutout_mipped");;
+
+        String waitingForRewardEjectionName = String.format("%s_waiting_for_reward_ejection", name(block.get()));
+        ModelFile waitingForRewardEjection = models().cube(waitingForRewardEjectionName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).renderType("cutout_mipped");
+
+        this.baseSpawnerBlocks(block, inactive, active, cooldown, ejectReward, waitingForPlayer, waitingForRewardEjection);
+        this.simpleBlockItem(block.get(), inactive);
+    }
+
+    protected void baseSpawnerBlocks(RegistryObject<Block> block,
+                                     ModelFile inactive,
+                                     ModelFile active,
+                                     ModelFile cooldown,
+                                     ModelFile ejectReward,
+                                     ModelFile waitingForPlayer,
+                                     ModelFile waitingForRewardEjection) {
+        this.getVariantBuilder(block.get())
+                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.INACTIVE).modelForState().modelFile(inactive).addModel()
+                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.ACTIVE).modelForState().modelFile(active).addModel()
+                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.COOLDOWN).modelForState().modelFile(cooldown).addModel()
+                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.EJECTING_REWARD).modelForState().modelFile(ejectReward).addModel()
+                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.WAITING_FOR_PLAYERS).modelForState().modelFile(waitingForPlayer).addModel()
+                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.WAITING_FOR_REWARD_EJECTION).modelForState().modelFile(waitingForRewardEjection).addModel();
+    }
+
     protected void flowerItem(RegistryObject<Block> flowerBlocks) {
         blockGeneratedItem(flowerBlocks);
         ModelFile flowerBlock = models().cross(blockTexture(flowerBlocks.get()).getPath(), blockTexture(flowerBlocks.get())).renderType("cutout");

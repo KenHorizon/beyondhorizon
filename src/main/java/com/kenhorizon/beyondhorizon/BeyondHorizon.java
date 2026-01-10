@@ -73,6 +73,9 @@ public class BeyondHorizon
         eventBus.addListener(this::onConfigLoad);
         BHAttributes.register(eventBus);
         BHCreativeTabs.register(eventBus);
+        BHBlocks.register(eventBus);
+        BHItems.register(eventBus);
+        BHBlockEntity.register(eventBus);
         BHMenu.register(eventBus);
         BHParticle.register(eventBus);
         //  BHPotions.register(eventBus);
@@ -81,8 +84,6 @@ public class BeyondHorizon
         BHEntity.register(eventBus);
         BHEffects.register(eventBus);
         BHRecipe.register(eventBus);
-        BHBlocks.register(eventBus);
-        BHItems.register(eventBus);
         Skills.register(eventBus);
         MasterySkillCategories.register(eventBus);
         MasterySkills.register(eventBus);

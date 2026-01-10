@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
+import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
@@ -21,10 +22,7 @@ import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireRod;
-import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.init.BHMenu;
-import com.kenhorizon.beyondhorizon.server.init.BHParticle;
+import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAccessoryInventoryPacket;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
@@ -32,6 +30,8 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -116,6 +116,8 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
         EntityRenderers.register(BHEntity.HELLFIRE_ORB.get(), HellfireOrbRenderer::new);
         EntityRenderers.register(BHEntity.HELLFIRE_ROD.get(), HellfireRodRenderer::new);
+
+//        BlockEntityRenderers.register(BHBlockEntity.BASE_SPAWNER.get(), BaseSpawnerRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);

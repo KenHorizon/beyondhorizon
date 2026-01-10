@@ -223,10 +223,20 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     public List<Skill> getSkills() {
         return this.skills;
     }
+    
+    @Override
+    public boolean onLeftClickEntity(ItemStack itemStack, Player player, Entity entity) {
+        for (Skill skill : this.skills) {
+            Optional<IAttack> properties = skill.IAttackCallback();
+            if (properties.isPresent()) {
+                return properties.get().onLeftClickEntity(itemStack, player, entity);
+            }
+        }
+        return super.onLeftClickEntity(itemStack, player, entity);
+    }
 
     @Override
     public boolean onLeftClick(ItemStack stack, Player player) {
-        BeyondHorizon.LOGGER.debug("Left Clicking!!");
         for (Skill skill : this.skills) {
             Optional<IAttack> properties = skill.IAttackCallback();
             if (properties.isPresent()) {

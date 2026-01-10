@@ -6,6 +6,8 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.data.IAttack;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.item.ICustomHitSound;
 import com.kenhorizon.beyondhorizon.server.item.ICustomSweepParticle;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
@@ -16,6 +18,8 @@ import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.network.chat.Component;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,6 +34,7 @@ import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.MendingEnchantment;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
@@ -220,8 +225,20 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     }
 
     @Override
-    public boolean onLeftClick(ItemStack stack, LivingEntity player) {
+    public boolean onLeftClick(ItemStack stack, Player player) {
+        BeyondHorizon.LOGGER.debug("Left Clicking!!");
+        for (Skill skill : this.skills) {
+            Optional<IAttack> properties = skill.IAttackCallback();
+            if (properties.isPresent()) {
+                properties.get().onLeftClick(stack, player);
+                return true;
+            }
+        }
         return false;
+    }
+
+    private boolean isCharged(Player player, ItemStack stack){
+        return player.getAttackStrengthScale(0.5F) > 0.9F;
     }
 
     @Override

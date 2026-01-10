@@ -46,6 +46,7 @@ public class NetworkHandler {
         net.registerMessage(id(), ServerboundSkillPointsPacket.class, ServerboundSkillPointsPacket::toBytes, ServerboundSkillPointsPacket::new, ServerboundSkillPointsPacket::handle);
         net.registerMessage(id(), ServerboundBossbarPacket.class, ServerboundBossbarPacket::toBytes, ServerboundBossbarPacket::new, ServerboundBossbarPacket::handle);
         net.registerMessage(id(), ServerboundAbilityEffectPacket.class, ServerboundAbilityEffectPacket::toBytes, ServerboundAbilityEffectPacket::new, ServerboundAbilityEffectPacket::handle);
+        net.registerMessage(id(), ServerboundPlayerSwingArmPacket.class, ServerboundPlayerSwingArmPacket::toBytes, ServerboundPlayerSwingArmPacket::new, ServerboundPlayerSwingArmPacket::handle);
     }
 
     public static <MSG> void sendToServer(MSG msg) {

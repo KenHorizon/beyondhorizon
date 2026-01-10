@@ -1,20 +1,26 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.entity.IEntityDamageCap;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 public class ExtraDamageSkill extends WeaponSkills {
@@ -133,6 +139,7 @@ public class ExtraDamageSkill extends WeaponSkills {
     public ExtraDamageSkill(float magnitude, MobType mobType, DamageTypeFunction damageTypeFunction) {
         this(magnitude, 1.0F, mobType, damageTypeFunction);
     }
+
 
 
     @Override

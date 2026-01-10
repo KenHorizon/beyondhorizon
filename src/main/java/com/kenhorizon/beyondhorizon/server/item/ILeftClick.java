@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.item;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 public interface ILeftClick {
@@ -9,5 +10,5 @@ public interface ILeftClick {
         return false;
     }
 
-    boolean onLeftClick(ItemStack stack, LivingEntity player);
+    boolean onLeftClick(ItemStack stack, Player player);
 }

@@ -22,9 +22,7 @@ public interface IAttack {
 
     default void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {}
 
-    default boolean onLeftClick(ItemStack itemStack, Player player) {
-        return false;
-    }
+    default void onLeftClick(ItemStack itemStack, Player player) {}
 
     default boolean onLeftClickEntity(ItemStack itemStack, Player player, Entity entity) {
         return false;

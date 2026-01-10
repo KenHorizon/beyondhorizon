@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server;
 
+import com.google.common.graph.Network;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
@@ -13,8 +14,10 @@ import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
+import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
+import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
@@ -25,6 +28,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.ActiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundPlayerSwingArmPacket;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.ChatFormatting;
@@ -61,6 +65,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -779,5 +784,55 @@ public class ServerEventHandler {
             originalSpeed += bonusMiningSpeed;
         }
         event.setNewSpeed((float) originalSpeed);
+    }
+    @SubscribeEvent
+    public void onPlayerInteract(PlayerInteractEvent.LeftClickEmpty event) {
+        Player player = event.getEntity();
+        Level level = event.getLevel();
+        if (event.isCancelable() && player.hasEffect(BHEffects.STUN.get())) {
+            event.setCanceled(true);
+        }
+        boolean flag = false;
+        ItemStack leftItem = player.getOffhandItem();
+        ItemStack rightItem = player.getMainHandItem();
+        if (!player.hasEffect(BHEffects.STUN.get())) {
+            if (leftItem.getItem() instanceof ILeftClick) {
+                ((ILeftClick) leftItem.getItem()).onLeftClick(leftItem, player);
+                flag = true;
+            }
+            if (rightItem.getItem() instanceof ILeftClick) {
+                ((ILeftClick) rightItem.getItem()).onLeftClick(rightItem, player);
+                flag = true;
+            }
+            if (level.isClientSide() && flag) {
+                NetworkHandler.sendToServer(new ServerboundPlayerSwingArmPacket());
+            }
+        }
+    }
+    @SubscribeEvent
+    public void onPlayerInteract(PlayerInteractEvent.RightClickEmpty event) {
+        if (event.isCancelable() && event.getEntity().hasEffect(BHEffects.STUN.get())) {
+            event.setCanceled(true);
+        }
+    }
+    @SubscribeEvent
+    public void onPlayerInteract(PlayerInteractEvent.EntityInteract event) {
+        if (event.isCancelable() && event.getEntity().hasEffect(BHEffects.STUN.get())) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerInteract(PlayerInteractEvent.RightClickBlock event) {
+        if (event.isCancelable() && event.getEntity().hasEffect(BHEffects.STUN.get())) {
+            event.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerInteract(PlayerInteractEvent.LeftClickBlock event) {
+        if (event.isCancelable() && event.getEntity().hasEffect(BHEffects.STUN.get())) {
+            event.setCanceled(true);
+        }
     }
 }

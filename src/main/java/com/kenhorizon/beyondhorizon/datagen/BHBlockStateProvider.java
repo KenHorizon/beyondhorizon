@@ -61,5 +61,6 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.standBasinBlocks(BHBlocks.FIRE_BASIN);
         this.standWallBasinBlocks(BHBlocks.WALL_FIRE_BASIN);
         this.baseSpawnerBlocks(BHBlocks.SPAWNER, BeyondHorizon.resource("block/base_spawner_top"), BeyondHorizon.resource("block/base_spawner_bottom"), BeyondHorizon.resource("block/base_spawner_side"));
+        this.baseSpawnerBlocks(BHBlocks.SPAWNER_OMNIOUS, BeyondHorizon.resource("block/base_spawner_omnious_top"), BeyondHorizon.resource("block/base_spawner_bottom"), BeyondHorizon.resource("block/base_spawner_omnious_side"));
     }
 }

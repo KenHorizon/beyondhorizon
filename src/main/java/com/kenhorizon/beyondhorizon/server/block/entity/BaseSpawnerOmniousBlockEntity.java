@@ -1,9 +1,11 @@
-package com.kenhorizon.beyondhorizon.server.blockentity;
+package com.kenhorizon.beyondhorizon.server.block.entity;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.block.BlockProperties;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.BHBaseSpawner;
+import com.kenhorizon.beyondhorizon.server.block.spawner.data.BaseSpawnerData;
+import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerBuilder;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import com.kenhorizon.beyondhorizon.server.util.PlayerDetector;
@@ -18,12 +20,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class BaseSpawnerBlockEntity extends BlockEntity implements BHBaseSpawner.StateAccessor {
+public class BaseSpawnerOmniousBlockEntity extends BlockEntity implements BHBaseSpawner.StateAccessor {
     private BHBaseSpawner spawner;
 
-    public BaseSpawnerBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(BHBlockEntity.BASE_SPAWNER.get(), blockPos, blockState);
-        this.spawner = new BHBaseSpawner(this, PlayerDetector.NO_CREATIVE_PLAYERS, PlayerDetector.EntitySelector.SELECT_FROM_LEVEL);
+    public BaseSpawnerOmniousBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(BHBlockEntity.BASE_SPAWNER_OMINOUS.get(), blockPos, blockState);
+        this.spawner = new BHBaseSpawner(SpawnerBuilder.OMNIOUS, new BaseSpawnerData(),this, PlayerDetector.NO_CREATIVE_PLAYERS, PlayerDetector.EntitySelector.SELECT_FROM_LEVEL);
     }
     @Override
     public void load(CompoundTag nbt) {

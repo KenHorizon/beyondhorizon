@@ -64,14 +64,14 @@ public class BaseSpawnerData {
         this(Collections.emptySet(), Collections.emptySet(), 0L, 0L, 0, Optional.empty(), Optional.empty());
     }
 
-    public BaseSpawnerData(Set<UUID> set, Set<UUID> set2, long l, long m, int i, Optional<SpawnData> optional, Optional<ResourceLocation> optional2) {
+    public BaseSpawnerData(Set<UUID> set, Set<UUID> set2, long cooldownEndsAt, long nextMobSpawnsAt, int totalMobsSpawned, Optional<SpawnData> optionalSpawnData, Optional<ResourceLocation> optionalloottable) {
         this.detectedPlayers.addAll(set);
         this.currentMobs.addAll(set2);
-        this.cooldownEndsAt = l;
-        this.nextMobSpawnsAt = m;
-        this.totalMobsSpawned = i;
-        this.nextSpawnData = optional;
-        this.ejectingLootTable = optional2;
+        this.cooldownEndsAt = cooldownEndsAt;
+        this.nextMobSpawnsAt = nextMobSpawnsAt;
+        this.totalMobsSpawned = totalMobsSpawned;
+        this.nextSpawnData = optionalSpawnData;
+        this.ejectingLootTable = optionalloottable;
     }
     public static UUID uuidFromIntArray(int[] is) {
         return new UUID((long)is[0] << 32 | is[1] & 4294967295L, (long)is[2] << 32 | is[3] & 4294967295L);
@@ -185,12 +185,12 @@ public class BaseSpawnerData {
     public CompoundTag getUpdateTag(SpawnerState trialSpawnerState) {
         CompoundTag compoundTag = new CompoundTag();
         if (trialSpawnerState == SpawnerState.ACTIVE) {
-            compoundTag.putLong("next_mob_spawns_at", this.nextMobSpawnsAt);
+            compoundTag.putLong(TAG_NEXT_MOB_SPAWNS_AT, this.nextMobSpawnsAt);
         }
 
         this.nextSpawnData.ifPresent(
                 spawnData -> compoundTag.put(
-                        "spawn_data",
+                        TAG_SPAWN_DATA,
                         SpawnData.CODEC.encodeStart(NbtOps.INSTANCE, spawnData)
                                 .result()
                                 .orElseThrow(() -> new IllegalStateException("Invalid SpawnData"))

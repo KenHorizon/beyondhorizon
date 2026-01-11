@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "beyondhorizon:base_spawner_block"
+          "name": "beyondhorizon:base_spawner"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "beyondhorizon:blocks/base_spawner_block"
+  "random_sequence": "beyondhorizon:blocks/base_spawner"
 }

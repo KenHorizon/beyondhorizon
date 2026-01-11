@@ -1,6 +1,7 @@
 {
   "values": [
-    "beyondhorizon:base_spawner_block",
+    "beyondhorizon:base_spawner",
+    "beyondhorizon:base_spawner_ominous",
     "beyondhorizon:dungeon_bricks",
     "beyondhorizon:workbench",
     "beyondhorizon:siltstone",

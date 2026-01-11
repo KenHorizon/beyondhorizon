@@ -286,22 +286,22 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         ResourceLocation activeSide = side.withSuffix("_active");
 
         String inactiveName = String.format("%s_inactive", name(block.get()));
-        ModelFile inactive = models().cube(inactiveName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).renderType("cutout_mipped");;
+        ModelFile inactive = models().cube(inactiveName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).texture("particle", inactiveSide).renderType("cutout_mipped");;
 
         String activeName = String.format("%s_active", name(block.get()));
-        ModelFile active = models().cube(activeName, bottom, activeTop, activeSide, activeSide, activeSide, activeSide).renderType("cutout_mipped");;
+        ModelFile active = models().cube(activeName, bottom, activeTop, activeSide, activeSide, activeSide, activeSide).texture("particle", activeSide).renderType("cutout_mipped");;
 
         String cooldownName = String.format("%s_cooldown", name(block.get()));
-        ModelFile cooldown = models().cube(cooldownName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).renderType("cutout_mipped");;
+        ModelFile cooldown = models().cube(cooldownName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).texture("particle", inactiveSide).renderType("cutout_mipped");;
 
         String ejectRewardName = String.format("%s_eject_reward", name(block.get()));
-        ModelFile ejectReward = models().cube(ejectRewardName, bottom, top.withSuffix("_ejecting_reward"), activeSide, activeSide, activeSide, activeSide).renderType("cutout_mipped");;
+        ModelFile ejectReward = models().cube(ejectRewardName, bottom, top.withSuffix("_ejecting_reward"), activeSide, activeSide, activeSide, activeSide).texture("particle", activeSide).renderType("cutout_mipped");;
 
         String waitingForPlayerName = String.format("%s_waiting_for_player", name(block.get()));
-        ModelFile waitingForPlayer = models().cube(waitingForPlayerName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).renderType("cutout_mipped");;
+        ModelFile waitingForPlayer = models().cube(waitingForPlayerName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).texture("particle", inactiveSide).renderType("cutout_mipped");;
 
         String waitingForRewardEjectionName = String.format("%s_waiting_for_reward_ejection", name(block.get()));
-        ModelFile waitingForRewardEjection = models().cube(waitingForRewardEjectionName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).renderType("cutout_mipped");
+        ModelFile waitingForRewardEjection = models().cube(waitingForRewardEjectionName, bottom, inactiveTop, inactiveSide, inactiveSide, inactiveSide, inactiveSide).texture("particle", inactiveSide).renderType("cutout_mipped");
 
         this.baseSpawnerBlocks(block, inactive, active, cooldown, ejectReward, waitingForPlayer, waitingForRewardEjection);
         this.simpleBlockItem(block.get(), inactive);

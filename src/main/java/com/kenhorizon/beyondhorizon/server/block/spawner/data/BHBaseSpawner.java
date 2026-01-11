@@ -134,11 +134,6 @@ public class BHBaseSpawner {
                     return Optional.empty();
                 } else {
                     BlockPos blockPos2 = BlockPos.containing(blockPositionVec);
-                    /*if (!SpawnPlacements.checkSpawnRules(optional.get(), serverLevel, MobSpawnType.SPAWNER, blockPos2, serverLevel.getRandom())) {
-                        return Optional.empty();
-                    } else {
-
-                    }*/
                     Entity entity = EntityType.loadEntityRecursive(nbtEntityToSpawn, serverLevel, entityx -> {
                         entityx.moveTo(blockX, blockY, blockZ, random.nextFloat() * 360.0F, 0.0F);
                         return entityx;

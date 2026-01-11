@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/cube",
+  "render_type": "minecraft:cutout_mipped",
+  "textures": {
+    "down": "beyondhorizon:block/base_spawner_bottom",
+    "east": "beyondhorizon:block/base_spawner_omnious_side_inactive",
+    "north": "beyondhorizon:block/base_spawner_omnious_side_inactive",
+    "particle": "beyondhorizon:block/base_spawner_omnious_side_inactive",
+    "south": "beyondhorizon:block/base_spawner_omnious_side_inactive",
+    "up": "beyondhorizon:block/base_spawner_omnious_top_inactive",
+    "west": "beyondhorizon:block/base_spawner_omnious_side_inactive"
+  }
+}

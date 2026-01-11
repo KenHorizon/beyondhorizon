@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.server.block.WorkbenchBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.FireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.WallFireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
+import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerOmniousBlock;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.core.BlockPos;
@@ -22,7 +23,13 @@ public class BHBlocks {
     public static final BlockBehaviour.Properties SPAWNER_PROPERTIES = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).lightLevel(value -> value.getValue(BaseSpawnerBlock.SPAWNER_STATE).lightLevel()).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(50.0F).sound(BHSoundType.SPAWNER).noOcclusion().isViewBlocking(BHBlocks::never);
 
     public static final RegistryObject<Block> SPAWNER = RegistryBlocks
-            .register("base_spawner_block", properties -> new BaseSpawnerBlock(SPAWNER_PROPERTIES))
+            .register("base_spawner", properties -> new BaseSpawnerBlock(SPAWNER_PROPERTIES))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+    public static final RegistryObject<Block> SPAWNER_OMNIOUS = RegistryBlocks
+            .register("base_spawner_ominous", properties -> new BaseSpawnerOmniousBlock(SPAWNER_PROPERTIES))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()

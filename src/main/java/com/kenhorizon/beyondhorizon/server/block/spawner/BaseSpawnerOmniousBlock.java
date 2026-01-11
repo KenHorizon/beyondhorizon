@@ -2,8 +2,9 @@ package com.kenhorizon.beyondhorizon.server.block.spawner;
 
 
 import com.kenhorizon.beyondhorizon.server.block.BlockProperties;
-import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.block.entity.BaseSpawnerBlockEntity;
+import com.kenhorizon.beyondhorizon.server.block.entity.BaseSpawnerOmniousBlockEntity;
+import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -39,10 +40,10 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class BaseSpawnerBlock extends BaseEntityBlock {
+public class BaseSpawnerOmniousBlock extends BaseEntityBlock {
     public static final EnumProperty<SpawnerState> SPAWNER_STATE = BlockProperties.SPAWNER_STATE;
 
-    public BaseSpawnerBlock(Properties properties) {
+    public BaseSpawnerOmniousBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(SPAWNER_STATE, SpawnerState.INACTIVE));
     }
@@ -78,15 +79,15 @@ public class BaseSpawnerBlock extends BaseEntityBlock {
 
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
-        return new BaseSpawnerBlockEntity(blockPos, blockState);
+        return new BaseSpawnerOmniousBlockEntity(blockPos, blockState);
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState blockState, BlockEntityType<T> type) {
         return level instanceof ServerLevel serverLevel
-                ? createTickerHelper(type, BHBlockEntity.BASE_SPAWNER.get(), (level1, blockPos, state, block) -> block.getVoidSpawner().tickServer(serverLevel, blockPos))
-                : createTickerHelper(type, BHBlockEntity.BASE_SPAWNER.get(), (level1, blockPos, state, block) -> block.getVoidSpawner().tickClient(level1, blockPos));
+                ? createTickerHelper(type, BHBlockEntity.BASE_SPAWNER_OMINOUS.get(), (level1, blockPos, state, block) -> block.getVoidSpawner().tickServer(serverLevel, blockPos))
+                : createTickerHelper(type, BHBlockEntity.BASE_SPAWNER_OMINOUS.get(), (level1, blockPos, state, block) -> block.getVoidSpawner().tickClient(level1, blockPos));
     }
 
     @Override

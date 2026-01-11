@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.server.api.classes.MasterySkillCategory;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.api.classes.MasterySkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
+import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerBuilder;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraftforge.registries.DeferredRegister;
@@ -33,6 +34,7 @@ public class BHRegistries {
 
 
     public static class Keys {
+        public static final ResourceKey<Registry<SpawnerBuilder>> SPAWNER_BUILDER = ResourceKey.createRegistryKey(BeyondHorizon.resource("base_spawner"));
         public static final ResourceKey<Registry<Skill>> SKILL = ResourceKey.createRegistryKey(BeyondHorizon.resource("skills"));
         public static final ResourceKey<Registry<RoleClass>> ROLE_CLASS = ResourceKey.createRegistryKey(BeyondHorizon.resource("role_classes"));
         public static final ResourceKey<Registry<Accessory>> ACCESSORY = ResourceKey.createRegistryKey(BeyondHorizon.resource("accessorry_items"));

@@ -5,6 +5,7 @@
     "down": "beyondhorizon:block/base_spawner_bottom",
     "east": "beyondhorizon:block/base_spawner_side_active",
     "north": "beyondhorizon:block/base_spawner_side_active",
+    "particle": "beyondhorizon:block/base_spawner_side_active",
     "south": "beyondhorizon:block/base_spawner_side_active",
     "up": "beyondhorizon:block/base_spawner_top_active",
     "west": "beyondhorizon:block/base_spawner_side_active"

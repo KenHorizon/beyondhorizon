@@ -20,6 +20,7 @@ import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
@@ -300,11 +301,11 @@ public abstract class Skill {
         if (firstType) {
             tooltip.add(Component.translatable(Tooltips.SKILL_TYPE, this.getType().getName()).withStyle(Tooltips.TOOLTIP[1]));
         }
-        text = this.spacing().append(Component.translatable(this.getDescriptionId()).withStyle(this.format.getChatFormatting()));
+        text = this.spacingTitle().append(Component.translatable(this.getDescriptionId()).withStyle(this.format.getChatFormatting()));
         tooltip.add(text);
     }
 
-    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
+    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first, boolean last) {
         if (!this.isTooltipEnable()) return;
         if (this.isTooltipNameEnable()) {
             this.addTooltipTitle(itemStack, tooltip, first);
@@ -314,6 +315,9 @@ public abstract class Skill {
         boolean alwayShow = (BHConfigs.ADVANCED_TOOLTIP || BHConfigs.ADVANCED_TOOLTIP_SKILL) && flag;
         if ((alwayShow || isShiftPressed) && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
+        }
+        if (last) {
+            tooltip.add(CommonComponents.space()) ;
         }
     }
 
@@ -360,7 +364,9 @@ public abstract class Skill {
     public MutableComponent spacing() {
         return Component.literal("   ");
     }
-
+    public MutableComponent spacingTitle() {
+        return Component.literal("  ");
+    }
     public boolean registerIcons() {
         return false;
     }

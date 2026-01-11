@@ -7,6 +7,8 @@ import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.ManaHud;
+import com.kenhorizon.beyondhorizon.client.render.item.BHArmorRenderProperties;
+import com.kenhorizon.beyondhorizon.client.render.item.BHItemRenderProperties;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
@@ -241,6 +243,16 @@ public class ClientProxy extends ServerProxy {
     @Override
     public Player clientPlayer() {
         return Minecraft.getInstance().player;
+    }
+
+    @Override
+    public Object getCustomItemRenderer() {
+        return new BHItemRenderProperties();
+    }
+
+    @Override
+    public Object getCustomArmorRenderer() {
+        return new BHArmorRenderProperties();
     }
 
     @Override

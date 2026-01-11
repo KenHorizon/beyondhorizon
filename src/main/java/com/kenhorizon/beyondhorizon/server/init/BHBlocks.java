@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
+import com.kenhorizon.beyondhorizon.server.block.ChainPulleyBlock;
 import com.kenhorizon.beyondhorizon.server.block.WorkbenchBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.FireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.WallFireBasinBlock;
@@ -41,7 +42,14 @@ public class BHBlocks {
             .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()
             .register();
-    
+
+    public static final RegistryObject<Block> CHAIN_PULLEY = RegistryBlocks
+            .register("chain_pulley", properties -> new ChainPulleyBlock(BlockBehaviour.Properties.copy(Blocks.GRINDSTONE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
     public static final RegistryObject<Block> WORKBENCH = RegistryBlocks
             .register("workbench", properties -> new WorkbenchBlock(BlockBehaviour.Properties.copy(Blocks.SMITHING_TABLE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)

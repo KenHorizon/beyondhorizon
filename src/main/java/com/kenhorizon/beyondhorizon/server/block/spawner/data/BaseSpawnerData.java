@@ -28,8 +28,14 @@ import java.util.*;
 import java.util.function.Function;
 
 public class BaseSpawnerData {
-    public static final String TAG_SPAWN_DATA = "spawn_data";
+
+    private static final String TAG_REGISTERED = "registered_players";
+    private static final String TAG_CURRENT_MOBS = "current_mobs";
+    private static final String TAG_COOLDOWN_ENDS_AT = "cooldown_ends_at";
     private static final String TAG_NEXT_MOB_SPAWNS_AT = "next_mob_spawns_at";
+    private static final String TAG_TOTAL_MOBS_SPAWNED = "total_mobs_spawned";
+    private static final String TAG_SPAWN_DATA = "spawn_data";
+    private static final String TAG_EJECTING_LOOT_TABLE = "ejecting_loot_table";
     public static final Codec<UUID> CODEC = Codec.INT_STREAM
             .comapFlatMap(intStream -> Util.fixedSize(intStream, 4).map(BaseSpawnerData::uuidFromIntArray), uUID -> Arrays.stream(BaseSpawnerData.uuidToIntArray(uUID)));
 
@@ -37,13 +43,13 @@ public class BaseSpawnerData {
 
     public static MapCodec<BaseSpawnerData> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
-                            BaseSpawnerData.CODEC_SET.optionalFieldOf("registered_players", Sets.<UUID>newHashSet()).forGetter(trialSpawnerData -> trialSpawnerData.detectedPlayers),
-                            BaseSpawnerData.CODEC_SET.optionalFieldOf("current_mobs", Sets.<UUID>newHashSet()).forGetter(trialSpawnerData -> trialSpawnerData.currentMobs),
-                            Codec.LONG.optionalFieldOf("cooldown_ends_at", 0L).forGetter(trialSpawnerData -> trialSpawnerData.cooldownEndsAt),
-                            Codec.LONG.optionalFieldOf("next_mob_spawns_at", 0L).forGetter(trialSpawnerData -> trialSpawnerData.nextMobSpawnsAt),
-                            Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf("total_mobs_spawned", 0).forGetter(trialSpawnerData -> trialSpawnerData.totalMobsSpawned),
-                            SpawnData.CODEC.optionalFieldOf("spawn_data").forGetter(trialSpawnerData -> trialSpawnerData.nextSpawnData),
-                            ResourceLocation.CODEC.optionalFieldOf("ejecting_loot_table").forGetter(trialSpawnerData -> trialSpawnerData.ejectingLootTable)
+                            BaseSpawnerData.CODEC_SET.optionalFieldOf(TAG_REGISTERED, Sets.<UUID>newHashSet()).forGetter(trialSpawnerData -> trialSpawnerData.detectedPlayers),
+                            BaseSpawnerData.CODEC_SET.optionalFieldOf(TAG_CURRENT_MOBS, Sets.<UUID>newHashSet()).forGetter(trialSpawnerData -> trialSpawnerData.currentMobs),
+                            Codec.LONG.optionalFieldOf(TAG_COOLDOWN_ENDS_AT, 0L).forGetter(trialSpawnerData -> trialSpawnerData.cooldownEndsAt),
+                            Codec.LONG.optionalFieldOf(TAG_NEXT_MOB_SPAWNS_AT, 0L).forGetter(trialSpawnerData -> trialSpawnerData.nextMobSpawnsAt),
+                            Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf(TAG_TOTAL_MOBS_SPAWNED, 0).forGetter(trialSpawnerData -> trialSpawnerData.totalMobsSpawned),
+                            SpawnData.CODEC.optionalFieldOf(TAG_SPAWN_DATA).forGetter(trialSpawnerData -> trialSpawnerData.nextSpawnData),
+                            ResourceLocation.CODEC.optionalFieldOf(TAG_EJECTING_LOOT_TABLE).forGetter(trialSpawnerData -> trialSpawnerData.ejectingLootTable)
                     )
                     .apply(instance, BaseSpawnerData::new)
     );

@@ -42,11 +42,11 @@ public class BHCreativeTabs {
                     })
                     .build());
 
-    public static final RegistryObject<CreativeModeTab> BH_WEAPONS = RegistryTabs.registerCreativeTabs("beyond_horizon_tab_weapons",
+    public static final RegistryObject<CreativeModeTab> BH_COMBATS = RegistryTabs.registerCreativeTabs("beyond_horizon_tab_combats",
             () -> CreativeModeTab.builder()
                     .icon(() -> new ItemStack(BHItems.BLADE_OF_THE_ENDERLORD.get()))
                     .withTabsBefore(BHCreativeTabs.BH_TOOLS.getKey())
-                    .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.weapons"))
+                    .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.combats"))
                     .displayItems((parameters, output) -> {
                         RegistryTabs.REFINED_SWORD_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
                         RegistryTabs.SWORD_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
@@ -58,7 +58,7 @@ public class BHCreativeTabs {
     public static final RegistryObject<CreativeModeTab> BH_BLOCKS = RegistryTabs.registerCreativeTabs("beyond_horizon_tabs_blocks",
             () -> CreativeModeTab.builder()
                     .icon(() -> new ItemStack(BHBlocks.COBALT_ORE.get()))
-                    .withTabsBefore(BHCreativeTabs.BH_WEAPONS.getKey())
+                    .withTabsBefore(BHCreativeTabs.BH_COMBATS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.blocks"))
                     .displayItems((parameters, output) -> {
                         RegistryTabs.BLOCKS_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
@@ -68,7 +68,7 @@ public class BHCreativeTabs {
     public static final RegistryObject<CreativeModeTab> BH_SPAWN_EGG = RegistryTabs.registerCreativeTabs("beyond_horizon_tabs_spawn_egg",
             () -> CreativeModeTab.builder()
                     .icon(() -> new ItemStack(BHItems.BLAZING_INFERNO_SPAWN_EGG.get()))
-                    .withTabsBefore(BHCreativeTabs.BH_WEAPONS.getKey())
+                    .withTabsBefore(BHCreativeTabs.BH_COMBATS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.spawn_eggs"))
                     .displayItems((parameters, output) -> {
                         RegistryTabs.SPAWN_EGG_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));

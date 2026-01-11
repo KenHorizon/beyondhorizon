@@ -116,7 +116,7 @@ public class BHLangProvider extends LanguageProvider {
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon | Ingredients");
         creativeTabs(BHCreativeTabs.BH_TOOLS, "Beyond Horizon | Tools");
         creativeTabs(BHCreativeTabs.BH_ACCESSORY, "Beyond Horizon | Accessorry");
-        creativeTabs(BHCreativeTabs.BH_WEAPONS, "Beyond Horizon | Weapons");
+        creativeTabs(BHCreativeTabs.BH_COMBATS, "Beyond Horizon | Combats");
         creativeTabs(BHCreativeTabs.BH_BLOCKS, "Beyond Horizon | Blocks");
         creativeTabs(BHCreativeTabs.BH_SPAWN_EGG, "Beyond Horizon | Spawn Egg");
         creativeTabs(BHCreativeTabs.BH_DEBUG_ITEMS, "Beyond Horizon | Debug Items");

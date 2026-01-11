@@ -1,8 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.effect;
 
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -90,7 +88,7 @@ public class BHMobEffect extends MobEffect {
         return removeCurative(
                 BHEffects.CURSED.get(),
                 BHEffects.ARMOR_BREAK.get(),
-                BHEffects.NATURE_HEAL.get(),
+                BHEffects.RAPID_HEALING.get(),
                 BHEffects.FEAR.get(),
                 BHEffects.STUN.get(),
                 BHEffects.DRAGON_FLAME.get()

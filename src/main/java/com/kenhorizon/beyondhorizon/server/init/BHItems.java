@@ -5,8 +5,10 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
+import com.kenhorizon.beyondhorizon.server.item.base.ArmorBaseItem;
 import com.kenhorizon.beyondhorizon.server.item.base.BasicAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.*;
+import com.kenhorizon.beyondhorizon.server.item.materials.ArmorBaseMaterials;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.item.base.WeaponBuilder;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
@@ -14,6 +16,8 @@ import com.kenhorizon.libs.client.model.item.ItemModels;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryItems;
 import com.kenhorizon.libs.registry.RegistryTabs;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -161,6 +165,11 @@ public class BHItems {
             .tab(RegistryTabs.Category.INGREDIENTS)
             .model(ItemModels.GENERATED)
             .register();
+
+    public static final RegistryObject<Item> WILDFIRE_HELMET = armorItem("wildfire_helmet", ArmorItem.Type.HELMET, ArmorBaseMaterials.WILDFIRE);
+    public static final RegistryObject<Item> WILDFIRE_CHESTPLATE = armorItem("wildfire_chestplate", ArmorItem.Type.CHESTPLATE, ArmorBaseMaterials.WILDFIRE);
+    public static final RegistryObject<Item> WILDFIRE_LEGGINGS = armorItem("wildfire_leggings", ArmorItem.Type.LEGGINGS, ArmorBaseMaterials.WILDFIRE);
+    public static final RegistryObject<Item> WILDFIRE_BOOTS = armorItem("wildfire_boots", ArmorItem.Type.BOOTS, ArmorBaseMaterials.WILDFIRE);
 
     public static final RegistryObject<Item> RUBY = basicItem("ruby", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> AMPLIFLYING_TOME = basicItem("ampliflying_tome", RegistryTabs.Category.INGREDIENTS);
@@ -648,7 +657,9 @@ public class BHItems {
     public static RegistryObject<Item> woolFurItem(String name, RegistryTabs.Category category) {
         return RegistryItems.register(name, BasicItem::new).tab(category).tag(BHItemTags.WOOL_FUR).model(ItemModels.GENERATED).register();
     }
-
+    public static RegistryObject<Item> armorItem(String name, ArmorItem.Type type, ArmorBaseMaterials armorMaterial) {
+        return RegistryItems.register(name, properties -> new ArmorBaseItem(armorMaterial, type, properties)).tab(RegistryTabs.Category.COMBAT).model(ItemModels.GENERATED).register();
+    }
     public static void register(IEventBus eventBus) {
         RegistryEntries.ITEMS.register(eventBus);
     }

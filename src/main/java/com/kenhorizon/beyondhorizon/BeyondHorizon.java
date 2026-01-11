@@ -12,6 +12,8 @@ import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSets;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
 import com.kenhorizon.beyondhorizon.server.api.classes.MasterySkillCategories;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClasses;
 import com.kenhorizon.beyondhorizon.server.api.classes.MasterySkills;
@@ -106,6 +108,7 @@ public class BeyondHorizon
     private void commonSetup(final FMLCommonSetupEvent event) {
         BeyondHorizon.LOGGER.info("Setting up {} {}!!", BeyondHorizon.NAME, BeyondHorizon.VERSION);
         NetworkHandler.register();
+        ArmorBonusSets.register();
         event.enqueueWork(() -> {
             BHPotions.setup();
             this.modCompatible();

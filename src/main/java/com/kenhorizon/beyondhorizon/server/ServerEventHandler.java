@@ -6,6 +6,9 @@ import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSet;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
 import com.kenhorizon.beyondhorizon.server.capability.*;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
@@ -37,6 +40,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -87,6 +91,30 @@ public class ServerEventHandler {
                 PlayerData data = CapabilityCaller.data(player);
                 NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) player);
                 NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) player);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+        Player player = event.player;
+        if (player.level().isClientSide) return;
+
+        Set<ResourceLocation> active = ArmorBonusSet.ACTIVE_SETS.computeIfAbsent(player.getUUID(), id -> new HashSet<>());
+
+        for (ArmorSet set : ArmorSetRegistry.getAll()) {
+            boolean matches = set.matches(player);
+            boolean applied = active.contains(set.getId());
+
+            if (matches && !applied) {
+                set.applyBonus(player);
+                active.add(set.getId());
+            }
+
+            if (!matches && applied) {
+                set.removeBonus(player);
+                active.remove(set.getId());
             }
         }
     }

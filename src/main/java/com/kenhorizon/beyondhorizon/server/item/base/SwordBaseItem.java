@@ -158,7 +158,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
                 if (!skill.getAttributeModifiers().isEmpty()) {
                     skill.addTooltipAttributes(itemStack, tooltip);
                 }
-                skill.addTooltip(itemStack, tooltip, this.skills.size(), Utils.isShiftPressed(), i == 0);
+                skill.addTooltip(itemStack, tooltip, this.skills.size(), Utils.isShiftPressed(), i == 0, i == (this.skills.size() - 1));
             }
         }
         super.appendHoverText(itemStack, level, tooltip, isAdvanced);

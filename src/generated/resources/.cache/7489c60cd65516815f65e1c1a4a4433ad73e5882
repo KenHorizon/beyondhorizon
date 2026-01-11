@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-09T11:44:29.6421995	Item Models: beyondhorizon
+// 1.20.1	2026-01-11T21:32:16.6219713	Item Models: beyondhorizon
 61bd62baa09e73293916ef2d5600d19c032d0f96 assets/beyondhorizon/models/item/adamantite_axe.json
 bd25a09e9bcfc47662d0a3f201203af5e078f985 assets/beyondhorizon/models/item/adamantite_hoe.json
 8a8ce68bd28d9994f0df749e8177a704dd895bee assets/beyondhorizon/models/item/adamantite_ingot.json
@@ -111,6 +111,10 @@ f2515104bbd8ee5fd6c69c4ae418136a6f8871d5 assets/beyondhorizon/models/item/true_h
 12cb0db145a6cec5e5d92822f58a2cd11cb243ab assets/beyondhorizon/models/item/unstable_runic_tome.json
 604d72d4a4e892b05266d1ab21ad191c3981ddeb assets/beyondhorizon/models/item/vitality_stone.json
 8eb0372e30c619e32f4038852bbfebaede77e120 assets/beyondhorizon/models/item/white_wool_fur.json
+0e452738a355de7fa630ec2a0b9fc172b9a930d5 assets/beyondhorizon/models/item/wildfire_boots.json
+bde479a110f83a6254f91dd5987b79c91bae7c1c assets/beyondhorizon/models/item/wildfire_chestplate.json
 68be5e0f825e172f339287815a850bf930b9e049 assets/beyondhorizon/models/item/wildfire_fragment.json
+6bba49806cc268916bc53eddc6a9a6a122689781 assets/beyondhorizon/models/item/wildfire_helmet.json
+fe3562e8b66c7ab405b59e67a2255e707af26dba assets/beyondhorizon/models/item/wildfire_leggings.json
 240fcfa60532a7b9b1a1f6cb792cd914dda4c022 assets/beyondhorizon/models/item/yellow_wool_fur.json
 29ffea9408da2fb5a6e8c73067543f30bfcd31e6 assets/beyondhorizon/models/item/zenith.json

@@ -40,7 +40,6 @@ public class BaseSpawnerData {
             .comapFlatMap(intStream -> Util.fixedSize(intStream, 4).map(BaseSpawnerData::uuidFromIntArray), uUID -> Arrays.stream(BaseSpawnerData.uuidToIntArray(uUID)));
 
     public static final Codec<Set<UUID>> CODEC_SET = Codec.list(CODEC).xmap(Sets::newHashSet, Lists::newArrayList);
-
     public static MapCodec<BaseSpawnerData> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             BaseSpawnerData.CODEC_SET.optionalFieldOf(TAG_REGISTERED, Sets.<UUID>newHashSet()).forGetter(trialSpawnerData -> trialSpawnerData.detectedPlayers),
@@ -79,10 +78,12 @@ public class BaseSpawnerData {
         this.nextSpawnData = optionalSpawnData;
         this.ejectingLootTable = optionalloottable;
     }
+
     public static UUID uuidFromIntArray(int[] is) {
         return new UUID((long)is[0] << 32 | is[1] & 4294967295L, (long)is[2] << 32 | is[3] & 4294967295L);
     }
-    public void setSpawnPotentialsFromConfig(SpawnerBuilder trialSpawnerConfig) {
+
+    public void setSpawnPotentialsFromConfig(SpawnerConfig trialSpawnerConfig) {
         SimpleWeightedRandomList<SpawnData> simpleWeightedRandomList = trialSpawnerConfig.spawnPotentialsDefinition();
         if (simpleWeightedRandomList.isEmpty()) {
             this.spawnPotentials = SimpleWeightedRandomList.single(this.nextSpawnData.orElseGet(SpawnData::new));
@@ -109,12 +110,12 @@ public class BaseSpawnerData {
         this.currentMobs.clear();
     }
 
-    public boolean hasMobToSpawn() {
+    public boolean hasMobToSpawn(BHBaseSpawner baseSpawner) {
         boolean bl = this.nextSpawnData.isPresent() && ((SpawnData)this.nextSpawnData.get()).getEntityToSpawn().contains("id", 8);
-        return bl || !this.spawnPotentials.isEmpty();
+        return bl || !baseSpawner.getConfig().spawnPotentialsDefinition().isEmpty();
     }
 
-    public boolean hasFinishedSpawningAllMobs(SpawnerBuilder trialSpawnerConfig, int i) {
+    public boolean hasFinishedSpawningAllMobs(SpawnerConfig trialSpawnerConfig, int i) {
         return this.totalMobsSpawned >= trialSpawnerConfig.calculateTargetTotalMobs(i);
     }
 
@@ -122,7 +123,7 @@ public class BaseSpawnerData {
         return this.currentMobs.isEmpty();
     }
 
-    public boolean isReadyToSpawnNextMob(ServerLevel serverLevel, SpawnerBuilder trialSpawnerConfig, int i) {
+    public boolean isReadyToSpawnNextMob(ServerLevel serverLevel, SpawnerConfig trialSpawnerConfig, int i) {
         return serverLevel.getGameTime() >= this.nextMobSpawnsAt && this.currentMobs.size() < trialSpawnerConfig.calculateTargetSimultaneousMobs(i);
     }
 
@@ -144,12 +145,12 @@ public class BaseSpawnerData {
         }
     }
 
-    public boolean isReadyToOpenShutter(ServerLevel serverLevel, SpawnerBuilder trialSpawnerConfig, float f) {
+    public boolean isReadyToOpenShutter(ServerLevel serverLevel, SpawnerConfig trialSpawnerConfig, float f) {
         long l = this.cooldownEndsAt - trialSpawnerConfig.targetCooldownLength();
         return (float)serverLevel.getGameTime() >= (float)l + f;
     }
 
-    public boolean isReadyToEjectItems(ServerLevel serverLevel, SpawnerBuilder trialSpawnerConfig, float f) {
+    public boolean isReadyToEjectItems(ServerLevel serverLevel, SpawnerConfig trialSpawnerConfig, float f) {
         long l = this.cooldownEndsAt - trialSpawnerConfig.targetCooldownLength();
         return (float)(serverLevel.getGameTime() - l) % f == 0.0F;
     }

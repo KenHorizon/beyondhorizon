@@ -5,6 +5,8 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -119,6 +121,7 @@ public class AttributeTooltips {
         String prefix = "attribute.modifier";
         String attributeEqualsPrefix = "attribute.modifier.equals.0";
         String handPrefix = "item.modifiers";
+
         if (BHConfigs.ATTRIBUTE_TOOLTIP_OVERHAUl) {
             for (int i = 0; i < tooltip.size(); i++) {
                 var component = tooltip.get(i);
@@ -129,6 +132,12 @@ public class AttributeTooltips {
             this.makePotionTooltip(itemStack, tooltip);
         }
         this.makeEnchantmentAttributeTooltip(player, tooltip, itemStack);
+
+        for (ArmorBonusSet set : ArmorSetRegistry.getAll()) {
+            if (set.contains(itemStack)) {
+                set.addTooltips(tooltip, itemStack, player);
+            }
+        }
     }
 
     public void makePotionTooltip(ItemStack itemStack, List<Component> tooltips) {

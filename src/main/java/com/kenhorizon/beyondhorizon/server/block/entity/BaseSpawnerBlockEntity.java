@@ -6,12 +6,17 @@ import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.BHBaseSpawner;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
+import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
 import com.kenhorizon.beyondhorizon.server.util.PlayerDetector;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -28,15 +33,31 @@ public class BaseSpawnerBlockEntity extends BlockEntity implements BHBaseSpawner
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
-        this.spawner.codec().parse(NbtOps.INSTANCE, nbt).resultOrPartial(BeyondHorizon.LOGGER::error).ifPresent(baseSpawner -> this.spawner = baseSpawner);
+        this.spawner.load(nbt);
+        BHBaseSpawner packed = this.spawner.codec().parse(NbtOps.INSTANCE, nbt)
+            .getOrThrow(false, error -> BeyondHorizon.LOGGER.error("Failed to parse spawner: {}", error));
+        Tag raw = nbt.get("configs");
+        if (raw instanceof StringTag stringTag) {
+            ResourceLocation resourceLocation = ResourceLocation.tryParse(stringTag.getAsString());
+            this.spawner.setConfig(SpawnerBuilderListener.get(resourceLocation));
+            this.spawner.setData(packed.getData());
+            this.spawner.getData().setSpawnPotentialsFromConfig(SpawnerBuilderListener.get(resourceLocation));
+        } else {
+            this.spawner.codec()
+                    .parse(NbtOps.INSTANCE, nbt)
+                    .resultOrPartial(error -> BeyondHorizon.LOGGER.error("Error NBT Tags cant be applied due {}", error))
+                    .ifPresent(baseSpawner -> this.spawner = baseSpawner);
+        }
+
         if (this.level != null) {
             this.markUpdated();
         }
     }
     @Override
-    protected void saveAdditional(CompoundTag compoundTag) {
-        super.saveAdditional(compoundTag);
-        this.spawner.codec().encodeStart(NbtOps.INSTANCE, this.spawner).get().ifLeft(tag -> compoundTag.merge((CompoundTag)tag)).ifRight(param0x -> BeyondHorizon.LOGGER.warn("Failed to encode Base Spawner {}", param0x.message()));
+    protected void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
+        this.spawner.save(nbt);
+
     }
 
     @Override

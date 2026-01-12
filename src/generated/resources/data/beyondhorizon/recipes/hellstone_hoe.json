@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "beyondhorizon:hellstone_ingot"
+    },
+    "H": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "##",
+    " H",
+    " H"
+  ],
+  "result": {
+    "item": "beyondhorizon:hellstone_hoe"
+  },
+  "show_notification": true
+}

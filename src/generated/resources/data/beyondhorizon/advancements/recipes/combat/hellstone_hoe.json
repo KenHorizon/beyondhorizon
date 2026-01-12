@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:hellstone_hoe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "hellstone_hoe": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:hellstone_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "hellstone_hoe",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:hellstone_hoe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

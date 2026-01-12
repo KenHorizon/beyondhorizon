@@ -7,12 +7,12 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BHSounds {
-    public static RegistryObject<SoundEvent> SPAWNER_BREAK = RegistryHelper.registerSounds("block.base_spawner.break", "");
-    public static RegistryObject<SoundEvent> SPAWNER_PLACE = RegistryHelper.registerSounds("block.base_spawner.place", "");
-    public static RegistryObject<SoundEvent> SPAWNER_STEP = RegistryHelper.registerSounds("block.base_spawner.step", "");
-    public static RegistryObject<SoundEvent> SPAWNER_FALL = RegistryHelper.registerSounds("block.base_spawner.fall", "");
-    public static RegistryObject<SoundEvent> SPAWNER_HIT = RegistryHelper.registerSounds("block.base_spawner.hit", "");
-    public static RegistryObject<SoundEvent> SPAWNER_AMBIENT = RegistryHelper.registerSounds("block.base_spawner.ambient", "Spawner Crackles");
+    public static RegistryObject<SoundEvent> SPAWNER_BREAK = RegistryHelper.registerSounds("block.base_spawner.break", "Block broken");
+    public static RegistryObject<SoundEvent> SPAWNER_PLACE = RegistryHelper.registerSounds("block.base_spawner.place", "Block placed");
+    public static RegistryObject<SoundEvent> SPAWNER_STEP = RegistryHelper.registerSounds("block.base_spawner.step", "Block step");
+    public static RegistryObject<SoundEvent> SPAWNER_FALL = RegistryHelper.registerSounds("block.base_spawner.fall", "Block fall");
+    public static RegistryObject<SoundEvent> SPAWNER_HIT = RegistryHelper.registerSounds("block.base_spawner.hit", "Block breaking");
+    public static RegistryObject<SoundEvent> SPAWNER_AMBIENT = RegistryHelper.registerSounds("block.base_spawner.ambient", "Spawner crackles");
     public static RegistryObject<SoundEvent> SPAWNER_AMBIENT_OMINOUS = RegistryHelper.registerSounds("block.base_spawner.ambient.ominous", "Ominous crackling");
     public static RegistryObject<SoundEvent> SPAWNER_ABOUT_TO_SPAWN = RegistryHelper.registerSounds("block.base_spawner.about_to_spawn", "Ominous item prepares");
     public static RegistryObject<SoundEvent> SPAWNER_SPAWN = RegistryHelper.registerSounds("block.base_spawner.spawn_mob", "Spawner spawns a mob");

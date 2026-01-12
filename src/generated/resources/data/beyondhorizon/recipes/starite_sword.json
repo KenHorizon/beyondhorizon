@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "beyondhorizon:starite_ingot"
+    },
+    "H": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "#",
+    "#",
+    "H"
+  ],
+  "result": {
+    "item": "beyondhorizon:starite_sword"
+  },
+  "show_notification": true
+}

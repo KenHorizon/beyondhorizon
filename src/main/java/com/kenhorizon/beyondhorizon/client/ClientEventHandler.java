@@ -10,6 +10,9 @@ import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotSc
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSet;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
@@ -24,17 +27,21 @@ import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ClientEventHandler {
 
@@ -73,21 +80,13 @@ public class ClientEventHandler {
     @SubscribeEvent
     public void addTootipOnItems(ItemTooltipEvent event) {
         final List<Component> additions = new ArrayList<>();
+        Player player = event.getEntity();
         List<Component> tooltip = event.getToolTip();
+        TooltipFlag flag = event.getFlags();
         boolean isAdvanced = event.getFlags().isAdvanced();
         ItemStack itemStack = event.getItemStack();
         AttributeTooltips attributeTooltips = new AttributeTooltips();
-        attributeTooltips.addTooltips(itemStack, event.getEntity(), event.getFlags(), tooltip);
-//        float digSpeed = ItemStackUtil.getDestroySpeed(itemStack);
-//        if (digSpeed > 0.0F) {
-//            additions.add(CommonComponents.space().append(Component.translatable(Tooltips.TOOLTIP_MINING_SPEED, Maths.format1(digSpeed)).withStyle(ChatFormatting.DARK_GREEN)));
-//        }
-//        if (itemStack.isDamaged()) {
-//            additions.add(Component.translatable("item.durability", itemStack.getMaxDamage() - itemStack.getDamageValue(), itemStack.getMaxDamage()).withStyle(ChatFormatting.DARK_GRAY));
-//        }
-//        if (!additions.isEmpty()) {
-//            tooltip.addAll(ItemStackUtil.getInsertOffset(isAdvanced, tooltip.size(), itemStack), additions);
-//        }
+        attributeTooltips.addTooltips(itemStack, player, flag, tooltip);
     }
 
     @SubscribeEvent

@@ -13,7 +13,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class BHCreativeTabs {
     public static final RegistryObject<CreativeModeTab> BH_INGREDIENTS = RegistryTabs.registerCreativeTabs("beyond_horizon_tab_ingredients",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHItems.RAW_COBALT.get()))
+                    .icon(() -> new ItemStack(BHItems.STARITE_INGOT.get()))
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.ingredients"))
                     .displayItems((parameters, output) -> {
                         RegistryTabs.MISC_LIST.forEach(itemLike -> output.accept((ItemLike) itemLike.get()));
@@ -24,7 +24,7 @@ public class BHCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BH_TOOLS = RegistryTabs.registerCreativeTabs("beyond_horizon_tab_tools",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHItems.TITANIUM_PICKAXE.get()))
+                    .icon(() -> new ItemStack(BHItems.ANCIENT_PICKAXE.get()))
                     .withTabsBefore(BHCreativeTabs.BH_INGREDIENTS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.tools"))
                     .displayItems((parameters, output) -> {
@@ -57,7 +57,7 @@ public class BHCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BH_BLOCKS = RegistryTabs.registerCreativeTabs("beyond_horizon_tabs_blocks",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHBlocks.COBALT_ORE.get()))
+                    .icon(() -> new ItemStack(BHBlocks.STARITE_ORE.get()))
                     .withTabsBefore(BHCreativeTabs.BH_COMBATS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.blocks"))
                     .displayItems((parameters, output) -> {
@@ -77,7 +77,7 @@ public class BHCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BH_DEBUG_ITEMS = RegistryTabs.registerCreativeTabs("beyond_horizon_tabs_debug_items",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHItems.ADAMANTITE_INGOT.get()))
+                    .icon(() -> new ItemStack(BHItems.STARITE_INGOT.get()))
                     .withTabsBefore(BHCreativeTabs.BH_BLOCKS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.debug_items"))
                     .displayItems((parameters, output) -> {

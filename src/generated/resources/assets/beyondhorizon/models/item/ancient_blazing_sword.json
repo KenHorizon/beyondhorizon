@@ -1,6 +1,0 @@
-{
-  "parent": "beyondhorizon:item/base/64xhandheld",
-  "textures": {
-    "layer0": "beyondhorizon:item/ancient_blazing_sword"
-  }
-}

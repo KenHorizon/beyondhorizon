@@ -2,7 +2,6 @@ package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
-import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
@@ -20,20 +19,19 @@ import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRen
 import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.HellfireRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
+import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireRod;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAccessoryInventoryPacket;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -61,6 +59,7 @@ import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
+import net.minecraftforge.registries.DataPackRegistryEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,8 +77,14 @@ public class ClientProxy extends ServerProxy {
         bus.addListener(this::onEntityAttributeModification);
         bus.addListener(this::addResourcesBuiltin);
         bus.addListener(this::registerGuiOverlays);
+        bus.addListener(this::registerNewRegsitry);
         IconAttributesTooltip.registerFactory();
         Tooltips.TitleBreakComponent.registerFactory();
+    }
+
+    public void registerNewRegsitry(DataPackRegistryEvent.NewRegistry event) {
+        BeyondHorizon.LOGGER.debug("Custom Registry is registered and created!");
+        event.dataPackRegistry(BHRegistries.Keys.SPAWNER_BUILDER, SpawnerConfig.MAP_CODEC.codec());
     }
 
     public void registerGuiOverlays(RegisterGuiOverlaysEvent event) {

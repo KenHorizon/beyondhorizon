@@ -4,7 +4,6 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.libs.client.data.BlockStateBuilder;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class BHBlockStateProvider extends BlockStateBuilder {
@@ -14,19 +13,7 @@ public class BHBlockStateProvider extends BlockStateBuilder {
     @Override
     protected void registerStatesAndModels() {
         this.blockWithItem(BHBlocks.VOIDSTONE);
-        this.blockWithItem(BHBlocks.ADAMANTITE_ORE);
-        this.blockWithItem(BHBlocks.COBALT_ORE);
-        this.blockWithItem(BHBlocks.DEEPSLATE_COBALT_ORE);
-        this.blockWithItem(BHBlocks.RUBY_ORE);
-        this.blockWithItem(BHBlocks.DEEPSLATE_RUBY_ORE);
-        this.blockWithItem(BHBlocks.SILVER_ORE);
-        this.blockWithItem(BHBlocks.DEEPSLATE_SILVER_ORE);
-        this.blockWithItem(BHBlocks.TITANIUM_ORE);
-        this.blockWithItem(BHBlocks.HELLSTONE_ORE);
-        this.blockWithItem(BHBlocks.NETHERRACK_HELLSTONE_ORE);
-        this.blockWithItem(BHBlocks.HALITE_ORE);
-        this.blockWithItem(BHBlocks.SULFUR_ORE);
-        this.blockWithItem(BHBlocks.PALLADIUM_ORE);
+        this.blockWithItem(BHBlocks.STARITE_ORE);
         this.fullFaceBlock(BHBlocks.WORKBENCH);
         this.blockWithItem(BHBlocks.DUNGEON_BRICKS);
         this.blockWithItem(BHBlocks.SILTSTONE);
@@ -61,6 +48,5 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.standBasinBlocks(BHBlocks.FIRE_BASIN);
         this.standWallBasinBlocks(BHBlocks.WALL_FIRE_BASIN);
         this.baseSpawnerBlocks(BHBlocks.SPAWNER, BeyondHorizon.resource("block/base_spawner_top"), BeyondHorizon.resource("block/base_spawner_bottom"), BeyondHorizon.resource("block/base_spawner_side"));
-        this.baseSpawnerBlocks(BHBlocks.SPAWNER_OMNIOUS, BeyondHorizon.resource("block/base_spawner_omnious_top"), BeyondHorizon.resource("block/base_spawner_bottom"), BeyondHorizon.resource("block/base_spawner_omnious_side"));
     }
 }

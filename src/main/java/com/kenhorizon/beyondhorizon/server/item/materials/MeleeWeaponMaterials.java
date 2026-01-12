@@ -16,84 +16,21 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWeaponMaterials> {
-    BAMBOO("bamboo", 0,
-            39,
-            2.0F,
-            0.0F,
-            12, () -> {
-        return Ingredient.of(ItemTags.PLANKS);
-    }),
-    WOOD("wooden",
-            0,
-            59,
-            2.0F,
-            0.0F,
-            15, () -> {
-        return Ingredient.of(ItemTags.PLANKS);
-    }),
-    STONE("stone",
-            1,
-            131,
-            4.0F,
-            1.0F,
-            5, () -> {
-        return Ingredient.of(ItemTags.STONE_TOOL_MATERIALS);
-    }),
-    IRON("iron",
+    HELLSTONE("hellstone",
             2,
-            250,
+            650,
             6.0F,
             2.0F,
             14, () -> {
-        return Ingredient.of(Items.IRON_INGOT);
+        return Ingredient.of(BHItems.RAW_EMBED_HELLSTONE.get());
     }),
-    SILVER("silver",
-            3,
-            235,
-            5.5F,
-            2.0F,
-            16, () -> {
-        return Ingredient.of(BHItems.SILVER_INGOT.get());
-    }, SkillBuilder.RADIANT),
-    COBALT("cobalt",
-            3,
-            451,
-            8.0F,
-            3.0F,
-            24, () -> {
-        return Ingredient.of(BHItems.COBALT_INGOT.get());
-    }),
-    HELLSTONE("hellstone",
-            3,
-            451,
-            8.5F,
-            3.0F,
-            24, () -> {
-        return Ingredient.of(BHItems.HELLSTONE_INGOT.get());
-    }, SkillBuilder.INFLICT_FIRE),
-    PALLADIUM("palladium",
-            3,
-            1034,
-            8.0F,
-            3.0F,
-            27, () -> {
-        return Ingredient.of(BHItems.PALLADIUM_INGOT.get());
-    }),
-    ADAMANTITE("adamantite",
+    STARITE("adamantite",
             3,
             2034,
             9.0F,
             3.0F,
             27, () -> {
-        return Ingredient.of(BHItems.ADAMANTITE_INGOT.get());
-    }),
-    TITANIUM("titanium",
-            3,
-            2034,
-            9.0F,
-            3.0F,
-            27, () -> {
-        return Ingredient.of(BHItems.TITANIUM_INGOT.get());
+        return Ingredient.of(BHItems.STARITE_INGOT.get());
     }),
     TIER_ONE("tier_one",
             0,

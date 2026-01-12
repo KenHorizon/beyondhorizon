@@ -1,7 +1,9 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfigs;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -13,6 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class DatapackEntryProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
+            .add(BHRegistries.Keys.SPAWNER_BUILDER, SpawnerConfigs::bootstrap)
             .add(Registries.DAMAGE_TYPE, BHDamageTypes::bootstrap);
 
     public DatapackEntryProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {

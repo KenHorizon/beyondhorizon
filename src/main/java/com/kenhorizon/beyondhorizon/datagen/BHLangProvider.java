@@ -5,6 +5,8 @@ import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.configs.Configs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
+import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSets;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClasses;
 import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
@@ -17,6 +19,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -79,7 +82,11 @@ public class BHLangProvider extends LanguageProvider {
         this.addEnchantmentDesc(BHEnchantments.SWIFTNESS, "Increased total movement speed");
         this.addEnchantmentDesc(BHEnchantments.SPELL_BLADE, "Convert percentage of the physical damage dealt into magic damage");
          //
+        this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 0, "Attacks inflict burning");
+        this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 1, "Increased %s%% Damage dealt");
+         //
         this.add(Tooltips.SKILL_TYPE, "%s");
+        this.add(Tooltips.TOOLTIP_BONUS_ARMOR_SET, "Bonus set:");
         this.add(Tooltips.TOOLTIP_MINING_SPEED, "%s Mining Speed");
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional %.2f%% target's Current HP");
         this.addSkills(Skills.BLADE_EDGE.get(), "Blade Edge", "Deal additional +%s%% target's Max HP");
@@ -146,7 +153,10 @@ public class BHLangProvider extends LanguageProvider {
     private void addEnchantmentDesc(Supplier<? extends Enchantment> enchantments, String description) {
         this.add(enchantments.get().getDescriptionId() + ".desc", description);
     }
-
+    private void addArmorBonusSet(ArmorBonusSet registry, int lines, String description) {
+        String name = String.format("%s.%s.%s.desc.%s", ArmorBonusSet.PREFIX,registry.getId().getNamespace(), registry.getId().getPath(), lines);
+        this.add(name, description);
+    }
     private void addAccessory(Accessory accessory, String name) {
         this.add(accessory.getDescriptionId(), name);
     }
@@ -208,8 +218,8 @@ public class BHLangProvider extends LanguageProvider {
         this.add(attribute.get().getDescriptionId(), name);
     }
 
-    private void addSoundEvents(String name, String subtitles) {
-        this.add(name, subtitles);
+    private void addSoundEvents(Supplier<? extends SoundEvent> name, String subtitles) {
+        this.add(name.get().getLocation().toString(), subtitles);
     }
 
     private void addPaintingAuthor(String addPaintings, String name) {

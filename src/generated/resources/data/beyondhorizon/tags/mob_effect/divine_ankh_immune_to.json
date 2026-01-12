@@ -1,0 +1,13 @@
+{
+  "values": [
+    "minecraft:hunger",
+    "minecraft:mining_fatigue",
+    "minecraft:unluck",
+    "#beyondhorizon:lightness_immune_to",
+    "#beyondhorizon:owl_sight_immune_to",
+    "#beyondhorizon:body_poison_immune_to",
+    "#beyondhorizon:weight_immune_to",
+    "#beyondhorizon:brute_resistance_immune_to",
+    "#beyondhorizon:haunting_guise_immune_to"
+  ]
+}

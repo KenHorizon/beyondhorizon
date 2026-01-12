@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:starite_pickaxe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "starite_pickaxe": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:starite_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "starite_pickaxe",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:starite_pickaxe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

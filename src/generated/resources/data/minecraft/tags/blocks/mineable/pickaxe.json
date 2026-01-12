@@ -1,7 +1,6 @@
 {
   "values": [
     "beyondhorizon:base_spawner",
-    "beyondhorizon:base_spawner_ominous",
     "beyondhorizon:dungeon_bricks",
     "beyondhorizon:chain_pulley",
     "beyondhorizon:workbench",
@@ -37,18 +36,6 @@
     "beyondhorizon:end_stone_pillar",
     "beyondhorizon:chiselled_end_stone",
     "beyondhorizon:chiselled_end_stone_uncarved",
-    "beyondhorizon:adamantite_ore",
-    "beyondhorizon:cobalt_ore",
-    "beyondhorizon:deepslate_cobalt_ore",
-    "beyondhorizon:deepslate_ruby_ore",
-    "beyondhorizon:deepslate_silver_ore",
-    "beyondhorizon:halite_ore",
-    "beyondhorizon:hellstone_ore",
-    "beyondhorizon:netherrack_hellstone_ore",
-    "beyondhorizon:palladium_ore",
-    "beyondhorizon:ruby_ore",
-    "beyondhorizon:silver_ore",
-    "beyondhorizon:sulfur_ore",
-    "beyondhorizon:titanium_ore"
+    "beyondhorizon:starite_ore"
   ]
 }

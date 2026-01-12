@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_starite": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:raw_starite"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:starite_ingot_from_smelting_raw_starite"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_starite",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:starite_ingot_from_smelting_raw_starite"
+    ]
+  },
+  "sends_telemetry_event": false
+}

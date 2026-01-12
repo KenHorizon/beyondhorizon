@@ -1,39 +1,15 @@
 package com.kenhorizon.beyondhorizon.server.api.bonus_set;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
+import com.kenhorizon.beyondhorizon.server.init.BHItems;
+import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-
-import java.util.UUID;
 
 public class ArmorBonusSets {
-    public static UUID DIAMOND_SET_UUID = UUID.fromString("5ff0f2f4-1ae2-4abc-9ab6-6cfd9318b0a2");
+    public static final String WILDFIRE_ARMOR_SET_NAME = "wildfire_armor_set";
+    public static final ArmorBonusSet WILDFIRE_ARMOR_SET = new ArmorBonusSetMagnitude(DefaultArmorBonus.WILDFIRE_INCREASED_DAMAGE, BeyondHorizon.resource(WILDFIRE_ARMOR_SET_NAME), 2, new ItemStack(BHItems.WILDFIRE_HELMET.get()), new ItemStack(BHItems.WILDFIRE_CHESTPLATE.get()), new ItemStack(BHItems.WILDFIRE_LEGGINGS.get()), new ItemStack(BHItems.WILDFIRE_BOOTS.get()));
 
     public static void register() {
-//        ArmorSetRegistry.register(new ArmorBonusSet(BeyondHorizon.resource("iron_armor_set"),
-//                new ItemStack(Items.IRON_HELMET),
-//                new ItemStack(Items.IRON_CHESTPLATE),
-//                new ItemStack(Items.IRON_LEGGINGS),
-//                new ItemStack(Items.IRON_BOOTS),
-//                player -> {
-//                    AttributeInstance attr = player.getAttribute(Attributes.ARMOR_TOUGHNESS);
-//                    if (attr != null && attr.getModifier(DIAMOND_SET_UUID) == null) {
-//                        attr.addPermanentModifier(new AttributeModifier(DIAMOND_SET_UUID, "Set Armor Bonus", 2.0, AttributeModifier.Operation.ADDITION));
-//                    }
-//                    },
-//                player -> {
-//                    AttributeInstance attr = player.getAttribute(Attributes.ARMOR_TOUGHNESS);
-//                    if (attr != null) {
-//                        attr.removeModifier(DIAMOND_SET_UUID);
-//                    }
-//        }
-//        ));
-
+        ArmorSetRegistry.register(WILDFIRE_ARMOR_SET);
     }
 }

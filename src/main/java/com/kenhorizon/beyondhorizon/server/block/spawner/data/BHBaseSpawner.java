@@ -1,19 +1,25 @@
 package com.kenhorizon.beyondhorizon.server.block.spawner.data;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
+import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
+import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.PlayerDetector;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Holder;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -34,6 +40,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,8 +50,8 @@ public class BHBaseSpawner {
     private static final int MAX_MOB_TRACKING_DISTANCE = 47;
     private static final int MAX_MOB_TRACKING_DISTANCE_SQR = Mth.square(47);
     private static final float SPAWNING_AMBIENT_SOUND_CHANCE = 0.02F;
-    private final SpawnerBuilder config;
-    private final BaseSpawnerData data;
+    private SpawnerConfig config;
+    private BaseSpawnerData data;
     private final StateAccessor stateAccessor;
     private PlayerDetector playerDetector;
     private final PlayerDetector.EntitySelector entitySelector;
@@ -52,25 +59,30 @@ public class BHBaseSpawner {
 
     public Codec<BHBaseSpawner> codec() {
         return RecordCodecBuilder.create(
-                instance -> instance.group(SpawnerBuilder.MAP_CODEC.forGetter(BHBaseSpawner::getConfig), BaseSpawnerData.MAP_CODEC.forGetter(BHBaseSpawner::getData))
-                        .apply(instance, (trialSpawnerConfig, trialSpawnerData) -> new BHBaseSpawner(trialSpawnerConfig, trialSpawnerData, this.stateAccessor, this.playerDetector, this.entitySelector))
+                instance -> instance.group(SpawnerConfig.MAP_CODEC.forGetter(BHBaseSpawner::getConfig), BaseSpawnerData.MAP_CODEC.forGetter(BHBaseSpawner::getData))
+                        .apply(instance, (config, data) -> new BHBaseSpawner(config, data, this.stateAccessor, this.playerDetector, this.entitySelector))
         );
     }
 
     public BHBaseSpawner(StateAccessor stateAccessor, PlayerDetector playerDetector, PlayerDetector.EntitySelector entitySelector) {
-        this(SpawnerBuilder.DEFAULT, new BaseSpawnerData(), stateAccessor, playerDetector, entitySelector);
+        this(SpawnerConfig.DEFAULT, new BaseSpawnerData(), stateAccessor, playerDetector, entitySelector);
     }
 
-    public BHBaseSpawner(SpawnerBuilder trialSpawnerConfig, BaseSpawnerData trialSpawnerData, StateAccessor stateAccessor, PlayerDetector playerDetector, PlayerDetector.EntitySelector entitySelector) {
-        this.config = trialSpawnerConfig;
-        this.data = trialSpawnerData;
-        this.data.setSpawnPotentialsFromConfig(trialSpawnerConfig);
+    public BHBaseSpawner(final SpawnerConfig config, BaseSpawnerData data, StateAccessor stateAccessor, PlayerDetector playerDetector, PlayerDetector.EntitySelector entitySelector) {
+        this.config = config;
+        this.data = data;
+        this.data.setSpawnPotentialsFromConfig(config);
         this.stateAccessor = stateAccessor;
         this.playerDetector = playerDetector;
         this.entitySelector = entitySelector;
     }
-    public SpawnerBuilder getConfig() {
+
+    public SpawnerConfig getConfig() {
         return this.config;
+    }
+
+    public void setConfig(SpawnerConfig config) {
+        this.config = config;
     }
 
     public int getTargetCooldownLength() {
@@ -79,6 +91,10 @@ public class BHBaseSpawner {
 
     public int getRequiredPlayerRange() {
         return this.config.requiredPlayerRange();
+    }
+
+    public void setData(BaseSpawnerData data) {
+        this.data = data;
     }
 
     public BaseSpawnerData getData() {
@@ -112,7 +128,6 @@ public class BHBaseSpawner {
             return level.getDifficulty() != Difficulty.PEACEFUL;
         }
     }
-
     public Optional<UUID> spawnMob(ServerLevel serverLevel, BlockPos blockPos) {
         RandomSource random = serverLevel.getRandom();
         SpawnData spawnData = this.data.getOrCreateNextSpawnData(this, serverLevel.getRandom());
@@ -266,6 +281,33 @@ public class BHBaseSpawner {
             level.sendParticles(ParticleTypes.FLAME, d, e, f, 0, g, h, j * 0.25D, 0.5F);
             level.sendParticles(ParticleTypes.POOF, d, e, f, 0, g, h, j, 0.5F);
         }
+    }
+
+    public void save(CompoundTag nbt) {
+        nbt.put("configs", this.codec()
+                .encodeStart(NbtOps.INSTANCE, this)
+                .getOrThrow(false, error -> BeyondHorizon.LOGGER.error("Failed to load {}", error)));
+
+    }
+
+    public void load(CompoundTag nbt) {
+//        BHBaseSpawner packed = this.codec().parse(NbtOps.INSTANCE, nbt)
+//            .getOrThrow(false, error -> BeyondHorizon.LOGGER.error("Failed to parse spawner: {}", error));
+//
+//        Tag raw = nbt.get("configs");
+//        if (raw instanceof StringTag stringTag) {
+//            ResourceLocation resourceLocation = ResourceLocation.tryParse(stringTag.getAsString());
+//            this.spawner.setConfig(SpawnerBuilderListener.get(resourceLocation));
+//            this.spawner.getData().setSpawnPotentialsFromConfig(SpawnerBuilderListener.get(resourceLocation));
+//        } else {
+//            packed.codec()
+//                    .parse(NbtOps.INSTANCE, nbt)
+//                    .resultOrPartial(error -> BeyondHorizon.LOGGER.error("Error NBT Tags cant be applied due {}", error))
+//                    .ifPresent(baseSpawner -> this.spawner = baseSpawner);
+//        }
+//        this.config = packed.getConfig();
+//        this.data = packed.getData();
+//        this.data.setSpawnPotentialsFromConfig(this.config);
     }
 
     public interface StateAccessor {

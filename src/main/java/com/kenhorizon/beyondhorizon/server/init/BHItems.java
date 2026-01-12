@@ -4,20 +4,19 @@ import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
-import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
-import com.kenhorizon.beyondhorizon.server.item.base.ArmorBaseItem;
-import com.kenhorizon.beyondhorizon.server.item.base.BasicAccessoryItem;
+import com.kenhorizon.beyondhorizon.server.item.base.*;
+import com.kenhorizon.beyondhorizon.server.item.base.armor.ArmorBaseItem;
+import com.kenhorizon.beyondhorizon.server.item.base.tools.DiggerBaseItem;
+import com.kenhorizon.beyondhorizon.server.item.base.weapons.SwordBaseItem;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.*;
 import com.kenhorizon.beyondhorizon.server.item.materials.ArmorBaseMaterials;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
-import com.kenhorizon.beyondhorizon.server.item.base.WeaponBuilder;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import com.kenhorizon.libs.client.model.item.ItemModels;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryItems;
 import com.kenhorizon.libs.registry.RegistryTabs;
 import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -62,117 +61,27 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register();
 
-    public static final RegistryObject<Item> HANDLE = RegistryItems
-            .register("handle", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-    
-    public static final RegistryObject<Item> FLAME_CELL = RegistryItems
-            .register("flame_cell", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
+    public static final RegistryObject<Item> HANDLE = basicItem("handle", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> FLAME_CELL = basicItem("flame_cell", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> WILDFIRE_FRAGMENT = basicItem("wildfire_fragment", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> RAW_LUMINITE = basicItem("raw_luminite", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> RAW_STARITE = basicItem("raw_starite", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> RAW_HELLSTONE = basicItem("raw_hellstone", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> RAW_EMBED_HELLSTONE = basicItem("raw_embed_hellstone", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> HELLSTONE_INGOT = basicItem("hellstone_ingot", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> STARITE_INGOT = basicItem("starite_ingot", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> LUMINITE_INGOT = basicItem("luminite_ingot", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> DARK_CRYSTAL = basicItem("dark_crystal", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> SHADOWCRUST = basicItem("shadowcrust", RegistryTabs.Category.INGREDIENTS);
 
-    public static final RegistryObject<Item> WILDFIRE_FRAGMENT = RegistryItems
-            .register("wildfire_fragment", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-
-    public static final RegistryObject<Item> RAW_ADAMANTITE = RegistryItems
-            .register("raw_adamantite", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-
-    public static final RegistryObject<Item> RAW_COBALT = RegistryItems
-            .register("raw_cobalt", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-
-    
-    public static final RegistryObject<Item> RAW_HELLSTONE = RegistryItems
-            .register("raw_hellstone", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-
-    public static final RegistryObject<Item> RAW_EMBED_HELLSTONE = RegistryItems
-            .register("raw_embed_hellstone", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-
-    public static final RegistryObject<Item> RAW_PALLADIUM = RegistryItems
-            .register("raw_palladium", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-
-    public static final RegistryObject<Item> RAW_SILVER = RegistryItems
-            .register("raw_silver", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-
-    public static final RegistryObject<Item> RAW_TITANIUM = RegistryItems
-            .register("raw_titanium", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-    public static final RegistryObject<Item> SILVER_INGOT = RegistryItems
-            .register("silver_ingot", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-
-    public static final RegistryObject<Item> ADAMANTITE_INGOT = RegistryItems
-            .register("adamantite_ingot", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-    public static final RegistryObject<Item> COBALT_INGOT = RegistryItems
-            .register("cobalt_ingot", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-
-    public static final RegistryObject<Item> HELLSTONE_INGOT = RegistryItems
-            .register("hellstone_ingot", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-
-    public static final RegistryObject<Item> PALLADIUM_INGOT = RegistryItems
-            .register("palladium_ingot", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-    public static final RegistryObject<Item> TITANIUM_INGOT = RegistryItems
-            .register("titanium_ingot", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-    public static final RegistryObject<Item> IRON_PLATE = RegistryItems
-            .register("iron_plate", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
-    public static final RegistryObject<Item> CHAIN_PLATE = RegistryItems
-            .register("chain_plate", BasicItem::new)
-            .tab(RegistryTabs.Category.INGREDIENTS)
-            .model(ItemModels.GENERATED)
-            .register();
+    public static final RegistryObject<Item> CHAIN_PLATE = basicItem("chain_plate", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> RUBY = basicItem("ruby", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> AMPLIFLYING_TOME = basicItem("ampliflying_tome", RegistryTabs.Category.INGREDIENTS);
 
     public static final RegistryObject<Item> WILDFIRE_HELMET = armorItem("wildfire_helmet", ArmorItem.Type.HELMET, ArmorBaseMaterials.WILDFIRE);
     public static final RegistryObject<Item> WILDFIRE_CHESTPLATE = armorItem("wildfire_chestplate", ArmorItem.Type.CHESTPLATE, ArmorBaseMaterials.WILDFIRE);
     public static final RegistryObject<Item> WILDFIRE_LEGGINGS = armorItem("wildfire_leggings", ArmorItem.Type.LEGGINGS, ArmorBaseMaterials.WILDFIRE);
     public static final RegistryObject<Item> WILDFIRE_BOOTS = armorItem("wildfire_boots", ArmorItem.Type.BOOTS, ArmorBaseMaterials.WILDFIRE);
-
-    public static final RegistryObject<Item> RUBY = basicItem("ruby", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> AMPLIFLYING_TOME = basicItem("ampliflying_tome", RegistryTabs.Category.INGREDIENTS);
 
     public static final RegistryObject<Item> WHITE_WOOL_FUR = woolFurItem("white_wool_fur", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> ORANGE_WOOL_FUR = woolFurItem("orange_wool_fur", RegistryTabs.Category.INGREDIENTS);
@@ -191,449 +100,106 @@ public class BHItems {
     public static final RegistryObject<Item> RED_WOOL_FUR = woolFurItem("red_wool_fur", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> BLACK_WOOL_FUR = woolFurItem("black_wool_fur", RegistryTabs.Category.INGREDIENTS);
     //
-    public static final RegistryObject<Item> TOUGH_CLOTH = RegistryItems
-            .register("tough_cloth", item -> new BasicAccessoryItem(item, AccessoryBuilder.TOUGH_CLOTH))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-    public static final RegistryObject<Item> NULL_MAGIC_RUNE = RegistryItems
-            .register("null_magic_rune", item -> new BasicAccessoryItem(item, AccessoryBuilder.NULL_MAGIC_RUNE))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-    public static final RegistryObject<Item> FIREFLY_FAYE = RegistryItems
-            .register("firefly_faye", item -> new BasicAccessoryItem(item, AccessoryBuilder.FIREFLY_FAYE))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-    public static final RegistryObject<Item> SAPPHIRE_CRYSTAL = RegistryItems
-            .register("sapphire_crystal", item -> new BasicAccessoryItem(item, AccessoryBuilder.SAPPHIRE_CRYSTAL))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-    public static final RegistryObject<Item> CHAIN_VEST = RegistryItems
-            .register("chain_vest", item -> new BasicAccessoryItem(item, AccessoryBuilder.CHAIN_VEST))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-    public static final RegistryObject<Item> RUMINATIVE_BEADS = RegistryItems
-            .register("ruminative_beads", item -> new BasicAccessoryItem(item, AccessoryBuilder.RUMINATIVE_BEADS))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
+    public static final RegistryObject<Item> HELLSTONE_SWORD = swordItem("hellstone_sword", MeleeWeaponMaterials.HELLSTONE, ItemBuilder.SWORD);
+    public static final RegistryObject<Item> HELLSTONE_AXE = toolItem("hellstone_axe", MeleeWeaponMaterials.HELLSTONE, ItemBuilder.AXE);
+    public static final RegistryObject<Item> HELLSTONE_PICKAXE = toolItem("hellstone_pickaxe", MeleeWeaponMaterials.HELLSTONE, ItemBuilder.PICKAXE);
+    public static final RegistryObject<Item> HELLSTONE_SHOVEL = toolItem("hellstone_shovel", MeleeWeaponMaterials.HELLSTONE, ItemBuilder.SHOVEL);
+    public static final RegistryObject<Item> HELLSTONE_HOE = toolItem("hellstone_hoe", MeleeWeaponMaterials.HELLSTONE, ItemBuilder.HOE);
 
-    public static final RegistryObject<Item> SPECTRAL_CLOAK = RegistryItems
-            .register("spectral_cloak", item -> new AccessoryItem(item, AccessoryBuilder.SPECTRAL_CLOAK))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-    public static final RegistryObject<Item> UNSTABLE_RUNIC_TOME = RegistryItems
-            .register("unstable_runic_tome", item -> new AccessoryItem(item, AccessoryBuilder.UNSTABLE_RUNIC_TOME))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-    public static final RegistryObject<Item> BROKEN_HERO_SWORD = RegistryItems
-            .register("broken_hero_sword", item -> new AccessoryItem(AccessoryItemGroup.HERO_SWORD, item, AccessoryBuilder.BROKEN_HERO_SWORD))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> TRUE_HERO_SWORD = RegistryItems
-            .register("true_hero_sword", item -> new AccessoryItem(AccessoryItemGroup.HERO_SWORD, item, AccessoryBuilder.TRUE_HERO_SWORD))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> INFINITY_SWORD = RegistryItems
-            .register("infinity_sword", item -> new AccessoryItem(AccessoryItemGroup.HERO_SWORD, item, AccessoryBuilder.INFINITY_SWORD))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> NULL_SWORD = RegistryItems
-            .register("null_sword", item -> new AccessoryItem(AccessoryItemGroup.HERO_SWORD, item, AccessoryBuilder.NULL_SWORD))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> ASCENDED_HERO_SWORD = RegistryItems
-            .register("ascended_hero_sword", item -> new AccessoryItem(AccessoryItemGroup.HERO_SWORD, item, AccessoryBuilder.ASCENDED_HERO_SWORD))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> DARK_ESSESNCE_CRYSTAL = RegistryItems
-            .register("dark_essence_crystal", item -> new AccessoryItem(item, AccessoryBuilder.MAGICAL_OPS))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> BOOTS = RegistryItems
-            .register("boots", item -> new AccessoryItem(AccessoryItemGroup.BOOTS, item, AccessoryBuilder.BASIC_BOOTS))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> GOLDEN_BOOTS = RegistryItems
-            .register("golden_boots", item -> new AccessoryItem(AccessoryItemGroup.BOOTS, item, AccessoryBuilder.GOLDEN_BOOTS))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> BERSERKER_BOOTS = RegistryItems
-            .register("berserker_boots", item -> new AccessoryItem(AccessoryItemGroup.BOOTS, item, AccessoryBuilder.BERSERKER_BOOTS))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> IRON_PLATED_BOOTS = RegistryItems
-            .register("iron_plated_boots", item -> new AccessoryItem(AccessoryItemGroup.BOOTS, item, AccessoryBuilder.IRON_PLATED_BOOTS))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> MINER_BOOTS = RegistryItems
-            .register("miner_boots", item -> new AccessoryItem(AccessoryItemGroup.BOOTS, item, AccessoryBuilder.MINING_BOOTS))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> BOOK_OF_KNOWLEDGE = RegistryItems
-            .register("book_of_knowledge", item -> new AccessoryItem(AccessoryItemGroup.NONE, item, AccessoryBuilder.BOOK_OF_KNOWLEDGE))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> ANCIENT_PICKAXE = RegistryItems
-            .register("ancient_pickaxe", item -> new AccessoryItem(item, AccessoryBuilder.ANCIENT_PICKAXE))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> ANCIENT_CHISEL = RegistryItems
-            .register("ancient_chisel", item -> new AccessoryItem(item, AccessoryBuilder.ANCIENT_CHISEL))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> MINER_GLOVES = RegistryItems
-            .register("miner_gloves", item -> new AccessoryItem(item, AccessoryBuilder.MINER_GLOVES))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> DWARF_MINER_RING = RegistryItems
-            .register("dwarf_miner_ring", item -> new AccessoryItem(item, AccessoryBuilder.DWARF_MINER_RING))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> POISON_VILE = RegistryItems
-            .register("poison_vile", item -> new AccessoryItem(item, AccessoryBuilder.POISON_VILE))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> LUCKY_HORSE_SHOE = RegistryItems
-            .register("lucky_horse_shoe", item -> new AccessoryItem(item, AccessoryBuilder.NEGATE_FALL_DAMAGE))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> POWER_CLAW = RegistryItems
-            .register("power_claw", item -> new AccessoryItem(item, AccessoryBuilder.POWER_CLAW))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> BLOOD_OF_BERSERKER = RegistryItems
-            .register("blood_of_berserker", item -> new AccessoryItem(item, AccessoryBuilder.BLOOD_OF_BERSERKER))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> THORNMAIL = RegistryItems
-            .register("thornmail", item -> new AccessoryItem(item, AccessoryBuilder.THORNMAIL))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> SPRING_LOCK = RegistryItems
-            .register("spring_lock", item -> new AccessoryItem(item, AccessoryBuilder.SPRING_LOCK))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-    public static final RegistryObject<Item> POWER_GLOVES = RegistryItems
-            .register("power_gloves", item -> new AccessoryItem(item, AccessoryBuilder.POWER_GLOVES))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> SWIFT_DAGGER = RegistryItems
-            .register("swift_dagger", item -> new AccessoryItem(item, AccessoryBuilder.SWIFT_DAGGER))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> AETHER_WISP = RegistryItems
-            .register("aether_wisp", item -> new AccessoryItem(item, AccessoryBuilder.AETHER_WISP))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> HEART_OF_THE_TREE = RegistryItems
-            .register("heart_of_the_tree", item -> new AccessoryItem(item, AccessoryBuilder.OVERGROWTH))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> RECTRIX = RegistryItems
-            .register("rectrix", item -> new AccessoryItem(item, AccessoryBuilder.RECTRIX))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> FORTUNE_SHIKIGAMI = RegistryItems
-            .register("fortune_shikigami", item -> new AccessoryItem(item, AccessoryBuilder.FORTUNE_SHIKIGAMI))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> LEATHER_AGILITY = RegistryItems
-            .register("leather_agility", item -> new AccessoryItem(item, AccessoryBuilder.LEATHER_AGILITY))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> AGILE_DAGGER = RegistryItems
-            .register("agile_dagger", item -> new AccessoryItem(item, AccessoryBuilder.AGILE_DAGGER))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> MASK_OF_AGONY = RegistryItems
-            .register("mask_of_agony", item -> new AccessoryItem(item, AccessoryBuilder.DESPAIR_AND_DEFY))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> VITALITY_STONE = RegistryItems
-            .register("vitality_stone", item -> new AccessoryItem(item, AccessoryBuilder.VITALITY_STONE))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> CINDER_STONE = RegistryItems
-            .register("cinder_stone", item -> new AccessoryItem(item, AccessoryBuilder.CINDER_STONE))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
-
-    public static final RegistryObject<Item> CRYSTALLIZED_PLATE = RegistryItems
-            .register("crystallized_plate", item -> new AccessoryItem(item, AccessoryBuilder.CRYSTALLIZED_PLATE))
-            .tab(RegistryTabs.Category.ACCESSORY)
-            .model(ItemModels.ACCESSORY)
-            .tag(BHItemTags.ONLY_ACCESSORY)
-            .register();
+    public static final RegistryObject<Item> STARITE_SWORD = swordItem("starite_sword", MeleeWeaponMaterials.STARITE, ItemBuilder.SWORD);
+    public static final RegistryObject<Item> STARITE_AXE = toolItem("starite_axe", MeleeWeaponMaterials.STARITE, ItemBuilder.AXE);
+    public static final RegistryObject<Item> STARITE_PICKAXE = toolItem("starite_pickaxe", MeleeWeaponMaterials.STARITE, ItemBuilder.PICKAXE);
+    public static final RegistryObject<Item> STARITE_SHOVEL = toolItem("starite_shovel", MeleeWeaponMaterials.STARITE, ItemBuilder.SHOVEL);
+    public static final RegistryObject<Item> STARITE_HOE = toolItem("starite_hoe", MeleeWeaponMaterials.STARITE, ItemBuilder.HOE);
 
     //
-    public static final RegistryObject<Item> SILVER_SWORD = RegistryItems
-            .register("silver_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.SILVER, item))
-            .tab(RegistryTabs.Category.COMBAT)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> HELLSTONE_SWORD = RegistryItems
-            .register("hellstone_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.HELLSTONE, item))
-            .tab(RegistryTabs.Category.COMBAT)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> COBALT_SWORD = RegistryItems
-            .register("cobalt_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.COBALT, item))
-            .tab(RegistryTabs.Category.COMBAT)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> ADAMANTITE_SWORD = RegistryItems
-            .register("adamantite_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.ADAMANTITE, item))
-            .tab(RegistryTabs.Category.COMBAT)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> TITANIUM_SWORD = RegistryItems
-            .register("titanium_sword", item -> WeaponBuilder.SWORD.create(MeleeWeaponMaterials.TITANIUM, item))
-            .tab(RegistryTabs.Category.COMBAT)
-            .model(ItemModels.HANDHELD)
-            .register();
+    public static final RegistryObject<Item> TOUGH_CLOTH = accessoryItem("tough_cloth", AccessoryBuilder.TOUGH_CLOTH);
+    public static final RegistryObject<Item> NULL_MAGIC_RUNE = accessoryItem("null_magic_rune", AccessoryBuilder.NULL_MAGIC_RUNE);
+    public static final RegistryObject<Item> FIREFLY_FAYE = accessoryItem("firefly_faye", AccessoryBuilder.FIREFLY_FAYE);
+    public static final RegistryObject<Item> SAPPHIRE_CRYSTAL = accessoryItem("sapphire_crystal", AccessoryBuilder.SAPPHIRE_CRYSTAL);
+    public static final RegistryObject<Item> CHAIN_VEST = accessoryItem("chain_vest", AccessoryBuilder.CHAIN_VEST);
+    public static final RegistryObject<Item> RUMINATIVE_BEADS = accessoryItem("ruminative_beads", AccessoryBuilder.RUMINATIVE_BEADS);
+    public static final RegistryObject<Item> SPECTRAL_CLOAK = accessoryItem("spectral_cloak", AccessoryBuilder.SPECTRAL_CLOAK);
+    public static final RegistryObject<Item> UNSTABLE_RUNIC_TOME = accessoryItem("unstable_runic_tome", AccessoryBuilder.UNSTABLE_RUNIC_TOME);
+    public static final RegistryObject<Item> BROKEN_HERO_SWORD = accessoryItem("broken_hero_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.BROKEN_HERO_SWORD);
+    public static final RegistryObject<Item> TRUE_HERO_SWORD = accessoryItem("true_hero_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.TRUE_HERO_SWORD);
+    public static final RegistryObject<Item> INFINITY_SWORD = accessoryItem("infinity_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.INFINITY_SWORD);
+    public static final RegistryObject<Item> NULL_SWORD = accessoryItem("null_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.NULL_SWORD);
+    public static final RegistryObject<Item> ASCENDED_HERO_SWORD = accessoryItem("ascended_hero_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.ASCENDED_HERO_SWORD);
+    public static final RegistryObject<Item> DARK_ESSESNCE_CRYSTAL = accessoryItem("dark_essence_crystal", AccessoryBuilder.MAGICAL_OPS);
+    public static final RegistryObject<Item> BOOTS = accessoryItem("boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.GOLDEN_BOOTS);
+    public static final RegistryObject<Item> GOLDEN_BOOTS = accessoryItem("golden_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.BASIC_BOOTS);
+    public static final RegistryObject<Item> BERSERKER_BOOTS = accessoryItem("berserker_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.BERSERKER_BOOTS);
+    public static final RegistryObject<Item> IRON_PLATED_BOOTS = accessoryItem("iron_plated_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.IRON_PLATED_BOOTS);
+    public static final RegistryObject<Item> MINER_BOOTS = accessoryItem("miner_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.MINER_BOOTS);
+    public static final RegistryObject<Item> BOOK_OF_KNOWLEDGE = accessoryItem("book_of_knowledge", AccessoryItemGroup.NONE, AccessoryBuilder.BOOK_OF_KNOWLEDGE);
+    public static final RegistryObject<Item> ANCIENT_PICKAXE = accessoryItem("ancient_pickaxe", AccessoryBuilder.ANCIENT_PICKAXE);
+    public static final RegistryObject<Item> ANCIENT_CHISEL = accessoryItem("ancient_chisel", AccessoryBuilder.ANCIENT_CHISEL);
+    public static final RegistryObject<Item> MINER_GLOVES = accessoryItem("miner_gloves", AccessoryBuilder.MINER_GLOVES);
+    public static final RegistryObject<Item> DWARF_MINER_RING = accessoryItem("dwarf_miner_ring", AccessoryBuilder.DWARF_MINER_RING);
+    public static final RegistryObject<Item> POISON_VILE = accessoryItem("poison_vile", AccessoryBuilder.POISON_VILE);
+    public static final RegistryObject<Item> LUCKY_HORSE_SHOE = accessoryItem("lucky_horse_shoe", AccessoryBuilder.NEGATE_FALL_DAMAGE);
+    public static final RegistryObject<Item> POWER_CLAW = accessoryItem("power_claw", AccessoryBuilder.POWER_CLAW);
+    public static final RegistryObject<Item> BLOOD_OF_BERSERKER = accessoryItem("blood_of_berserker", AccessoryBuilder.BLOOD_OF_BERSERKER);
+    public static final RegistryObject<Item> THORNMAIL = accessoryItem("thornmail", AccessoryBuilder.THORNMAIL);
+    public static final RegistryObject<Item> SPRING_LOCK = accessoryItem("spring_lock", AccessoryBuilder.SPRING_LOCK);
 
-    public static final RegistryObject<Item> SILVER_AXE = RegistryItems
-            .register("silver_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.SILVER, item))
-            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.AXE, RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> COBALT_AXE = RegistryItems
-            .register("cobalt_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.COBALT, item))
-            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.AXE, RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> HELLSTONE_AXE = RegistryItems
-            .register("hellstone_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.HELLSTONE, item))
-            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.AXE, RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> ADAMANTITE_AXE = RegistryItems
-            .register("adamantite_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.ADAMANTITE, item))
-            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.AXE, RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> TITANIUM_AXE = RegistryItems
-            .register("titanium_axe", item -> WeaponBuilder.AXE.create(MeleeWeaponMaterials.TITANIUM, item))
-            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.AXE, RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
+    public static final RegistryObject<Item> BROKEN_SHULKER_SHELL = accessoryItem("broken_shulker_shell", AccessoryBuilder.BROKEN_SHULKER_SHELL);
+    public static final RegistryObject<Item> ARMOR_PLATE = accessoryItem("armor_plate", AccessoryBuilder.ARMOR_PLATE);
+    public static final RegistryObject<Item> VITAMINS = accessoryItem("vitamins", AccessoryBuilder.VITAMINS);
 
-    public static final RegistryObject<Item> SILVER_PICKAXE = RegistryItems
-            .register("silver_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.SILVER, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> COBALT_PICKAXE = RegistryItems
-            .register("cobalt_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.COBALT, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> HELLSTONE_PICKAXE = RegistryItems
-            .register("hellstone_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.HELLSTONE, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> ADAMANTITE_PICKAXE = RegistryItems
-            .register("adamantite_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.ADAMANTITE, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> TITANIUM_PICKAXE = RegistryItems
-            .register("titanium_pickaxe", item -> WeaponBuilder.PICKAXE.create(MeleeWeaponMaterials.TITANIUM, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> SILVER_SHOVEL = RegistryItems
-            .register("silver_shovel", item -> WeaponBuilder.SHOVEL.create(MeleeWeaponMaterials.SILVER, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> COBALT_SHOVEL = RegistryItems
-            .register("cobalt_shovel", item -> WeaponBuilder.SHOVEL.create(MeleeWeaponMaterials.COBALT, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> HELLSTONE_SHOVEL = RegistryItems
-            .register("hellstone_shovel", item -> WeaponBuilder.SHOVEL.create(MeleeWeaponMaterials.HELLSTONE, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> ADAMANTITE_SHOVEL = RegistryItems
-            .register("adamantite_shovel", item -> WeaponBuilder.SHOVEL.create(MeleeWeaponMaterials.ADAMANTITE, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> TITANIUM_SHOVEL = RegistryItems
-            .register("titanium_shovel", item -> WeaponBuilder.SHOVEL.create(MeleeWeaponMaterials.TITANIUM, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> COBALT_HOE = RegistryItems
-            .register("cobalt_hoe", item -> WeaponBuilder.HOE.create(MeleeWeaponMaterials.COBALT, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> HELLSTONE_HOE = RegistryItems
-            .register("hellstone_hoe", item -> WeaponBuilder.HOE.create(MeleeWeaponMaterials.HELLSTONE, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> ADAMANTITE_HOE = RegistryItems
-            .register("adamantite_hoe", item -> WeaponBuilder.HOE.create(MeleeWeaponMaterials.ADAMANTITE, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
-    public static final RegistryObject<Item> TITANIUM_HOE = RegistryItems
-            .register("titanium_hoe", item -> WeaponBuilder.HOE.create(MeleeWeaponMaterials.TITANIUM, item))
-            .tab(RegistryTabs.Category.TOOLS)
-            .model(ItemModels.HANDHELD)
-            .register();
+    public static final RegistryObject<Item> POWER_GLOVES = accessoryItem("power_gloves", AccessoryBuilder.POWER_GLOVES);
+    public static final RegistryObject<Item> SWIFT_DAGGER = accessoryItem("swift_dagger", AccessoryBuilder.SWIFT_DAGGER);
+    public static final RegistryObject<Item> AETHER_WISP = accessoryItem("aether_wisp", AccessoryBuilder.AETHER_WISP);
+    public static final RegistryObject<Item> HEART_OF_THE_TREE = accessoryItem("heart_of_the_tree", AccessoryBuilder.HEART_OF_THE_TREE);
+    public static final RegistryObject<Item> RECTRIX = accessoryItem("rectrix", AccessoryBuilder.RECTRIX);
+    public static final RegistryObject<Item> FORTUNE_SHIKIGAMI = accessoryItem("fortune_shikigami", AccessoryBuilder.FORTUNE_SHIKIGAMI);
+    public static final RegistryObject<Item> LEATHER_AGILITY = accessoryItem("leather_agility", AccessoryBuilder.LEATHER_AGILITY);
+    public static final RegistryObject<Item> AGILE_DAGGER = accessoryItem("agile_dagger", AccessoryBuilder.AGILE_DAGGER);
+    public static final RegistryObject<Item> MASK_OF_AGONY = accessoryItem("mask_of_agony", AccessoryBuilder.DESPAIR_AND_DEFY);
+    public static final RegistryObject<Item> VITALITY_STONE = accessoryItem("vitality_stone", AccessoryBuilder.VITALITY_STONE);
+    public static final RegistryObject<Item> CINDER_STONE = accessoryItem("cinder_stone", AccessoryBuilder.CINDER_STONE);
+    public static final RegistryObject<Item> CRYSTALLIZED_PLATE = accessoryItem("crystallized_plate", AccessoryBuilder.CRYSTALLIZED_PLATE);
+
+    //
 
     public static final RegistryObject<Item> BLADE_OF_THE_ENDERLORD = RegistryItems
-            .register("blade_of_the_enderlord", item -> WeaponBuilder.BLADE_OF_THE_ENDERLORD.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("blade_of_the_enderlord", item -> ItemBuilder.BLADE_OF_THE_ENDERLORD.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> GIANT_SLAYER_SWORD = RegistryItems
-            .register("giant_slayer_sword", item -> WeaponBuilder.GIANT_SLAYER_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("giant_slayer_sword", item -> ItemBuilder.GIANT_SLAYER_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
+
     public static final RegistryObject<Item> ZENITH = RegistryItems
-            .register("zenith", item -> WeaponBuilder.ZENITH.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("zenith", item -> ItemBuilder.ZENITH.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
+
     public static final RegistryObject<Item> ELUCIDATOR = RegistryItems
-            .register("elucidator", item -> WeaponBuilder.ELUCIDATOR.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("elucidator", item -> ItemBuilder.ELUCIDATOR.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
+
     public static final RegistryObject<Item> DARK_REPULSER = RegistryItems
-            .register("dark_repulser", item -> WeaponBuilder.DARK_REPULSER.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("dark_repulser", item -> ItemBuilder.DARK_REPULSER.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
-    public static final RegistryObject<Item> ANCIENT_BLAZING_SWORD = RegistryItems
-            .register("ancient_blazing_sword", item -> WeaponBuilder.ANCIENT_BLAZING_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
+
+    public static final RegistryObject<Item> GUARDIAN_SWORD = RegistryItems
+            .register("guardian_sword", item -> ItemBuilder.GUARDIAN_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG32_HANDHELD)
@@ -657,9 +223,33 @@ public class BHItems {
     public static RegistryObject<Item> woolFurItem(String name, RegistryTabs.Category category) {
         return RegistryItems.register(name, BasicItem::new).tab(category).tag(BHItemTags.WOOL_FUR).model(ItemModels.GENERATED).register();
     }
+
+    public static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> factory) {
+        return swordItem(name, materials, factory, ItemModels.HANDHELD);
+    }
+
+    public static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> factory) {
+        return toolItem(name, materials, factory, ItemModels.HANDHELD);
+    }
+
+    public static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> builder, ItemModels itemModels) {
+        return RegistryItems.register(name, properties -> builder.create(materials, properties)).tab(RegistryTabs.Category.COMBAT).model(itemModels).register();
+    }
+    public static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> builder, ItemModels itemModels) {
+        return RegistryItems.register(name, properties -> builder.create(materials, properties)).tab(RegistryTabs.Category.TOOLS).model(itemModels).register();
+    }
     public static RegistryObject<Item> armorItem(String name, ArmorItem.Type type, ArmorBaseMaterials armorMaterial) {
         return RegistryItems.register(name, properties -> new ArmorBaseItem(armorMaterial, type, properties)).tab(RegistryTabs.Category.COMBAT).model(ItemModels.GENERATED).register();
     }
+
+    private static RegistryObject<Item> accessoryItem(String name, AccessoryItemGroup group, AccessoryBuilder accessoryBuilder) {
+        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+    }
+
+    private static RegistryObject<Item> accessoryItem(String name, AccessoryBuilder accessoryBuilder) {
+        return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+    }
+
     public static void register(IEventBus eventBus) {
         RegistryEntries.ITEMS.register(eventBus);
     }

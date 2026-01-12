@@ -80,7 +80,7 @@ import java.util.*;
 public class ServerEventHandler {
     @SubscribeEvent
     public void onAddReloadListeners(AddReloadListenerEvent event) {
-        event.addListener(new SpawnerBuilderListener());
+        event.addListener(new SpawnerBuilderListener(event.getConditionContext()));
     }
 
     @SubscribeEvent
@@ -99,19 +99,15 @@ public class ServerEventHandler {
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         Player player = event.player;
-        if (player.level().isClientSide) return;
-
+        if (player.level().isClientSide()) return;
         Set<ResourceLocation> active = ArmorBonusSet.ACTIVE_SETS.computeIfAbsent(player.getUUID(), id -> new HashSet<>());
-
         for (ArmorSet set : ArmorSetRegistry.getAll()) {
             boolean matches = set.matches(player);
             boolean applied = active.contains(set.getId());
-
             if (matches && !applied) {
                 set.applyBonus(player);
                 active.add(set.getId());
             }
-
             if (!matches && applied) {
                 set.removeBonus(player);
                 active.remove(set.getId());
@@ -543,6 +539,18 @@ public class ServerEventHandler {
                     isCrit = true;
                     damageDealt = (float) (damageDealt * criticalDamage);
                     player.crit(target);
+                }
+                for (ArmorSet set : ArmorSetRegistry.getAll()) {
+                    ArmorBonusSet armorBonusSet = set.getInstance();
+                    boolean matches = set.matches(player);
+                    if (matches) {
+                        BeyondHorizon.LOGGER.debug("Is armor is {}", armorBonusSet.getId());
+                        var attackCallback = armorBonusSet.attack();
+                        if (attackCallback.isPresent()) {
+                            damageDealt = attackCallback.get().postMigitationDamage(damageDealt, source, attacker, target);
+                            attackCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
+                        }
+                    }
                 }
             }
             damageDealt = this.enchantmentPostMitigationDamage(attacker, damageDealt, source, target);

@@ -36,14 +36,14 @@ public enum SpawnerState implements StringRepresentable {
 
     SpawnerState tickAndGetNext(BlockPos blockPos, BHBaseSpawner spawner, ServerLevel serverLevel) {
         BaseSpawnerData data = spawner.getData();
-        SpawnerBuilder config = spawner.getConfig();
+        SpawnerConfig config = spawner.getConfig();
         SpawnerState state;
         switch(this) {
             case INACTIVE:
                 state = data.getOrCreateDisplayEntity(spawner, serverLevel, WAITING_FOR_PLAYERS) == null ? this : WAITING_FOR_PLAYERS;
                 break;
             case WAITING_FOR_PLAYERS:
-                if (!data.hasMobToSpawn()) {
+                if (!data.hasMobToSpawn(spawner)) {
                     state = INACTIVE;
                 } else {
                     data.tryDetectPlayers(serverLevel, blockPos, spawner);
@@ -51,7 +51,7 @@ public enum SpawnerState implements StringRepresentable {
                 }
                 break;
             case ACTIVE:
-                if (!data.hasMobToSpawn()) {
+                if (!data.hasMobToSpawn(spawner)) {
                     state = INACTIVE;
                 } else {
                     int i = data.countAdditionalPlayers(blockPos);

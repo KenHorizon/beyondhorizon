@@ -1,0 +1,6 @@
+{
+  "parent": "beyondhorizon:item/base/64xhandheld",
+  "textures": {
+    "layer0": "beyondhorizon:item/guardian_sword"
+  }
+}

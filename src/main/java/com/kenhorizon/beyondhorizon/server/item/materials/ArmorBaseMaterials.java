@@ -29,20 +29,21 @@ public enum ArmorBaseMaterials implements StringRepresentable, IArmorBaseMateria
         tier.put(ArmorItem.Type.LEGGINGS, ImmutableMultimap.of(
                 () -> Attributes.ARMOR, 3.0D,
                 () -> Attributes.ARMOR_TOUGHNESS, 3.0D,
+                () -> Attributes.KNOCKBACK_RESISTANCE, 0.1D,
                 BHAttributes.MAGIC_RESISTANCE, 7.0D
         ));
         tier.put(ArmorItem.Type.CHESTPLATE, ImmutableMultimap.of(
+                () -> Attributes.MAX_HEALTH, 20.0D,
                 () -> Attributes.ARMOR, 7.0D,
                 () -> Attributes.ARMOR_TOUGHNESS, 3.0D,
                 () -> Attributes.KNOCKBACK_RESISTANCE, 0.1D,
-                BHAttributes.MAGIC_RESISTANCE, 8.0D,
-                () -> Attributes.MAX_HEALTH, 20.0D
+                BHAttributes.MAGIC_RESISTANCE, 8.0D
         ));
         tier.put(ArmorItem.Type.HELMET, ImmutableMultimap.of(
                 () -> Attributes.ARMOR, 2.0D,
                 () -> Attributes.ARMOR_TOUGHNESS, 3.0D,
-                BHAttributes.MAGIC_RESISTANCE, 6.0D,
-                () -> Attributes.KNOCKBACK_RESISTANCE, 0.1D
+                () -> Attributes.KNOCKBACK_RESISTANCE, 0.1D,
+                BHAttributes.MAGIC_RESISTANCE, 6.0D
         ));
 
     }), 15, SoundEvents.ARMOR_EQUIP_IRON, () -> {

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ArmorSetRegistry {
-    private static final List<ArmorSet> SETS = new ArrayList<>();
+    private static final List<ArmorBonusSet> SETS = new ArrayList<>();
 
-    public static void register(ArmorSet set) {
+    public static void register(ArmorBonusSet set) {
         SETS.add(set);
     }
 
-    public static List<ArmorSet> getAll() {
+    public static List<ArmorBonusSet> getAll() {
         return SETS;
     }
 }

@@ -12,6 +12,10 @@ import java.util.stream.Collectors;
 public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder NONE = new AccessoryBuilder(List.of(Accessories.NONE));
 
+    public static final AccessoryBuilder BROKEN_SHULKER_SHELL = new AccessoryBuilder(List.of(Accessories.NULLIFY));
+    public static final AccessoryBuilder ARMOR_PLATE = new AccessoryBuilder(List.of(Accessories.NULLIFY));
+    public static final AccessoryBuilder VITAMINS = new AccessoryBuilder(List.of(Accessories.NULLIFY));
+
     public static final AccessoryBuilder NULL_SWORD = new AccessoryBuilder(List.of(Accessories.NULLIFY));
     public static final AccessoryBuilder INFINITY_SWORD = new AccessoryBuilder(List.of(Accessories.LETHAL_BURST));
     public static final AccessoryBuilder TRUE_HERO_SWORD = new AccessoryBuilder(List.of(Accessories.TRUE_HERO_SWORD));
@@ -46,10 +50,10 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder AETHER_WISP = new AccessoryBuilder(List.of(Accessories.AETHER_WISP));
     public static final AccessoryBuilder BERSERKER_BOOTS = new AccessoryBuilder(List.of(Accessories.BERSERKER_BOOTS));
     public static final AccessoryBuilder IRON_PLATED_BOOTS = new AccessoryBuilder(List.of(Accessories.IRON_PLATED_BOOTS));
-    public static final AccessoryBuilder MINING_BOOTS = new AccessoryBuilder(List.of(Accessories.MINING_BOOTS));
+    public static final AccessoryBuilder MINER_BOOTS = new AccessoryBuilder(List.of(Accessories.MINING_BOOTS));
     public static final AccessoryBuilder ANCIENT_PICKAXE = new AccessoryBuilder(List.of(Accessories.ANCIENT_PICKAXE));
     public static final AccessoryBuilder ANCIENT_CHISEL = new AccessoryBuilder(List.of(Accessories.ANCIENT_CHISEL));
-    public static final AccessoryBuilder OVERGROWTH = new AccessoryBuilder(List.of(Accessories.OVERGROWTH));
+    public static final AccessoryBuilder HEART_OF_THE_TREE = new AccessoryBuilder(List.of(Accessories.OVERGROWTH));
     public static final AccessoryBuilder BROKEN_HERO_SWORD = new AccessoryBuilder(List.of(Accessories.BRAVERY));
     public static final AccessoryBuilder RECTRIX = new AccessoryBuilder(List.of(Accessories.RECTRIX));
     public static final AccessoryBuilder FORTUNE_SHIKIGAMI = new AccessoryBuilder(List.of(Accessories.FORTUNE_SHIKIGAMI));

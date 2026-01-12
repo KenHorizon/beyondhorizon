@@ -127,6 +127,8 @@ public class Accessories {
 
     public static final RegistryObject<Accessory> KNOWLEDGE = registerSkill("knowledge", () -> new ExperienceAccessory(Constant.KNOWLEDGE_XP_MODIFIER));
 
+    public static final RegistryObject<Accessory> WEIGHTS = registerSkill("weights", () -> new ExperienceAccessory(Constant.KNOWLEDGE_XP_MODIFIER));
+
     public static final RegistryObject<Accessory> VENOM = registerSkill("venom", () -> new ApplyEffectAccessory((int) Constant.VENOM_DURATION, (int) Constant.VENOM_POISON_LEVEL, MobEffects.POISON, BHEffects.LETHAL_POISON.get())
             .chances(Constant.VENOM_INFLICT_CHANCE));
 

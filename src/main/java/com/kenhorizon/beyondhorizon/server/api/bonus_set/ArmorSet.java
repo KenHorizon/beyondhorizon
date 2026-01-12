@@ -1,7 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.api.bonus_set;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
 
 public interface ArmorSet {
 
@@ -14,4 +18,8 @@ public interface ArmorSet {
     int countPieces(Player player);
 
     ResourceLocation getId();
+
+    int tooltipLines();
+
+    ArmorBonusSet getInstance();
 }

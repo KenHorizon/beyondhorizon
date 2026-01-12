@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_raw_embed_hellstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:raw_embed_hellstone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:hellstone_ingot_from_smelting_raw_embed_hellstone"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_raw_embed_hellstone",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:hellstone_ingot_from_smelting_raw_embed_hellstone"
+    ]
+  },
+  "sends_telemetry_event": false
+}

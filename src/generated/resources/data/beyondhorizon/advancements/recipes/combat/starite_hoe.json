@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:starite_hoe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "starite_hoe": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:starite_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "starite_hoe",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:starite_hoe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

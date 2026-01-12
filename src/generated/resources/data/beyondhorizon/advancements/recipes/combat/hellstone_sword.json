@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:hellstone_sword"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "hellstone_sword": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:hellstone_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "hellstone_sword",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:hellstone_sword"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:starite_axe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "starite_axe": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:starite_ingot"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "starite_axe",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:starite_axe"
+    ]
+  },
+  "sends_telemetry_event": false
+}

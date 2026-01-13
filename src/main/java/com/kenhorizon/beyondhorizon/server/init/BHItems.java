@@ -152,6 +152,8 @@ public class BHItems {
     public static final RegistryObject<Item> CARBONIZED_BONE = accessoryItem("carbonized_bone", AccessoryBuilder.CARBONIZED_BONE);
     public static final RegistryObject<Item> ADHESIVE_BANDAGES = accessoryItem("adhesive_bandage", AccessoryBuilder.ADHESIVE_BANDAGES);
     public static final RegistryObject<Item> CURSED_APPLE = accessoryItem("cursed_apple", AccessoryBuilder.CURSED_APPLE);
+    public static final RegistryObject<Item> CURSED_SKULL = accessoryItem("cursed_skull", AccessoryBuilder.CURSED_APPLE);
+    public static final RegistryObject<Item> CURSED_TORMENT = accessoryItem("cursed_torment", AccessoryBuilder.CURSED_APPLE);
 
     public static final RegistryObject<Item> POWER_GLOVES = accessoryItem("power_gloves", AccessoryBuilder.POWER_GLOVES);
     public static final RegistryObject<Item> SWIFT_DAGGER = accessoryItem("swift_dagger", AccessoryBuilder.SWIFT_DAGGER);

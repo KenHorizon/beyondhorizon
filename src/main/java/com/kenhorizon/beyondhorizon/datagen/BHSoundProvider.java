@@ -67,27 +67,22 @@ public class BHSoundProvider extends SoundDefinitionsProvider {
         add(soundEvent, definition, 1);
     }
     protected void add(final RegistryObject<? extends SoundEvent> soundEvent, final String definition, int count) {
-        boolean isHaveSubtitles = !RegistryLanguage.ADD_SOUNDS_TRANSLATION.get(soundEvent).isBlank();
+        String localization = String.format("subtitle.%s.%s", BeyondHorizon.ID, soundEvent.get().getLocation().getPath());
+        BeyondHorizon.LOGGER.debug("Check sound {}", localization);
+        boolean check = !RegistryLanguage.ADD_SOUNDS_TRANSLATION.getOrDefault(localization, "").isBlank();
         SoundDefinition.Sound[] addSounds = new SoundDefinition.Sound[count];
         for (int i = 0; i < count; i++) {
             String str0 = definition + (1 + i);
             String str1 = definition;
             addSounds[i] = (this.addSounds(count == 1 ? str1 : str0));
         }
-        if (isHaveSubtitles) {
+        if (check) {
             this.add(soundEvent.get(), subtitle(soundEvent).with(addSounds));
         } else {
             this.add(soundEvent.get(), SoundDefinition.definition().with(addSounds));
         }
     }
-    protected void add(final RegistryObject<? extends SoundEvent> soundEvent, final SoundDefinition.Sound... definition) {
-        boolean isHaveSubtitles = !RegistryLanguage.ADD_SOUNDS_TRANSLATION.getOrDefault(soundEvent, "").isBlank();
-        if (isHaveSubtitles) {
-            this.add(soundEvent.get(), subtitle(soundEvent).with(definition));
-        } else {
-            this.add(soundEvent.get(), SoundDefinition.definition().with(definition));
-        }
-    }
+
     private SoundDefinition subtitle(Supplier<? extends SoundEvent> subtile) {
         return SoundDefinition.definition().subtitle(String.format("subtitle.%s.%s", BeyondHorizon.ID, subtile.get().getLocation().getPath()));
     }

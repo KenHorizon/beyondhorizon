@@ -51,6 +51,7 @@ public class BHLangProvider extends LanguageProvider {
 
         this.add(Configs.CHANGE_DAMAGE_CALCULATION, "Change Damage Calculation");
 
+        this.add(Tooltips.TOOLTIP_IMMUNE_TO, "Gain Immunity to %s");
         this.add(Tooltips.TOOLTIP_BUILTIN_RESOURCE, "Beyond Horizon: Builtin Resources");
 
         this.add(Tooltips.COMMAND_ROLE_SET_FAILED, "Failed to change the role to %s");
@@ -218,8 +219,8 @@ public class BHLangProvider extends LanguageProvider {
         this.add(attribute.get().getDescriptionId(), name);
     }
 
-    private void addSoundEvents(Supplier<? extends SoundEvent> name, String subtitles) {
-        this.add(name.get().getLocation().toString(), subtitles);
+    private void addSoundEvents(String name, String subtitles) {
+        this.add(name, subtitles);
     }
 
     private void addPaintingAuthor(String addPaintings, String name) {

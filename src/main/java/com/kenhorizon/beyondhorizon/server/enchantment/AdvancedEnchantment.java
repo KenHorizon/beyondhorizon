@@ -64,9 +64,31 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
     }
 
     @Override
+    public int modifyExprienceDrop(int level, int dropExperience, LivingEntity target, Player player) {
+        if (target == null || player == null) return dropExperience;
+        if (this == BHEnchantments.EDUCATION.get()) {
+            return (int) (dropExperience * (0.25F * level));
+        }
+        return dropExperience;
+    }
+
+    @Override
     public float postMigitationDamage(int level, float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (attacker == null || target == null) return damageDealt;
         RandomSource random = attacker.getRandom();
+
+        if (this == BHEnchantments.PHYSICAL_PROTECTION.get()) {
+            if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
+                damageDealt *= (0.05F * level);
+            }
+        }
+
+        if (this == BHEnchantments.SPELL_PROTECTION.get()) {
+            if (source.getDirectEntity() == target && source.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
+                damageDealt *= (0.05F * level);
+            }
+        }
+
         if (this == BHEnchantments.DYNAMO_HIT.get()) {
             if (attacker instanceof Player player) {
                 PlayerData playerData = CapabilityCaller.data(player);

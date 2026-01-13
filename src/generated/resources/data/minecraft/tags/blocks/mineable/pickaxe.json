@@ -1,5 +1,6 @@
 {
   "values": [
+    "beyondhorizon:gate",
     "beyondhorizon:base_spawner",
     "beyondhorizon:dungeon_bricks",
     "beyondhorizon:chain_pulley",
@@ -27,6 +28,11 @@
     "beyondhorizon:chiselled_black_nether_bricks",
     "beyondhorizon:voidstone",
     "beyondhorizon:radiance_crystal",
+    "beyondhorizon:desolate_obsidian",
+    "beyondhorizon:desolate_obsidian_bricks",
+    "beyondhorizon:desolate_obsidian_brick_slab",
+    "beyondhorizon:desolate_obsidian_brick_stair",
+    "beyondhorizon:purpur_end_stone_brick_pillar",
     "beyondhorizon:end_grey_stone",
     "beyondhorizon:end_grey_pillar",
     "beyondhorizon:end_grey_bricks",
@@ -36,6 +42,10 @@
     "beyondhorizon:end_stone_pillar",
     "beyondhorizon:chiselled_end_stone",
     "beyondhorizon:chiselled_end_stone_uncarved",
-    "beyondhorizon:starite_ore"
+    "beyondhorizon:netherrack_hellstone_ore",
+    "beyondhorizon:hellstone_ore",
+    "beyondhorizon:starite_ore",
+    "beyondhorizon:raw_starite_block",
+    "beyondhorizon:starite_block"
   ]
 }

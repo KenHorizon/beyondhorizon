@@ -42,13 +42,11 @@ public class BaseSpawnerBlockEntity extends BlockEntity implements BHBaseSpawner
             this.spawner.setConfig(SpawnerBuilderListener.get(resourceLocation));
             this.spawner.setData(packed.getData());
             this.spawner.getData().setSpawnPotentialsFromConfig(SpawnerBuilderListener.get(resourceLocation));
-        } else {
-            this.spawner.codec()
-                    .parse(NbtOps.INSTANCE, nbt)
-                    .resultOrPartial(error -> BeyondHorizon.LOGGER.error("Error NBT Tags cant be applied due {}", error))
-                    .ifPresent(baseSpawner -> this.spawner = baseSpawner);
         }
-
+        this.spawner.codec()
+                .parse(NbtOps.INSTANCE, nbt.get("configs"))
+                .resultOrPartial(error -> BeyondHorizon.LOGGER.error("Error NBT Tags cant be applied due {}", error))
+                .ifPresent(baseSpawner -> this.spawner = baseSpawner);
         if (this.level != null) {
             this.markUpdated();
         }
@@ -57,6 +55,10 @@ public class BaseSpawnerBlockEntity extends BlockEntity implements BHBaseSpawner
     protected void saveAdditional(CompoundTag nbt) {
         super.saveAdditional(nbt);
         this.spawner.save(nbt);
+        nbt.put("configs", this.spawner.codec()
+                .encodeStart(NbtOps.INSTANCE, this.spawner)
+                .getOrThrow(false, error -> BeyondHorizon.LOGGER.error("Failed to load {}", error)));
+
 
     }
 

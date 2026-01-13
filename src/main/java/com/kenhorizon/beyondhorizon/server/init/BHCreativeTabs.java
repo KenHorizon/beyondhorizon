@@ -6,6 +6,7 @@ import com.kenhorizon.libs.registry.RegistryTabs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
@@ -24,7 +25,7 @@ public class BHCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BH_TOOLS = RegistryTabs.registerCreativeTabs("beyond_horizon_tab_tools",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHItems.ANCIENT_PICKAXE.get()))
+                    .icon(() -> new ItemStack(BHItems.STARITE_PICKAXE.get()))
                     .withTabsBefore(BHCreativeTabs.BH_INGREDIENTS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.tools"))
                     .displayItems((parameters, output) -> {
@@ -44,7 +45,7 @@ public class BHCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BH_COMBATS = RegistryTabs.registerCreativeTabs("beyond_horizon_tab_combats",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHItems.BLADE_OF_THE_ENDERLORD.get()))
+                    .icon(() -> new ItemStack(BHItems.STARITE_SWORD.get()))
                     .withTabsBefore(BHCreativeTabs.BH_TOOLS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.combats"))
                     .displayItems((parameters, output) -> {
@@ -77,7 +78,7 @@ public class BHCreativeTabs {
 
     public static final RegistryObject<CreativeModeTab> BH_DEBUG_ITEMS = RegistryTabs.registerCreativeTabs("beyond_horizon_tabs_debug_items",
             () -> CreativeModeTab.builder()
-                    .icon(() -> new ItemStack(BHItems.STARITE_INGOT.get()))
+                    .icon(() -> new ItemStack(Items.COMMAND_BLOCK))
                     .withTabsBefore(BHCreativeTabs.BH_BLOCKS.getKey())
                     .title(Component.translatable(BeyondHorizon.ID + ".creative_tabs.debug_items"))
                     .displayItems((parameters, output) -> {

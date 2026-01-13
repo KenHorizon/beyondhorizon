@@ -2,9 +2,12 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.google.common.collect.ImmutableList;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.tags.BHEffectTags;
 import com.kenhorizon.beyondhorizon.server.util.EffectUtil;
 import com.kenhorizon.libs.registry.RegistryHelper;
+import com.kenhorizon.libs.server.IReloadable;
+import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -28,7 +31,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ImmunityEffectAccessory extends AccessorySkill {
+public class ImmunityEffectAccessory extends AccessorySkill implements IReloadable {
     private boolean removeEffectOnTick = false;
     private boolean cancelDamageOfEffect = false;
     private List<MobEffect> mobEffectList = ImmutableList.of();
@@ -38,22 +41,30 @@ public class ImmunityEffectAccessory extends AccessorySkill {
         ImmutableList.Builder<MobEffect> map = ImmutableList.builder();
         map.addAll(Arrays.asList(mobEffect));
         this.mobEffectList = map.build();
+        ReloadableHandler.addToReloadList(this);
     }
 
     public ImmunityEffectAccessory(TagKey<MobEffect> mobEffectTags) {
         this.mobEffectTag = mobEffectTags;
+        ReloadableHandler.addToReloadList(this);
     }
 
     @Override
-    protected MutableComponent tooltipDescription(ItemStack itemStack) {
+    public void reload() {
+        ImmutableList.Builder<MobEffect> map = ImmutableList.builder();
+        map.addAll(ForgeRegistries.MOB_EFFECTS);
+        this.mobEffectList = map.build();
+    }
+
+    @Override
+    protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
         if (!this.getMobEffects().isEmpty()) {
             for (MobEffect instance : this.getMobEffects()) {
-                return Component.translatable(String.format("%s.desc", this.getDescriptionId()), instance.getDisplayName().getString()).withStyle(ChatFormatting.GOLD);
+                if (EffectUtil.is(instance, this.mobEffectTag)) {
+                    tooltip.add(this.spacing().append(Component.translatable(Tooltips.TOOLTIP_IMMUNE_TO, instance.getDisplayName().getString()).withStyle(ChatFormatting.GRAY)));
+                }
             }
-        } else {
-            return super.tooltipDescription(itemStack);
         }
-        return super.tooltipDescription(itemStack);
     }
 
     public ImmunityEffectAccessory removeOnTick() {

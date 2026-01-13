@@ -36,7 +36,6 @@ public class BaseSpawnerRenderer implements BlockEntityRenderer<BaseSpawnerBlock
                 if ((double)f1 > 1.0D) {
                     f /= f1;
                 }
-
                 poseStack.translate(0.0F, 0.4F, 0.0F);
                 poseStack.mulPose(Axis.YP.rotationDegrees((float) Mth.lerp((double) partialTick, data.getOSpin(), data.getSpin()) * 10.0F));
                 poseStack.translate(0.0F, -0.2F, 0.0F);

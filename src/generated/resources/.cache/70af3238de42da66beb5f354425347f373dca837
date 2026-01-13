@@ -1,7 +1,7 @@
-// 1.20.1	2026-01-13T01:29:04.0506959	Block Tags
+// 1.20.1	2026-01-13T23:46:38.2884528	Block Tags
 072eefa8be49996b612bc3279b7ba3e6de800822 data/beyondhorizon/tags/blocks/mineable_with_paxel.json
 b63b59a5e1bd8e387449457006d9f688f4f35cfe data/beyondhorizon/tags/blocks/unmoveable.json
-36757ddd9361b8a23ca3e39d10222342973a878d data/minecraft/tags/blocks/mineable/pickaxe.json
-f427accff59e1a47b99ba3ab5c45de6d39928baf data/minecraft/tags/blocks/needs_diamond_tool.json
-12a521bb9bd79f5bf1d8c9ce529bde7b130cd4e4 data/minecraft/tags/blocks/needs_iron_tool.json
-8dedfcc9599797ca765b53d8e19617acc93ff55c data/minecraft/tags/blocks/needs_stone_tool.json
+073906f569b77606af928a170f368e8c3db90899 data/minecraft/tags/blocks/mineable/pickaxe.json
+9a699f32c9adcf4c2d7cc91143cbe9b50c1a1364 data/minecraft/tags/blocks/needs_diamond_tool.json
+6d3fed1f37ba22b76b91f5e8a8038fc0b0b44b81 data/minecraft/tags/blocks/needs_iron_tool.json
+20a59574233b2d4636a20398e361171661181552 data/minecraft/tags/blocks/needs_stone_tool.json

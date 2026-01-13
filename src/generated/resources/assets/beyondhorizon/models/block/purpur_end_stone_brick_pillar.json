@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "beyondhorizon:block/purpur_end_stone_brick_pillar_end",
+    "east": "beyondhorizon:block/purpur_end_stone_brick_pillar_side",
+    "end": "beyondhorizon:block/purpur_end_stone_brick_pillar_end",
+    "north": "beyondhorizon:block/purpur_end_stone_brick_pillar_side",
+    "particle": "beyondhorizon:block/purpur_end_stone_brick_pillar_side",
+    "side": "beyondhorizon:block/purpur_end_stone_brick_pillar_side",
+    "south": "beyondhorizon:block/purpur_end_stone_brick_pillar_side",
+    "up": "beyondhorizon:block/purpur_end_stone_brick_pillar_end",
+    "west": "beyondhorizon:block/purpur_end_stone_brick_pillar_side"
+  }
+}

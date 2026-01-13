@@ -47,7 +47,7 @@ public class RegistryHelper {
         RegistryObject<SoundEvent> object = RegistryEntries.SOUND_EVENTS.register(name, () -> SoundEvent.createVariableRangeEvent(id));
         if (!subtitleName.isBlank()) {
             String localization = String.format("subtitle.%s.%s", BeyondHorizon.ID, name);
-            RegistryLanguage.ADD_SOUNDS_TRANSLATION.put(object, subtitleName);
+            RegistryLanguage.ADD_SOUNDS_TRANSLATION.put(localization, subtitleName);
         }
         return object;
     }

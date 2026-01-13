@@ -15,10 +15,7 @@ import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
-import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.init.BHItems;
+import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
@@ -36,10 +33,12 @@ import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundPlay
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.ChatFormatting;
+import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -48,10 +47,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Sheep;
@@ -63,6 +59,8 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -383,6 +381,16 @@ public class ServerEventHandler {
             });
         }
     }
+    //TODO: Put entity tags that spawn on spawner to prevent gain points from stacking abilities in the future!
+    @SubscribeEvent
+    public void onLivingSpawn(MobSpawnEvent.FinalizeSpawn event) {
+        LivingEntity entity = event.getEntity();
+        var levelAcecssor = event.getLevel();
+        if (event.getSpawnType() == MobSpawnType.SPAWNER) {
+
+        }
+    }
+
     @SubscribeEvent
     public void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
@@ -607,6 +615,20 @@ public class ServerEventHandler {
         level.sendParticles(new DamageIndicatorOptions(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
         event.setAmount(damageDealt);
     }
+    private int enchantmentModifiyExpDrop(LivingEntity attacker, int experienceDrop, LivingEntity target) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(attacker.getItemBySlot(slot));
+            for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
+                if (entry.getKey() instanceof IAdditionalEnchantment additionalEnchantment) {
+                    Optional<IAdditionalEnchantment> optional = additionalEnchantment.enchantmentCallback();
+                    if (optional.isPresent()) {
+                        experienceDrop = optional.get().modifyExprienceDrop(entry.getValue(), experienceDrop, target, (Player) attacker);
+                    }
+                }
+            }
+        }
+        return experienceDrop;
+    }
     //TODO: Enchantment Post Mitigation Damage
     private float enchantmentPostMitigationDamage(LivingEntity attacker, float damageDealt, DamageSource source, LivingEntity target) {
         for (EquipmentSlot slot : EquipmentSlot.values()) {
@@ -748,6 +770,7 @@ public class ServerEventHandler {
         int originalExperience = event.getOriginalExperience();
         int modifiyDropExperience = 0;
         ItemStack itemStack = player.getMainHandItem();
+        modifiyDropExperience = this.enchantmentModifiyExpDrop(player, droppedExperience, target);
         if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems<?> skillItems) {
             for (Skill skill : skillItems.getSkills()) {
                 Optional<IEntityProperties> callback = skill.IEntityProperties();
@@ -792,6 +815,11 @@ public class ServerEventHandler {
                 }
             }
         }
+    }
+
+    private boolean inStructures(ServerLevel level, Player player, ResourceKey<Structure> structure) {
+        var isAt = LocationPredicate.inStructure(structure);
+        return isAt.matches(level, player.getX(), player.getY(), player.getZ());
     }
 
     @SubscribeEvent

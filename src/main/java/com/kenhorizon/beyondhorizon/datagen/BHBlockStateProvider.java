@@ -14,6 +14,8 @@ public class BHBlockStateProvider extends BlockStateBuilder {
     protected void registerStatesAndModels() {
         this.blockWithItem(BHBlocks.VOIDSTONE);
         this.blockWithItem(BHBlocks.STARITE_ORE);
+        this.blockWithItem(BHBlocks.HELLSTONE_ORE);
+        this.blockWithItem(BHBlocks.NETHERRACK_HELLSTONE_ORE);
         this.fullFaceBlock(BHBlocks.WORKBENCH);
         this.blockWithItem(BHBlocks.DUNGEON_BRICKS);
         this.blockWithItem(BHBlocks.SILTSTONE);
@@ -40,6 +42,7 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.stairsBlocks(BHBlocks.POLISHED_NETHER_STAIR, BHBlocks.POLISHED_NETHER);
         this.blockWithItem(BHBlocks.CUT_BLACK_NETHER_BRICKS);
         this.blockWithItem(BHBlocks.BLACK_NETHER_BRICKS);
+        this.axisBlock(BHBlocks.PURPUR_END_STONE_PILLAR);
         this.axisBlock(BHBlocks.BLACK_NETHER_PILLAR);
         this.slabBlocks(BHBlocks.BLACK_NETHER_BRICK_SLAB, BHBlocks.BLACK_NETHER_BRICKS);
         this.stairsBlocks(BHBlocks.BLACK_NETHER_BRICK_STAIR, BHBlocks.BLACK_NETHER_BRICKS);
@@ -47,6 +50,11 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.NETHER_BRICK_LANTERN);
         this.standBasinBlocks(BHBlocks.FIRE_BASIN);
         this.standWallBasinBlocks(BHBlocks.WALL_FIRE_BASIN);
+        this.blockWithItem(BHBlocks.DESOLATE_OBSIDIAN);
+        this.blockWithItem(BHBlocks.DESOLATE_OBSIDIAN_BRICKS);
+        this.slabBlocks(BHBlocks.DESOLATE_OBSIDIAN_BRICK_SLAB, BHBlocks.DESOLATE_OBSIDIAN_BRICKS);
+        this.stairsBlocks(BHBlocks.DESOLATE_OBSIDIAN_BRICK_STAIR, BHBlocks.DESOLATE_OBSIDIAN_BRICKS);
         this.baseSpawnerBlocks(BHBlocks.SPAWNER, BeyondHorizon.resource("block/base_spawner_top"), BeyondHorizon.resource("block/base_spawner_bottom"), BeyondHorizon.resource("block/base_spawner_side"));
+        this.blockWithItem(BHBlocks.GATE, BeyondHorizon.resource("block/gate_top"), BeyondHorizon.resource("block/gate_bottom"), BeyondHorizon.resource("block/gate_side"));
     }
 }

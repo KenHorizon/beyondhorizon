@@ -284,9 +284,6 @@ public class BHBaseSpawner {
     }
 
     public void save(CompoundTag nbt) {
-        nbt.put("configs", this.codec()
-                .encodeStart(NbtOps.INSTANCE, this)
-                .getOrThrow(false, error -> BeyondHorizon.LOGGER.error("Failed to load {}", error)));
 
     }
 

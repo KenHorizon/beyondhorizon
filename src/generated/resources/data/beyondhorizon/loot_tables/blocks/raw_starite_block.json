@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:raw_starite_block"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "beyondhorizon:blocks/raw_starite_block"
+}

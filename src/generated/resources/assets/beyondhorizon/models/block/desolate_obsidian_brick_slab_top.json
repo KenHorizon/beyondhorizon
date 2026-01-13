@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "beyondhorizon:block/desolate_obsidian_bricks",
+    "side": "beyondhorizon:block/desolate_obsidian_bricks",
+    "top": "beyondhorizon:block/desolate_obsidian_bricks"
+  }
+}

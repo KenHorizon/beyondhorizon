@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "__comment": "all mobs that cannot be controlled with a totem of possession.",
+  "values": [
+    "beyondhorizon:blazing_inferno"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "beyondhorizon:block/gate_bottom",
+    "east": "beyondhorizon:block/gate_side",
+    "north": "beyondhorizon:block/gate_side",
+    "particle": "beyondhorizon:block/gate_side",
+    "south": "beyondhorizon:block/gate_side",
+    "up": "beyondhorizon:block/gate_top",
+    "west": "beyondhorizon:block/gate_side"
+  }
+}

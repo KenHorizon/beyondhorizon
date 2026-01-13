@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
+import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
@@ -32,6 +33,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -124,10 +126,11 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.HELLFIRE_ORB.get(), HellfireOrbRenderer::new);
         EntityRenderers.register(BHEntity.HELLFIRE_ROD.get(), HellfireRodRenderer::new);
 
-//        BlockEntityRenderers.register(BHBlockEntity.BASE_SPAWNER.get(), BaseSpawnerRenderer::new);
+        BlockEntityRenderers.register(BHBlockEntity.BASE_SPAWNER.get(), BaseSpawnerRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
+
         Raid.RaiderType.create("ILLUSIONER", EntityType.ILLUSIONER, new int[]{0, 0, 1, 2, 2, 3, 4, 5});
     }
 

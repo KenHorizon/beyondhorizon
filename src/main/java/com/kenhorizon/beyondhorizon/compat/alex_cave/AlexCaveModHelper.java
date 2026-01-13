@@ -8,10 +8,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class AlexCaveModHelper {
-    public static final ResourceLocation IRRADIATED = alexCave("irradiated");
+    public static final ResourceLocation IRRADIATED = mod("irradiated");
 
-    public static ResourceLocation alexCave(String rl) {
+    public static ResourceLocation mod(String rl) {
         return ModCompats.getMod(ModLists.ALEX_CAVES).getRL(rl);
+    }
+
+    public static boolean isLoaded() {
+        return ModCompats.getMod(ModLists.ALEX_CAVES).isModLoaded();
     }
 
     public static boolean isIrradiated(LivingEntity entity) {

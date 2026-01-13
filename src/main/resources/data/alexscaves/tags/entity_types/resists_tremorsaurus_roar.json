@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "__comment": "all mobs that are not shaken by a tremorsaurus roar.",
+  "values": [
+    "beyondhorizon:blazing_inferno"
+  ]
+}

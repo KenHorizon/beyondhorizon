@@ -30,18 +30,21 @@ public class BHSoundProvider extends SoundDefinitionsProvider {
     @Override
     public void registerSounds() {
         this.add(BHSounds.HEAVY_ATTACK, "generic/heavy_hit/heavyhit", 3);
+
         this.add(BHSounds.BLAZING_INFERNO_SHOOT, "mob/blazing_inferno/shoot/shoot", 2);
         this.add(BHSounds.BLAZING_INFERNO_SHOCKWAVE, "mob/blazing_inferno/shockwave/shockwave", 3);
         this.add(BHSounds.BLAZING_INFERNO_GROWL, "mob/blazing_inferno/growl/growl", 4);
         this.add(BHSounds.BLAZING_INFERNO_HURT, "mob/blazing_inferno/hurt/hurt", 3);
         this.add(BHSounds.BLAZING_INFERNO_IDLE, "mob/blazing_inferno/idle/idle", 4);
         this.add(BHSounds.BLAZING_INFERNO_STEP, "mob/blazing_inferno/scream");
-        this.add(BHSounds.BLAZING_INFERNO_DEATH, "mob/blazing_inferno/charging/death", 3);
+        this.add(BHSounds.BLAZING_INFERNO_DEATH, "mob/blazing_inferno/death/death", 3);
         this.add(BHSounds.BLAZING_INFERNO_CHARGE, "mob/blazing_inferno/charging/charging", 4);
         this.add(BHSounds.BLAZING_INFERNO_EXPLOSION, "mob/blazing_inferno/explosion");
         this.add(BHSounds.BLAZING_INFERNO_DEATH_RAY, "mob/blazing_inferno/death_ray");
         this.add(BHSounds.BLAZING_INFERNO_DEATH_RAY_CHARGING, "mob/blazing_inferno/death_ray_charging");
-        this.add(BHSounds.INFERNO_SHIELD_BREAK, "block/inferno_shield/break", 3);
+
+        this.add(BHSounds.INFERNO_SHIELD_BREAK, "mob/inferno_shield/break", 3);
+
         this.add(BHSounds.SPAWNER_HIT, "block/spawner_block/break", 3);
         this.add(BHSounds.SPAWNER_BREAK, "block/spawner_block/break", 3);
         this.add(BHSounds.SPAWNER_FALL, "block/spawner_block/step", 5);

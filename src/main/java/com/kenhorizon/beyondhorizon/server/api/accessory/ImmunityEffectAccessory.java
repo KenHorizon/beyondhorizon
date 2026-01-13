@@ -3,6 +3,8 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 import com.google.common.collect.ImmutableList;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.tags.BHEffectTags;
+import com.kenhorizon.beyondhorizon.server.util.EffectUtil;
+import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -12,6 +14,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -26,10 +29,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ImmunityEffectAccessory extends AccessorySkill {
-    protected boolean removeEffectOnTick = false;
-    protected boolean cancelDamageOfEffect = false;
-    protected List<MobEffect> mobEffectList = ImmutableList.of();
-    protected TagKey<MobEffect> mobEffectTag;
+    private boolean removeEffectOnTick = false;
+    private boolean cancelDamageOfEffect = false;
+    private List<MobEffect> mobEffectList = ImmutableList.of();
+    private TagKey<MobEffect> mobEffectTag = null;
 
     public ImmunityEffectAccessory(MobEffect... mobEffect) {
         ImmutableList.Builder<MobEffect> map = ImmutableList.builder();
@@ -39,26 +42,6 @@ public class ImmunityEffectAccessory extends AccessorySkill {
 
     public ImmunityEffectAccessory(TagKey<MobEffect> mobEffectTags) {
         this.mobEffectTag = mobEffectTags;
-        var registry = ForgeRegistries.MOB_EFFECTS;
-        ITagManager<MobEffect> tagManager = registry.tags();
-        if (tagManager.isKnownTagName(BHEffectTags.BODY_POISON_IMMUNE_TO)) {
-            BeyondHorizon.LOGGER.error("[Accessory] Effect tag {} couldn't be found", mobEffectTags.location());
-        }
-        ITag<MobEffect> tag = tagManager.getTag(mobEffectTags);
-        this.mobEffectList = tag.stream().collect(Collectors.toUnmodifiableList());
-
-//        ForgeRegistry<MobEffect> registry = RegistryManager.ACTIVE.getRegistry(ForgeRegistries.Keys.MOB_EFFECTS);
-//        ITagManager<MobEffect> tagManager = registry.tags();
-//        if (!tagManager.isKnownTagName(mobEffectTags)) {
-//            BeyondHorizon.LOGGER.error("[Accessory] Effect tag {} couldn't be found", mobEffectTags.location());
-//        } else {
-//            BeyondHorizon.LOGGER.info("[Accessory] Effect tag {} found", mobEffectTags.location());
-//        }
-//        ITag<MobEffect> tag = tagManager.getTag(mobEffectTags);
-//        this.mobEffectList = tag.stream().collect(Collectors.toUnmodifiableList());
-//        for (MobEffect instance : this.mobEffectList) {
-//            BeyondHorizon.LOGGER.debug("[Accessory] Effect List: {}", instance.getDisplayName());
-//        }
     }
 
     @Override
@@ -104,13 +87,20 @@ public class ImmunityEffectAccessory extends AccessorySkill {
 
     @Override
     public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
+        MobEffect effect = null;
         for (MobEffectInstance instance : entity.getActiveEffects()) {
             if (!entity.level().isClientSide()) {
-                if (this.removeEffectOnTick && instance.getEffect() == this.getMobEffect() && entity.hasEffect(this.getMobEffect())) {
-                    BeyondHorizon.LOGGER.debug("[Accessory/Divine Ankh] Remove Effects {}", instance.getEffect().getDisplayName());
-                    entity.removeEffect(instance.getEffect());
+                if (instance != null) {
+                    boolean flag = EffectUtil.is(instance.getEffect(), this.mobEffectTag);
+                    if (this.isRemoveOnTick() && flag) {
+                        BeyondHorizon.LOGGER.debug("[Accessory/Divine Ankh] Remove Effects {}", instance.getEffect().getDisplayName());
+                        effect = instance.getEffect();
+                    }
                 }
             }
+        }
+        if (effect != null) {
+            entity.removeEffect(effect);
         }
     }
 

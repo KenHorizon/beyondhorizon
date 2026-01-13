@@ -12,9 +12,13 @@ import java.util.stream.Collectors;
 public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder NONE = new AccessoryBuilder(List.of(Accessories.NONE));
 
-    public static final AccessoryBuilder BROKEN_SHULKER_SHELL = new AccessoryBuilder(List.of(Accessories.NULLIFY));
-    public static final AccessoryBuilder ARMOR_PLATE = new AccessoryBuilder(List.of(Accessories.NULLIFY));
-    public static final AccessoryBuilder VITAMINS = new AccessoryBuilder(List.of(Accessories.NULLIFY));
+    public static final AccessoryBuilder CARBONIZED_BONE = new AccessoryBuilder(List.of(Accessories.PRESERVED));
+    public static final AccessoryBuilder CURSED_BLINDFOLD = new AccessoryBuilder(List.of(Accessories.SEEK_ONE_SEEK_TWICE));
+    public static final AccessoryBuilder MASK_OF_BEWILDERED = new AccessoryBuilder(List.of(Accessories.UNBOTHERED));
+    public static final AccessoryBuilder BROKEN_SHULKER_SHELL = new AccessoryBuilder(List.of(Accessories.WEIGHTS));
+    public static final AccessoryBuilder ARMOR_PLATE = new AccessoryBuilder(List.of(Accessories.INVULNERABLE));
+    public static final AccessoryBuilder ADHESIVE_BANDAGES = new AccessoryBuilder(List.of(Accessories.HEMORRHAGE_CONTROL));
+    public static final AccessoryBuilder VITAMINS = new AccessoryBuilder(List.of(Accessories.VITAMINS));
 
     public static final AccessoryBuilder NULL_SWORD = new AccessoryBuilder(List.of(Accessories.NULLIFY));
     public static final AccessoryBuilder INFINITY_SWORD = new AccessoryBuilder(List.of(Accessories.LETHAL_BURST));

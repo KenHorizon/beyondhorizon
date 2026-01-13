@@ -195,12 +195,6 @@
     ],
     "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.idle"
   },
-  "mob.blazing_inferno.scream": {
-    "sounds": [
-      "beyondhorizon:mob/blazing_inferno/scream"
-    ],
-    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.scream"
-  },
   "mob.blazing_inferno.shockwave": {
     "sounds": [
       "beyondhorizon:mob/blazing_inferno/shockwave/shockwave1",
@@ -218,10 +212,7 @@
   },
   "mob.blazing_inferno.step": {
     "sounds": [
-      "beyondhorizon:mob/blazing_inferno/step/step1",
-      "beyondhorizon:mob/blazing_inferno/step/step2",
-      "beyondhorizon:mob/blazing_inferno/step/step3",
-      "beyondhorizon:mob/blazing_inferno/step/step4"
+      "beyondhorizon:mob/blazing_inferno/scream"
     ],
     "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.step"
   },

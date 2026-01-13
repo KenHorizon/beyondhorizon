@@ -1,9 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.datagen.BHLangProvider;
+import com.kenhorizon.beyondhorizon.server.effect.BHMobEffect;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
+import com.kenhorizon.beyondhorizon.server.tags.BHEffectTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -127,7 +129,14 @@ public class Accessories {
 
     public static final RegistryObject<Accessory> KNOWLEDGE = registerSkill("knowledge", () -> new ExperienceAccessory(Constant.KNOWLEDGE_XP_MODIFIER));
 
-    public static final RegistryObject<Accessory> WEIGHTS = registerSkill("weights", () -> new ExperienceAccessory(Constant.KNOWLEDGE_XP_MODIFIER));
+    public static final RegistryObject<Accessory> WEIGHTS = registerSkill("weights", () -> new ImmunityEffectAccessory(BHEffectTags.WEIGHT_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> VITAMINS = registerSkill("vitamins", () -> new ImmunityEffectAccessory(BHEffectTags.VITAMINS_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> INVULNERABLE = registerSkill("invulnerable", () -> new ImmunityEffectAccessory(BHEffectTags.INVULNERABLE_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> HEMORRHAGE_CONTROL = registerSkill("hemorrhage_control", () -> new ImmunityEffectAccessory(BHEffectTags.HEMORRHAGE_CONTROL_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> BAD_APPLE = registerSkill("bad_apple", () -> new ImmunityEffectAccessory(BHEffectTags.BODY_POISON_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> SEEK_ONE_SEEK_TWICE = registerSkill("seek_one_seek_twice", () -> new ImmunityEffectAccessory(BHEffectTags.SEEK_ONE_SEEK_TWICE_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> UNBOTHERED = registerSkill("unbothered", () -> new ImmunityEffectAccessory(BHEffectTags.UNBOTHERED_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> PRESERVED = registerSkill("preserved", () -> new ImmunityEffectAccessory(BHEffectTags.PRESERVED_IMMUNE_TO).removeOnTick());
 
     public static final RegistryObject<Accessory> VENOM = registerSkill("venom", () -> new ApplyEffectAccessory((int) Constant.VENOM_DURATION, (int) Constant.VENOM_POISON_LEVEL, MobEffects.POISON, BHEffects.LETHAL_POISON.get())
             .chances(Constant.VENOM_INFLICT_CHANCE));

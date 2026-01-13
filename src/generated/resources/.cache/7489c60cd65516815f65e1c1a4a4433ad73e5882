@@ -1,4 +1,5 @@
-// 1.20.1	2026-01-12T20:40:08.7298002	Item Models: beyondhorizon
+// 1.20.1	2026-01-13T12:10:30.3648717	Item Models: beyondhorizon
+7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
 bc4bd470691ac94e76d84763498ebdb51c69b6ef assets/beyondhorizon/models/item/agile_dagger.json
 81e672adaad488959227245db22ca6da1a6c7d5d assets/beyondhorizon/models/item/ampliflying_tome.json
@@ -17,10 +18,12 @@ dc3804f8766858ba7c08050177ed01830661ab8c assets/beyondhorizon/models/item/boots.
 178bd6b4eebf361baf4543904cd1998143ed4bab assets/beyondhorizon/models/item/broken_hero_sword.json
 818cf761749a0767bf5a1b7eb19124d2b46b1a3b assets/beyondhorizon/models/item/broken_shulker_shell.json
 a97479f7514763ce288f911c54ed1bdfb4b724ef assets/beyondhorizon/models/item/brown_wool_fur.json
+87f90f2d23bd2c3806037e9a9a37c010b311643c assets/beyondhorizon/models/item/carbonized_bone.json
 f262f6dd5af2d28e9dd0926ab3939c3d9d78dea8 assets/beyondhorizon/models/item/chain_plate.json
 0c4edd5204a6f8f688fba2991e9dddd3085e88fd assets/beyondhorizon/models/item/chain_vest.json
 cf2fa7ac02a93f111a965393ce3b2bfcece9f7af assets/beyondhorizon/models/item/cinder_stone.json
 08f3f24e998dbe7a32d05f1080008929b8e553c2 assets/beyondhorizon/models/item/crystallized_plate.json
+b087597c66d43451f6cf518fe969e7a42c47e2b2 assets/beyondhorizon/models/item/cursed_blindfold.json
 432c882104358a9688ab01e52f4138c64815bd1a assets/beyondhorizon/models/item/cyan_wool_fur.json
 b855fdb2c78b573c0e717cb9a9948450b6079604 assets/beyondhorizon/models/item/dark_crystal.json
 0c72a1a96f11e47ede9e9d15a449faf88730f8a9 assets/beyondhorizon/models/item/dark_essence_crystal.json
@@ -59,6 +62,7 @@ e8028c4201c3c27c867b7c515b379d57e441cba6 assets/beyondhorizon/models/item/infini
 5c1465778f8df57bbb766d3937a7020e7f22ff61 assets/beyondhorizon/models/item/luminite_ingot.json
 8fb217c40292c38368d67141a94a6d4306e750c0 assets/beyondhorizon/models/item/magenta_wool_fur.json
 f6ca3709d68e38f21a87b2cad5be9b5348c1e860 assets/beyondhorizon/models/item/mask_of_agony.json
+b2f43174d163177bf6e76674a3a457ee16329a1d assets/beyondhorizon/models/item/mask_of_bewildered.json
 ad7deea38ea7f781b1e24c5223f796ffb35a9719 assets/beyondhorizon/models/item/miner_boots.json
 ed31ccc37159ce9d10539435aa6dc901a8e2864b assets/beyondhorizon/models/item/miner_gloves.json
 e86bba503b61d6ac12ff1a92db83b9b2b6f4e2dc assets/beyondhorizon/models/item/null_magic_rune.json

@@ -9,7 +9,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.Mob;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryManager;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +42,10 @@ public class BHMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEffe
                 .add(
                         BHEffects.BLEED.get()
                 );
+        this.tag(BHEffectTags.VITAMINS_IMMUNE_TO)
+                .add(
+                        MobEffects.HUNGER
+                );
         this.tag(BHEffectTags.HAUNTING_GUISE_IMMUNE_TO)
                 .add(
                         MobEffects.CONFUSION
@@ -54,6 +57,26 @@ public class BHMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEffe
         this.tag(BHEffectTags.LIGHTNESS_IMMUNE_TO)
                 .add(
                         MobEffects.WITHER
+                );
+        this.tag(BHEffectTags.HEMORRHAGE_CONTROL_IMMUNE_TO)
+                .add(
+                        BHEffects.BLEED.get()
+                );
+        this.tag(BHEffectTags.INVULNERABLE_IMMUNE_TO)
+                .add(
+                        BHEffects.VULNERABLE.get()
+                );
+        this.tag(BHEffectTags.UNBOTHERED_IMMUNE_TO)
+                .add(
+                        MobEffects.CONFUSION
+                );
+        this.tag(BHEffectTags.PRESERVED_IMMUNE_TO)
+                .add(
+                        MobEffects.WITHER
+                );
+        this.tag(BHEffectTags.SEEK_ONE_SEEK_TWICE_IMMUNE_TO)
+                .add(
+                        MobEffects.BLINDNESS
                 );
         this.tag(BHEffectTags.DIVINE_ANKH_IMMUNE_TO)
                 .add(

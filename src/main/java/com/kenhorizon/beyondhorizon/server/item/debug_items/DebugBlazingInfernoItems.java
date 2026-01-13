@@ -47,6 +47,7 @@ public class DebugBlazingInfernoItems extends BasicItem {
                 spawnPos = blockPos.relative(direction);
             }
             BlazingInferno boss = new BlazingInferno(BHEntity.BLAZING_INFERNO.get(), level);
+            boss.setXRot(-context.getPlayer().getXRot());
             boss.setIsPowered(false);
             boss.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             level.addFreshEntity(boss);

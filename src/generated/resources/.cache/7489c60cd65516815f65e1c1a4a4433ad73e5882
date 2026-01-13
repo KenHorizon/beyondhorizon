@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-13T12:10:30.3648717	Item Models: beyondhorizon
+// 1.20.1	2026-01-13T14:00:32.0638216	Item Models: beyondhorizon
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
 bc4bd470691ac94e76d84763498ebdb51c69b6ef assets/beyondhorizon/models/item/agile_dagger.json
@@ -23,6 +23,7 @@ f262f6dd5af2d28e9dd0926ab3939c3d9d78dea8 assets/beyondhorizon/models/item/chain_
 0c4edd5204a6f8f688fba2991e9dddd3085e88fd assets/beyondhorizon/models/item/chain_vest.json
 cf2fa7ac02a93f111a965393ce3b2bfcece9f7af assets/beyondhorizon/models/item/cinder_stone.json
 08f3f24e998dbe7a32d05f1080008929b8e553c2 assets/beyondhorizon/models/item/crystallized_plate.json
+775cdbc7976d4fbb83576a08caa7162987b7d0ff assets/beyondhorizon/models/item/cursed_apple.json
 b087597c66d43451f6cf518fe969e7a42c47e2b2 assets/beyondhorizon/models/item/cursed_blindfold.json
 432c882104358a9688ab01e52f4138c64815bd1a assets/beyondhorizon/models/item/cyan_wool_fur.json
 b855fdb2c78b573c0e717cb9a9948450b6079604 assets/beyondhorizon/models/item/dark_crystal.json

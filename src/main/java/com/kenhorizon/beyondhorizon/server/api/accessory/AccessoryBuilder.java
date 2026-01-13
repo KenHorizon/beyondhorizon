@@ -18,6 +18,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder BROKEN_SHULKER_SHELL = new AccessoryBuilder(List.of(Accessories.WEIGHTS));
     public static final AccessoryBuilder ARMOR_PLATE = new AccessoryBuilder(List.of(Accessories.INVULNERABLE));
     public static final AccessoryBuilder ADHESIVE_BANDAGES = new AccessoryBuilder(List.of(Accessories.HEMORRHAGE_CONTROL));
+    public static final AccessoryBuilder CURSED_APPLE = new AccessoryBuilder(List.of(Accessories.BAD_APPLE));
     public static final AccessoryBuilder VITAMINS = new AccessoryBuilder(List.of(Accessories.VITAMINS));
 
     public static final AccessoryBuilder NULL_SWORD = new AccessoryBuilder(List.of(Accessories.NULLIFY));

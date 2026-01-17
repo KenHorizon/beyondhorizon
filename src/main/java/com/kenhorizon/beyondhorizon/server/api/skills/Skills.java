@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
+import com.kenhorizon.beyondhorizon.server.api.skills.item_properties.GuardianSwordProperties;
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
@@ -83,6 +84,8 @@ public class Skills {
             .universal()
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));
+
+    public static final RegistryObject<Skill> GUARDIAN_SWORD_TRAIT = registerSkill("guardian_sword_trait", GuardianSwordProperties::new);
 
     public static RegistryObject<Skill> registerSkill(String name, Supplier<Skill> properties) {
         return BHRegistries.DEFERRED_SKILL.register(name, properties);

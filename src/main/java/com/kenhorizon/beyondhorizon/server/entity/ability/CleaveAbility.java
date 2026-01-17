@@ -28,6 +28,7 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 public class CleaveAbility extends AbilityEntity {
+    public static final int CLEAVE_DURATION = 15;
     public enum Type {
         CIRCLE,
         CONE
@@ -44,7 +45,6 @@ public class CleaveAbility extends AbilityEntity {
         ability.setBaseDamage(damage);
         ability.setRadius(range);
         ability.setPos(target.position().add(0, target.getBbHeight() * 0.05D, 0));
-        ability.setSourceDamage(owner);
         ability.setCleaveType(type);
         ability.setCaster(owner);
         ability.setCasterID(owner.getUUID());
@@ -60,26 +60,28 @@ public class CleaveAbility extends AbilityEntity {
     }
 
     @Override
-    protected void onStart() {
-        float yaw = (float) Math.toRadians(-this.getYRot());
-        float pitch = (float) Math.toRadians(-this.getXRot());
-        float spread = 0.25f;
-        float speed = 1.56f;
-        float xComp = (float) (Math.sin(yaw) * Math.cos(pitch));
-        float yComp = (float) (Math.sin(pitch));
-        float zComp = (float) (Math.cos(yaw) * Math.cos(pitch));
-        if (this.level().isClientSide()) {
+    public void handleEntityEvent(byte id) {
+        super.handleEntityEvent(id);
+        if (id == 4) {
+            float yaw = (float) Math.toRadians(-this.getYRot());
+            float pitch = (float) Math.toRadians(-this.getXRot());
+            float spread = 0.25f;
+            float speed = 1.56f;
+            float xComp = (float) (Math.sin(yaw) * Math.cos(pitch));
+            float yComp = (float) (Math.sin(pitch));
+            float zComp = (float) (Math.cos(yaw) * Math.cos(pitch));
+
             if (this.getCleaveType() == Type.CONE) {
                 float r = ColorUtil.getFARGB(0xFFFFFF)[0];
                 float g = ColorUtil.getFARGB(0xFFFFFF)[1];
                 float b = ColorUtil.getFARGB(0xFFFFFF)[2];
-                this.level().addParticle(new RingParticleOptions(yaw, -pitch, 15, r, g, b, 1.0F, 110.0F * spread, false, RingParticles.Behavior.GROW), this.getX(), this.getY() + 0.1D, this.getZ(), speed * xComp, speed * yComp, speed * zComp);
+                this.level().addParticle(new RingParticleOptions(yaw, -pitch, CLEAVE_DURATION, r, g, b, 1.0F, 110.0F * spread, false, RingParticles.Behavior.GROW), this.getX(), this.getY() + 0.1D, this.getZ(), speed * xComp, speed * yComp, speed * zComp);
             }
             if (this.getCleaveType() == Type.CIRCLE) {
                 float r = ColorUtil.getFARGB(0xFF6500)[0];
                 float g = ColorUtil.getFARGB(0xFF6500)[1];
                 float b = ColorUtil.getFARGB(0xFF6500)[2];
-                this.level().addParticle(new RingParticleOptions(0, (float) Math.PI / 2, 15, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+                this.level().addParticle(new RingParticleOptions(0, (float) Math.PI / 2, CLEAVE_DURATION, r, g, b, 1.0F, 32.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
             }
         }
     }
@@ -87,6 +89,10 @@ public class CleaveAbility extends AbilityEntity {
     @Override
     protected void onEnd() {
         LivingEntity user = this.getCaster();
+        if (!this.sentSpikeEvent) {
+            this.level().broadcastEntityEvent(this, (byte) 4);
+            this.sentSpikeEvent = true;
+        }
         if (this.getCleaveType() == Type.CIRCLE) {
             this.cleaveAttack();
         }
@@ -95,24 +101,20 @@ public class CleaveAbility extends AbilityEntity {
                 this.coneAttack();
             }
         }
-        if (!this.sentSpikeEvent) {
-            this.level().broadcastEntityEvent(this, (byte) 4);
-            this.sentSpikeEvent = true;
-        }
     }
+
     public void cleaveAttack() {
         LivingEntity attacker = this.getCaster();
-        List<Entity> entityOnRangeInCleave = this.level().getEntities(this, this.getBoundingBox().inflate(this.getRadius()));
-        for (Entity entityOnRange : entityOnRangeInCleave) {
+        List<Entity> cleaveRange = this.level().getEntities(this, this.getBoundingBox().inflate(this.getRadius()));
+        for (Entity entityOnRange : cleaveRange) {
             if (entityOnRange instanceof LivingEntity targetOnRange) {
                 if (targetOnRange == attacker || targetOnRange == this.getTarget()) continue;
                 if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
-                    targetOnRange.hurt(BHDamageTypes.physicalDamage(this, attacker), this.getBaseDamage());
+                    targetOnRange.hurt(BHDamageTypes.physicalDamage(this), this.getBaseDamage());
                 }
             }
         }
     }
-
 
     public void coneAttack() {
         LivingEntity attacker = this.getCaster();

@@ -1,14 +1,29 @@
 package com.kenhorizon.beyondhorizon.server.entity.util;
 
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class EntityUtils {
+    public static double getAttackDamage(LivingEntity entity) {
+        double attackDamage = entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
+        double effectivness = entity.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
+        if (entity instanceof Player player) {
+            float cooldownFactor = player.getAttackStrengthScale(0.0F);
+            return (attackDamage * effectivness) * cooldownFactor;
+        } else {
+            return attackDamage * effectivness;
+        }
+    }
+
     public static void groundSlamParticles(Level level, float yBodyRot, double x, double y, double z, float radius, float vec, float math) {
         RandomSource random = level.getRandom();
         for (int i1 = 0; i1 < 120 + random.nextInt(12); i1++) {

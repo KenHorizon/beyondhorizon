@@ -28,8 +28,8 @@ public abstract class ArmorBonusSet implements ArmorSet {
 
     public static final Map<UUID, Set<ResourceLocation>> ACTIVE_SETS = new HashMap<>();
 
-    public ArmorBonusSet(ResourceLocation id, int tooltipLines, ItemStack head, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
-        this.id = id;
+    public ArmorBonusSet(String id, int tooltipLines, ItemStack head, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
+        this.id = BeyondHorizon.resource(id);
         this.tooltipLines = tooltipLines;
         this.head = head;
         this.chestplate = chestplate;
@@ -48,7 +48,6 @@ public abstract class ArmorBonusSet implements ArmorSet {
 
     @Override
     public void applyBonus(Player player) {
-        BeyondHorizon.LOGGER.error("applied!!");
     }
 
     @Override

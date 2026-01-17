@@ -23,12 +23,12 @@ public class WeaponSkills extends Skill implements IAttack, IEntityProperties {
     }
 
     @Override
-    public Optional<IAttack> IAttackCallback() {
+    public Optional<IAttack> attack() {
         return Optional.of(this);
     }
 
     @Override
-    public Optional<IEntityProperties> IEntityProperties() {
+    public Optional<IEntityProperties> entityProperties() {
         return Optional.of(this);
     }
 

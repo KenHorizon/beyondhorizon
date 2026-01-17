@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
+import com.kenhorizon.libs.datagen.SoundDefinitionFactory;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.core.particles.ParticleType;
@@ -17,13 +18,8 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class BHSoundProvider extends SoundDefinitionsProvider {
-    /**
-     * Creates a new instance of this data provider.
-     *
-     * @param output The {@linkplain PackOutput} instance provided by the data generator.
-     * @param helper The existing file helper provided by the event you are initializing this provider in.
-     */
+public class BHSoundProvider extends SoundDefinitionFactory {
+
     public BHSoundProvider(PackOutput output, ExistingFileHelper helper) {
         super(output, BeyondHorizon.ID, helper);
     }
@@ -61,37 +57,5 @@ public class BHSoundProvider extends SoundDefinitionsProvider {
         this.add(BHSounds.SPAWNER_OPEN_SHUTTER, "block/spawner_block/open_shutter");
         this.add(BHSounds.SPAWNER_CLOSE_SHUTTER, "block/spawner_block/close_shutter");
         this.add(BHSounds.SPAWNER_DETECT_PLAYER, "block/spawner_block/detect_player", 3);
-    }
-
-    protected void add(final RegistryObject<? extends SoundEvent> soundEvent, final String definition) {
-        add(soundEvent, definition, 1);
-    }
-    protected void add(final RegistryObject<? extends SoundEvent> soundEvent, final String definition, int count) {
-        String localization = String.format("subtitle.%s.%s", BeyondHorizon.ID, soundEvent.get().getLocation().getPath());
-        BeyondHorizon.LOGGER.debug("Check sound {}", localization);
-        boolean check = !RegistryLanguage.ADD_SOUNDS_TRANSLATION.getOrDefault(localization, "").isBlank();
-        SoundDefinition.Sound[] addSounds = new SoundDefinition.Sound[count];
-        for (int i = 0; i < count; i++) {
-            String str0 = definition + (1 + i);
-            String str1 = definition;
-            addSounds[i] = (this.addSounds(count == 1 ? str1 : str0));
-        }
-        if (check) {
-            this.add(soundEvent.get(), subtitle(soundEvent).with(addSounds));
-        } else {
-            this.add(soundEvent.get(), SoundDefinition.definition().with(addSounds));
-        }
-    }
-
-    private SoundDefinition subtitle(Supplier<? extends SoundEvent> subtile) {
-        return SoundDefinition.definition().subtitle(String.format("subtitle.%s.%s", BeyondHorizon.ID, subtile.get().getLocation().getPath()));
-    }
-
-    private SoundDefinition.Sound addSounds(String sound) {
-        return addSounds(sound, SoundDefinition.SoundType.SOUND);
-    }
-
-    private SoundDefinition.Sound addSounds(String sound, SoundDefinition.SoundType type) {
-        return SoundDefinition.Sound.sound(BeyondHorizon.resource(sound), type);
     }
 }

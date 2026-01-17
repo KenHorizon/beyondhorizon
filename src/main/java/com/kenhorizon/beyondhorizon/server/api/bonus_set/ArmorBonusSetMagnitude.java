@@ -1,14 +1,15 @@
 package com.kenhorizon.beyondhorizon.server.api.bonus_set;
 
-import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
+import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -25,16 +26,16 @@ public class ArmorBonusSetMagnitude extends ArmorBonusSet implements IAttack, IE
     private float magnitude;
     private float level;
 
-    public ArmorBonusSetMagnitude(float magnitude, float level, ResourceLocation id, int tooltipLines, ItemStack head, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
+    public ArmorBonusSetMagnitude(float magnitude, float level, String id, int tooltipLines, ItemStack head, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
         super(id, tooltipLines, head, chestplate, leggings, boots);
         this.magnitude = magnitude;
         this.level = level;
     }
-    public ArmorBonusSetMagnitude(float magnitude, ResourceLocation id, int tooltipLines, ItemStack head, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
+    public ArmorBonusSetMagnitude(float magnitude, String id, int tooltipLines, ItemStack head, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
         this(magnitude, 1.0F, id, tooltipLines, head, chestplate, leggings, boots);
     }
 
-    public ArmorBonusSetMagnitude(ResourceLocation id, int tooltipLines, ItemStack head, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
+    public ArmorBonusSetMagnitude(String id, int tooltipLines, ItemStack head, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
         this(0.0F, 1.0F, id, tooltipLines, head, chestplate, leggings, boots);
     }
 
@@ -88,13 +89,16 @@ public class ArmorBonusSetMagnitude extends ArmorBonusSet implements IAttack, IE
     }
 
     @Override
-    public float postMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (attacker == null || target == null) return damageDealt;
-//        if (this == ArmorBonusSets.WILDFIRE_ARMOR_SET) {
-//
-//        }
+    public float damageTaken(float damageDealt, DamageSource source, LivingEntity entity) {
+        if (entity == null) return damageDealt;
+        if (this == ArmorBonusSets.WILDFIRE_ARMOR_SET) {
+            float totalDamage = (float) EntityUtils.getAttackDamage(entity);
+            float dealDamage = this.getLevel() + (totalDamage * this.getMagnitude());
+            CleaveAbility.spawn(entity.level(), entity, entity, dealDamage, 8.0F, CleaveAbility.Type.CIRCLE);
+        }
         return damageDealt;
     }
+
 
     @Override
     public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {

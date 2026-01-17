@@ -41,6 +41,10 @@ public class BlazingRod extends ExtendedProjectile {
         this.setPos(x, y, z);
     }
 
+    public BlazingRod(Level level, LivingEntity shooter) {
+        this(level, shooter.getX(), shooter.getEyeY(), shooter.getZ(), shooter);
+    }
+
     @Override
     protected void onHit(HitResult hitResult) {
         super.onHit(hitResult);

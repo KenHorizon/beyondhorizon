@@ -88,7 +88,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         });
         if (this.skills != null) {
             this.skills.forEach((abilityTraits) -> {
-                abilityTraits.IEntityProperties().ifPresent(callback -> {
+                abilityTraits.entityProperties().ifPresent(callback -> {
                     callback.addAttributes(mapBuilder);
                 });
             });
@@ -138,7 +138,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         if (entity instanceof LivingEntity living) {
             if (this.skills != null) {
                 this.skills.forEach((skill) -> {
-                    skill.IEntityProperties().ifPresent(callback -> {
+                    skill.entityProperties().ifPresent(callback -> {
                         callback.onItemUpdate(itemStack, level, living, slot, isSelected);
                     });
                 });
@@ -234,7 +234,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     @Override
     public boolean onLeftClickEntity(ItemStack itemStack, Player player, Entity entity) {
         for (Skill skill : this.skills) {
-            Optional<IAttack> properties = skill.IAttackCallback();
+            Optional<IAttack> properties = skill.attack();
             if (properties.isPresent()) {
                 return properties.get().onLeftClickEntity(itemStack, player, entity);
             }
@@ -243,9 +243,20 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     }
 
     @Override
+    public boolean preventClickOthers(ItemStack stack, Player player) {
+        for (Skill skill : this.skills) {
+            Optional<IAttack> properties = skill.attack();
+            if (properties.isPresent()) {
+                return properties.get().onLeftClickProperties(stack, player);
+            }
+        }
+        return ILeftClick.super.preventClickOthers(stack, player);
+    }
+
+    @Override
     public boolean onLeftClick(ItemStack stack, Player player) {
         for (Skill skill : this.skills) {
-            Optional<IAttack> properties = skill.IAttackCallback();
+            Optional<IAttack> properties = skill.attack();
             if (properties.isPresent()) {
                 properties.get().onLeftClick(stack, player);
                 return true;

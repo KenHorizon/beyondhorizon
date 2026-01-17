@@ -6,7 +6,7 @@ import net.minecraft.world.item.ItemStack;
 
 public interface ILeftClick {
 
-    default boolean preventClickOthers() {
+    default boolean preventClickOthers(ItemStack stack, Player player) {
         return false;
     }
 

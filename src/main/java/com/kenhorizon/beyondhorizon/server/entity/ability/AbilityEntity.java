@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 
 import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
@@ -232,16 +233,16 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     @Override
     public void tick() {
         super.tick();
-        if (this.getLifeTime() <= (this.getDelay())) {
+        this.setLifeTime(this.getLifeTime() + 1);
+        this.animation.increaseTimer();
+        this.onDuration();
+        if (this.getLifeTime() <= (1 + this.getDelay())) {
             if (!this.sentSpikeEvent) {
                 this.level().broadcastEntityEvent(this, (byte) 4);
                 this.sentSpikeEvent = true;
             }
             this.onStart();
         }
-        this.setLifeTime(this.getLifeTime() + 1);
-        this.animation.increaseTimer();
-        this.onDuration();
         if (this.getLifeTime() >= (this.getDuration() + this.getDelay()) - 1) {
             this.onEnd();
         }
@@ -268,7 +269,7 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     }
 
     public DamageSource setSourceDamage(LivingEntity entity) {
-        return this.level().damageSources().mobProjectile(this, entity);
+        return BHDamageTypes.physicalDamage(this, entity);
     }
 
     public boolean checkEntity(Entity entity) {

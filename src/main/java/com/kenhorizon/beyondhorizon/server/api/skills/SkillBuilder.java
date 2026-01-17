@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class SkillBuilder implements IReloadable {
     public static final SkillBuilder NONE = new SkillBuilder(SkillTypes.UNIVERSAL, List.of(Skills.NONE));
-    public static final SkillBuilder ANCIENT_BLAZING_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.BLAZING_CLEAVE));
+    public static final SkillBuilder GUARDIAN = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.GUARDIAN_SWORD_TRAIT, Skills.BLAZING_CLEAVE));
     public static final SkillBuilder ELUDICATOR = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.DARK_BLADE));
     public static final SkillBuilder DARK_REPULSOR = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.PIERCING_EDEGE));
     public static final SkillBuilder RUINED_BLADE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.RUINED_BLADE));

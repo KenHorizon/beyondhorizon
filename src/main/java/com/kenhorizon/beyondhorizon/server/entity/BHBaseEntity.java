@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.entity;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.world.RoarParticleOptions;
 import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
+import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -176,8 +177,9 @@ public abstract class BHBaseEntity extends PathfinderMob {
     public float getAttackDamage() {
         return this.getAttackDamage(1.0F);
     }
+
     public float getAttackDamage(float percent) {
-        return (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * percent;
+        return (float) (EntityUtils.getAttackDamage(this) * percent);
     }
 
     public boolean getRandomChances(float value) {

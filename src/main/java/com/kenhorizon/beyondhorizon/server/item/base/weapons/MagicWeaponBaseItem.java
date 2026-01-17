@@ -64,7 +64,7 @@ public class MagicWeaponBaseItem extends TieredItem implements ISkillItems<Magic
         }
         if (this.skills != null) {
             this.skills.forEach((abilityTraits) -> {
-                abilityTraits.IEntityProperties().ifPresent(callback -> {
+                abilityTraits.entityProperties().ifPresent(callback -> {
                     callback.addAttributes(mapBuilder);
                 });
             });

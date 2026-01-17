@@ -8,6 +8,7 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
@@ -403,14 +404,17 @@ public abstract class Skill {
         this.tooltipNameEnable = tooltipEnableName;
     }
 
-    public Optional<IAttack> IAttackCallback() {
+    public Optional<IAttack> attack() {
         return Optional.empty();
     }
 
-    public Optional<IEntityProperties> IEntityProperties() {
+    public Optional<IEntityProperties> entityProperties() {
         return Optional.empty();
     }
 
+    public Optional<IItemProperties> itemProperties() {
+        return Optional.empty();
+    }
     public boolean isEnchantmentCompatible(Enchantment enchant) {
         return false;
     }

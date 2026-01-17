@@ -83,8 +83,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addEnchantmentDesc(BHEnchantments.SWIFTNESS, "Increased total movement speed");
         this.addEnchantmentDesc(BHEnchantments.SPELL_BLADE, "Convert percentage of the physical damage dealt into magic damage");
          //
-        this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 0, "Attacks inflict burning");
-        this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 1, "Increased %s%% Damage dealt");
+        this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 0, "Chance to release a shockwave dealing %s + %s%% total of attack damage");
+        this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 1, "Attacks inflict burning and increased %s%% damage dealt");
          //
         this.add(Tooltips.SKILL_TYPE, "%s");
         this.add(Tooltips.TOOLTIP_BONUS_ARMOR_SET, "Bonus set:");

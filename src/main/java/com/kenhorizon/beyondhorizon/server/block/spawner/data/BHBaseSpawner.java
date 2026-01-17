@@ -288,23 +288,7 @@ public class BHBaseSpawner {
     }
 
     public void load(CompoundTag nbt) {
-//        BHBaseSpawner packed = this.codec().parse(NbtOps.INSTANCE, nbt)
-//            .getOrThrow(false, error -> BeyondHorizon.LOGGER.error("Failed to parse spawner: {}", error));
-//
-//        Tag raw = nbt.get("configs");
-//        if (raw instanceof StringTag stringTag) {
-//            ResourceLocation resourceLocation = ResourceLocation.tryParse(stringTag.getAsString());
-//            this.spawner.setConfig(SpawnerBuilderListener.get(resourceLocation));
-//            this.spawner.getData().setSpawnPotentialsFromConfig(SpawnerBuilderListener.get(resourceLocation));
-//        } else {
-//            packed.codec()
-//                    .parse(NbtOps.INSTANCE, nbt)
-//                    .resultOrPartial(error -> BeyondHorizon.LOGGER.error("Error NBT Tags cant be applied due {}", error))
-//                    .ifPresent(baseSpawner -> this.spawner = baseSpawner);
-//        }
-//        this.config = packed.getConfig();
-//        this.data = packed.getData();
-//        this.data.setSpawnPotentialsFromConfig(this.config);
+
     }
 
     public interface StateAccessor {

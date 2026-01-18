@@ -113,6 +113,18 @@ public class BlazingSpear extends ExtendedProjectile {
             }
 
             while(!this.isRemoved()) {
+                if (entity instanceof Mob && ((Mob) entity).getTarget() != null) {
+                    LivingEntity target = ((Mob) entity).getTarget();
+                    this.setYRot(entity.getYRot());
+                    this.setXRot(entity.getXRot());
+                }
+                if (entity instanceof Player player) {
+                    LivingEntity target = (LivingEntity) RaycastUtil.getEntityLookedAt(player);
+                    if (target != null) {
+                        this.setYRot(entity.getYRot());
+                        this.setXRot(entity.getXRot());
+                    }
+                }
                 EntityHitResult entityhitresult = this.findHitEntity(vec32, vec33);
                 if (entityhitresult != null) {
                     hitresult = entityhitresult;

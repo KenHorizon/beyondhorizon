@@ -3,13 +3,18 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireOrb;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
 
 public class FlameStrikeAbility extends AbilityEntity {
     public FlameStrikeAbility(EntityType<?> entityType, Level level) {
@@ -65,16 +70,21 @@ public class FlameStrikeAbility extends AbilityEntity {
         if (this.level().isClientSide()) {
             this.circleParticle(6);
         }
+        level().addParticle(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), getX(), getY() + 0.1, getZ(), 0, 0, 0);
+        this.dealDamage();
+    }
 
-        HellfireOrb orb = new HellfireOrb(this.level(), HellfireOrb.EffectOnHit.SLOW, this.getCaster());
-        orb.setBaseDamage(this.getBaseDamage());
-        orb.setPosRaw(this.getX(), this.getY() + 10.0D, this.getZ());
-        double d0 = this.getX() - orb.getX();
-        double d1 = this.getBoundingBox().minY + this.getBbHeight() / 3.0F - orb.getY();
-        double d2 = this.getZ() - orb.getZ();
-        double d3 = Mth.sqrt((float) (d0 * d0 + d2 * d2));
-        orb.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 2.50F, 0);
-        this.level().addFreshEntity(orb);
+    public void dealDamage() {
+        LivingEntity attacker = this.getCaster();
+        List<Entity> cleaveRange = this.level().getEntities(this, this.getBoundingBox().inflate(this.getRadius()));
+        for (Entity entityOnRange : cleaveRange) {
+            if (entityOnRange instanceof LivingEntity targetOnRange) {
+                if (targetOnRange == attacker || targetOnRange == this.getTarget()) continue;
+                if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
+                    targetOnRange.hurt(BHDamageTypes.magicDamage(this), this.getBaseDamage());
+                }
+            }
+        }
     }
 
     private void circleParticle(int amount) {

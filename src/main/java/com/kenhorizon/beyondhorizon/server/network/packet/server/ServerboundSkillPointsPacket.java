@@ -51,7 +51,7 @@ public class ServerboundSkillPointsPacket {
                         role.addPointOfAttributes(this.attributePoints, this.amount);
                     } else {
                         role.setPoints(role.getPoints() + 1);
-                        role.removePointOfAttributes(this.attributePoints, this.amount);
+                        role.removePointOfAttributes(this.attributePoints, -this.amount);
                     }
                 }
             }

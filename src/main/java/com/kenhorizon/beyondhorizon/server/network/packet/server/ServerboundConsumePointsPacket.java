@@ -42,7 +42,7 @@ public class ServerboundConsumePointsPacket {
                 Level level = sender.level();
                 Entity entity = level.getEntity(this.index);
                 if (entity instanceof ServerPlayer player) {
-                    if (player.experienceProgress < 0) {
+                    if (player.totalExperience < 0) {
                         player.setExperiencePoints(0);
                     }
                     player.giveExperiencePoints(-this.amount);

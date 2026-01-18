@@ -26,6 +26,7 @@ public class HudInfo {
         Player player = minecraft.player;
         if (player == null) return;
         PlayerData playerData = CapabilityCaller.data(player);
+        if (playerData == null) return;
         this.scaledWindowWidth = minecraft.getWindow().getGuiScaledWidth();
         this.scaledWindowHeight = minecraft.getWindow().getGuiScaledHeight();
         this.health = player.getHealth();

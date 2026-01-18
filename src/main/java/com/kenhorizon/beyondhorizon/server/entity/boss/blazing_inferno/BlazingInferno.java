@@ -121,7 +121,7 @@ public class BlazingInferno extends BHBossEntity {
     public int shockwaveCooldown = 0;
     public static final int SHOCKWAVE_COOLDOWN = Maths.sec(7);
     public int shieldCooldown = 0;
-    public static final int SHIELD_COOLDOWN = Maths.mins(1);
+    public static final int SHIELD_COOLDOWN = Maths.mins(5);
     public int flameStrikeCooldown = 0;
     public static final int FLAME_STRIKE_COOLDOWN = Maths.sec(12);
     public int hellfireDownCooldown = 0;
@@ -206,7 +206,7 @@ public class BlazingInferno extends BHBossEntity {
         this.targetSelector.addGoal(1, new HellfireDownAttackGoal(this, ID_ANIMATION_EMPTY, ID_HELLFIRE_DOWN, ID_ANIMATION_EMPTY, 40, Maths.sec(5), 80.0D));
         this.targetSelector.addGoal(1, new ShockwaveAttackGoal(this, ID_ANIMATION_EMPTY, ID_SHOCKWAVE, ID_ANIMATION_EMPTY, 40, Maths.sec(5), 80.0D));
         this.targetSelector.addGoal(1, new DashAttackGoal(this, ID_ANIMATION_EMPTY, ID_DASHES, ID_ANIMATION_EMPTY, 40, Maths.sec(3), 80.0D));
-        this.targetSelector.addGoal(1, new DeathRayAttackGoal(this, ID_ANIMATION_EMPTY, ID_PREPARE_DEATH_RAY, ID_DEATH_RAY, Maths.sec(5), 100.0D));
+        this.targetSelector.addGoal(1, new DeathRayAttackGoal(this, ID_BLAZING_ROD, ID_PREPARE_DEATH_RAY, ID_DEATH_RAY, Maths.sec(5), 100.0D));
 
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractGolem.class, true));
@@ -451,7 +451,7 @@ public class BlazingInferno extends BHBossEntity {
         if (this.getAnimationState(ID_ACTIVE)) {
             this.setAwakenProgress(this.getAwakenProgress() + 1);
         }
-        if (this.getAwakenProgress() > 100) {
+        if (this.getAwakenProgress() > 99) {
             this.summonShield(true);
         }
         this.setIsUsingDeathRay(this.getAnimationState(ID_PREPARE_DEATH_RAY));
@@ -529,24 +529,15 @@ public class BlazingInferno extends BHBossEntity {
             }
         }
         if (this.getAnimationState(ID_BLAZING_ROD)) {
-            this.setCantMoved();
             if (target != null) {
-                if (this.getAnimationTick() > 50 && this.isEnraged()) {
+                int fireRate = this.isEnraged() ? 5 : 20;
+                float velocity = 1.0F;
+                if (this.getAnimationTick() % fireRate == 0) {
                     this.doRoarParticle(this.getX(), this.getEyeY(), this.getZ(), 10, 255, 0, 0, 1.0F, 1.0F, 5.0F, 0.1F);
                     if (!this.isSilent()) {
                         this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
                     }
-                    this.shoot(3, target, 1.0F, 0.2F, false);
-                } else {
-                    int fireRate = this.isEnraged() ? 5 : 10;
-                    float velocity = this.isEnraged() ? 1.25F : 1.0F;
-                    if (this.getAnimationTick() % fireRate == 0) {
-                        this.doRoarParticle(this.getX(), this.getEyeY(), this.getZ(), 10, 255, 0, 0, 1.0F, 1.0F, 5.0F, 0.1F);
-                        if (!this.isSilent()) {
-                            this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
-                        }
-                        this.shoot(3, target, velocity, 0.2F);
-                    }
+                    this.shoot(3, target, velocity, 0.2F);
                 }
             }
         }
@@ -790,12 +781,12 @@ public class BlazingInferno extends BHBossEntity {
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 10, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
                 }
                 float damage = this.getAttackDamage(0.15F);
-                if (target != null && this.hurtEntitiesAround(this.position(), 10, damage, 2.75F, true, true)) {
+                if (target != null && this.hurtEntitiesAround(this.position(), 6, damage, 2.75F, true, true)) {
                     target.addEffect(new MobEffectInstance(BHEffects.STUN.get(), 40, 0, true, true));
                     this.playSound(BHSounds.BLAZING_INFERNO_SHOCKWAVE.get());
                 }
             }
-            if (this.level() instanceof ServerLevel && this.getAnimationTick() > Maths.sec(2)) {
+            if (this.level() instanceof ServerLevel && this.getAnimationTick() > Maths.sec(4)) {
                 this.doShakeBlock(this, this.getAnimationTick(), 20);
             }
         }

@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.classes;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
@@ -73,8 +74,7 @@ public class RoleClass implements IAttack, IEntityProperties {
     private static final UUID AGILITY_ID = UUID.fromString("83f8cf72-6425-4217-8b89-6512a2ecf4c3");
     private static final UUID DEXERITY_ID = UUID.fromString("af62fce2-34f3-42e6-9202-bd1a35770cbc");
     private static final UUID INTELLIGENCE_ID = UUID.fromString("f05bc533-96c0-4e8f-91b2-ce899d446d88");
-    public RoleClass prevRoleClass;
-    public RoleClass roleClass;
+    public RoleClass activeRoleClass;
     private int dex;
     private int inte;
     private int agi;
@@ -83,9 +83,9 @@ public class RoleClass implements IAttack, IEntityProperties {
     private int str;
     private int levels;
     private int points;
-    public float expProgress = 0;
-    public float expRequired = 0;
     public final int maxRequiredXp = 280;
+    public float expProgress = 0;
+    public float expRequired = 280;
     public final int maxLevel = 100;
     public static final int REQUIRED_LEVEL_ATTRIBUTES = Constant.LEVEL_SYSTEM_UNLOCKED;
     public static final int REQUIRED_LEVEL_CLASS_TRAITS = Constant.CLASS_SYSTEM_UNLOCKED;
@@ -97,11 +97,6 @@ public class RoleClass implements IAttack, IEntityProperties {
 
     public RoleClass() {
     }
-
-    public RoleClass getRoles() {
-        return this;
-    }
-
 
     public MasterySkillCategory masterySkillCategory() {
         return this.masterySkillCategory;
@@ -152,6 +147,10 @@ public class RoleClass implements IAttack, IEntityProperties {
         }
         return list;
     }
+    public RoleClass getActiveRole() {
+        return this.activeRoleClass;
+    }
+
 
     public ResourceLocation getResourceLocation() {
         return ResourceLocation.fromNamespaceAndPath(this.getId(), this.getName());
@@ -182,12 +181,7 @@ public class RoleClass implements IAttack, IEntityProperties {
     }
 
     public void setRoles(RoleClass roles) {
-        this.roleClass = roles;
-        this.prevRoleClass = this.roleClass;
-    }
-
-    public boolean roleChanged() {
-        return this.roleClass != this.prevRoleClass;
+        this.activeRoleClass = roles;
     }
 
     public void addStr(int amount) {
@@ -195,7 +189,7 @@ public class RoleClass implements IAttack, IEntityProperties {
     }
 
     public void removeStr(int amount) {
-        this.str = Math.max(0, amount);
+        this.str -= Math.max(0, amount);
     }
 
     public void addVit(int amount) {
@@ -203,7 +197,7 @@ public class RoleClass implements IAttack, IEntityProperties {
     }
 
     public void removeVit(int amount) {
-        this.vit = Math.max(0, amount);
+        this.vit -= Math.max(0, amount);
     }
 
     public void addAgi(int amount) {
@@ -211,7 +205,7 @@ public class RoleClass implements IAttack, IEntityProperties {
     }
 
     public void removeAgi(int amount) {
-        this.agi = Math.max(0, amount);
+        this.agi -= Math.max(0, amount);
     }
 
     public void addCons(int amount) {
@@ -219,7 +213,7 @@ public class RoleClass implements IAttack, IEntityProperties {
     }
 
     public void removeCons(int amount) {
-        this.cons = Math.max(0, amount);
+        this.cons -= Math.max(0, amount);
     }
 
     public void addInte(int amount) {
@@ -227,7 +221,7 @@ public class RoleClass implements IAttack, IEntityProperties {
     }
 
     public void removeInte(int amount) {
-        this.inte = Math.max(0, amount);
+        this.inte -= Math.max(0, amount);
     }
 
     public void addDex(int amount) {
@@ -235,7 +229,7 @@ public class RoleClass implements IAttack, IEntityProperties {
     }
 
     public void removeDex(int amount) {
-        this.dex = Math.max(0, amount);
+        this.dex -= Math.max(0, amount);
     }
 
     public void addExpPoints(int amount) {
@@ -377,7 +371,7 @@ public class RoleClass implements IAttack, IEntityProperties {
         this.setRoles(RoleClasses.NONE.get());
         this.setPoints(0);
         this.setLevel(0);
-        this.expProgress = 0.0F;
+        this.expProgress = 0;
         this.str = 0;
         this.vit = 0;
         this.cons = 0;
@@ -404,22 +398,22 @@ public class RoleClass implements IAttack, IEntityProperties {
             AttributeInstance healthRegen = player.getAttribute(BHAttributes.HEALTH_REGENERATION.get());
             AttributeInstance manaRegen = player.getAttribute(BHAttributes.MANA_REGENERATION.get());
             AttributeInstance abilityPower = player.getAttribute(BHAttributes.ABILITY_POWER.get());
-            this.addModifiers(2, this.getPointOfSkills(AttributePoints.VITALITY), VITALITY_ID, maxHealth, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(1, this.getPointOfSkills(AttributePoints.STRENGHT), STRENGHT_ID, attackDamage, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(0.01F, this.getPointOfSkills(AttributePoints.AGILITY), AGILITY_ID, attackSpeed, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(0.001F, this.getPointOfSkills(AttributePoints.DEXERITY), DEXERITY_ID, movement, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(0.01F, this.getPointOfSkills(AttributePoints.DEXERITY), DEXERITY_ID, falldamage, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(2, this.getPointOfSkills(AttributePoints.INTELLIGENGE), INTELLIGENCE_ID, maxMana, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(2, this.getPointOfSkills(AttributePoints.INTELLIGENGE), INTELLIGENCE_ID, abilityPower, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, healthRegen, AttributeModifier.Operation.MULTIPLY_BASE);
-            this.addModifiers(0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, manaRegen, AttributeModifier.Operation.MULTIPLY_BASE);
+            this.addModifiers(entity,2, this.getPointOfSkills(AttributePoints.VITALITY), VITALITY_ID, maxHealth, AttributeModifier.Operation.ADDITION);
+            this.addModifiers(entity,1, this.getPointOfSkills(AttributePoints.STRENGHT), STRENGHT_ID, attackDamage, AttributeModifier.Operation.ADDITION);
+            this.addModifiers(entity,0.01F, this.getPointOfSkills(AttributePoints.AGILITY), AGILITY_ID, attackSpeed, AttributeModifier.Operation.ADDITION);
+            this.addModifiers(entity,0.001F, this.getPointOfSkills(AttributePoints.DEXERITY), DEXERITY_ID, movement, AttributeModifier.Operation.ADDITION);
+            this.addModifiers(entity,0.01F, this.getPointOfSkills(AttributePoints.DEXERITY), DEXERITY_ID, falldamage, AttributeModifier.Operation.ADDITION);
+            this.addModifiers(entity,2, this.getPointOfSkills(AttributePoints.INTELLIGENGE), INTELLIGENCE_ID, maxMana, AttributeModifier.Operation.ADDITION);
+            this.addModifiers(entity,2, this.getPointOfSkills(AttributePoints.INTELLIGENGE), INTELLIGENCE_ID, abilityPower, AttributeModifier.Operation.ADDITION);
+            this.addModifiers(entity,0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, healthRegen, AttributeModifier.Operation.MULTIPLY_BASE);
+            this.addModifiers(entity,0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, manaRegen, AttributeModifier.Operation.MULTIPLY_BASE);
             if (player instanceof ServerPlayer) {
                 NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(this.saveNbt()), (ServerPlayer) player);
             }
         }
     }
 
-    private void addModifiers(float stats, int pts, UUID uuid, AttributeInstance instance, AttributeModifier.Operation operation) {
+    private void addModifiers(LivingEntity player, float stats, int pts, UUID uuid, AttributeInstance instance, AttributeModifier.Operation operation) {
         if (instance == null) return;
         float amount = stats * pts;
         if (amount == 0) {
@@ -438,8 +432,9 @@ public class RoleClass implements IAttack, IEntityProperties {
 
     public CompoundTag saveNbt() {
         CompoundTag nbt = new CompoundTag();
-        ResourceLocation roleId = BHRegistries.ROLE_CLASS_KEY.get().getKey(this.getRoles());
-        nbt.putString(CLASS_TAGS, roleId == null ? "beyondhorizon:none" : roleId.toString());
+        ResourceLocation roleId = BHRegistries.ROLE_CLASS_KEY.get().getKey(this.activeRoleClass);
+        ResourceLocation roleNull = BHRegistries.ROLE_CLASS_KEY.get().getKey(RoleClasses.NONE.get());
+        nbt.putString(CLASS_TAGS, roleId == null ? roleNull.toString() : roleId.toString());
         nbt.putInt(LEVELS_TAGS, this.getLevel());
         nbt.putInt(POINTS_TAGS, this.getPoints());
         nbt.putBoolean(REQUIRED_LEVEL_TAGS, this.alreadyReachedRequiredLevel);
@@ -465,7 +460,7 @@ public class RoleClass implements IAttack, IEntityProperties {
     }
 
     public void loadNbt(CompoundTag nbt) {
-        this.roleClass = BHRegistries.ROLE_CLASS_KEY.get().getValue(ResourceLocation.parse(nbt.getString(CLASS_TAGS)));
+        this.activeRoleClass = BHRegistries.ROLE_CLASS_KEY.get().getValue(ResourceLocation.parse(nbt.getString(CLASS_TAGS)));
         this.levels = nbt.getInt(LEVELS_TAGS);
         this.points = nbt.getInt(POINTS_TAGS);
         ListTag attributeTagList = nbt.getList(ATTRIBUTE_TAGS, Tag.TAG_COMPOUND);

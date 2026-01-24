@@ -1,5 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
+import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import net.minecraft.core.particles.ParticleTypes;
@@ -67,6 +70,7 @@ public class HellfireRod extends ExtendedProjectile {
                 this.yRotO = this.getYRot();
                 this.xRotO = this.getXRot();
             }
+            vec3 = this.getDeltaMovement();
             double d5 = vec3.x;
             double d6 = vec3.y;
             double d1 = vec3.z;
@@ -78,6 +82,17 @@ public class HellfireRod extends ExtendedProjectile {
             this.setXRot((float) (Mth.atan2(d6, d4) * (double) (180F / (float) Math.PI)));
             this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
             this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
+
+            float yaw = (float) Math.toRadians(-this.getYRot());
+            float yaw1 = (float) Math.toRadians(-this.getYRot() + 180.0F);
+            float pitch = (float) Math.toRadians(-this.getXRot());
+
+            float r = ColorUtil.getFARGB(0xFFFFFF)[0];
+            float g = ColorUtil.getFARGB(0xFFFFFF)[1];
+            float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+            this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw, pitch, 15, r, g, b, 1.0F, 4.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY() + this.getBbHeight() / 2 - 0.15F, this.getZ(), 0, 0, 0);
+            this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw1, pitch, 15, r, g, b, 1.0F, 4.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY() + this.getBbHeight() / 2 - 0.15F, this.getZ(), 0, 0, 0);
+
             float f = 0.99F;
             float f1 = 0.05F;
             float sqrt = (float)this.getDeltaMovement().length();

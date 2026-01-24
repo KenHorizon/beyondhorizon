@@ -21,42 +21,41 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class HellfireRodRenderer extends EntityRenderer<HellfireRod> {
-    private final HellfireRodModel model;
-    private static final ResourceLocation TEXTURE_LAYER = BeyondHorizon.resource("textures/entity/projectiles/hellfire_rod_layer.png");
-    private static final ResourceLocation TEXTURE = BeyondHorizon.resource("textures/entity/projectiles/hellfire_rod.png");
+    private static final ResourceLocation TEXTURE_RED = BeyondHorizon.resource("textures/entity/projectiles/blazing_rod.png");
+    private static final RenderType RENDER_TYPE_RED = RenderType.eyes(TEXTURE_RED);
     private static final ResourceLocation TRAIL_TEXTURE = BeyondHorizon.resource("textures/particle/teletor_trail.png");
     private final RandomSource random = RandomSource.create();
 
     public HellfireRodRenderer(EntityRendererProvider.Context context) {
         super(context);
-        this.model = new HellfireRodModel(context.bakeLayer(BHModelLayers.HELLFIRE_ROD));
     }
     @Override
     public void render(HellfireRod entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));
+        poseStack.mulPose(Axis.XP.rotationDegrees(45.0F));
+        poseStack.scale(0.05625F, 0.05625F, 0.05625F);
         poseStack.translate(-4.0F, 0.0F, 0.0F);
-        poseStack.pushPose();
-        VertexConsumer builder0 = buffer.getBuffer(BHRenderTypes.glowing(this.getTextureLocation(entity)));
-        VertexConsumer builder1 = buffer.getBuffer(BHRenderTypes.glowing(TEXTURE_LAYER));
-        this.model.setupAnim(entity, 0, 0, entity.tickCount + partialTicks, 0, 0);
-        this.model.renderToBuffer(poseStack, builder0, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 0.50F);
-        this.model.renderToBuffer(poseStack, builder1, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        poseStack.popPose();
-        super.render(entity, yaw, partialTicks, poseStack, buffer, packedLight);
-        if (entity.hasTrail()) {
-            double x = Mth.lerp(partialTicks, entity.xOld, entity.getX());
-            double y = Mth.lerp(partialTicks, entity.yOld, entity.getY());
-            double z = Mth.lerp(partialTicks, entity.zOld, entity.getZ());
-            float ran = 0.04f;
-            float r = 195/255F + this.random.nextFloat() * ran * 1.5F;
-            float g = 95/255F + this.random.nextFloat() * ran;
-            float b = 3/255F + this.random.nextFloat() * ran;
-            poseStack.pushPose();
-            poseStack.translate(-x, -y, -z);
-            renderTrail(entity, partialTicks, poseStack, buffer, r, g, b, 1.0F, packedLight);
-            poseStack.popPose();
+        VertexConsumer vertexconsumer = buffer.getBuffer(RENDER_TYPE_RED);
+        PoseStack.Pose posestack$pose = poseStack.last();
+        Matrix4f matrix4f = posestack$pose.pose();
+        Matrix3f matrix3f = posestack$pose.normal();
+        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, -2, 0.0F, 0.15625F, -1, 0, 0, packedLight);
+        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, 2, 0.15625F, 0.15625F, -1, 0, 0, packedLight);
+        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, 2, 0.15625F, 0.3125F, -1, 0, 0, packedLight);
+        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, -2, 0.0F, 0.3125F, -1, 0, 0, packedLight);
+        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, -2, 0.0F, 0.15625F, 1, 0, 0, packedLight);
+        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, 2, 0.15625F, 0.15625F, 1, 0, 0, packedLight);
+        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, 2, 0.15625F, 0.3125F, 1, 0, 0, packedLight);
+        this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, -2, 0.0F, 0.3125F, 1, 0, 0, packedLight);
+
+        for(int j = 0; j < 4; ++j) {
+            poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+            this.vertex(matrix4f, matrix3f, vertexconsumer, -8, -2, 0, 0.0F, 0.0F, 0, 1, 0, packedLight);
+            this.vertex(matrix4f, matrix3f, vertexconsumer, 8, -2, 0, 0.5F, 0.0F, 0, 1, 0, packedLight);
+            this.vertex(matrix4f, matrix3f, vertexconsumer, 8, 2, 0, 0.5F, 0.15625F, 0, 1, 0, packedLight);
+            this.vertex(matrix4f, matrix3f, vertexconsumer, -8, 2, 0, 0.0F, 0.15625F, 0, 1, 0, packedLight);
         }
 
         poseStack.popPose();
@@ -115,6 +114,6 @@ public class HellfireRodRenderer extends EntityRenderer<HellfireRod> {
     }
     @Override
     public ResourceLocation getTextureLocation(HellfireRod entity) {
-        return TEXTURE;
+        return TEXTURE_RED;
     }
 }

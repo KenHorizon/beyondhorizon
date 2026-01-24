@@ -31,7 +31,10 @@ public class HellfireRodModel extends HierarchicalModel<HellfireRod> {
     public void setupAnim(HellfireRod entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
 
     }
-
+    public void setupAnim(float ageInTicks, float netHeadYaw, float headPitch) {
+        this.root.yRot = netHeadYaw * ((float)Math.PI / 180F);
+        this.root.xRot = headPitch * ((float)Math.PI / 180F);
+    }
     @Override
     public void renderToBuffer(PoseStack poseStack, VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
         root.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);

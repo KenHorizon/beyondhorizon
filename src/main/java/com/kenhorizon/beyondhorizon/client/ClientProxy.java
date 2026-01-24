@@ -15,6 +15,7 @@ import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.EruptionRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.FlameStrikeRenderer;
+import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingSpearRenderer;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.HellfireOrbRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;

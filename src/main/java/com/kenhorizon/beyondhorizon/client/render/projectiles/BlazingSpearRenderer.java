@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.client.render.entity;
+package com.kenhorizon.beyondhorizon.client.render.projectiles;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.BlazingSpearModel;

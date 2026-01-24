@@ -19,7 +19,6 @@ public class BHModelLayers {
     public static final ModelLayerLocation INFERNO_SHIELD = createLocation("inferno_shield");
     public static final ModelLayerLocation BLAZING_SPEAR = createLocation("blazing_spear");
     public static final ModelLayerLocation HELLFIRE_ORB = createLocation("hellfire_orb");
-    public static final ModelLayerLocation HELLFIRE_ROD = createLocation("hellfire_rod");
 
     public static void register(final EntityRenderersEvent.RegisterLayerDefinitions event) {
         BeyondHorizon.LOGGER.info("Registering Model Layers...");
@@ -27,7 +26,6 @@ public class BHModelLayers {
         event.registerLayerDefinition(INFERNO_SHIELD, InfernoShieldModel::createBodyLayer);
         event.registerLayerDefinition(BLAZING_SPEAR, BlazingSpearModel::createBodyLayer);
         event.registerLayerDefinition(HELLFIRE_ORB, HellfireOrbModel::createBodyLayer);
-        event.registerLayerDefinition(HELLFIRE_ROD, HellfireRodModel::createBodyLayer);
     }
     private static ModelLayerLocation createOuterArmor(String model) {
         return createLocation(model, "outer_armor");

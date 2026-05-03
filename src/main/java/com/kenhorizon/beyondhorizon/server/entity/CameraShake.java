@@ -110,7 +110,12 @@ public class CameraShake extends Entity {
             level.addFreshEntity(cameraShake);
         }
     }
-
+    public static void spawn(Entity entity, float radius, float magnitude, int duration, int fadeDuration) {
+        if (!entity.level().isClientSide()) {
+            CameraShake cameraShake = new CameraShake(entity.level(), entity.position(), radius, magnitude, duration, fadeDuration);
+            entity.level().addFreshEntity(cameraShake);
+        }
+    }
     @OnlyIn(Dist.CLIENT)
     public float getShakeAmount(Player player, float delta) {
         float ticksDelta = this.tickCount + delta;

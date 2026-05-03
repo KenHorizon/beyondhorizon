@@ -1,7 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
+import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireOrb;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
@@ -69,6 +72,13 @@ public class FlameStrikeAbility extends AbilityEntity {
     protected void onEnd() {
         if (this.level().isClientSide()) {
             this.circleParticle(6);
+
+            float r = ColorUtil.getFARGB(0xFFFFFF)[0];
+            float g = ColorUtil.getFARGB(0xFFFFFF)[1];
+            float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+            this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 15, r, g, b, 1.0F, 4.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(), this.getZ(), 0, -10, 0);
+            this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 15, r, g, b, 1.0F, 4.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+
         }
         level().addParticle(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), getX(), getY() + 0.1, getZ(), 0, 0, 0);
         this.dealDamage();

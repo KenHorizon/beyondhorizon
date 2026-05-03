@@ -96,7 +96,8 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     public void tick() {
         super.tick();
         LivingEntity target = this.entity.getTarget();
-        if (this.entity.getAnimationTick() < this.seeTick && target != null) {
+        boolean flag = this.seeTick > 0 && (this.entity.getAnimationTick() < this.seeTick && target != null);
+        if (flag) {
             this.entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
             this.entity.lookAt(target, 30.0F, 30.0F);
         } else {

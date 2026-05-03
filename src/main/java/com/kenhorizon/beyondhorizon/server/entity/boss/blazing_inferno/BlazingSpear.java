@@ -131,7 +131,7 @@ public class BlazingSpear extends ExtendedProjectile {
                 }
 
                 if (hitresult != null && hitresult.getType() == HitResult.Type.ENTITY) {
-                    Entity entity1 = ((EntityHitResult)hitresult).getEntity();
+                    Entity entity1 = ((EntityHitResult) hitresult).getEntity();
                     Entity entity2 = this.getOwner();
                     if (entity1 instanceof Player && entity2 instanceof Player && !((Player)entity1).canHarmPlayer((Player)entity1)) {
                         hitresult = null;
@@ -170,14 +170,11 @@ public class BlazingSpear extends ExtendedProjectile {
                 hitresult = null;
             }
 
-            if (this.isRemoved())
-                return;
-
+            if (this.isRemoved())return;
             vec3 = this.getDeltaMovement();
             double d5 = vec3.x;
             double d6 = vec3.y;
             double d1 = vec3.z;
-
             double d7 = this.getX() + d5;
             double d2 = this.getY() + d6;
             double d3 = this.getZ() + d1;
@@ -187,12 +184,10 @@ public class BlazingSpear extends ExtendedProjectile {
             } else {
                 this.setYRot((float)(Mth.atan2(d5, d1) * (double)(180F / (float)Math.PI)));
             }
-
             this.setXRot((float)(Mth.atan2(d6, d4) * (double)(180F / (float)Math.PI)));
             this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
             this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
             float motion = 0.99F;
-            float motionValue = 0.05F;
             if (this.isInWater()) {
                 for(int j = 0; j < 4; ++j) {
                     float motionDrag = 0.25F;
@@ -200,12 +195,9 @@ public class BlazingSpear extends ExtendedProjectile {
                 }
                 motion = this.getWaterInertia();
             }
-
             this.setDeltaMovement(vec3.add(this.xPower, this.yPower, this.zPower).scale((double) motion));
-
             this.setPos(d7, d2, d3);
             this.checkInsideBlocks();
-
             if (this.getLifeSpan() == this.getDelay()) {
                 if (entity instanceof Player player) {
                     LivingEntity target = (LivingEntity) RaycastUtil.getEntityLookedAt(player);

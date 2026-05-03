@@ -59,7 +59,6 @@ public class MobStateGoal<T extends BHLibEntity> extends Goal {
             this.entity.setYRot(this.entity.yRotO);
         }
         this.entity.getNavigation().stop();
-
     }
 
     @Override

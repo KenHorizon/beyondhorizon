@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -32,7 +33,6 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
     public void setExp(int xpPoints) {
         this.xpReward = xpPoints;
     }
-
     public void setAnimationTick(int animationTick) {
         this.animationTick = animationTick;
     }
@@ -60,6 +60,10 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
         if (this.getAnimation() > 0) {
             this.setAnimationTick(this.getAnimationTick() + 1);
         }
+    }
+
+    public void randomLook() {
+        this.lookAt(EntityAnchorArgument.Anchor.EYES, this.getLookAngle().add(new Vec3(0,0, this.getRandom().nextIntBetweenInclusive(0, 360))));
     }
 
     public int getIdleTime() {
@@ -165,6 +169,14 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
 
     public boolean inBetweenHealth(float to, float from) {
         return this.getHealthRatio() >= from && this.getHealthRatio() <= to;
+    }
+
+    public boolean inRangeOf(double range) {
+        LivingEntity target = this.getTarget();
+        if (target == null) {
+            return false;
+        }
+        return this.distanceTo(target) < range;
     }
 
     public boolean getAnimationState(int id) {

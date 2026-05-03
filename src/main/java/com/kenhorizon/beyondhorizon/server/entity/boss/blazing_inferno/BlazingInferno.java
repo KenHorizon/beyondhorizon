@@ -25,6 +25,8 @@ import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Camera;
+import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -71,6 +73,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class BlazingInferno extends BHBossEntity {
+    public AnimationState animationIdle = new AnimationState();
     public AnimationState animationActive = new AnimationState();
     public AnimationState animationInactive = new AnimationState();
     public AnimationState animationEnragedPhase = new AnimationState();
@@ -88,10 +91,12 @@ public class BlazingInferno extends BHBossEntity {
     public AnimationState animationHellfireDown = new AnimationState();
     public AnimationState animationFlameStrike = new AnimationState();
     public AnimationState animationHellOrb = new AnimationState();
+    public AnimationState animationIdleState = new AnimationState();
     public static int animationId = 1;
     public static final int ID_ACTIVE = createAnimationID();
     public static final int ID_INACTIVE = createAnimationID();
     public static final int ID_ENRAGED_PHASE = createAnimationID();
+    public static final int ID_IDLE = createAnimationID();
     public static final int ID_DEATH = createAnimationID();
     public static final int ID_DODGE = createAnimationID();
     public static final int ID_SPEAR = createAnimationID();
@@ -102,15 +107,19 @@ public class BlazingInferno extends BHBossEntity {
     public static final int ID_ERUPTION = createAnimationID();
     public static final int ID_SHOCKWAVE = createAnimationID();
     public static final int ID_DASHES = createAnimationID();
-    public static final int ID_JUMP = createAnimationID();
+    public static final int ID_IDLE_STATE = createAnimationID();
     public static final int ID_HELLFIRE_DOWN = createAnimationID();
     public static final int ID_FLAME_STRIKE = createAnimationID();
+    public static final int BLAZING_ROD_IA_NORMAL = 30;
+    public static final int BLAZING_ROD_IA_ENRAGED = 15;
 
     public List<InfernoShield> infernoShields = new ArrayList<>();
     public int fireballCooldown = 0;
     public static final int FIREBALL_COOLDOWN = Maths.sec(5);
     public int spearCooldown = 0;
     public static final int SPEAR_COOLDOWN = Maths.sec(6);
+    public int idleCooldown = 0;
+    public static final int IDLE_COOLDOWN = Maths.sec(3);
     public int deathRayCooldown = 0;
     public static final int DEATH_RAY_COOLDOWN = Maths.sec(35);
     public int groundSlamCooldown = 0;
@@ -191,18 +200,19 @@ public class BlazingInferno extends BHBossEntity {
                 this.entity.setCantMoved();
             }
         });
-        this.goalSelector.addGoal(0, new BlazingInfernoAwakenGoal(this, ID_INACTIVE, ID_ACTIVE, ID_ANIMATION_EMPTY, 0, Maths.sec(5)));
+        this.goalSelector.addGoal(1, new MobStateGoal<>(this, ID_IDLE, ID_IDLE, ID_ANIMATION_EMPTY, Maths.sec(2), Maths.sec(2)));
+        this.goalSelector.addGoal(0, new BlazingInfernoAwakenGoal(this, ID_INACTIVE, ID_ACTIVE, ID_IDLE, 0, Maths.sec(5)));
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
-        this.targetSelector.addGoal(1, new FireballAttackGoal(this, ID_DEATH_RAY, ID_BLAZING_ROD, ID_ANIMATION_EMPTY, 30, Maths.sec(5), 80.0D));
-        this.targetSelector.addGoal(1, new FireballAttackGoal(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_ANIMATION_EMPTY, 30, Maths.sec(5), 80.0D));
-//        this.targetSelector.addGoal(1, new SpearAttackGoal(this, ID_ANIMATION_EMPTY, ID_SPEAR, ID_ANIMATION_EMPTY, 30, Maths.sec(3), 80.0D));
-//        this.targetSelector.addGoal(1, new GroundSlamAttackGoal(this, ID_ANIMATION_EMPTY, ID_GROUND_SLAM, ID_ANIMATION_EMPTY, 20, 80.0D));
-//        this.targetSelector.addGoal(1, new EruptionAttackGoal(this, ID_ANIMATION_EMPTY, ID_ERUPTION, ID_ANIMATION_EMPTY, 20, Maths.sec(2), 80.0D));
-//        this.targetSelector.addGoal(1, new FlameStrikeAttackGoal(this, ID_ANIMATION_EMPTY, ID_FLAME_STRIKE, ID_ANIMATION_EMPTY, 40, Maths.sec(3), 80.0D));
-//        this.targetSelector.addGoal(1, new HellfireDownAttackGoal(this, ID_ANIMATION_EMPTY, ID_HELLFIRE_DOWN, ID_ANIMATION_EMPTY, 40, Maths.sec(5), 80.0D));
-//        this.targetSelector.addGoal(1, new ShockwaveAttackGoal(this, ID_ANIMATION_EMPTY, ID_SHOCKWAVE, ID_ANIMATION_EMPTY, 40, Maths.sec(5), 80.0D));
-//        this.targetSelector.addGoal(1, new DashAttackGoal(this, ID_ANIMATION_EMPTY, ID_DASHES, ID_ANIMATION_EMPTY, 40, Maths.sec(3), 80.0D));
-//        this.targetSelector.addGoal(1, new DeathRayAttackGoal(this, ID_BLAZING_ROD, ID_PREPARE_DEATH_RAY, ID_DEATH_RAY, Maths.sec(5), 100.0D));
+        this.targetSelector.addGoal(1, new FireballAttackGoal(this, ID_DEATH_RAY, ID_BLAZING_ROD, ID_IDLE, 30, Maths.sec(5), 80.0D));
+        this.targetSelector.addGoal(1, new FireballAttackGoal(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_IDLE, 30, Maths.sec(5), 80.0D));
+        this.targetSelector.addGoal(1, new SpearAttackGoal(this, ID_ANIMATION_EMPTY, ID_SPEAR, ID_IDLE, 30, Maths.sec(3), 80.0D));
+        this.targetSelector.addGoal(1, new GroundSlamAttackGoal(this, ID_ANIMATION_EMPTY, ID_GROUND_SLAM, ID_IDLE, 20, 80.0D));
+        this.targetSelector.addGoal(1, new EruptionAttackGoal(this, ID_ANIMATION_EMPTY, ID_ERUPTION, ID_IDLE, 20, Maths.sec(2), 80.0D));
+        this.targetSelector.addGoal(1, new FlameStrikeAttackGoal(this, ID_ANIMATION_EMPTY, ID_FLAME_STRIKE, ID_IDLE, 40, Maths.sec(3), 80.0D));
+        this.targetSelector.addGoal(1, new HellfireDownAttackGoal(this, ID_ANIMATION_EMPTY, ID_HELLFIRE_DOWN, ID_IDLE, 40, Maths.sec(5), 80.0D));
+        this.targetSelector.addGoal(1, new ShockwaveAttackGoal(this, ID_ANIMATION_EMPTY, ID_SHOCKWAVE, ID_IDLE, 40, Maths.sec(5), 80.0D));
+        this.targetSelector.addGoal(1, new DashAttackGoal(this, ID_ANIMATION_EMPTY, ID_DASHES, ID_IDLE, 40, Maths.sec(3), 80.0D));
+        this.targetSelector.addGoal(1, new DeathRayAttackGoal(this, ID_BLAZING_ROD, ID_PREPARE_DEATH_RAY, ID_DEATH_RAY, Maths.sec(5), 100.0D));
 
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractGolem.class, true));
@@ -433,6 +443,7 @@ public class BlazingInferno extends BHBossEntity {
     public void tick() {
         super.tick();
         this.setInfernoShieldActive(!this.infernoShields.isEmpty());
+        LivingEntity target = this.getTarget();
         if (!this.isEnraged() && !this.isInfernoShieldActive() && this.getShieldCooldown() > 0) this.setShieldCooldown(this.getShieldCooldown() - 1);
         if (this.hellfireDownCooldown > 0) this.hellfireDownCooldown--;
         if (this.flameStrikeCooldown > 0) this.flameStrikeCooldown--;
@@ -443,6 +454,7 @@ public class BlazingInferno extends BHBossEntity {
         if (this.shockwaveCooldown > 0) this.shockwaveCooldown--;
         if (this.groundSlamCooldown > 0) this.groundSlamCooldown--;
         if (this.fireballCooldown > 0) this.fireballCooldown--;
+        if (this.idleCooldown > 0) this.idleCooldown--;
         if (this.getAnimationState(ID_ACTIVE)) {
             this.setAwakenProgress(this.getAwakenProgress() + 1);
         }
@@ -450,6 +462,10 @@ public class BlazingInferno extends BHBossEntity {
         this.infernoShields = this.getEntitiesNearby(InfernoShield.class, 16.0F);
         if (this.infernoShields.isEmpty()) {
             this.summonShield();
+        }
+
+        if (target != null && this.distanceTo(target) < 4.0D && this.getAnimationState(ID_ANIMATION_EMPTY)) {
+            this.doAvoidTarget(target);
         }
         if (this.getAnimationState(ID_ENRAGED_PHASE)) {
             this.setEnragedProgress(this.getEnragedProgress() + 1);
@@ -473,13 +489,9 @@ public class BlazingInferno extends BHBossEntity {
         this.playSound(BHSounds.BLAZING_INFERNO_HURT.get());
     }
 
-
     @Override
     public void aiStep() {
         super.aiStep();
-        if (this.getAnimation() != this.getPrevAnimationState()) {
-            BeyondHorizon.LOGGER.debug("Animation State: {}", this.getAnimation());
-        }
         if (!this.isSleep()) {
             if (this.level().isClientSide()) {
                 int flameCount = this.isEnraged() ? 5 : 2;
@@ -519,35 +531,36 @@ public class BlazingInferno extends BHBossEntity {
                 }
             }
         }
+
         if (this.getAnimationState(ID_BLAZING_ROD)) {
             this.setCantMoved();
             if (target != null) {
-                int fireRate = this.isEnraged() ? 10 : 20;
+                int fireRate = this.isEnraged() ? BLAZING_ROD_IA_ENRAGED : BLAZING_ROD_IA_NORMAL;
                 float velocity = 1.0F;
                 if (this.getAnimationTick() % fireRate == 0) {
                     this.doRoarParticle(this.getX(), this.getEyeY(), this.getZ(), 10, 255, 0, 0, 1.0F, 1.0F, 5.0F, 0.1F);
                     if (!this.isSilent()) {
                         this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
                     }
-                    this.shootHellfireRod(3, target, velocity, 0.2F);
-//                    if (this.getRandom().nextBoolean()) {
-//                        this.shoot(3, target, velocity, 0.2F);
-//                    } else {
-//                        this.shootHellfireRod(3, target, velocity, 0.2F);
-//                    }
+                    if (this.isEnraged())
+                    {
+                        this.shoot(33, target, velocity, 0.0F, true);
+                    } else {
+                        this.shoot(3, target, velocity, 0.2F, false);
+                    }
                 }
             }
         }
         if (this.getAnimationState(ID_SPEAR)) {
-            if (this.getAnimationTick() == 1 && target != null) {
+            if (this.inRangeOf(8.0D) && this.getAnimationTick() == 1 && target != null) {
                 this.doAvoidTarget(target);
             }
-
             if (this.getAnimationTick() == 40) {
+                CameraShake.spawn(this.level(), this.position(), 16.0F, 0.05F, 5, 20);
                 this.doRoarParticle(this.getX(), this.getEyeY(), this.getZ(), 10, 255, 0, 0, 1.0F, 1.0F, 5.0F, 0.1F);
             }
             switch (this.getRandom().nextInt(3)) {
-                case 1 -> {
+                case 0 -> {
                     if (target != null && this.getAnimationTick() == 40) {
                         if (!this.isSilent()) {
                             this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
@@ -557,30 +570,23 @@ public class BlazingInferno extends BHBossEntity {
                         this.shootSpear(new Vec3(0, 1, 0), Maths.sec(5));
                     }
                 }
-                case 2 -> {
+                case 1 -> {
                     if (target != null && this.getAnimationTick() == 40) {
                         if (!this.isSilent()) {
                             this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
                         }
-                        CameraShake.spawn(this.level(), this.position(), 32.0F, 0.15F, 5, 20);
-                        int count = 12;
-                        for (int i = 0; i < count; i++) {
-                            float rotate = (360F / count) * i;
-                            this.shootSpear(new Vec3(Math.cos(rotate), 1, Math.sin(rotate)), Maths.sec(1));
-                        }
+                        this.shootSpear(new Vec3(2, 1, 0));
+                        this.shootSpear(new Vec3(-2, 1, 0));
+                        this.shootSpear(new Vec3(0, 1, 0));
                     }
                 }
-                case 3 -> {
-                    if (target != null && this.getAnimationTick() == 40) {
+                case 2 -> {
+                    if (target != null && this.getAnimationTick() % 20 == 0) {
                         if (!this.isSilent()) {
                             this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
                         }
                         CameraShake.spawn(this.level(), this.position(), 32.0F, 0.15F, 5, 20);
-                        int count = 8;
-                        for (int i = 0; i < count; i++) {
-                            float rotate = (360F / count) * i;
-                            this.shootSpear(new Vec3(Math.cos(rotate), 1, Math.sin(rotate)), Maths.sec(3));
-                        }
+                        this.shootSpear(new Vec3(0, 1, 0));
                     }
                 }
             }
@@ -642,7 +648,16 @@ public class BlazingInferno extends BHBossEntity {
                         this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SHOCKWAVE.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
                     }
                 }
-                this.setAnimation(0);
+                this.setAnimation(ID_IDLE_STATE);
+            }
+        }
+        if (this.getAnimationState(ID_IDLE_STATE)) {
+            this.setCantMoved();
+            if (target != null) {
+                this.getLookControl().setLookAt(target);
+            }
+            if (this.getAnimationTick() > 40) {
+                this.setAnimation(ID_ANIMATION_EMPTY);
             }
         }
         if (this.getAnimationState(ID_FLAME_STRIKE)) {
@@ -690,7 +705,7 @@ public class BlazingInferno extends BHBossEntity {
                         double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
                         ParticleTrailOptions.add(this.level(), TrailParticles.Behavior.FADE, getX() + ox, getY() + oy + 0.1, getZ() + oz, 3.0F, 1, 0.0F, 0.0F, 1.0F, 20, new Vec3(this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ()));
                     }
-
+                    CameraShake.spawn(this, 32.0F, 0.55F, 10, 10);
                     float yaw = (float) Math.toRadians(-this.getYRot());
                     float pitch = (float) Math.toRadians(-this.getXRot());
                     float r = ColorUtil.getFARGB(0xFFFFFF)[0];
@@ -726,11 +741,11 @@ public class BlazingInferno extends BHBossEntity {
                     float b = ColorUtil.getFARGB(0xFFFFFF)[2];
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, 0, 11, r, g, b, 1.0F, 16.0F, true, RingParticles.Behavior.GROW), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
                 }
-                this.setAnimation(0);
+                this.setAnimation(ID_IDLE_STATE);
             }
         }
         if (this.getAnimationState(ID_SHOCKWAVE)) {
-            if (this.getAnimationTick() == Maths.sec(1)) {
+            if (this.getAnimationTick() % Maths.sec(1) == 0) {
                 if (this.level().isClientSide()) {
                     int particleCount = 32;
                     while (particleCount --> 0) {
@@ -770,7 +785,7 @@ public class BlazingInferno extends BHBossEntity {
                 }
             }
             if (this.level() instanceof ServerLevel && this.getAnimationTick() > Maths.sec(4)) {
-                this.doShakeBlock(this, this.getAnimationTick(), 20);
+                this.doShakeBlock(this, this.getAnimationTick(), 10);
             }
         }
         this.dashAttack();
@@ -1074,6 +1089,10 @@ public class BlazingInferno extends BHBossEntity {
                 this.stopAnimations();
                 this.animationHellfireDown.startIfStopped(this.tickCount);
             }
+            if (this.getAnimation() == ID_IDLE_STATE) {
+                this.stopAnimations();
+                this.animationIdleState.startIfStopped(this.tickCount);
+            }
 //            switch (this.getAnimation()) {
 //                case 0 -> this.stopAnimations();
 //                case 1 -> {
@@ -1173,6 +1192,7 @@ public class BlazingInferno extends BHBossEntity {
                 this.animationDeath,
                 this.animationJump,
                 this.animationEruption,
+                this.animationIdleState,
                 this.animationEnragedPhase
         };
     }
@@ -1180,6 +1200,10 @@ public class BlazingInferno extends BHBossEntity {
     @Override
     public boolean canBeSeenAsEnemy() {
         return !this.isSleep() && super.canBeSeenAsEnemy();
+    }
+
+    private void shootSpear(Vec3 position) {
+        this.shootSpear(position, 10);
     }
 
     private void shootSpear(Vec3 position, int timer) {
@@ -1192,15 +1216,14 @@ public class BlazingInferno extends BHBossEntity {
         double d1 = position.y;
         double d2 = position.z;
         float f = Mth.sqrt((float) (d0 * d0 + d2 * d2)) * 0.35F;
-        projectile.setDelay(Maths.sec(2));
         projectile.shoot(d0, d1 + f, d2, 0.25F, 0.0F);
         projectile.setDelay(timer);
         this.level().addFreshEntity(projectile);
     }
-    private void shoot(int count, LivingEntity target, float velocity, float inaccuracy) {
-        this.shoot(count, target, velocity, inaccuracy, true);
+    private void shoot(int count, LivingEntity target, float velocity, float inaccuracy, boolean empowered) {
+        this.shoot(count, target, velocity, inaccuracy, true, empowered);
     }
-    private void shoot(int count, LivingEntity target, float velocity, float inaccuracy, boolean spread) {
+    private void shoot(int count, LivingEntity target, float velocity, float inaccuracy, boolean spread, boolean empowered) {
         double offsetangle = Math.toRadians(12);
         for (int i = 0; i < count; ++i) {
             double angle = spread ? (i - (count - 1) / 2.0F) * offsetangle : 0;
@@ -1209,7 +1232,7 @@ public class BlazingInferno extends BHBossEntity {
             double d2 = this.getZ();
             BlazingRod projectile = new BlazingRod(this.level(), d0, d1, d2, this);
             projectile.setDamage(DamageTags.DEFAULT, 0.02F);
-            projectile.setBaseDamage(3);
+            projectile.setBaseDamage(empowered ? 5 : 3);
             double shootX = target.getX() - this.getX();
             double shootY = target.getBoundingBox().minY + target.getBbHeight() / 2 - projectile.getY();
             double shootZ = target.getZ() - this.getZ();
@@ -1218,9 +1241,6 @@ public class BlazingInferno extends BHBossEntity {
             projectile.shoot(x, shootY, z, velocity, inaccuracy);
             this.level().addFreshEntity(projectile);
         }
-    }
-    private void shootHellfireRod(int count, LivingEntity target, float velocity, float inaccuracy) {
-        this.shootHellfireRod(count, target, velocity, inaccuracy, true);
     }
     private void shootHellfireRod(int count, LivingEntity target, float velocity, float inaccuracy, boolean spread) {
         double offsetangle = Math.toRadians(12);
@@ -1311,7 +1331,6 @@ public class BlazingInferno extends BHBossEntity {
             return false;
         }
     }
-
     public static class FireballAttackGoal extends MobAttackGoal<BlazingInferno> {
 
         public FireballAttackGoal(BlazingInferno entity, int getAnimation, int start, int end, int seeTick, int maxDuration, double random) {

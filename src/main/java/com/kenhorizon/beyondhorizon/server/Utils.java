@@ -7,8 +7,6 @@ import org.lwjgl.glfw.GLFW;
 
 public class Utils {
 
-
-
     public static String capitalize(Component component) {
         return capitalize(component.getString(), (char[]) null);
     }
@@ -56,6 +54,7 @@ public class Utils {
             return false;
         }
     }
+
     private static boolean isEmpty(final CharSequence cs) {
         return cs == null || cs.length() == 0;
     }

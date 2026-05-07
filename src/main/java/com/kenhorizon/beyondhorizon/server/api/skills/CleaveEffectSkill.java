@@ -1,19 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 public class CleaveEffectSkill extends WeaponSkills {
     private float cleaveRange;
@@ -42,7 +35,7 @@ public class CleaveEffectSkill extends WeaponSkills {
 
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
-        return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F), Maths.format(this.getCleaveRange() * 100.0F));
+        return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F), MathUtils.format(this.getCleaveRange() * 100.0F));
     }
 
     @Override

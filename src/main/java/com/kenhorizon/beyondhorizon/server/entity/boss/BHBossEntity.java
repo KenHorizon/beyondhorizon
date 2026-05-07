@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BHBossEntity extends BHLibEntity implements Enemy {
-    public record BossState(int id, AnimationState animaiton) {}
     private static final EntityDataAccessor<BlockPos> DATA_HOME_POS = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<String> DATA_DIMENSION_TYPE = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Integer> DATA_BOSS_PHASE = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.INT);

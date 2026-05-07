@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.particle;
 
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.Camera;
@@ -93,8 +93,8 @@ public class RingParticles extends TextureSheetParticle {
                 quaternionf.mul(Axis.ZP.rotation(f3));
             }
         } else {
-            Quaternionf quatX = Maths.quatFromRotationXYZ(pitch, 0, 0, false);
-            Quaternionf quatY = Maths.quatFromRotationXYZ(0, yaw, 0, false);
+            Quaternionf quatX = MathUtils.quatFromRotationXYZ(pitch, 0, 0, false);
+            Quaternionf quatY = MathUtils.quatFromRotationXYZ(0, yaw, 0, false);
             quaternionf.mul(quatY);
             quaternionf.mul(quatX);
         }

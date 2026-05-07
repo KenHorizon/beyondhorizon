@@ -9,7 +9,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 
 import java.util.EnumSet;
 
-public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
+public class MobAttackGoal<T extends BHLibEntity> extends Goal {
     protected final T entity;
     protected final boolean isLoop;
     protected final int animation;
@@ -18,9 +18,8 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     protected final float attackRange;
     protected final int seeTick;
     protected final int maxDuration;
-    protected final double random;
 
-    public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, int maxDuration, double random, boolean isLoop, boolean interrupt) {
+    public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, int maxDuration, boolean isLoop, boolean interrupt) {
         this.entity = entity;
         this.isLoop = isLoop;
         this.animation = animation;
@@ -29,32 +28,26 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
         this.seeTick = seeTick;
         this.maxDuration = maxDuration;
         this.attackRange = (float) this.entity.getAttributeValue(Attributes.FOLLOW_RANGE);
-        this.random = random;
         if (interrupt) {
             this.setFlags(EnumSet.of(Flag.MOVE, Flag.JUMP, Flag.LOOK));
         }
     }
-    public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, int maxDuration, double random) {
-        this(entity, animation, start, end, seeTick, maxDuration, random, false, false);
+    public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, int maxDuration, boolean isLoop) {
+        this(entity, animation, start, end, seeTick, maxDuration, isLoop, false);
     }
-    public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, int maxDuration, double random, boolean isLoop) {
-        this(entity, animation, start, end, seeTick, maxDuration, random, isLoop, false);
-    }
+
     public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, int maxDuration) {
-        this(entity, animation, start, end, seeTick, maxDuration, 100.0D, false, false);
+        this(entity, animation, start, end, seeTick, maxDuration, false, false);
     }
 
     public MobAttackGoal(T entity, int animation, int start, int end, int seeTick) {
-        this(entity, animation, start, end, seeTick,0, 100.0D, true, false);
+        this(entity, animation, start, end, seeTick,0, true, false);
     }
-    public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, double random) {
-        this(entity, animation, start, end, seeTick,0, random, true, false);
-    }
+
     @Override
     public void start() {
         super.start();
         this.entity.setAnimation(this.start);
-//        BeyondHorizon.LOGGER.info("Start Animation ID: {}", animationId);
         this.entity.getNavigation().stop();
     }
 
@@ -62,7 +55,6 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     public void stop() {
         super.stop();
         this.entity.setAnimation(this.end);
-//        BeyondHorizon.LOGGER.info("End Animation ID: {}", animationId);
         LivingEntity target = this.entity.getTarget();
         if (!EntitySelector.NO_CREATIVE_OR_SPECTATOR.test(target)) {
             this.entity.setTarget(null);
@@ -76,11 +68,11 @@ public abstract class MobAttackGoal<T extends BHLibEntity> extends Goal {
     @Override
     public boolean canUse() {
         LivingEntity target = this.entity.getTarget();
-        if (this.entity.getRandom().nextDouble() * 100.0D <= this.random) {
-            return target != null && target.isAlive() && this.entity.distanceTo(target) < this.attackRange && this.entity.getAnimation() == this.animation;
-        } else {
-            return false;
-        }
+        return target != null && target.isAlive() && this.entity.distanceTo(target) < this.attackRange && this.entity.getAnimation() == this.animation;
+    }
+
+    public void endAttackState() {
+        this.entity.setAnimation(this.end);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -27,7 +27,7 @@ public class HealthToDamageSkill extends WeaponSkills {
         if (itemStack.hasTag() && itemStack.getTag().contains(tagName)) {
             bonusAttackDamage = itemStack.getTag().getDouble(tagName);
         }
-        return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), Mth.ceil(bonusAttackDamage));
+        return Component.translatable(this.createId(), MathUtils.format0(this.getMagnitude()), Mth.ceil(bonusAttackDamage));
     }
 
     @Override

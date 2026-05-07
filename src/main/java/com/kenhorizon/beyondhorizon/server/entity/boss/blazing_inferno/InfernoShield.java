@@ -140,6 +140,7 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
     public int getEntityId() {
         return this.entityData.get(ENTITY_ID);
     }
+
     private float getOrbitScale() {
         return this.entityData.get(ORBIT_SCALE);
     }

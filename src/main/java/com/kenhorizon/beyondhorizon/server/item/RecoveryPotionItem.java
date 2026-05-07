@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.item;
 
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.network.chat.Component;
@@ -40,7 +40,7 @@ public class RecoveryPotionItem extends BasicItem {
         if (!level.isClientSide()) {
             livingEntity.heal(this.healthRecovery);
             if (!player.isCreative()) {
-                livingEntity.addEffect(new MobEffectInstance(BHEffects.HEALING_SICKNESS.get(), Maths.mins(1), 0, true, true, true));
+                livingEntity.addEffect(new MobEffectInstance(BHEffects.HEALING_SICKNESS.get(), MathUtils.mins(1), 0, true, true, true));
             }
         }
 

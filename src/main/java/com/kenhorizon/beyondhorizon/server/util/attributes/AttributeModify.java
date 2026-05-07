@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.mixins.common.accessor.AttributeAccessor;
 import com.kenhorizon.beyondhorizon.mixins.common.accessor.AttributeRangeAccessor;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -35,11 +35,11 @@ public class AttributeModify {
                     final AttributeRangeAccessor rangeAccessor = (AttributeRangeAccessor) attribute;
                     attributeAccessor.setSyncable(true);
                     if (minValue != ranged.getMinValue()) {
-                        BeyondHorizon.LOGGER.debug("Modifying minimum value for {} from {} to {}.", attributeId, Maths.format0(ranged.getMinValue()), Maths.format0(minValue));
+                        BeyondHorizon.LOGGER.debug("Modifying minimum value for {} from {} to {}.", attributeId, MathUtils.format0(ranged.getMinValue()), MathUtils.format0(minValue));
                         rangeAccessor.setMinValue(minValue);
                     }
                     if (maxValue != ranged.getMaxValue()) {
-                        BeyondHorizon.LOGGER.debug("Modifying maximum value for {} from {} to {}.", attributeId, Maths.format0(ranged.getMaxValue()), Maths.format0(maxValue));
+                        BeyondHorizon.LOGGER.debug("Modifying maximum value for {} from {} to {}.", attributeId, MathUtils.format0(ranged.getMaxValue()), MathUtils.format0(maxValue));
                         rangeAccessor.setMaxValue(maxValue);
                     }
                 }

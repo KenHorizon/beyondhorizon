@@ -182,17 +182,8 @@ public abstract class BHBaseEntity extends PathfinderMob {
         return (float) (EntityUtils.getAttackDamage(this) * percent);
     }
 
-    public boolean getRandomChances(float value) {
-        float min = Math.min(value, 1.0F);
-        float max = Math.max(min, 0.0F);
-        float chance = Mth.clamp(max, 0.0F, 1.0F);
-        return this.getRandom().nextFloat() <= chance;
-    }
-
     public boolean getRandomChances(int value) {
-        int minMax = Math.max(Math.min(value, 100), 0);
-        float chance = Mth.clamp((float) (minMax / 100), 0, 1);
-        return this.getRandom().nextFloat() <= chance;
+        return this.random.nextFloat() * 100.0F < (float) value;
     }
 
     protected void doRoarParticle(double x, double y, double z, int duration, int r, int g, int b, float a, float start, float end, float increase) {

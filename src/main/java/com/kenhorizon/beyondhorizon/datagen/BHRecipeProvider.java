@@ -6,7 +6,7 @@ import com.kenhorizon.beyondhorizon.datagen.recipes.WorkbenchRecipeProvider;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -157,8 +157,8 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .required(BHItems.SAPPHIRE_CRYSTAL.get())
                 .save(consumer);
 
-        oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, Maths.sec(10));
-        oreSmeltings(consumer, List.of(BHItems.RAW_STARITE.get()), RecipeCategory.MISC, BHItems.STARITE_INGOT.get(), 0.7F, Maths.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, MathUtils.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.RAW_STARITE.get()), RecipeCategory.MISC, BHItems.STARITE_INGOT.get(), 0.7F, MathUtils.sec(10));
 
     }
 

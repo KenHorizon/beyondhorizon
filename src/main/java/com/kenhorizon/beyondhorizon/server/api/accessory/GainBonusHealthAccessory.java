@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.server.util.Constant;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -37,7 +37,7 @@ public class GainBonusHealthAccessory extends AccessorySkill {
         if (itemStack.hasTag() && itemStack.getTag().contains(tagName)) {
             bonusHp = itemStack.getTag().getDouble(tagName);
         }
-        return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), Mth.ceil(bonusHp));
+        return Component.translatable(this.createId(), MathUtils.format0(this.getMagnitude()), Mth.ceil(bonusHp));
     }
 
     @Override

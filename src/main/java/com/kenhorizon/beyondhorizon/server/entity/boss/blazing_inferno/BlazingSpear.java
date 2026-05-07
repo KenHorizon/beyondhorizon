@@ -2,43 +2,44 @@ package com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno;
 
 
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.ExtendedProjectile;
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import com.kenhorizon.beyondhorizon.server.util.RaycastUtil;
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.event.ForgeEventFactory;
 
-import javax.annotation.Nullable;
+import java.util.Optional;
+import java.util.UUID;
 
 public class BlazingSpear extends ExtendedProjectile {
+    public static float MOTION = 0.99F;
+    public float wantedX = 0.0F;
+    public float wantedY = 0.0F;
+    public float wantedZ = 0.0F;
+    public static final EntityDataAccessor<Float> WANTED_X = SynchedEntityData.defineId(BlazingSpear.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> WANTED_Y = SynchedEntityData.defineId(BlazingSpear.class, EntityDataSerializers.FLOAT);
+    public static final EntityDataAccessor<Float> WANTED_Z = SynchedEntityData.defineId(BlazingSpear.class, EntityDataSerializers.FLOAT);
+    public static final String NBT_TARGET_ID = "TargetUUID";
+    public static final String NBT_WANTED_X = "TargetWantedX";
+    public static final String NBT_WANTED_Y = "TargetWantedY";
+    public static final String NBT_WANTED_Z = "TargetWantedZ";
+
     public BlazingSpear(EntityType<? extends Projectile> entityType, Level level) {
         super(entityType, level);
         this.setDuration(160);
@@ -49,11 +50,51 @@ public class BlazingSpear extends ExtendedProjectile {
         this(BHEntity.BLAZING_SPEAR.get(), level);
         this.setOwner(shooter);
     }
+    @Override
+    protected void defineSynchedData() {
+        this.entityData.define(WANTED_X, 0.0F);
+        this.entityData.define(WANTED_Y, 0.0F);
+        this.entityData.define(WANTED_Z, 0.0F);
+        super.defineSynchedData();
+    }
+
+    @Override
+    public void addAdditionalSaveData(CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        tag.putFloat(NBT_WANTED_X, this.getWantedX());
+        tag.putFloat(NBT_WANTED_Y, this.getWantedY());
+        tag.putFloat(NBT_WANTED_Z, this.getWantedZ());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setWantedTarget(tag.getFloat(NBT_WANTED_X), tag.getFloat(NBT_WANTED_Y), tag.getFloat(NBT_WANTED_Z));
+    }
+
+    public void setWantedTarget(float x, float y, float z) {
+        this.entityData.set(WANTED_X, x);
+        this.entityData.set(WANTED_Y, y);
+        this.entityData.set(WANTED_Z, z);
+        this.wantedX = x;
+        this.wantedY = y;
+        this.wantedZ = z;
+    }
+
+    public float getWantedX() {
+        return this.level().isClientSide() ? this.entityData.get(WANTED_X) : this.wantedX;
+    }
+    public float getWantedY() {
+        return this.level().isClientSide() ? this.entityData.get(WANTED_Y) : this.wantedY;
+    }
+    public float getWantedZ() {
+        return this.level().isClientSide() ? this.entityData.get(WANTED_Z) : this.wantedZ;
+    }
 
     @Override
     public void afterGotHit(LivingEntity entity) {
         entity.invulnerableTime = 0;
-        entity.addEffect(new MobEffectInstance(BHEffects.ROOTED.get(), Maths.sec(2)));
+        entity.addEffect(new MobEffectInstance(BHEffects.ROOTED.get(), MathUtils.sec(2)));
     }
 
     @Override
@@ -162,15 +203,12 @@ public class BlazingSpear extends ExtendedProjectile {
                             break;
                     }
                 }
-
                 if (entityhitresult == null || this.getPierceLevel() <= 0) {
                     break;
                 }
-
                 hitresult = null;
             }
-
-            if (this.isRemoved())return;
+            if (this.isRemoved()) return;
             vec3 = this.getDeltaMovement();
             double d5 = vec3.x;
             double d6 = vec3.y;
@@ -187,7 +225,7 @@ public class BlazingSpear extends ExtendedProjectile {
             this.setXRot((float)(Mth.atan2(d6, d4) * (double)(180F / (float)Math.PI)));
             this.setXRot(lerpRotation(this.xRotO, this.getXRot()));
             this.setYRot(lerpRotation(this.yRotO, this.getYRot()));
-            float motion = 0.99F;
+            float motion = MOTION;
             if (this.isInWater()) {
                 for(int j = 0; j < 4; ++j) {
                     float motionDrag = 0.25F;
@@ -195,10 +233,17 @@ public class BlazingSpear extends ExtendedProjectile {
                 }
                 motion = this.getWaterInertia();
             }
-            this.setDeltaMovement(vec3.add(this.xPower, this.yPower, this.zPower).scale((double) motion));
+            this.setDeltaMovement(vec3.add(this.xPower, this.yPower, this.zPower).scale(motion));
             this.setPos(d7, d2, d3);
+            for(int j = 0; j < 4; ++j) {
+                float motionDrag = 0.25F;
+                this.level().addParticle(ParticleTypes.SMOKE, d7 - d5 * motionDrag, d2 - d6 * motionDrag, d3 - d1 * motionDrag, d5, d6, d1);
+                this.level().addParticle(ParticleTypes.FLAME, d7 - d5 * motionDrag, d2 - d6 * motionDrag, d3 - d1 * motionDrag, d5, d6, d1);
+                this.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, d7 - d5 * motionDrag, d2 - d6 * motionDrag, d3 - d1 * motionDrag, d5, d6, d1);
+            }
             this.checkInsideBlocks();
-            if (this.getLifeSpan() == this.getDelay()) {
+            if (this.getLifeSpan() > this.getDelay()) {
+                Entity owner = this.getOwner();
                 if (entity instanceof Player player) {
                     LivingEntity target = (LivingEntity) RaycastUtil.getEntityLookedAt(player);
                     if (target != null) {
@@ -214,11 +259,21 @@ public class BlazingSpear extends ExtendedProjectile {
                         this.zPower = dz * this.getSpeed();
                     }
                 }
-                if (entity instanceof Mob && ((Mob) entity).getTarget() != null) {
-                    LivingEntity target = ((Mob) entity).getTarget();
-                    double dx = target.getX() - this.getX();
-                    double dy = target.getY() + target.getBbHeight() * 0.5F - this.getY();
-                    double dz = target.getZ() - this.getZ();
+                if (owner instanceof Mob && ((Mob) owner).getTarget() != null) {
+                    LivingEntity target = ((Mob) owner).getTarget();
+                    double dx = 0.0D;
+                    double dy = 0.0D;
+                    double dz = 0.0D;
+                    if (target == null) {
+                        dx = this.getWantedX() - this.getX();
+                        dy = this.getWantedY() - this.getY();
+                        dz = this.getWantedZ() - this.getZ();
+                    } else {
+                        dx = target.getX() - this.getX();
+                        dy = target.getY() - target.getBbHeight() * 0.5F - this.getY();
+                        dz = target.getZ() - this.getZ();
+                    }
+
                     double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
                     dx /= d;
                     dy /= d;

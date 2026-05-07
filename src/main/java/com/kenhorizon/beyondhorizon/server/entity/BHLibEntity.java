@@ -135,15 +135,6 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
         this.performDodge(animationId);
     }
 
-    public void doDodge(float chance) {
-        this.doDodge(chance, 0);
-    }
-
-    public void doDodge(float chance, int animationId) {
-        if (this.getRandomChances(chance)) return;
-        this.performDodge(animationId);
-    }
-
     private void performDodge(int animationId) {
         List<Projectile> projectilesNearby = this.getEntitiesNearby(Projectile.class, 30);
         for (Projectile projectile : projectilesNearby) {
@@ -197,5 +188,9 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
 
     public AnimationState[] getAnimations() {
         return new AnimationState[0];
+    }
+
+    protected boolean AnimationChanged() {
+        return this.getAnimation() != this.getPrevAnimationState();
     }
 }

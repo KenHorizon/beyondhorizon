@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
@@ -16,9 +16,9 @@ public class WeaponSkills extends Skill implements IAttack, IEntityProperties {
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this.getMagnitude() > 0.0F && this.getLevel() > 0.0F) {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F), Maths.format(this.getLevel() * 100.0F));
+            return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F), MathUtils.format(this.getLevel() * 100.0F));
         } else {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F));
+            return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F));
         }
     }
 

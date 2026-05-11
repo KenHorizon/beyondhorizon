@@ -257,7 +257,11 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
 
     @Override
     public boolean removeWhenFarAway(double distance) {
-        return this.getUsingEntity() != null;
+        if (this.isCantDespawn()) {
+            return false;
+        } else {
+            return this.getUsingEntity() != null;
+        }
     }
 
     @Override

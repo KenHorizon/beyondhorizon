@@ -1,6 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
+import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -24,15 +27,20 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
     private int idleTime;
     private float damageCap = -1;
     private int animationTick;
+    private boolean cantDespawn = false;
+    public static final String NBT_CANT_DESPAWN = "CantDespawn";
     public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(BHLibEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> CANT_DESPAWN = SynchedEntityData.defineId(BHLibEntity.class, EntityDataSerializers.BOOLEAN);
 
-    public BHLibEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
+    public BHLibEntity(EntityType<? extends PathfinderMob> entityType, Level level)
+    {
         super(entityType, level);
     }
 
     public void setExp(int xpPoints) {
         this.xpReward = xpPoints;
     }
+
     public void setAnimationTick(int animationTick) {
         this.animationTick = animationTick;
     }
@@ -45,6 +53,7 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(ANIMATION_STATE, 0);
+        this.entityData.define(CANT_DESPAWN, false);
     }
 
     @Override
@@ -110,6 +119,26 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
         this.entityData.set(ANIMATION_STATE, animation);
         this.prevAnimationState = this.getAnimation();
         this.level().broadcastEntityEvent(this, (byte) -animation);
+    }
+    @Override
+    public void addAdditionalSaveData(CompoundTag nbt) {
+        super.addAdditionalSaveData(nbt);
+        nbt.putBoolean(NBT_CANT_DESPAWN, this.isCantDespawn());
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag nbt) {
+        this.setCantDespawn(nbt.getBoolean(NBT_CANT_DESPAWN));
+        super.readAdditionalSaveData(nbt);
+    }
+
+    public void setCantDespawn(boolean v) {
+        this.entityData.set(CANT_DESPAWN, v);
+        this.cantDespawn = v;
+    }
+
+    public boolean isCantDespawn() {
+        return this.level().isClientSide() ? this.entityData.get(CANT_DESPAWN) : this.cantDespawn;
     }
 
     public int getPrevAnimationState() {

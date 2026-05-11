@@ -107,7 +107,7 @@ public class BlazingInferno extends BHBossEntity {
     public static final int ID_FLAME_STRIKE = createAnimationID();
     public static final int BLAZING_ROD_IA_NORMAL = 30;
     public static final int BLAZING_ROD_IA_ENRAGED = 15;
-
+    private int groundSlamDuration = 0;
     public List<InfernoShield> infernoShields = new ArrayList<>();
     public int fireballCooldown = 0;
     public static final int FIREBALL_COOLDOWN = MathUtils.sec(6);
@@ -134,6 +134,7 @@ public class BlazingInferno extends BHBossEntity {
     public static final int ENRAGED_COOLDOWN = MathUtils.sec(5);
     public static final int AWAKEN_COOLDOWN = MathUtils.sec(5);
     private boolean doGroundSmash = false;
+    private boolean doGroundSmashFX = false;
     public static final String NBT_POWERED = "IsPowered";
     public static final String NBT_ENRAGED = "IsEnraged";
     public static final String NBT_SHIELD_COUNT = "ShieldCount";
@@ -590,63 +591,6 @@ public class BlazingInferno extends BHBossEntity {
                 }
             }
         }
-        if (this.getAnimationState(ID_GROUND_SLAM)) {
-            if (this.getAnimationTick() % 20 == 0 && this.getAnimationTick() <= MathUtils.sec(5)) {
-                this.level().playSound(null, this.getX(), this.getY(), this.getZ(), BHSounds.BLAZING_INFERNO_SCREAM.get(), SoundSource.HOSTILE, 1.0F, 1.0F);
-                if (this.level().isClientSide()) {
-                    int particleCount = 32;
-                    while (particleCount --> 0) {
-                        double radius = 5.0F;
-                        float yaw = (float) (this.random.nextFloat() * 2 * Math.PI);
-                        float pitch = (float) (this.random.nextFloat() * 2 * Math.PI);
-                        double ox = (float) (radius * Math.sin(yaw) * Math.sin(pitch));
-                        double oy = (float) (radius * Math.cos(pitch));
-                        double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
-                        ParticleTrailOptions.add(this.level(), TrailParticles.Behavior.FADE, this.getX() + ox, this.getY() + oy + 0.1, this.getZ() + oz, 6.0F, 1, 0.0F, 0.0F, 1.0F, 10, new Vec3(this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ()));
-                    }
-                    while (particleCount --> 0) {
-                        this.level().addParticle(ParticleTypes.FLAME, this.getRandomX(0.5D), this.getBbHeight() * 0.01D, this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
-                    }
-                    for (int i = 0; i < 10; ++i) {
-                        this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(0.5D), this.getBbHeight() * 0.01D, this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
-                        this.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getRandomX(0.5D), this.getBbHeight() * 0.01D, this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
-                    }
-                    float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-                    float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-                    float b = ColorUtil.getFARGB(0xFFFFFF)[2];
-                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 30, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
-                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 30, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
-                    this.level().addParticle(new RoarParticleOptions(10, 255, 255, 255, 1.0F, 1.0F, 0.1F, 25.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
-                }
-            }
-            if (this.getAnimationTick() > MathUtils.sec(2) && this.getAnimationTick() < 43) {
-                this.doJump(0.62255D);
-                this.doGroundSmash = true;
-            }
-            if (this.doGroundSmash && this.getAnimationTick() > MathUtils.sec(3) && !this.onGround()) {
-                this.setDeltaMovement(this.getDeltaMovement().add(0, -0.52255D, 0));
-            }
-            if (this.level() instanceof ServerLevel && this.getAnimationTick() > MathUtils.sec(3) && this.onGround()) {
-                this.doShakeBlock(this, this.getAnimationTick(), 40);
-            }
-            if (this.level().isClientSide()) {
-                if (this.getAnimationTick() == MathUtils.sec(3) && this.onGround()) {
-                    float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-                    float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-                    float b = ColorUtil.getFARGB(0xFFFFFF)[2];
-                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 32, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
-                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 32, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
-                    EntityUtils.groundSlamParticles(this.level(), this.yBodyRot, this.getX(), this.getY(0.5D), this.getZ(), 6.5F,  0.25F, 0.065F);
-                    this.sphereParticle(16);
-                }
-            } else {
-                if (this.getAnimationTick() > MathUtils.sec(3) && this.onGround()) {
-                    CameraShake.spawn(this.level(), this.position(), 32.0F, 0.15F, 10, 5);
-                    this.createEruption(16);
-                    this.doGroundSmash = false;
-                }
-            }
-        }
         if (this.getAnimationState(ID_FLAME_STRIKE)) {
             int intervalAttack = 10;
             if (target != null) {
@@ -757,6 +701,8 @@ public class BlazingInferno extends BHBossEntity {
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 30, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
                     this.level().addParticle(new RoarParticleOptions(10, 255, 255, 255, 1.0F, 1.0F, 0.1F, 25.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
 
+                } else {
+                    this.playSound(BHSounds.BLAZING_INFERNO_SCREAM.get());
                 }
             }
             if (this.getAnimationTick() == MathUtils.sec(4)) {
@@ -777,6 +723,72 @@ public class BlazingInferno extends BHBossEntity {
             if (this.level() instanceof ServerLevel && this.getAnimationTick() > MathUtils.sec(4)) {
                 this.doShakeBlock(this, this.getAnimationTick(), 40);
             }
+        }
+        if (this.getAnimationState(ID_GROUND_SLAM)) {
+            if (this.getAnimationTick() % 20 == 0 && this.getAnimationTick() <= MathUtils.sec(3) && this.onGround()) {
+               if (this.level().isClientSide()) {
+                    int particleCount = 32;
+                    while (particleCount --> 0) {
+                        double radius = 5.0F;
+                        float yaw = (float) (this.random.nextFloat() * 2 * Math.PI);
+                        float pitch = (float) (this.random.nextFloat() * 2 * Math.PI);
+                        double ox = (float) (radius * Math.sin(yaw) * Math.sin(pitch));
+                        double oy = (float) (radius * Math.cos(pitch));
+                        double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
+                        ParticleTrailOptions.add(this.level(), TrailParticles.Behavior.FADE, this.getX() + ox, this.getY() + oy + 0.1, this.getZ() + oz, 6.0F, 1, 0.0F, 0.0F, 1.0F, 10, new Vec3(this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ()));
+                    }
+                    while (particleCount --> 0) {
+                        this.level().addParticle(ParticleTypes.FLAME, this.getRandomX(0.5D), this.getBbHeight() * 0.01D, this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+                    }
+                    for (int i = 0; i < 10; ++i) {
+                        this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.getRandomX(0.5D), this.getBbHeight() * 0.01D, this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+                        this.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, this.getRandomX(0.5D), this.getBbHeight() * 0.01D, this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+                    }
+                    float r = ColorUtil.getFARGB(0xFFFFFF)[0];
+                    float g = ColorUtil.getFARGB(0xFFFFFF)[1];
+                    float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 30, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
+                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 30, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
+                    this.level().addParticle(new RoarParticleOptions(10, 255, 255, 255, 1.0F, 1.0F, 0.1F, 25.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
+               }
+                this.playSound(BHSounds.BLAZING_INFERNO_GROWL.get());
+            }
+            if (this.getAnimationTick() > MathUtils.sec(2) && this.getAnimationTick() < 43) {
+                this.doJump(0.42255D);
+                this.doGroundSmash = true;
+                this.doGroundSmashFX = true;
+            }
+            if (this.doGroundSmash) {
+                if (this.getAnimationTick() > MathUtils.sec(3) && !this.onGround()) {
+                    this.setDeltaMovement(this.getDeltaMovement().add(0, -1.52255D, 0));
+                }
+            }
+            if (this.getAnimationTick() > MathUtils.sec(3) && this.doGroundSmashFX && this.onGround()) {
+                this.doGroundSmash = false;
+                this.doGroundSmashFX = false;
+                if (this.level() instanceof ServerLevel) {
+                    this.doShakeBlock(this, this.getAnimationTick(), 40);
+                }
+                if (this.level().isClientSide()) {
+                    if (this.onGround()) {
+                        float r = ColorUtil.getFARGB(0xFFFFFF)[0];
+                        float g = ColorUtil.getFARGB(0xFFFFFF)[1];
+                        float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+                        this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 32, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+                        this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 32, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+                        EntityUtils.groundSlamParticles(this.level(), this.yBodyRot, this.getX(), this.getY(0.5D), this.getZ(), 6.5F,  0.25F, 0.065F);
+                        this.level().addParticle(new RoarParticleOptions(64, 255, 255, 255, 1.0F, 1.0F, 0.1F, 128.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
+                    }
+                } else {
+                    if (this.onGround()) {
+                        CameraShake.spawn(this.level(), this.position(), 32.0F, 0.15F, 10, 5);
+                        this.createEruption(16);
+                        this.playSound(BHSounds.BLAZING_INFERNO_SHOCKWAVE.get());
+                        this.groundSlamDuration = 0;
+                    }
+                }
+            }
+
         }
         this.dashAttack();
         if (this.getAnimationState(ID_DASHES)) {
@@ -884,6 +896,7 @@ public class BlazingInferno extends BHBossEntity {
         for (int i = 0; i < count; i++) {
             InfernoShield summonShield = new InfernoShield(this.level(), this, 0.25F, i * rotate);
             summonShield.isAlliedTo(this);
+            summonShield.setCantDespawn(true);
             this.level().addFreshEntity(summonShield);
         }
         this.shieldCooldown = SHIELD_COOLDOWN;

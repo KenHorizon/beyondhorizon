@@ -27,6 +27,7 @@ public class BHSoundProvider extends SoundDefinitionFactory {
     public void registerSounds() {
         this.add(BHSounds.HEAVY_ATTACK, "generic/heavy_hit/heavyhit", 3);
 
+        this.add(BHSounds.BLAZING_INFERNO_SCREAM, "mob/blazing_inferno/scream");
         this.add(BHSounds.BLAZING_INFERNO_SHOOT, "mob/blazing_inferno/shoot/shoot", 2);
         this.add(BHSounds.BLAZING_INFERNO_SHOCKWAVE, "mob/blazing_inferno/shockwave/shockwave", 3);
         this.add(BHSounds.BLAZING_INFERNO_GROWL, "mob/blazing_inferno/growl/growl", 4);

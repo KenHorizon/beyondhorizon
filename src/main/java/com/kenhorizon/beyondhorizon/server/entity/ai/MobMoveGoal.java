@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.entity.ai;
 
 import com.kenhorizon.beyondhorizon.server.entity.BHBaseEntity;
+import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,13 +12,13 @@ import net.minecraft.world.level.pathfinder.Path;
 import java.util.EnumSet;
 
 public class MobMoveGoal extends Goal {
-    private final BHBaseEntity entity;
+    public final BHLibEntity entity;
     private final boolean followingTargetEvenIfNotSeen;
     private Path path;
     private int delayCounter;
     protected final double moveSpeed;
 
-    public MobMoveGoal(BHBaseEntity boss, boolean followingTargetEvenIfNotSeen, double moveSpeed) {
+    public MobMoveGoal(BHLibEntity boss, boolean followingTargetEvenIfNotSeen, double moveSpeed) {
         this.entity = boss;
         this.followingTargetEvenIfNotSeen = followingTargetEvenIfNotSeen;
         this.moveSpeed = moveSpeed;

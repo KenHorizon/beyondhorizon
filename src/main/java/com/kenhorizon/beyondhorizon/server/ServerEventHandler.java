@@ -8,6 +8,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
+import com.kenhorizon.beyondhorizon.server.api.handler.UndyingTotemAbility;
 import com.kenhorizon.beyondhorizon.server.capability.*;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
@@ -39,6 +40,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -816,6 +818,7 @@ public class ServerEventHandler {
     public void onKilledEntiy(LivingDeathEvent event) {
         LivingEntity target = event.getEntity();
         DamageSource source = event.getSource();
+        boolean cantDie = false;
         if (source.getEntity() instanceof LivingEntity attacker) {
             ICombatCore attackerCombatCore = CapabilityCaller.combat(attacker);
             ItemStack attackerStack = attacker.getMainHandItem();
@@ -823,6 +826,24 @@ public class ServerEventHandler {
                 RoleClass roleClass = CapabilityCaller.roleClass(player);
                 Optional<IAttack> attack = roleClass.IAttack();
                 attack.ifPresent(iAttack -> iAttack.onEntityKilled(source, attacker, target));
+                IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+                if (handler != null) {
+                    for (int i = 0; i < handler.getSlots(); i++) {
+                        final ItemStack itemStack = handler.getStackInSlot(i);
+                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> container) {
+                            for (Accessory trait : container.getAccessories()) {
+                                Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
+                                if (meleeWeaponCallback.isPresent()) {
+                                    cantDie = meleeWeaponCallback.get().onEntityDeath(player, itemStack);
+                                }
+                            }
+                        }
+                    }
+                }
+                ServerLevel level = (ServerLevel) player.level();
+                if (!(player.isCreative() || player.isSpectator()) && !UndyingTotemAbility.onUse(level, (ServerPlayer) player) && (source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL))) {
+                    event.setCanceled(true);
+                }
             }
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                 for (Skill trait : container.getSkills()) {
@@ -831,7 +852,9 @@ public class ServerEventHandler {
                 }
             }
         }
+        event.setCanceled(cantDie);
     }
+
 
     private boolean inStructures(ServerLevel level, Player player, ResourceKey<Structure> structure) {
         var isAt = LocationPredicate.inStructure(structure);

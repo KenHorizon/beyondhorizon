@@ -69,6 +69,7 @@ public class SinglePassiveAccessory extends AccessorySkill {
         float jumpFactor1 = level.getBlockState(this.getOnPos(entity,0.500001F)).getBlock().getJumpFactor();
         return (double)jumpFactor0 == 1.0D ? jumpFactor1 : jumpFactor0;
     }
+
     protected BlockPos getOnPos(LivingEntity entity, float yOffset) {
         if (entity.mainSupportingBlockPos.isPresent()) {
             BlockPos blockpos = entity.mainSupportingBlockPos.get();

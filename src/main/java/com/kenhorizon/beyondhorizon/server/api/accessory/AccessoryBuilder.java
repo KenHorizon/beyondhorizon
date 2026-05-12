@@ -21,6 +21,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder CURSED_APPLE = new AccessoryBuilder(List.of(Accessories.BAD_APPLE));
     public static final AccessoryBuilder VITAMINS = new AccessoryBuilder(List.of(Accessories.VITAMINS));
 
+    public static final AccessoryBuilder ETERNAL_LIFE = new AccessoryBuilder(List.of(Accessories.ETERNAL_LIFE));
     public static final AccessoryBuilder NULL_SWORD = new AccessoryBuilder(List.of(Accessories.NULLIFY));
     public static final AccessoryBuilder INFINITY_SWORD = new AccessoryBuilder(List.of(Accessories.LETHAL_BURST));
     public static final AccessoryBuilder TRUE_HERO_SWORD = new AccessoryBuilder(List.of(Accessories.TRUE_HERO_SWORD));

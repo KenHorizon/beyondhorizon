@@ -37,6 +37,7 @@ public class PlayerData {
     public double getMana() {
         return this.mana;
     }
+
     public void setCrit(boolean crit) {
         this.crit = crit;
     }
@@ -44,6 +45,7 @@ public class PlayerData {
     public boolean isCrit() {
         return this.crit;
     }
+
     public void setDefaults() {
         this.mana = this.player.getAttributeBaseValue(BHAttributes.MAX_MANA.get());
     }

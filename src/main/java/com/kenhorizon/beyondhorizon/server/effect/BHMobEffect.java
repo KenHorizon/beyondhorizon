@@ -1,6 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.effect;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.DamageInfoCap;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
+import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
+import com.mojang.realmsclient.dto.PlayerInfo;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -18,16 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BHMobEffect extends MobEffect {
+    private int rapidHealingRate = 20;
+    private int rapidHealingMinusRate = 1;
+    private final int rapidHealingDefaultRate = 20;
+    private final int rapidHealingLimitRate = 5;
     public BHMobEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-        if (this == BHEffects.RECOVERY.get() && entity.getHealth() < entity.getMaxHealth()) {
-            float missingHealth = (entity.getMaxHealth() - entity.getHealth()) / entity.getMaxHealth();
-            float healingFactor = 0.015F * entity.getMaxHealth() * (entity.getMaxHealth() * missingHealth);
-            entity.heal(healingFactor);
-        }
         if (this == BHEffects.DRAGON_FLAME.get()) {
             if (entity.getHealth() > 0) {
                 float damageOutput = 1.0F + (amplifier * 0.5F);
@@ -39,6 +45,24 @@ public class BHMobEffect extends MobEffect {
                     damageOutput *= 1.25F;
                 }
                 entity.hurt(entity.level().damageSources().magic(), damageOutput);
+            }
+        }
+        if (this == BHEffects.RAPID_HEALING.get()) {
+            ICombatCore combatCore = CapabilityCaller.combat(entity);
+            boolean cancelHeal = combatCore.OnCombat();
+            if (!cancelHeal && entity.getHealth() < entity.getMaxHealth()) {
+                if (entity.tickCount % this.rapidHealingRate == 0) {
+                    BeyondHorizon.LOGGER.debug("Rapid Healing Debug: Rate:{} Limit:{} Minus:{}", this.rapidHealingRate, this.rapidHealingLimitRate, this.rapidHealingMinusRate);
+                    entity.heal(0.5F);
+                    if (this.rapidHealingRate > this.rapidHealingLimitRate) {
+                        this.rapidHealingRate -= this.rapidHealingMinusRate;
+                    } else {
+                        this.rapidHealingRate = this.rapidHealingLimitRate;
+                    }
+                }
+            }
+            if (cancelHeal) {
+                this.rapidHealingRate = this.rapidHealingDefaultRate;
             }
         }
         if (this == BHEffects.BLEED.get()) {
@@ -64,9 +88,7 @@ public class BHMobEffect extends MobEffect {
             AABB range = player.getBoundingBox().inflate(rangeLevel);
             for (LivingEntity targetZombies : user.level().getEntitiesOfClass(LivingEntity.class, range)) {
                 if (targetZombies instanceof Zombie zombie) {
-                    if (zombie.getTarget() == null) {
-                        zombie.getMoveControl().setWantedPosition(player.getX(), player.getY(), player.getZ(), 1.0D);
-                    }
+                    zombie.getMoveControl().setWantedPosition(player.getX(), player.getY(), player.getZ(), 1.0D);
                 }
             }
         }
@@ -107,18 +129,6 @@ public class BHMobEffect extends MobEffect {
     }
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
-        if (this == BHEffects.RECOVERY.get()) {
-            int tick = 20 >> amplifier;
-            if (tick > 0) {
-                return duration % tick == 0;
-            } else {
-                return true;
-            }
-        }
-        if (this == BHEffects.DRAGON_FLAME.get()) {
-            int tick = 20;
-            return duration % tick == 0;
-        }
         if (this == BHEffects.LETHAL_POISON.get()) {
             int tick = 25 >> amplifier;
             if (tick > 0) {
@@ -127,7 +137,6 @@ public class BHMobEffect extends MobEffect {
                 return true;
             }
         }
-
         if (this == BHEffects.LIGHTNING.get()) {
             int tick = 75 >> amplifier;
             if (tick > 0) {

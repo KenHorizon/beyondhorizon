@@ -112,6 +112,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.KNOWLEDGE.get(), "Knowledge", "Increase drop experience by %s%%");
         this.addAccessory(Accessories.VENOM.get(), "Venom", "Attacks have %.2f%% chance inflict either Poison or Lethal Poison for %s seconds");
         this.addAccessory(Accessories.JUMP_BOOST.get(), "Jump Boost", "Increase the jump height by %s%%");
+        this.addAccessory(Accessories.ETERNAL_LIFE.get(), "Eternal Life", "Revive on death and consume Undying Totem in the inventory");
         this.addAccessory(Accessories.NULLIFY.get(), "Nullify", "Ignore enchantment protection by %s%% at same time your attack effectivness reduced by %s%%");
         //
         this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");

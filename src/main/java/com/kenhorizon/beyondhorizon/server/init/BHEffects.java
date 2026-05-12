@@ -28,11 +28,9 @@ public class BHEffects {
     public static final RegistryObject<MobEffect> ARMOR_BREAK =
             RegistryHelper.registerEffects("armor_break", () -> new ModifierEffect(MobEffectCategory.NEUTRAL, 0x808080, -0.05F).addAttributeModifier(Attributes.ARMOR, "afd508a1-981f-4cad-aaa5-4fda014e8c53", (double) -0.15F, AttributeModifier.Operation.MULTIPLY_BASE).addAttributeModifier(Attributes.ARMOR_TOUGHNESS, "d042bf31-085c-454e-94ef-31cee0c83ba8", (double) -0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> RAPID_HEALING =
-            RegistryHelper.registerEffects("rapid_healing", () -> new ModifierEffect(MobEffectCategory.NEUTRAL, 0x808080, 0.05F).addAttributeModifier(BHAttributes.HEALTH_REGENERATION.get(), "2c23c41e-069d-48b1-88a6-6cc5bfeaedb2", (double) 0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
+            RegistryHelper.registerEffects("rapid_healing", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x808080));
     public static final RegistryObject<MobEffect> IMMUNITY =
             RegistryHelper.registerEffects("immunity", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0xFFEA82));
-    public static final RegistryObject<MobEffect> RECOVERY =
-            RegistryHelper.registerEffects("recovery", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x4CFF00));
     public static final RegistryObject<MobEffect> PARALYZE =
             RegistryHelper.registerEffects("paralyze", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0xFFD800));
     public static final RegistryObject<MobEffect> LEECH =

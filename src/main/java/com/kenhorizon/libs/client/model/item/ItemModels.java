@@ -6,6 +6,7 @@ public enum ItemModels implements IExtensibleEnum {
     NONE(null),
     RUNE(ItemModelType.RUNES),
     ACCESSORY(ItemModelType.ACCESSORY),
+    HANDHELD_ACCESSORY(ItemModelType.ACCESSORY_HANDHELD),
     BIG_SCYTHE(ItemModelType.BIG_SCYTHE),
     BIG_SPEAR(ItemModelType.BIG_SPEAR),
     SCYTHE(ItemModelType.SCYTHE),

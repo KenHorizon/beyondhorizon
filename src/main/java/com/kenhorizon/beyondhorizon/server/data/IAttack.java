@@ -45,4 +45,8 @@ public interface IAttack {
     default boolean canEntiyReceiveDamage(Player player, LivingEntity target, DamageSource source) {
         return false;
     }
+
+    default boolean onEntityDeath(Player player, ItemStack itemStack) {
+        return false;
+    }
 }

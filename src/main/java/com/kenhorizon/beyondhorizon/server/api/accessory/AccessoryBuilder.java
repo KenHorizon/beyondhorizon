@@ -36,9 +36,15 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder BLOOD_OF_BERSERKER = new AccessoryBuilder(List.of(Accessories.RAGE));
     public static final AccessoryBuilder GOLDEN_BOOTS = new AccessoryBuilder(List.of(Accessories.BERSERKER_BOOTS, Accessories.IRON_PLATED_BOOTS, Accessories.FIRE_IMMUNITY));
     public static final AccessoryBuilder BASIC_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS));
+    public static final AccessoryBuilder DEATH_CONTRACT = new AccessoryBuilder(List.of(Accessories.DEATH, Accessories.TAXS));
     public static final AccessoryBuilder TOUGH_CLOTH = new AccessoryBuilder(List.of(Accessories.TOUGH_CLOTH));
     public static final AccessoryBuilder VITALITY_STONE = new AccessoryBuilder(List.of(Accessories.VITALITY_STONE));
     public static final AccessoryBuilder CHAIN_VEST = new AccessoryBuilder(List.of(Accessories.CHAIN_VEST));
+    public static final AccessoryBuilder ABYSSAL_TOOTH = new AccessoryBuilder(List.of(Accessories.CORRUPTED_BITE));
+    public static final AccessoryBuilder TALISMAN_OF_ASCENSION = new AccessoryBuilder(List.of(Accessories.ASCENSION));
+    public static final AccessoryBuilder WARDEN_MAIL = new AccessoryBuilder(List.of(Accessories.ROCK_SOLID));
+    public static final AccessoryBuilder WARD_CLEANSE = new AccessoryBuilder(List.of(Accessories.CLEANSE));
+    public static final AccessoryBuilder SOUL_SIPHON = new AccessoryBuilder(List.of(Accessories.LIFE_SIPHON));
     public static final AccessoryBuilder LEATHER_AGILITY = new AccessoryBuilder(List.of(Accessories.LEATHER_AGILITY));
     public static final AccessoryBuilder NULL_MAGIC_RUNE = new AccessoryBuilder(List.of(Accessories.NULL_MAGIC_RUNE));
     public static final AccessoryBuilder FIREFLY_FAYE = new AccessoryBuilder(List.of(Accessories.FIREFLY_FAYE));
@@ -61,6 +67,10 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder ANCIENT_CHISEL = new AccessoryBuilder(List.of(Accessories.ANCIENT_CHISEL));
     public static final AccessoryBuilder HEART_OF_THE_TREE = new AccessoryBuilder(List.of(Accessories.OVERGROWTH));
     public static final AccessoryBuilder BROKEN_HERO_SWORD = new AccessoryBuilder(List.of(Accessories.BRAVERY));
+    public static final AccessoryBuilder TWILIGHT_SWORD = new AccessoryBuilder(List.of(Accessories.TWILIGHT_SWORD, Accessories.SPELL_BLADE_1));
+    public static final AccessoryBuilder SHEEN = new AccessoryBuilder(List.of(Accessories.SHEEN, Accessories.SPELL_BLADE_0));
+    public static final AccessoryBuilder SPEAR_OF_CHAOS = new AccessoryBuilder(List.of(Accessories.SPEAR_OF_CHAOS));
+    public static final AccessoryBuilder VOID_STAFF = new AccessoryBuilder(List.of(Accessories.VOID_STAFF));
     public static final AccessoryBuilder RECTRIX = new AccessoryBuilder(List.of(Accessories.RECTRIX));
     public static final AccessoryBuilder FORTUNE_SHIKIGAMI = new AccessoryBuilder(List.of(Accessories.FORTUNE_SHIKIGAMI));
     public static final AccessoryBuilder DESPAIR_AND_DEFY = new AccessoryBuilder(List.of(Accessories.DESPAIR_AND_DEFY));

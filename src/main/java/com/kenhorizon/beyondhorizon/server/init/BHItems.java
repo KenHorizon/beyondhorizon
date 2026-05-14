@@ -113,7 +113,17 @@ public class BHItems {
     public static final RegistryObject<Item> STARITE_HOE = toolItem("starite_hoe", MeleeWeaponMaterials.STARITE, ItemBuilder.HOE);
     //
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = accessoryHandheldItem("broken_hero_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.BROKEN_HERO_SWORD);
+    public static final RegistryObject<Item> SHEEN = accessoryHandheldItemX32("sheen", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.SHEEN);
+    public static final RegistryObject<Item> TWILIGHT_SWORD = accessoryHandheldItemX32("twilight_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.TWILIGHT_SWORD);
+    public static final RegistryObject<Item> SPEAR_OF_CHAOS = accessoryHandheldItemX32("spear_of_chaos", AccessoryItemGroup.FATALITY, AccessoryBuilder.SPEAR_OF_CHAOS);
+    public static final RegistryObject<Item> VOID_STAFF = accessoryHandheldItem("void_staff", AccessoryItemGroup.BLIGHT, AccessoryBuilder.VOID_STAFF);
     //
+    public static final RegistryObject<Item> ABYSSAL_TOOTH = accessoryItem("abyssal_tooth", AccessoryBuilder.TALISMAN_OF_ASCENSION);
+    public static final RegistryObject<Item> TALISMAN_OF_ASCENSION = accessoryItem("talisman_of_ascension", AccessoryBuilder.TALISMAN_OF_ASCENSION);
+    public static final RegistryObject<Item> WARDEN_MAIL = accessoryItem("warden_mail", AccessoryBuilder.WARDEN_MAIL);
+    public static final RegistryObject<Item> WARD_CLEANSE = accessoryItem("ward_cleanse", AccessoryBuilder.WARD_CLEANSE);
+    public static final RegistryObject<Item> SOUL_SIPHON = accessoryItem("soul_siphon", AccessoryBuilder.SOUL_SIPHON);
+    public static final RegistryObject<Item> DEATH_CONTRACT = accessoryItem("death_contract", AccessoryBuilder.DEATH_CONTRACT);
     public static final RegistryObject<Item> TOUGH_CLOTH = accessoryItem("tough_cloth", AccessoryBuilder.TOUGH_CLOTH);
     public static final RegistryObject<Item> NULL_MAGIC_RUNE = accessoryItem("null_magic_rune", AccessoryBuilder.NULL_MAGIC_RUNE);
     public static final RegistryObject<Item> FIREFLY_FAYE = accessoryItem("firefly_faye", AccessoryBuilder.FIREFLY_FAYE);
@@ -261,8 +271,12 @@ public class BHItems {
         return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.HANDHELD_ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
 
-    private static RegistryObject<Item> accessoryHandheldItem(String name, AccessoryBuilder accessoryBuilder) {
-        return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.HANDHELD_ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+    private static RegistryObject<Item> accessoryHandheldItemX32(String name, AccessoryItemGroup group, AccessoryBuilder accessoryBuilder) {
+        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.BIG_HANDHELD_ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+    }
+
+    private static RegistryObject<Item> accessoryHandheldItemX64(String name, AccessoryItemGroup group, AccessoryBuilder accessoryBuilder) {
+        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.BIG32_HANDHELD_ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
 
     public static void register(IEventBus eventBus) {

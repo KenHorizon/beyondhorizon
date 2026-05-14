@@ -39,6 +39,7 @@ public class BHSounds {
     public static RegistryObject<SoundEvent> INFERNO_SHIELD_BREAK = RegistryHelper.registerSounds("mob.inferno_shield.break", "Blazing inferno death");
 
     public static RegistryObject<SoundEvent> HEAVY_ATTACK = RegistryHelper.registerSounds("generic.heavy_attack", "Heavy attack");
+    public static RegistryObject<SoundEvent> ENTITY_EXECUTED = RegistryHelper.registerSounds("generic.entity_executed", "Entity has been executed");
 
 
     public static void register(IEventBus eventBus) {

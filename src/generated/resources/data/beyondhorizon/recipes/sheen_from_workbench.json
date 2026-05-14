@@ -1,0 +1,23 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:broken_hero_sword"
+    },
+    {
+      "item": "beyondhorizon:sapphire_crystal"
+    },
+    {
+      "item": "beyondhorizon:sapphire_crystal"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:sheen"
+  }
+}

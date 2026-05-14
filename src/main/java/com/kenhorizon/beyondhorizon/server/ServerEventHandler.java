@@ -839,6 +839,7 @@ public class ServerEventHandler {
                                 Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                                 if (meleeWeaponCallback.isPresent()) {
                                     cantDie = meleeWeaponCallback.get().onEntityDeath(player, itemStack);
+                                    meleeWeaponCallback.get().onEntityKilled(source, player, target);
                                 }
                             }
                         }

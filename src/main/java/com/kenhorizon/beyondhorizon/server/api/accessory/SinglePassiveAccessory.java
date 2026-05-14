@@ -12,15 +12,19 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.registries.ForgeRegistries;
+
+import java.util.UUID;
 
 public class SinglePassiveAccessory extends AccessorySkill {
-
+    private boolean hasAscension = false;
     public SinglePassiveAccessory() {
         super(0, 1);
     }
@@ -48,6 +52,30 @@ public class SinglePassiveAccessory extends AccessorySkill {
         }
         if (this == Accessories.JUMP_BOOST.get()) {
             entity.fallDistance -= entity.getMaxFallDistance() + (entity.getMaxFallDistance() * this.getMagnitude() * this.getLevel());
+        }
+        if (this == Accessories.ASCENSION.get()) {
+            this.hasAscension = true;
+            var attrs = entity.getAttributes();
+            for (var att : ForgeRegistries.ATTRIBUTES) {
+                boolean hasAttrs = attrs.hasAttribute(att);
+                var getAtt = entity.getAttribute(att);
+                if (hasAttrs && getAtt != null) {
+                    getAtt.addTransientModifier(new AttributeModifier("Atttribute" + att.getDescriptionId(), 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                }
+            }
+        }
+        if (this != Accessories.ASCENSION.get()) {
+            this.hasAscension = false;
+        }
+        if (!this.hasAscension) {
+            var attrs = entity.getAttributes();
+            for (var att : ForgeRegistries.ATTRIBUTES) {
+                boolean hasAttrs = attrs.hasAttribute(att);
+                var getAtt = entity.getAttribute(att);
+                if (hasAttrs && getAtt != null) {
+                    getAtt.removeModifier(new AttributeModifier("Atttribute" + att.getDescriptionId(), 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                }
+            }
         }
     }
 
@@ -93,6 +121,9 @@ public class SinglePassiveAccessory extends AccessorySkill {
         if (target == null || attacker == null) return;
         if (this == Accessories.BURN_EFFECT.get()) {
             target.setSecondsOnFire(Constant.FIRE_EFFECT);
+        }
+        if (this == Accessories.CORRUPTED_BITE.get()) {
+            target.hurt(BHDamageTypes.magicDamage(target, attacker), damageDealt * (this.getMagnitude() * this.getLevel()));
         }
         if (this == Accessories.NULLIFY.get()) {
             for (ItemStack armor : target.getArmorSlots()) {

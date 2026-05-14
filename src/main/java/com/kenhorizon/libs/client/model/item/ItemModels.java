@@ -7,6 +7,8 @@ public enum ItemModels implements IExtensibleEnum {
     RUNE(ItemModelType.RUNES),
     ACCESSORY(ItemModelType.ACCESSORY),
     HANDHELD_ACCESSORY(ItemModelType.ACCESSORY_HANDHELD),
+    BIG_HANDHELD_ACCESSORY(ItemModelType.ACCESSORY_HANDHELD_BIG),
+    BIG32_HANDHELD_ACCESSORY(ItemModelType.ACCESSORY_HANDHELD_BIG32),
     BIG_SCYTHE(ItemModelType.BIG_SCYTHE),
     BIG_SPEAR(ItemModelType.BIG_SPEAR),
     SCYTHE(ItemModelType.SCYTHE),

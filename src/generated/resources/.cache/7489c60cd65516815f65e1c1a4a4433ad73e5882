@@ -1,4 +1,5 @@
-// 1.20.1	2026-05-12T04:59:18.6286018	Item Models: beyondhorizon
+// 1.20.1	2026-05-14T19:27:31.5097135	Item Models: beyondhorizon
+13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
 bc4bd470691ac94e76d84763498ebdb51c69b6ef assets/beyondhorizon/models/item/agile_dagger.json
@@ -32,6 +33,7 @@ de3c0da14bbfc7ab2ed03c06075a1cfca7f0130b assets/beyondhorizon/models/item/cursed
 b855fdb2c78b573c0e717cb9a9948450b6079604 assets/beyondhorizon/models/item/dark_crystal.json
 0c72a1a96f11e47ede9e9d15a449faf88730f8a9 assets/beyondhorizon/models/item/dark_essence_crystal.json
 5768b4cb01f107fe8acb22721dbf74c9f941ceac assets/beyondhorizon/models/item/dark_repulser.json
+3f66afefa91f9449a70a66b4c37f25a55ec45c82 assets/beyondhorizon/models/item/death_contract.json
 f59b8406bb7e664a001ca5e500800ba779b34476 assets/beyondhorizon/models/item/debug0.json
 f067ccde0fbe79a96370293f0849fa7134d3cbf4 assets/beyondhorizon/models/item/debug1.json
 8a7a95a438bf4d87e45d9b853b600eca97d354d4 assets/beyondhorizon/models/item/debug2.json
@@ -87,6 +89,9 @@ e3f7cf59d038e3a6f17c79df06c355d94ddff921 assets/beyondhorizon/models/item/red_wo
 3746514904677291e1b4686b734a423c32cc7f67 assets/beyondhorizon/models/item/ruminative_beads.json
 57a8249296a2127e5dbc9b4b7c82984516e55b27 assets/beyondhorizon/models/item/sapphire_crystal.json
 bf27c57b7a5f8f5a822a5a4e2b23b24638d803d5 assets/beyondhorizon/models/item/shadowcrust.json
+a664ea90911adb468fe30b38b448940bda161708 assets/beyondhorizon/models/item/sheen.json
+1524805377d058021cfc7008d54c3920591ffc9a assets/beyondhorizon/models/item/soul_siphon.json
+eaaed2d71f4ecb41d7f34cf47d5a14c566daed5a assets/beyondhorizon/models/item/spear_of_chaos.json
 2c688f36077a5638732e16887bc8a7156cd74f6f assets/beyondhorizon/models/item/spectral_cloak.json
 fe7a0dbc81496c4bce2b33fcd6f8b36a1ce6deb5 assets/beyondhorizon/models/item/spring_lock.json
 e9cbfec3a01748b23a3a1fd084b12bd5706558c0 assets/beyondhorizon/models/item/starite_axe.json
@@ -96,11 +101,16 @@ e9cbfec3a01748b23a3a1fd084b12bd5706558c0 assets/beyondhorizon/models/item/starit
 6199f503fa163426069669bc26a076307dfecdab assets/beyondhorizon/models/item/starite_shovel.json
 e088cfc672483b94b88191d486af6451ef171a83 assets/beyondhorizon/models/item/starite_sword.json
 e76a33e9aa84f769c6cdb6746315d8fb943e35f8 assets/beyondhorizon/models/item/swift_dagger.json
+ddb4f39e2749d15a53bdac9c199b616cd3ce942e assets/beyondhorizon/models/item/talisman_of_ascension.json
 946a02d0e93616512ba47387c5010f334702f1b9 assets/beyondhorizon/models/item/thornmail.json
 1038351eb1c42e8c6f8d93312cae5c91d799c9e6 assets/beyondhorizon/models/item/tough_cloth.json
+cad29a26297570a181e0e814979fe06819076f21 assets/beyondhorizon/models/item/twilight_sword.json
 12cb0db145a6cec5e5d92822f58a2cd11cb243ab assets/beyondhorizon/models/item/unstable_runic_tome.json
 604d72d4a4e892b05266d1ab21ad191c3981ddeb assets/beyondhorizon/models/item/vitality_stone.json
 f686f70b3152320e6fc1068bb48927e6476e1cdd assets/beyondhorizon/models/item/vitamins.json
+41f7068f225096e7c63d10680eb07fb22c61cee7 assets/beyondhorizon/models/item/void_staff.json
+3e80aa584c6fe2bf44f4a9e3dd524e0c583895b5 assets/beyondhorizon/models/item/warden_mail.json
+d9280172e0fbb32be19997085d3deb47cc19b660 assets/beyondhorizon/models/item/ward_cleanse.json
 8eb0372e30c619e32f4038852bbfebaede77e120 assets/beyondhorizon/models/item/white_wool_fur.json
 0e452738a355de7fa630ec2a0b9fc172b9a930d5 assets/beyondhorizon/models/item/wildfire_boots.json
 bde479a110f83a6254f91dd5987b79c91bae7c1c assets/beyondhorizon/models/item/wildfire_chestplate.json

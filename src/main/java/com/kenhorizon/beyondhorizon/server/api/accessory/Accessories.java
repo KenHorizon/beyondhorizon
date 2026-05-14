@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.datagen.BHLangProvider;
-import com.kenhorizon.beyondhorizon.server.effect.BHMobEffect;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
@@ -22,48 +21,55 @@ import java.util.function.Supplier;
 public class Accessories {
     public static final RegistryObject<Accessory> NONE = registerSkill("none", AccessorySkill::new);
 
-    public static final RegistryObject<Accessory> SPECTRAL_CLOAK = registerSkill("spectral_cloak", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> SHEEN = registerSkill("sheen", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.ATTACK_DAMAGE, "57b45474-573e-4e5c-8e33-22a6b3f1f30b", Constant.SHEEN_AD, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> TWILIGHT_SWORD = registerSkill("twilight_sword", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.ATTACK_DAMAGE, "9ca1a7d2-52ea-499e-9d4e-0e6651ad1192", Constant.TS_AD, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.ABILITY_POWER.get(), "6b7c9a40-ff19-47ed-aa10-1b08f0697c0d", Constant.TS_AP, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> SPECTRAL_CLOAK = registerSkill("spectral_cloak", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MAX_HEALTH, "56c926ec-6dae-4cc1-887a-bca94ad097f2", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.MAGIC_RESISTANCE.get(), "29ebac4c-4845-44cf-aa07-2b9ef950c932", Constant.MAGIC_RESISTANCE_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.HEALTH_REGENERATION.get(), "81a1ce5c-e820-47f3-9165-3b467d712e56", Constant.REGEN, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-    public static final RegistryObject<Accessory> UNSTABLE_RUNIC_TOME = registerSkill("unstable_runic_tome", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> UNSTABLE_RUNIC_TOME = registerSkill("unstable_runic_tome", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.ABILITY_POWER.get(), "dc4893ce-e329-4cb7-afbb-639413a5a225", Constant.ABILITY_POWER_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.MAX_MANA.get(), "173973bc-2ef2-41ef-8a36-dc69c04a0090", Constant.MAX_MANA_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(Attributes.MOVEMENT_SPEED, "f9ed79b5-cdc4-4b54-b023-4b9e7fe0ec5f", Constant.BOOTS_TIER_1, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> CRYSTALLIZED_PLATE = registerSkill("crystallized_plate", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> CRYSTALLIZED_PLATE = registerSkill("crystallized_plate", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MAX_HEALTH, "065099dd-42ed-4ba3-874e-c8923a2a0502", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> CINDER_STONE = registerSkill("cinder_stone", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> CINDER_STONE = registerSkill("cinder_stone", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MAX_HEALTH, "a65f31b4-c3f2-4f5a-bf60-9bae56e32c70", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> AGILE_DAGGER = registerSkill("agile_dagger", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> AGILE_DAGGER = registerSkill("agile_dagger", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.CRITICAL_CHANCE.get(), "c65092cd-69fd-44b0-97d7-ffabe9c2db53", Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(Attributes.MOVEMENT_SPEED, "dafafcc2-2d26-49b1-af3a-386d69c03878", Constant.BOOTS_TIER_1, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> CHAIN_VEST = registerSkill("chain_vest", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> CHAIN_VEST = registerSkill("chain_vest", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ARMOR, "7aa1a339-925d-4c55-bad7-d4b6efc3571d", Constant.ARMOR_0, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> LEATHER_AGILITY = registerSkill("leather_agility", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> LEATHER_AGILITY = registerSkill("leather_agility", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.CRITICAL_CHANCE.get(), "3493efb1-52e6-48d7-a64f-4bbb77fe364d", Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> NULL_MAGIC_RUNE = registerSkill("null_magic_run", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> NULL_MAGIC_RUNE = registerSkill("null_magic_run", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.MAGIC_RESISTANCE.get(), "45683092-0b26-4572-b7bd-09393a010c2a", Constant.MAGIC_RESISTANCE_0, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> FIREFLY_FAYE = registerSkill("firefly_faye", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> FIREFLY_FAYE = registerSkill("firefly_faye", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.COOLDOWN.get(), "5743e43b-eea8-4554-aa6e-310e51c2f7da", Constant.COOLDOWN_0, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> SAPPHIRE_CRYSTAL = registerSkill("sapphire_crystal", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> SAPPHIRE_CRYSTAL = registerSkill("sapphire_crystal", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.MAX_MANA.get(), "423554e1-36cf-4d1a-b983-878a7e1c197c", Constant.MAX_MANA_0, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> RUMINATIVE_BEADS = registerSkill("ruminative_beads", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> RUMINATIVE_BEADS = registerSkill("ruminative_beads", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.HEALTH_REGENERATION.get(), "073bd83a-4b0f-4668-a73d-39675598eb4a", Constant.REGEN, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-    public static final RegistryObject<Accessory> TOUGH_CLOTH = registerSkill("tough_cloth", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> TOUGH_CLOTH = registerSkill("tough_cloth", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.HEALTH_REGENERATION.get(), "eec2663f-3b32-457d-b54b-dda7897db1a6", Constant.ARMOR_0, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> VITALITY_STONE = registerSkill("vitality_stone", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> VITALITY_STONE = registerSkill("vitality_stone", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MAX_HEALTH, "93068588-1f7a-4e61-bd3d-4758fbe80e01", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> BOOTS = registerSkill("boots", () -> new BootsAccessory()
@@ -122,6 +128,12 @@ public class Accessories {
     public static final RegistryObject<Accessory> LETHAL_BURST = registerSkill("lethal_burst", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.CRITICAL_DAMAGE.get(), "079d5345-009b-45a9-9b97-bb3b7f1e2196", Constant.LETHAL_BURST, AttributeModifier.Operation.ADDITION));
 
+    public static final RegistryObject<Accessory> VOID_STAFF = registerSkill("void_staff", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.PERCENTAGE_MAGIC_PENETRATION.get(), "a7ec61dd-76f4-4015-b988-d7a89e16497f", Constant.STANDARD_MAGIC_PEN_PERCENT_2, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> SPEAR_OF_CHAOS = registerSkill("spear_of_chaos", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.ARMOR_PENETRATION.get(), "16746ed6-7343-4a4a-9a76-26b0dcd67659", Constant.STANDARD_ARMOR_PEN_2, AttributeModifier.Operation.ADDITION));
+
     public static final RegistryObject<Accessory> TRUE_HERO_SWORD = registerSkill("true_lethal_sword", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.DAMAGE_DEALT.get(), "2c923a99-f0ef-4357-a51b-e7a5fdbc2ce4", Constant.TRUE_HERO_SWORD_DMG, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributes(Attributes.ATTACK_SPEED, "d67d1352-3cfe-4d6a-b7f0-8eff52c5c2d9", Constant.TRUE_HERO_SWORD_ATK_SPD, AttributeModifier.Operation.MULTIPLY_TOTAL)
@@ -151,14 +163,17 @@ public class Accessories {
     public static final RegistryObject<Accessory> FEATHER_FEET = registerSkill("feather_feet", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> RAGE = registerSkill("rage", () -> new ExtraDamageAccessory(Constant.RAGE, ExtraDamageAccessory.USER_MISSING_HEALTH));
     public static final RegistryObject<Accessory> THORNS = registerSkill("thorns", () -> new ThornsAccessory(Constant.THORN_BASE_DAMAGE, Constant.THORN_DAMAGE_MODIFIER));
+    public static final RegistryObject<Accessory> DEATH = registerSkill("death", () -> new ExecuteAbilityAccessory(Constant.DEATH_HEALTH_THRESOHOLD));
+    public static final RegistryObject<Accessory> TAXS = registerSkill("taxs", TaxsAbilityAccessory::new);
 
-    public static final RegistryObject<Accessory> LIFE_SIPHON = registerSkill("life_siphon", SinglePassiveAccessory::new);
+    public static final RegistryObject<Accessory> LIFE_SIPHON = registerSkill("life_siphon", () -> new SinglePassiveAccessory(Constant.SOUL_SIPHON_CURRENT_HEALTH_DAMAGE));
+    public static final RegistryObject<Accessory> CORRUPTED_BITE = registerSkill("corrupted_bite", () -> new SinglePassiveAccessory(Constant.CORRUPTED_BITE_DAMAGE_SCALE));
     public static final RegistryObject<Accessory> ASCENSION = registerSkill("ascension", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> SPELL_BLADE_0 = registerSkill("spell_blade_0", () -> new SpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.SPELLBLADE_BASE));
     public static final RegistryObject<Accessory> SPELL_BLADE_1 = registerSkill("spell_blade_1", () -> new TwilightSpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.TWILIGHT_SPELLBLADE));
     public static final RegistryObject<Accessory> SPELL_BLADE_2 = registerSkill("spell_blade_2", () -> new SpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.SPELLBLADE_BASE));
     public static final RegistryObject<Accessory> CLEANSE = registerSkill("cleanse", SinglePassiveAccessory::new);
-    public static final RegistryObject<Accessory> ROCK_SOLID = registerSkill("rock_solid", SinglePassiveAccessory::new);
+    public static final RegistryObject<Accessory> ROCK_SOLID = registerSkill("rock_solid", () -> new DamageReductionAccessory(Constant.ROCK_SOLID_REDUCE, DamageReductionAccessory.DamageReductionType.BASIC_ATTACK));
     public static final RegistryObject<Accessory> INFLAME = registerSkill("inflame", SinglePassiveAccessory::new);
 
     public static RegistryObject<Accessory> registerSkill(String name, Supplier<Accessory> properties) {

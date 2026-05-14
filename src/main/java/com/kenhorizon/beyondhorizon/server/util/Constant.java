@@ -1,6 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static final float ROCK_SOLID_REDUCE = 0.15F;
+    public static float CORRUPTED_BITE_DAMAGE_SCALE = 0.015F;
+    public static float SOUL_SIPHON_CURRENT_HEALTH_DAMAGE = 0.015F;
     public static int LEVEL_SYSTEM_UNLOCKED = 5;
     public static int CLASS_SYSTEM_UNLOCKED = 20;
 
@@ -28,6 +31,12 @@ public class Constant {
     public static float NULLIFY_DAMAGE_SCALE = 0.20F;
     public static float JUMP_BOOST = 0.50F;
     public static float MINING_SPEED_BASIC = 0.10F;
+    public static float STANDARD_MAGIC_PEN_PERCENT_2 = 0.45F;
+    public static float STANDARD_MAGIC_PEN_PERCENT_1 = 0.35F;
+    public static float STANDARD_MAGIC_PEN_PERCENT_0 = 0.15F;
+    public static float STANDARD_ARMOR_PEN_2 = 0.45F;
+    public static float STANDARD_ARMOR_PEN_1 = 0.35F;
+    public static float STANDARD_ARMOR_PEN_0 = 0.15F;
     public static float LETHAL_BURST = 0.75F;
     public static float MINING_SPEED_UPGRADED = 0.20F;
     public static float KNOWLEDGE_XP_MODIFIER = 1.20F;
@@ -37,7 +46,7 @@ public class Constant {
     public static float DARK_BLADE_PEN = 0.15F;
     public static float PERFECTION = 0.15F;
     public static float LETHALITY = 0.12F;
-    public static float DEATH_HEALTH_THRESOHOLD = 0.12F;
+    public static float DEATH_HEALTH_THRESOHOLD = 0.05F;
     public static float KINETIC_STRIKE_DAMAGE_MODIFIER = 1.0F;
     public static float TRANNY_MISSING_HEALTH_SCALE = 0.12F;
     public static float TRANNY_HEALTH_SCALE = 0.025F;
@@ -63,6 +72,10 @@ public class Constant {
     public static float[] ELUCIDATOR = {12.0F, 1.4F, 4F};
     public static float[] DARK_REPULSER = {12.0F, 1.4F, 4F};
     public static float[] ANCIENT_BLAZING_SWORD = {11.0F, 1.7F, 4.0F};
+    //
+    public static double SHEEN_AD = 3.0;
+    public static double TS_AD = 3.0;
+    public static double TS_AP = 5.0;
     //
     public static double MANA_REGEN_0 = 1.0;
     public static double MANA_REGEN_1 = 1.25;

@@ -1,0 +1,23 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:sheen"
+    },
+    {
+      "item": "beyondhorizon:ampliflying_tome"
+    },
+    {
+      "item": "beyondhorizon:aether_wisp"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:twilight_sword"
+  }
+}

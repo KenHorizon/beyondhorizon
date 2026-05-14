@@ -156,6 +156,16 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .required(BHItems.FIREFLY_FAYE.get())
                 .required(BHItems.SAPPHIRE_CRYSTAL.get())
                 .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.SHEEN.get(), 1)
+                .required(BHItems.BROKEN_HERO_SWORD.get())
+                .required(BHItems.SAPPHIRE_CRYSTAL.get())
+                .required(BHItems.SAPPHIRE_CRYSTAL.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.TWILIGHT_SWORD.get(), 1)
+                .required(BHItems.SHEEN.get())
+                .required(BHItems.AMPLIFLYING_TOME.get())
+                .required(BHItems.AETHER_WISP.get())
+                .save(consumer);
 
         oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, MathUtils.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_STARITE.get()), RecipeCategory.MISC, BHItems.STARITE_INGOT.get(), 0.7F, MathUtils.sec(10));

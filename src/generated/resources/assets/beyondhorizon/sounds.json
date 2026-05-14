@@ -126,6 +126,12 @@
     ],
     "subtitle": "subtitle.beyondhorizon.block.base_spawner.step"
   },
+  "generic.entity_executed": {
+    "sounds": [
+      "beyondhorizon:generic/entity_executed"
+    ],
+    "subtitle": "subtitle.beyondhorizon.generic.entity_executed"
+  },
   "generic.heavy_attack": {
     "sounds": [
       "beyondhorizon:generic/heavy_hit/heavyhit1",

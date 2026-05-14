@@ -45,6 +45,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -414,6 +415,9 @@ public class ServerEventHandler {
                 damageInfo.setPreStoredDamage(0.0F);
                 damageInfo.setPostStoredDamage(0.0F);
             }
+        }
+        if (entity.hasEffect(BHEffects.LETHAL_PROTECTION_COOLDOWN.get())) {
+            entity.removeEffect(BHEffects.LETHAL_PROTECTION.get());
         }
         if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems<?> items) {
             for (Skill skill : items.getSkills()) {
@@ -841,8 +845,16 @@ public class ServerEventHandler {
                     }
                 }
                 ServerLevel level = (ServerLevel) player.level();
-                if (!(player.isCreative() || player.isSpectator()) && !UndyingTotemAbility.onUse(level, (ServerPlayer) player) && (source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL))) {
-                    event.setCanceled(true);
+
+                if ((source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL))) {
+                    if (!(player.isCreative() || player.isSpectator()) && !UndyingTotemAbility.onUse(level, (ServerPlayer) player)) {
+                        event.setCanceled(true);
+                    }
+                    if (!(player.isCreative() || player.isSpectator()) && player.hasEffect(BHEffects.LETHAL_PROTECTION.get())) {
+                        player.setHealth(1.0F);
+                        player.addEffect(new MobEffectInstance(BHEffects.LETHAL_PROTECTION_COOLDOWN.get()));
+                        event.setCanceled(true);
+                    }
                 }
             }
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {

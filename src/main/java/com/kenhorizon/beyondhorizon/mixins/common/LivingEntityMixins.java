@@ -1,9 +1,13 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
+import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.core.Holder;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.util.Mth;
@@ -24,14 +28,62 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import javax.annotation.Nullable;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixins extends EntityMixins {
+public abstract class LivingEntityMixins extends EntityMixins implements IBHDataEntity {
+    private static final EntityDataAccessor<CompoundTag> DATA_BH_TAG_FLAGS = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.COMPOUND_TAG);
+    private static final EntityDataAccessor<Byte> DATA_BH_SHARED_FLAGS = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.BYTE);
 
     @Shadow public abstract ItemStack getMainHandItem();
+
+    @Inject(at = @At("TAIL"), method = "Lnet/minecraft/world/entity/LivingEntity;defineSynchedData()V")
+    private void beyondhorizonRegisterData(CallbackInfo ci) {
+        entityData.define(DATA_BH_TAG_FLAGS, new CompoundTag());
+        entityData.define(DATA_BH_SHARED_FLAGS, (byte) 0);
+    }
+
+    @Inject(at = @At("TAIL"), method = "Lnet/minecraft/world/entity/LivingEntity;addAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
+    private void beyondhorizonWriteAdditional(CompoundTag compoundNBT, CallbackInfo ci) {
+        CompoundTag data = getEntityData();
+        if (data != null) {
+            compoundNBT.put("BeyondHorizonData", data);
+        }
+    }
+
+    @Inject(at = @At("TAIL"), method = "Lnet/minecraft/world/entity/LivingEntity;readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
+    private void beyondhorizonReadAdditional(CompoundTag compoundNBT, CallbackInfo ci) {
+        if (compoundNBT.contains("BeyondHorizonData")) {
+            setEntityData(compoundNBT.getCompound("BeyondHorizonData"));
+        }
+    }
+    @Override
+    public CompoundTag getEntityData() {
+        return entityData.get(DATA_BH_TAG_FLAGS);
+    }
+
+    @Override
+    public void setEntityData(CompoundTag nbt) {
+        entityData.set(DATA_BH_TAG_FLAGS, nbt);
+    }
+
+    @Override
+    public void setBHSharedFlags(int flag, boolean set) {
+        byte b0 = this.entityData.get(DATA_BH_SHARED_FLAGS);
+        if (set) {
+            this.entityData.set(DATA_BH_SHARED_FLAGS, (byte)(b0 | 1 << flag));
+        } else {
+            this.entityData.set(DATA_BH_SHARED_FLAGS, (byte)(b0 & ~(1 << flag)));
+        }
+    }
+
+    @Override
+    public boolean getBHSharedFlags(int flag) {
+        return (this.entityData.get(DATA_BH_SHARED_FLAGS) & 1 << flag) != 0;
+    }
 
     @Inject(method = "decreaseAirSupply", at = @At("RETURN"), cancellable = true)
     private void modifiedDecreaseAirSupply(int currentAir, CallbackInfoReturnable<Integer> cir) {

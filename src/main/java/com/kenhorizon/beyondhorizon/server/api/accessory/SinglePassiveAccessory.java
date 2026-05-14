@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.machinezoo.noexception.throwing.ThrowingIntSupplier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -112,6 +113,9 @@ public class SinglePassiveAccessory extends AccessorySkill {
                     return damageDealt * (this.getMagnitude() * this.getLevel());
                 }
             }
+        }
+        if (this == Accessories.LIFE_SIPHON.get()) {
+           return damageDealt + (target.getHealth() * (this.getMagnitude() * this.getLevel()));
         }
         return damageDealt;
     }

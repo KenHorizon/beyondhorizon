@@ -111,11 +111,8 @@ public class BHItems {
     public static final RegistryObject<Item> STARITE_PICKAXE = toolItem("starite_pickaxe", MeleeWeaponMaterials.STARITE, ItemBuilder.PICKAXE);
     public static final RegistryObject<Item> STARITE_SHOVEL = toolItem("starite_shovel", MeleeWeaponMaterials.STARITE, ItemBuilder.SHOVEL);
     public static final RegistryObject<Item> STARITE_HOE = toolItem("starite_hoe", MeleeWeaponMaterials.STARITE, ItemBuilder.HOE);
-
     //
-
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = accessoryHandheldItem("broken_hero_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.BROKEN_HERO_SWORD);
-
     //
     public static final RegistryObject<Item> TOUGH_CLOTH = accessoryItem("tough_cloth", AccessoryBuilder.TOUGH_CLOTH);
     public static final RegistryObject<Item> NULL_MAGIC_RUNE = accessoryItem("null_magic_rune", AccessoryBuilder.NULL_MAGIC_RUNE);

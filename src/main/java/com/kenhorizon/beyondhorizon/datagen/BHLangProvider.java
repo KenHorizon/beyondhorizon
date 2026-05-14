@@ -114,6 +114,14 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.JUMP_BOOST.get(), "Jump Boost", "Increase the jump height by %s%%");
         this.addAccessory(Accessories.ETERNAL_LIFE.get(), "Eternal Life", "Revive on death and consume Undying Totem in the inventory");
         this.addAccessory(Accessories.NULLIFY.get(), "Nullify", "Ignore enchantment protection by %s%% at same time your attack effectivness reduced by %s%%");
+        this.addAccessory(Accessories.LIFE_SIPHON.get(), "Life Siphon", "Deal additional %s%% target's current health");
+        this.addAccessory(Accessories.ASCENSION.get(), "Ascension", "All attributes are increased by 200%");
+        this.addAccessory(Accessories.CLEANSE.get(), "Cleanse", "Healing and Shielding are increased by 200%");
+        this.addAccessory(Accessories.ROCK_SOLID.get(), "Rock Solid", "Reduce basic attack pre-mitigation damage by %s%%");
+        this.addAccessory(Accessories.INFLAME.get(), "Inflame", "Attacks inflict Inflame that burn target for 0.5 magic damage per 0.5 seconds");
+        this.addAccessory(Accessories.SPELL_BLADE_0.get(), "Spell Blade", "Deal additional %s%% base AD physical damage on-hit");
+        this.addAccessory(Accessories.SPELL_BLADE_1.get(), "Spell Blade", "Deal additional %s%% base AD (+%s%% AP) magic damage on-hit");
+        this.addAccessory(Accessories.SPELL_BLADE_2.get(), "Spell Blade", "Deal additional %s%% base AD (+%s%% AP) magic damage on-hit");
         //
         this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");
         this.addRole(RoleClasses.MARKSMAN.get(), "Marksman", "Specialize in precision, long range engagement and delivering consistent, high damage from safe distance");

@@ -51,6 +51,10 @@ public class BHEffects {
             RegistryHelper.registerEffects("rooted", () -> new RootedEffect(MobEffectCategory.NEUTRAL, 0x9B4D00).addAttributeModifier(Attributes.MOVEMENT_SPEED, "0e530966-8625-4300-890c-3992a8198d6e", -Integer.MAX_VALUE, AttributeModifier.Operation.MULTIPLY_TOTAL));
     public static final RegistryObject<MobEffect> TORMENT =
             RegistryHelper.registerEffects("torment", () -> new TormentEffect(MobEffectCategory.HARMFUL, 0xFF6A00));
+    public static final RegistryObject<MobEffect> LETHAL_PROTECTION =
+            RegistryHelper.registerEffects("lethal_protection", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0xFF6A00));
+    public static final RegistryObject<MobEffect> LETHAL_PROTECTION_COOLDOWN =
+            RegistryHelper.registerEffects("lethal_protection_cooldown", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0xFF6A00));
     public static final RegistryObject<MobEffect> WOUNDED =
             RegistryHelper.registerEffects("wounded", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0xFF8206)
                     .addAttributeModifier(BHAttributes.HEALING.get(), "4ca80eb7-871b-4751-af4e-c7ec47642425", 0.40D, AttributeModifier.Operation.MULTIPLY_BASE)

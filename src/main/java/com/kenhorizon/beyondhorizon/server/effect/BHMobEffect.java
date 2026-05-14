@@ -108,6 +108,9 @@ public class BHMobEffect extends MobEffect {
     @Override
     public List<ItemStack> getCurativeItems() {
         return removeCurative(
+                BHEffects.LETHAL_PROTECTION.get(),
+                BHEffects.LETHAL_PROTECTION_COOLDOWN.get(),
+                BHEffects.RAPID_HEALING.get(),
                 BHEffects.CURSED.get(),
                 BHEffects.ARMOR_BREAK.get(),
                 BHEffects.RAPID_HEALING.get(),

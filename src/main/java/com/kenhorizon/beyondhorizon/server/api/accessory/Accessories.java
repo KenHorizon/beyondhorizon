@@ -152,6 +152,15 @@ public class Accessories {
     public static final RegistryObject<Accessory> RAGE = registerSkill("rage", () -> new ExtraDamageAccessory(Constant.RAGE, ExtraDamageAccessory.USER_MISSING_HEALTH));
     public static final RegistryObject<Accessory> THORNS = registerSkill("thorns", () -> new ThornsAccessory(Constant.THORN_BASE_DAMAGE, Constant.THORN_DAMAGE_MODIFIER));
 
+    public static final RegistryObject<Accessory> LIFE_SIPHON = registerSkill("life_siphon", SinglePassiveAccessory::new);
+    public static final RegistryObject<Accessory> ASCENSION = registerSkill("ascension", SinglePassiveAccessory::new);
+    public static final RegistryObject<Accessory> SPELL_BLADE_0 = registerSkill("spell_blade_0", () -> new SpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.SPELLBLADE_BASE));
+    public static final RegistryObject<Accessory> SPELL_BLADE_1 = registerSkill("spell_blade_1", () -> new TwilightSpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.TWILIGHT_SPELLBLADE));
+    public static final RegistryObject<Accessory> SPELL_BLADE_2 = registerSkill("spell_blade_2", () -> new SpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.SPELLBLADE_BASE));
+    public static final RegistryObject<Accessory> CLEANSE = registerSkill("cleanse", SinglePassiveAccessory::new);
+    public static final RegistryObject<Accessory> ROCK_SOLID = registerSkill("rock_solid", SinglePassiveAccessory::new);
+    public static final RegistryObject<Accessory> INFLAME = registerSkill("inflame", SinglePassiveAccessory::new);
+
     public static RegistryObject<Accessory> registerSkill(String name, Supplier<Accessory> properties) {
         return BHRegistries.DEFERRED_ACCESSORY.register(name, properties);
     }

@@ -29,6 +29,14 @@ public class AxeBaseItem extends DiggerBaseItem {
         super(materials, attackDamage, attackSpeed, attackRange, BlockTags.MINEABLE_WITH_AXE, properties, skillBuilder);
     }
 
+    public AxeBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties, SkillBuilder skillBuilder) {
+        super(materials, stats, BlockTags.MINEABLE_WITH_AXE, properties, skillBuilder);
+    }
+
+    public AxeBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties) {
+        super(materials, stats, BlockTags.MINEABLE_WITH_AXE, properties);
+    }
+
     public AxeBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, Properties properties, SkillBuilder skillBuilder) {
         super(materials, attackDamage, attackSpeed, BlockTags.MINEABLE_WITH_AXE, properties, skillBuilder);
     }
@@ -37,6 +45,17 @@ public class AxeBaseItem extends DiggerBaseItem {
         super(materials, attackDamage, attackSpeed, BlockTags.MINEABLE_WITH_AXE, properties);
     }
 
+//    public AxeBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, float attackRange, Properties properties, SkillBuilder skillBuilder) {
+//        super(materials, attackDamage, attackSpeed, attackRange, BlockTags.MINEABLE_WITH_AXE, properties, skillBuilder);
+//    }
+//
+//    public AxeBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, Properties properties, SkillBuilder skillBuilder) {
+//        super(materials, attackDamage, attackSpeed, BlockTags.MINEABLE_WITH_AXE, properties, skillBuilder);
+//    }
+//
+//    public AxeBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, Properties properties) {
+//        super(materials, attackDamage, attackSpeed, BlockTags.MINEABLE_WITH_AXE, properties);
+//    }
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level level = context.getLevel();

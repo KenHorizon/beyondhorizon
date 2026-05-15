@@ -39,6 +39,14 @@ public class HoeBaseItem extends DiggerBaseItem {
         super(materials, attackDamage, attackSpeed, attackRange, BlockTags.MINEABLE_WITH_HOE, properties, skillBuilder);
     }
 
+    public HoeBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties) {
+        super(materials, stats, BlockTags.MINEABLE_WITH_HOE, properties);
+    }
+
+    public HoeBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties, SkillBuilder skillBuilder) {
+        super(materials, stats, BlockTags.MINEABLE_WITH_HOE, properties, skillBuilder);
+    }
+
     public HoeBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, Properties properties, SkillBuilder skillBuilder) {
         super(materials, attackDamage, attackSpeed, BlockTags.MINEABLE_WITH_HOE, properties, skillBuilder);
     }

@@ -22,6 +22,14 @@ public class PickaxeBaseItem extends DiggerBaseItem {
         super(materials, attackDamage, attackSpeed, BlockTags.MINEABLE_WITH_PICKAXE, properties);
     }
 
+    public PickaxeBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties) {
+        super(materials, stats, BlockTags.MINEABLE_WITH_PICKAXE, properties);
+    }
+
+    public PickaxeBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties, SkillBuilder skillBuilder) {
+        super(materials, stats, BlockTags.MINEABLE_WITH_PICKAXE, properties, skillBuilder);
+    }
+
     @Override
     public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
         return ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction);

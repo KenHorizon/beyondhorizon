@@ -67,6 +67,13 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems<DiggerBase
         this.materials = materials;
         ReloadableHandler.addToReloadList(this);
     }
+    public DiggerBaseItem(MeleeWeaponMaterials materials, float[] stats, TagKey<Block> blocks, Properties properties, SkillBuilder skillBuilder) {
+        this(materials, stats[0], stats[1], stats.length == 2 ? 0.0F : stats[2], blocks, properties, skillBuilder);
+    }
+
+    public DiggerBaseItem(MeleeWeaponMaterials materials, float[] stats, TagKey<Block> blocks, Properties properties) {
+        this(materials, stats[0], stats[1], stats.length == 2 ? 0.0F : stats[2], blocks, properties, SkillBuilder.NONE);
+    }
 
     public DiggerBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, TagKey<Block> blocks, Properties properties, SkillBuilder skillBuilder) {
         this(materials, attackDamage, attackSpeed, 0.0F, blocks, properties, skillBuilder);

@@ -254,7 +254,7 @@ public abstract class Accessory {
     }
 
     public MutableComponent spacing() {
-        return Component.literal("   ");
+        return Component.literal(" ");
     }
 
     public boolean registerIcons() {

@@ -1,4 +1,4 @@
-// 1.20.1	2026-05-14T19:27:31.5097135	Item Models: beyondhorizon
+// 1.20.1	2026-05-15T17:05:08.9350765	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -79,6 +79,7 @@ e86bba503b61d6ac12ff1a92db83b9b2b6f4e2dc assets/beyondhorizon/models/item/null_m
 77bc62c80e33b8216c5c8a6407feff4f8495678c assets/beyondhorizon/models/item/power_claw.json
 e27924fd60d10d0b9fb28da852db14123677eca3 assets/beyondhorizon/models/item/power_gloves.json
 b33263830e511f749b734f7555da90fbdfab7fcf assets/beyondhorizon/models/item/purple_wool_fur.json
+42c71d52f13ec13493d69a4ebf96119f77c8e18a assets/beyondhorizon/models/item/radiant.json
 086fc8638fa6096b640a1ced095f12591820bde3 assets/beyondhorizon/models/item/raw_embed_hellstone.json
 27b0177b6d8dcb0dce790c4fd90b4891a4b006ba assets/beyondhorizon/models/item/raw_hellstone.json
 e0a4998f74cc1d56c1b4d8d341d166863c3c1340 assets/beyondhorizon/models/item/raw_luminite.json

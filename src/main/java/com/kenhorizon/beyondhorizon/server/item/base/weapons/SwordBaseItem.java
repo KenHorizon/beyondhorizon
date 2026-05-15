@@ -60,6 +60,14 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         ReloadableHandler.addToReloadList(this);
     }
 
+    public SwordBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties) {
+        this(materials, stats[0], stats[1], stats.length == 2 ? 0 : stats[2], properties, SkillBuilder.NONE);
+    }
+
+    public SwordBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties, SkillBuilder skillBuilder) {
+        this(materials, stats[0], stats[1], stats.length == 2 ? 0 : stats[2], properties, skillBuilder);
+    }
+
     public SwordBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, float attackRange, Properties properties) {
         this(materials, attackDamage, attackSpeed, attackRange, properties, SkillBuilder.NONE);
     }

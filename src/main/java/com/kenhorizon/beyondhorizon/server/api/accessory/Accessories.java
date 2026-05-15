@@ -171,7 +171,7 @@ public class Accessories {
     public static final RegistryObject<Accessory> ASCENSION = registerSkill("ascension", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> SPELL_BLADE_0 = registerSkill("spell_blade_0", () -> new SpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.SPELLBLADE_BASE));
     public static final RegistryObject<Accessory> SPELL_BLADE_1 = registerSkill("spell_blade_1", () -> new TwilightSpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.TWILIGHT_SPELLBLADE));
-    public static final RegistryObject<Accessory> SPELL_BLADE_2 = registerSkill("spell_blade_2", () -> new SpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.SPELLBLADE_BASE));
+    public static final RegistryObject<Accessory> SPELL_BLADE_2 = registerSkill("spell_blade_2", () -> new ForceImpactSpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.FORCE_IMPACT_SPELLBLADE));
     public static final RegistryObject<Accessory> CLEANSE = registerSkill("cleanse", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> ROCK_SOLID = registerSkill("rock_solid", () -> new DamageReductionAccessory(Constant.ROCK_SOLID_REDUCE, DamageReductionAccessory.DamageReductionType.BASIC_ATTACK));
     public static final RegistryObject<Accessory> INFLAME = registerSkill("inflame", SinglePassiveAccessory::new);

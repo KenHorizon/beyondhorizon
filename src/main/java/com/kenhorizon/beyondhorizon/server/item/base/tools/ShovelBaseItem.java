@@ -38,6 +38,13 @@ public class ShovelBaseItem extends DiggerBaseItem {
         super(materials, attackDamage, attackSpeed, BlockTags.MINEABLE_WITH_SHOVEL, properties);
     }
 
+    public ShovelBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties, SkillBuilder skillBuilder) {
+        super(materials, stats, BlockTags.MINEABLE_WITH_SHOVEL, properties, skillBuilder);
+    }
+
+    public ShovelBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties) {
+        super(materials, stats, BlockTags.MINEABLE_WITH_SHOVEL, properties);
+    }
 
     @Override
     public InteractionResult useOn(UseOnContext context) {

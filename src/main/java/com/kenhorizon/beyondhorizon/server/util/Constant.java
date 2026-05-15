@@ -22,6 +22,7 @@ public class Constant {
 
     public static int SPELLBLADE_INTERVAL = 5;
     public static float SPELLBLADE_BASE = 2.0F;
+    public static float FORCE_IMPACT_SPELLBLADE = 0.65F;
     public static float TWILIGHT_SPELLBLADE = 0.55F;
     public static float BLAZING_CLEAVE_DAMAGE = 0.55F;
     public static float BLAZING_CLEAVE_RANGE = 2.5F;
@@ -71,7 +72,8 @@ public class Constant {
     public static float[] GIANT_SLAYER = {8.0F, 1.7F, 4.5F};
     public static float[] ELUCIDATOR = {12.0F, 1.4F, 4F};
     public static float[] DARK_REPULSER = {12.0F, 1.4F, 4F};
-    public static float[] ANCIENT_BLAZING_SWORD = {11.0F, 1.7F, 4.0F};
+    public static float[] GUARDIAN_SWORD = {11.0F, 1.7F, 4.0F};
+    public static float[] RADIANT_SWORD = {6.0F, 1.7F, 4.0F};
     //
     public static double SHEEN_AD = 3.0;
     public static double TS_AD = 3.0;

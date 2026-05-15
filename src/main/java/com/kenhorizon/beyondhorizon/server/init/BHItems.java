@@ -223,6 +223,13 @@ public class BHItems {
             .model(ItemModels.BIG32_HANDHELD)
             .register();
 
+    public static final RegistryObject<Item> RADIANT = RegistryItems
+            .register("radiant", item -> ItemBuilder.RADIANT.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG32_HANDHELD)
+            .register();
+
     public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(139, 52, 1));
 
 

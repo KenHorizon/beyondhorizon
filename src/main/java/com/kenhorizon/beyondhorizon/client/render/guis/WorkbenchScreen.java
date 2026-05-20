@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.client.render.guis;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundWorkbenchCraftPacket;
@@ -15,6 +16,7 @@ import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -38,6 +40,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     public static final ResourceLocation RESOURCE_GUI = BeyondHorizon.resourceGui("container/workbench.png");
     public static final ResourceLocation RESOURCE_GUI_RECIPE = BeyondHorizon.resourceGui("container/workbench_recipe.png");
     private int timesInventoryChanged;
+    private WorkbenchRecipe selectedRecipes = null;
     private static final Component SEARCH_HINT = Component.translatable("gui.recipebook.search_hint").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
 
     public WorkbenchScreen(WorkbenchMenu menu, Inventory inventory, Component component) {
@@ -59,7 +62,15 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     @Override
     protected void containerTick() {
         super.containerTick();
+        if (this.selectedRecipes != null) {
+            BeyondHorizon.LOGGER.debug("Selected Recipes is {}", this.selectedRecipes.getId());
+        }
+    }
 
+    @Override
+    public void onClose() {
+        super.onClose();
+        this.selectedRecipes = null;
     }
 
     public void updateContent() {
@@ -78,10 +89,19 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-        super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderBackground(guiGraphics);
-        this.renderBg(guiGraphics, partialTick, mouseX, mouseY);
+        super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
+        if (this.selectedRecipes != null) {
+            int x = this.leftPos + (this.imageWidth/2);
+            int y = this.topPos;
+            Component com = this.selectedRecipes.getResultItem(this.minecraft.level.registryAccess()).getItem().getDescription();
+            String displayNameRecipe = com.toString();
+            guiGraphics.drawCenteredString(this.minecraft.font, com, x, y, ColorUtil.WHITE);
+            int nameLenght = displayNameRecipe.length();
+            guiGraphics.blitNineSliced(RESOURCE_GUI, x + 7 - (nameLenght), y - 2, 24 + nameLenght, 12, 20 , 4, 200, 20, 0, 184);
+            guiGraphics.renderItem(this.selectedRecipes.getResultItem(this.minecraft.level.registryAccess()), this.leftPos + 81, this.topPos + 25);
+        }
     }
 
     @Override
@@ -115,6 +135,9 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             }
 //            this.renderTooltipIngredients(guiGraphics, posX, posY, x, y, index, i);
         }
+//        if (this.selectedRecipes != null) {
+//            guiGraphics.renderTooltip(this.font, this.selectedRecipes.getResultItem(this.minecraft.level.registryAccess()), this.leftPos, this.topPos - 20);
+//        }
     }
 
     private void renderTooltipIngredients(GuiGraphics guiGraphics, int recipesItemX, int recipesItemY, int x, int y, int index, int i) {
@@ -170,8 +193,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
 //        }
 //    }
     public void renderRecipes(GuiGraphics guiGraphics, int posX, int posY, int mouseX, int mouseY, int startIndex) {
-        int startX = ((this.leftPos + 7) - (this.imageWidth - 6));
-        int startY = this.topPos + POS_Y;
+
         for (int i = this.startIndex; i < startIndex && i < this.menu.recipes.size(); ++i) {
             int index = i - this.startIndex;
             int x = (posX - (this.imageWidth - 6)) + index % ROW * 24;
@@ -208,21 +230,25 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         this.scrolling = false;
-        int startIndex = this.startIndex + COLUMN;
+        int startIndex = this.startIndex + (COLUMN * ROW);
+        int craftW = 24;
+        int craftH = 24;
         for (int i = this.startIndex; i < startIndex; ++i) {
             int index = i - this.startIndex;
-            double guiButtonX = this.leftPos + 8;
-            double guiButtonY = this.topPos + POS_Y + (PADDING_Y * index);
-            for (int i0 = 0; i0 < menu.recipes.size(); i0++) {
-                if (mouseX >= guiButtonX && mouseX <= guiButtonX + 176 && mouseY >= guiButtonY && mouseY <= guiButtonY + PADDING_Y) {
-                    WorkbenchRecipe recipe = menu.recipes.get(i0);
-                    NetworkHandler.sendToServer(new ServerboundWorkbenchCraftPacket(recipe.getId()) );
+            int x0 = ((this.leftPos + 7) - (this.imageWidth - 6)) + index % ROW * 24;
+            int var0001 = index / ROW;
+            int y0 = (this.topPos + POS_Y) + var0001 * 24 + 2;
+            for (int i0 = 0; i0 < this.menu.recipes.size(); i0++) {
+                if (mouseX >= x0 && mouseX <= x0 + craftW && mouseY >= y0 && mouseY <= y0 + craftH) {
+                    WorkbenchRecipe recipe = this.menu.recipes.get(i0);
+                    this.selectedRecipes = this.menu.recipes.get(index);
+//                    NetworkHandler.sendToServer(new ServerboundWorkbenchCraftPacket(recipe.getId()));
                 }
             }
-            int x = this.leftPos + 52;
-            int y = this.topPos + 14;
-            double d0 = mouseX - (double) (x + index % COLUMN * 16);
-            double d1 = mouseY - (double) (y + index / COLUMN * 18);
+            int x1 = this.leftPos + 52;
+            int y1 = this.topPos + 14;
+            double d0 = mouseX - (double) (x1 + index % COLUMN * 16);
+            double d1 = mouseY - (double) (y1 + index / COLUMN * 18);
             if (d0 >= 0.0D && d1 >= 0.0D && d0 < 16.0D && d1 < 18.0D && this.menu.clickMenuButton(this.minecraft.player, i)) {
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_STONECUTTER_SELECT_RECIPE, 1.0F));
                 this.minecraft.gameMode.handleInventoryButtonClick((this.menu).containerId, i);

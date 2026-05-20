@@ -39,6 +39,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     public static int PADDING_Y = 24;
     public static final ResourceLocation RESOURCE_GUI = BeyondHorizon.resourceGui("container/workbench.png");
     public static final ResourceLocation RESOURCE_GUI_RECIPE = BeyondHorizon.resourceGui("container/workbench_recipe.png");
+    public static final ResourceLocation RESOURCE_GUI_INGRE = BeyondHorizon.resourceGui("container/workbench_recipe_ingredients.png");
     private int timesInventoryChanged;
     private WorkbenchRecipe selectedRecipes = null;
     private static final Component SEARCH_HINT = Component.translatable("gui.recipebook.search_hint").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
@@ -99,17 +100,22 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             String displayNameRecipe = com.toString();
             guiGraphics.drawCenteredString(this.minecraft.font, com, x, y, ColorUtil.WHITE);
             int nameLenght = displayNameRecipe.length();
-            guiGraphics.blitNineSliced(RESOURCE_GUI, x + 7 - (nameLenght), y - 2, 24 + nameLenght, 12, 20 , 4, 200, 20, 0, 184);
+            int guiW = 54 + nameLenght;
+            guiGraphics.blitNineSliced(RESOURCE_GUI, this.leftPos + (this.imageWidth / 2 - (guiW / 2)), y - 2, guiW, 12, 20 , 4, 200, 20, 0, 184);
             guiGraphics.renderItem(this.selectedRecipes.getResultItem(this.minecraft.level.registryAccess()), this.leftPos + 81, this.topPos + 25);
         }
     }
 
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
-        guiGraphics.blit(RESOURCE_GUI_RECIPE, this.leftPos - this.imageWidth + 12, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
-        guiGraphics.blit(RESOURCE_GUI, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         int x = this.leftPos + 7;
         int y = this.topPos + POS_Y;
+        guiGraphics.blit(RESOURCE_GUI_RECIPE, this.leftPos - this.imageWidth + 12, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+        if (this.selectedRecipes != null) {
+            guiGraphics.blit(RESOURCE_GUI_INGRE, this.leftPos + this.imageWidth - 12, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
+            this.renderIngredients(guiGraphics, x, y);
+        }
+        guiGraphics.blit(RESOURCE_GUI, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
         int startIndexs = this.startIndex + (COLUMN * ROW);
         this.renderSrollBar(guiGraphics, mouseX, mouseY);
         this.renderRecipes(guiGraphics, x, y, mouseX, mouseY, startIndexs);
@@ -133,18 +139,18 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             if (x >= posX && x <= posX + 24 && y >= posY && y <= posY + 24) {
                 guiGraphics.renderTooltip(this.font, list.get(i).getResultItem(this.minecraft.level.registryAccess()), x, y);
             }
-//            this.renderTooltipIngredients(guiGraphics, posX, posY, x, y, index, i);
         }
-//        if (this.selectedRecipes != null) {
-//            guiGraphics.renderTooltip(this.font, this.selectedRecipes.getResultItem(this.minecraft.level.registryAccess()), this.leftPos, this.topPos - 20);
-//        }
+        if (this.selectedRecipes != null) {
+            int recX = (this.leftPos + 7) + (this.imageWidth + 12);
+            int recY = (this.topPos + POS_Y) + 2;
+            this.renderTooltipIngredients(guiGraphics, recX, recY, x, y);
+        }
     }
 
-    private void renderTooltipIngredients(GuiGraphics guiGraphics, int recipesItemX, int recipesItemY, int x, int y, int index, int i) {
-        WorkbenchRecipe recipe = menu.recipes.get(i);
-        for (int j = 0; j < recipe.getIngredients().size(); j++) {
+    private void renderTooltipIngredients(GuiGraphics guiGraphics, int recipesItemX, int recipesItemY, int x, int y) {
+        for (int j = 0; j < this.selectedRecipes.getIngredients().size(); j++) {
             if (x >= recipesItemX && x <= recipesItemX + 24 && y >= recipesItemY && y <= recipesItemY + 24) {
-                ItemStack itemStack = recipe.getIngredients().get(j).getItems()[0];
+                ItemStack itemStack = this.selectedRecipes.getIngredients().get(j).getItems()[0];
                 guiGraphics.renderTooltip(this.font, itemStack, x, y);
             }
             recipesItemX += PADDING_INGREDIENTS;
@@ -157,43 +163,29 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         int y = this.topPos + POS_Y;
         guiGraphics.blit(RESOURCE_GUI, x, y + scrollOffset, 176 + (this.isScrollBarActive() ? 0 : 12), 0, 12, 15);
     }
-//    public void renderRecipes(GuiGraphics guiGraphics, int posX, int posY, int mouseX, int mouseY, int startIndex) {
-//        for (int i = this.startIndex; i < startIndex && i < this.menu.recipes.size(); ++i) {
-//            int index = i - this.startIndex;
-//            int x = posX - (this.imageWidth + 12);
-//            int y = posY + (index * PADDING_Y) + 2;
-//            WorkbenchRecipe recipe = menu.recipes.get(i);
-//            boolean isHovering = this.isHovering(8, -POS_Y + (index * PADDING_Y), 176, 20, mouseX, mouseY);
-//            float scaling = isHovering ? 2.4F : 1.0F;
-//            float scale = this.lerp(0.2F, 1.0F, scaling);
-//            PoseStack poseStack = guiGraphics.pose();
-//            poseStack.pushPose();
-//            float pX = x + 8;
-//            float pY = y + 8;
-//            poseStack.translate(pX, pY, 0);
-//            poseStack.scale(scale, scale, 1.0F);
-//            poseStack.translate(-pX, -pY, 0);
-//            guiGraphics.blitNineSliced(RESOURCE_GUI, x + 7, y - 2, 24, 24, 20, 4, 200, 20, 0, 184);
-//            guiGraphics.renderItem(recipe.getResultItem(null), x + 10, y + 2);
-//            guiGraphics.blit(RESOURCE_GUI, x + 10, y + 1, 0, 166, 18, 18);
-//            for (int j = 0; j < recipe.getIngredients().size(); j++) {
-//                Ingredient ing = recipe.getIngredients().get(j);
-//                int need = recipe.getCounts().get(j);
-//                ItemStack item = ing.getItems()[0];
-//                guiGraphics.renderItem(item, x, y + 2);
-//                poseStack.pushPose();
-//                poseStack.translate(0, 0, 200);
-//                if (!(need == 1 || need == 0)) {
-//                    BlitHelper.drawStrings(guiGraphics, String.format("%s", need), x + 4, y + 10, ColorUtil.combineRGB(255, 255, 255), false);
-//                }
-//                poseStack.popPose();
-//                x += PADDING_INGREDIENTS;
-//            }
-//            poseStack.popPose();
-//        }
-//    }
-    public void renderRecipes(GuiGraphics guiGraphics, int posX, int posY, int mouseX, int mouseY, int startIndex) {
 
+    public void renderIngredients(GuiGraphics guiGraphics, int posX, int posY) {
+        int x = posX + (this.imageWidth + 12);
+        int y = posY + 2;
+        WorkbenchRecipe recipe = this.selectedRecipes;
+        PoseStack poseStack = guiGraphics.pose();
+        poseStack.pushPose();
+        for (int j = 0; j < recipe.getIngredients().size(); j++) {
+            Ingredient ing = recipe.getIngredients().get(j);
+            int need = recipe.getCounts().get(j);
+            ItemStack item = ing.getItems()[0];
+            guiGraphics.renderItem(item, x, y + 2);
+            poseStack.pushPose();
+            poseStack.translate(0, 0, 200);
+            if (!(need == 1 || need == 0)) {
+                BlitHelper.drawStrings(guiGraphics, String.format("%s", need), x + 4, y + 10, ColorUtil.combineRGB(255, 255, 255), false);
+            }
+            poseStack.popPose();
+            x += PADDING_INGREDIENTS;
+        }
+        poseStack.popPose();
+    }
+    public void renderRecipes(GuiGraphics guiGraphics, int posX, int posY, int mouseX, int mouseY, int startIndex) {
         for (int i = this.startIndex; i < startIndex && i < this.menu.recipes.size(); ++i) {
             int index = i - this.startIndex;
             int x = (posX - (this.imageWidth - 6)) + index % ROW * 24;

@@ -2,9 +2,12 @@ package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.recipe.WorkbenchRecipe;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -34,7 +37,10 @@ public class ServerboundWorkbenchCraftPacket {
             ServerPlayer player = context.getSender();
             Level level = player.level();
             Optional<WorkbenchRecipe> recipes = level.getRecipeManager().byKey(this.recipedId).filter(r -> r instanceof WorkbenchRecipe).map(r -> (WorkbenchRecipe) r);
-            recipes.ifPresent(recipe -> this.craft(player, recipe));
+            recipes.ifPresent(recipe -> {
+                Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.ANVIL_USE, 1.0F));
+                this.craft(player, recipe);
+            });
         });
         context.setPacketHandled(true);
     }

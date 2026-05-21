@@ -56,6 +56,8 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.TOOLTIP_WORKBENCH_ITEMS, "Items");
         this.add(Tooltips.TOOLTIP_WORKBENCH_INGREDIENTS, "Ingredients");
         this.add(Tooltips.TOOLTIP_WORKBENCH_FORGE, "Forge");
+        this.add(Tooltips.TOOLTIP_WORKBENCH_HELP_0, "Accessory/Artifacts will not shown on the Items Category");
+        this.add(Tooltips.TOOLTIP_WORKBENCH_HELP_1, "unless you have one of them ingredients/recipes");
 
         this.add(Tooltips.TOOLTIP_IMMUNE_TO, "Gain Immunity to %s");
         this.add(Tooltips.TOOLTIP_BUILTIN_RESOURCE, "Beyond Horizon: Builtin Resources");

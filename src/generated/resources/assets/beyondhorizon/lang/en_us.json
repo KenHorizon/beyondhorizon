@@ -143,6 +143,8 @@
   "block.beyondhorizon.wall_fire_basin": "Wall Fire Basin",
   "block.beyondhorizon.workbench": "Workbench",
   "block.beyondhorizon.workbench.forge": "Forge",
+  "block.beyondhorizon.workbench.help.0": "Accessory/Artifacts will not shown on the Items Category",
+  "block.beyondhorizon.workbench.help.1": "unless you have one of them ingredients/recipes",
   "block.beyondhorizon.workbench.ingredients": "Ingredients",
   "block.beyondhorizon.workbench.items": "Items",
   "block.beyondhorizon.workbench.name": "Workbench",

@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.guis;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.Utils;
@@ -19,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +31,6 @@ import java.util.List;
 
 public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     private float scrollOffs;
-    private boolean visible;
     private boolean scrolling;
     private int startIndex;
     public static int POS_Y = 24;
@@ -82,30 +83,61 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     }
 
     private void updateStackedContents() {
+
     }
 
-    public boolean isVisible() {
-        return this.visible;
-    }
 
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.renderTooltip(guiGraphics, mouseX, mouseY);
+        int x = this.leftPos + (this.imageWidth/2);
+        int y = this.topPos;
+        int craftX = this.leftPos + (this.imageWidth / 2 - (120 / 2));
+        int craftY = y + 50;
+        int craftTextY = craftY + 2;
+        Component mutableComponent = Component.translatable(Tooltips.TOOLTIP_WORKBENCH_FORGE);
+        String craftText = mutableComponent.getString();
+        int craftTextW = craftText.length();
         if (this.selectedRecipes != null) {
-            int x = this.leftPos + (this.imageWidth/2);
-            int y = this.topPos;
             Component com = this.selectedRecipes.getResultItem(this.minecraft.level.registryAccess()).getItem().getDescription();
             String displayNameRecipe = com.toString();
-            guiGraphics.drawCenteredString(this.minecraft.font, com, x, y, ColorUtil.WHITE);
+            guiGraphics.drawCenteredString(this.font, com, x, y, ColorUtil.WHITE);
             int nameLenght = displayNameRecipe.length();
             int guiW = 54 + nameLenght;
             guiGraphics.blitNineSliced(RESOURCE_GUI, this.leftPos + (this.imageWidth / 2 - (guiW / 2)), y - 2, guiW, 12, 20 , 4, 200, 20, 0, 184);
-            guiGraphics.renderItem(this.selectedRecipes.getResultItem(this.minecraft.level.registryAccess()), this.leftPos + 81, this.topPos + 25);
+            guiGraphics.renderItem(this.selectedRecipes.getResultItem(this.minecraft.level.registryAccess()), this.leftPos + 80, this.topPos + 25);
+            if (this.onHoveredSlot(this.leftPos + (this.imageWidth / 2 - (120 / 2)), 120, 12, y - 60, mouseX, mouseY)) {
+                guiGraphics.blitNineSliced(RESOURCE_GUI, craftX, craftY, 120, 14, 20 , 4, 200, 20, 0, 224);
+            } else {
+                guiGraphics.blitNineSliced(RESOURCE_GUI, craftX, craftY, 120, 14, 20 , 4, 200, 20, 0, 184);
+            }
+            guiGraphics.drawCenteredString(this.font, mutableComponent, craftX + (craftTextW + (120 / 2) - 2), craftTextY, ColorUtil.WHITE);
+            this.createLabel(guiGraphics, Tooltips.TOOLTIP_WORKBENCH_INGREDIENTS, this.leftPos + this.imageWidth + 20, this.topPos - 6, 64, 18);
+        } else {
+            guiGraphics.blitNineSliced(RESOURCE_GUI, craftX, craftY, 120, 14, 20 , 4, 200, 20, 0, 204);
+            guiGraphics.drawCenteredString(this.font, mutableComponent, craftX + (craftTextW + (120 / 2) - 2), craftTextY, ColorUtil.WHITE);
         }
+        this.createLabel(guiGraphics, Tooltips.TOOLTIP_WORKBENCH_ITEMS, this.leftPos - this.imageWidth + 20, this.topPos - 6, 64, 18);
+
     }
 
+    private void createLabel(GuiGraphics guiGraphics, String text, int x, int y, int width, int height) {
+        Component mutableComponent = Component.translatable(text);
+        String craftText = mutableComponent.getString();
+        int craftTextW = craftText.length();
+        guiGraphics.blitNineSliced(RESOURCE_GUI, x, y, width + craftTextW, height, 20, 4, 200, 20, 0, 184);
+        guiGraphics.drawCenteredString(this.font, craftText, x + (craftTextW + (width / 2) - 2), y + 4, ColorUtil.WHITE);
+    }
+    
+    private void createLabel(GuiGraphics guiGraphics, Component text, int x, int y, int width, int height) {
+        String craftText = text.getString();
+        int craftTextW = craftText.length();
+        guiGraphics.blitNineSliced(RESOURCE_GUI, x, y, width + craftTextW, height, 20 , 4, 200, 20, 0, 184);
+        guiGraphics.drawCenteredString(this.font, craftText, x + (craftTextW + (width / 2) - 2), y+4, ColorUtil.WHITE);
+
+    }
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         int x = this.leftPos + 7;

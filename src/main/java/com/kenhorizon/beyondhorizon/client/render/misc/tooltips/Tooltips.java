@@ -51,6 +51,10 @@ public class Tooltips {
     public static final String TOOLTIP_MANA_RECOVERY_POTION = String.format("tooltip.%s.recovery_potion.mana", BeyondHorizon.ID);
     public static final String TOOLTIP_BUILTIN_RESOURCE = String.format("resourcepack.%s.game_art", BeyondHorizon.ID);
     public static final String TOOLTIP_IMMUNE_TO = String.format("tooltip.%s.immune_to", BeyondHorizon.ID);
+    public static final String TOOLTIP_WORKBENCH = String.format("block.%s.workbench.name", BeyondHorizon.ID);
+    public static final String TOOLTIP_WORKBENCH_FORGE = String.format("block.%s.workbench.forge", BeyondHorizon.ID);
+    public static final String TOOLTIP_WORKBENCH_INGREDIENTS = String.format("block.%s.workbench.ingredients", BeyondHorizon.ID);
+    public static final String TOOLTIP_WORKBENCH_ITEMS = String.format("block.%s.workbench.items", BeyondHorizon.ID);
 
     public static final String TOOLTIP_PREFIX = String.format("tooltip.%s.", BeyondHorizon.ID);
     public static final ChatFormatting[] ATTRIBUTES = {ChatFormatting.DARK_GREEN, ChatFormatting.RED};

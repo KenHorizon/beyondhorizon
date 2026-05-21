@@ -17,6 +17,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryLanguage;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
@@ -50,6 +51,11 @@ public class BHLangProvider extends LanguageProvider {
         Keybinds.KEYBINDING.forEach(this::add);
 
         this.add(Configs.CHANGE_DAMAGE_CALCULATION, "Change Damage Calculation");
+
+        this.add(Tooltips.TOOLTIP_WORKBENCH, "Workbench");
+        this.add(Tooltips.TOOLTIP_WORKBENCH_ITEMS, "Items");
+        this.add(Tooltips.TOOLTIP_WORKBENCH_INGREDIENTS, "Ingredients");
+        this.add(Tooltips.TOOLTIP_WORKBENCH_FORGE, "Forge");
 
         this.add(Tooltips.TOOLTIP_IMMUNE_TO, "Gain Immunity to %s");
         this.add(Tooltips.TOOLTIP_BUILTIN_RESOURCE, "Beyond Horizon: Builtin Resources");

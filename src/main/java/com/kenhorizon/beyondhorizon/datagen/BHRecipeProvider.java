@@ -166,6 +166,16 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .required(BHItems.AMPLIFLYING_TOME.get())
                 .required(BHItems.AETHER_WISP.get())
                 .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.CURSED_SKULL.get(), 1)
+                .required(Items.ENDER_EYE, 20)
+                .required(Items.GOLD_INGOT, 20)
+                .required(BHItems.RUBY.get(), 10)
+                .required(Blocks.OBSIDIAN, 10)
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.FLAME_OF_TORMENT.get(), 1)
+                .required(BHItems.CURSED_SKULL.get())
+                .required(BHItems.ASHES_OF_FLAME.get())
+                .save(consumer);
 
         oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, MathUtils.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_STARITE.get()), RecipeCategory.MISC, BHItems.STARITE_INGOT.get(), 0.7F, MathUtils.sec(10));

@@ -42,6 +42,9 @@ public class SinglePassiveAccessory extends AccessorySkill {
         if (this == Accessories.NULLIFY.get()) {
             return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F), MathUtils.format(this.getMagnitude() * 100.0F));
         }
+        if (this == Accessories.STING.get()) {
+            return Component.translatable(this.createId(), (int) this.getMagnitude());
+        }
         return super.tooltipDescription(itemStack);
     }
 
@@ -144,6 +147,10 @@ public class SinglePassiveAccessory extends AccessorySkill {
                     return damageDealt * (this.getMagnitude() * this.getLevel());
                 }
             }
+        }
+
+        if (this == Accessories.STING.get()) {
+            return damageDealt + (this.getMagnitude() * this.getLevel());
         }
         if (this == Accessories.LIFE_SIPHON.get()) {
            return damageDealt + (target.getHealth() * (this.getMagnitude() * this.getLevel()));

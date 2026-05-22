@@ -24,6 +24,9 @@ public class Accessories {
     public static final RegistryObject<Accessory> SHEEN = registerSkill("sheen", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_DAMAGE, "57b45474-573e-4e5c-8e33-22a6b3f1f30b", Constant.SHEEN_AD, AttributeModifier.Operation.ADDITION));
 
+    public static final RegistryObject<Accessory> CURSED_SKULL = registerSkill("cursed_skull", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.MAX_HEALTH, "aca6ea1f-96bc-44cd-8154-9c020761f661", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
+
     public static final RegistryObject<Accessory> TWILIGHT_SWORD = registerSkill("twilight_sword", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_DAMAGE, "9ca1a7d2-52ea-499e-9d4e-0e6651ad1192", Constant.TS_AD, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.ABILITY_POWER.get(), "6b7c9a40-ff19-47ed-aa10-1b08f0697c0d", Constant.TS_AP, AttributeModifier.Operation.ADDITION));
@@ -106,6 +109,9 @@ public class Accessories {
     public static final RegistryObject<Accessory> AETHER_WISP = registerSkill("aether_wisp", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.ABILITY_POWER.get(), "8da8b801-b5fe-4b2a-9cc9-9d5746181d61", Constant.AETHER_WISP_ABILITY_POWER, AttributeModifier.Operation.ADDITION));
 
+    public static final RegistryObject<Accessory> HARPOON_HEAD = registerSkill("harpoon_head", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.ARMOR_PENETRATION.get(), "9af2b627-40a9-4009-afb0-3dacd4ab686b", Constant.STANDARD_ARMOR_PEN_0, AttributeModifier.Operation.MULTIPLY_TOTAL));
+
     public static final RegistryObject<Accessory> POWER_GLOVES = registerSkill("power_gloves", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_DAMAGE, "847a9dc2-56ee-4ebc-a892-0e5095012667", Constant.POWER_GLOVES_ATTACK_DAMAGE, AttributeModifier.Operation.ADDITION)
             .addAttributes(Attributes.ATTACK_KNOCKBACK, "c71ca564-8178-4ca2-bc63-29a4f90361e3", Constant.POWER_GLOVES_KNOCBACK, AttributeModifier.Operation.MULTIPLY_TOTAL));
@@ -175,6 +181,8 @@ public class Accessories {
     public static final RegistryObject<Accessory> CLEANSE = registerSkill("cleanse", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> ROCK_SOLID = registerSkill("rock_solid", () -> new DamageReductionAccessory(Constant.ROCK_SOLID_REDUCE, DamageReductionAccessory.DamageReductionType.BASIC_ATTACK));
     public static final RegistryObject<Accessory> INFLAME = registerSkill("inflame", SinglePassiveAccessory::new);
+    public static final RegistryObject<Accessory> STING = registerSkill("sting", () -> new SinglePassiveAccessory(Constant.STING_DAMAGE));
+    public static final RegistryObject<Accessory> TORMENT = registerSkill("torment", () -> new ApplyEffectAccessory(3, 0, BHEffects.TORMENT.get()).showIcon(true).ambient(true));
 
     public static RegistryObject<Accessory> registerSkill(String name, Supplier<Accessory> properties) {
         return BHRegistries.DEFERRED_ACCESSORY.register(name, properties);

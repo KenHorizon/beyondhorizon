@@ -20,6 +20,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -42,7 +43,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     private int timesInventoryChanged;
     private boolean widthTooNarrow;
     private WorkbenchRecipe selectedRecipes = null;
-    private static final Component SEARCH_HINT = Component.translatable("gui.recipebook.search_hint").withStyle(ChatFormatting.ITALIC).withStyle(ChatFormatting.GRAY);
+    private boolean enableHelp = false;
 
     public WorkbenchScreen(WorkbenchMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -137,10 +138,12 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             guiGraphics.drawCenteredString(this.font, mutableComponent, craftX + (craftTextW + (120 / 2) - 2), craftTextY, ColorUtil.WHITE);
         }
         this.createLabel(guiGraphics, Tooltips.TOOLTIP_WORKBENCH_ITEMS, this.leftPos - this.imageWidth + 20, this.topPos - 6, 64, 18);
-        if (this.onHoveredSlot(this.leftPos + 156, this.topPos + 4, 15, 12, mouseX, mouseY)) {
-            guiGraphics.blit(RESOURCE_GUI, this.leftPos + 156, this.topPos + 4, 212, 0, 12, 15);
-        } else {
-            guiGraphics.blit(RESOURCE_GUI, this.leftPos + 156, this.topPos + 4, 200, 0, 12, 15);
+        if (this.enableHelp) {
+            if (this.onHoveredSlot(this.leftPos + 156, this.topPos + 4, 15, 12, mouseX, mouseY)) {
+                guiGraphics.blit(RESOURCE_GUI, this.leftPos + 156, this.topPos + 4, 212, 0, 12, 15);
+            } else {
+                guiGraphics.blit(RESOURCE_GUI, this.leftPos + 156, this.topPos + 4, 200, 0, 12, 15);
+            }
         }
     }
 
@@ -181,14 +184,14 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         super.renderTooltip(guiGraphics, x, y);
         int startIndex = this.startIndex + (COLUMN * ROW);
         List<WorkbenchRecipe> list = this.menu.recipes;
-        int startX = ((this.leftPos + 7) - (this.imageWidth - 6));
-        int startY = this.topPos + POS_Y;
+        int startX = ((this.leftPos + 7) - (this.imageWidth - 6)) + 8;
+        int startY = this.topPos + POS_Y + 8;
         for (int i = this.startIndex; i < startIndex && i < this.menu.recipes.size(); i++) {
             int index = i - this.startIndex;
             int posX = startX + index % ROW * 24;
             int var0001 = index / ROW;
             int posY = startY + var0001 * 24 + 2;
-            if (x >= posX && x <= posX + 24 && y >= posY && y <= posY + 24) {
+            if (x >= posX && x <= posX + 16 && y >= posY && y <= posY + 16) {
                 guiGraphics.renderTooltip(this.font, list.get(i).getResultItem(this.minecraft.level.registryAccess()), x, y);
             }
         }
@@ -197,15 +200,17 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             int recY = (this.topPos + POS_Y) + 2;
             this.renderTooltipIngredients(guiGraphics, recX, recY, x, y);
         }
-        int helpX = this.leftPos + 156;
-        int helpY = this.topPos + 4;
-        int helpW = 15;
-        int helpH = 12;
-        if (x >= helpX && x <= helpX + helpW && y >= helpY && y <= helpY + helpH) {
-            List<Component> components = new ArrayList<>();
-            components.add(Component.translatable(Tooltips.TOOLTIP_WORKBENCH_HELP_0));
-            components.add(Component.translatable(Tooltips.TOOLTIP_WORKBENCH_HELP_1));
-            guiGraphics.renderComponentTooltip(this.font, components, x, y);
+        if (this.enableHelp) {
+            int helpX = this.leftPos + 156;
+            int helpY = this.topPos + 4;
+            int helpW = 15;
+            int helpH = 12;
+            if (x >= helpX && x <= helpX + helpW && y >= helpY && y <= helpY + helpH) {
+                List<Component> components = new ArrayList<>();
+                components.add(Component.translatable(Tooltips.TOOLTIP_WORKBENCH_HELP_0));
+                components.add(Component.translatable(Tooltips.TOOLTIP_WORKBENCH_HELP_1));
+                guiGraphics.renderComponentTooltip(this.font, components, x, y);
+            }
         }
     }
 

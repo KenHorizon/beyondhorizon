@@ -115,10 +115,17 @@ public class BHItems {
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = accessoryHandheldItem("broken_hero_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.BROKEN_HERO_SWORD);
     public static final RegistryObject<Item> SHEEN = accessoryHandheldItemX32("sheen", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.SHEEN);
     public static final RegistryObject<Item> TWILIGHT_SWORD = accessoryHandheldItemX32("twilight_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.TWILIGHT_SWORD);
+
     public static final RegistryObject<Item> SPEAR_OF_CHAOS = accessoryHandheldItemX32("spear_of_chaos", AccessoryItemGroup.FATALITY, AccessoryBuilder.SPEAR_OF_CHAOS);
+    public static final RegistryObject<Item> HARPOON_HEAD = accessoryItem("harpoon_head", AccessoryItemGroup.FATALITY, AccessoryBuilder.HARPOON_HEAD);
+
     public static final RegistryObject<Item> VOID_STAFF = accessoryHandheldItem("void_staff", AccessoryItemGroup.BLIGHT, AccessoryBuilder.VOID_STAFF);
     //
-    public static final RegistryObject<Item> ABYSSAL_TOOTH = accessoryItem("abyssal_tooth", AccessoryBuilder.TALISMAN_OF_ASCENSION);
+    public static final RegistryObject<Item> FLAME_OF_TORMENT = accessoryItem("flame_of_torment", AccessoryBuilder.FLAME_OF_TORMENT);
+    public static final RegistryObject<Item> CURSED_SKULL = accessoryItem("cursed_skull", AccessoryBuilder.CURSED_SKULL);
+    public static final RegistryObject<Item> RECURVE_ARROW = accessoryItem("recurve_arrow", AccessoryBuilder.RECURVE_ARROW);
+    public static final RegistryObject<Item> ASHES_OF_FLAME = accessoryItem("ashes_of_flame", AccessoryBuilder.ASHES_OF_FLAME);
+    public static final RegistryObject<Item> ABYSSAL_TOOTH = accessoryItem("abyssal_tooth", AccessoryBuilder.ABYSSAL_TOOTH);
     public static final RegistryObject<Item> TALISMAN_OF_ASCENSION = accessoryItem("talisman_of_ascension", AccessoryBuilder.TALISMAN_OF_ASCENSION);
     public static final RegistryObject<Item> WARDEN_MAIL = accessoryItem("warden_mail", AccessoryBuilder.WARDEN_MAIL);
     public static final RegistryObject<Item> WARD_CLEANSE = accessoryItem("ward_cleanse", AccessoryBuilder.WARD_CLEANSE);
@@ -163,7 +170,6 @@ public class BHItems {
     public static final RegistryObject<Item> CARBONIZED_BONE = accessoryItem("carbonized_bone", AccessoryBuilder.CARBONIZED_BONE);
     public static final RegistryObject<Item> ADHESIVE_BANDAGES = accessoryItem("adhesive_bandage", AccessoryBuilder.ADHESIVE_BANDAGES);
     public static final RegistryObject<Item> CURSED_APPLE = accessoryItem("cursed_apple", AccessoryBuilder.CURSED_APPLE);
-    public static final RegistryObject<Item> CURSED_SKULL = accessoryItem("cursed_skull", AccessoryBuilder.CURSED_APPLE);
     public static final RegistryObject<Item> CURSED_TORMENT = accessoryItem("cursed_torment", AccessoryBuilder.CURSED_APPLE);
 
     public static final RegistryObject<Item> POWER_GLOVES = accessoryItem("power_gloves", AccessoryBuilder.POWER_GLOVES);

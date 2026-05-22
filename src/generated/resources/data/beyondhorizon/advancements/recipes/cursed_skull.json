@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipes": {
+      "conditions": {
+        "recipe": "beyondhorizon:cursed_skull"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipes"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:cursed_skull"
+    ]
+  },
+  "sends_telemetry_event": true
+}

@@ -127,12 +127,14 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.CLEANSE.get(), "Cleanse", "Healing and Shielding are increased by 200%");
         this.addAccessory(Accessories.ROCK_SOLID.get(), "Rock Solid", "Reduce basic attack pre-mitigation damage by %s%%");
         this.addAccessory(Accessories.INFLAME.get(), "Inflame", "Attacks inflict Inflame that burn target for 0.5 magic damage per 0.5 seconds");
-        this.addAccessory(Accessories.SPELL_BLADE_0.get(), "Spell Blade", "Deal additional %s%% base AD physical damage on-hit");
-        this.addAccessory(Accessories.SPELL_BLADE_1.get(), "Spell Blade", "Deal additional %s%% base AD (+%s%% AP) magic damage on-hit");
-        this.addAccessory(Accessories.SPELL_BLADE_2.get(), "Spell Blade", "Deal additional %s%% base AD (+%s%% AP) magic damage on-hit");
+        this.addAccessory(Accessories.SPELL_BLADE_0.get(), "Spell Blade", "If damage not taken for %s seconds deal additional %s%% base AD physical damage on-hit");
+        this.addAccessory(Accessories.SPELL_BLADE_1.get(), "Spell Blade", "If damage not taken for %s seconds deal additional (+%s%% AP) magic damage on-hit");
+        this.addAccessory(Accessories.SPELL_BLADE_2.get(), "Spell Blade", "If damage not taken for %s seconds deal additional (+%s%% AD) physical damage on-hit");
         this.addAccessory(Accessories.DEATH.get(), "Death", "If you deal post-mitigation damage that would leave a target below %s%% of their max health, execute them");
         this.addAccessory(Accessories.TAXS.get(), "Taxs", "Killing a target will drop 1 emerald");
         this.addAccessory(Accessories.CORRUPTED_BITE.get(), "Corrupted Bite", "Deal additional (%s%% Total damage dealt) magic damage");
+        this.addAccessory(Accessories.STING.get(), "Sting", "Basic Attack deal additional %s physical damage");
+        this.addAccessory(Accessories.TORMENT.get(), "Torment", "Dealing damage burn dealing 1% of the target's max health magic damage every 0.5 seconds for 3 seconds");
         //
         this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");
         this.addRole(RoleClasses.MARKSMAN.get(), "Marksman", "Specialize in precision, long range engagement and delivering consistent, high damage from safe distance");

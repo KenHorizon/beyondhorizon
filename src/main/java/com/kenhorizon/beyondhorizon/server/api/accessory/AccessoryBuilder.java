@@ -21,6 +21,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder CURSED_APPLE = new AccessoryBuilder(List.of(Accessories.BAD_APPLE));
     public static final AccessoryBuilder VITAMINS = new AccessoryBuilder(List.of(Accessories.VITAMINS));
 
+    public static final AccessoryBuilder FLAME_OF_TORMENT = new AccessoryBuilder(List.of(Accessories.TORMENT));
     public static final AccessoryBuilder ETERNAL_LIFE = new AccessoryBuilder(List.of(Accessories.ETERNAL_LIFE));
     public static final AccessoryBuilder NULL_SWORD = new AccessoryBuilder(List.of(Accessories.NULLIFY));
     public static final AccessoryBuilder INFINITY_SWORD = new AccessoryBuilder(List.of(Accessories.LETHAL_BURST));
@@ -41,6 +42,9 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder VITALITY_STONE = new AccessoryBuilder(List.of(Accessories.VITALITY_STONE));
     public static final AccessoryBuilder CHAIN_VEST = new AccessoryBuilder(List.of(Accessories.CHAIN_VEST));
     public static final AccessoryBuilder ABYSSAL_TOOTH = new AccessoryBuilder(List.of(Accessories.CORRUPTED_BITE));
+    public static final AccessoryBuilder ASHES_OF_FLAME = new AccessoryBuilder(List.of(Accessories.INFLAME));
+    public static final AccessoryBuilder CURSED_SKULL = new AccessoryBuilder(List.of(Accessories.CURSED_SKULL));
+    public static final AccessoryBuilder RECURVE_ARROW = new AccessoryBuilder(List.of(Accessories.STING));
     public static final AccessoryBuilder TALISMAN_OF_ASCENSION = new AccessoryBuilder(List.of(Accessories.ASCENSION));
     public static final AccessoryBuilder WARDEN_MAIL = new AccessoryBuilder(List.of(Accessories.ROCK_SOLID));
     public static final AccessoryBuilder WARD_CLEANSE = new AccessoryBuilder(List.of(Accessories.CLEANSE));
@@ -57,6 +61,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder CRYSTALLIZED_PLATE = new AccessoryBuilder(List.of(Accessories.CRYSTALLIZED_PLATE));
     public static final AccessoryBuilder CINDER_STONE = new AccessoryBuilder(List.of(Accessories.CINDER_STONE, Accessories.BURN_EFFECT));
     public static final AccessoryBuilder AGILE_DAGGER = new AccessoryBuilder(List.of(Accessories.AGILE_DAGGER));
+    public static final AccessoryBuilder HARPOON_HEAD = new AccessoryBuilder(List.of(Accessories.HARPOON_HEAD));
     public static final AccessoryBuilder POWER_GLOVES = new AccessoryBuilder(List.of(Accessories.POWER_GLOVES));
     public static final AccessoryBuilder SWIFT_DAGGER = new AccessoryBuilder(List.of(Accessories.SWIFT_DAGGER));
     public static final AccessoryBuilder AETHER_WISP = new AccessoryBuilder(List.of(Accessories.AETHER_WISP));

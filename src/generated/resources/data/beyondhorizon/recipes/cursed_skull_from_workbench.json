@@ -1,0 +1,27 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    20,
+    20,
+    10,
+    10
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:ender_eye"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "beyondhorizon:ruby"
+    },
+    {
+      "item": "minecraft:obsidian"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:cursed_skull"
+  }
+}

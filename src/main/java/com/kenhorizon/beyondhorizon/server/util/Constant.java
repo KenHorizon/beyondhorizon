@@ -29,6 +29,7 @@ public class Constant {
     public static float PIERCING_EDGE_SCALE_DAMAGE = 0.12F;
     public static float PIERCING_EDGE_DAMAGE = 0.08F;
     public static int FIRE_EFFECT = 5;
+    public static float STING_DAMAGE = 2.0F;
     public static float NULLIFY_DAMAGE_SCALE = 0.20F;
     public static float JUMP_BOOST = 0.50F;
     public static float MINING_SPEED_BASIC = 0.10F;

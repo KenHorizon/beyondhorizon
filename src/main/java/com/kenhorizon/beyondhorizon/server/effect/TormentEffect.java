@@ -18,7 +18,7 @@ public class TormentEffect extends BHMobEffect {
 
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
-        int tick = 20 >> amplifier;
+        int tick = 10 >> amplifier;
         return duration % tick == 0;
     }
 }

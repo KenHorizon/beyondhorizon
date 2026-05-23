@@ -12,6 +12,7 @@ public class BHDamageTypeTags {
     public static final TagKey<DamageType> IS_MAGIC_PENETRATION = create("is_magic_penetration");
     public static final TagKey<DamageType> MAGIC_DAMAGE = create("magic_damage");
     public static final TagKey<DamageType> PHYSICAL_DAMAGE = create("physical_damage");
+    public static final TagKey<DamageType> BURN_DAMAGE = create("burn_damage");
     public static final TagKey<DamageType> TRUE_DAMAGE = create("true_damage");
     public static final TagKey<DamageType> RANGED_DAMAGE = create("ranged_damage");
     public static final TagKey<DamageType> CANT_STORE_DAMAGE = create("cant_store_damage");

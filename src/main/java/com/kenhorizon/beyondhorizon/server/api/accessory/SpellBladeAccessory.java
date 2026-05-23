@@ -12,7 +12,7 @@ public class SpellBladeAccessory extends BaseSpellbladeAccessory {
 
     @Override
     protected float spellBladeDamage(LivingEntity attacker, float damage, float damageScale) {
-        return (float) (attacker.getAttributeValue(Attributes.ATTACK_DAMAGE) * damageScale);
+        return (float) (attacker.getAttributeBaseValue(Attributes.ATTACK_DAMAGE) * damageScale);
     }
 
     @Override

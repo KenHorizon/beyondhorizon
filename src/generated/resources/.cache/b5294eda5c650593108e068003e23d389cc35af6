@@ -1,8 +1,10 @@
-// 1.20.1	2026-01-06T14:53:14.9031569	Particle Descriptions
+// 1.20.1	2026-05-23T16:45:05.6332816	Particle Descriptions
 e89608ac16258c3065f5950d1297133670bbcbc4 assets/beyondhorizon/particles/bleed.json
+692921198200c0b2a1d985a179e788b692bc8a40 assets/beyondhorizon/particles/dragonic_flame.json
 e58b829b09084e6b99cb7b5fa57ff5351b9f835d assets/beyondhorizon/particles/hellfire_orb_explosion.json
 799ddf0f37c4aef95275e64c75a57a1989e50465 assets/beyondhorizon/particles/hellfire_orb_trail.json
 7dd0f87538997a0e24fcb298795233363171a633 assets/beyondhorizon/particles/indicator.json
+542bc79238dd56fcde7b03ea03cb51b41fb46795 assets/beyondhorizon/particles/red_skull.json
 2f15a08a7836cef1ade0d345c773edc14823daf4 assets/beyondhorizon/particles/ring.json
 379b28434b83421170723b89ea2ef8b6e2f9098e assets/beyondhorizon/particles/ring_big.json
 06a25bfc03d32b0e33c9ebd8cbd1303dd48f863e assets/beyondhorizon/particles/roar.json

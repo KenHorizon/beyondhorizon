@@ -3,11 +3,16 @@ package com.kenhorizon.beyondhorizon.server.effect;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.capability.DamageInfoCap;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
+import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
+import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.mojang.realmsclient.dto.PlayerInfo;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -18,6 +23,7 @@ import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -29,12 +35,37 @@ public class BHMobEffect extends MobEffect {
     private int rapidHealingMinusRate = 1;
     private final int rapidHealingDefaultRate = 20;
     private final int rapidHealingLimitRate = 5;
+
     public BHMobEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
+
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
-        if (this == BHEffects.DRAGON_FLAME.get()) {
+        if (this == BHEffects.INFLAME.get()) {
+            entity.hurt(BHDamageTypes.burnMagic(), 0.1F + (0.1F * amplifier));
+            Level level = entity.level();
+            if (level instanceof ServerLevel sLevel) {
+                sLevel.sendParticles(ParticleTypes.FLAME, entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 5, 0,0,0, 0.05D);
+            }
+        }
+        if (this == BHEffects.TORMENT.get()) {
+            entity.hurt(BHDamageTypes.burnMagic(), entity.getMaxHealth() * Constant.TORMENT_EFFECT);
+            Level level = entity.level();
+            if (level instanceof ServerLevel sLevel) {
+                sLevel.sendParticles(ParticleTypes.FLAME, entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 5, 0,0,0, 0.0D);
+            }
+        }
+
+        if (this == BHEffects.ACID.get()) {
+            entity.hurt(BHDamageTypes.bleed(), 0.1F + (0.1F * amplifier));
+            Level level = entity.level();
+            if (level instanceof ServerLevel sLevel) {
+                sLevel.sendParticles(BHParticle.RED_SKULL.get(), entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 5, 0,0,0, 0.0D);
+            }
+        }
+
+        if (this == BHEffects.DRAGONIC_FLAME.get()) {
             if (entity.getHealth() > 0) {
                 float damageOutput = 1.0F + (amplifier * 0.5F);
                 if (entity.isInWaterOrRain() || entity.isInWaterOrBubble()) {
@@ -44,7 +75,10 @@ public class BHMobEffect extends MobEffect {
                 } else if (entity.isFallFlying() || entity instanceof Player player && player.getAbilities().flying) {
                     damageOutput *= 1.25F;
                 }
-                entity.hurt(entity.level().damageSources().magic(), damageOutput);
+                if (entity.level() instanceof ServerLevel sLevel) {
+                    sLevel.sendParticles(BHParticle.DRAGONIC_FLAME.get(), entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 5, 0,0,0, 0.0D);
+                }
+                entity.hurt(BHDamageTypes.burnMagic(), 2 * damageOutput);
             }
         }
         if (this == BHEffects.RAPID_HEALING.get()) {
@@ -64,6 +98,9 @@ public class BHMobEffect extends MobEffect {
             if (cancelHeal) {
                 this.rapidHealingRate = this.rapidHealingDefaultRate;
             }
+            if (entity.level() instanceof ServerLevel sLevel) {
+                sLevel.sendParticles(ParticleTypes.HEART, entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 2, 0,0,0, 0.10D);
+            }
         }
         if (this == BHEffects.BLEED.get()) {
             if (!entity.level().isClientSide()) {
@@ -78,6 +115,9 @@ public class BHMobEffect extends MobEffect {
             int level = amplifier / 2;
             if (entity.getHealth() > 0.0F) {
                 entity.hurt(entity.damageSources().magic(), 0.5F + level);
+            }
+            if (entity.level() instanceof ServerLevel sLevel) {
+                sLevel.sendParticles(BHParticle.RED_SKULL.get(), entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), 2, 0,0,0, 0.005D);
             }
         }
         super.applyEffectTick(entity, amplifier);
@@ -116,7 +156,8 @@ public class BHMobEffect extends MobEffect {
                 BHEffects.RAPID_HEALING.get(),
                 BHEffects.FEAR.get(),
                 BHEffects.STUN.get(),
-                BHEffects.DRAGON_FLAME.get()
+                BHEffects.INFLAME.get(),
+                BHEffects.DRAGONIC_FLAME.get()
         );
     }
 
@@ -130,6 +171,7 @@ public class BHMobEffect extends MobEffect {
         ret.add(new ItemStack(Items.MILK_BUCKET));
         return ret;
     }
+
     @Override
     public boolean isDurationEffectTick(int duration, int amplifier) {
         if (this == BHEffects.LETHAL_POISON.get()) {
@@ -147,6 +189,18 @@ public class BHMobEffect extends MobEffect {
             } else {
                 return true;
             }
+        }
+        if (this == BHEffects.ACID.get()) {
+            return duration % 5 == 0;
+        }
+        if (this == BHEffects.INFLAME.get()) {
+            return duration % 10 == 0;
+        }
+        if (this == BHEffects.DRAGONIC_FLAME.get()) {
+            return duration % 10 == 0;
+        }
+        if (this == BHEffects.TORMENT.get()) {
+            return duration % 10 == 0;
         }
         return true;
     }

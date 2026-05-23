@@ -1,0 +1,19 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:harpoon_head"
+    },
+    {
+      "item": "beyondhorizon:broken_hero_sword"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:spear_of_chaos"
+  }
+}

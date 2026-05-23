@@ -1,4 +1,4 @@
-// 1.20.1	2026-05-22T07:48:42.1598619	Recipes
+// 1.20.1	2026-05-23T19:42:36.2936674	Recipes
 4fe6cdfcfda884afb6de86d887957c5816bab566 data/beyondhorizon/advancements/recipes/aether_wisp.json
 e5d9b0d083e8c7398680c7b83789d60e056c0dcc data/beyondhorizon/advancements/recipes/berserker_boots.json
 36acb42eb3beafcc2e9623ebc6ee348c3e8b40cb data/beyondhorizon/advancements/recipes/boots.json
@@ -27,6 +27,7 @@ e575e7aa21479e243fe7cf6a03f279c0237bea53 data/beyondhorizon/advancements/recipes
 eb0be1c39354f0be1b74231775e5ee9a3efa5956 data/beyondhorizon/advancements/recipes/null_magic_rune.json
 a3210a7281f87a305da2fc958c075aad34c9c30c data/beyondhorizon/advancements/recipes/ruminative_beads.json
 cb0fc2e0db03a092045a574249e86e79a1688b6a data/beyondhorizon/advancements/recipes/sheen.json
+d78fd2f659372cafed94c2233988e4f1a466862d data/beyondhorizon/advancements/recipes/spear_of_chaos.json
 35490a47c7f91ffd65f08076f9ad04cc7d8d4044 data/beyondhorizon/advancements/recipes/spectral_cloak.json
 812309e5c847bfdcbf60ed7750d8367895890270 data/beyondhorizon/advancements/recipes/tough_cloth.json
 cd7bac32ebba2ddd772817a284e99969644f4917 data/beyondhorizon/advancements/recipes/twilight_sword.json
@@ -52,6 +53,7 @@ cd6d967cf705a20e1c4b8a02f2b690ae7870f4e4 data/beyondhorizon/recipes/hellstone_sw
 bd80b65a78d9f6b515337e1359c025f391aac9b2 data/beyondhorizon/recipes/raw_embed_hellstone.json
 794e55133b3e1faed7238eb99cea2498ac911a64 data/beyondhorizon/recipes/ruminative_beads_from_workbench.json
 b266141393e067447c364f6f79e8cf75f975e473 data/beyondhorizon/recipes/sheen_from_workbench.json
+1679efc6f3ba9ff872313349cc010659c148e2f2 data/beyondhorizon/recipes/spear_of_chaos_from_workbench.json
 71d16adff8b02e2d78c289ca771814192d4355c1 data/beyondhorizon/recipes/spectral_cloak_from_workbench.json
 d81027809ef046177ebf3a440e2c15a6e8a94d8f data/beyondhorizon/recipes/starite_axe.json
 2c786ad5a67312968e1f66454b3bcf8c18ff739c data/beyondhorizon/recipes/starite_hoe.json

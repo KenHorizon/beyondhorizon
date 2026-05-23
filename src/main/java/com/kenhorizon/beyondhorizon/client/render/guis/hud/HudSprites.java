@@ -4,6 +4,8 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.resources.ResourceLocation;
 
 public class HudSprites {
+    public static final ResourceLocation ADRENALINE = BeyondHorizon.resourceGui("sprites/adrenaline.png");
+    public static final ResourceLocation RAGED = BeyondHorizon.resourceGui("sprites/raged.png");
     public static final ResourceLocation HEALTH = BeyondHorizon.resourceGui("sprites/icon/heart.png");
     public static final ResourceLocation ABSROPTION = BeyondHorizon.resourceGui("sprites/icon/absroption.png");
     public static final ResourceLocation ARMOR_FULL = BeyondHorizon.resourceGui("sprites/icon/armor_full.png");

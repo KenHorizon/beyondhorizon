@@ -15,6 +15,9 @@ import javax.annotation.Nullable;
 public class BHDamageTypes {
 
     public static final ResourceKey<DamageType> BEAM = createKey("beam");
+    public static final ResourceKey<DamageType> TRUE_DAMAGE_BURNING = createKey("true_damage_burning");
+    public static final ResourceKey<DamageType> PHYSICAL_BURNING = createKey("phyiscal_burning");
+    public static final ResourceKey<DamageType> MAGIC_BURNING = createKey("magic_burning");
     public static final ResourceKey<DamageType> BLEED = createKey("bleed");
     public static final ResourceKey<DamageType> IGNORE_ENCHANTMENT_PROTECTION = createKey("ignore_enchantment_protection");
     public static final ResourceKey<DamageType> BLAZING_ROD = createKey("blazing_rod");
@@ -28,6 +31,9 @@ public class BHDamageTypes {
     private static Registry<DamageType> damageTypes;
 
     public static void bootstrap(BootstapContext<DamageType> context) {
+        context.register(TRUE_DAMAGE_BURNING, new DamageType("true_damage_burning", 0.1F));
+        context.register(PHYSICAL_BURNING, new DamageType("physical_burning", 0.1F));
+        context.register(MAGIC_BURNING, new DamageType("magic_burning", 0.1F));
         context.register(IGNORE_ENCHANTMENT_PROTECTION, new DamageType("ignore_enchantment_protection", 0.1F));
         context.register(BEAM, new DamageType("beam", 0.1F));
         context.register(BLAZING_ROD, new DamageType("blazing_rod", 0.1F));
@@ -57,6 +63,17 @@ public class BHDamageTypes {
         return source(BLEED);
     }
 
+    public static DamageSource burnTrueDamage() {
+        return source(TRUE_DAMAGE_BURNING);
+    }
+
+    public static DamageSource burnPhysical() {
+        return source(PHYSICAL_BURNING);
+    }
+
+    public static DamageSource burnMagic() {
+        return source(MAGIC_BURNING);
+    }
     public static DamageSource armorPenetration(Entity source) {
         return source(ARMOR_PENETRATION, source);
     }

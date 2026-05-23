@@ -11,6 +11,8 @@ import net.minecraftforge.registries.RegistryObject;
 public class BHParticle {
     public static final RegistryObject<SimpleParticleType> HELLFIRE_ORB_TRAIL = RegistryEntries.PARTICLE.register("hellfire_orb_trail", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> HELLFIRE_ORB_EXPLOSION = RegistryEntries.PARTICLE.register("hellfire_orb_explosion", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> RED_SKULL = RegistryEntries.PARTICLE.register("red_skull", () -> new SimpleParticleType(true));
+    public static final RegistryObject<SimpleParticleType> DRAGONIC_FLAME = RegistryEntries.PARTICLE.register("dragonic_flame", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> BLEED = RegistryEntries.PARTICLE.register("bleed", () -> new SimpleParticleType(true));
     public static final RegistryObject<SimpleParticleType> STUN_PARTICLES = RegistryEntries.PARTICLE.register("stun_particles", () -> new SimpleParticleType(true));
     public static final RegistryObject<ParticleType<DamageIndicatorOptions>> DAMAGE_INDICATOR = RegistryEntries.PARTICLE.register("damage_indicator", () -> new ParticleType<DamageIndicatorOptions>(false, DamageIndicatorOptions.DESERIALIZER) {

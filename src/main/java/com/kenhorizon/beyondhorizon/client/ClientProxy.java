@@ -34,6 +34,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.particle.FlameParticle;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
@@ -209,6 +210,9 @@ public class ClientProxy extends ServerProxy {
 
     public void registerParticles(RegisterParticleProvidersEvent event) {
         BeyondHorizon.LOGGER.info("Registering Particles!!");
+        event.registerSpriteSet(BHParticle.DRAGONIC_FLAME.get(), FlameParticle.Provider::new);
+        event.registerSpriteSet(BHParticle.RED_SKULL.get(), FlameParticle.Provider::new);
+        event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
         event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
         event.registerSpriteSet(BHParticle.RING.get(), RingParticles.Provider::new);
         event.registerSpriteSet(BHParticle.RING_BIG.get(), RingParticles.Provider::new);

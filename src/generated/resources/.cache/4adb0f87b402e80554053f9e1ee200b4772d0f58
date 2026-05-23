@@ -1,4 +1,4 @@
-// 1.20.1	2026-01-12T21:48:49.4391633	Beyond Horizon: Datapack Registries
+// 1.20.1	2026-05-23T15:53:59.0501124	Beyond Horizon: Datapack Registries
 7e16db83ce654b730a82919c9ba614b52fffa31f data/beyondhorizon/base_spawner/spawner/testing_phase.json
 40892efc51eadc232f99a3cc979407590646320e data/beyondhorizon/damage_type/armor_penetration.json
 bb7471859e13238f104a23a0d29ba35280ab6fc8 data/beyondhorizon/damage_type/beam.json
@@ -6,7 +6,10 @@ bb7471859e13238f104a23a0d29ba35280ab6fc8 data/beyondhorizon/damage_type/beam.jso
 2b581616c48fe0c833f919ad5ab58fb8db354e51 data/beyondhorizon/damage_type/bleed.json
 444c8a6dec939894037531001d452b5cd2a28bf9 data/beyondhorizon/damage_type/ignore_enchantment_protection.json
 7bf9ca402ad3183994d0cf76dff12b61a73c8fc7 data/beyondhorizon/damage_type/lethality.json
+19474b1f55955924a9eb5448d725b2ba51b01237 data/beyondhorizon/damage_type/magic_burning.json
 db41d2e4b7199f0ba9bbf2f4f2eb560efa5bf408 data/beyondhorizon/damage_type/magic_damage.json
 f4f3fd39d00c86075c3c68ce8e429b082f8133a4 data/beyondhorizon/damage_type/magic_penetration.json
+2f8fef155c408d797906fefc693c619aca319d69 data/beyondhorizon/damage_type/phyiscal_burning.json
 a89034073120247350d8e7e0f9479c4f0da79d2e data/beyondhorizon/damage_type/physical_damage.json
 3946e79599744034bc889ae5a13086ae1dac5134 data/beyondhorizon/damage_type/true_damage.json
+c82e9c7ce5962490da898ecf42e341f9f4c3fa75 data/beyondhorizon/damage_type/true_damage_burning.json

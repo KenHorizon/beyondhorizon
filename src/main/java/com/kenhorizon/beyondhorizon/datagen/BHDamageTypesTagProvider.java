@@ -24,13 +24,14 @@ public class BHDamageTypesTagProvider extends DamageTypeTagsProvider {
         this.tag(BHDamageTypeTags.IS_MAGIC_PENETRATION).add(BHDamageTypes.MAGIC_PENETRATION);
         this.tag(BHDamageTypeTags.IS_ARMOR_PENETRATION).add(BHDamageTypes.ARMOR_PENETRATION, BHDamageTypes.LETHALITY, BHDamageTypes.TRUE_DAMAGE);
         this.tag(BHDamageTypeTags.IS_TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE).add(DamageTypes.INDIRECT_MAGIC);
-        this.tag(BHDamageTypeTags.TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE);
-        this.tag(DamageTypeTags.BYPASSES_EFFECTS).add(BHDamageTypes.BLEED, BHDamageTypes.TRUE_DAMAGE);
+        this.tag(BHDamageTypeTags.BURN_DAMAGE).add(BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING);
+        this.tag(BHDamageTypeTags.TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE, BHDamageTypes.TRUE_DAMAGE_BURNING);
+        this.tag(DamageTypeTags.BYPASSES_EFFECTS).add(BHDamageTypes.BLEED, BHDamageTypes.TRUE_DAMAGE, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(DamageTypeTags.BYPASSES_ENCHANTMENTS).add(BHDamageTypes.IGNORE_ENCHANTMENT_PROTECTION);
-        this.tag(DamageTypeTags.IS_EXPLOSION).add(BHDamageTypes.BLEED, BHDamageTypes.BLAZING_ROD, BHDamageTypes.BEAM);
-        this.tag(DamageTypeTags.BYPASSES_COOLDOWN).add(BHDamageTypes.BLAZING_ROD, BHDamageTypes.BEAM);
+        this.tag(DamageTypeTags.IS_EXPLOSION).add(BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING, BHDamageTypes.BLAZING_ROD, BHDamageTypes.BEAM);
+        this.tag(DamageTypeTags.BYPASSES_COOLDOWN).add(BHDamageTypes.BLAZING_ROD, BHDamageTypes.BEAM, BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(DamageTypeTags.IS_PROJECTILE).add(BHDamageTypes.BLAZING_ROD);
-        this.tag(BHDamageTypeTags.CANT_STORE_DAMAGE).add(BHDamageTypes.BLEED);
+        this.tag(BHDamageTypeTags.CANT_STORE_DAMAGE).add(BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING);
 
     }
 }

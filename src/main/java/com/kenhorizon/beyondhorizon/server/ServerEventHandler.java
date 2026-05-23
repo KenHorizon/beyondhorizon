@@ -31,6 +31,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundPlayerSwingArmPacket;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
@@ -51,6 +52,7 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
@@ -536,6 +538,9 @@ public class ServerEventHandler {
             }
         }
         if (target instanceof Player player) {
+            if (source.getEntity() instanceof LivingEntity lEntity && lEntity instanceof EnderDragon) {
+                player.addEffect(new MobEffectInstance(BHEffects.DRAGONIC_FLAME.get(), MathUtils.sec(3), 1));
+            }
             for (ArmorSet set : ArmorSetRegistry.getAll()) {
                 ArmorBonusSet armorBonusSet = set.getInstance();
                 boolean matches = set.matches(player);

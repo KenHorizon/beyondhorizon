@@ -13,22 +13,40 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class BHEffects {
 
+    public static final RegistryObject<MobEffect> ENRAGED =
+            RegistryHelper.registerEffects("enraged", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x00000000)
+                    .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "9cf36f6f-ac2e-4db8-b49d-58e7d6fd5a60", 1.25F, AttributeModifier.Operation.MULTIPLY_BASE)
+                    .addAttributeModifier(BHAttributes.DAMAGE_TAKEN.get(), "6fb06f36-770f-464c-847b-c7187b124ec3", 1.25F, AttributeModifier.Operation.MULTIPLY_BASE));
+    public static final RegistryObject<MobEffect> RAGED =
+            RegistryHelper.registerEffects("raged", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x00000000)
+                    .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "6430bc86-adf6-4e0c-bef5-2321c0cdcdf3", 1.35F, AttributeModifier.Operation.MULTIPLY_BASE));
+    public static final RegistryObject<MobEffect> ADRENALINE =
+            RegistryHelper.registerEffects("adrenaline", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x00000000)
+                    .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "514b12e1-fce8-4a6a-83ac-42f977cdf1cb", 2.10F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> BLEED =
-            RegistryHelper.registerEffects("bleed", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x4F0000));
+            RegistryHelper.registerEffects("bleed", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x00000000));
     public static final RegistryObject<MobEffect> LETHAL_POISON =
-            RegistryHelper.registerEffects("lethal_poison", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x1A3000));
+            RegistryHelper.registerEffects("lethal_poison", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x00000000));
+    public static final RegistryObject<MobEffect> INFLAME =
+            RegistryHelper.registerEffects("inflame", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x00000000));
+    public static final RegistryObject<MobEffect> ACID =
+            RegistryHelper.registerEffects("acid", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x00000000));
+    public static final RegistryObject<MobEffect> DRAGONIC_FLAME =
+            RegistryHelper.registerEffects("dragonic_flame", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x00000000));
     public static final RegistryObject<MobEffect> LIGHTNING =
-            RegistryHelper.registerEffects("lightning", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x0094FF));
+            RegistryHelper.registerEffects("lightning", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x0094FF00));
     public static final RegistryObject<MobEffect> THORNS =
             RegistryHelper.registerEffects("thorns", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x007F0E));
     public static final RegistryObject<MobEffect> CURSED =
             RegistryHelper.registerEffects("cursed", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x00FF21));
     public static final RegistryObject<MobEffect> IRON_SKIN =
-            RegistryHelper.registerEffects("iron_skin", () -> new ModifierEffect(MobEffectCategory.NEUTRAL, 0x808080, 0.10F).addAttributeModifier(Attributes.ARMOR, "923ae74a-a3a1-490f-b183-2734f16d00b8", (double) 0.05F, AttributeModifier.Operation.MULTIPLY_BASE));
+            RegistryHelper.registerEffects("iron_skin", () -> new ModifierEffect(MobEffectCategory.NEUTRAL, 0x808080, 0.10F)
+                    .addAttributeModifier(Attributes.ARMOR, "923ae74a-a3a1-490f-b183-2734f16d00b8", (double) 0.05F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> ARMOR_BREAK =
-            RegistryHelper.registerEffects("armor_break", () -> new ModifierEffect(MobEffectCategory.NEUTRAL, 0x808080, -0.05F).addAttributeModifier(Attributes.ARMOR, "afd508a1-981f-4cad-aaa5-4fda014e8c53", (double) -0.15F, AttributeModifier.Operation.MULTIPLY_BASE).addAttributeModifier(Attributes.ARMOR_TOUGHNESS, "d042bf31-085c-454e-94ef-31cee0c83ba8", (double) -0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
+            RegistryHelper.registerEffects("armor_break", () -> new ModifierEffect(MobEffectCategory.NEUTRAL, 0x808080, -0.05F)
+                    .addAttributeModifier(Attributes.ARMOR, "afd508a1-981f-4cad-aaa5-4fda014e8c53", (double) -0.15F, AttributeModifier.Operation.MULTIPLY_BASE).addAttributeModifier(Attributes.ARMOR_TOUGHNESS, "d042bf31-085c-454e-94ef-31cee0c83ba8", (double) -0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> RAPID_HEALING =
-            RegistryHelper.registerEffects("rapid_healing", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x808080));
+            RegistryHelper.registerEffects("rapid_healing", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x00000000));
     public static final RegistryObject<MobEffect> IMMUNITY =
             RegistryHelper.registerEffects("immunity", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0xFFEA82));
     public static final RegistryObject<MobEffect> PARALYZE =
@@ -42,15 +60,13 @@ public class BHEffects {
     public static final RegistryObject<MobEffect> VULNERABLE =
             RegistryHelper.registerEffects("vulnerable", () -> new ModifierEffect(MobEffectCategory.HARMFUL, 0x4040400, 0.05F).addAttributeModifier(BHAttributes.DAMAGE_TAKEN.get(), "9a5dcc14-4692-42ef-8304-3985a91f5220", (double)-0.05F, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<MobEffect> HEALING_SICKNESS =
-            RegistryHelper.registerEffects("healing_sickness", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x7F0000));
+            RegistryHelper.registerEffects("healing_sickness", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x00000000));
     public static final RegistryObject<MobEffect> STUN =
             RegistryHelper.registerEffects("stun", () -> new StunEffect(MobEffectCategory.NEUTRAL, 0xFFE16B).addAttributeModifier(Attributes.MOVEMENT_SPEED, "0e530966-8625-4300-890c-3992a8198d6e", -Integer.MAX_VALUE, AttributeModifier.Operation.MULTIPLY_TOTAL));
-    public static final RegistryObject<MobEffect> DRAGON_FLAME =
-            RegistryHelper.registerEffects("dragon_flame", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0xFF25FF));
     public static final RegistryObject<MobEffect> ROOTED =
             RegistryHelper.registerEffects("rooted", () -> new RootedEffect(MobEffectCategory.NEUTRAL, 0x9B4D00).addAttributeModifier(Attributes.MOVEMENT_SPEED, "0e530966-8625-4300-890c-3992a8198d6e", -Integer.MAX_VALUE, AttributeModifier.Operation.MULTIPLY_TOTAL));
     public static final RegistryObject<MobEffect> TORMENT =
-            RegistryHelper.registerEffects("torment", () -> new TormentEffect(MobEffectCategory.HARMFUL, 0xFF6A00));
+            RegistryHelper.registerEffects("torment", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0xFF6A00));
     public static final RegistryObject<MobEffect> LETHAL_PROTECTION =
             RegistryHelper.registerEffects("lethal_protection", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0xFF6A00));
     public static final RegistryObject<MobEffect> LETHAL_PROTECTION_COOLDOWN =

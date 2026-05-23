@@ -1,6 +1,10 @@
 {
   "values": [
     "beyondhorizon:blazing_rod",
-    "beyondhorizon:beam"
+    "beyondhorizon:beam",
+    "beyondhorizon:bleed",
+    "beyondhorizon:phyiscal_burning",
+    "beyondhorizon:magic_burning",
+    "beyondhorizon:true_damage_burning"
   ]
 }

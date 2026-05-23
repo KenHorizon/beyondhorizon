@@ -23,7 +23,7 @@ public class Constant {
     public static int SPELLBLADE_INTERVAL = 5;
     public static float SPELLBLADE_BASE = 2.0F;
     public static float FORCE_IMPACT_SPELLBLADE = 0.65F;
-    public static float TWILIGHT_SPELLBLADE = 0.55F;
+    public static float TWILIGHT_SPELLBLADE = 0.15F;
     public static float BLAZING_CLEAVE_DAMAGE = 0.55F;
     public static float BLAZING_CLEAVE_RANGE = 2.5F;
     public static float PIERCING_EDGE_SCALE_DAMAGE = 0.12F;

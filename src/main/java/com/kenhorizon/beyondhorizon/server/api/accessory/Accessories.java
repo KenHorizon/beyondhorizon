@@ -178,6 +178,8 @@ public class Accessories {
     public static final RegistryObject<Accessory> DEATH = registerSkill("death", () -> new ExecuteAbilityAccessory(Constant.DEATH_HEALTH_THRESOHOLD));
     public static final RegistryObject<Accessory> TAXS = registerSkill("taxs", TaxsAbilityAccessory::new);
 
+    public static final RegistryObject<Accessory> FLUOROCARBON = registerSkill("fluorocarbon", () -> new StringBowAccessory(StringBowAccessory.Type.LIGHT));
+    public static final RegistryObject<Accessory> POLYETHYLENE = registerSkill("polyethylene", () -> new StringBowAccessory(StringBowAccessory.Type.HEAVY));
     public static final RegistryObject<Accessory> LIFE_SIPHON = registerSkill("life_siphon", () -> new SinglePassiveAccessory(Constant.SOUL_SIPHON_CURRENT_HEALTH_DAMAGE));
     public static final RegistryObject<Accessory> CORRUPTED_BITE = registerSkill("corrupted_bite", () -> new SinglePassiveAccessory(Constant.CORRUPTED_BITE_DAMAGE_SCALE));
     public static final RegistryObject<Accessory> ASCENSION = registerSkill("ascension", SinglePassiveAccessory::new);

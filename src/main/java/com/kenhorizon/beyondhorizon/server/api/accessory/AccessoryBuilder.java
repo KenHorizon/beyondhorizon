@@ -21,6 +21,8 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder CURSED_APPLE = new AccessoryBuilder(List.of(Accessories.BAD_APPLE));
     public static final AccessoryBuilder VITAMINS = new AccessoryBuilder(List.of(Accessories.VITAMINS));
 
+    public static final AccessoryBuilder LIGHT_STRING_BOW = new AccessoryBuilder(List.of(Accessories.FLUOROCARBON));
+    public static final AccessoryBuilder HEAVY_STRING_BOW = new AccessoryBuilder(List.of(Accessories.POLYETHYLENE));
     public static final AccessoryBuilder KRAKEN_SLAYER = new AccessoryBuilder(List.of(Accessories.BRING_IT_DOWN));
     public static final AccessoryBuilder TITAN_GLOVES = new AccessoryBuilder(List.of(Accessories.SPELL_BLADE_2));
     public static final AccessoryBuilder FLAME_OF_TORMENT = new AccessoryBuilder(List.of(Accessories.TORMENT));

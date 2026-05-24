@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static final float HEAVY_STRING_DAMAGE = 0.10F;
     public static final float BRING_IT_DOWN_BASE_DAMAGE = 2;
     public static final float BRING_IT_DOWN_INCREASED_DAMAGE = 0.75F;
     public static final float ROCK_SOLID_REDUCE = 0.15F;

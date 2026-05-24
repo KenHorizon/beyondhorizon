@@ -49,4 +49,8 @@ public interface IAttack {
     default boolean onEntityDeath(Player player, ItemStack itemStack) {
         return false;
     }
+
+    default int modifyRangedWeaponUseTime(ItemStack itemStack, int duration) {
+        return 0;
+    }
 }

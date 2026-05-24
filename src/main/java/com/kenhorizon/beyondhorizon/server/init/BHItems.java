@@ -121,6 +121,8 @@ public class BHItems {
 
     public static final RegistryObject<Item> VOID_STAFF = accessoryHandheldItem("void_staff", AccessoryItemGroup.BLIGHT, AccessoryBuilder.VOID_STAFF);
     //
+    public static final RegistryObject<Item> LIGHT_STRING_BOW = accessoryItem("light_string_bow", AccessoryBuilder.LIGHT_STRING_BOW);
+    public static final RegistryObject<Item> HEAVY_STRING_BOW = accessoryItem("heavy_string_bow", AccessoryBuilder.HEAVY_STRING_BOW);
     public static final RegistryObject<Item> KRAKEN_SLAYER = accessoryItem("kraken_slayer", AccessoryBuilder.KRAKEN_SLAYER);
     public static final RegistryObject<Item> TITAN_GLOVES = accessoryItem("titan_gloves", AccessoryBuilder.TITAN_GLOVES);
     public static final RegistryObject<Item> FLAME_OF_TORMENT = accessoryItem("flame_of_torment", AccessoryBuilder.FLAME_OF_TORMENT);

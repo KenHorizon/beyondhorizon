@@ -13,6 +13,7 @@ import com.kenhorizon.beyondhorizon.server.capability.*;
 import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.init.*;
@@ -56,6 +57,7 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -657,6 +659,35 @@ public class ServerEventHandler {
         }
         return experienceDrop;
     }
+    //TODO: Item Use Event
+    @SubscribeEvent
+    public void onItemUse(LivingEntityUseItemEvent event) {
+        LivingEntity entity = event.getEntity();
+        Item item = event.getItem().getItem();
+        ItemStack itemStack = item.getDefaultInstance();
+        int duration = event.getDuration();
+        if (event.isCancelable() && (entity.hasEffect(BHEffects.PARALYZE.get()) || entity.hasEffect(BHEffects.STUN.get()))) {
+            event.setCanceled(true);
+        }
+        int itemDuration = 0;
+        if (EnchantmentHelper.getEnchantmentLevel(BHEnchantments.DRAW_SPEED.get(), entity) > 0) {
+            itemDuration = event.getDuration() - AdvancedEnchantment.getDrawSpeed(entity, event.getDuration());
+        }
+        if (entity instanceof Player) {
+            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+                for (Accessory accessory : accessoryItems.getAccessories()) {
+                    Optional<IAttack> rangedWeaponCallback = accessory.IAttackCallback();
+                    if (rangedWeaponCallback.isPresent()) {
+                        itemDuration = rangedWeaponCallback.get().modifyRangedWeaponUseTime(itemStack, duration);
+                    }
+                }
+            }
+            if (itemDuration > 0) {
+                event.setDuration(event.getDuration() - itemDuration);
+            }
+        }
+    }
+
     //TODO: Enchantment Post Mitigation Damage
     private float enchantmentPostMitigationDamage(LivingEntity attacker, float damageDealt, DamageSource source, LivingEntity target) {
         for (EquipmentSlot slot : EquipmentSlot.values()) {

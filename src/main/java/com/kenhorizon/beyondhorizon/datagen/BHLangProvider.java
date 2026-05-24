@@ -136,6 +136,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.STING.get(), "Sting", "Basic Attack deal additional %s physical damage");
         this.addAccessory(Accessories.TORMENT.get(), "Torment", "Dealing damage burn dealing 1% of the target's max health magic damage every 0.5 seconds for 3 seconds");
         this.addAccessory(Accessories.BRING_IT_DOWN.get(), "Bring It Down", "Basic attack grant a stack for 3 seconds, up to 2 stacks, at 2 stacks, the next attack consumes all stacks to deal (+%s per level) physical damage on-hit increased by %s%% based on target's missing health");
+        this.addAccessory(Accessories.POLYETHYLENE.get(), "Polyethylene", "Increase ranged damage and knockback by %s%%");
+        this.addAccessory(Accessories.FLUOROCARBON.get(), "Fluorocarbon", "Reduce the draw time of Item");
         //
         this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");
         this.addRole(RoleClasses.MARKSMAN.get(), "Marksman", "Specialize in precision, long range engagement and delivering consistent, high damage from safe distance");

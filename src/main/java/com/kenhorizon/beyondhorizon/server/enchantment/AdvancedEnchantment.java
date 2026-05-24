@@ -24,6 +24,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 
@@ -176,6 +177,16 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
         }
     }
 
+    public static int getDrawSpeed(LivingEntity shooter, int drawSpeed) {
+        int level = EnchantmentHelper.getEnchantmentLevel(BHEnchantments.DRAW_SPEED.get(), shooter);
+        if (level <= 4) {
+            boolean flag = drawSpeed % (5 - level) == 0;
+            return flag ? 1 : 0;
+        } else {
+            return drawSpeed - EnchantmentHelper.getEnchantmentLevel(BHEnchantments.DRAW_SPEED.get(), shooter) - (8 + level);
+        }
+    }
+
     public Predicate<Enchantment> getIncompatibleEnchantments() {
         return incompatibleEnchantments;
     }
@@ -259,5 +270,6 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
             this.attributeModifiers.put(attribute, attributeModifier);
             return this;
         }
+
     }
 }

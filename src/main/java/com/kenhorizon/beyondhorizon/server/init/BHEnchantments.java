@@ -14,6 +14,15 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BHEnchantments {
+    public static RegistryObject<Enchantment> DRAW_SPEED = RegistryHelper.registerEnchantments("draw_speed",
+            () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
+                    .maxLevel(3)
+                    .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
+                    .maxCost(20)
+                    .minCost(6)
+                    .rarity(Enchantment.Rarity.RARE)
+                    .category(EnchantmentCategory.BOW)
+            ));
     public static RegistryObject<Enchantment> EDUCATION = RegistryHelper.registerEnchantments("education",
             () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
                     .maxLevel(5)

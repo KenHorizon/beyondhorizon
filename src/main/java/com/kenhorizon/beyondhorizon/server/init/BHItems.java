@@ -146,8 +146,8 @@ public class BHItems {
     public static final RegistryObject<Item> NULL_GEM = accessoryItem("null_gem", AccessoryItemGroup.POWER_GEM, AccessoryBuilder.NULL_SWORD);
     public static final RegistryObject<Item> CATALYST_GEM = accessoryItem("catalyst_gem", AccessoryItemGroup.POWER_GEM, AccessoryBuilder.ASCENDED_HERO_SWORD);
     public static final RegistryObject<Item> DARK_ESSESNCE_CRYSTAL = accessoryItem("dark_essence_crystal", AccessoryBuilder.MAGICAL_OPS);
-    public static final RegistryObject<Item> BOOTS = accessoryItem("boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.GOLDEN_BOOTS);
-    public static final RegistryObject<Item> GOLDEN_BOOTS = accessoryItem("golden_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.BASIC_BOOTS);
+    public static final RegistryObject<Item> BOOTS = accessoryItem("boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.BASIC_BOOTS);
+    public static final RegistryObject<Item> GOLDEN_BOOTS = accessoryItem("golden_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.GOLDEN_BOOTS);
     public static final RegistryObject<Item> BERSERKER_BOOTS = accessoryItem("berserker_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.BERSERKER_BOOTS);
     public static final RegistryObject<Item> IRON_PLATED_BOOTS = accessoryItem("iron_plated_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.IRON_PLATED_BOOTS);
     public static final RegistryObject<Item> MINER_BOOTS = accessoryItem("miner_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.MINER_BOOTS);

@@ -75,19 +75,22 @@ public class Accessories {
     public static final RegistryObject<Accessory> VITALITY_STONE = registerSkill("vitality_stone", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MAX_HEALTH, "93068588-1f7a-4e61-bd3d-4758fbe80e01", Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> BOOTS = registerSkill("boots", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> BOOTS_1 = registerSkill("boots_0", () -> new BootsAccessory()
             .addAttributes(Attributes.MOVEMENT_SPEED, "221521ae-847b-4607-bef8-95de7e2f227b", Constant.BOOTS_TIER_1, AttributeModifier.Operation.ADDITION));
 
+    public static final RegistryObject<Accessory> BOOTS_2 = registerSkill("boots_1", () -> new BootsAccessory()
+            .addAttributes(Attributes.MOVEMENT_SPEED, "221521ae-847b-4607-bef8-95de7e2f227b", Constant.BOOTS_TIER_2, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> BOOTS_3 = registerSkill("boots_2", () -> new BootsAccessory()
+            .addAttributes(Attributes.MOVEMENT_SPEED, "221521ae-847b-4607-bef8-95de7e2f227b", Constant.BOOTS_TIER_3, AttributeModifier.Operation.ADDITION));
+
     public static final RegistryObject<Accessory> BERSERKER_BOOTS = registerSkill("berserker_boots", () -> new BootsAccessory()
-            .addAttributes(Attributes.MOVEMENT_SPEED, "221521ae-847b-4607-bef8-95de7e2f227b", Constant.BOOTS_TIER_2, AttributeModifier.Operation.ADDITION)
             .addAttributes(Attributes.ATTACK_SPEED, "f9f8e054-4d00-4361-bae5-a92224ab6481", Constant.BERSERKER_BOOTS, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Accessory> IRON_PLATED_BOOTS = registerSkill("iron_plated_boots", () -> new BootsAccessory()
-            .addAttributes(Attributes.MOVEMENT_SPEED, "fd01b56f-0adc-4112-8ed9-f09fa24010fc", Constant.BOOTS_TIER_2, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.DAMAGE_TAKEN.get(), "fa44c7ee-0a5e-43a7-baad-92bc23c2e5b8", -Constant.IRON_PLATED_BOOTS, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> MINING_BOOTS = registerSkill("mining_boots", () -> new BootsAccessory()
-            .addAttributes(Attributes.MOVEMENT_SPEED, "3ff3046e-dcaf-47a4-b3f7-f57eb9fa141c", Constant.BOOTS_TIER_2, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.MINING_SPEED.get(), "16f527b1-3dc4-4db0-9c22-8e8e0aea6b07", Constant.MINING_SPEED_BASIC, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> BRAVERY = registerSkill("bravery", () -> new AttributeOnlyAccessory()

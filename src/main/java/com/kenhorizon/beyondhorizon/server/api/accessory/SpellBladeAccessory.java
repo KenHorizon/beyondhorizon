@@ -7,7 +7,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 public class SpellBladeAccessory extends BaseSpellbladeAccessory {
 
     public SpellBladeAccessory(int attackInterval, float attackScale) {
-        super(attackInterval, attackScale);
+        super(attackInterval, attackScale, DamageType.PHYSICAL);
     }
 
     @Override

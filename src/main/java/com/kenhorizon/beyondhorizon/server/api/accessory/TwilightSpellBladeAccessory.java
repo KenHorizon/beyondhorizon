@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 public class TwilightSpellBladeAccessory extends BaseSpellbladeAccessory {
 
     public TwilightSpellBladeAccessory(int attackInterval, float attackScale) {
-        super(attackInterval, attackScale);
+        super(attackInterval, attackScale, DamageType.MAGIC);
     }
 
     @Override

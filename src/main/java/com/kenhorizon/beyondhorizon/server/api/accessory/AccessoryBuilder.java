@@ -21,6 +21,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder CURSED_APPLE = new AccessoryBuilder(List.of(Accessories.BAD_APPLE));
     public static final AccessoryBuilder VITAMINS = new AccessoryBuilder(List.of(Accessories.VITAMINS));
 
+    public static final AccessoryBuilder KRAKEN_SLAYER = new AccessoryBuilder(List.of(Accessories.BRING_IT_DOWN));
     public static final AccessoryBuilder TITAN_GLOVES = new AccessoryBuilder(List.of(Accessories.SPELL_BLADE_2));
     public static final AccessoryBuilder FLAME_OF_TORMENT = new AccessoryBuilder(List.of(Accessories.TORMENT));
     public static final AccessoryBuilder ETERNAL_LIFE = new AccessoryBuilder(List.of(Accessories.ETERNAL_LIFE));
@@ -42,7 +43,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder TOUGH_CLOTH = new AccessoryBuilder(List.of(Accessories.TOUGH_CLOTH));
     public static final AccessoryBuilder VITALITY_STONE = new AccessoryBuilder(List.of(Accessories.VITALITY_STONE));
     public static final AccessoryBuilder CHAIN_VEST = new AccessoryBuilder(List.of(Accessories.CHAIN_VEST));
-    public static final AccessoryBuilder ABYSSAL_TOOTH = new AccessoryBuilder(List.of(Accessories.CORRUPTED_BITE));
+    public static final AccessoryBuilder ABYSSAL_TOOTH = new AccessoryBuilder(List.of(Accessories.ABYSSAL_TOOTH, Accessories.CORRUPTED_BITE));
     public static final AccessoryBuilder ASHES_OF_FLAME = new AccessoryBuilder(List.of(Accessories.INFLAME));
     public static final AccessoryBuilder CURSED_SKULL = new AccessoryBuilder(List.of(Accessories.CURSED_SKULL));
     public static final AccessoryBuilder RECURVE_ARROW = new AccessoryBuilder(List.of(Accessories.STING));

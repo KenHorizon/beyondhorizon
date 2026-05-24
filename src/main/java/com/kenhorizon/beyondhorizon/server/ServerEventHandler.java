@@ -638,7 +638,8 @@ public class ServerEventHandler {
         int intAmount = (int) roundedAmount;
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
         Vec3 pos = target.getEyePosition();
-        MutableComponent component = Component.literal(text).withStyle(isCrit ? ChatFormatting.DARK_RED : ChatFormatting.GOLD, ChatFormatting.BOLD);
+        ChatFormatting damageIndColor = source.is(BHDamageTypeTags.PHYSICAL_DAMAGE) ? ChatFormatting.GOLD : source.is(BHDamageTypeTags.MAGIC_DAMAGE) ? ChatFormatting.BLUE : ChatFormatting.WHITE;
+        MutableComponent component = Component.literal(text).withStyle(isCrit ? ChatFormatting.DARK_RED : damageIndColor, ChatFormatting.BOLD);
         level.sendParticles(new DamageIndicatorOptions(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
         event.setAmount(damageDealt);
     }

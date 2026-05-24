@@ -48,12 +48,15 @@ public class DamageHandler {
     public static boolean instantKill(LivingEntity target, DamageSource source) {
         return damage(target, BHDamageTypes.trueDamage(source.getEntity(), target), target.getMaxHealth(), DamageTags.INSTANT_KILL, target.getMaxHealth());
     }
+
     public static boolean damage(LivingEntity target, DamageSource source, float amount, DamageTags damageTags, float damageModifiers) {
         return damage(target, false, source, damageTags, damageModifiers, amount);
     }
+
     public static boolean damage(LivingEntity target, DamageSource source, float amount) {
         return damage(target, false, source, DamageTags.DEFAULT, 0, amount);
     }
+
     public static boolean damage(LivingEntity target, boolean bypassIFrame, DamageSource source, float amount) {
         return damage(target, bypassIFrame, source, DamageTags.DEFAULT, 0, amount);
     }
@@ -67,7 +70,8 @@ public class DamageHandler {
     }
 
     public static float missingHealth(LivingEntity entity, float damageDealt, float perPercentage) {
-        return multiplier(damageDealt, (float) MathUtils.perValue(entity.getHealth(), perPercentage, perPercentage));
+        float mul = perPercentage + (1.0F + (entity.getHealth() / entity.getMaxHealth()));
+        return multiplier(damageDealt, mul);
     }
 
     public static float maxHealth(LivingEntity target, float damageDealt, float percentHealth) {

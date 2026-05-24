@@ -1,4 +1,4 @@
-// 1.20.1	2026-05-23T19:42:36.279663	Item Models: beyondhorizon
+// 1.20.1	2026-05-24T08:42:10.0607869	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -63,6 +63,7 @@ d7e626d382998b6a7f36cb0950d591375ab862d0 assets/beyondhorizon/models/item/hellst
 371735e3272f3256b1289bff9d8988b8cf71a633 assets/beyondhorizon/models/item/hellstone_sword.json
 33ab8b1213915d33ded37edc9ffb60deba049ab7 assets/beyondhorizon/models/item/infinity_gem.json
 4982b6ebb0e0cc0b2755b177dea0e167737993a7 assets/beyondhorizon/models/item/iron_plated_boots.json
+a0d9fff7da5ef4f6361e78c61b790175e70b0799 assets/beyondhorizon/models/item/kraken_slayer.json
 137c3bde9bb69c7f73788817307dc82f53abf192 assets/beyondhorizon/models/item/leather_agility.json
 521afb23a94b06b04c8067765a9d395da444d924 assets/beyondhorizon/models/item/light_blue_wool_fur.json
 67e5427bc5c681e98ba662560ba10c98f86e9a59 assets/beyondhorizon/models/item/light_gray_wool_fur.json

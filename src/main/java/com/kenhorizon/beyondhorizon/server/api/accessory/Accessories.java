@@ -140,6 +140,9 @@ public class Accessories {
     public static final RegistryObject<Accessory> SPEAR_OF_CHAOS = registerSkill("spear_of_chaos", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.ARMOR_PENETRATION.get(), "16746ed6-7343-4a4a-9a76-26b0dcd67659", Constant.STANDARD_ARMOR_PEN_2, AttributeModifier.Operation.ADDITION));
 
+    public static final RegistryObject<Accessory> ABYSSAL_TOOTH = registerSkill("abyssal_tooth", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.ABILITY_POWER.get(), "2508734b-9f8d-40fb-bec8-b7855acbd48d", Constant.ABILITY_POWER_1, AttributeModifier.Operation.ADDITION));
+
     public static final RegistryObject<Accessory> TRUE_HERO_SWORD = registerSkill("true_lethal_sword", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.DAMAGE_DEALT.get(), "2c923a99-f0ef-4357-a51b-e7a5fdbc2ce4", Constant.TRUE_HERO_SWORD_DMG, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributes(Attributes.ATTACK_SPEED, "d67d1352-3cfe-4d6a-b7f0-8eff52c5c2d9", Constant.TRUE_HERO_SWORD_ATK_SPD, AttributeModifier.Operation.MULTIPLY_TOTAL)
@@ -183,6 +186,7 @@ public class Accessories {
     public static final RegistryObject<Accessory> INFLAME = registerSkill("inflame", () -> new ApplyEffectAccessory(3, 0, BHEffects.INFLAME.get()).showIcon(true).ambient(true));
     public static final RegistryObject<Accessory> STING = registerSkill("sting", () -> new SinglePassiveAccessory(Constant.STING_DAMAGE));
     public static final RegistryObject<Accessory> TORMENT = registerSkill("torment", () -> new ApplyEffectAccessory(3, 0, BHEffects.TORMENT.get()).showIcon(true).ambient(true));
+    public static final RegistryObject<Accessory> BRING_IT_DOWN = registerSkill("bring_it_down", () -> new SinglePassiveAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE));
 
     public static RegistryObject<Accessory> registerSkill(String name, Supplier<Accessory> properties) {
         return BHRegistries.DEFERRED_ACCESSORY.register(name, properties);

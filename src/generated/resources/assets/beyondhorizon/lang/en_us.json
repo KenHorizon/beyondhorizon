@@ -1,6 +1,8 @@
 {
   "accessory.beyondhorizon.ascension": "Ascension",
   "accessory.beyondhorizon.ascension.desc": "All attributes are increased by 200%",
+  "accessory.beyondhorizon.bring_it_down": "Bring It Down",
+  "accessory.beyondhorizon.bring_it_down.desc": "Basic attack grant a stack for 3 seconds, up to 2 stacks, at 2 stacks, the next attack consumes all stacks to deal (+%s per level) physical damage on-hit increased by %s%% based on target's missing health",
   "accessory.beyondhorizon.burn_effect": "Burn",
   "accessory.beyondhorizon.burn_effect.desc": "Set target on fire for %s seconds",
   "accessory.beyondhorizon.cleanse": "Cleanse",
@@ -312,6 +314,7 @@
   "item.beyondhorizon.hellstone_sword": "Hellstone Sword",
   "item.beyondhorizon.infinity_gem": "Infinity Gem",
   "item.beyondhorizon.iron_plated_boots": "Iron Plated Boots",
+  "item.beyondhorizon.kraken_slayer": "Kraken Slayer",
   "item.beyondhorizon.leather_agility": "Leather Agility",
   "item.beyondhorizon.light_blue_wool_fur": "Light Blue Wool Fur",
   "item.beyondhorizon.light_gray_wool_fur": "Light Gray Wool Fur",

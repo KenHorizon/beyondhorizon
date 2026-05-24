@@ -1,18 +1,24 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
+import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.init.BHSounds;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
-import com.machinezoo.noexception.throwing.ThrowingIntSupplier;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -21,10 +27,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.UUID;
-
 public class SinglePassiveAccessory extends AccessorySkill {
     private boolean hasAscension = false;
+    public static String NBT_BRING_IT_DOWN = "bring_it_down";
+    protected int bringItDownStacks = 0;
+    protected boolean bringItDownSFX = false;
     public SinglePassiveAccessory() {
         super(0, 1);
     }
@@ -44,6 +51,9 @@ public class SinglePassiveAccessory extends AccessorySkill {
         }
         if (this == Accessories.STING.get()) {
             return Component.translatable(this.createId(), (int) this.getMagnitude());
+        }
+        if (this == Accessories.BRING_IT_DOWN.get()) {
+            return Component.translatable(this.createId(), (int) this.getMagnitude(), MathUtils.format(Constant.BRING_IT_DOWN_INCREASED_DAMAGE * 100.0F));
         }
         return super.tooltipDescription(itemStack);
     }
@@ -122,17 +132,41 @@ public class SinglePassiveAccessory extends AccessorySkill {
     @Override
     public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         if (target == null || attacker == null) return;
+        CompoundTag tagA = EntityData.getOrCreateTag(attacker);
+        CompoundTag tagT = EntityData.getOrCreateTag(attacker);
         if (this == Accessories.BURN_EFFECT.get()) {
             target.setSecondsOnFire(Constant.FIRE_EFFECT);
         }
         if (this == Accessories.CORRUPTED_BITE.get()) {
-            target.hurt(BHDamageTypes.magicDamage(target, attacker), damageDealt * (this.getMagnitude() * this.getLevel()));
+            target.invulnerableTime = 0;
+            double AP = attacker.getAttributeValue(BHAttributes.ABILITY_POWER.get());
+            target.hurt(BHDamageTypes.magicDamage(attacker, target), (float) (AP * (this.getMagnitude() * this.getLevel())));
         }
         if (this == Accessories.NULLIFY.get()) {
+            target.invulnerableTime = 0;
             for (ItemStack armor : target.getArmorSlots()) {
                 if (armor.isEnchanted() && armor.getEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION) > 0) {
                     float damage = damageDealt * (this.getMagnitude() * this.getLevel());
                     target.hurt(BHDamageTypes.nullify(attacker, target), damage);
+                }
+            }
+        }
+        if (this == Accessories.BRING_IT_DOWN.get()) {
+            if (attacker instanceof Player player) {
+                int xpLevel = player.experienceLevel;
+                float baseDamage = (this.getMagnitude() * (xpLevel + 1));
+                this.bringItDownStacks++;
+                tagA.putInt(NBT_BRING_IT_DOWN, this.bringItDownStacks);
+                if (this.bringItDownStacks == 2) {
+                    this.bringItDownSFX = true;
+                    attacker.level().playSound(null, target.getX(), target.getY(), target.getZ(), BHSounds.HEAVY_ATTACK.get(), SoundSource.MASTER, 1.0F, 1.0F);
+                }
+                if (this.bringItDownStacks >= 3) {
+                    this.bringItDownSFX = false;
+                    target.invulnerableTime = 0;
+                    target.hurt(BHDamageTypes.physicalDamage(attacker, target), DamageHandler.missingHealth(target, baseDamage, Constant.BRING_IT_DOWN_INCREASED_DAMAGE));
+                    tagA.putInt(NBT_BRING_IT_DOWN, 0);
+                    this.bringItDownStacks = 0;
                 }
             }
         }

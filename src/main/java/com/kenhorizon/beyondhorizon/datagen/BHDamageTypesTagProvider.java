@@ -19,7 +19,7 @@ public class BHDamageTypesTagProvider extends DamageTypeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(BHDamageTypeTags.PHYSICAL_DAMAGE).add(DamageTypes.PLAYER_ATTACK, DamageTypes.MOB_ATTACK, DamageTypes.MOB_ATTACK_NO_AGGRO, BHDamageTypes.PHYSICAL_DAMAGE);
+        this.tag(BHDamageTypeTags.PHYSICAL_DAMAGE).add(DamageTypes.PLAYER_ATTACK, DamageTypes.TRIDENT, DamageTypes.FALLING_ANVIL, DamageTypes.MOB_ATTACK_NO_AGGRO, DamageTypes.MOB_PROJECTILE, DamageTypes.FALL, DamageTypes.CACTUS, DamageTypes.ARROW, DamageTypes.MOB_ATTACK, DamageTypes.MOB_ATTACK_NO_AGGRO, BHDamageTypes.PHYSICAL_DAMAGE);
         this.tag(BHDamageTypeTags.MAGIC_DAMAGE).add(BHDamageTypes.MAGIC_DAMAGE, DamageTypes.MAGIC, DamageTypes.INDIRECT_MAGIC, BHDamageTypes.BLAZING_ROD, BHDamageTypes.MAGIC_BURNING);
         this.tag(BHDamageTypeTags.IS_MAGIC_PENETRATION).add(BHDamageTypes.MAGIC_PENETRATION);
         this.tag(BHDamageTypeTags.IS_ARMOR_PENETRATION).add(BHDamageTypes.ARMOR_PENETRATION, BHDamageTypes.LETHALITY, BHDamageTypes.TRUE_DAMAGE);

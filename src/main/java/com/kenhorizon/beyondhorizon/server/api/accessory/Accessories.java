@@ -151,7 +151,7 @@ public class Accessories {
             .addAttributes(Attributes.ATTACK_SPEED, "d67d1352-3cfe-4d6a-b7f0-8eff52c5c2d9", Constant.TRUE_HERO_SWORD_ATK_SPD, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributes(Attributes.ATTACK_KNOCKBACK, "d67d1352-3cfe-4d6a-b7f0-8eff52c5c2d9", Constant.TRUE_HERO_SWORD_ATK_KNOCKBACK, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-    public static final RegistryObject<Accessory> KNOWLEDGE = registerSkill("knowledge", () -> new ExperienceAccessory(Constant.KNOWLEDGE_XP_MODIFIER));
+    public static final RegistryObject<Accessory> KNOWLEDGE_1 = registerSkill("knowledge", () -> new ExperienceAccessory(Constant.KNOWLEDGE_XP_MODIFIER));
 
     public static final RegistryObject<Accessory> WEIGHTS = registerSkill("weights", () -> new ImmunityEffectAccessory(BHEffectTags.WEIGHT_IMMUNE_TO).removeOnTick());
     public static final RegistryObject<Accessory> VITAMINS = registerSkill("vitamins", () -> new ImmunityEffectAccessory(BHEffectTags.VITAMINS_IMMUNE_TO).removeOnTick());
@@ -192,6 +192,12 @@ public class Accessories {
     public static final RegistryObject<Accessory> STING = registerSkill("sting", () -> new SinglePassiveAccessory(Constant.STING_DAMAGE));
     public static final RegistryObject<Accessory> TORMENT = registerSkill("torment", () -> new ApplyEffectAccessory(3, 0, BHEffects.TORMENT.get()).showIcon(true).ambient(true));
     public static final RegistryObject<Accessory> BRING_IT_DOWN = registerSkill("bring_it_down", () -> new SinglePassiveAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE));
+
+    public static final RegistryObject<Accessory> KNOWLEDGE_2 = registerSkill("ultima_knowledge", () -> new ExperienceAccessory(Constant.ULTIMA_KNOWLEDGE_XP_MODIFIER));
+
+    public static final RegistryObject<Accessory> ULTIMA = registerSkill("ultima_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.DAMAGE_DEALT.get(), "204a6a89-9957-4299-97bc-01bac74f04e5", Constant.UlTIMA_DAMAGE_AMP, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            .addAttributes(BHAttributes.DAMAGE_TAKEN.get(), "c6861207-2ecb-4620-a55b-a38ae627b496", Constant.UlTIMA_DAMAGE_TAKEN, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static RegistryObject<Accessory> registerSkill(String name, Supplier<Accessory> properties) {
         return BHRegistries.DEFERRED_ACCESSORY.register(name, properties);

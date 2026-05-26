@@ -1,4 +1,4 @@
-// 1.20.1	2026-05-25T03:55:15.4870271	Item Models: beyondhorizon
+// 1.20.1	2026-05-26T16:17:34.9525802	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -114,6 +114,7 @@ ddb4f39e2749d15a53bdac9c199b616cd3ce942e assets/beyondhorizon/models/item/talism
 6a8de6395c69831767e1e997b76a6a1cb66d8b44 assets/beyondhorizon/models/item/titan_gloves.json
 1038351eb1c42e8c6f8d93312cae5c91d799c9e6 assets/beyondhorizon/models/item/tough_cloth.json
 cad29a26297570a181e0e814979fe06819076f21 assets/beyondhorizon/models/item/twilight_sword.json
+ae16808a8f32bd65d5f0c3fefc23cb27d56b2d49 assets/beyondhorizon/models/item/ultima.json
 12cb0db145a6cec5e5d92822f58a2cd11cb243ab assets/beyondhorizon/models/item/unstable_runic_tome.json
 604d72d4a4e892b05266d1ab21ad191c3981ddeb assets/beyondhorizon/models/item/vitality_stone.json
 f686f70b3152320e6fc1068bb48927e6476e1cdd assets/beyondhorizon/models/item/vitamins.json

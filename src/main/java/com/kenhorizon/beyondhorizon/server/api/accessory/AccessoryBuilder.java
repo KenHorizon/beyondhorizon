@@ -35,7 +35,8 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder POISON_VILE = new AccessoryBuilder(List.of(Accessories.VENOM));
     public static final AccessoryBuilder DWARF_MINER_RING = new AccessoryBuilder(List.of(Accessories.DWARF_MINER_RING));
     public static final AccessoryBuilder MINER_GLOVES = new AccessoryBuilder(List.of(Accessories.MINER_GLOVES));
-    public static final AccessoryBuilder BOOK_OF_KNOWLEDGE = new AccessoryBuilder(List.of(Accessories.KNOWLEDGE));
+    public static final AccessoryBuilder BOOK_OF_KNOWLEDGE = new AccessoryBuilder(List.of(Accessories.KNOWLEDGE_1));
+    public static final AccessoryBuilder ULTIMA = new AccessoryBuilder(List.of(Accessories.ULTIMA, Accessories.KNOWLEDGE_2));
     public static final AccessoryBuilder POWER_CLAW = new AccessoryBuilder(List.of(Accessories.POWER_CLAW));
     public static final AccessoryBuilder THORNMAIL = new AccessoryBuilder(List.of(Accessories.THORNS));
     public static final AccessoryBuilder BLOOD_OF_BERSERKER = new AccessoryBuilder(List.of(Accessories.RAGE));

@@ -14,6 +14,12 @@ import javax.annotation.Nullable;
 
 public class BHDamageTypes {
 
+    public static final ResourceKey<DamageType> SPELL_DAMAGE_TRUE_DAMAGE = createKey("spell_damage_true_damage");
+    public static final ResourceKey<DamageType> SPELL_DAMAGE_MAGIC = createKey("spell_damage_magic");
+    public static final ResourceKey<DamageType> SPELL_DAMAGE_PHYSICAL = createKey("spell_damage_physical");
+    public static final ResourceKey<DamageType> PET_DAMAGE_TRUE_DAMAGE = createKey("pet_damage_true_damage");
+    public static final ResourceKey<DamageType> PET_DAMAGE_MAGIC = createKey("pet_damage_magic");
+    public static final ResourceKey<DamageType> PET_DAMAGE_PHYSICAL = createKey("pet_damage_physical");
     public static final ResourceKey<DamageType> BEAM = createKey("beam");
     public static final ResourceKey<DamageType> TRUE_DAMAGE_BURNING = createKey("true_damage_burning");
     public static final ResourceKey<DamageType> PHYSICAL_BURNING = createKey("phyiscal_burning");
@@ -31,7 +37,13 @@ public class BHDamageTypes {
     private static Registry<DamageType> damageTypes;
 
     public static void bootstrap(BootstapContext<DamageType> context) {
-        context.register(TRUE_DAMAGE_BURNING, new DamageType("true_damage_burning", 0.1F));
+        context.register(SPELL_DAMAGE_TRUE_DAMAGE, new DamageType("spell_damage_true_damage", 0.1F));
+        context.register(SPELL_DAMAGE_MAGIC, new DamageType("spell_damage_magic", 0.1F));
+        context.register(SPELL_DAMAGE_PHYSICAL, new DamageType("spell_damage_physical", 0.1F));
+        context.register(PET_DAMAGE_TRUE_DAMAGE, new DamageType("pet_damage_true_damage", 0.1F));
+        context.register(PET_DAMAGE_MAGIC, new DamageType("pet_damage_magic", 0.1F));
+        context.register(PET_DAMAGE_PHYSICAL, new DamageType("pet_damage_physical", 0.1F));
+        context.register(TRUE_DAMAGE_BURNING, new DamageType("true_burning", 0.1F));
         context.register(PHYSICAL_BURNING, new DamageType("physical_burning", 0.1F));
         context.register(MAGIC_BURNING, new DamageType("magic_burning", 0.1F));
         context.register(IGNORE_ENCHANTMENT_PROTECTION, new DamageType("ignore_enchantment_protection", 0.1F));
@@ -92,6 +104,16 @@ public class BHDamageTypes {
 
     public static DamageSource deathRay(Entity source) {
         return source(BEAM, source, source);
+    }
+
+    public static DamageSource petDamageTrue(Entity source, Entity cause) {
+        return source(PET_DAMAGE_TRUE_DAMAGE, source, cause);
+    }
+    public static DamageSource petDamagePhysical(Entity source, Entity cause) {
+        return source(PET_DAMAGE_PHYSICAL, source, cause);
+    }
+    public static DamageSource petDamageMagic(Entity source, Entity cause) {
+        return source(PET_DAMAGE_MAGIC, source, cause);
     }
 
     public static DamageSource magicDamage(Entity source, Entity cause) {

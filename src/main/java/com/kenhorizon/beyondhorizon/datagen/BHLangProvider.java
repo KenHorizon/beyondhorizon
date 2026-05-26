@@ -17,10 +17,8 @@ import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryLanguage;
-import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -117,7 +115,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.FIRE_IMMUNITY.get(), "Fire Immunity", "Grant immunity from fire block");
         this.addAccessory(Accessories.RAGE.get(), "Rage", "Grant 0-%s%%(based on Missing HP) increased damage");
         this.addAccessory(Accessories.THORNS.get(), "Thorns", "When struck by basic attack on-hit, deal %s (+%s%% bonus Armor) magic damage to the attacker and inflict Wounded for 3 seconds");
-        this.addAccessory(Accessories.KNOWLEDGE.get(), "Knowledge", "Increase drop experience by %s%%");
+        this.addAccessory(Accessories.KNOWLEDGE_1.get(), "Knowledge", "Increase drop experience by %s%%");
+        this.addAccessory(Accessories.KNOWLEDGE_2.get(), "Ultima Knowledge", "Increase drop experience by %s%%");
         this.addAccessory(Accessories.VENOM.get(), "Venom", "Attacks have %.2f%% chance inflict either Poison or Lethal Poison for %s seconds");
         this.addAccessory(Accessories.JUMP_BOOST.get(), "Jump Boost", "Increase the jump height by %s%%");
         this.addAccessory(Accessories.ETERNAL_LIFE.get(), "Eternal Life", "Revive on death and consume Undying Totem in the inventory");
@@ -136,7 +135,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.STING.get(), "Sting", "Basic Attack deal additional %s physical damage");
         this.addAccessory(Accessories.TORMENT.get(), "Torment", "Dealing damage burn dealing 1% of the target's max health magic damage every 0.5 seconds for 3 seconds");
         this.addAccessory(Accessories.BRING_IT_DOWN.get(), "Bring It Down", "Basic attack grant a stack for 3 seconds, up to 2 stacks, at 2 stacks, the next attack consumes all stacks to deal (+%s per level) physical damage on-hit increased by %s%% based on target's missing health");
-        this.addAccessory(Accessories.POLYETHYLENE.get(), "Polyethylene", "Increase ranged damage and knockback by %s%%");
+        this.addAccessory(Accessories.POLYETHYLENE.get(), "Polyethylene", "Increase ranged damage by %s%% and knockback by %s%%");
         this.addAccessory(Accessories.FLUOROCARBON.get(), "Fluorocarbon", "Reduce the draw time of Item");
         //
         this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");

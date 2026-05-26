@@ -1,7 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
-    public static final float HEAVY_STRING_DAMAGE = 0.10F;
+    public static final float HEAVY_STRING_KNOCKBACK = 1.20F;
+    public static final float HEAVY_STRING_DAMAGE = 0.20F;
     public static final float BRING_IT_DOWN_BASE_DAMAGE = 2;
     public static final float BRING_IT_DOWN_INCREASED_DAMAGE = 0.75F;
     public static final float ROCK_SOLID_REDUCE = 0.15F;
@@ -45,6 +46,7 @@ public class Constant {
     public static float LETHAL_BURST = 0.75F;
     public static float MINING_SPEED_UPGRADED = 0.20F;
     public static float KNOWLEDGE_XP_MODIFIER = 1.20F;
+    public static float ULTIMA_KNOWLEDGE_XP_MODIFIER = 2.20F;
     public static float THORN_BASE_DAMAGE = 5;
     public static float THORN_DAMAGE_MODIFIER = 0.10F;
     public static float RAGE = 0.40F;
@@ -133,6 +135,8 @@ public class Constant {
     public static double SWIFT_DAGGER_ATTACK_SPEED = 0.05D;
     public static double POWER_GLOVES_ATTACK_DAMAGE = 3;
     public static double POWER_GLOVES_KNOCBACK = 0.10D;
+    public static double UlTIMA_DAMAGE_AMP = 0.3D;
+    public static double UlTIMA_DAMAGE_TAKEN = 1.3D;
     public static double TRUE_HERO_SWORD_DMG = 0.15D;
     public static double TRUE_HERO_SWORD_ATK_SPD = 0.25D;
     public static double TRUE_HERO_SWORD_ATK_KNOCKBACK = 0.20D;

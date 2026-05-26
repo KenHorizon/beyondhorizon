@@ -139,10 +139,16 @@ public class BHDamageTypes {
     public static DamageSource nullify(Entity source, Entity target) {
         return source(IGNORE_ENCHANTMENT_PROTECTION, source, target);
     }
+    public static DamageSource nullify(Entity source) {
+        return source(IGNORE_ENCHANTMENT_PROTECTION, source, source);
+    }
     public static DamageSource trueDamage(Entity source, Entity cause) {
         return source(TRUE_DAMAGE, source, cause);
     }
 
+    public static DamageSource trueDamage(Entity source) {
+        return source(TRUE_DAMAGE, source, source);
+    }
     private static ResourceKey<DamageType> createKey(String keyName) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, BeyondHorizon.resource(keyName));
     }

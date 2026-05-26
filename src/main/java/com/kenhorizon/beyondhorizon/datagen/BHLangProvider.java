@@ -88,6 +88,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addEnchantmentDesc(BHEnchantments.VIBRANCY, "Increased total max health");
         this.addEnchantmentDesc(BHEnchantments.SWIFTNESS, "Increased total movement speed");
         this.addEnchantmentDesc(BHEnchantments.SPELL_BLADE, "Convert percentage of the physical damage dealt into magic damage");
+        this.addEnchantmentDesc(BHEnchantments.ECHO, "Some attacks can be followed up by another attack in quick succession");
+        this.addEnchantmentDesc(BHEnchantments.DRAW_SPEED, "Reduce use time while using bow");
          //
         this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 0, "Chance to release a shockwave dealing %s + %s%% total of attack damage");
         this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 1, "Attacks inflict burning and increased %s%% damage dealt");

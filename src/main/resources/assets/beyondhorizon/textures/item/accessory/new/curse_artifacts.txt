@@ -7,7 +7,7 @@ Duskblade
 - increase damage taken by 25%
 - increased all damage by 0-150% based on target missing health
 
-Ghoul Flesh
+Ghoul heart
 - hunger exhaustion is increased by 150%
 - on-kill restore hunger by 5 pts and gain effect of Ghoul's Will (Prevent hunger being depleted and give damage boost)
 - forbids user to eat include G-Apple

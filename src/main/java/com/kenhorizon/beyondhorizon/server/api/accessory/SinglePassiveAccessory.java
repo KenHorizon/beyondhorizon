@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
@@ -140,14 +141,14 @@ public class SinglePassiveAccessory extends AccessorySkill {
         if (this == Accessories.CORRUPTED_BITE.get()) {
             target.invulnerableTime = 0;
             double AP = attacker.getAttributeValue(BHAttributes.ABILITY_POWER.get());
-            target.hurt(BHDamageTypes.magicDamage(attacker, target), (float) (AP * (this.getMagnitude() * this.getLevel())));
+            target.hurt(BHDamageTypes.magicDamage(attacker), (float) (AP * (this.getMagnitude() * this.getLevel())));
         }
         if (this == Accessories.NULLIFY.get()) {
             target.invulnerableTime = 0;
             for (ItemStack armor : target.getArmorSlots()) {
                 if (armor.isEnchanted() && armor.getEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION) > 0) {
                     float damage = damageDealt * (this.getMagnitude() * this.getLevel());
-                    target.hurt(BHDamageTypes.nullify(attacker, target), damage);
+                    target.hurt(BHDamageTypes.nullify(attacker), damage);
                 }
             }
         }
@@ -156,6 +157,7 @@ public class SinglePassiveAccessory extends AccessorySkill {
                 int xpLevel = player.experienceLevel;
                 float baseDamage = (this.getMagnitude() * (xpLevel + 1));
                 this.bringItDownStacks++;
+//                BeyondHorizon.LOGGER.debug("Bring it down stacks: {} damage {}", this.bringItDownStacks, baseDamage);
                 tagA.putInt(NBT_BRING_IT_DOWN, this.bringItDownStacks);
                 if (this.bringItDownStacks == 2) {
                     this.bringItDownSFX = true;
@@ -164,7 +166,7 @@ public class SinglePassiveAccessory extends AccessorySkill {
                 if (this.bringItDownStacks >= 3) {
                     this.bringItDownSFX = false;
                     target.invulnerableTime = 0;
-                    target.hurt(BHDamageTypes.physicalDamage(attacker, target), DamageHandler.missingHealth(target, baseDamage, Constant.BRING_IT_DOWN_INCREASED_DAMAGE));
+                    target.hurt(BHDamageTypes.physicalDamage(attacker), DamageHandler.missingHealth(target, baseDamage, Constant.BRING_IT_DOWN_INCREASED_DAMAGE));
                     tagA.putInt(NBT_BRING_IT_DOWN, 0);
                     this.bringItDownStacks = 0;
                 }

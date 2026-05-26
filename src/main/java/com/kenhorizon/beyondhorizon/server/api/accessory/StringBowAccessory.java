@@ -26,7 +26,7 @@ public class StringBowAccessory extends AccessorySkill {
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this.type == Type.HEAVY) {
-            return Component.translatable(this.createId(), MathUtils.format0(Constant.HEAVY_STRING_DAMAGE * 10.0F), MathUtils.format0(Constant.HEAVY_STRING_KNOCKBACK * 10.0F));
+            return Component.translatable(this.createId(), MathUtils.format0(Constant.HEAVY_STRING_DAMAGE), MathUtils.format0(Constant.HEAVY_STRING_KNOCKBACK));
         } else {
             return super.tooltipDescription(itemStack);
         }
@@ -50,7 +50,7 @@ public class StringBowAccessory extends AccessorySkill {
 
     @Override
     public int modifyRangedWeaponUseTime(ItemStack itemStack, int duration) {
-        if ((itemStack.is(BHItemTags.BOWS) || itemStack.getItem() instanceof BowItem) && this.getType() == Type.LIGHT) {
+        if (this.getType() == Type.LIGHT) {
             return (duration % (4) == 0 ? 1 : 0);
         }
         return 0;

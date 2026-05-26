@@ -16,7 +16,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class BHEnchantments {
     public static RegistryObject<Enchantment> DRAW_SPEED = RegistryHelper.registerEnchantments("draw_speed",
             () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
-                    .maxLevel(3)
+                    .maxLevel(5)
                     .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
                     .maxCost(20)
                     .minCost(6)
@@ -99,6 +99,16 @@ public class BHEnchantments {
                     .maxCost(10)
                     .minCost(12)
                     .rarity(Enchantment.Rarity.UNCOMMON)
+                    .category(EnchantmentCategory.WEAPON)
+            ));
+
+    public static RegistryObject<Enchantment> ECHO = RegistryHelper.registerEnchantments("echo",
+            () -> new ExtendedDamageEnchantment(new AdvancedEnchantment.Builder()
+                    .maxLevel(5)
+                    .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
+                    .maxCost(20)
+                    .minCost(12)
+                    .rarity(Enchantment.Rarity.VERY_RARE)
                     .category(EnchantmentCategory.WEAPON)
             ));
 

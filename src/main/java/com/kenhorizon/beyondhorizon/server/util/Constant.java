@@ -46,7 +46,7 @@ public class Constant {
     public static float LETHAL_BURST = 0.75F;
     public static float MINING_SPEED_UPGRADED = 0.20F;
     public static float KNOWLEDGE_XP_MODIFIER = 1.20F;
-    public static float ULTIMA_KNOWLEDGE_XP_MODIFIER = 2.20F;
+    public static float ULTIMA_KNOWLEDGE_XP_MODIFIER = 5.00F;
     public static float THORN_BASE_DAMAGE = 5;
     public static float THORN_DAMAGE_MODIFIER = 0.10F;
     public static float RAGE = 0.40F;

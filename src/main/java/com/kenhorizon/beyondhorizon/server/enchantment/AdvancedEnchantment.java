@@ -57,10 +57,20 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
     @Override
     public void onHitAttack(int level, DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         if (this == BHEnchantments.SPELL_BLADE.get()) {
+            float applyDamage = damageDealt * (0.15F * (level + 1));
             if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
-                float applyDamage = damageDealt * (0.5F * (level + 1));
+                target.invulnerableTime = 0;
                 target.hurt(BHDamageTypes.magicDamage(attacker), applyDamage);
             }
+        }
+        if (this == BHEnchantments.ECHO.get()) {
+            var random = attacker.getRandom();
+            float chances = 10.0F + (10.0F * level);
+            if (random.nextFloat() * 100.0F <= chances) {
+                target.invulnerableTime = 0;
+                target.hurt(BHDamageTypes.physicalDamage(attacker), damageDealt / 2);
+            }
+
         }
     }
 
@@ -72,6 +82,7 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
         }
         return dropExperience;
     }
+
 
     @Override
     public float postMigitationDamage(int level, float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {

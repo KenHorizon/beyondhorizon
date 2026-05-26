@@ -508,9 +508,6 @@ public class ServerEventHandler {
                 }
             }
         }
-        if (source.getEntity() instanceof LivingEntity attacker) {
-            this.enchantmentOnHitEffect(attacker, damage, source, target);
-        }
         AttributeInstance evade = target.getAttribute(BHAttributes.EVADE.get());
         double dodgeChance = 0;
         if (evade != null) {
@@ -589,7 +586,7 @@ public class ServerEventHandler {
                         }
                     }
                 }
-            }
+            }this.enchantmentOnHitEffect(attacker, damageDealt, source, target);
             damageDealt = this.enchantmentPostMitigationDamage(attacker, damageDealt, source, target);
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                 for (Skill trait : container.getSkills()) {
@@ -671,20 +668,34 @@ public class ServerEventHandler {
         }
         int itemDuration = 0;
         if (EnchantmentHelper.getEnchantmentLevel(BHEnchantments.DRAW_SPEED.get(), entity) > 0) {
-            itemDuration = event.getDuration() - AdvancedEnchantment.getDrawSpeed(entity, event.getDuration());
+            itemDuration = AdvancedEnchantment.getDrawSpeed(entity, event.getDuration());
         }
-        if (entity instanceof Player) {
-            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
-                for (Accessory accessory : accessoryItems.getAccessories()) {
-                    Optional<IAttack> rangedWeaponCallback = accessory.IAttackCallback();
-                    if (rangedWeaponCallback.isPresent()) {
-                        itemDuration = rangedWeaponCallback.get().modifyRangedWeaponUseTime(itemStack, duration);
+        if (entity instanceof Player player) {
+            IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+            if (handler != null) {
+                for (int i = 0; i < handler.getSlots(); i++) {
+                    final ItemStack itemStacks = handler.getStackInSlot(i);
+                    if (!itemStacks.isEmpty() && itemStacks.getItem() instanceof IAccessoryItems<?> container) {
+                        for (Accessory trait : container.getAccessories()) {
+                            Optional<IAttack> rangedWeaponCallback = trait.IAttackCallback();
+                            if (rangedWeaponCallback.isPresent()) {
+                                itemDuration = rangedWeaponCallback.get().modifyRangedWeaponUseTime(itemStack, duration);
+                            }
+                        }
                     }
                 }
             }
-            if (itemDuration > 0) {
-                event.setDuration(event.getDuration() - itemDuration);
-            }
+//            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+//                for (Accessory accessory : accessoryItems.getAccessories()) {
+//                    Optional<IAttack> rangedWeaponCallback = accessory.IAttackCallback();
+//                    if (rangedWeaponCallback.isPresent()) {
+//                        itemDuration = rangedWeaponCallback.get().modifyRangedWeaponUseTime(itemStack, duration);
+//                    }
+//                }
+//            }
+        }
+        if (itemDuration > 0) {
+            event.setDuration(event.getDuration() - itemDuration);
         }
     }
 
@@ -710,9 +721,7 @@ public class ServerEventHandler {
             for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
                 if (entry.getKey() instanceof IAdditionalEnchantment additionalEnchantment) {
                     Optional<IAdditionalEnchantment> optional = additionalEnchantment.enchantmentCallback();
-                    if (optional.isPresent()) {
-                        optional.get().onHitAttack(entry.getValue(), source, attacker.getItemBySlot(slot), target, attacker, damageDealt);
-                    }
+                    optional.ifPresent(iAdditionalEnchantment -> iAdditionalEnchantment.onHitAttack(entry.getValue(), source, attacker.getItemBySlot(slot), target, attacker, damageDealt));
                 }
             }
         }

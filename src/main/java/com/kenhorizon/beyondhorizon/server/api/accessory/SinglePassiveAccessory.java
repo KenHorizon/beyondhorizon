@@ -141,14 +141,14 @@ public class SinglePassiveAccessory extends AccessorySkill {
         if (this == Accessories.CORRUPTED_BITE.get()) {
             target.invulnerableTime = 0;
             double AP = attacker.getAttributeValue(BHAttributes.ABILITY_POWER.get());
-            target.hurt(BHDamageTypes.magicDamage(attacker), (float) (AP * (this.getMagnitude() * this.getLevel())));
+            target.hurt(BHDamageTypes.magicDamage(attacker, null), (float) (AP * (this.getMagnitude() * this.getLevel())));
         }
         if (this == Accessories.NULLIFY.get()) {
             target.invulnerableTime = 0;
             for (ItemStack armor : target.getArmorSlots()) {
                 if (armor.isEnchanted() && armor.getEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION) > 0) {
                     float damage = damageDealt * (this.getMagnitude() * this.getLevel());
-                    target.hurt(BHDamageTypes.nullify(attacker), damage);
+                    target.hurt(BHDamageTypes.nullify(attacker, null), damage);
                 }
             }
         }
@@ -166,7 +166,7 @@ public class SinglePassiveAccessory extends AccessorySkill {
                 if (this.bringItDownStacks >= 3) {
                     this.bringItDownSFX = false;
                     target.invulnerableTime = 0;
-                    target.hurt(BHDamageTypes.physicalDamage(attacker), DamageHandler.missingHealth(target, baseDamage, Constant.BRING_IT_DOWN_INCREASED_DAMAGE));
+                    target.hurt(BHDamageTypes.physicalDamage(attacker, null), DamageHandler.missingHealth(target, baseDamage, Constant.BRING_IT_DOWN_INCREASED_DAMAGE));
                     tagA.putInt(NBT_BRING_IT_DOWN, 0);
                     this.bringItDownStacks = 0;
                 }

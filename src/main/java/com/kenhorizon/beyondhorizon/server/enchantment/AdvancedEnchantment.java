@@ -5,13 +5,16 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
@@ -56,6 +59,8 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
 
     @Override
     public void onHitAttack(int level, DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+
+        var random = attacker.getRandom();
         if (this == BHEnchantments.SPELL_BLADE.get()) {
             float applyDamage = damageDealt * (0.15F * (level + 1));
             if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
@@ -64,13 +69,18 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
             }
         }
         if (this == BHEnchantments.ECHO.get()) {
-            var random = attacker.getRandom();
-            float chances = 10.0F + (10.0F * level);
+            float chances = 10.0F + (5.0F * level);
             if (random.nextFloat() * 100.0F <= chances) {
                 target.invulnerableTime = 0;
                 target.hurt(BHDamageTypes.physicalDamage(attacker), damageDealt / 2);
             }
 
+        }
+        if (this == BHEnchantments.STUNNING.get()) {
+            float chances = 5.0F + (5.0F * level);
+            if (random.nextFloat() * 100.0F <= chances) {
+                target.addEffect(new MobEffectInstance(BHEffects.STUN.get(), MathUtils.sec(1)));
+            }
         }
     }
 
@@ -151,6 +161,7 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
                 damageDealt = DamageHandler.additional(damageDealt, 2 * (level + 1));
             }
         }
+
         return damageDealt;
     }
 

@@ -14,12 +14,9 @@ import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.EruptionRenderer;
-import com.kenhorizon.beyondhorizon.client.render.entity.ability.FlameStrikeRenderer;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingSpearRenderer;
-import com.kenhorizon.beyondhorizon.client.render.projectiles.HellfireOrbRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
 import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;
-import com.kenhorizon.beyondhorizon.client.render.projectiles.HellfireRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
@@ -122,12 +119,8 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.CLEAVE_ABILITY.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.BLAZING_SPEAR.get(), BlazingSpearRenderer::new);
         EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
-        EntityRenderers.register(BHEntity.FLAME_STRIKE.get(), FlameStrikeRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
         EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
-        EntityRenderers.register(BHEntity.HELLFIRE_ORB.get(), HellfireOrbRenderer::new);
-        EntityRenderers.register(BHEntity.HELLFIRE_ROD.get(), HellfireRodRenderer::new);
-
         BlockEntityRenderers.register(BHBlockEntity.BASE_SPAWNER.get(), BaseSpawnerRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);

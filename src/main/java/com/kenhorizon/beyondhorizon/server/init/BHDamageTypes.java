@@ -133,14 +133,14 @@ public class BHDamageTypes {
     }
 
     public static DamageSource physicalDamage(Entity source) {
-        return source(PHYSICAL_DAMAGE, source, source);
+        return source(PHYSICAL_DAMAGE, source);
     }
 
     public static DamageSource nullify(Entity source, Entity target) {
         return source(IGNORE_ENCHANTMENT_PROTECTION, source, target);
     }
     public static DamageSource nullify(Entity source) {
-        return source(IGNORE_ENCHANTMENT_PROTECTION, source, source);
+        return source(IGNORE_ENCHANTMENT_PROTECTION, source);
     }
     public static DamageSource trueDamage(Entity source, Entity cause) {
         return source(TRUE_DAMAGE, source, cause);

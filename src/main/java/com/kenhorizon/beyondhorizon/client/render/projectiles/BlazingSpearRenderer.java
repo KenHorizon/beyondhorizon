@@ -5,7 +5,6 @@ import com.kenhorizon.beyondhorizon.client.model.entity.BlazingSpearModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSpear;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.HellfireOrb;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

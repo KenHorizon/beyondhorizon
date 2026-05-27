@@ -23,6 +23,15 @@ public class BHEnchantments {
                     .rarity(Enchantment.Rarity.RARE)
                     .category(EnchantmentCategory.BOW)
             ));
+    public static RegistryObject<Enchantment> STUNNING = RegistryHelper.registerEnchantments("stunning",
+            () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
+                    .maxLevel(3)
+                    .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
+                    .maxCost(20)
+                    .minCost(6)
+                    .rarity(Enchantment.Rarity.RARE)
+                    .category(EnchantmentCategory.WEAPON)
+            ));
     public static RegistryObject<Enchantment> EDUCATION = RegistryHelper.registerEnchantments("education",
             () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
                     .maxLevel(5)

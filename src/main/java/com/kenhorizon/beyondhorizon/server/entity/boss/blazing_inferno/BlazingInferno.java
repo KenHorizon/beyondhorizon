@@ -777,6 +777,9 @@ public class BlazingInferno extends BHBossEntity {
             }
         }
         if (this.getAnimationState(ID_SHOCKWAVE)) {
+            if (this.getAnimationTick() == 1) {
+                this.playSound(BHSounds.BLAZING_INFERNO_SCREAM.get());
+            }
             if (this.getAnimationTick() % MathUtils.sec(1) == 0) {
                 if (this.level().isClientSide()) {
                     int particleCount = 32;
@@ -799,8 +802,6 @@ public class BlazingInferno extends BHBossEntity {
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 30, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
                     this.level().addParticle(new RoarParticleOptions(10, 255, 255, 255, 1.0F, 1.0F, 0.1F, 25.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
 
-                } else {
-                    this.playSound(BHSounds.BLAZING_INFERNO_SCREAM.get());
                 }
             }
             if (this.getAnimationTick() == MathUtils.sec(4)) {
@@ -927,28 +928,17 @@ public class BlazingInferno extends BHBossEntity {
         }
     }
 
-    private void createFlameStrike(int count) {
-        for (int i = 0; i < count; i++) {
-            float angle = i * Mth.PI / (count / 2);
-            for (int k = 0; k < 8; ++k) {
-                double d2 = 1.15D * (double) (k + 1);
-                this.createFlameStrike(this.getX() + (double) Mth.cos(angle) * 1.25D * d2, this.getZ() + (double) Mth.sin(angle) * 1.25D * d2, this.getY(), this.getY() + 2, i);
-            }
-        }
-    }
-
     private void dashAttack() {
         if (this.isDashing()) {
-            Vec3 dMovement = this.getDeltaMovement();
-            if (this.tickCount % 0.5F == 0) {
-                float yaw = (float) Math.toRadians(-this.getYRot());
-                float yaw1 = (float) Math.toRadians(-this.getYRot() + 180.0F);
-                float pitch = (float) Math.toRadians(-this.getXRot() + 20.0F);
-                float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-                float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-                float b = ColorUtil.getFARGB(0xFFFFFF)[2];
-                this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw, pitch, 15, r, g, b, 1.0F, 32.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ(), 0, 0, 0);
-                this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw1, pitch, 15, r, g, b, 1.0F, 32.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ(), 0, 0, 0);
+            if (this.tickCount % 4 == 0) {
+//                float yaw = (float) Math.toRadians(-this.getYRot());
+//                float yaw1 = (float) Math.toRadians(-this.getYRot() + 180.0F);
+//                float pitch = (float) Math.toRadians(-this.getXRot() + 20.0F);
+//                float r = ColorUtil.getFARGB(0xFFFFFF)[0];
+//                float g = ColorUtil.getFARGB(0xFFFFFF)[1];
+//                float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+//                this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw, pitch, 15, r, g, b, 1.0F, 32.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ(), 0, 0, 0);
+//                this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw1, pitch, 15, r, g, b, 1.0F, 32.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ(), 0, 0, 0);
                 float rangeAttack = this.isInfernoShieldActive() ? 2.5F : 1.0F;
                 for (LivingEntity target : this.getEntitiesNearby(LivingEntity.class, rangeAttack)) {
                     if (!isAlliedTo(target) && !(target instanceof BlazingInferno) && target != this) {
@@ -1033,39 +1023,6 @@ public class BlazingInferno extends BHBossEntity {
 
     private void createEruption(double x, double y, double minY, double maxY) {
         this.createEruption(x, y, minY, maxY, 3);
-    }
-
-    private void createFlameStrike(double x, double y, double minY, double maxY, int delay) {
-        BlockPos blockpos = BlockPos.containing(x, maxY, y);
-        boolean flag = false;
-        double d0 = 0.0D;
-
-        do {
-            BlockPos blockpos1 = blockpos.below();
-            BlockState blockstate = this.level().getBlockState(blockpos1);
-            if (blockstate.isFaceSturdy(this.level(), blockpos1, Direction.UP)) {
-                if (!this.level().isEmptyBlock(blockpos)) {
-                    BlockState blockstate1 = this.level().getBlockState(blockpos);
-                    VoxelShape voxelshape = blockstate1.getCollisionShape(this.level(), blockpos);
-                    if (!voxelshape.isEmpty()) {
-                        d0 = voxelshape.max(Direction.Axis.Y);
-                    }
-                }
-
-                flag = true;
-                break;
-            }
-
-            blockpos = blockpos.below();
-        } while (blockpos.getY() >= Mth.floor(minY) - 1);
-
-        if (flag) {
-            FlameStrikeAbility.spawn(this.level(), blockpos.getX() + 0.5, (double) blockpos.getY() + d0, (double) blockpos.getZ() + 0.5, this.getAttackDamage(), 2.5F, MathUtils.sec(delay), this);
-        }
-    }
-
-    private void createFlameStrike(double x, double y, double minY, double maxY) {
-        this.createFlameStrike(x, y, minY, maxY, 3);
     }
 
     @Override

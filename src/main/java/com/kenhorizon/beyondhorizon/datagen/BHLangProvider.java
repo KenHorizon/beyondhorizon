@@ -16,6 +16,7 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.item.PlayerTrackerItem;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -161,6 +162,15 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.TOOLTIP_INVENTORY, "Inventory");
         this.add(Tooltips.TOOLTIP_HEALTH_RECOVERY_POTION, "Restore %s Health");
         this.add(Tooltips.TOOLTIP_MANA_RECOVERY_POTION, "Restore %s Mana");
+
+        this.add(PlayerTrackerItem.NBT_PLAYER_HEALTH, "Health:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_MANA, "Mana:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_ATTACK_DAMAGE, "Attack Damage:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_ABILITY_POWER, "Ability Power:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_ARMOR, "Armor:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_MAGIC_ARMOR, "Magic Resistance:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_DAMAGE_AMP, "Damage Dealt:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_DAMAGE_TAKEN, "Damage Taken:");
 
         this.add(BeyondHorizon.ID + ".attributes.plus.percent", "+%s%% %s");
         this.add(BeyondHorizon.ID + ".attributes.take.percent", "-%s%% %s");

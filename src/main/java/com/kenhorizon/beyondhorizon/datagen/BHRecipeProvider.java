@@ -88,6 +88,18 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                         inventoryTrigger(ItemPredicate.Builder.item().of(BHItemTags.WOOL_FUR).build()))
                 .save(consumer, getItemName(Items.STRING) + "_from_wool_fur");
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHItems.PLAYER_TRACKER.get())
+                .pattern("NGN")
+                .pattern("IRI")
+                .pattern("INI")
+                .define('G', Blocks.GLASS_PANE)
+                .define('N', Items.NETHERITE_INGOT)
+                .define('R', Items.REDSTONE)
+                .define('I', Items.IRON_INGOT)
+                .unlockedBy("has_player_tracker",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.PLAYER_TRACKER.get()).build()))
+                .save(consumer);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BHBlocks.WORKBENCH.get())
                 .pattern("PCP")
                 .pattern("IAI")

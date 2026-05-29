@@ -367,40 +367,39 @@ public class BlazingInferno extends BHBossEntity {
     public boolean hurt(DamageSource source, float amount) {
         boolean flag = source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL);
         boolean immune = this.isBossImmune();
-        if (!this.infernoShields.isEmpty()) {
-            amount *= 0.80F;
-        }
-        if (source.getEntity() instanceof AbstractArrow) {
-            amount *= 0.75F;
-        }
-        if (source.getEntity() instanceof AbstractGolem) {
-            amount *= 0.25F;
-        }
-        if (this.isHalfHealth() && !this.isEnraged() && !flag) {
-            this.setAnimation(ID_ENRAGED_PHASE);
-            this.setHealth(this.getMaxHealth() / 2);
-        }
+
         if (immune) {
-           return false;
-        }
-        if (!flag) {
-            boolean gotHurt = super.hurt(source, amount);
-            float shieldDamage = amount;
-            if (source.getEntity() instanceof LivingEntity entity) {
-                if (entity.getMainHandItem().getItem() instanceof AxeItem) {
-                    shieldDamage *= 2.0F;
-                }
+            return false;
+        } else {
+            if (!this.infernoShields.isEmpty()) {
+                amount *= 0.80F;
             }
-            if (gotHurt && !this.infernoShields.isEmpty()) {
-                InfernoShield shield = this.infernoShields.get(this.getRandom().nextInt(this.infernoShields.size()));
-                shield.hurt(source, shieldDamage);
+            if (source.getEntity() instanceof AbstractArrow) {
+                amount *= 0.75F;
+            }
+            if (source.getEntity() instanceof AbstractGolem) {
+                amount *= 0.25F;
+            }
+            if (this.isHalfHealth() && !this.isEnraged() && !flag) {
+                this.setAnimation(ID_ENRAGED_PHASE);
+                this.setHealth(this.getMaxHealth() / 2);
+            }
+            if (!flag) {
+                boolean gotHurt = super.hurt(source, amount);
+                float shieldDamage = amount;
+                if (source.getEntity() instanceof LivingEntity entity) {
+                    if (entity.getMainHandItem().getItem() instanceof AxeItem) {
+                        shieldDamage *= 2.0F;
+                    }
+                }
+                if (gotHurt && !this.infernoShields.isEmpty()) {
+                    InfernoShield shield = this.infernoShields.get(this.getRandom().nextInt(this.infernoShields.size()));
+                    shield.hurt(source, shieldDamage);
+                }
+                return gotHurt;
             }
         }
         return super.hurt(source, amount);
-    }
-
-    public int getShieldActiveCount() {
-        return this.infernoShields.size();
     }
 
     @Override
@@ -820,7 +819,7 @@ public class BlazingInferno extends BHBossEntity {
         if (this.getAnimationState(ID_DASHES)) {
             int dashStart = 45;
             int dashEnd = 65;
-            BeyondHorizon.LOGGER.debug("Dash {}/{}", this.getDashProgress(), this.getDashCount());
+//            BeyondHorizon.LOGGER.debug("Dash {}/{}", this.getDashProgress(), this.getDashCount());
             if (target != null) {
                 if (this.getAnimationTick() < dashStart) {
                     this.lookAt(target, 30.0F, 3.0F);
@@ -849,8 +848,7 @@ public class BlazingInferno extends BHBossEntity {
                     double d0 = livingentity.getX() - this.getX();
                     double d1 = livingentity.getZ() - this.getZ();
                     double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
-                    livingentity.hurt(this.level().damageSources().mobAttack(this), this.getAttackDamage(0.05F) + livingentity.getMaxHealth() * 0.10F);
-                    livingentity.push(d0 / d2 * this.powerShockwaveX, 0.2D * this.powerShockwaveY, d1 / d2 * this.powerShockwaveZ);
+                    livingentity.push(d0 / d2 * (this.powerShockwaveX / 2), 0.2D * this.powerShockwaveY, d1 / d2 * (this.powerShockwaveZ / 2));
                 }
                 this.playSound(BHSounds.BLAZING_INFERNO_SHOCKWAVE.get());
             }

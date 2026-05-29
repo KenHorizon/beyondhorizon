@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
+import com.kenhorizon.beyondhorizon.server.item.PlayerTrackerItem;
 import com.kenhorizon.beyondhorizon.server.item.base.*;
 import com.kenhorizon.beyondhorizon.server.item.base.armor.ArmorBaseItem;
 import com.kenhorizon.beyondhorizon.server.item.base.tools.DiggerBaseItem;
@@ -18,6 +19,7 @@ import com.kenhorizon.libs.registry.RegistryItems;
 import com.kenhorizon.libs.registry.RegistryTabs;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
@@ -191,6 +193,13 @@ public class BHItems {
     public static final RegistryObject<Item> CRYSTALLIZED_PLATE = accessoryItem("crystallized_plate", AccessoryBuilder.CRYSTALLIZED_PLATE);
 
     //
+
+    public static final RegistryObject<Item> PLAYER_TRACKER = RegistryItems
+            .register("player_tracker", PlayerTrackerItem::new)
+            .properties(p -> p.rarity(Rarity.RARE))
+            .tab(RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
 
     public static final RegistryObject<Item> BLADE_OF_THE_ENDERLORD = RegistryItems
             .register("blade_of_the_enderlord", item -> ItemBuilder.BLADE_OF_THE_ENDERLORD.create(MeleeWeaponMaterials.TIER_ONE, item))

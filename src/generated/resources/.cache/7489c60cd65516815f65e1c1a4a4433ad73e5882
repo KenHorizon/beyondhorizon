@@ -1,4 +1,4 @@
-// 1.20.1	2026-05-26T16:17:34.9525802	Item Models: beyondhorizon
+// 1.20.1	2026-05-30T00:18:50.4013746	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -81,6 +81,7 @@ dafdd78759bb14e2aed8610d97dcf799e25a96b3 assets/beyondhorizon/models/item/null_g
 e86bba503b61d6ac12ff1a92db83b9b2b6f4e2dc assets/beyondhorizon/models/item/null_magic_rune.json
 242cea373a6f165c99b359396b8764b19ca4ac0a assets/beyondhorizon/models/item/orange_wool_fur.json
 9441b29efd39bbb6bc359f26c94e6b6ef4400ba4 assets/beyondhorizon/models/item/pink_wool_fur.json
+f05f22dd7f2938a372b7d647f2dbd51ffed27d86 assets/beyondhorizon/models/item/player_tracker.json
 7ac2b611da7d091da9a964ae62b8c404c4c6696b assets/beyondhorizon/models/item/poison_vile.json
 77bc62c80e33b8216c5c8a6407feff4f8495678c assets/beyondhorizon/models/item/power_claw.json
 e27924fd60d10d0b9fb28da852db14123677eca3 assets/beyondhorizon/models/item/power_gloves.json

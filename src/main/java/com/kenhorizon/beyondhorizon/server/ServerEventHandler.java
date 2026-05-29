@@ -668,7 +668,7 @@ public class ServerEventHandler {
         }
         int itemDuration = 0;
         if (EnchantmentHelper.getEnchantmentLevel(BHEnchantments.DRAW_SPEED.get(), entity) > 0) {
-            itemDuration = AdvancedEnchantment.getDrawSpeed(entity, event.getDuration());
+            itemDuration = AdvancedEnchantment.getDrawSpeed(entity, duration);
         }
         if (entity instanceof Player player) {
             IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
@@ -685,15 +685,8 @@ public class ServerEventHandler {
                     }
                 }
             }
-//            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
-//                for (Accessory accessory : accessoryItems.getAccessories()) {
-//                    Optional<IAttack> rangedWeaponCallback = accessory.IAttackCallback();
-//                    if (rangedWeaponCallback.isPresent()) {
-//                        itemDuration = rangedWeaponCallback.get().modifyRangedWeaponUseTime(itemStack, duration);
-//                    }
-//                }
-//            }
         }
+        BeyondHorizon.LOGGER.debug("Duraiton {}", itemDuration);
         if (itemDuration > 0) {
             event.setDuration(event.getDuration() - itemDuration);
         }

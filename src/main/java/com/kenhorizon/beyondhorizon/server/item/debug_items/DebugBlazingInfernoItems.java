@@ -51,7 +51,6 @@ public class DebugBlazingInfernoItems extends BasicItem {
             boss.setIsPowered(false);
             boss.setPos(spawnPos.getX(), spawnPos.getY(), spawnPos.getZ());
             level.addFreshEntity(boss);
-
             return InteractionResult.CONSUME;
         }
     }

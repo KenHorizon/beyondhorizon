@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
@@ -133,6 +134,7 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
         nbt.putFloat(NBT_LIFESPAN, this.getLifeSpan());
         nbt.putFloat(NBT_ROTATION_OFFSET, this.getRotateOffset());
     }
+
     public void setEntityId(int id) {
         this.entityData.set(ENTITY_ID, id);
     }
@@ -235,6 +237,9 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
             this.infernoShieldTicks(entity != null ? entity : owner);
         }
     }
+
+
+
     private void shoot(int count, BlazingInferno entity, float velocity, float inaccuracy) {
         double d0 = this.getX();
         double d1 = this.getY() + (this.getBbHeight() / 2) + 0.5D;
@@ -302,7 +307,17 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
     @Override
     protected void tickDeath() {
         super.tickDeath();
-        this.repelEntities(1.4F, 4, 1.4F, 3.5F, this.getUsingEntity());
+    }
+
+    @Override
+    public void die(DamageSource cause) {
+        super.die(cause);
+        if (this.getUsingEntity() != null && this.getUsingEntity() instanceof BlazingInferno bI) {
+            this.repelEntities(1.4F, 4, 1.4F, 3.5F, this.getUsingEntity());
+            if (cause.getDirectEntity() == cause.getEntity() && cause.getEntity() instanceof LivingEntity attacker) {
+                bI.hurt(this.level().damageSources().mobAttack(attacker), 10.0F);
+            }
+        }
     }
 
     @Override

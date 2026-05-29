@@ -51,6 +51,6 @@ public interface IAttack {
     }
 
     default int modifyRangedWeaponUseTime(ItemStack itemStack, int duration) {
-        return duration;
+        return 0;
     }
 }

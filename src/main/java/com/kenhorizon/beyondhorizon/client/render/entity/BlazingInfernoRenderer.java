@@ -91,10 +91,12 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
                 VertexConsumer renderModelExplosion = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_INACTIVE));
                 this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, whiteOverlay, 1.0F, 1.0F, 1.0F, 1.0F - awakenProgress);
             }
+
             VertexConsumer renderModelExplosion = buffer.getBuffer(RenderType.entityTranslucent(TEXTURE_ENRAGED));
             this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, whiteOverlay, 1.0F, 1.0F, 1.0F, enragedProgress);
         }
-        if (entity.deathTime > 0 && entity.isEnraged()) {
+
+        if (entity.deathTime > 0) {
             float f1 = ((float) entity.deathTime + partialTicks) / 200.0F;
             float f2 = Math.min(f1 > 0.8F ? (f1 - 0.8F) / 0.2F : 0.0F, 1.0F);
             RandomSource randomsource = RandomSource.create(432L);

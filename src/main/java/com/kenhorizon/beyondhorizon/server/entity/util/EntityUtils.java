@@ -13,6 +13,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class EntityUtils {
+    public static void disableShield(Player player, int ticks) {
+        if (!player.level().isClientSide()) {
+            if (player.isBlocking()) {
+                player.getCooldowns().addCooldown(player.getUseItem().getItem(), ticks);
+                player.stopUsingItem();
+                player.level().broadcastEntityEvent(player, (byte)30);
+            }
+        }
+    }
+
     public static double getAttackDamage(LivingEntity entity) {
         double attackDamage = entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
         double effectivness = entity.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());

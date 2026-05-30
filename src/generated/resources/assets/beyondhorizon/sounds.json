@@ -222,6 +222,12 @@
     ],
     "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.shoot"
   },
+  "mob.blazing_inferno.spear": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/summon_spear"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.spear"
+  },
   "mob.blazing_inferno.step": {
     "sounds": [
       "beyondhorizon:mob/blazing_inferno/scream"
@@ -235,5 +241,14 @@
       "beyondhorizon:mob/inferno_shield/break3"
     ],
     "subtitle": "subtitle.beyondhorizon.mob.inferno_shield.break"
+  },
+  "mob.inferno_shield.impact": {
+    "sounds": [
+      "beyondhorizon:mob/inferno_shield/impact1",
+      "beyondhorizon:mob/inferno_shield/impact2",
+      "beyondhorizon:mob/inferno_shield/impact3",
+      "beyondhorizon:mob/inferno_shield/impact4"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.inferno_shield.impact"
   }
 }

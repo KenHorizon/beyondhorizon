@@ -171,6 +171,9 @@ public class BHLangProvider extends LanguageProvider {
         this.add(PlayerTrackerItem.NBT_PLAYER_MAGIC_ARMOR, "Magic Resistance:");
         this.add(PlayerTrackerItem.NBT_PLAYER_DAMAGE_AMP, "Damage Dealt:");
         this.add(PlayerTrackerItem.NBT_PLAYER_DAMAGE_TAKEN, "Damage Taken:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_MOVEMENT_SPEED, "Movement Speed:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_MOVEMENT_SPEED_DIR, "B/S");
+        this.add(PlayerTrackerItem.NBT_PLAYER_KNOCKBACK_RESISTANCE, "Knockback Resistance:");
 
         this.add(BeyondHorizon.ID + ".attributes.plus.percent", "+%s%% %s");
         this.add(BeyondHorizon.ID + ".attributes.take.percent", "-%s%% %s");

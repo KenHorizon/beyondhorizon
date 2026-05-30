@@ -28,6 +28,7 @@ public class BHSoundProvider extends SoundDefinitionFactory {
         this.add(BHSounds.HEAVY_ATTACK, "generic/heavy_hit/heavyhit", 3);
         this.add(BHSounds.ENTITY_EXECUTED, "generic/entity_executed");
 
+        this.add(BHSounds.BLAZING_INFERNO_SPEAR, "mob/blazing_inferno/summon_spear");
         this.add(BHSounds.BLAZING_INFERNO_SCREAM, "mob/blazing_inferno/scream");
         this.add(BHSounds.BLAZING_INFERNO_SHOOT, "mob/blazing_inferno/shoot/shoot", 2);
         this.add(BHSounds.BLAZING_INFERNO_SHOCKWAVE, "mob/blazing_inferno/shockwave/shockwave", 3);
@@ -42,6 +43,7 @@ public class BHSoundProvider extends SoundDefinitionFactory {
         this.add(BHSounds.BLAZING_INFERNO_DEATH_RAY_CHARGING, "mob/blazing_inferno/death_ray_charging");
 
         this.add(BHSounds.INFERNO_SHIELD_BREAK, "mob/inferno_shield/break", 3);
+        this.add(BHSounds.INFERNO_SHIELD_IMPACT, "mob/inferno_shield/impact", 4);
 
         this.add(BHSounds.SPAWNER_HIT, "block/spawner_block/break", 3);
         this.add(BHSounds.SPAWNER_BREAK, "block/spawner_block/break", 3);

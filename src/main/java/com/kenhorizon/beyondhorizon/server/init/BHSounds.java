@@ -27,6 +27,7 @@ public class BHSounds {
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_HURT = RegistryHelper.registerSounds("mob.blazing_inferno.hurt", "Blazing inferno hurt");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_IDLE = RegistryHelper.registerSounds("mob.blazing_inferno.idle", "Blazing inferno crackles");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_SCREAM = RegistryHelper.registerSounds("mob.blazing_inferno.scream", "Blazing inferno scream");
+    public static RegistryObject<SoundEvent> BLAZING_INFERNO_SPEAR = RegistryHelper.registerSounds("mob.blazing_inferno.spear", "Blazing inferno summoned spear");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_STEP = RegistryHelper.registerSounds("mob.blazing_inferno.step", "Blazing inferno step");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_GROWL = RegistryHelper.registerSounds("mob.blazing_inferno.growl", "Blazing inferno growling");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_SHOOT = RegistryHelper.registerSounds("mob.blazing_inferno.shoot", "Blazing inferno shoot");
@@ -36,7 +37,8 @@ public class BHSounds {
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_DEATH_RAY = RegistryHelper.registerSounds("mob.blazing_inferno.death_ray", "Death ray blast");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_DEATH_RAY_CHARGING = RegistryHelper.registerSounds("mob.blazing_inferno.death_ray_charging", "Death ray charging");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_DEATH = RegistryHelper.registerSounds("mob.blazing_inferno.death", "Blazing inferno death");
-    public static RegistryObject<SoundEvent> INFERNO_SHIELD_BREAK = RegistryHelper.registerSounds("mob.inferno_shield.break", "Blazing inferno death");
+    public static RegistryObject<SoundEvent> INFERNO_SHIELD_IMPACT = RegistryHelper.registerSounds("mob.inferno_shield.impact", "Shiled impact");
+    public static RegistryObject<SoundEvent> INFERNO_SHIELD_BREAK = RegistryHelper.registerSounds("mob.inferno_shield.break", "Shield Break");
 
     public static RegistryObject<SoundEvent> HEAVY_ATTACK = RegistryHelper.registerSounds("generic.heavy_attack", "Heavy attack");
     public static RegistryObject<SoundEvent> ENTITY_EXECUTED = RegistryHelper.registerSounds("generic.entity_executed", "Entity has been executed");

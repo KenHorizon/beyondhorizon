@@ -90,6 +90,7 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
             return super.hurt(source, amount);
         }
     }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -99,6 +100,7 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
         this.entityData.define(ORBIT_SCALE, 0.0F);
         this.entityData.define(LIFE_SPAN, 40.0F);
     }
+
     @Override
     public boolean isAlliedTo(Entity entity) {
         if (entity == null) {
@@ -134,15 +136,6 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
         nbt.putFloat(NBT_LIFESPAN, this.getLifeSpan());
         nbt.putFloat(NBT_ROTATION_OFFSET, this.getRotateOffset());
     }
-
-    public void setEntityId(int id) {
-        this.entityData.set(ENTITY_ID, id);
-    }
-
-    public int getEntityId() {
-        return this.entityData.get(ENTITY_ID);
-    }
-
     private float getOrbitScale() {
         return this.entityData.get(ORBIT_SCALE);
     }
@@ -157,6 +150,14 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
 
     public void setRotateOffset(float rotateOffset) {
         this.entityData.set(ROTATE_OFFSET, rotateOffset);
+    }
+
+    public void setEntityId(int id) {
+        this.entityData.set(ENTITY_ID, id);
+    }
+
+    public int getEntityId() {
+        return this.entityData.get(ENTITY_ID);
     }
 
     public float getLifeSpan() {
@@ -226,7 +227,9 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
         if (owner != null && !owner.isAlive()) this.discard();
         if (owner != null) {
             if (this.level().isClientSide()) {
-                this.level().addParticle(new ParticleTrailOptions(0, 0, 20, 1.0F, 0.0F, 0.0F, 1.0F, 8.0F, true,  TrailParticles.Behavior.DEFAULT, owner.position().add(0, owner.getBbHeight() * 0.5D, 0)), this.getX(), this.getY() + (this.getBbHeight() / 2), this.getZ(), 0, 0, 0);
+                for (int i = 0; i < 2; i++) {
+                    this.level().addParticle(new ParticleTrailOptions(0, 0, 20, 1.0F, 0.0F, 0.0F, 1.0F, 12.0F, true,  TrailParticles.Behavior.DEFAULT, owner.position().add(0, owner.getBbHeight() * 0.5D, 0)), this.getRandomX(0.50D), this.getY() + (this.getBbHeight() / 2), this.getRandomZ(0.50D), 0, 0, 0);
+                }
             }
             if (owner instanceof BlazingInferno blazingInferno) {
                 if (blazingInferno.deathTime > 0) {
@@ -252,7 +255,7 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
     }
     @Override
     protected @Nullable SoundEvent getHurtSound(DamageSource source) {
-        return SoundEvents.SHIELD_BLOCK;
+        return BHSounds.INFERNO_SHIELD_IMPACT.get();
     }
 
     @Override

@@ -378,13 +378,6 @@ public abstract class BHBaseEntity extends PathfinderMob {
         }
         return flag;
     }
-    public void disableShield(Player player, int disalbeDuration) {
-        if (player.isBlocking()) {
-            player.getCooldowns().addCooldown(this.getUseItem().getItem(), disalbeDuration);
-            player.stopUsingItem();
-            this.level().broadcastEntityEvent(this, (byte) 30);
-        }
-    }
 
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {

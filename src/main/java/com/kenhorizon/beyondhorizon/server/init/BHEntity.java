@@ -23,7 +23,7 @@ public class BHEntity {
             .register("blazing_inferno", BlazingInferno::new)
             .lang("Blazing Inferno")
             .mobCategory(MobCategory.CREATURE)
-            .properties(p -> p.sized(0.85F, 2.75F))
+            .properties(p -> p.sized(0.85F, 3.1F))
             .properties(EntityType.Builder::fireImmune)
             .tag(Tags.EntityTypes.BOSSES)
             .register();
@@ -53,7 +53,7 @@ public class BHEntity {
             .<InfernoShield>register("inferno_shield", InfernoShield::new)
             .lang("Inferno Shield")
             .mobCategory(MobCategory.MISC)
-            .properties(p -> p.sized(1.25F, 2.45F))
+            .properties(p -> p.sized(1.25F, 2.0F))
             .properties(EntityType.Builder::fireImmune)
             .register();
 

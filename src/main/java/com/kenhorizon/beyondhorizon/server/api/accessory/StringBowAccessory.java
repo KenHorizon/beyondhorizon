@@ -49,7 +49,7 @@ public class StringBowAccessory extends AccessorySkill {
     }
 
     @Override
-    public int modifyRangedWeaponUseTime(ItemStack itemStack, int duration) {
+    public int onItemUseItem(ItemStack itemStack, int duration) {
         if (this.getType() == Type.LIGHT) {
             return (duration % (4) == 0 ? 1 : 0);
         }

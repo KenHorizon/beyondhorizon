@@ -3,6 +3,11 @@ package com.kenhorizon.beyondhorizon.server.util;
 public class Constant {
     public static final float HEAVY_STRING_KNOCKBACK = 1.20F;
     public static final float HEAVY_STRING_DAMAGE = 0.20F;
+    public static final float DARK_SUN_CONVERT = 0.25F;
+    public static final float FADED_MOON_CONVERT = 0.25F;
+    public static final float NIGHTSTALKER_DAMGE_TAKEN = 0.25F;
+    public static final float EXCORIATE_DAMAGE_PENALTY = 0.80F;
+    public static final float EXCORIATE_DAMAGE = 0.50F;
     public static final float BRING_IT_DOWN_BASE_DAMAGE = 2;
     public static final float BRING_IT_DOWN_INCREASED_DAMAGE = 0.75F;
     public static final float ROCK_SOLID_REDUCE = 0.15F;
@@ -156,7 +161,7 @@ public class Constant {
     public static double BERSERKER_BOOTS = 0.12D;
     public static double IRON_PLATED_BOOTS = 0.10D;
     public static double OVERGROWTH_BONUS_HEALTH = 0.12D;
-    public static double  VENOM_DURATION = 5;
+    public static double VENOM_DURATION = 5;
     public static double VENOM_POISON_LEVEL = 2;
     public static double VENOM_INFLICT_CHANCE = 0.5D;
      //

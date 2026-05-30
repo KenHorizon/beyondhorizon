@@ -141,6 +141,13 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.BRING_IT_DOWN.get(), "Bring It Down", "Basic attack grant a stack for 3 seconds, up to 2 stacks, at 2 stacks, the next attack consumes all stacks to deal (+%s per level) physical damage on-hit increased by %s%% based on target's missing health");
         this.addAccessory(Accessories.POLYETHYLENE.get(), "Polyethylene", "Increase ranged damage by %s%% and knockback by %s%%");
         this.addAccessory(Accessories.FLUOROCARBON.get(), "Fluorocarbon", "Reduce the draw time of Item");
+        this.addAccessory(Accessories.DARK_SUN.get(), "Dark Sun", "Convert 25% damage dealt into addtional bonus true damage on-hit");
+        this.addAccessory(Accessories.NIGHTSTALKER.get(), "Nightstalker", "Increased all damage by 0-%s%% based on target missing health");
+        this.addAccessory(Accessories.PENALTY_0.get(), "Penalty", "Reduce the attack effectiveness by %s%%");
+        this.addAccessory(Accessories.EXCORIATE.get(), "Excoriate", "Gain random bonus critidal damage upto 0-%s%%, with the value of this changing of every 0.25 seconds");
+        this.addAccessory(Accessories.GHOUL.get(), "Ghoul", "Hunger exhaustion increased by 150%, On-kill restore 5 hunger points and gain buff of Ghoul Will, and prevent user eat edible item");
+        this.addAccessory(Accessories.FADED_MOON.get(), "Faded Moon", "Convert 25% Max Mana into additional bonus magic damage on-hit");
+        this.addAccessory(Accessories.TWO_WORLD.get(), "Two World", "Gain Dark Sun and Faded Moon, If you have more than bonus attack damage to ability power enter Dark Sun and if you have more than ability power to attack damage enter Faded Moon ");
         //
         this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");
         this.addRole(RoleClasses.MARKSMAN.get(), "Marksman", "Specialize in precision, long range engagement and delivering consistent, high damage from safe distance");
@@ -174,6 +181,8 @@ public class BHLangProvider extends LanguageProvider {
         this.add(PlayerTrackerItem.NBT_PLAYER_MOVEMENT_SPEED, "Movement Speed:");
         this.add(PlayerTrackerItem.NBT_PLAYER_MOVEMENT_SPEED_DIR, "B/S");
         this.add(PlayerTrackerItem.NBT_PLAYER_KNOCKBACK_RESISTANCE, "Knockback Resistance:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_CRIT, "Critical Strike:");
+        this.add(PlayerTrackerItem.NBT_PLAYER_CRIT_DAMAGE, "Critical Damage:");
 
         this.add(BeyondHorizon.ID + ".attributes.plus.percent", "+%s%% %s");
         this.add(BeyondHorizon.ID + ".attributes.take.percent", "-%s%% %s");

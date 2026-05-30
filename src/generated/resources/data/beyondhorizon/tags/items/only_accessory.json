@@ -27,6 +27,7 @@
     "beyondhorizon:heart_of_the_tree",
     "beyondhorizon:null_magic_rune",
     "beyondhorizon:cursed_skull",
+    "beyondhorizon:forbidden_eye",
     "beyondhorizon:adhesive_bandage",
     "beyondhorizon:ruminative_beads",
     "beyondhorizon:cursed_apple",
@@ -39,9 +40,11 @@
     "beyondhorizon:light_string_bow",
     "beyondhorizon:infinity_gem",
     "beyondhorizon:spectral_cloak",
+    "beyondhorizon:twilight_edge",
     "beyondhorizon:ward_cleanse",
     "beyondhorizon:mask_of_bewildered",
     "beyondhorizon:wraith_gem",
+    "beyondhorizon:ghoul_heart",
     "beyondhorizon:vitality_stone",
     "beyondhorizon:harpoon_head",
     "beyondhorizon:null_gem",
@@ -71,6 +74,7 @@
     "beyondhorizon:thornmail",
     "beyondhorizon:leather_agility",
     "beyondhorizon:recurve_arrow",
-    "beyondhorizon:power_gloves"
+    "beyondhorizon:power_gloves",
+    "beyondhorizon:duskblade"
   ]
 }

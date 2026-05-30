@@ -168,6 +168,10 @@ public class BHItems {
     public static final RegistryObject<Item> THORNMAIL = accessoryItem("thornmail", AccessoryBuilder.THORNMAIL);
     public static final RegistryObject<Item> SPRING_LOCK = accessoryItem("spring_lock", AccessoryBuilder.SPRING_LOCK);
     public static final RegistryObject<Item> ANKH_ETERNITY = accessoryItem("ankh_eternity", AccessoryBuilder.ETERNAL_LIFE);
+    public static final RegistryObject<Item> TWILIGHT_EDGE = accessoryItem("twilight_edge", AccessoryBuilder.TWILIGHT_EDGE);
+    public static final RegistryObject<Item> DUSKBLADE = accessoryHandheldItem("duskblade", AccessoryItemGroup.UNIQUE, AccessoryBuilder.DUSKBLADE);
+    public static final RegistryObject<Item> GHOUL_HEART = accessoryItem("ghoul_heart", AccessoryBuilder.GHOUL_HEART);
+    public static final RegistryObject<Item> FORBIDDEN_EYE = accessoryItem("forbidden_eye", AccessoryBuilder.FORBIDDEN_EYE);
 
     public static final RegistryObject<Item> BROKEN_SHULKER_SHELL = accessoryItem("broken_shulker_shell", AccessoryBuilder.BROKEN_SHULKER_SHELL);
     public static final RegistryObject<Item> ARMOR_PLATE = accessoryItem("armor_plate", AccessoryBuilder.ARMOR_PLATE);

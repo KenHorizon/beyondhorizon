@@ -23,6 +23,9 @@ public class BHEffects {
     public static final RegistryObject<MobEffect> ADRENALINE =
             RegistryHelper.registerEffects("adrenaline", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x00000000)
                     .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "514b12e1-fce8-4a6a-83ac-42f977cdf1cb", 2.10F, AttributeModifier.Operation.MULTIPLY_BASE));
+    public static final RegistryObject<MobEffect> GHOUL_WILL =
+            RegistryHelper.registerEffects("ghoul_will", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x00000000)
+                    .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "dbd4c61c-8c18-41cb-be67-668ac9249c69", 0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> BLEED =
             RegistryHelper.registerEffects("bleed", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x00000000));
     public static final RegistryObject<MobEffect> LETHAL_POISON =

@@ -9,12 +9,12 @@ Duskblade
 
 Ghoul heart
 - hunger exhaustion is increased by 150%
-- on-kill restore hunger by 5 pts and gain effect of Ghoul's Will (Prevent hunger being depleted and give damage boost)
-- forbids user to eat include G-Apple
+- on-kill restore hunger by 5 pts and gain effect of Ghoul's Will (Prevent hunger being depleted and give damage boost) in 10 seconds
+- forbids user to any food is edible
 
 Twilight Edge
 - Gain ability of dark sun and faded moon
 - If you have more than bonus attack damage than on ability power gain Dark Sun ability
 - if you have more than bonus ability power than on attack damage gain Faded Moon ability
-- Dark Sun: Convert 25% damage dealt into addtional bonus true damage
-- Faded Moon: Convert 25% Max Mana into additional bonus magic damage
+- Dark Sun: Convert 25% damage dealt into addtional bonus true damage on-hit
+- Faded Moon: Convert 25% Max Mana into additional bonus magic damage on-hit

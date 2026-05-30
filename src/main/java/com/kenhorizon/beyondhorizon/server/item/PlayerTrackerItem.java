@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import it.unimi.dsi.fastutil.chars.CharRBTreeSet;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.CommonComponents;
@@ -32,6 +33,8 @@ public class PlayerTrackerItem extends BasicItem {
     public static String NBT_PLAYER_MOVEMENT_SPEED = "player_stats.movement_speed";
     public static String NBT_PLAYER_MOVEMENT_SPEED_DIR = "player_stats.movement_speed.dir";
     public static String NBT_PLAYER_KNOCKBACK_RESISTANCE = "player_stats.knockback_resistance";
+    public static String NBT_PLAYER_CRIT = "player_stats.crit";
+    public static String NBT_PLAYER_CRIT_DAMAGE = "player_stats.crit_damage";
 
     public PlayerTrackerItem(Properties properties) {
         super(properties);
@@ -63,5 +66,9 @@ public class PlayerTrackerItem extends BasicItem {
                 .append(Component.literal(String.format("%s%%", MathUtils.format(100.0D * player.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get())))).withStyle(ChatFormatting.GREEN)));
         tooltip.add(Component.translatable(NBT_PLAYER_KNOCKBACK_RESISTANCE).append(CommonComponents.space())
                 .append(Component.literal(String.format("%s%%", MathUtils.format(100.0D * player.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)))).withStyle(ChatFormatting.GREEN)));
+        tooltip.add(Component.translatable(NBT_PLAYER_CRIT).append(CommonComponents.space())
+                .append(Component.literal(String.format("%s%%", MathUtils.format(100.0D * player.getAttributeValue(BHAttributes.CRITICAL_CHANCE.get())))).withStyle(ChatFormatting.GREEN)));
+        tooltip.add(Component.translatable(NBT_PLAYER_CRIT_DAMAGE).append(CommonComponents.space())
+                .append(Component.literal(String.format("%s%%", MathUtils.format(100.0D * player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get())))).withStyle(ChatFormatting.GREEN)));
     }
 }

@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
-public class AccessorySkill extends Accessory implements IEntityProperties, IAttack {
+public class AccessorySkill extends Accessory implements IEntityProperties, IAttack, IAccessoryEvent {
 
     public AccessorySkill(float magnitude, int level) {
         super(magnitude, level);
@@ -28,6 +28,12 @@ public class AccessorySkill extends Accessory implements IEntityProperties, IAtt
     public Optional<IAttack> IAttackCallback() {
         return Optional.of(this);
     }
+
+    @Override
+    public Optional<IAccessoryEvent> IAccessory() {
+        return Optional.of(this);
+    }
+
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this.getMagnitude() > 0.0F && this.getLevel() > 0.0F) {

@@ -192,8 +192,19 @@ public class Accessories {
     public static final RegistryObject<Accessory> STING = registerSkill("sting", () -> new SinglePassiveAccessory(Constant.STING_DAMAGE));
     public static final RegistryObject<Accessory> TORMENT = registerSkill("torment", () -> new ApplyEffectAccessory(3, 0, BHEffects.TORMENT.get()).showIcon(true).ambient(true));
     public static final RegistryObject<Accessory> BRING_IT_DOWN = registerSkill("bring_it_down", () -> new SinglePassiveAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE));
+    public static final RegistryObject<Accessory> GHOUL = registerSkill("ghoul", () -> new SinglePassiveAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE));
+    public static final RegistryObject<Accessory> PENALTY_0 = registerSkill("penalty", () -> new DamageEffectivenessAccessory(Constant.EXCORIATE_DAMAGE_PENALTY));
+    public static final RegistryObject<Accessory> EXCORIATE = registerSkill("excoriate", () -> new SinglePassiveAccessory(Constant.EXCORIATE_DAMAGE));
+    public static final RegistryObject<Accessory> NIGHTSTALKER = registerSkill("nightstalker", () -> new ExtraDamageAccessory(Constant.EXCORIATE_DAMAGE, ExtraDamageAccessory.TARGET_MISSING_HEALTH));
+    public static final RegistryObject<Accessory> TWO_WORLD = registerSkill("two_world", () -> new SinglePassiveAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE)
+            .innate(Accessories.DARK_SUN).innate(Accessories.FADED_MOON));
+    public static final RegistryObject<Accessory> DARK_SUN = registerSkill("dark_sun", () -> new SinglePassiveAccessory(Constant.DARK_SUN_CONVERT));
+    public static final RegistryObject<Accessory> FADED_MOON = registerSkill("faded_moon", () -> new SinglePassiveAccessory(Constant.FADED_MOON_CONVERT));
 
     public static final RegistryObject<Accessory> KNOWLEDGE_2 = registerSkill("ultima_knowledge", () -> new ExperienceAccessory(Constant.ULTIMA_KNOWLEDGE_XP_MODIFIER));
+
+    public static final RegistryObject<Accessory> DUSKBLADE = registerSkill("duskblade_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.DAMAGE_TAKEN.get(), "529b72d6-32c0-4978-ac30-54b05124e8f4", Constant.NIGHTSTALKER_DAMGE_TAKEN, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Accessory> ULTIMA = registerSkill("ultima_stats", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.DAMAGE_DEALT.get(), "204a6a89-9957-4299-97bc-01bac74f04e5", Constant.UlTIMA_DAMAGE_AMP, AttributeModifier.Operation.MULTIPLY_TOTAL)

@@ -42,6 +42,11 @@ public class BHMobEffect extends MobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
+        if (this == BHEffects.GHOUL_WILL.get()) {
+            if (entity instanceof Player player) {
+                player.getFoodData().setExhaustion(-1.0F);
+            }
+        }
         if (this == BHEffects.INFLAME.get()) {
             entity.hurt(BHDamageTypes.burnMagic(), 0.1F + (0.1F * amplifier));
             Level level = entity.level();

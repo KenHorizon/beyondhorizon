@@ -300,4 +300,5 @@ public abstract class Accessory {
     public Optional<IEntityProperties> IEntityProperties() {
         return Optional.empty();
     }
+
 }

@@ -4,8 +4,10 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
+import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.core.BlockPos;
@@ -14,13 +16,17 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.Foods;
+import net.minecraft.world.item.BowlFoodItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -28,11 +34,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.util.UUID;
+
 public class SinglePassiveAccessory extends AccessorySkill {
     private boolean hasAscension = false;
     public static String NBT_BRING_IT_DOWN = "bring_it_down";
     protected int bringItDownStacks = 0;
     protected boolean bringItDownSFX = false;
+
+    private static final UUID BONUS_CRIT_DAMAGE = UUID.fromString("20c13c52-4226-4724-bf7a-b0ce3dbcf00a");
+
     public SinglePassiveAccessory() {
         super(0, 1);
     }
@@ -46,6 +57,20 @@ public class SinglePassiveAccessory extends AccessorySkill {
     }
 
     @Override
+    public void onChangePrevAccessorySlot(Player player, ItemStack itemStack) {
+        BeyondHorizon.LOGGER.debug("Item has been taken? {}", itemStack.getItem());
+        if (this == Accessories.EXCORIATE.get()) {
+            player.getAttribute(BHAttributes.CRITICAL_DAMAGE.get()).removeModifier(BONUS_CRIT_DAMAGE);
+        }
+    }
+
+
+    @Override
+    public void onChangePostAccessorySlot(Player player, ItemStack itemStack) {
+        BeyondHorizon.LOGGER.debug("Item has been put? {}", itemStack.getItem());
+    }
+
+    @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this == Accessories.NULLIFY.get()) {
             return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F), MathUtils.format(this.getMagnitude() * 100.0F));
@@ -56,11 +81,35 @@ public class SinglePassiveAccessory extends AccessorySkill {
         if (this == Accessories.BRING_IT_DOWN.get()) {
             return Component.translatable(this.createId(), (int) this.getMagnitude(), MathUtils.format(Constant.BRING_IT_DOWN_INCREASED_DAMAGE * 100.0F));
         }
+        if (this == Accessories.EXCORIATE.get()) {
+            return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F));
+        }
+        if (this == Accessories.NIGHTSTALKER.get()) {
+            return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F));
+        }
         return super.tooltipDescription(itemStack);
     }
 
+
     @Override
     public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
+        if (this == Accessories.GHOUL.get()) {
+            if (entity instanceof Player player) {
+                player.causeFoodExhaustion(0.015F);
+            }
+        }
+
+        if (this == Accessories.EXCORIATE.get()) {
+            double crit = Math.min(this.getMagnitude(), entity.getAttributeValue(BHAttributes.CRITICAL_CHANCE.get()));
+            if (crit <= 0) return;
+            if (entity.tickCount % 5 == 0) {
+                float randomCrit = entity.getRandom().nextInt((int) (crit * 100.0F)) / 100.0F;
+//                BeyondHorizon.LOGGER.debug("{}", randomCrit);
+                AttributeModifier bonusCritDamage = new AttributeModifier(BONUS_CRIT_DAMAGE, "Bonus crit damage", randomCrit, AttributeModifier.Operation.ADDITION);
+                entity.getAttribute(BHAttributes.CRITICAL_DAMAGE.get()).removeModifier(BONUS_CRIT_DAMAGE);
+                entity.getAttribute(BHAttributes.CRITICAL_DAMAGE.get()).addTransientModifier(bonusCritDamage);
+            }
+        }
         if (this == Accessories.FEATHER_FEET.get()) {
             entity.fallDistance = -1;
         }
@@ -91,6 +140,16 @@ public class SinglePassiveAccessory extends AccessorySkill {
                 }
             }
         }
+    }
+
+    @Override
+    public int onItemUseItem(ItemStack itemStack, int duration) {
+        if (this == Accessories.GHOUL.get()) {
+            if (itemStack.getItem().isEdible()) {
+                return -1;
+            }
+        }
+        return 0;
     }
 
     @Override
@@ -152,6 +211,26 @@ public class SinglePassiveAccessory extends AccessorySkill {
                 }
             }
         }
+        if (this == Accessories.DARK_SUN.get()) {
+            double bonusAD = AttributeUtils.getBonus(attacker, Attributes.ATTACK_DAMAGE);
+            double bonusAP = AttributeUtils.getBonus(attacker, BHAttributes.ABILITY_POWER.get());
+            if (bonusAD >= bonusAP) {
+
+                target.invulnerableTime = 0;
+                float outputDamage = (damageDealt * this.getMagnitude());
+                target.hurt(BHDamageTypes.trueDamage(attacker, null), outputDamage);
+            }
+        }
+        if (this == Accessories.FADED_MOON.get()) {
+            double bonusAD = AttributeUtils.getBonus(attacker, Attributes.ATTACK_DAMAGE);
+            double bonusAP = AttributeUtils.getBonus(attacker, BHAttributes.ABILITY_POWER.get());
+            if (bonusAP >= bonusAD) {
+                target.invulnerableTime = 0;
+                double mana = attacker.getAttributeValue(BHAttributes.MAX_MANA.get());
+                float outputDamage = (float) (mana * this.getMagnitude());
+                target.hurt(BHDamageTypes.magicDamage(attacker, null), outputDamage);
+            }
+        }
         if (this == Accessories.BRING_IT_DOWN.get()) {
             if (attacker instanceof Player player) {
                 int xpLevel = player.experienceLevel;
@@ -192,6 +271,16 @@ public class SinglePassiveAccessory extends AccessorySkill {
            return damageDealt + (target.getHealth() * (this.getMagnitude() * this.getLevel()));
         }
         return damageDealt;
+    }
+
+    @Override
+    public void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {
+        if (this == Accessories.GHOUL.get()) {
+            if (attacker instanceof Player player) {
+                player.getFoodData().eat(5, 0);
+            }
+            attacker.addEffect(new MobEffectInstance(BHEffects.GHOUL_WILL.get(), MathUtils.sec(10), 0, true, true));
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.client.render.projectiles;
+package com.kenhorizon.beyondhorizon.client.render.entity.projectiles;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;

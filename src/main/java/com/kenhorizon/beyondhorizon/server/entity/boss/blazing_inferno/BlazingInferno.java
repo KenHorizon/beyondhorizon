@@ -701,11 +701,12 @@ public class BlazingInferno extends BHBossEntity {
                 float yaw = (float) Math.toRadians(-this.getYRot());
                 float yaw2 = (float) Math.toRadians(-this.getYRot() + 180);
                 float pitch = (float) Math.toRadians(-this.getXRot());
+                this.level().addAlwaysVisibleParticle(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), x, y, z, 0, 0, 0);
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw, pitch, 40, r, g, b, 1.0F, 50F, false, RingParticles.Behavior.GROW), x, y, z, 0, 0, 0);
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw2, pitch, 40, r, g, b, 1.0F, 50F, false, RingParticles.Behavior.GROW), x, y, z, 0, 0, 0);
-
             }
         }
+
         if (this.getAnimationState(ID_SPEAR)) {
             if (this.inRangeOf(8.0D) && this.getAnimationTick() == 1 && target != null) {
                 this.doAvoidTarget(target);
@@ -1564,7 +1565,7 @@ public class BlazingInferno extends BHBossEntity {
         @Override
         public boolean canUse() {
             LivingEntity target = this.entity.getTarget();
-            return super.canUse() && this.entity.eruptionCooldown <= 0 && target != null && target.isAlive() && this.entity.getRandomChances(75) && this.entity.distanceTo(target) < 5;
+            return super.canUse() && this.entity.eruptionCooldown <= 0 && target != null && target.isAlive() && this.entity.getRandomChances(75) && this.entity.targetDistance < 5;
         }
 
         @Override
@@ -1583,7 +1584,7 @@ public class BlazingInferno extends BHBossEntity {
         @Override
         public boolean canUse() {
             LivingEntity target = this.entity.getTarget();
-            return super.canUse() && this.entity.shockwaveCooldown <= 0 && target != null && target.isAlive() && this.entity.distanceTo(target) < 8 && this.entity.getRandomChances(75);
+            return super.canUse() && this.entity.shockwaveCooldown <= 0 && target != null && target.isAlive() && this.entity.targetDistance < 8 && this.entity.getRandomChances(75);
         }
 
         @Override

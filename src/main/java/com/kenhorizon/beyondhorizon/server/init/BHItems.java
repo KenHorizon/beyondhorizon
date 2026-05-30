@@ -251,6 +251,7 @@ public class BHItems {
             .register();
 
     public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(139, 52, 1));
+    public static final RegistryObject<Item> FAYE_FLARES_SPAWN_EGG = spawnEgg("faye_flares", BHEntity.FAYE_FLARES, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(182, 31, 0));
 
 
     private static RegistryObject<Item> spawnEgg(String entityName, RegistryObject entityType, int backgroundColor, int highlightColor) {

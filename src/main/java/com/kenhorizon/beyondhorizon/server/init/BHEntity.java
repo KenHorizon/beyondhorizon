@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingIn
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSpear;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
+import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.libs.registry.RegistryEntity;
 import com.kenhorizon.libs.registry.RegistryEntries;
@@ -26,6 +27,14 @@ public class BHEntity {
             .properties(p -> p.sized(0.85F, 3.1F))
             .properties(EntityType.Builder::fireImmune)
             .tag(Tags.EntityTypes.BOSSES)
+            .register();
+
+    public static final RegistryObject<EntityType<FayeFlares>> FAYE_FLARES = RegistryEntity
+            .register("faye_flares", FayeFlares::new)
+            .lang("Faye Flares")
+            .mobCategory(MobCategory.CREATURE)
+            .properties(p -> p.sized(0.85F, 0.85F))
+            .properties(EntityType.Builder::fireImmune)
             .register();
 
     public static final RegistryObject<EntityType<BlazingSpear>> BLAZING_SPEAR = RegistryEntity

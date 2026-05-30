@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.datagen.loot.BlazingInfernoLootTable;
+import com.kenhorizon.beyondhorizon.datagen.loot.FayeFlaresLootTable;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
@@ -51,6 +52,7 @@ public class BHLootTableProvider {
     public static class Entity extends EntityLootSubProvider {
 
         private final BlazingInfernoLootTable BLAZING_INFERNO = new BlazingInfernoLootTable(BHEntity.BLAZING_INFERNO.get());
+        private final FayeFlaresLootTable FAYE_FLARES = new FayeFlaresLootTable(BHEntity.FAYE_FLARES.get());
 
         public Entity() {
             super(FeatureFlags.REGISTRY.allFlags());
@@ -59,6 +61,7 @@ public class BHLootTableProvider {
         @Override
         public void generate() {
             this.add(BLAZING_INFERNO.getEntityType(), BLAZING_INFERNO.build());
+            this.add(FAYE_FLARES.getEntityType(), FAYE_FLARES.build());
         }
 
         private LootItemEntityPropertyCondition.Builder hasProperties(LootContext.EntityTarget entityTarget, EntityPredicate.Builder predicateBuilder) {

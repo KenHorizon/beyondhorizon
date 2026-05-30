@@ -14,14 +14,15 @@ import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.EruptionRenderer;
-import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingSpearRenderer;
+import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.BlazingSpearRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
-import com.kenhorizon.beyondhorizon.client.render.projectiles.BlazingRodRenderer;
+import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.BlazingRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
+import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAccessoryInventoryPacket;
@@ -112,6 +113,7 @@ public class ClientProxy extends ServerProxy {
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         //bus.addListener(this::addRegisteredLayers);
 
+        EntityRenderers.register(BHEntity.FAYE_FLARES.get(), FayeFlaresRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO.get(), BlazingInfernoRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_ROD.get(), BlazingRodRenderer::new);
         EntityRenderers.register(BHEntity.INFERNO_SHIELD.get(), InfernoShieldRenderer::new);
@@ -130,6 +132,7 @@ public class ClientProxy extends ServerProxy {
     }
 
     public void entityCreationAttribute(EntityAttributeCreationEvent event) {
+        event.put(BHEntity.FAYE_FLARES.get(), FayeFlares.createAttributes());
         event.put(BHEntity.BLAZING_INFERNO.get(), BlazingInferno.createAttributes());
         event.put(BHEntity.INFERNO_SHIELD.get(), InfernoShield.createAttributes());
     }

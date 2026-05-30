@@ -106,10 +106,8 @@ public class AccessoryItem extends BasicItem implements IAccessoryItems<Accessor
             }
             if (!accessory.getAttributeModifiers().isEmpty()) {
                 accessory.addTooltipAttributes(itemStack, tooltip);
-            } else {
-                size++;
             }
-            accessory.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+            accessory.addTooltip(itemStack, tooltip, this.accessories.size(), Utils.isShiftPressed(), i == 0);
         }
     }
 

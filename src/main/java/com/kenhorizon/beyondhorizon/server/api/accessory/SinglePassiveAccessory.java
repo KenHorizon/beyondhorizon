@@ -37,7 +37,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.UUID;
 
 public class SinglePassiveAccessory extends AccessorySkill {
-    private boolean hasAscension = false;
     public static String NBT_BRING_IT_DOWN = "bring_it_down";
     protected int bringItDownStacks = 0;
     protected boolean bringItDownSFX = false;
@@ -54,20 +53,6 @@ public class SinglePassiveAccessory extends AccessorySkill {
 
     public SinglePassiveAccessory(float magnitude) {
         super(magnitude, 1);
-    }
-
-    @Override
-    public void onChangePrevAccessorySlot(Player player, ItemStack itemStack) {
-        BeyondHorizon.LOGGER.debug("Item has been taken? {}", itemStack.getItem());
-        if (this == Accessories.EXCORIATE.get()) {
-            player.getAttribute(BHAttributes.CRITICAL_DAMAGE.get()).removeModifier(BONUS_CRIT_DAMAGE);
-        }
-    }
-
-
-    @Override
-    public void onChangePostAccessorySlot(Player player, ItemStack itemStack) {
-        BeyondHorizon.LOGGER.debug("Item has been put? {}", itemStack.getItem());
     }
 
     @Override
@@ -95,7 +80,7 @@ public class SinglePassiveAccessory extends AccessorySkill {
     public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
         if (this == Accessories.GHOUL.get()) {
             if (entity instanceof Player player) {
-                player.causeFoodExhaustion(0.015F);
+                player.causeFoodExhaustion(0.150F);
             }
         }
 
@@ -117,7 +102,6 @@ public class SinglePassiveAccessory extends AccessorySkill {
             entity.fallDistance -= entity.getMaxFallDistance() + (entity.getMaxFallDistance() * this.getMagnitude() * this.getLevel());
         }
         if (this == Accessories.ASCENSION.get()) {
-            this.hasAscension = true;
             var attrs = entity.getAttributes();
             for (var att : ForgeRegistries.ATTRIBUTES) {
                 boolean hasAttrs = attrs.hasAttribute(att);
@@ -127,14 +111,20 @@ public class SinglePassiveAccessory extends AccessorySkill {
                 }
             }
         }
-        if (this != Accessories.ASCENSION.get()) {
-            this.hasAscension = false;
+    }
+
+
+    @Override
+    public void onChangePrevAccessorySlot(Player player, ItemStack itemStack) {
+        BeyondHorizon.LOGGER.debug("Item has been taken? {}", itemStack.getItem());
+        if (this == Accessories.EXCORIATE.get()) {
+            player.getAttribute(BHAttributes.CRITICAL_DAMAGE.get()).removeModifier(BONUS_CRIT_DAMAGE);
         }
-        if (!this.hasAscension) {
-            var attrs = entity.getAttributes();
+        if (this == Accessories.ASCENSION.get()) {
+            var attrs = player.getAttributes();
             for (var att : ForgeRegistries.ATTRIBUTES) {
                 boolean hasAttrs = attrs.hasAttribute(att);
-                var getAtt = entity.getAttribute(att);
+                var getAtt = player.getAttribute(att);
                 if (hasAttrs && getAtt != null) {
                     getAtt.removeModifier(new AttributeModifier("Atttribute" + att.getDescriptionId(), 1.0D, AttributeModifier.Operation.MULTIPLY_TOTAL));
                 }
@@ -142,6 +132,11 @@ public class SinglePassiveAccessory extends AccessorySkill {
         }
     }
 
+
+    @Override
+    public void onChangePostAccessorySlot(Player player, ItemStack itemStack) {
+        BeyondHorizon.LOGGER.debug("Item has been put? {}", itemStack.getItem());
+    }
     @Override
     public int onItemUseItem(ItemStack itemStack, int duration) {
         if (this == Accessories.GHOUL.get()) {
@@ -279,7 +274,7 @@ public class SinglePassiveAccessory extends AccessorySkill {
             if (attacker instanceof Player player) {
                 player.getFoodData().eat(5, 0);
             }
-            attacker.addEffect(new MobEffectInstance(BHEffects.GHOUL_WILL.get(), MathUtils.sec(10), 0, true, true));
+            attacker.addEffect(new MobEffectInstance(BHEffects.GHOUL_WILL.get(), MathUtils.sec(30), 0, true, true));
         }
     }
 

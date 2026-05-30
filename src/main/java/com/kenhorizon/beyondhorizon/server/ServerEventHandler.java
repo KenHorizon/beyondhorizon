@@ -677,6 +677,9 @@ public class ServerEventHandler {
                             Optional<IAttack> rangedWeaponCallback = trait.IAttackCallback();
                             if (rangedWeaponCallback.isPresent()) {
                                 itemDuration = rangedWeaponCallback.get().onItemUseItem(itemStack, duration);
+                                if (itemDuration < 0) {
+                                    event.setCanceled(true);
+                                }
                             }
                         }
                     }

@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 @SuppressWarnings({"rawtypes", "ConstantConditions"})
 public class ModClientConfig {
+    public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR;
     public static ForgeConfigSpec.BooleanValue ATTRIBUTE_TOOLTIP_OVERHAUl;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_ACCESSORY;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_SKILL;
@@ -27,6 +28,9 @@ public class ModClientConfig {
 
     public ModClientConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Beyond Horizon | Client Configs");
+        DAMAGE_INDICATOR = builder
+                .comment("Allow to see the damage/heal dealt or take")
+                .define("Damage Indicator", true);
         SCREEN_SHAKE = builder
                 .comment("  Allow to do screen shake effect")
                 .define("Screen Shake", true);

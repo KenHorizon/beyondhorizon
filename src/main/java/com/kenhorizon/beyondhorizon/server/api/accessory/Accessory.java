@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
@@ -142,9 +143,17 @@ public abstract class Accessory {
             this.addTooltipTitle(itemStack, tooltip, first);
         }
         if (!this.isTooltipDescriptionEnable()) return;
+        BeyondHorizon.LOGGER.debug("[Accessory] Tooltip size: {}", size);
         boolean flag = size == 1;
-        boolean alwayShow = (BHConfigs.ADVANCED_TOOLTIP || BHConfigs.ADVANCED_TOOLTIP_ACCESSORY) && flag;
-        if ((alwayShow || isShiftPressed) && I18n.exists(this.createId())) {
+//        boolean alwayShow = (BHConfigs.ADVANCED_TOOLTIP || BHConfigs.ADVANCED_TOOLTIP_ACCESSORY) && flag;
+//        if ((alwayShow || isShiftPressed) && I18n.exists(this.createId())) {
+//            this.addTooltipDescription(itemStack, tooltip);
+//        }
+        if (BHConfigs.ADVANCED_TOOLTIP && I18n.exists(this.createId())) {
+            this.addTooltipDescription(itemStack, tooltip);
+        } else if (BHConfigs.ADVANCED_TOOLTIP_ACCESSORY && I18n.exists(this.createId())) {
+            this.addTooltipDescription(itemStack, tooltip);
+        } else if ((flag || isShiftPressed) && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
         }
     }

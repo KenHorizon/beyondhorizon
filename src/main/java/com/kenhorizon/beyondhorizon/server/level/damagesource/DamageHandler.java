@@ -1,8 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.entity.IEntityDamageCap;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
@@ -70,8 +72,9 @@ public class DamageHandler {
     }
 
     public static float missingHealth(LivingEntity entity, float damageDealt, float perPercentage) {
-        float mul = perPercentage + (1.0F + (entity.getHealth() / entity.getMaxHealth()));
-        return multiplier(damageDealt, mul);
+        float missingHealth = (entity.getMaxHealth() - entity.getHealth()) / entity.getMaxHealth();
+        BeyondHorizon.LOGGER.debug("Damage Info [Missing Health] {} {} {} || {}", damageDealt, perPercentage, missingHealth, multiplier(damageDealt, missingHealth - perPercentage));
+        return multiplier(damageDealt, perPercentage >= 1.0F ? missingHealth + perPercentage : missingHealth - perPercentage);
     }
 
     public static float maxHealth(LivingEntity target, float damageDealt, float percentHealth) {

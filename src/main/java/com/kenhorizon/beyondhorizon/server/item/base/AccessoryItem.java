@@ -2,12 +2,9 @@ package com.kenhorizon.beyondhorizon.server.item.base;
 
 import com.google.common.collect.ImmutableList;
 import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
-import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
+import com.kenhorizon.beyondhorizon.server.api.accessory.*;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.ChatFormatting;
@@ -94,7 +91,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItems<Accessor
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-        int size = 0;
+        int size = this.accessories.size();
         for (int i = 0; i < this.accessories.size(); i++) {
             Accessory accessory = this.accessories.get(i);
             if (i == 0) {
@@ -105,9 +102,10 @@ public class AccessoryItem extends BasicItem implements IAccessoryItems<Accessor
                 }
             }
             if (!accessory.getAttributeModifiers().isEmpty()) {
+                size--;
                 accessory.addTooltipAttributes(itemStack, tooltip);
             }
-            accessory.addTooltip(itemStack, tooltip, this.accessories.size(), Utils.isShiftPressed(), i == 0);
+            accessory.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
         }
     }
 

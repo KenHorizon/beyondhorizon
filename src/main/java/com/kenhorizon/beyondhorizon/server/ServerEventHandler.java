@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
@@ -630,14 +631,16 @@ public class ServerEventHandler {
         if (target instanceof Player player) {
             CapabilityCaller.data(player).setCrit(isCrit);
         }
-        float roundedAmount = Math.round(damageDealt * 10) / 10f;
-        int intAmount = (int) roundedAmount;
-        String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
-        Vec3 pos = target.getEyePosition();
-        ChatFormatting damageIndColor = source.is(BHDamageTypeTags.PHYSICAL_DAMAGE) ? ChatFormatting.GOLD : source.is(BHDamageTypeTags.MAGIC_DAMAGE) ? ChatFormatting.BLUE : ChatFormatting.WHITE;
-        MutableComponent component = Component.literal(text).withStyle(isCrit ? ChatFormatting.DARK_RED : damageIndColor, ChatFormatting.BOLD);
-        level.sendParticles(new DamageIndicatorOptions(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
-        event.setAmount(damageDealt);
+        if (BHConfigs.DAMAGE_INDICATOR) {
+            float roundedAmount = Math.round(damageDealt * 10) / 10f;
+            int intAmount = (int) roundedAmount;
+            String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
+            Vec3 pos = target.getEyePosition();
+            ChatFormatting damageIndColor = source.is(BHDamageTypeTags.PHYSICAL_DAMAGE) ? ChatFormatting.GOLD : source.is(BHDamageTypeTags.MAGIC_DAMAGE) ? ChatFormatting.BLUE : ChatFormatting.WHITE;
+            MutableComponent component = Component.literal(text).withStyle(isCrit ? ChatFormatting.DARK_RED : damageIndColor, ChatFormatting.BOLD);
+            level.sendParticles(new DamageIndicatorOptions(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
+            event.setAmount(damageDealt);
+        }
     }
     private int enchantmentModifiyExpDrop(LivingEntity attacker, int experienceDrop, LivingEntity target) {
         for (EquipmentSlot slot : EquipmentSlot.values()) {

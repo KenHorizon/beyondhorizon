@@ -51,18 +51,7 @@ public class ExtraDamageAccessory extends AccessorySkill {
         return DamageHandler.multiplier(damageDealt, damageMultiplier);
     });
     public static final ExtraDamageAccessory.DamageTypeFunction TARGET_MISSING_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        float damageMultiplier = (target.getMaxHealth() - target.getHealth() / target.getMaxHealth());
-        float amplifier = 0.0F;
-        if ((magnitude * level) != 0) {
-            for (int i = 0; i < (100 * magnitude); ++i) {
-                if (i % magnitude == 0) {
-                    amplifier++;
-                    float perDamage = (amplifier / 100.0F);
-                    return DamageHandler.multiplier (damageDealt, perDamage);
-                }
-            }
-        }
-        return DamageHandler.multiplier(damageDealt, damageMultiplier);
+        return DamageHandler.missingHealth(target, damageDealt, magnitude);
     });
 
     public static final ExtraDamageAccessory.DamageTypeFunction BONUS_DAMAGE = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {

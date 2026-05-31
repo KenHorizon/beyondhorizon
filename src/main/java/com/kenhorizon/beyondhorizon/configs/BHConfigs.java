@@ -14,6 +14,7 @@ public class BHConfigs {
     public static boolean ADVANCED_TOOLTIP_ACCESSORY = true;
     public static boolean ADVANCED_TOOLTIP_SKILL = true;
     public static boolean ADVANCED_TOOLTIP = true;
+    public static boolean DAMAGE_INDICATOR = true;
     public static boolean SCREEN_SHAKE = true;
     public static int SCREEN_SHAKE_AMOUNT = 100;
     public static GameHuds GAME_HUD = GameHuds.MOD;
@@ -37,6 +38,7 @@ public class BHConfigs {
             SCREEN_SHAKE = ModClientConfig.SCREEN_SHAKE.get();
             SCREEN_SHAKE_AMOUNT = ModClientConfig.SCREEN_SHAKE_AMOUNT.get();
             GAME_HUD = ModClientConfig.GAME_HUD.get();
+            DAMAGE_INDICATOR = ModClientConfig.DAMAGE_INDICATOR.get();
             //---------------------------------------------------------------------//
             ENCHANTMENT_BREAK_LEVEL = ModCommonConfig.ENCHANTMENT_BREAK_LEVEL.get();
             ANVIL_COSTING = ModCommonConfig.ANVIL_COSTING.get();

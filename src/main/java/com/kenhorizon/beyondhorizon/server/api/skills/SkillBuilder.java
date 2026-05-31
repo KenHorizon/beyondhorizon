@@ -36,14 +36,14 @@ public class SkillBuilder implements IReloadable {
     public void reload() {
         this.suppliers.forEach(supplier -> {
             Skill skill = supplier.get();
+            if (!this.filter.contains(skill)) {
+                this.filter.add(skill);
+            }
             skill.innateSkill().forEach(innate -> {
                 if (!this.filter.contains(innate.get())) {
                     this.filter.add(innate.get());
                 }
             });
-            if (!this.filter.contains(skill)) {
-                this.filter.add(skill);
-            }
         });
 
         this.skills = this.filter.stream().filter(skill -> {

@@ -39,7 +39,9 @@ public class BHMobEffect extends MobEffect {
     public BHMobEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
-
+    public BHMobEffect(MobEffectCategory category) {
+        this(category, 0x00000000);
+    }
     @Override
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (this == BHEffects.GHOUL_WILL.get()) {

@@ -11,8 +11,13 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.level.Level;
 
 public class StunEffect extends BHMobEffect {
+
     public StunEffect(MobEffectCategory category, int color) {
         super(category, color);
+    }
+
+    public StunEffect(MobEffectCategory category) {
+        super(category);
     }
 
     @Override

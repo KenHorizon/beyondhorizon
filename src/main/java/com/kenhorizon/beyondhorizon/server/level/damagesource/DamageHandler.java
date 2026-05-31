@@ -2,14 +2,23 @@ package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.entity.IEntityDamageCap;
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class DamageHandler {
+    public static DamageSource dealAdaptiveDamage(LivingEntity attacker, float damagedealt) {
+        double AD = AttributeUtils.getBonus(attacker, Attributes.ATTACK_DAMAGE);
+        double AP = AttributeUtils.getBonus(attacker, BHAttributes.ABILITY_POWER.get());
+        return AD > AP ? BHDamageTypes.physicalDamage(attacker, null) : BHDamageTypes.magicDamage(attacker, null);
+    }
+
     public static boolean damage(LivingEntity target, boolean bypassIFrame, DamageSource source, DamageTags damageTags, float damageModifiers, float amount) {
         if (bypassIFrame) {
             target.invulnerableTime = 0;

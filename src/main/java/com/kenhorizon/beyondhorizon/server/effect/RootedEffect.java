@@ -6,9 +6,13 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public class RootedEffect extends MobEffect {
+public class RootedEffect extends BHMobEffect {
     public RootedEffect(MobEffectCategory category, int color) {
         super(category, color);
+    }
+
+    public RootedEffect(MobEffectCategory category) {
+        super(category);
     }
 
     @Override

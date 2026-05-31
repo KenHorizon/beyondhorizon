@@ -48,10 +48,8 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     public AnimationState animationBlazingRod = new AnimationState();
     public static int animationId = 1;
     public static final int ID_BLAZING_ROD = createAnimationID();
-    private boolean counterclockWise;
     public int fireballCooldown = 0;
     public static final int FIREBALL_COOLDOWN = MathUtils.sec(6);
-    private static final EntityDataAccessor<Boolean> COUNTER_CLOCKWISE = SynchedEntityData.defineId(FayeFlares.class, EntityDataSerializers.BOOLEAN);
 
     public FayeFlares(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -80,16 +78,6 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(COUNTER_CLOCKWISE, false);
-    }
-
-    public void setCounterClockWise(boolean v) {
-        this.entityData.set(COUNTER_CLOCKWISE, v);
-        this.counterclockWise = v;
-    }
-
-    public boolean isCounterClockWise() {
-        return this.level().isClientSide() ? this.entityData.get(COUNTER_CLOCKWISE) : this.counterclockWise;
     }
 
     @Override
@@ -259,14 +247,6 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
         } else {
 
             if (this.getAnimationState(ID_BLAZING_ROD)) {
-                if (this.getAnimationTick() == 1) {
-                    this.setCounterClockWise(this.getRandom().nextBoolean());
-                }
-//                if (this.getAnimationTick() > 0 && this.getAnimationTick() <= 60) {
-//                    if (target != null) {
-//                        this.rotateTargets(target, this.isCounterClockWise());
-//                    }
-//                }
                 if (this.getAnimationTick() <= 60 && target != null) {
                     this.getLookControl().setLookAt(target, 30, 30);
                 }

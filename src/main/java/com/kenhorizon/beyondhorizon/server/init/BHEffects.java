@@ -24,7 +24,7 @@ public class BHEffects {
             RegistryHelper.registerEffects("adrenaline", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x00000000)
                     .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "514b12e1-fce8-4a6a-83ac-42f977cdf1cb", 2.10F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> GHOUL_WILL =
-            RegistryHelper.registerEffects("ghoul_will", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL, 0x00000000)
+            RegistryHelper.registerEffects("ghoul_will", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x00000000)
                     .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "dbd4c61c-8c18-41cb-be67-668ac9249c69", 0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> BLEED =
             RegistryHelper.registerEffects("bleed", () -> new BHMobEffect(MobEffectCategory.HARMFUL, 0x00000000));
@@ -55,13 +55,16 @@ public class BHEffects {
     public static final RegistryObject<MobEffect> PARALYZE =
             RegistryHelper.registerEffects("paralyze", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0xFFD800));
     public static final RegistryObject<MobEffect> LEECH =
-            RegistryHelper.registerEffects("leech", () -> new ModifierEffect(MobEffectCategory.BENEFICIAL, 0xFF9E9E, 0.10F).addAttributeModifier(BHAttributes.PHYSICALVAMP.get(), "3dee7ca1-5b28-48c2-811f-083979e21d01", (double) 0.05F, AttributeModifier.Operation.ADDITION));
+            RegistryHelper.registerEffects("leech", () -> new ModifierEffect(MobEffectCategory.BENEFICIAL, 0xFF9E9E, 0.10F)
+                    .addAttributeModifier(BHAttributes.PHYSICALVAMP.get(), "3dee7ca1-5b28-48c2-811f-083979e21d01", (double) 0.05F, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<MobEffect> FEAR =
             RegistryHelper.registerEffects("fear", () -> new FearEffect(MobEffectCategory.NEUTRAL, 0x303030));
     public static final RegistryObject<MobEffect> RAGE =
-            RegistryHelper.registerEffects("rage", () -> new ModifierEffect(MobEffectCategory.BENEFICIAL, 0xFF0000, 0.05D).addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "0b962cab-73cc-4159-970d-f4354c51bd18", (double) 0.05D, AttributeModifier.Operation.ADDITION).addAttributeModifier(Attributes.MOVEMENT_SPEED, "2547b4b4-4ac2-4085-b503-564c00835e39", (double) 0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            RegistryHelper.registerEffects("rage", () -> new ModifierEffect(MobEffectCategory.BENEFICIAL, 0xFF0000, 0.05D)
+                    .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "0b962cab-73cc-4159-970d-f4354c51bd18", (double) 0.05D, AttributeModifier.Operation.ADDITION).addAttributeModifier(Attributes.MOVEMENT_SPEED, "2547b4b4-4ac2-4085-b503-564c00835e39", (double) 0.2F, AttributeModifier.Operation.MULTIPLY_TOTAL));
     public static final RegistryObject<MobEffect> VULNERABLE =
-            RegistryHelper.registerEffects("vulnerable", () -> new ModifierEffect(MobEffectCategory.HARMFUL, 0x4040400, 0.05F).addAttributeModifier(BHAttributes.DAMAGE_TAKEN.get(), "9a5dcc14-4692-42ef-8304-3985a91f5220", (double)-0.05F, AttributeModifier.Operation.ADDITION));
+            RegistryHelper.registerEffects("vulnerable", () -> new ModifierEffect(MobEffectCategory.HARMFUL, 0x4040400, 0.05F)
+                    .addAttributeModifier(BHAttributes.DAMAGE_TAKEN.get(), "9a5dcc14-4692-42ef-8304-3985a91f5220", (double)-0.05F, AttributeModifier.Operation.ADDITION));
     public static final RegistryObject<MobEffect> HEALING_SICKNESS =
             RegistryHelper.registerEffects("healing_sickness", () -> new BHMobEffect(MobEffectCategory.NEUTRAL, 0x00000000));
     public static final RegistryObject<MobEffect> STUN =

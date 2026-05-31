@@ -103,6 +103,11 @@ public class AccessoryBuilder implements IReloadable {
         AtomicReference<Accessory> builder = new AtomicReference<Accessory>(null);
         this.suppliers.forEach(supplier -> {
             Accessory accessory = supplier.get();
+            accessory.innateSkill().forEach(innate -> {
+                if (!this.filter.contains(innate.get())) {
+                    this.filter.add(innate.get());
+                }
+            });
             if (!this.filter.contains(accessory)) {
                 this.filter.add(accessory);
             }

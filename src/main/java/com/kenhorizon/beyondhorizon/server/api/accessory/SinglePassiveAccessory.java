@@ -80,7 +80,9 @@ public class SinglePassiveAccessory extends AccessorySkill {
     public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
         if (this == Accessories.GHOUL.get()) {
             if (entity instanceof Player player) {
-                player.causeFoodExhaustion(0.150F);
+                if (player.tickCount % 10 == 0) {
+                    player.causeFoodExhaustion(1.50F);
+                }
             }
         }
 
@@ -274,7 +276,7 @@ public class SinglePassiveAccessory extends AccessorySkill {
             if (attacker instanceof Player player) {
                 player.getFoodData().eat(5, 0);
             }
-            attacker.addEffect(new MobEffectInstance(BHEffects.GHOUL_WILL.get(), MathUtils.sec(30), 0, true, true));
+            attacker.addEffect(new MobEffectInstance(BHEffects.GHOUL_WILL.get(), MathUtils.mins(5), 0, true, true));
         }
     }
 

@@ -10,7 +10,9 @@ import net.minecraft.world.level.storage.DimensionDataStorage;
 public class WorldData extends SavedData {
     private static final String IDENTIFIER = "BeyondHorizonWoldData";
     private static final String NBT_ENDER_DRAGON_IS_DEFEATED = "EnderDragon";
+    private static final String NBT_WITHER_BOSS_IS_DEFEATED = "WitherBoss";
     private static final String NBT_BLAZING_INFERNO_IS_DEFEATED = "BlazingInferno";
+    private boolean witherBossDefeated = false;
     private boolean blazingInfernoDefeated = false;
     private boolean enderDragonDefeated = false;
 
@@ -34,14 +36,24 @@ public class WorldData extends SavedData {
         WorldData data = new WorldData();
         data.setEnderDragonIsDefeated(nbt.getBoolean(NBT_BLAZING_INFERNO_IS_DEFEATED));
         data.setBlazingInfernoIsDefeated(nbt.getBoolean(NBT_BLAZING_INFERNO_IS_DEFEATED));
+        data.setWitherBossIsDefeated(nbt.getBoolean(NBT_WITHER_BOSS_IS_DEFEATED));
         return data;
     }
 
     @Override
     public CompoundTag save(CompoundTag nbt) {
+        nbt.putBoolean(NBT_WITHER_BOSS_IS_DEFEATED, this.isWitherBossDefeated());
         nbt.putBoolean(NBT_ENDER_DRAGON_IS_DEFEATED, this.isEnderDragonDefeated());
         nbt.putBoolean(NBT_BLAZING_INFERNO_IS_DEFEATED, this.isBlazingInfernoDefeated());
         return nbt;
+    }
+
+    public void setWitherBossIsDefeated(boolean defeated) {
+        this.witherBossDefeated = defeated;
+    }
+
+    public boolean isWitherBossDefeated() {
+        return this.witherBossDefeated;
     }
 
     public void setBlazingInfernoIsDefeated(boolean defeated) {
@@ -51,6 +63,7 @@ public class WorldData extends SavedData {
     public boolean isBlazingInfernoDefeated() {
         return this.blazingInfernoDefeated;
     }
+
     public void setEnderDragonIsDefeated(boolean defeated) {
         this.enderDragonDefeated = defeated;
     }

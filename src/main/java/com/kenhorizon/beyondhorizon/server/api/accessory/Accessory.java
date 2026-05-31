@@ -113,7 +113,9 @@ public abstract class Accessory {
     public float getMagnitude() {
         return magnitude;
     }
-
+    public List<RegistryObject<? extends Accessory>> innateSkill() {
+        return this.innateSkills;
+    }
     public Accessory innate(RegistryObject<Accessory> skill) {
         this.innateSkills.add(skill);
         return this;

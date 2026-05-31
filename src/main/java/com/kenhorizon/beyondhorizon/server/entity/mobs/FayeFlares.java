@@ -1,11 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.entity.mobs;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ai.*;
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
+import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
@@ -15,6 +16,8 @@ import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -45,14 +48,15 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     public AnimationState animationBlazingRod = new AnimationState();
     public static int animationId = 1;
     public static final int ID_BLAZING_ROD = createAnimationID();
-
+    private boolean counterclockWise;
     public int fireballCooldown = 0;
     public static final int FIREBALL_COOLDOWN = MathUtils.sec(6);
+    private static final EntityDataAccessor<Boolean> COUNTER_CLOCKWISE = SynchedEntityData.defineId(FayeFlares.class, EntityDataSerializers.BOOLEAN);
 
     public FayeFlares(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
         this.setExp(10);
-        this.moveControl = new FlyingMoveControl(this, 5, true);
+        this.moveControl = new FlyingMoveControl(this, 7, true);
         this.setMaxUpStep(2.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
@@ -71,6 +75,21 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
             return false;
         }
         return super.hurt(source, amount);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(COUNTER_CLOCKWISE, false);
+    }
+
+    public void setCounterClockWise(boolean v) {
+        this.entityData.set(COUNTER_CLOCKWISE, v);
+        this.counterclockWise = v;
+    }
+
+    public boolean isCounterClockWise() {
+        return this.level().isClientSide() ? this.entityData.get(COUNTER_CLOCKWISE) : this.counterclockWise;
     }
 
     @Override
@@ -96,7 +115,20 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
                 .add(Attributes.FLYING_SPEED, 0.45F)
                 .build();
     }
-
+    @Override
+    public boolean isAlliedTo(Entity entity) {
+        if (entity == null) {
+            return false;
+        } else if (entity == this) {
+            return true;
+        } else if (super.isAlliedTo(entity)) {
+            return true;
+        } else if (entity instanceof FayeFlares) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 80));
@@ -157,8 +189,8 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     }
 
     private void rotateTargets(Entity entity, boolean counterClockwise) {
-        float rot = (counterClockwise ? 0.25F : -0.25F) + entity.tickCount * 0.12F;
-        Vec3 orbitBy = new Vec3(0.0D, 0.5D, 2.0D).yRot((float) -Math.toRadians(rot));
+        float rot = (counterClockwise ? 0.25F : -0.25F) + entity.tickCount * 3;
+        Vec3 orbitBy = new Vec3(0.0D, 0.50D, 8.0D).yRot((float) -Math.toRadians(rot));
         Vec3 orbitTarget = entity.position().add(orbitBy).subtract(this.position());
         this.setXRot(10.0F);
         this.setDeltaMovement(orbitTarget.scale(0.25F));
@@ -208,6 +240,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
 
             }
             if (this.getAnimationState(ID_BLAZING_ROD)) {
+
                 if (this.getAnimationTick() == 60) {
                     float r = ColorUtil.getFARGB(0xFF0000)[0];
                     float g = ColorUtil.getFARGB(0xFF0000)[1];
@@ -223,58 +256,34 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw2, pitch, 40, r, g, b, 1.0F, 50F, false, RingParticles.Behavior.GROW), x, y, z, 0, 0, 0);
                 }
             }
-        }
-        if (this.getAnimationState(ID_BLAZING_ROD)) {
-//            if (this.getAnimationTick() <= 60) {
-//                Vec3 vec3 = this.getDeltaMovement().multiply(1.0D, 0.6D, 1.0D);
-//                if (!this.level().isClientSide() && target != null) {
-//                    double d0 = vec3.y;
-//                    if (this.getY() < target.getY() || this.getY() < target.getY() + 5.0D) {
-//                        d0 = Math.max(0.0D, d0);
-//                        d0 += 0.3D - d0 * (double) 0.6F;
-//                    }
-//
-//                    vec3 = new Vec3(vec3.x, d0, vec3.z);
-//                    Vec3 vec31 = new Vec3(target.getX() - this.getX() + 4.0D, 0.0D, target.getZ() - this.getZ() + 4.0D);
-//                    if (vec31.horizontalDistanceSqr() > 9.0D) {
-//                        Vec3 vec32 = vec31.normalize();
-//                        vec3 = vec3.add(vec32.x * 0.3D - vec3.x * 0.6D, 0.0D, vec32.z * 0.3D - vec3.z * 0.6D);
+        } else {
+
+            if (this.getAnimationState(ID_BLAZING_ROD)) {
+                if (this.getAnimationTick() == 1) {
+                    this.setCounterClockWise(this.getRandom().nextBoolean());
+                }
+//                if (this.getAnimationTick() > 0 && this.getAnimationTick() <= 60) {
+//                    if (target != null) {
+//                        this.rotateTargets(target, this.isCounterClockWise());
 //                    }
 //                }
-//
-//                this.setDeltaMovement(vec3);
-//            }
-            if (this.getAnimationTick() == 60) {
-                if (target != null) {
-
-                    this.performRangedAttack(3, target, 10, 1.0F, 5.0F);
-                    if (!this.isSilent()) {
-                        this.playSound(BHSounds.BLAZING_INFERNO_SHOOT.get(), 1.0F, 1.0F);
+                if (this.getAnimationTick() <= 60 && target != null) {
+                    this.getLookControl().setLookAt(target, 30, 30);
+                }
+                if (this.targetDistance < 4) {
+                    this.getMoveControl().strafe(-1.50F, 1.25F);
+                } else {
+                    if (target != null) {
+                        this.getNavigation().moveTo(target, 1.0D);
                     }
                 }
-                if (this.level().isClientSide()) {
-                    float r = ColorUtil.getFARGB(0xFF0000)[0];
-                    float g = ColorUtil.getFARGB(0xFF0000)[1];
-                    float b = ColorUtil.getFARGB(0xFF0000)[2];
-                    double x = this.getX();
-                    double y = this.getY() + this.getBbHeight() / 2;
-                    double z = this.getZ();
-                    float yaw = (float) Math.toRadians(-this.getYRot());
-                    float yaw2 = (float) Math.toRadians(-this.getYRot() + 180);
-                    float pitch = (float) Math.toRadians(-this.getXRot());
-                    this.level().addAlwaysVisibleParticle(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), x, y, z, 0, 0, 0);
-                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw, pitch, 40, r, g, b, 1.0F, 50F, false, RingParticles.Behavior.GROW), x, y, z, 0, 0, 0);
-                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw2, pitch, 40, r, g, b, 1.0F, 50F, false, RingParticles.Behavior.GROW), x, y, z, 0, 0, 0);
-                }
-            }
-            if (this.getAnimationTick() <= 60 && target != null) {
-                this.getLookControl().setLookAt(target, 30, 30);
-            }
-            if (this.targetDistance < 8) {
-                this.getMoveControl().strafe(-1.50F, 1.25F);
-            } else {
-                if (target != null) {
-                    this.getNavigation().moveTo(target, 1.0D);
+                if (this.getAnimationTick() == 60) {
+                    if (target != null) {
+                        this.performRangedAttack(3, target, 10, 1.0F, 5.0F);
+                        if (!this.isSilent()) {
+                            this.playSound(BHSounds.BLAZING_INFERNO_SHOOT.get(), 1.0F, 1.0F);
+                        }
+                    }
                 }
             }
         }

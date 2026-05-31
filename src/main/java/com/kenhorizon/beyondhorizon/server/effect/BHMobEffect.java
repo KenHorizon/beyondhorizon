@@ -44,7 +44,11 @@ public class BHMobEffect extends MobEffect {
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (this == BHEffects.GHOUL_WILL.get()) {
             if (entity instanceof Player player) {
-                player.getFoodData().setExhaustion(-1.0F);
+                player.getFoodData().setExhaustion(-999.0F);
+                if (player.tickCount % 40 == 0) {
+                    player.heal(0.50F);
+                    player.getFoodData().eat(1, 0);
+                }
             }
         }
         if (this == BHEffects.INFLAME.get()) {

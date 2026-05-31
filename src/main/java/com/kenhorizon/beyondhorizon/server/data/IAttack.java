@@ -50,6 +50,13 @@ public interface IAttack {
         return false;
     }
 
+    /**
+     * Handle item duration use
+     * @param itemStack Item being used for
+     * @param duration The total duration of item use
+     * @return Item used in duration otherwise if negative value will not be used
+     * */
+
     default int onItemUseItem(ItemStack itemStack, int duration) {
         return 0;
     }

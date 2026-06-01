@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
@@ -16,7 +17,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -25,8 +25,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.Foods;
-import net.minecraft.world.item.BowlFoodItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
@@ -230,7 +228,8 @@ public class SinglePassiveAccessory extends AccessorySkill {
         }
         if (this == Accessories.BRING_IT_DOWN.get()) {
             if (attacker instanceof Player player) {
-                int xpLevel = player.experienceLevel;
+                var roleClass = CapabilityCaller.levelSystem(player);
+                int xpLevel = roleClass != null ? roleClass.getLevel() : 1;
                 float baseDamage = (this.getMagnitude() * (xpLevel + 1));
                 this.bringItDownStacks++;
 //                BeyondHorizon.LOGGER.debug("Bring it down stacks: {} damage {}", this.bringItDownStacks, baseDamage);

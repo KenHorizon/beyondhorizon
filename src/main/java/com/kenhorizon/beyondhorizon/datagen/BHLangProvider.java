@@ -7,8 +7,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSets;
-import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
-import com.kenhorizon.beyondhorizon.server.api.classes.RoleClasses;
+import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
@@ -149,13 +148,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.FADED_MOON.get(), "Faded Moon", "Convert 25% Max Mana into additional bonus magic damage on-hit");
         this.addAccessory(Accessories.TWO_WORLD.get(), "Two World", "Gain Dark Sun and Faded Moon, If you have more than bonus attack damage to ability power enter Dark Sun and if you have more than ability power to attack damage enter Faded Moon ");
         //
-        this.addRole(RoleClasses.ASSASSIN.get(), "Assassin", "Specialty of stealth to ambush and kill the target");
-        this.addRole(RoleClasses.MARKSMAN.get(), "Marksman", "Specialize in precision, long range engagement and delivering consistent, high damage from safe distance");
-        this.addRole(RoleClasses.CASTER.get(), "Caster", "Caster or Mage, specialize the casting powerful spell and ability");
-        this.addRole(RoleClasses.VANGUARD.get(), "Vanguard", "Vanguard or Tank that specialize defense and utility control in combat");
-        this.addRole(RoleClasses.STRIKER.get(), "Striker", "A close combat class that specialize powerful strike and engage to the enemy");
-        this.addRole(RoleClasses.SUPPORT.get(), "Support", "A sub-class to the mage who specialize the casting powerful healing and buff to allied");
-        //
+
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon | Ingredients");
         creativeTabs(BHCreativeTabs.BH_TOOLS, "Beyond Horizon | Tools");
         creativeTabs(BHCreativeTabs.BH_ACCESSORY, "Beyond Horizon | Accessorry");
@@ -222,21 +215,7 @@ public class BHLangProvider extends LanguageProvider {
 
         }
     }
-    private void addRole(RoleClass roleClass, String name) {
-        this.add(roleClass.getDescriptionId(), name);
-    }
 
-    private void addRole(RoleClass roleClass, String name, String... descriptions) {
-        this.add(roleClass.getDescriptionId(), name);
-        for (int i = 0; i < descriptions.length; i++) {
-            if (i == 0) {
-                this.add(roleClass.getDescriptionId() + ".desc", descriptions[i]);
-            } else {
-                this.add(roleClass.getDescriptionId() + ".desc." + i, descriptions[i]);
-            }
-
-        }
-    }
     private void addSkills(Skill skill, String name) {
         this.add(skill.getDescriptionId(), name);
     }

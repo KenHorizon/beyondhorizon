@@ -2,7 +2,6 @@ package com.kenhorizon.beyondhorizon.server.api.classes;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
@@ -34,7 +33,7 @@ import net.minecraft.world.item.ItemStack;
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class RoleClass implements IAttack, IEntityProperties {
+public class LevelSystem implements IAttack, IEntityProperties {
     public enum AttributePoints implements StringRepresentable {
         STRENGHT,
         VITALITY,
@@ -53,9 +52,6 @@ public class RoleClass implements IAttack, IEntityProperties {
         }
     }
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
-    public static final String CLASS_TAGS = "id";
-    public static final String MASTERRY_TAGS = "Mastery";
-    public static final String CLASS_TRAITS_LEVEL_TAGS = "ClassTraitsUnlocked";
     public static final String REQUIRED_LEVEL_TAGS = "RequiredLevel";
     public static final String DEX_TAGS = "Dex";
     public static final String INT_TAGS = "Int";
@@ -74,7 +70,6 @@ public class RoleClass implements IAttack, IEntityProperties {
     private static final UUID AGILITY_ID = UUID.fromString("83f8cf72-6425-4217-8b89-6512a2ecf4c3");
     private static final UUID DEXERITY_ID = UUID.fromString("af62fce2-34f3-42e6-9202-bd1a35770cbc");
     private static final UUID INTELLIGENCE_ID = UUID.fromString("f05bc533-96c0-4e8f-91b2-ce899d446d88");
-    public RoleClass activeRoleClass;
     private int dex;
     private int inte;
     private int agi;
@@ -93,68 +88,10 @@ public class RoleClass implements IAttack, IEntityProperties {
     private boolean unlockedClassAndTraits = false;
     @Nullable
     protected String descriptionId;
-    private final MasterySkillCategory masterySkillCategory = new MasterySkillCategory();
 
-    public RoleClass() {
+    public LevelSystem() {
     }
 
-    public MasterySkillCategory masterySkillCategory() {
-        return this.masterySkillCategory;
-    }
-
-    public String getName() {
-        return BHRegistries.ROLE_CLASS_KEY.get().getKey(this).getPath();
-    }
-
-    public String getDescriptionId() {
-        return this.getOrCreateDescriptionId();
-    }
-
-    public String getId() {
-        return BHRegistries.ROLE_CLASS_KEY.get().getKey(this).getNamespace();
-    }
-
-    protected String getOrCreateDescriptionId() {
-        if (this.descriptionId == null) {
-            this.descriptionId = String.format("role.class.%s.%s", this.getId(), this.getName());
-        }
-        return this.descriptionId;
-    }
-
-
-    protected String createId() {
-        return createId(0);
-    }
-
-    protected String createId(int lines) {
-        return lines == 0 ? String.format("%s.desc", this.getDescriptionId()) : String.format("%s.desc.%s", this.getDescriptionId(), lines);
-    }
-
-    public List<Component> getRoleDescription() {
-        return this.wrappedText(Component.translatable(this.createId(), this.getName()));
-    }
-
-    private List<Component> wrappedText(Component component) {
-        List<Component> list = new ArrayList<>();
-        Minecraft minecraft = Minecraft.getInstance();
-        Font font = minecraft.font;
-        Component desc = Component.translatable(this.createId(), this.getName());
-        List<FormattedCharSequence> wrappedText = font.split(desc, 158);
-        for (FormattedCharSequence format : wrappedText) {
-            List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
-            Component text = Component.literal(texts.get(0).getString());
-            list.add(text);
-        }
-        return list;
-    }
-    public RoleClass getActiveRole() {
-        return this.activeRoleClass;
-    }
-
-
-    public ResourceLocation getResourceLocation() {
-        return ResourceLocation.fromNamespaceAndPath(this.getId(), this.getName());
-    }
 
     public Optional<IAttack> IAttack() {
         return Optional.of(this);
@@ -178,10 +115,6 @@ public class RoleClass implements IAttack, IEntityProperties {
 
     public boolean isAlreadyReachedRequiredLevel() {
         return alreadyReachedRequiredLevel;
-    }
-
-    public void setRoles(RoleClass roles) {
-        this.activeRoleClass = roles;
     }
 
     public void addStr(int amount) {
@@ -368,7 +301,6 @@ public class RoleClass implements IAttack, IEntityProperties {
     }
 
     public void resetEverything() {
-        this.setRoles(RoleClasses.NONE.get());
         this.setPoints(0);
         this.setLevel(0);
         this.expProgress = 0;
@@ -432,17 +364,12 @@ public class RoleClass implements IAttack, IEntityProperties {
 
     public CompoundTag saveNbt() {
         CompoundTag nbt = new CompoundTag();
-        ResourceLocation roleId = BHRegistries.ROLE_CLASS_KEY.get().getKey(this.activeRoleClass);
-        ResourceLocation roleNull = BHRegistries.ROLE_CLASS_KEY.get().getKey(RoleClasses.NONE.get());
-        nbt.putString(CLASS_TAGS, roleId == null ? roleNull.toString() : roleId.toString());
         nbt.putInt(LEVELS_TAGS, this.getLevel());
         nbt.putInt(POINTS_TAGS, this.getPoints());
         nbt.putBoolean(REQUIRED_LEVEL_TAGS, this.alreadyReachedRequiredLevel);
-        nbt.putBoolean(CLASS_TRAITS_LEVEL_TAGS, this.unlockedClassAndTraits);
         nbt.put(ATTRIBUTE_TAGS, this.createListSkills());
         nbt.putFloat(EXP_TAGS, this.expProgress);
         nbt.putFloat(EXP_REQUIRED_TAGS, this.expRequired);
-        nbt.put(MASTERRY_TAGS, this.masterySkillCategory().saveNbt());
         return nbt;
     }
 
@@ -460,7 +387,6 @@ public class RoleClass implements IAttack, IEntityProperties {
     }
 
     public void loadNbt(CompoundTag nbt) {
-        this.activeRoleClass = BHRegistries.ROLE_CLASS_KEY.get().getValue(ResourceLocation.parse(nbt.getString(CLASS_TAGS)));
         this.levels = nbt.getInt(LEVELS_TAGS);
         this.points = nbt.getInt(POINTS_TAGS);
         ListTag attributeTagList = nbt.getList(ATTRIBUTE_TAGS, Tag.TAG_COMPOUND);
@@ -474,11 +400,7 @@ public class RoleClass implements IAttack, IEntityProperties {
             this.inte = attributeTags.getInt(INT_TAGS);
         }
         this.alreadyReachedRequiredLevel = nbt.getBoolean(REQUIRED_LEVEL_TAGS);
-        this.unlockedClassAndTraits = nbt.getBoolean(CLASS_TRAITS_LEVEL_TAGS);
         this.expProgress = nbt.getFloat(EXP_TAGS);
         this.expRequired = nbt.getFloat(EXP_REQUIRED_TAGS);
-        if (nbt.contains(MASTERRY_TAGS)) {
-            this.masterySkillCategory.loadNbt(nbt);
-        }
     }
 }

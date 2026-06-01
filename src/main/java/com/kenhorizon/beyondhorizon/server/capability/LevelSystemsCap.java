@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
+import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class RoleClassCap implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static ResourceLocation NAME = BeyondHorizon.resource("roles");
-    private final LazyOptional<RoleClass> handler = LazyOptional.of(RoleClass::new);
+public class LevelSystemsCap implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+    public static ResourceLocation NAME = BeyondHorizon.resource("leyel_systems");
+    private final LazyOptional<LevelSystem> handler = LazyOptional.of(LevelSystem::new);
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {

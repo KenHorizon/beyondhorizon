@@ -9,9 +9,9 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
+import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.handler.UndyingTotemAbility;
 import com.kenhorizon.beyondhorizon.server.capability.*;
-import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
@@ -88,7 +88,7 @@ public class ServerEventHandler {
     public void onEntityJoin(EntityJoinLevelEvent event) {
         if (!event.getLevel().isClientSide()) {
             if (event.getEntity() instanceof Player player) {
-                RoleClass role = CapabilityCaller.roleClass(player);
+                LevelSystem role = CapabilityCaller.levelSystem(player);
                 PlayerData data = CapabilityCaller.data(player);
                 NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) player);
                 NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) player);
@@ -118,7 +118,7 @@ public class ServerEventHandler {
 
     @SubscribeEvent
     public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        RoleClass role = CapabilityCaller.roleClass(event.getEntity());
+        LevelSystem role = CapabilityCaller.levelSystem(event.getEntity());
         PlayerData data = CapabilityCaller.data(event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) event.getEntity());
@@ -126,7 +126,7 @@ public class ServerEventHandler {
 
     @SubscribeEvent
     public void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        RoleClass role = CapabilityCaller.roleClass(event.getEntity());
+        LevelSystem role = CapabilityCaller.levelSystem(event.getEntity());
         PlayerData data = CapabilityCaller.data(event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) event.getEntity());
@@ -163,8 +163,8 @@ public class ServerEventHandler {
         if (CombatCoreCap.canAttachTo(entity)) {
             event.addCapability(CombatCoreCap.NAME, new CombatCoreCap());
         }
-        if (RoleClassCap.canAttachTo(entity)) {
-            event.addCapability(RoleClassCap.NAME, new RoleClassCap());
+        if (LevelSystemsCap.canAttachTo(entity)) {
+            event.addCapability(LevelSystemsCap.NAME, new LevelSystemsCap());
         }
         if (PlayerDataCap.canAttachTo(entity)) {
             event.addCapability(PlayerDataCap.NAME, new PlayerDataCap((Player) entity));
@@ -179,7 +179,7 @@ public class ServerEventHandler {
         event.register(IAccessoryItemHandler.class);
         event.register(ICombatCore.class);
         event.register(IDamageInfo.class);
-        event.register(RoleClass.class);
+        event.register(LevelSystem.class);
         event.register(PlayerData.class);
         event.register(ActiveSkill.class);
     }
@@ -429,9 +429,9 @@ public class ServerEventHandler {
         }
         if (entity instanceof Player player) {
             this.onPlayerTick(player);
-            RoleClass roleClass = CapabilityCaller.roleClass(player);
-            if (roleClass != null) {
-                Optional<IEntityProperties> optional = roleClass.IEntityProperties();
+            LevelSystem levelSystem = CapabilityCaller.levelSystem(player);
+            if (levelSystem != null) {
+                Optional<IEntityProperties> optional = levelSystem.IEntityProperties();
                 optional.ifPresent(callback -> callback.onEntityUpdate(entity, itemStack));
             }
             for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
@@ -596,8 +596,8 @@ public class ServerEventHandler {
                 }
             }
             if (attacker instanceof Player player) {
-                RoleClass roleClass = CapabilityCaller.roleClass(player);
-                Optional<IAttack> attack = roleClass.IAttack();
+                LevelSystem levelSystem = CapabilityCaller.levelSystem(player);
+                Optional<IAttack> attack = levelSystem.IAttack();
                 if (attack.isPresent()) {
                     attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
                 }
@@ -777,8 +777,8 @@ public class ServerEventHandler {
                 ICombatCore attackerCombatCore = CapabilityCaller.combat(attacker);
                 ItemStack attackerStack = attacker.getMainHandItem();
                 if (attacker instanceof Player player) {
-                    RoleClass roleClass = CapabilityCaller.roleClass(player);
-                    Optional<IAttack> attack = roleClass.IAttack();
+                    LevelSystem levelSystem = CapabilityCaller.levelSystem(player);
+                    Optional<IAttack> attack = levelSystem.IAttack();
                     if (attack.isPresent()) {
                         damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
                     }
@@ -869,8 +869,8 @@ public class ServerEventHandler {
             ICombatCore attackerCombatCore = CapabilityCaller.combat(attacker);
             ItemStack attackerStack = attacker.getMainHandItem();
             if (attacker instanceof Player player) {
-                RoleClass roleClass = CapabilityCaller.roleClass(player);
-                Optional<IAttack> attack = roleClass.IAttack();
+                LevelSystem levelSystem = CapabilityCaller.levelSystem(player);
+                Optional<IAttack> attack = levelSystem.IAttack();
                 attack.ifPresent(iAttack -> iAttack.onEntityKilled(source, attacker, target));
                 IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
                 if (handler != null) {

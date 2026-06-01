@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -15,8 +15,8 @@ import java.util.function.Supplier;
 public class ServerboundSkillPointsPacket {
     private final int index;
     private final int amount;
-    private final RoleClass.AttributePoints attributePoints;
-    public ServerboundSkillPointsPacket(int index, RoleClass.AttributePoints attributePoints, int amount) {
+    private final LevelSystem.AttributePoints attributePoints;
+    public ServerboundSkillPointsPacket(int index, LevelSystem.AttributePoints attributePoints, int amount) {
         this.index = index;
         this.amount = amount;
         this.attributePoints = attributePoints;
@@ -25,7 +25,7 @@ public class ServerboundSkillPointsPacket {
     public ServerboundSkillPointsPacket(FriendlyByteBuf buf) {
         this.index = buf.readInt();
         this.amount = buf.readInt();
-        this.attributePoints = buf.readEnum(RoleClass.AttributePoints.class);
+        this.attributePoints = buf.readEnum(LevelSystem.AttributePoints.class);
     }
 
     public void toBytes(FriendlyByteBuf buf) {
@@ -45,7 +45,7 @@ public class ServerboundSkillPointsPacket {
                 Level level = sender.level();
                 Entity entity = level.getEntity(this.index);
                 if (entity instanceof Player player) {
-                    RoleClass role = CapabilityCaller.roleClass((Player) player);
+                    LevelSystem role = CapabilityCaller.levelSystem((Player) player);
                     if (this.amount > 0) {
                         role.setPoints(role.getPoints() - 1);
                         role.addPointOfAttributes(this.attributePoints, this.amount);

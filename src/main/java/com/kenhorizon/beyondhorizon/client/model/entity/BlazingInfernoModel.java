@@ -120,8 +120,7 @@ public class BlazingInfernoModel extends AdvanceEntityModel<BlazingInferno> {
         this.animate(entity.animationInactive, BlazingInfernoAnim.INACTIVE, ageInTicks);
         this.animate(entity.animationDeath, BlazingInfernoAnim.DEATH, ageInTicks);
         this.animate(entity.animationEnragedPhase, BlazingInfernoAnim.SECOND_PHASE, ageInTicks);
-        this.animate(entity.animationPrepareDeathRay, BlazingInfernoAnim.PREPARE_DEATH_RAY, ageInTicks);
-        this.animate(entity.animationDeathRay, BlazingInfernoAnim.DEATH_RAY, ageInTicks);
+        this.animate(entity.animationDeathRay, BlazingInfernoAnim.PREPARE_DEATH_RAY, ageInTicks);
         this.animate(entity.animationEruption, BlazingInfernoAnim.SHOCKWAVE, ageInTicks);
         this.animate(entity.animationDashes, BlazingInfernoAnim.DASH, ageInTicks);
         this.animate(entity.animationGroundSlam, BlazingInfernoAnim.SHOCKWAVE, ageInTicks);

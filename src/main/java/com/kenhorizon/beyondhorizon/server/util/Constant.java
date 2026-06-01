@@ -86,6 +86,8 @@ public class Constant {
     public static float[] DARK_REPULSER = {12.0F, 1.4F, 4F};
     public static float[] GUARDIAN_SWORD = {11.0F, 1.7F, 4.0F};
     public static float[] RADIANT_SWORD = {6.0F, 1.7F, 4.0F};
+    public static float[] HARVESTER = {4.0F, 1.7F};
+    public static float[] SOLARFLARE = {12.0F, 1.7F, 4.0F};
     //
     public static double SHEEN_AD = 3.0;
     public static double TS_AD = 3.0;

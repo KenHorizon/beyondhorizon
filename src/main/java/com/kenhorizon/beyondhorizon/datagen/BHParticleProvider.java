@@ -22,7 +22,7 @@ public class BHParticleProvider extends ParticleDescriptionProvider {
     @Override
     protected void addDescriptions() {
         this.sprite(BHParticle.ROAR.get(), register("roar"));
-        this.sprite(BHParticle.TRAILS.get(), register("orb"));
+        this.sprite(BHParticle.TRAILS.get(), register("pixel"));
         this.sprite(BHParticle.RING.get(), register("ring"));
         this.sprite(BHParticle.RING_BIG.get(), register("ring_big"));
         this.sprite(BHParticle.INDICATOR.get(), register("indicator"));

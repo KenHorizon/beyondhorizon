@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client.particle;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
@@ -41,7 +42,9 @@ public class TrailParticles extends TextureSheetParticle {
 
     public enum Behavior {
         DEFAULT,
-        FADE
+        FADE,
+        SHRINK,
+        FADE_N_SHRINK
     }
 
     public TrailParticles(ClientLevel world, double x, double y, double z, double motionX, double motionY, double motionZ, float yaw, float pitch, int duration, float r, float g, float b, float opacity, float size, boolean facesCamera, Behavior behavior, Vec3 target) {
@@ -69,59 +72,22 @@ public class TrailParticles extends TextureSheetParticle {
     @Override
     public void render(VertexConsumer buffer, Camera camera, float partialTick) {
         float var = (age + partialTick) / this.lifetime;
-        if (this.behavior == Behavior.FADE) {
+        if (this.behavior == Behavior.FADE || this.behavior == Behavior.FADE_N_SHRINK) {
             this.alpha = this.opacity * 0.95f * (1 - (this.age + partialTick) / this.lifetime) + 0.05f;
         }
+        this.quadSize = this.particleBehavior(var);
         this.rCol = this.r;
         this.gCol = this.g;
         this.bCol = this.b;
         super.render(buffer, camera, partialTick);
-//
-//        Vec3 Vector3d = camera.getPosition();
-//        float f = (float)(Mth.lerp(partialTick, this.xo, this.x) - Vector3d.x());
-//        float f1 = (float)(Mth.lerp(partialTick, this.yo, this.y) - Vector3d.y());
-//        float f2 = (float)(Mth.lerp(partialTick, this.zo, this.z) - Vector3d.z());
-//        Quaternionf quaternionf = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
-//        if (this.facesCamera) {
-//            if (this.roll == 0.0F) {
-//                quaternionf = camera.rotation();
-//            } else {
-//                quaternionf = new Quaternionf(camera.rotation());
-//                float f3 = Mth.lerp(partialTick, this.oRoll, this.roll);
-//                quaternionf.mul(Axis.ZP.rotation(f3));
-//            }
-//        }
-//        else {
-//            Quaternionf quatX = Maths.quatFromRotationXYZ(this.pitch, 0, 0, false);
-//            Quaternionf quatY = Maths.quatFromRotationXYZ(0, this.yaw, 0, false);
-//            quaternionf.mul(quatY);
-//            quaternionf.mul(quatX);
-//        }
-//
-//        Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);
-//        quaternionf.transform(vector3f1);
-//        Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
-//        float f4 = this.getQuadSize(partialTick);
-//
-//        for(int i = 0; i < 4; ++i) {
-//            Vector3f vector3f = avector3f[i];
-//            quaternionf.transform(vector3f);
-//            vector3f.mul(f4);
-//            vector3f.add(f, f1, f2);
-//        }
-//
-//        float f7 = this.getU0();
-//        float f8 = this.getU1();
-//        float f5 = this.getV0();
-//        float f6 = this.getV1();
-//        int color = this.getLightColor(partialTick);
-//        buffer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).uv(f8, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(color).endVertex();
-//        buffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(f8, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(color).endVertex();
-//        buffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(f7, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(color).endVertex();
-//        buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f7, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(color).endVertex();
-        this.renderTrail(camera, partialTick);
     }
-
+    private float particleBehavior(float var) {
+        if (this.behavior == Behavior.SHRINK || this.behavior == Behavior.FADE_N_SHRINK) {
+            return this.size * (1 - var);
+        } else {
+            return this.size;
+        }
+    }
     private void renderTrail(Camera camera, float partialTick) {
         Minecraft minecraft = Minecraft.getInstance();
         if (this.trailPointer > -1) {
@@ -235,7 +201,7 @@ public class TrailParticles extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
+        return ParticleRenderType.PARTICLE_SHEET_LIT;
     }
 
     @OnlyIn(Dist.CLIENT)

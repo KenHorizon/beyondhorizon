@@ -45,8 +45,8 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register();
     public static final RegistryObject<Item> DEBUG3 = RegistryItems
-            .register("debug3", DebugRoleClassResetItems::new)
-            .itemName("Debug: Role Class Reset")
+            .register("debug3", DebugLevelSystemResetItems::new)
+            .itemName("Debug: Level System Reset")
             .tab(RegistryTabs.Category.DEBUGS)
             .model(ItemModels.GENERATED)
             .register();
@@ -250,6 +250,20 @@ public class BHItems {
 
     public static final RegistryObject<Item> RADIANT = RegistryItems
             .register("radiant", item -> ItemBuilder.RADIANT.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG32_HANDHELD)
+            .register();
+
+    public static final RegistryObject<Item> HARVESTER = RegistryItems
+            .register("harvester", item -> ItemBuilder.HARVESTER.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG32_HANDHELD)
+            .register();
+
+    public static final RegistryObject<Item> SOLARFLARE = RegistryItems
+            .register("solarflare", item -> ItemBuilder.SOLARFLARE.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG32_HANDHELD)

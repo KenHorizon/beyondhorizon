@@ -435,6 +435,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     public boolean shouldRenderAtSqrDistance(double distance) {
         return distance < 1024;
     }
+
     private void updateWithPlayer() {
         this.setYaw((float) ((caster.yHeadRot + 90) * Math.PI / 180.0D));
         this.setPitch((float) (-caster.getXRot() * Math.PI / 180.0D));

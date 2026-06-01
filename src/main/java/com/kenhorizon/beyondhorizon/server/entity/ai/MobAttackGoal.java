@@ -43,7 +43,9 @@ public class MobAttackGoal<T extends BHLibEntity> extends Goal {
     public MobAttackGoal(T entity, int animation, int start, int end, int seeTick) {
         this(entity, animation, start, end, seeTick,0, true, false);
     }
-
+    public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, boolean interrupt) {
+        this(entity, animation, start, end, seeTick,0, true, interrupt);
+    }
     @Override
     public void start() {
         super.start();
@@ -88,12 +90,15 @@ public class MobAttackGoal<T extends BHLibEntity> extends Goal {
     public void tick() {
         super.tick();
         LivingEntity target = this.entity.getTarget();
-        boolean flag = this.seeTick > 0 && (this.entity.getAnimationTick() < this.seeTick && target != null);
-        if (flag) {
-            this.entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
-            this.entity.lookAt(target, 30.0F, 30.0F);
-        } else {
-            this.entity.setYRot(this.entity.yRotO);
+        boolean flag = this.entity.getAnimationTick() < this.seeTick;
+        if (target != null) {
+            if (flag) {
+                this.entity.getLookControl().setLookAt(target, 30.0F, 30.0F);
+                this.entity.lookAt(target, 30.0F, 30.0F);
+            } else {
+                entity.getLookControl().setLookAt(target,0F, 30.0F);
+                this.entity.setYRot(this.entity.yRotO);
+            }
         }
         this.entity.getNavigation().stop();
 

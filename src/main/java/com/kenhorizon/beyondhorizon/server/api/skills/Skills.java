@@ -85,6 +85,10 @@ public class Skills {
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));
 
+    public static final RegistryObject<Skill> FEAST = registerSkill("feast", () -> new CleaveEffectSkill(Constant.BLAZING_CLEAVE_DAMAGE, Constant.BLAZING_CLEAVE_RANGE, CleaveAbility.Type.CIRCLE)
+            .universal()
+            .format(Skill.Format.NORMAL)
+            .type(Skill.Type.PASSIVE));
     public static final RegistryObject<Skill> GUARDIAN_SWORD_TRAIT = registerSkill("guardian_sword_trait", GuardianSwordProperties::new);
 
     public static RegistryObject<Skill> registerSkill(String name, Supplier<Skill> properties) {

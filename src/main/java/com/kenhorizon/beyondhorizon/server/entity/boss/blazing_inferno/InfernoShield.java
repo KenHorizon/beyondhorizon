@@ -228,7 +228,7 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
         if (owner != null) {
             if (this.level().isClientSide()) {
                 for (int i = 0; i < 2; i++) {
-                    this.level().addParticle(new ParticleTrailOptions(0, 0, 20, 1.0F, 0.0F, 0.0F, 1.0F, 12.0F, true,  TrailParticles.Behavior.DEFAULT, owner.position().add(0, owner.getBbHeight() * 0.5D, 0)), this.getRandomX(0.50D), this.getY() + (this.getBbHeight() / 2), this.getRandomZ(0.50D), 0, 0, 0);
+                    this.level().addParticle(new ParticleTrailOptions(0, 0, 20, 1.0F, 0.0F, 0.0F, 1.0F, 4.0F, true,  TrailParticles.Behavior.DEFAULT, owner.position().add(0, owner.getBbHeight() * 0.5D, 0)), this.getRandomX(0.25D), this.getY() + (this.getBbHeight() / 2), this.getRandomZ(0.25D), 0, 0, 0);
                 }
             }
             if (owner instanceof BlazingInferno blazingInferno) {

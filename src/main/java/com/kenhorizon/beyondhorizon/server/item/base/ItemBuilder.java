@@ -29,4 +29,6 @@ public class ItemBuilder {
     public static final Factory<SwordBaseItem> DARK_REPULSER = ((materials, properties) -> new SwordBaseItem(materials, Constant.DARK_REPULSER, properties, SkillBuilder.DARK_REPULSOR).addAttribues(BHAttributes.CRITICAL_CHANCE.get(), "a4339059-a960-462c-bd5c-c2ec7ddc570b", Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION));
     public static final Factory<SwordBaseItem> GUARDIAN_SWORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.GUARDIAN_SWORD, properties, SkillBuilder.GUARDIAN).addAttribues(BHAttributes.CRITICAL_CHANCE.get(), "a4339059-a960-462c-bd5c-c2ec7ddc570b", Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION));
     public static final Factory<SwordBaseItem> RADIANT = ((materials, properties) -> new SwordBaseItem(materials, Constant.RADIANT_SWORD, properties, SkillBuilder.RADIANT));
+    public static final Factory<SwordBaseItem> HARVESTER = ((materials, properties) -> new SwordBaseItem(materials, Constant.HARVESTER, properties, SkillBuilder.HARVESTER));
+    public static final Factory<SwordBaseItem> SOLARFLARE = ((materials, properties) -> new SwordBaseItem(materials, Constant.SOLARFLARE, properties, SkillBuilder.SOLARFLARE));
 }

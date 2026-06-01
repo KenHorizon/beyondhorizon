@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.api.classes.RoleClass;
+import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -46,7 +46,7 @@ public class ServerboundConsumePointsPacket {
                         player.setExperiencePoints(0);
                     }
                     player.giveExperiencePoints(-this.amount);
-                    RoleClass role = CapabilityCaller.roleClass((Player) player);
+                    LevelSystem role = CapabilityCaller.levelSystem((Player) player);
                     role.addExpPoints(this.amount);
                 }
             }

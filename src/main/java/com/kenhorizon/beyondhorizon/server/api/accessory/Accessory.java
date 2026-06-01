@@ -143,7 +143,7 @@ public abstract class Accessory {
             this.addTooltipTitle(itemStack, tooltip, first);
         }
         if (!this.isTooltipDescriptionEnable()) return;
-        BeyondHorizon.LOGGER.debug("[Accessory] Tooltip size: {}", size);
+//        BeyondHorizon.LOGGER.debug("[Accessory] Tooltip size: {}", size);
         boolean flag = size == 1;
 //        boolean alwayShow = (BHConfigs.ADVANCED_TOOLTIP || BHConfigs.ADVANCED_TOOLTIP_ACCESSORY) && flag;
 //        if ((alwayShow || isShiftPressed) && I18n.exists(this.createId())) {

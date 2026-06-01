@@ -195,7 +195,7 @@ public class Accessories {
     public static final RegistryObject<Accessory> GHOUL = registerSkill("ghoul", () -> new SinglePassiveAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE));
     public static final RegistryObject<Accessory> PENALTY_0 = registerSkill("penalty", () -> new DamageEffectivenessAccessory(Constant.EXCORIATE_DAMAGE_PENALTY));
     public static final RegistryObject<Accessory> EXCORIATE = registerSkill("excoriate", () -> new SinglePassiveAccessory(Constant.EXCORIATE_DAMAGE));
-    public static final RegistryObject<Accessory> NIGHTSTALKER = registerSkill("nightstalker", () -> new ExtraDamageAccessory(Constant.EXCORIATE_DAMAGE, ExtraDamageAccessory.TARGET_MISSING_HEALTH));
+    public static final RegistryObject<Accessory> NIGHTSTALKER = registerSkill("nightstalker", () -> new ExtraDamageAccessory(Constant.EXCORIATE_DAMAGE, Constant.EXCORIATE_PER_MISSING_HP, ExtraDamageAccessory.TARGET_MISSING_HEALTH));
     public static final RegistryObject<Accessory> TWO_WORLD = registerSkill("two_world", () -> new SinglePassiveAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE)
             .innate(Accessories.DARK_SUN).innate(Accessories.FADED_MOON));
     public static final RegistryObject<Accessory> DARK_SUN = registerSkill("dark_sun", () -> new SinglePassiveAccessory(Constant.DARK_SUN_CONVERT));

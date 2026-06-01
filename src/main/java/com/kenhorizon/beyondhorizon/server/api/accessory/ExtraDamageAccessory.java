@@ -37,21 +37,18 @@ public class ExtraDamageAccessory extends AccessorySkill {
     });
 
     public static final ExtraDamageAccessory.DamageTypeFunction USER_MISSING_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        float damageMultiplier = (attacker.getMaxHealth() - attacker.getHealth() / attacker.getMaxHealth());
-        float amplifier = 0.0F;
-        if ((magnitude * level) != 0) {
-            for (int i = 0; i < (100 * magnitude); ++i) {
-                if (i % magnitude == 0) {
-                    amplifier++;
-                    float perDamage = (amplifier / 100.0F);
-                    return DamageHandler.multiplier(damageDealt, perDamage);
-                }
-            }
+        if (level == 1) {
+            return DamageHandler.missingHealth(attacker, damageDealt, magnitude);
+        } else {
+            return DamageHandler.missingHealth(attacker, damageDealt, (float) (level / 100.0F), magnitude);
         }
-        return DamageHandler.multiplier(damageDealt, damageMultiplier);
     });
     public static final ExtraDamageAccessory.DamageTypeFunction TARGET_MISSING_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        return DamageHandler.missingHealth(target, damageDealt, magnitude);
+        if (level == 1) {
+            return DamageHandler.missingHealth(target, damageDealt, magnitude);
+        } else {
+            return DamageHandler.missingHealth(target, damageDealt, (float) (level / 100.0F), magnitude);
+        }
     });
 
     public static final ExtraDamageAccessory.DamageTypeFunction BONUS_DAMAGE = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
@@ -83,11 +80,12 @@ public class ExtraDamageAccessory extends AccessorySkill {
         this.setLevel(level);
         this.mobType = mobType;
     }
-
+    public ExtraDamageAccessory(float magnitude, int level, ExtraDamageAccessory.DamageTypeFunction damageTypeFunction) {
+        this(magnitude, level, null, damageTypeFunction);
+    }
     public ExtraDamageAccessory(float magnitude, ExtraDamageAccessory.DamageTypeFunction damageTypeFunction) {
         this(magnitude, 1, null, damageTypeFunction);
     }
-
     public ExtraDamageAccessory(float magnitude, MobType mobType, ExtraDamageAccessory.DamageTypeFunction damageTypeFunction) {
         this(magnitude, 1, mobType, damageTypeFunction);
     }

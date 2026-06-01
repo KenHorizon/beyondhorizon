@@ -80,10 +80,16 @@ public class DamageHandler {
         return damageDealt + additionalDamage;
     }
 
-    public static float missingHealth(LivingEntity entity, float damageDealt, float perPercentage) {
+    public static float missingHealth(LivingEntity entity, float damageDealt, float bonus) {
+        return missingHealth(entity, damageDealt, 1.0F, bonus);
+    }
+
+    public static float missingHealth(LivingEntity entity, float damageDealt, float percent, float bonus) {
         float missingHealth = (entity.getMaxHealth() - entity.getHealth()) / entity.getMaxHealth();
-        BeyondHorizon.LOGGER.debug("Damage Info [Missing Health] {} {} {} || {}", damageDealt, perPercentage, missingHealth, multiplier(damageDealt, missingHealth - perPercentage));
-        return multiplier(damageDealt, perPercentage >= 1.0F ? missingHealth + perPercentage : missingHealth - perPercentage);
+        float outputDamage = (missingHealth / percent) * bonus;
+//        BeyondHorizon.LOGGER.debug("Damage Info [Missing Health] Damage:{} | Bonus:{} | Output Damage {}",
+//                damageDealt, outputDamage, multiplier(damageDealt, outputDamage));
+        return multiplier(damageDealt, outputDamage);
     }
 
     public static float maxHealth(LivingEntity target, float damageDealt, float percentHealth) {

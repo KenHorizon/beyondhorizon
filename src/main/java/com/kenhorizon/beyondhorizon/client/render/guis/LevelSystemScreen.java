@@ -24,9 +24,9 @@ import java.util.function.Predicate;
 
 public class LevelSystemScreen extends Screen {
     public enum Category {
-        ATTRIBUTES(RoleClass::isAlreadyReachedRequiredLevel),
-        CLASS(RoleClass::isUnlockedClassAndTraits),
-        TRAIT(RoleClass::isUnlockedClassAndTraits);
+        ATTRIBUTES(RoleClass::isAlreadyReachedRequiredLevel);
+//        CLASS(RoleClass::isUnlockedClassAndTraits),
+//        TRAIT(RoleClass::isUnlockedClassAndTraits);
 
         private Predicate<RoleClass> levelRequired;
         private boolean subCategory;
@@ -72,7 +72,6 @@ public class LevelSystemScreen extends Screen {
     public List<AttributePoint> attributePoints = new ArrayList<>();
     public List<AttributeRemovePoints> attributeRemovePoints = new ArrayList<>();
     public static final ResourceLocation LOCATION = BeyondHorizon.resourceGui("level_system/level_system.png");
-    public static final ResourceLocation SKILL_TREE = BeyondHorizon.resourceGui("level_system/skill_tree.png");
 
     public LevelSystemScreen() {
         super(Component.empty());
@@ -100,7 +99,7 @@ public class LevelSystemScreen extends Screen {
         int y = this.posY + 10;
         RenderSystem.enableBlend();
         guiGraphics.blit(LOCATION, this.posX, this.posY, 0, 0, this.imageW, this.imageH);
-        this.renderCategoryButtons(guiGraphics, this.category);
+//        this.renderCategoryButtons(guiGraphics, this.category);
         if (this.subCategory == SubCategory.NONE) {
             BlitHelper.drawStrings(guiGraphics, player.getName(), x, y, ColorUtil.GRAY);
             guiGraphics.blit(LOCATION, this.posX + 126, this.posY + 10, 200, 0, 20, 12);
@@ -113,7 +112,7 @@ public class LevelSystemScreen extends Screen {
             String level = String.format("Level: %s", this.role.getLevel());
             String roleclass = String.format("Class: %s", activeRole.getName());
             BlitHelper.drawStrings(guiGraphics, level, x, y + 10, ColorUtil.GRAY);
-            BlitHelper.drawStrings(guiGraphics, roleclass, x, y + 20, ColorUtil.GRAY);
+//            BlitHelper.drawStrings(guiGraphics, roleclass, x, y + 20, ColorUtil.GRAY);
         }
 
         if (this.category == Category.ATTRIBUTES) {
@@ -129,32 +128,32 @@ public class LevelSystemScreen extends Screen {
                 BlitHelper.drawStrings(guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, ColorUtil.combineRGB(200, 0 , 0), true);
             }
         }
-        if (this.category == Category.CLASS) {
-            if (this.subCategory == SubCategory.CLASS_INFO) {
-                guiGraphics.blit(LOCATION, this.posX + 129, this.posY + 12, 220, 0, 18, 18);
-                BlitHelper.drawStrings(guiGraphics, activeRole.getName(), this.posX + 7, this.posY + 60, ColorUtil.GRAY);
-                for (int i = 0; i < activeRole.getRoleDescription().size(); i++) {
-                    Component text = activeRole.getRoleDescription().get(i);
-                    BlitHelper.drawStrings(guiGraphics, text, this.posX + 7, this.posY + 12 + (i * 9), ColorUtil.GRAY);
-                }
-            } else {
-                this.addSelectionButton(guiGraphics, this.posX, this.posY, RoleClasses.ASSASSIN.get());
-                this.addSelectionButton(guiGraphics, this.posX, this.posY + (33 * 1), RoleClasses.MARKSMAN.get());
-                this.addSelectionButton(guiGraphics, this.posX, this.posY + (33 * 2), RoleClasses.CASTER.get());
-                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY, RoleClasses.STRIKER.get());
-                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY + (33 * 1), RoleClasses.VANGUARD.get());
-                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY + (33 * 2), RoleClasses.SUPPORT.get());
-                if (!this.role.isUnlockedClassAndTraits()) {
-                    guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, ColorUtil.combineARGB(100, 0, 0,0));
-                    String warningText = String.format("You need to be level %s", Constant.CLASS_SYSTEM_UNLOCKED);
-                    BlitHelper.drawStrings(guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, ColorUtil.combineRGB(200, 0 , 0), true);
-                }
-            }
-        }
-        if (this.category == Category.TRAIT) {
-            String warningText = String.format("You need to be level %s", Constant.LEVEL_SYSTEM_UNLOCKED);
-            BlitHelper.drawStrings(guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, ColorUtil.combineRGB(200, 0 , 0), true);
-        }
+//        if (this.category == Category.CLASS) {
+//            if (this.subCategory == SubCategory.CLASS_INFO) {
+//                guiGraphics.blit(LOCATION, this.posX + 129, this.posY + 12, 220, 0, 18, 18);
+//                BlitHelper.drawStrings(guiGraphics, activeRole.getName(), this.posX + 7, this.posY + 60, ColorUtil.GRAY);
+//                for (int i = 0; i < activeRole.getRoleDescription().size(); i++) {
+//                    Component text = activeRole.getRoleDescription().get(i);
+//                    BlitHelper.drawStrings(guiGraphics, text, this.posX + 7, this.posY + 12 + (i * 9), ColorUtil.GRAY);
+//                }
+//            } else {
+//                this.addSelectionButton(guiGraphics, this.posX, this.posY, RoleClasses.ASSASSIN.get());
+//                this.addSelectionButton(guiGraphics, this.posX, this.posY + (33 * 1), RoleClasses.MARKSMAN.get());
+//                this.addSelectionButton(guiGraphics, this.posX, this.posY + (33 * 2), RoleClasses.CASTER.get());
+//                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY, RoleClasses.STRIKER.get());
+//                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY + (33 * 1), RoleClasses.VANGUARD.get());
+//                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY + (33 * 2), RoleClasses.SUPPORT.get());
+//                if (!this.role.isUnlockedClassAndTraits()) {
+//                    guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, ColorUtil.combineARGB(100, 0, 0,0));
+//                    String warningText = String.format("You need to be level %s", Constant.CLASS_SYSTEM_UNLOCKED);
+//                    BlitHelper.drawStrings(guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, ColorUtil.combineRGB(200, 0 , 0), true);
+//                }
+//            }
+//        }
+//        if (this.category == Category.TRAIT) {
+//            String warningText = String.format("You need to be level %s", Constant.LEVEL_SYSTEM_UNLOCKED);
+//            BlitHelper.drawStrings(guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, ColorUtil.combineRGB(200, 0 , 0), true);
+//        }
     }
 
     private void renderCategoryButtons(GuiGraphics guiGraphics, LevelSystemScreen.Category category) {
@@ -185,8 +184,9 @@ public class LevelSystemScreen extends Screen {
         String lvl = String.format("%s", pts);
         BlitHelper.drawStrings(guiGraphics, text, x + 12, y + 65, ColorUtil.WHITE, false);
         int colorPts = pts > 0 ? ColorUtil.WHITE : ColorUtil.combineRGB(255, 0, 0);
-        BlitHelper.drawStrings(guiGraphics, "lvl:", x + 12, y + 80, ColorUtil.WHITE, false);
-        BlitHelper.drawStrings(guiGraphics, lvl, x + 32, y + 81, colorPts, false);
+        int lvlPY = y + 76;
+        BlitHelper.drawStrings(guiGraphics, "lvl:", x + 12, lvlPY, ColorUtil.WHITE, false);
+        BlitHelper.drawStrings(guiGraphics, lvl, x + 34, lvlPY, colorPts, false);
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 200.0F);
@@ -224,26 +224,26 @@ public class LevelSystemScreen extends Screen {
                 this.mouseSkillSetsRemovePoints(this.attributeRemovePoints, mouseX, mouseY);
                 this.mouseSkillSets(this.attributePoints, mouseX, mouseY);
             }
-            if (this.category == Category.CLASS) {
-                if (this.subCategory == SubCategory.CLASS_INFO) {
-                    int backX = this.posX + 9;
-                    int backY = this.posY + 11;
-                    if (mouseX >= backX && mouseX <= backX + 12 && mouseY >= backY && mouseY <= backY + 12) {
-                        this.subCategory = SubCategory.NONE;
-                    }
-                    int confirmX = this.posX + 128;
-                    int confirmY = this.posY + 12;
-                    if (mouseX >= confirmX && mouseX <= confirmX + 12 && mouseY >= confirmY && mouseY <= confirmY + 12) {
-                        NetworkHandler.sendToServer(new ServerboundClassSelectionPacket(this.player.getId(), activeRole));
-                    }
-                }
-                boolean isUnlocked = this.category.getFilter().test(activeRole);
-                boolean jobless = activeRole == RoleClasses.NONE.get();
-                this.mouseClassSelectionInfo(this.selectionClass, mouseX, mouseY);
-            }
-            if (this.category == Category.TRAIT) {
-                boolean isUnlocked = this.category.getFilter().test(activeRole);
-            }
+//            if (this.category == Category.CLASS) {
+//                if (this.subCategory == SubCategory.CLASS_INFO) {
+//                    int backX = this.posX + 9;
+//                    int backY = this.posY + 11;
+//                    if (mouseX >= backX && mouseX <= backX + 12 && mouseY >= backY && mouseY <= backY + 12) {
+//                        this.subCategory = SubCategory.NONE;
+//                    }
+//                    int confirmX = this.posX + 128;
+//                    int confirmY = this.posY + 12;
+//                    if (mouseX >= confirmX && mouseX <= confirmX + 12 && mouseY >= confirmY && mouseY <= confirmY + 12) {
+//                        NetworkHandler.sendToServer(new ServerboundClassSelectionPacket(this.player.getId(), activeRole));
+//                    }
+//                }
+//                boolean isUnlocked = this.category.getFilter().test(activeRole);
+//                boolean jobless = activeRole == RoleClasses.NONE.get();
+//                this.mouseClassSelectionInfo(this.selectionClass, mouseX, mouseY);
+//            }
+//            if (this.category == Category.TRAIT) {
+//                boolean isUnlocked = this.category.getFilter().test(activeRole);
+//            }
             return super.mouseClicked(mouseX, mouseY, button);
         }
     }

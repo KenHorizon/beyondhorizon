@@ -7,6 +7,7 @@ public class Constant {
     public static final float FADED_MOON_CONVERT = 0.25F;
     public static final float NIGHTSTALKER_DAMGE_TAKEN = 0.25F;
     public static final float EXCORIATE_DAMAGE_PENALTY = 0.80F;
+    public static final int EXCORIATE_PER_MISSING_HP = 70;
     public static final float EXCORIATE_DAMAGE = 0.50F;
     public static final float BRING_IT_DOWN_BASE_DAMAGE = 2;
     public static final float BRING_IT_DOWN_INCREASED_DAMAGE = 0.75F;

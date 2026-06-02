@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 @SuppressWarnings({"rawtypes", "ConstantConditions"})
 public class ModClientConfig {
+    public static ForgeConfigSpec.BooleanValue MUSIC_BOSS;
     public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR;
     public static ForgeConfigSpec.BooleanValue ATTRIBUTE_TOOLTIP_OVERHAUl;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_ACCESSORY;
@@ -28,14 +29,17 @@ public class ModClientConfig {
 
     public ModClientConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Beyond Horizon | Client Configs");
+        MUSIC_BOSS = builder
+                .comment("Toggle the boss theme music when the boss spawn or active")
+                .define("Music", true);
         DAMAGE_INDICATOR = builder
-                .comment("Allow to see the damage/heal dealt or take")
+                .comment("Toggle to see the damage/heal dealt or take")
                 .define("Damage Indicator", true);
         SCREEN_SHAKE = builder
-                .comment("  Allow to do screen shake effect")
+                .comment("Allow to do screen shake effect")
                 .define("Screen Shake", true);
         SCREEN_SHAKE_AMOUNT = builder
-                .comment("  Change how much Sceen Shake Effectiveness")
+                .comment("Change how much Sceen Shake Effectiveness")
                 .comment("      Screen Shake Effectivness [1-100%]")
                 .defineInRange("Screen Shake Multiplier", 100, 0, 100);
         GAME_HUD = builder

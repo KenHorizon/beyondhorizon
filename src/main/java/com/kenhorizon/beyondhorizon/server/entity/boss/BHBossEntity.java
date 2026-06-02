@@ -124,6 +124,10 @@ public class BHBossEntity extends BHLibEntity implements Enemy {
             }
         }
     }
+    @Override
+    public boolean hasBossMusic() {
+        return true;
+    }
 
     @Override
     public boolean hasBossBar() {

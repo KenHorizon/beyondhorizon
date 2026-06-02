@@ -24,6 +24,7 @@ public class BHSounds {
     public static RegistryObject<SoundEvent> SPAWNER_OPEN_SHUTTER = RegistryHelper.registerSounds("block.base_spawner.open_shutter", "Spawner opens");
     public static RegistryObject<SoundEvent> SPAWNER_DETECT_PLAYER = RegistryHelper.registerSounds("block.base_spawner.detect_player", "Spawner charges up");
 
+    public static RegistryObject<SoundEvent> BLAZING_INFERNO_THEME = RegistryHelper.registerSounds("mob.blazing_inferno.theme");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_HURT = RegistryHelper.registerSounds("mob.blazing_inferno.hurt", "Blazing inferno hurt");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_IDLE = RegistryHelper.registerSounds("mob.blazing_inferno.idle", "Blazing inferno crackles");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_SCREAM = RegistryHelper.registerSounds("mob.blazing_inferno.scream", "Blazing inferno scream");

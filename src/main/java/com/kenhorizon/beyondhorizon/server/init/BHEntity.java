@@ -6,7 +6,7 @@ import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.EruptionAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.FlameStrikeAbility;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSpear;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingSpear;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;

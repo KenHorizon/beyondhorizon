@@ -103,6 +103,7 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
 
     public void setCantMoved() {
         this.setDeltaMovement(0, this.getDeltaMovement().y(), 0);
+        this.navigation.stop();
     }
 
     @Override

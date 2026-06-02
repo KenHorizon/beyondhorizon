@@ -2,6 +2,8 @@ package com.kenhorizon.beyondhorizon.server.entity;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.world.RoarParticleOptions;
+import com.kenhorizon.beyondhorizon.client.sound.BossMusic;
+import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import net.minecraft.core.BlockPos;
@@ -27,6 +29,8 @@ import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.network.NetworkHooks;
 
@@ -121,7 +125,7 @@ public abstract class BHBaseEntity extends PathfinderMob {
             this.targetDistance = distanceTo(getTarget()) - getTarget().getBbWidth() / 2.0F;
             this.targetAngle = (float) getAngleBetweenEntities(this, getTarget());
         }
-        if (!level().isClientSide() && this.hasBossMusic()) {
+        if (!this.level().isClientSide() && this.hasBossMusic()) {
             if (this.canPlayMusic()) {
                 this.level().broadcastEntityEvent(this, MUSIC_PLAY_ID);
             } else {
@@ -237,16 +241,16 @@ public abstract class BHBaseEntity extends PathfinderMob {
         return player != null && this.canAttack(player) && distanceTo(player) < 2500;
     }
 
-//    @Override
-//    public void handleEntityEvent(byte id) {
-//        if (id == MUSIC_PLAY_ID) {
-//            BossMusicPlayer.requestBossMusic(this);
-//        } else if (id == MUSIC_STOP_ID) {
-//            BossMusicPlayer.stopBossMusic(this);
-//        } else {
-//            super.handleEntityEvent(id);
-//        }
-//    }
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == MUSIC_PLAY_ID) {
+            BossMusicPlayer.requestBossMusic(this);
+        } else if (id == MUSIC_STOP_ID) {
+            BossMusicPlayer.stopBossMusic(this);
+        } else {
+            super.handleEntityEvent(id);
+        }
+    }
 
     protected void afterItDefeated(@Nullable LivingEntity entity) {}
 
@@ -254,10 +258,10 @@ public abstract class BHBaseEntity extends PathfinderMob {
         return true;
     }
 
-//    @OnlyIn(Dist.CLIENT)
-//    public BossMusic getBossMusic() {
-//        return null;
-//    }
+    @OnlyIn(Dist.CLIENT)
+    public BossMusic getBossMusic() {
+        return null;
+    }
 
     public void doShakeBlock(LivingEntity entity, int tick) {
         this.doShakeBlock(entity, tick, 20);

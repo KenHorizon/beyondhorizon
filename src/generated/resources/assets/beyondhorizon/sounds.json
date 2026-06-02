@@ -234,6 +234,11 @@
     ],
     "subtitle": "subtitle.beyondhorizon.mob.blazing_inferno.step"
   },
+  "mob.blazing_inferno.theme": {
+    "sounds": [
+      "beyondhorizon:mob/blazing_inferno/theme"
+    ]
+  },
   "mob.inferno_shield.break": {
     "sounds": [
       "beyondhorizon:mob/inferno_shield/break1",

@@ -28,6 +28,7 @@ public class BHSoundProvider extends SoundDefinitionFactory {
         this.add(BHSounds.HEAVY_ATTACK, "generic/heavy_hit/heavyhit", 3);
         this.add(BHSounds.ENTITY_EXECUTED, "generic/entity_executed");
 
+        this.add(BHSounds.BLAZING_INFERNO_THEME, "mob/blazing_inferno/theme");
         this.add(BHSounds.BLAZING_INFERNO_SPEAR, "mob/blazing_inferno/summon_spear");
         this.add(BHSounds.BLAZING_INFERNO_SCREAM, "mob/blazing_inferno/scream");
         this.add(BHSounds.BLAZING_INFERNO_SHOOT, "mob/blazing_inferno/shoot/shoot", 2);

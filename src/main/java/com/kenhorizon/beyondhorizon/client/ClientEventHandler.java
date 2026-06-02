@@ -8,6 +8,7 @@ import com.kenhorizon.beyondhorizon.client.render.guis.LevelSystemScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotButton;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
+import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
@@ -25,15 +26,31 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientEventHandler {
 
+    @SubscribeEvent
+    public void onLevelTick(TickEvent.LevelTickEvent event) {
+        Level level = event.level;
+        if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.END) {
+            BossMusicPlayer.tick();
+        }
+        if (event.level.isClientSide) {
+            return;
+        }
+        if (event.phase == TickEvent.Phase.START) {
+            return;
+        }
+    }
 
     @SubscribeEvent
     public void onMovementInput(MovementInputUpdateEvent event) {

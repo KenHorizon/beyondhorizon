@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingSpear;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingSpear;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.model.EntityModel;

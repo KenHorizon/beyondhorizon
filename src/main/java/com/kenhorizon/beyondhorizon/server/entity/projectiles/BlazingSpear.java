@@ -1,7 +1,6 @@
-package com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno;
+package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.ExtendedProjectile;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
@@ -23,9 +22,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.*;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import java.util.Optional;
-import java.util.UUID;
 
 public class BlazingSpear extends ExtendedProjectile {
     public static float MOTION = 0.99F;

@@ -2,7 +2,6 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.entity.IEntityDamageCap;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
@@ -28,18 +27,12 @@ public class ExtraDamageSkill extends WeaponSkills {
         if (target instanceof WitherBoss ||  target instanceof Warden) {
             return Math.min(finalDamage, Constant.PENALTY_DAMAGE);
         }
-        if (target instanceof IEntityDamageCap cap) {
-            return Math.min(finalDamage, cap.getDamageCap());
-        }
         return finalDamage;
     });
     public static final DamageTypeFunction MAX_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
         float finalDamage = damageDealt + (target.getMaxHealth() * (magnitude * level));
         if (target instanceof WitherBoss ||  target instanceof Warden) {
             return Math.min(finalDamage, Constant.PENALTY_DAMAGE);
-        }
-        if (target instanceof IEntityDamageCap cap) {
-            return Math.min(finalDamage, cap.getDamageCap());
         }
         return finalDamage;
     });

@@ -20,7 +20,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
+public class BHLibEntity extends BHBaseEntity {
     public AnimationState idleAnimation = new AnimationState();
     public static final int ID_ANIMATION_EMPTY = 0;
     private int prevAnimationState;
@@ -92,7 +92,6 @@ public class BHLibEntity extends BHBaseEntity implements IEntityDamageCap {
         this.damageCap = damageCap;
     }
 
-    @Override
     public float getDamageCap() {
         return this.damageCap;
     }

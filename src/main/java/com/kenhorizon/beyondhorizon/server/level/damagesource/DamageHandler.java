@@ -1,12 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.entity.IEntityDamageCap;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
@@ -87,16 +83,11 @@ public class DamageHandler {
     public static float missingHealth(LivingEntity entity, float damageDealt, float percent, float bonus) {
         float missingHealth = (entity.getMaxHealth() - entity.getHealth()) / entity.getMaxHealth();
         float outputDamage = (missingHealth / percent) * bonus;
-//        BeyondHorizon.LOGGER.debug("Damage Info [Missing Health] Damage:{} | Bonus:{} | Output Damage {}",
-//                damageDealt, outputDamage, multiplier(damageDealt, outputDamage));
         return multiplier(damageDealt, outputDamage);
     }
 
     public static float maxHealth(LivingEntity target, float damageDealt, float percentHealth) {
         float damageCap = -1;
-        if (target instanceof IEntityDamageCap entityDamageCap) {
-            damageCap = entityDamageCap.getDamageCap();
-        }
         return maxHealth(target, damageDealt, percentHealth, damageCap);
     }
 
@@ -110,9 +101,6 @@ public class DamageHandler {
 
     public static float currentHealth(LivingEntity target, float damageDealt, float percentHealth) {
         float damageCap = -1;
-        if (target instanceof IEntityDamageCap entityDamageCap) {
-            damageCap = entityDamageCap.getDamageCap();
-        }
         return currentHealth(target, damageDealt, percentHealth, damageCap);
     }
 
@@ -124,12 +112,7 @@ public class DamageHandler {
         difference = posMod(difference + 180.0f, 360.0f) - 180.0f;
         boolean doBonusDamage = Math.abs(difference) <= 30.0f;
         if (doBonusDamage) {
-            if (target instanceof IEntityDamageCap entityDamageCap) {
-                float damageCap = entityDamageCap.getDamageCap();
-                return Math.min(damageCap, multiplier(damageDealt, multiplier));
-            } else {
-                return multiplier(damageDealt, multiplier);
-            }
+            return multiplier(damageDealt, multiplier);
         } else {
             return damageDealt;
         }

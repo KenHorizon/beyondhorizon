@@ -91,6 +91,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addEnchantmentDesc(BHEnchantments.ECHO, "Small chances to attack twice");
         this.addEnchantmentDesc(BHEnchantments.DRAW_SPEED, "Reduce use time while using bow");
         this.addEnchantmentDesc(BHEnchantments.STUNNING, "Chance to stun the target");
+        this.addEnchantmentDesc(BHEnchantments.SMELTER, "Chance to auto smelt the item");
          //
         this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 0, "Chance to release a shockwave dealing %s + %s%% total of attack damage");
         this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 1, "Attacks inflict burning and increased %s%% damage dealt");

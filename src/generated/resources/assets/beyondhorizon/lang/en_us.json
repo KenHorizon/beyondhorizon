@@ -252,6 +252,8 @@
   "enchantment.beyondhorizon.physical_protection": "Physical Protection",
   "enchantment.beyondhorizon.pierce": "Pierce",
   "enchantment.beyondhorizon.pierce.desc": "Gain armor penetration",
+  "enchantment.beyondhorizon.smelter": "Smelter",
+  "enchantment.beyondhorizon.smelter.desc": "Chance to auto smelt the item",
   "enchantment.beyondhorizon.spell_blade": "Spell Blade",
   "enchantment.beyondhorizon.spell_blade.desc": "Convert percentage of the physical damage dealt into magic damage",
   "enchantment.beyondhorizon.spell_protection": "Spell Protection",

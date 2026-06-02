@@ -3,13 +3,12 @@ package com.kenhorizon.beyondhorizon.server;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryEvent;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
+import com.kenhorizon.beyondhorizon.server.api.accessory.*;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
 import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
+import com.kenhorizon.beyondhorizon.server.api.event.HarvestBlockEvent;
 import com.kenhorizon.beyondhorizon.server.api.handler.UndyingTotemAbility;
 import com.kenhorizon.beyondhorizon.server.capability.*;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
@@ -30,7 +29,6 @@ import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.skills.ActiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundPlayerSwingArmPacket;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
@@ -61,6 +59,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -73,6 +72,7 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -83,7 +83,41 @@ public class ServerEventHandler {
     public void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(new SpawnerBuilderListener(event.getConditionContext()));
     }
+    //TODO: Harvest
+    @SubscribeEvent
+    public void onHarvestBlockBreak(HarvestBlockEvent event) {
+        Player player = event.getPlayer();
+        ItemStack itemStack = event.getItemStackUse();
+        BlockState blockState = event.getState();
+        BlockPos blockPos = event.getPos();
+        boolean flag = true;
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(player.getItemBySlot(slot));
+            for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
+                if (entry.getKey() instanceof IAdditionalEnchantment additionalEnchantment) {
+                    Optional<IAdditionalEnchantment> optional = additionalEnchantment.enchantmentCallback();
+                    if (optional.isPresent()) {
+                        event.setCanDropLoot(optional.get().onHarverstDrop(entry.getValue(), player, event.getLevel(), itemStack, blockPos, blockState, event.getItemDrops()));
+                    }
+                }
+            }
+        }
+    }
 
+    @SubscribeEvent
+    public void onFarmLandTrample(BlockEvent.FarmlandTrampleEvent event) {
+        LivingEntity entity = (LivingEntity) event.getEntity();
+        if (entity != null) {
+            if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FALL_PROTECTION, entity) > 0) {
+                event.setCanceled(true);
+            }
+            if (entity instanceof Player player) {
+                if (AccessoryHelper.getAccessory(player, Accessories.FEATHER_FEET.get())) {
+                    event.setCanceled(true);
+                }
+            }
+        }
+    }
     @SubscribeEvent
     public void onEntityJoin(EntityJoinLevelEvent event) {
         if (!event.getLevel().isClientSide()) {

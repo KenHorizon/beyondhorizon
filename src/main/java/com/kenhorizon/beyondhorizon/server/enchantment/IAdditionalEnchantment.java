@@ -45,4 +45,7 @@ public interface IAdditionalEnchantment {
     default int modifyExprienceDrop(int level, int dropExperience, LivingEntity target, Player player) {
         return dropExperience;
     }
+    default boolean onHarverstDrop(int level, Player player, LevelAccessor levelAccessor, ItemStack itemStack, BlockPos blockPos, BlockState blockState, List<ItemStack> drops) {
+        return true;
+    }
 }

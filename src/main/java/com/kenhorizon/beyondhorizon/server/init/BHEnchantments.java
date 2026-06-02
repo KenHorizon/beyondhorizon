@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.ExtendedDamageEnchantment;
+import com.kenhorizon.beyondhorizon.server.enchantment.SmelterEnchantment;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -206,6 +207,15 @@ public class BHEnchantments {
                     .category(EnchantmentCategory.WEAPON)
             ));
 
+    public static RegistryObject<Enchantment> SMELTER = RegistryHelper.registerEnchantments("smelter",
+            () -> new SmelterEnchantment(new AdvancedEnchantment.Builder()
+                    .maxLevel(5)
+                    .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
+                    .maxCost(63)
+                    .minCost(22)
+                    .rarity(Enchantment.Rarity.RARE)
+                    .category(EnchantmentCategory.DIGGER)
+            ));
 
     public static void register(IEventBus eventBus) {
         RegistryEntries.ENCHANTMENTS.register(eventBus);

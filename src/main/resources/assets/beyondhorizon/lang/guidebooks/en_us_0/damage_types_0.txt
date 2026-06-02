@@ -1,0 +1,16 @@
+
+Damage Types split into three
+types, Physical Damage/Magic
+Damage/True Damage
+
+Physical Damage is dealt by all
+unmodified basic attacks
+
+
+Magic Damage is dealt by a
+portion of all damaging spells
+from target items and buffs
+
+
+True Damage ignores modifiers
+and resistances

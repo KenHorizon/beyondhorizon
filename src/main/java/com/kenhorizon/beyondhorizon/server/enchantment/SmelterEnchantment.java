@@ -43,7 +43,7 @@ public class SmelterEnchantment extends AdvancedEnchantment {
         boolean flag = random.nextDouble() <= (0.20D * (level + 1));
         if (itemStack.isCorrectToolForDrops(blockState) && flag) {
             List<ItemStack> blockDrops = new ArrayList<>();
-            BeyondHorizon.LOGGER.debug("Block Drops {} | {}", drops.size(), drops.toArray());
+//            BeyondHorizon.LOGGER.debug("Block Drops {} | {}", drops.size(), drops.toArray());
             for (ItemStack itemDrop : drops) {
                 if (itemDrop.isEmpty()) continue;
                 int amount = itemDrop.getCount();

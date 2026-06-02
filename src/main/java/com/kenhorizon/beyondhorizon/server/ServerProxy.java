@@ -58,4 +58,8 @@ public class ServerProxy {
     public void onAnimationHandler(int entityId, int index) {}
 
     public void playSound(AbstractSoundInstance instance) {}
+
+    public Object getFontRenderer() {
+        return null;
+    }
 }

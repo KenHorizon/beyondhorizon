@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
-import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
+import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;

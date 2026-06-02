@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.item.debug_items;
 
-import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
+import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import net.minecraft.world.InteractionHand;

@@ -268,4 +268,10 @@ public class ClientProxy extends ServerProxy {
     public void syncAccessoryToPlayer(int slot, ItemStack itemStack, ServerPlayer player) {
         NetworkHandler.sendToPlayer(new ServerboundAccessoryInventoryPacket(slot, player.getId(), itemStack), player);
     }
+
+    @OnlyIn(Dist.CLIENT)
+    @Override
+    public Object getFontRenderer() {
+        return Minecraft.getInstance().font;
+    }
 }

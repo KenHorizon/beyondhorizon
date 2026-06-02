@@ -3,12 +3,13 @@ package com.kenhorizon.beyondhorizon.client.render.guis;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
-import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
+import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundConsumePointsPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundSkillPointsPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
@@ -16,6 +17,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import org.joml.Math;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -96,17 +98,22 @@ public class LevelSystemScreen extends Screen {
         RenderSystem.enableBlend();
         guiGraphics.blit(LOCATION, this.posX, this.posY, 0, 0, this.imageW, this.imageH);
         if (this.subCategory == SubCategory.NONE) {
-            BlitHelper.drawStrings(guiGraphics, player.getName(), x, y, ColorUtil.GRAY);
             guiGraphics.blit(LOCATION, this.posX + 126, this.posY + 10, 200, 0, 20, 12);
             boolean cantGainExp = this.role.getLevel() >= this.role.maxLevel;
             guiGraphics.blit(LOCATION, this.posX + 149, this.posY + 10, 176, cantGainExp ? 0 : 12, 12, 12);
-            guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 166, 131, 5);
-            guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 171, (int) (this.role.expProgress * 131), 5);
+            guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 166, 131, 6);
+            guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 172, (int) (this.role.expProgress * 131), 6);
+            guiGraphics.blit(LOCATION, this.posX + (20 - 6), this.posY + (42), 79, 178, 8, 8);
             String pts = String.format("%s", this.role.getPoints());
-            BlitHelper.drawStrings(guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 134, this.posY + 12, ColorUtil.WHITE, false);
-            String level = String.format("Level: %s", this.role.getLevel());
-            BlitHelper.drawStrings(guiGraphics, level, x, y + 10, ColorUtil.GRAY);
-//            BlitHelper.drawStrings(guiGraphics, roleclass, x, y + 20, ColorUtil.GRAY);
+            String level = "Lvl: ";
+            String levelPTS = String.format("%s", this.role.getLevel());
+            int levelString = level.length();
+            String xpRequired = String.format("%s/%s", MathUtils.format(this.role.getExpProgress()), MathUtils.format(this.role.getXpNeededForNextLevel()));
+            BlitHelper.drawStrings(guiGraphics, xpRequired, this.posX + 20, this.posY + 34, ColorUtil.GREEN);
+            BlitHelper.drawStrings(guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 136, this.posY + 12, ColorUtil.WHITE, false);
+            BlitHelper.drawStrings(guiGraphics, player.getName(), x, y, ColorUtil.WHITE);
+            BlitHelper.drawStrings(guiGraphics, level, x, y + 10, ColorUtil.WHITE);
+            BlitHelper.drawStrings(guiGraphics, levelPTS, x + 10 + 4 + levelString, y + 10 , ColorUtil.GREEN);
         }
 
         if (this.category == Category.ATTRIBUTES) {

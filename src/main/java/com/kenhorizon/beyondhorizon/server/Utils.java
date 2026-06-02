@@ -2,10 +2,15 @@ package com.kenhorizon.beyondhorizon.server;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
 public class Utils {
+
+    public static String translateToLocal(String s) {
+        return I18n.get(s);
+    }
 
     public static String capitalize(Component component) {
         return capitalize(component.getString(), (char[]) null);

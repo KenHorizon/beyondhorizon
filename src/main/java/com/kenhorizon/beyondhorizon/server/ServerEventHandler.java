@@ -7,7 +7,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.*;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
-import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
+import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.event.HarvestBlockEvent;
 import com.kenhorizon.beyondhorizon.server.api.handler.UndyingTotemAbility;
 import com.kenhorizon.beyondhorizon.server.capability.*;

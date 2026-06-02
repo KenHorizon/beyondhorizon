@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
+import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

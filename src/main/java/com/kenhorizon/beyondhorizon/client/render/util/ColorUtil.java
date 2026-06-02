@@ -8,6 +8,10 @@ public class ColorUtil {
 
     public static int WHITE = combineRGB(255, 255, 255);
     public static int GRAY = combineRGB(64, 64, 64);
+    public static int RED = combineRGB(255, 0, 0);
+    public static int GREEN = combineRGB(0, 255, 0);
+    public static int BLUE = combineRGB(0, 0, 255);
+
     private static int round(float value) {
         return (int) (value * 255.0F + 0.5F);
     }

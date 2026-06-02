@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
+import com.kenhorizon.beyondhorizon.server.item.GuideBookItem;
 import com.kenhorizon.beyondhorizon.server.item.PlayerTrackerItem;
 import com.kenhorizon.beyondhorizon.server.item.base.*;
 import com.kenhorizon.beyondhorizon.server.item.base.armor.ArmorBaseItem;
@@ -60,6 +61,12 @@ public class BHItems {
             .register("debug5", DebugGodModeItems::new)
             .itemName("Debug: GOD MODE")
             .tab(RegistryTabs.Category.DEBUGS)
+            .model(ItemModels.GENERATED)
+            .register();
+
+    public static final RegistryObject<Item> GUIDE_BOOK = RegistryItems
+            .register("guide_book", GuideBookItem::new)
+            .tab(RegistryTabs.Category.MISC)
             .model(ItemModels.GENERATED)
             .register();
 

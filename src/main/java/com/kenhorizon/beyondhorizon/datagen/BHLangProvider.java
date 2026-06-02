@@ -2,12 +2,12 @@ package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
+import com.kenhorizon.beyondhorizon.client.render.guis.guide_book.GuideBookScreen;
 import com.kenhorizon.beyondhorizon.configs.Configs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSets;
-import com.kenhorizon.beyondhorizon.server.api.classes.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
@@ -192,7 +192,10 @@ public class BHLangProvider extends LanguageProvider {
         this.addDeathMessage(BHDamageTypes.TRUE_DAMAGE, "%%1$s was consumed", "%1$s was consumed by %2$s", "%1$s was consumed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.BLEED, "%1$s was bleeding to death", "%1$s was bleeding to death while killed by %2$s", "%1$s was bleeding to death while killed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.BEAM, "%1$s was evaporated", "%1$s was evaporated by %2$s", "%1$s was evaporated by %2$s using %3$s");
-
+        //
+        this.addGuideBookIndexes(GuideBookScreen.Pages.INTRODUCTION, "Introduction");
+        this.addGuideBookIndexes(GuideBookScreen.Pages.DAMAGE_TYPES, "Damage Types");
+        this.addGuideBookIndexes(GuideBookScreen.Pages.STATS, "Stats");
     }
     private void addEnchantmentDesc(Supplier<? extends Enchantment> enchantments, String description) {
         this.add(enchantments.get().getDescriptionId() + ".desc", description);
@@ -243,7 +246,9 @@ public class BHLangProvider extends LanguageProvider {
 
         }
     }
-
+    private void addGuideBookIndexes(GuideBookScreen.Pages pages, String name) {
+        this.add("guidebooks." + pages.toString().toLowerCase(), name);
+    }
     private void addAttributes(Supplier<? extends Attribute> attribute, String name) {
         this.add(attribute.get().getDescriptionId(), name);
     }

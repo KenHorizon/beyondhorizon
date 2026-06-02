@@ -2,6 +2,8 @@ package com.kenhorizon.beyondhorizon.server.entity.mobs;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
+import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
@@ -49,7 +51,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     public static int animationId = 1;
     public static final int ID_BLAZING_ROD = createAnimationID();
     public int fireballCooldown = 0;
-    public static final int FIREBALL_COOLDOWN = MathUtils.sec(6);
+    public static final int FIREBALL_COOLDOWN = MathUtils.sec(3);
 
     public FayeFlares(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -228,7 +230,18 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
 
             }
             if (this.getAnimationState(ID_BLAZING_ROD)) {
-
+                if (this.getAnimationTick() == 1) {
+                    int particleCount = 64;
+                    while (particleCount --> 0) {
+                        double radius = 5.0F;
+                        float yaw = (float) (this.random.nextFloat() * 2 * Math.PI);
+                        float pitch = (float) (this.random.nextFloat() * 2 * Math.PI);
+                        double ox = (float) (radius * Math.sin(yaw) * Math.sin(pitch));
+                        double oy = (float) (radius * Math.cos(pitch));
+                        double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
+                        ParticleTrailOptions.add(this.level(), TrailParticles.Behavior.SHRINK, this.getX() + ox, this.getY() + oy + 0.1, this.getZ() + oz, 4.0F, 1, 0.0F, 0.0F, 1.0F, 10, new Vec3(this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ()));
+                    }
+                }
                 if (this.getAnimationTick() == 60) {
                     float r = ColorUtil.getFARGB(0xFF0000)[0];
                     float g = ColorUtil.getFARGB(0xFF0000)[1];

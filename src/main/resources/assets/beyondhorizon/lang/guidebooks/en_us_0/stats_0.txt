@@ -1,0 +1,16 @@
+Ability Power
+Critical Strike
+Critical Damage
+Damage Dealt
+Damage Taken
+Mining Speed
+Evade
+Armor Penetration
+Magic Penetration
+Omni Vamp
+Physical Vamp
+Spell Vamp
+Life Steal
+Magic Resistance
+Max Mana
+Mana Regeneration

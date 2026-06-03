@@ -1,0 +1,15 @@
+§3§lMax Mana	
+§r A stats that correspond to the
+exact amount of ability casting
+
+§3§lMana Regeneration
+§r A stats that determines the rate
+of unit's current mana generate
+per 1 second
+
+§a§lStealth
+§rA mechanic that lower mob's
+visibility and vision range
+by percentages, allow to
+undetectable with certain range
+

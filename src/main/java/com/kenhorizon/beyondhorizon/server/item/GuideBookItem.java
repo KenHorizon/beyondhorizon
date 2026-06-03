@@ -50,6 +50,7 @@ public class GuideBookItem extends BasicItem {
             itemStack.getTag().putIntArray("Pages", new int[]{
                     GuideBookScreen.Pages.INTRODUCTION.ordinal(),
                     GuideBookScreen.Pages.DAMAGE_TYPES.ordinal(),
+                    GuideBookScreen.Pages.GAME_MECHANICS.ordinal(),
                     GuideBookScreen.Pages.STATS.ordinal()
             });
 

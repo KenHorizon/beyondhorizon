@@ -1,10 +1,12 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.guide_book;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import com.google.common.primitives.Ints;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.Fonts;
 import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.item.GuideBookItem;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -23,9 +25,11 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.commons.io.IOUtils;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -35,6 +39,8 @@ public class GuideBookScreen extends Screen {
     public enum Pages {
         INTRODUCTION(1),
         DAMAGE_TYPES(1),
+        GAME_MECHANICS(1),
+        ACCESSORY(1),
         STATS(2);
 
         public int pages;
@@ -103,6 +109,7 @@ public class GuideBookScreen extends Screen {
     public List<GuideBookIndexButton> indexButtons = new ArrayList<>();
     public GuideBookChangePageButton previousPage;
     public GuideBookChangePageButton nextPage;
+    private static final Map<String, ResourceLocation> PICTURE_LOCATION_CACHE = Maps.newHashMap();
     public int bookPages;
     public int bookPagesTotal = 1;
     public int indexPages;
@@ -226,6 +233,34 @@ public class GuideBookScreen extends Screen {
         this.renderables.forEach((widget -> widget.render(guiGraphics, mx, my, partialTick)));
         RenderSystem.enableDepthTest();
     }
+    public void drawPerPage(GuiGraphics grap, int bookPages) {
+//        imageFromTxt(grap);
+        switch (this.pageType) {
+            case INTRODUCTION:
+                if (bookPages == 0) {
+                    drawItemStack(grap, new ItemStack(BHItems.GUIDE_BOOK.get()), 8, 20, 1.0F);
+                }
+
+                if (bookPages == 1) {
+                    drawItemStack(grap, new ItemStack(BHItems.GUIDE_BOOK.get()), 8, 38 + (16 * 0), 1.0F);
+                    drawItemStack(grap, new ItemStack(Items.IRON_SWORD), 8, 38 + (16 * 1), 1.0F);
+                    drawItemStack(grap, new ItemStack(BHItems.POWER_GLOVES.get()), 8, 38 + (16 * 2), 1.0F);
+                    drawItemStack(grap, new ItemStack(BHItems.PLAYER_TRACKER.get()), 8, 38 + (16 * 3), 1.0F);
+                    drawItemStack(grap, new ItemStack(BHItems.BOOK_OF_KNOWLEDGE.get()), 8, 38 + (16 * 4), 1.0F);
+                }
+            case DAMAGE_TYPES:
+                break;
+            case STATS:
+                break;
+            case ACCESSORY:
+                if (bookPages == 0) {
+                    drawItemStack(grap, new ItemStack(BHItems.POWER_GLOVES.get()), 8, 20, 1.0F);
+                }
+            default:
+                break;
+        }
+        writeFromTxt(grap);
+    }
     public void writeFromTxt(GuiGraphics guiGraphics) {
         String fileName = this.pageType.toString().toLowerCase(Locale.ROOT) + "_" + this.bookPages + ".txt";
         String languageName = Minecraft.getInstance().options.languageCode.toLowerCase(Locale.ROOT);
@@ -268,9 +303,77 @@ public class GuideBookScreen extends Screen {
         font.drawInBatch8xOutline(title.getVisualOrderText(), 10, 2, 0XFFE7BF, 0XAA977F, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), 15728880);
         guiGraphics.pose().popPose();
     }
+    public void imageFromTxt(GuiGraphics ms) {
+        String fileName = this.pageType.toString().toLowerCase(Locale.ROOT) + "_" + this.bookPages + ".txt";
+        String languageName = Minecraft.getInstance().options.languageCode.toLowerCase(Locale.ROOT);
+        ResourceLocation fileLoc = BeyondHorizon.resource("lang/guidebooks/" + languageName + "_0/" + fileName);
+        ResourceLocation backupLoc = BeyondHorizon.resource("lang/guidebooks/en_us_0/" + fileName);
+        Optional<Resource> resource;
 
-    public void drawPerPage(GuiGraphics grap, int bookPages) {
-        writeFromTxt(grap);
+        resource = Minecraft.getInstance().getResourceManager().getResource(fileLoc);
+        if (resource.isEmpty()) {
+            resource = Minecraft.getInstance().getResourceManager().getResource(backupLoc);
+        }
+        try {
+            if (resource.isPresent()) {
+                final List<String> lines = IOUtils.readLines(resource.get().open(), StandardCharsets.UTF_8);
+                int zLevelAdd = 0;
+                for (String line : lines) {
+                    line = line.trim();
+                    if (line.contains("<") || line.contains(">")) {
+                        if (line.contains("<image>")) {
+                            line = line.substring(8, line.length() - 1);
+                            String[] split = line.split(" ");
+                            String texture = "guidebooks/" + split[0];
+                            ResourceLocation resourcelocation = PICTURE_LOCATION_CACHE.get(texture);
+                            if (resourcelocation == null) {
+                                resourcelocation = BeyondHorizon.resource(texture);
+                                PICTURE_LOCATION_CACHE.put(texture, resourcelocation);
+                            }
+                            ms.pose().pushPose();
+                            drawImage(ms, resourcelocation, Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]), Integer.parseInt(split[4]), Integer.parseInt(split[5]), Integer.parseInt(split[6]), Float.parseFloat(split[7]) * 512F);
+                            ms.pose().popPose();
+                        }
+                    }
+                    if (line.contains("<item>")) {
+                        line = line.substring(7, line.length() - 1);
+                        String[] split = line.split(" ");
+                        RenderSystem.enableDepthTest();
+                        drawItemStack(ms, new ItemStack(getItemByRegistryName(split[0]), 1), Integer.parseInt(split[2]), Integer.parseInt(split[3]), Float.parseFloat(split[4]) * 2F);
+                    }
+                    if (line.contains("<block>")) {
+                        zLevelAdd += 1;
+                        line = line.substring(8, line.length() - 1);
+                        String[] split = line.split(" ");
+                        RenderSystem.enableDepthTest();
+                        drawBlockStack(ms, new ItemStack(getItemByRegistryName(split[0]), 1), Integer.parseInt(split[2]), Integer.parseInt(split[3]), Float.parseFloat(split[4]) * 2F, zLevelAdd);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void drawImage(GuiGraphics ms, ResourceLocation texture, int x, int y, int u, int v, int width, int height, float scale) {
+        ms.pose().pushPose();
+        RenderSystem.setShaderTexture(0, texture);
+        ms.pose().scale(scale / 512F, scale / 512F, scale / 512F);
+        ms.blit(texture, x, y, u, v, width, height, 512, 512);
+        ms.pose().popPose();
+    }
+
+    private void drawItemStack(GuiGraphics ms, ItemStack stack, int x, int y, float scale) {
+        ms.pose().pushPose();
+        ms.pose().scale(scale, scale, scale);
+        ms.renderItem(stack, x, y);
+        ms.pose().popPose();
+    }
+    private void drawBlockStack(GuiGraphics ms, ItemStack stack, int x, int y, float scale, int zScale) {
+        ms.pose().pushPose();
+        ms.pose().scale(scale, scale, scale);
+        ms.pose().translate(0, 0, zScale * 10);
+        ms.renderItem(stack, x, y);
+        ms.pose().popPose();
     }
     private boolean usingVanillaFont() {
         return this.font == Minecraft.getInstance().font;

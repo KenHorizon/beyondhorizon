@@ -1,0 +1,30 @@
+Within this mod some game mechanic
+from vanilla has been alter and
+changes
+
+§n§lCombat
+§lImmunity Frame
+§rInstead of having 1 second
+immune after taken damage the
+second now has been based on the
+attack speed of the attacker
+having the max 1 second and
+mininum of 0 second Immunity Frame
+
+
+
+
+§n§lWorld
+§lLevels
+ §rEach non-boss will now have
+different levels on their spawn
+the levels based on the difficulty
+
+§lPost-Wither
+ §rAfter defeating wither boss the
+world will enter to apocalypse
+ 
+§lPost-EnderDragon
+ §rAfter defeating ender dragon 
+the world will enter to hardmode
+§n§lWorld

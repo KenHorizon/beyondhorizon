@@ -1,0 +1,14 @@
+§n§lTypes Types
+ §rAccessory came with two types
+of ability types §nActive §rand
+§nPassive
+
+§n§6§lPassive Abilities
+ §rA ability that grant a special
+effect automatically
+
+§n§6§lActive Abilities
+ §rand Consumables, grant a
+special effect upon cast, by
+pressing their slot's designated
+hotkey

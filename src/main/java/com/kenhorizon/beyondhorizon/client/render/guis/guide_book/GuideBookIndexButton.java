@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.guide_book;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -12,25 +13,24 @@ import org.jetbrains.annotations.NotNull;
 
 public class GuideBookIndexButton extends Button {
 
-    public GuideBookIndexButton(int x, int y, Component buttonText,
-                           net.minecraft.client.gui.components.Button.OnPress butn) {
-        super(x, y, 160, 32, buttonText, butn, DEFAULT_NARRATION);
+    public GuideBookIndexButton(int x, int y, Component buttonText, Button.OnPress btns) {
+        super(x, y, 160, 32, buttonText, btns, DEFAULT_NARRATION);
         this.width = 160;
         this.height = 32;
     }
 
     @Override
-    public void renderWidget(GuiGraphics pGuiGraphics, int mouseX, int mouseY, float partial) {
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
         if (this.active) {
-            pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
+            guiGraphics.setColor(1.0F, 1.0F, 1.0F, this.alpha);
             RenderSystem.enableBlend();
             RenderSystem.enableDepthTest();
             Font font = (Font) BeyondHorizon.PROXY.getFontRenderer();
             boolean flag = isHoveredOrFocused();
-            pGuiGraphics.blit(BeyondHorizon.resourceGui("guide_book/widgets.png"), this.getX(), this.getY(), 0, flag ? 32 : 0, this.width, this.height);
-            pGuiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-            int i = 10526880;  //this.getFGColor();
-            this.renderString(pGuiGraphics, font, i | Mth.ceil(this.alpha * 255.0F) << 24);
+            guiGraphics.blit(BeyondHorizon.resourceGui("guide_book/widgets.png"), this.getX(), this.getY(), 0, flag ? 32 : 0, this.width, this.height);
+            guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
+            int i = ColorUtil.LIGHT_GRAY;
+            this.renderString(guiGraphics, font, i | Mth.ceil(this.alpha * 255.0F) << 24);
         }
     }
 }

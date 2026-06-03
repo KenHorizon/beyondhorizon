@@ -30,6 +30,7 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.particle.FlameParticle;
@@ -272,6 +273,7 @@ public class ClientProxy extends ServerProxy {
     @OnlyIn(Dist.CLIENT)
     @Override
     public Object getFontRenderer() {
-        return Minecraft.getInstance().font;
+        Minecraft mc = Minecraft.getInstance();
+        return mc.font;
     }
 }

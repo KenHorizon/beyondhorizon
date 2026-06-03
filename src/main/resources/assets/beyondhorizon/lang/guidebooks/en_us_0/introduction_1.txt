@@ -1,7 +1,7 @@
-Contents
+§l§nCONTENT:
 
-Damage Types
-Damage Properties
-Accessory
-Stats
-Level System
+§l§nDamage Types
+§l§nDamage Properties
+§l§nAccessory
+§l§nStats
+§l§nLevel System

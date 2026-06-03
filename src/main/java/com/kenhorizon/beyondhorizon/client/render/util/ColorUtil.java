@@ -6,11 +6,14 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 public class ColorUtil {
 
+    public static int LIGHT_GRAY = combineRGB(192, 192, 192);
+    public static int ORANGE = combineRGB(255, 106, 0);
     public static int WHITE = combineRGB(255, 255, 255);
     public static int GRAY = combineRGB(64, 64, 64);
     public static int RED = combineRGB(255, 0, 0);
     public static int GREEN = combineRGB(0, 255, 0);
     public static int BLUE = combineRGB(0, 0, 255);
+    public static int GOLD = combineRGB(255, 216, 0);
 
     private static int round(float value) {
         return (int) (value * 255.0F + 0.5F);

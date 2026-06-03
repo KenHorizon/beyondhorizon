@@ -3,10 +3,12 @@ package com.kenhorizon.beyondhorizon.client.render.guis.guide_book;
 import com.google.common.collect.ImmutableList;
 import com.google.common.primitives.Ints;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.Fonts;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.item.GuideBookItem;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,6 +17,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.sounds.SoundEvents;
@@ -30,9 +33,9 @@ import java.util.stream.IntStream;
 
 public class GuideBookScreen extends Screen {
     public enum Pages {
-        INTRODUCTION(2),
-        DAMAGE_TYPES(0),
-        STATS(0);
+        INTRODUCTION(1),
+        DAMAGE_TYPES(1),
+        STATS(2);
 
         public int pages;
         public static final ImmutableList<Pages> ALL_PAGES = ImmutableList.copyOf(Pages.values());
@@ -180,7 +183,7 @@ public class GuideBookScreen extends Screen {
                         centerY + 10 + (yIndex * 20) - (xIndex == 1 ? 20 : 0),
                         Component.translatable("guidebooks."
                                 + Pages.values()[allPageTypes.get(i).ordinal()].toString().toLowerCase()),
-                        (p_214132_1_) -> {
+                        (btns) -> {
                             if (this.indexButtons.get(id - 2) != null && allPageTypes.get(id - 2) != null) {
                                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
                                 this.index = false;
@@ -198,8 +201,7 @@ public class GuideBookScreen extends Screen {
     public void render(GuiGraphics guiGraphics, int mx, int my, float partialTick) {
         this.renderBackground(guiGraphics);
         for (Renderable widget : this.renderables) {
-            if (widget instanceof GuideBookIndexButton) {
-                GuideBookIndexButton button = (GuideBookIndexButton) widget;
+            if (widget instanceof GuideBookIndexButton button) {
                 button.active = index;
                 button.visible = index;
             }
@@ -217,21 +219,14 @@ public class GuideBookScreen extends Screen {
         guiGraphics.pose().pushPose();
         guiGraphics.pose().translate(cornerX, cornerY, 0.0F);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        int centerX = (width - X) / 2;
-        int centerY = (height - Y) / 2;
         if (!index) {
             drawPerPage(guiGraphics, bookPages);
-            int pageLeft = bookPages * 2 + 1;
-            int pageRight = pageLeft + 1;
-            font.drawInBatch("" + pageLeft, (float) centerX, (float) (centerY - (Y * 0.13)), 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
-            font.drawInBatch("" + pageRight, (float) centerX, (float) (centerY - (Y * 0.13)), 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
         }
         guiGraphics.pose().popPose();
         this.renderables.forEach((widget -> widget.render(guiGraphics, mx, my, partialTick)));
         RenderSystem.enableDepthTest();
     }
-
-    public void writeFromTxt(GuiGraphics ms) {
+    public void writeFromTxt(GuiGraphics guiGraphics) {
         String fileName = this.pageType.toString().toLowerCase(Locale.ROOT) + "_" + this.bookPages + ".txt";
         String languageName = Minecraft.getInstance().options.languageCode.toLowerCase(Locale.ROOT);
         ResourceLocation fileLoc = BeyondHorizon.resource("lang/guidebooks/" + languageName + "_0/" + fileName);
@@ -250,32 +245,32 @@ public class GuideBookScreen extends Screen {
                 if (line.contains("<") || line.contains(">")) {
                     continue;
                 }
-                ms.pose().pushPose();
+                guiGraphics.pose().pushPose();
                 if (this.usingVanillaFont()) {
-                    ms.pose().scale(0.945F, 0.945F, 0.945F);
-                    ms.pose().translate(0, 5.5F, 0);
+                    guiGraphics.pose().scale(0.945F, 0.945F, 0.945F);
+                    guiGraphics.pose().translate(0, 5.5F, 0);
                 }
                 if (linenumber <= 19) {
-                    font.drawInBatch(line, 15, 20 + linenumber * 10, 0X303030, false, ms.pose().last().pose(), ms.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
+                    font.drawInBatch(line, 15, 20 + linenumber * 10, 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
                 } else {
-                    font.drawInBatch(line, 220, (linenumber - 19) * 10, 0X303030, false, ms.pose().last().pose(), ms.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
+                    font.drawInBatch(line, 220, (linenumber - 19) * 10, 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
                 }
                 linenumber++;
-                ms.pose().popPose();
+                guiGraphics.pose().popPose();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        ms.pose().pushPose();
-        String s = Utils.translateToLocal("guidebooks." + this.pageType.toString().toLowerCase(Locale.ROOT));
-        float scale = font.width(s) <= 100 ? 2 : font.width(s) * 0.0125F;
-        ms.pose().scale(scale, scale, scale);
-        font.drawInBatch(s, 10, 2, 0X7A756A, false, ms.pose().last().pose(), ms.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
-        ms.pose().popPose();
+        guiGraphics.pose().pushPose();
+        Component title = Component.translatable("guidebooks." + this.pageType.toString().toLowerCase(Locale.ROOT));
+        float scale = font.width(title) <= 100 ? 2 : font.width(title) * 0.0125F;
+        guiGraphics.pose().scale(scale, scale, scale);
+        font.drawInBatch8xOutline(title.getVisualOrderText(), 10, 2, 0XFFE7BF, 0XAA977F, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), 15728880);
+        guiGraphics.pose().popPose();
     }
 
-    public void drawPerPage(GuiGraphics ms, int bookPages) {
-        writeFromTxt(ms);
+    public void drawPerPage(GuiGraphics grap, int bookPages) {
+        writeFromTxt(grap);
     }
     private boolean usingVanillaFont() {
         return this.font == Minecraft.getInstance().font;

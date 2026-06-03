@@ -1,16 +1,40 @@
-Ability Power
-Critical Strike
-Critical Damage
-Damage Dealt
-Damage Taken
-Mining Speed
-Evade
-Armor Penetration
-Magic Penetration
-Omni Vamp
-Physical Vamp
-Spell Vamp
-Life Steal
-Magic Resistance
-Max Mana
-Mana Regeneration
+Newly added stats on the game
+
+§l§nAbility Power
+§l§nCritical Strike
+§l§nCritical Damage
+§l§nDamage Dealt
+§l§nDamage Taken
+§l§nMining Speed
+§l§nEvade
+§l§nArmor Penetration
+§l§nMagic Penetration
+§l§nOmni Vamp
+§l§nPhysical Vamp
+§l§nSpell Vamp
+§l§nLife Steal
+§l§nMagic Resistance
+§l§nMax Mana
+§l§nMana Regeneration
+
+	
+§9§lAbility Power 
+§r Is a stats that boost and 
+empower some skills and items
+
+§6§lCritical Strike
+§r Is a stats that
+allow to do a critical attack that
+deal bonus damage
+
+§c§lCritical Damage
+§r Is a stats that tell how
+much damage multiplier is applied
+
+§6§lDamage Dealt
+§r Is a stats that tell
+how effectiveness you deal
+
+§6§lDamage Taken
+§r Is a stats how much
+you take post-mitigation damage

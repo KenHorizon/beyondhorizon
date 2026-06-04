@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
@@ -85,7 +85,7 @@ public class ExtraDamageSkill extends WeaponSkills {
 
     public static final DamageTypeFunction PERFECTION = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
         if (attacker instanceof Player player) {
-            PlayerData playerData = CapabilityCaller.data(player);
+            PlayerData playerData = Capabilities.data(player);
             if (playerData.isCrit()) {
                 float lethalStrikeDamage = damageDealt * magnitude;
                 target.hurt(BHDamageTypes.trueDamage(attacker, target), lethalStrikeDamage);

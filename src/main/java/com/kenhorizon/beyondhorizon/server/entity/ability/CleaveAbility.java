@@ -1,29 +1,15 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
-import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -89,9 +75,9 @@ public class CleaveAbility extends AbilityEntity {
     @Override
     protected void onEnd() {
         LivingEntity user = this.getCaster();
-        if (!this.sentSpikeEvent) {
+        if (!this.onStartEvent) {
             this.level().broadcastEntityEvent(this, (byte) 4);
-            this.sentSpikeEvent = true;
+            this.onStartEvent = true;
         }
         if (this.getCleaveType() == Type.CIRCLE) {
             this.cleaveAttack();

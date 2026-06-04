@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundConsumePointsPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundSkillPointsPacket;
@@ -17,7 +17,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import org.joml.Math;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -86,7 +85,7 @@ public class LevelSystemScreen extends Screen {
         this.scaledWindowHeight = minecraft.getWindow().getGuiScaledHeight();
         this.posX = (this.scaledWindowWidth - this.imageW) / 2;
         this.posY = (this.scaledWindowHeight - this.imageH) / 2;
-        this.role = CapabilityCaller.levelSystem(this.player);
+        this.role = Capabilities.levelSystem(this.player);
     }
 
     @Override

@@ -15,3 +15,13 @@ hotkey
 
 §n§6§lAccessory Keybinds
 Alt + NumPads (1-6)
+
+
+
+§lTODO:
+- Update Accessory System, refined
+and optimized
+- Add item category basic, epic 
+and unique
+- Add system where stack all
+attributes

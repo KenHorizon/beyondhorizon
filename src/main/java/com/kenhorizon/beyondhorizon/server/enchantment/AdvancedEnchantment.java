@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.enchantment;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
@@ -22,14 +22,12 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -113,7 +111,7 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
 
         if (this == BHEnchantments.DYNAMO_HIT.get()) {
             if (attacker instanceof Player player) {
-                PlayerData playerData = CapabilityCaller.data(player);
+                PlayerData playerData = Capabilities.data(player);
                 if (playerData.isCrit()) {
                     damageDealt *= 2.0F;
                 } else {

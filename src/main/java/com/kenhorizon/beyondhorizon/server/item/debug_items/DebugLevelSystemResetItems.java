@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.item.debug_items;
 
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -18,7 +18,7 @@ public class DebugLevelSystemResetItems extends BasicItem {
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         if (!level.isClientSide()) {
-            LevelSystem levelSystem = CapabilityCaller.levelSystem(player);
+            LevelSystem levelSystem = Capabilities.levelSystem(player);
             levelSystem.resetEverything();
         }
         return super.use(level, player, hand);

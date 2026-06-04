@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.command;
 
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import net.minecraft.commands.CommandSourceStack;
@@ -27,7 +27,7 @@ public class RoleClassCommand {
     }
 
     private static int executeSetLevels(CommandSourceStack commandSource, ServerPlayer player, int amount) {
-        LevelSystem role = CapabilityCaller.levelSystem(player);
+        LevelSystem role = Capabilities.levelSystem(player);
         if (role == null) {
             commandSource.sendFailure(Component.translatable(Tooltips.COMMAND_ROLE_SET_FAILED, amount));
             return 0;
@@ -38,7 +38,7 @@ public class RoleClassCommand {
         }
     }
     private static int executeSetPoints(CommandSourceStack commandSource, ServerPlayer player, int amount) {
-        LevelSystem role = CapabilityCaller.levelSystem(player);
+        LevelSystem role = Capabilities.levelSystem(player);
         if (role == null) {
             commandSource.sendFailure(Component.translatable(Tooltips.COMMAND_POINTS_FAILED, amount));
             return 0;
@@ -49,7 +49,7 @@ public class RoleClassCommand {
         }
     }
     private static int executeReset(CommandSourceStack commandSource, ServerPlayer player) {
-        LevelSystem role = CapabilityCaller.levelSystem(player);
+        LevelSystem role = Capabilities.levelSystem(player);
         if (role == null) {
             commandSource.sendFailure(Component.translatable(Tooltips.COMMAND_RESET_FAILED));
             return 0;

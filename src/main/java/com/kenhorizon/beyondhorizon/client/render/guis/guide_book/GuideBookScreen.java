@@ -246,6 +246,10 @@ public class GuideBookScreen extends Screen {
                     drawImage(grap, DRAW0, 12, 22, 0, 0, 168, 40, 512F);
                     drawImage(grap, DRAW0, 12, 22 + 42, 0, 40, 168, 168, 512F);
                 }
+            case LEVEL_SYSTEM:
+                if (bookPages == 0) {
+                    drawImage(grap, DRAW0, 30, 256, 168, 0, 143, 82, 256F);
+                }
             case DAMAGE_TYPES:
                 break;
             case STATS:

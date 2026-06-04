@@ -1,19 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.item;
 
-import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
-import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
-import it.unimi.dsi.fastutil.chars.CharRBTreeSet;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -44,7 +38,7 @@ public class PlayerTrackerItem extends BasicItem {
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         Minecraft minecraft = Minecraft.getInstance();
         var player = minecraft.player;
-        var info = CapabilityCaller.data(player);
+        var info = Capabilities.data(player);
         tooltip.add(Component.translatable(NBT_PLAYER_HEALTH).append(CommonComponents.space())
                 .append(Component.literal(String.format("%s/%s", player.getHealth(), player.getMaxHealth())).withStyle(ChatFormatting.GREEN)));
         tooltip.add(Component.translatable(NBT_PLAYER_MANA).append(CommonComponents.space())

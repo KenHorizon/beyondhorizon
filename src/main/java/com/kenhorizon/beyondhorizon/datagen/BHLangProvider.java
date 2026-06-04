@@ -112,6 +112,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.PIERCING_EDEGE.get(), "Piercing Edge", "Increase physical damage dealt by %s (+%s%% target's armor)%% to armored target");
         this.addSkills(Skills.BLAZING_CLEAVE.get(), "Blazing Cleave", "On-hit attack release a powerful shockwave that deal %s%% damage within %s range");
         //
+        this.addAccessory(Accessories.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100");
+        this.addAccessory(Accessories.ELECTROSHOCK.get(), "Electro Shock", "When fully Energized, your next basic attack form chain of lightning dealing 40% damage dealt magic damage, this bounce to the nearest unit upto 4 targets");
         this.addAccessory(Accessories.FEATHER_FEET.get(), "Feather Feet", "Negate fall damage");
         this.addAccessory(Accessories.OVERGROWTH.get(), "Overgrowth", "Increase Bonus Max HP by %s%% (%s)");
         this.addAccessory(Accessories.DESPAIR_AND_DEFY.get(), "Despair And Defy", "Reduce %.2f%% post-mitigation damage and stored it and bleed per second of stored damage");
@@ -192,6 +194,15 @@ public class BHLangProvider extends LanguageProvider {
         this.addDeathMessage(BHDamageTypes.TRUE_DAMAGE, "%%1$s was consumed", "%1$s was consumed by %2$s", "%1$s was consumed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.BLEED, "%1$s was bleeding to death", "%1$s was bleeding to death while killed by %2$s", "%1$s was bleeding to death while killed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.BEAM, "%1$s was evaporated", "%1$s was evaporated by %2$s", "%1$s was evaporated by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.BLAZING_ROD, "%1$s was evaporated", "%1$s was evaporated by %2$s", "%1$s was evaporated by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.PET_DAMAGE_PHYSICAL, "%1$s was killed", "%1$s was evaporated by %2$s", "%1$s was evaporated by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.PET_DAMAGE_MAGIC, "%1$s was killed", "%1$s was killed by %2$s", "%1$s was killed by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.PET_DAMAGE_TRUE_DAMAGE, "%1$s was killed", "%1$s was killed by %2$s", "%1$s was killed by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.MAGIC_BURNING, "%1$s was burned", "%1$s was burned to death by %2$s", "%1$s was consumed by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.TRUE_DAMAGE_BURNING, "%1$s was burned", "%1$s was burned to death by %2$s", "%1$s was consumed by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.IGNORE_ENCHANTMENT_PROTECTION, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.LETHALITY, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.MAGIC_PENETRATION, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
         //
         this.addGuideBookIndexes(GuideBookScreen.Pages.INTRODUCTION, "Introduction");
         this.addGuideBookIndexes(GuideBookScreen.Pages.DAMAGE_TYPES, "Damage Types");

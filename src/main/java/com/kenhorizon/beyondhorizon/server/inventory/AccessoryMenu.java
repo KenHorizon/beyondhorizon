@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.inventory;
 
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
 import com.kenhorizon.beyondhorizon.server.inventory.slot.AccessorySlot;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
@@ -52,7 +52,7 @@ public class AccessoryMenu extends InventoryMenu {
         this.containerId = containerId;
         this.player = inventory.player;
         this.inventory = inventory;
-        this.handler = CapabilityCaller.accessory(this.player);
+        this.handler = Capabilities.accessory(this.player);
         this.resultSlot(inventory);
         this.craftingGrid();
         this.addPlayerInventorySlot();

@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -45,7 +45,7 @@ public class ServerboundSkillPointsPacket {
                 Level level = sender.level();
                 Entity entity = level.getEntity(this.index);
                 if (entity instanceof Player player) {
-                    LevelSystem role = CapabilityCaller.levelSystem((Player) player);
+                    LevelSystem role = Capabilities.levelSystem((Player) player);
                     if (this.amount > 0) {
                         role.setPoints(role.getPoints() - 1);
                         role.addPointOfAttributes(this.attributePoints, this.amount);

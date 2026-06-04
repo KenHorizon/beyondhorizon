@@ -1,7 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.entity.ability.BoltShockAbility;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
@@ -189,6 +191,19 @@ public class SinglePassiveAccessory extends AccessorySkill {
         if (target == null || attacker == null) return;
         CompoundTag tagA = EntityData.getOrCreateTag(attacker);
         CompoundTag tagT = EntityData.getOrCreateTag(attacker);
+        var stackableTags = Capabilities.stackable(attacker);
+        if (this == Accessories.ELECTROSHOCK.get()) {
+            if (stackableTags != null) {
+                var sTag = stackableTags.getInstance(StackableTagInstance.ENERGIZE);
+                if (!attacker.level().isClientSide()) {
+                    if (sTag.isFullyStacked()) {
+                        BeyondHorizon.LOGGER.debug("[Energize] Electroshock activated!");
+                        BoltShockAbility.spawn(attacker.level(), target.getX(), target.getY(0.05D), target.getZ(), damageDealt, 2.0F, 1, attacker);
+                        sTag.setStack(0);
+                    }
+                }
+            }
+        }
         if (this == Accessories.BURN_EFFECT.get()) {
             target.setSecondsOnFire(Constant.FIRE_EFFECT);
         }
@@ -228,7 +243,7 @@ public class SinglePassiveAccessory extends AccessorySkill {
         }
         if (this == Accessories.BRING_IT_DOWN.get()) {
             if (attacker instanceof Player player) {
-                var roleClass = CapabilityCaller.levelSystem(player);
+                var roleClass = Capabilities.levelSystem(player);
                 int xpLevel = roleClass != null ? roleClass.getLevel() : 1;
                 float baseDamage = (this.getMagnitude() * (xpLevel + 1));
                 this.bringItDownStacks++;

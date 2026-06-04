@@ -66,7 +66,6 @@ public class FlameStrikeAbility extends AbilityEntity {
             ParticleTrailOptions.add(this.level(), TrailParticles.Behavior.FADE, this.getX() + ox, this.getY(), this.getZ() + oz, 3.0F, 1, 0.0F, 0.0F, 1.0F, 20, new Vec3(this.getX() + ox, this.getY() + 10, this.getZ() + oz));
         }
     }
-
     @Override
     protected void onEnd() {
         if (this.level().isClientSide()) {

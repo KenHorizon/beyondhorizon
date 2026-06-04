@@ -11,12 +11,6 @@ speed) Immunity frame
 
 §7§nThis is based on combat-snapshot
 
-§n§lArrows
-All arrows from modded and vanilla
-are now ignoring Immunity Frame
-
-
-
 
 
 §n§lWorld

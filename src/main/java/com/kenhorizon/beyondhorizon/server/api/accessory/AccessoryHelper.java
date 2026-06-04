@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +20,7 @@ public class AccessoryHelper {
     private static List<Accessory> getAllAccessory(Player player) {
         List<Accessory> result = new ArrayList<>();
         if (!player.isAlive()) return result;
-        IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+        IAccessoryItemHandler handler = Capabilities.accessory(player);
         if (handler == null) return result;
         for (int i = 0; i < handler.getSlots(); i++) {
             ItemStack itemStack = handler.getStackInSlot(i);
@@ -35,7 +34,7 @@ public class AccessoryHelper {
     public static boolean checkAccessorySlot(Player player, Item item) {
         List<ItemStack> itemStacks = new ArrayList<>();
         ItemStack itemStack = item.getDefaultInstance();
-        IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+        IAccessoryItemHandler handler = Capabilities.accessory(player);
         for (int i = 0; i < handler.getSlots(); ++i) {
             ItemStack accessory = handler.getStackInSlot(i);
             if (!accessory.isEmpty()) {

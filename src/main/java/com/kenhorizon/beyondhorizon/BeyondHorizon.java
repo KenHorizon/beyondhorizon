@@ -13,6 +13,7 @@ import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSets;
 import com.kenhorizon.beyondhorizon.server.api.handler.anvil_patch.AnvilPatchHandler;
+import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.command.RoleClassCommand;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
@@ -101,6 +102,7 @@ public class BeyondHorizon
         BeyondHorizon.LOGGER.info("Setting up {} {}!!", BeyondHorizon.NAME, BeyondHorizon.VERSION);
         NetworkHandler.register();
         ArmorBonusSets.register();
+        StackableTagInstance.registerAll();
         event.enqueueWork(() -> {
             BHPotions.setup();
             this.modCompatible();

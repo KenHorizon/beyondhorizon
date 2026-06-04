@@ -1,16 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.effect;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
-import com.kenhorizon.beyondhorizon.server.capability.DamageInfoCap;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
-import com.mojang.realmsclient.dto.PlayerInfo;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -93,7 +89,7 @@ public class BHMobEffect extends MobEffect {
             }
         }
         if (this == BHEffects.RAPID_HEALING.get()) {
-            ICombatCore combatCore = CapabilityCaller.combat(entity);
+            ICombatCore combatCore = Capabilities.combat(entity);
             boolean cancelHeal = combatCore.OnCombat();
             if (!cancelHeal && entity.getHealth() < entity.getMaxHealth()) {
                 if (entity.tickCount % this.rapidHealingRate == 0) {
@@ -115,6 +111,11 @@ public class BHMobEffect extends MobEffect {
         }
         if (this == BHEffects.BLEED.get()) {
             if (!entity.level().isClientSide()) {
+                if (!entity.isInvulnerable()) {
+                    if (entity.moveDist > entity.nextStep) {
+                        entity.hurt(BHDamageTypes.bleed(), 1.0F);
+                    }
+                }
                 this.bleedSpecialEffect(entity, amplifier);
             }
         }

@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
@@ -39,13 +39,13 @@ public class BleedingEffectAccessory extends AccessorySkill {
 
     @Override
     public void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {
-        IDamageInfo damageInfo = CapabilityCaller.damageInfo(attacker);
+        IDamageInfo damageInfo = Capabilities.damageInfo(attacker);
         attacker.heal(damageInfo.getPostStoredDamage());
     }
 
     @Override
     public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
-        IDamageInfo damageInfo = CapabilityCaller.damageInfo(entity);
+        IDamageInfo damageInfo = Capabilities.damageInfo(entity);
         if (this.duration >= 100) {
             this.duration = 0;
             this.activatedEffect = false;

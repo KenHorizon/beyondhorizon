@@ -1,6 +1,6 @@
-§n§lACCESSORY
+    ACCESSORY
 
-§r Are equipable items that
+Are equipable items that
 provide various stat boosts to
 the player and special abilities
 

@@ -1,6 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
 import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
+import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.LightningParticleOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
@@ -15,6 +19,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -35,7 +41,8 @@ import java.util.UUID;
 
 public abstract class AbilityEntity extends Entity implements ILinkedEntity, TraceableEntity {
     protected float damage = 5.0F;
-    protected boolean sentSpikeEvent = false;
+    protected boolean onStartEvent = false;
+    protected boolean onEndEvent = false;
     protected int duration = 60;
     protected int lifespan = 0;
     protected int delay = 0;
@@ -229,26 +236,47 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     protected void onDuration() {}
 
     protected void onEnd() {}
+    @Override
+    public void handleEntityEvent(byte id) {
+        super.handleEntityEvent(id);
+        if (id == 4) {
+            this.onStartEvent();
+        }
+        if (id == 5) {
+           this.onEndEvent();
+        }
+    }
+
+    public void onStartEvent() {
+
+    }
+    public void onEndEvent() {
+
+    }
 
     @Override
     public void tick() {
         super.tick();
-        this.setLifeTime(this.getLifeTime() + 1);
         this.animation.increaseTimer();
         this.onDuration();
-        if (this.getLifeTime() <= (1 + this.getDelay())) {
-            if (!this.sentSpikeEvent) {
+        if (this.getLifeTime() == (this.getDelay())) {
+            if (!this.onStartEvent) {
                 this.level().broadcastEntityEvent(this, (byte) 4);
-                this.sentSpikeEvent = true;
+                this.onStartEvent = true;
             }
             this.onStart();
         }
+        this.setLifeTime(this.getLifeTime() + 1);
         if (this.getLifeTime() >= (this.getDuration() + this.getDelay()) - 1) {
+
+            if (!this.onEndEvent) {
+                this.level().broadcastEntityEvent(this, (byte) 5);
+                this.onEndEvent = true;
+            }
             this.onEnd();
         }
         if (this.getLifeTime() >= (this.getDuration() + this.getDelay())) {
             this.discard();
-            this.remove(RemovalReason.DISCARDED);
         }
     }
 

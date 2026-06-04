@@ -30,7 +30,6 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.particle.FlameParticle;
@@ -119,6 +118,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.BLAZING_ROD.get(), BlazingRodRenderer::new);
         EntityRenderers.register(BHEntity.INFERNO_SHIELD.get(), InfernoShieldRenderer::new);
         EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
+        EntityRenderers.register(BHEntity.BOLT_SHOCK.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.CLEAVE_ABILITY.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.BLAZING_SPEAR.get(), BlazingSpearRenderer::new);
         EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
@@ -220,6 +220,7 @@ public class ClientProxy extends ServerProxy {
         event.registerSpriteSet(BHParticle.TRAILS.get(), TrailParticles.Provider::new);
         event.registerSpecial(BHParticle.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(BHParticle.STUN_PARTICLES.get(),new StunParticles.Provider());
+        event.registerSpecial(BHParticle.LIGHTNING.get(), new LightningParticle.Provider());
 
     }
     private void registerKeybinds(RegisterKeyMappingsEvent event) {

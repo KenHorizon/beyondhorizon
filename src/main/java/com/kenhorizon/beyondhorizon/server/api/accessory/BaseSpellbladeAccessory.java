@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
@@ -49,7 +48,7 @@ public abstract class BaseSpellbladeAccessory extends AccessorySkill {
         CompoundTag tag = EntityData.getOrCreateTag(entity);
         int cooldown = 0;
         boolean flag = false;
-        ICombatCore combat = CapabilityCaller.combat(entity);
+        ICombatCore combat = Capabilities.combat(entity);
         if (!entity.level().isClientSide()) {
             cooldown = tag.getInt(this.spellBladeTag());
             this.timer = cooldown;

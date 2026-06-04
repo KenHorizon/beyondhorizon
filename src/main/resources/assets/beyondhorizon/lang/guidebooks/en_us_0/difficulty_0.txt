@@ -19,13 +19,13 @@ and bosses
 
 
 
-§lHardmode
+§n§lHardmode
 - Unlock new ores and enemies
 - Enemies are stronger
 - Unlock new items
 - Unlock some structures
 
-§lApocalypse
+§n§lApocalypse
 - Unlock new dimension
 - Unlock new biomes
 - Enemies are more stronger

@@ -10,6 +10,8 @@ import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.event.HarvestBlockEvent;
 import com.kenhorizon.beyondhorizon.server.api.handler.UndyingTotemAbility;
+import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance;
+import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.*;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
@@ -122,10 +124,16 @@ public class ServerEventHandler {
     public void onEntityJoin(EntityJoinLevelEvent event) {
         if (!event.getLevel().isClientSide()) {
             if (event.getEntity() instanceof Player player) {
-                LevelSystem role = CapabilityCaller.levelSystem(player);
-                PlayerData data = CapabilityCaller.data(player);
+                LevelSystem role = Capabilities.levelSystem(player);
+                PlayerData data = Capabilities.data(player);
                 NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) player);
                 NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) player);
+            }
+            if (event.getEntity() instanceof LivingEntity entity) {
+                IStackableInstance stackableTags = Capabilities.stackable(entity);
+                if (stackableTags != null) {
+                    stackableTags.instance(entity);
+                }
             }
         }
     }
@@ -152,16 +160,16 @@ public class ServerEventHandler {
 
     @SubscribeEvent
     public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        LevelSystem role = CapabilityCaller.levelSystem(event.getEntity());
-        PlayerData data = CapabilityCaller.data(event.getEntity());
+        LevelSystem role = Capabilities.levelSystem(event.getEntity());
+        PlayerData data = Capabilities.data(event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) event.getEntity());
     }
 
     @SubscribeEvent
     public void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        LevelSystem role = CapabilityCaller.levelSystem(event.getEntity());
-        PlayerData data = CapabilityCaller.data(event.getEntity());
+        LevelSystem role = Capabilities.levelSystem(event.getEntity());
+        PlayerData data = Capabilities.data(event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) event.getEntity());
     }
@@ -203,8 +211,11 @@ public class ServerEventHandler {
         if (PlayerDataCap.canAttachTo(entity)) {
             event.addCapability(PlayerDataCap.NAME, new PlayerDataCap((Player) entity));
         }
-        if (ActiveSkillCap.canAttachTo(entity)) {
-            event.addCapability(ActiveSkillCap.NAME, new ActiveSkillCap());
+//        if (ActiveSkillCap.canAttachTo(entity)) {
+//            event.addCapability(ActiveSkillCap.NAME, new ActiveSkillCap());
+//        }
+        if (StackableTagCap.canAttachTo(entity)) {
+            event.addCapability(StackableTagCap.NAME, new StackableTagCap());
         }
     }
 
@@ -228,7 +239,7 @@ public class ServerEventHandler {
     @SubscribeEvent
     public void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         Player player = event.getEntity();
-        PlayerData playerData = CapabilityCaller.data(player);
+        PlayerData playerData = Capabilities.data(player);
         if (!event.isEndConquered()) {
             playerData.setDefaults();
         }
@@ -393,7 +404,7 @@ public class ServerEventHandler {
         if (event.level instanceof ServerLevel level) {
             level.players().stream().toList().forEach(player -> {
                 if (player instanceof ServerPlayer) {
-                    PlayerData playerData = CapabilityCaller.data(player);
+                    PlayerData playerData = Capabilities.data(player);
                     playerData.tick(level);
                 }
             });
@@ -427,24 +438,20 @@ public class ServerEventHandler {
 
         }
     }
-//    @SubscribeEvent
-//    public void onLivingSpawn(PlayerEvent.PlayerLoggedInEvent event) {
-//        Player entity = event.getEntity();
-//        Level level = entity.level();
-//        var killSwitch = level.getEntitiesOfClass(Entity.class, entity.getBoundingBox().inflate(100));
-//        for (Entity kill : killSwitch) {
-//            kill.kill();
-//        }
-//    }
+
+    //TODO: Living Tick Update
     @SubscribeEvent
     public void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         ItemStack itemStack = entity.getMainHandItem();
-        ICombatCore combatCore = CapabilityCaller.combat(entity);
-        this.onEnchantmentTick(entity);
+        ICombatCore combatCore = Capabilities.combat(entity);
+        IStackableInstance stackableTags = Capabilities.stackable(entity);
+        if (stackableTags != null) {
+            stackableTags.tick(entity);
+        }
         if (combatCore != null) {
             combatCore.tick();
-            IDamageInfo damageInfo = CapabilityCaller.damageInfo(entity);
+            IDamageInfo damageInfo = Capabilities.damageInfo(entity);
             if (damageInfo != null && !combatCore.OnCombat()) {
                 damageInfo.setPostDamage(0.0F);
                 damageInfo.setPreDamage(0.0F);
@@ -452,6 +459,7 @@ public class ServerEventHandler {
                 damageInfo.setPostStoredDamage(0.0F);
             }
         }
+        this.onEnchantmentTick(entity);
         if (entity.hasEffect(BHEffects.LETHAL_PROTECTION_COOLDOWN.get())) {
             entity.removeEffect(BHEffects.LETHAL_PROTECTION.get());
         }
@@ -463,7 +471,7 @@ public class ServerEventHandler {
         }
         if (entity instanceof Player player) {
             this.onPlayerTick(player);
-            LevelSystem levelSystem = CapabilityCaller.levelSystem(player);
+            LevelSystem levelSystem = Capabilities.levelSystem(player);
             if (levelSystem != null) {
                 Optional<IEntityProperties> optional = levelSystem.IEntityProperties();
                 optional.ifPresent(callback -> callback.onEntityUpdate(entity, itemStack));
@@ -527,7 +535,7 @@ public class ServerEventHandler {
         LivingEntity target = event.getEntity();
         float damage = event.getAmount();
         if (target instanceof Player player) {
-            IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+            IAccessoryItemHandler handler = Capabilities.accessory(player);
             if (handler != null) {
                 for (int i = 0; i < handler.getSlots(); i++) {
                     final ItemStack itemStack = handler.getStackInSlot(i);
@@ -557,7 +565,7 @@ public class ServerEventHandler {
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
         ItemStack targetMainHandItem = target.getMainHandItem();
-        ICombatCore targetCombatCore = CapabilityCaller.combat(target);
+        ICombatCore targetCombatCore = Capabilities.combat(target);
         if (event.isCanceled() || source.is(DamageTypes.GENERIC_KILL) || !(target.level() instanceof ServerLevel level)) return;
         boolean isCrit = false;
         if (!targetMainHandItem.isEmpty() && target.getMainHandItem().getItem() instanceof ISkillItems<?> container) {
@@ -582,7 +590,7 @@ public class ServerEventHandler {
                     }
                 }
             }
-            IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+            IAccessoryItemHandler handler = Capabilities.accessory(player);
             if (handler != null) {
                 for (int i = 0; i < handler.getSlots(); i++) {
                     final ItemStack itemStack = handler.getStackInSlot(i);
@@ -630,12 +638,12 @@ public class ServerEventHandler {
                 }
             }
             if (attacker instanceof Player player) {
-                LevelSystem levelSystem = CapabilityCaller.levelSystem(player);
+                LevelSystem levelSystem = Capabilities.levelSystem(player);
                 Optional<IAttack> attack = levelSystem.IAttack();
                 if (attack.isPresent()) {
                     attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
                 }
-                IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+                IAccessoryItemHandler handler = Capabilities.accessory(player);
                 if (handler != null) {
                     for (int i = 0; i < handler.getSlots(); i++) {
                         final ItemStack itemStack = handler.getStackInSlot(i);
@@ -654,7 +662,7 @@ public class ServerEventHandler {
         }
         StatModifiers totalDamageTaken = new StatModifiers(1.0F, (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get()), 0.0F, 0.0F);
         damageDealt = totalDamageTaken.applyTo(damageDealt);
-        IDamageInfo damageInfo = CapabilityCaller.damageInfo(target);
+        IDamageInfo damageInfo = Capabilities.damageInfo(target);
         if (damageInfo != null) {
             damageInfo.setPostDamage(damageDealt);
             if (!source.is(BHDamageTypeTags.CANT_STORE_DAMAGE)) {
@@ -663,7 +671,7 @@ public class ServerEventHandler {
         }
         targetCombatCore.activated();
         if (target instanceof Player player) {
-            CapabilityCaller.data(player).setCrit(isCrit);
+            Capabilities.data(player).setCrit(isCrit);
         }
         if (BHConfigs.DAMAGE_INDICATOR) {
             float roundedAmount = Math.round(damageDealt * 10) / 10f;
@@ -705,7 +713,7 @@ public class ServerEventHandler {
             itemDuration = AdvancedEnchantment.getDrawSpeed(entity, duration);
         }
         if (entity instanceof Player player) {
-            IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+            IAccessoryItemHandler handler = Capabilities.accessory(player);
             if (handler != null) {
                 for (int i = 0; i < handler.getSlots(); i++) {
                     final ItemStack itemStacks = handler.getStackInSlot(i);
@@ -808,15 +816,15 @@ public class ServerEventHandler {
                 target.invulnerableTime = target.invulnerableDuration - (int) getAttackSpeed;
             }
             if (source.getEntity() instanceof LivingEntity attacker) {
-                ICombatCore attackerCombatCore = CapabilityCaller.combat(attacker);
+                ICombatCore attackerCombatCore = Capabilities.combat(attacker);
                 ItemStack attackerStack = attacker.getMainHandItem();
                 if (attacker instanceof Player player) {
-                    LevelSystem levelSystem = CapabilityCaller.levelSystem(player);
+                    LevelSystem levelSystem = Capabilities.levelSystem(player);
                     Optional<IAttack> attack = levelSystem.IAttack();
                     if (attack.isPresent()) {
                         damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
                     }
-                    IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+                    IAccessoryItemHandler handler = Capabilities.accessory(player);
                     if (handler != null) {
                         for (int i = 0; i < handler.getSlots(); i++) {
                             final ItemStack itemStack = handler.getStackInSlot(i);
@@ -845,7 +853,7 @@ public class ServerEventHandler {
             }
         }
         if (target != null) {
-            IDamageInfo damageInfo = CapabilityCaller.damageInfo(target);
+            IDamageInfo damageInfo = Capabilities.damageInfo(target);
             if (damageInfo != null) {
                 damageInfo.setPreDamage(damageDealt);
                 if (!source.is(BHDamageTypeTags.CANT_STORE_DAMAGE)) {
@@ -877,7 +885,7 @@ public class ServerEventHandler {
                 }
             }
         }
-        IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+        IAccessoryItemHandler handler = Capabilities.accessory(player);
         if (handler != null) {
             for (int i = 0; i < handler.getSlots(); i++) {
                 final ItemStack stackInSlot = handler.getStackInSlot(i);
@@ -900,13 +908,13 @@ public class ServerEventHandler {
         DamageSource source = event.getSource();
         boolean cantDie = false;
         if (source.getEntity() instanceof LivingEntity attacker) {
-            ICombatCore attackerCombatCore = CapabilityCaller.combat(attacker);
+            ICombatCore attackerCombatCore = Capabilities.combat(attacker);
             ItemStack attackerStack = attacker.getMainHandItem();
             if (attacker instanceof Player player) {
-                LevelSystem levelSystem = CapabilityCaller.levelSystem(player);
+                LevelSystem levelSystem = Capabilities.levelSystem(player);
                 Optional<IAttack> attack = levelSystem.IAttack();
                 attack.ifPresent(iAttack -> iAttack.onEntityKilled(source, attacker, target));
-                IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+                IAccessoryItemHandler handler = Capabilities.accessory(player);
                 if (handler != null) {
                     for (int i = 0; i < handler.getSlots(); i++) {
                         final ItemStack itemStack = handler.getStackInSlot(i);
@@ -966,7 +974,7 @@ public class ServerEventHandler {
                 miningEfficiency = 1.0D;
             }
             double bonusMiningSpeed = originalSpeed * miningSpeed * miningEfficiency;
-            IAccessoryItemHandler handler = CapabilityCaller.accessory(player);
+            IAccessoryItemHandler handler = Capabilities.accessory(player);
             if (handler != null) {
                 for (int i = 0; i < handler.getSlots(); i++) {
                     final ItemStack itemStack = handler.getStackInSlot(i);

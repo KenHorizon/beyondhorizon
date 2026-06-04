@@ -1,19 +1,28 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 
+import com.google.common.base.Preconditions;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
+import net.minecraftforge.client.model.generators.ModelProvider;
+import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class GameHudDisplay extends Gui {
+    private final static ResourceLocation ICON_BACKGROUND = BeyondHorizon.resourceGui("sprites/icon/effects/icon_backgrounds.png");
     private final HudInfo hud = new HudInfo();
     private final Minecraft minecraft;
     private int leftHeight = 39;
@@ -25,6 +34,8 @@ public class GameHudDisplay extends Gui {
     @SubscribeEvent(receiveCanceled = true)
     public void onHealthBarRender(RenderGuiOverlayEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
+        this.renderEffectIcons(event.getGuiGraphics(), event.getPartialTick());
+
         if (BHConfigs.GAME_HUD == GameHuds.VANILLA || minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.PLAYER_HEALTH.type()) return;
         event.setCanceled(true);
         this.renderPlayerHearts(event.getGuiGraphics(), event.getPartialTick());
@@ -37,7 +48,32 @@ public class GameHudDisplay extends Gui {
         event.setCanceled(true);
         this.renderArmor(event.getGuiGraphics(), event.getPartialTick());
     }
+    public void renderEffectIcons(GuiGraphics guiGraphics, float partialTicks) {
+        minecraft.getProfiler().push("effectIcons");
+        var player = minecraft.player;
+        RenderSystem.enableBlend();
+        this.hud.update();
+        var stackableTags = Capabilities.stackable(player);
+        int xPos = 0;
+        if (stackableTags != null) {
+            for (var allTags : stackableTags.getInstance()) {
+                ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + allTags.getName() + ".png");
+                if (getAllIcons != null && allTags.hasStacks()) {
+                    int x = this.hud.scaledWindowWidth / 2 - 91 + (24 * xPos);
+                    int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 32);
+                    String value = String.format("%s", allTags.getStack());
+                    BlitHelper.draw(guiGraphics, ICON_BACKGROUND, x, y -1, 9.0F, 24, 24, 24, 24);
+                    BlitHelper.draw(guiGraphics, getAllIcons, x, y - 1, 9.0F, 24, 24, 24, 24);
+                    int valueLenght = value.length();
+                    BlitHelper.drawStrings(guiGraphics, value,x + (5 + 9) - (valueLenght / 2), y + 12, ColorUtil.WHITE, true);
+                    RenderSystem.disableBlend();
+                    xPos++;
+                }
+            }
+        }
+        minecraft.getProfiler().pop();
 
+    }
     public void renderArmor(GuiGraphics guiGraphics, float partialTicks) {
         minecraft.getProfiler().push("armor");
         RenderSystem.enableBlend();

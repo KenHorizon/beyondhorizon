@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import net.minecraft.client.Minecraft;
@@ -25,7 +25,7 @@ public class HudInfo {
         if (minecraft == null) return;
         Player player = minecraft.player;
         if (player == null) return;
-        PlayerData playerData = CapabilityCaller.data(player);
+        PlayerData playerData = Capabilities.data(player);
         if (playerData == null) return;
         this.scaledWindowWidth = minecraft.getWindow().getGuiScaledWidth();
         this.scaledWindowHeight = minecraft.getWindow().getGuiScaledHeight();

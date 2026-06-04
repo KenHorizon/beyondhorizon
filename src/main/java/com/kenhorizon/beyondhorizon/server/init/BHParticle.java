@@ -51,6 +51,12 @@ public class BHParticle {
             return RoarParticleOptions.CODEC;
         }
     });
+    public static final RegistryObject<ParticleType<LightningParticleOptions>> LIGHTNING = RegistryEntries.PARTICLE.register("lightning", () -> new ParticleType<LightningParticleOptions>(false, LightningParticleOptions.DESERIALIZER) {
+        @Override
+        public Codec<LightningParticleOptions> codec() {
+            return LightningParticleOptions.CODEC;
+        }
+    });
     public static void register(IEventBus eventBus) {
         RegistryEntries.PARTICLE.register(eventBus);
     }

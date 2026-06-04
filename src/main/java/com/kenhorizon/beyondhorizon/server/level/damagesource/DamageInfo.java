@@ -1,8 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
-import com.kenhorizon.beyondhorizon.server.capability.CapabilityCaller;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
 public class DamageInfo implements IDamageInfo {
@@ -18,7 +17,7 @@ public class DamageInfo implements IDamageInfo {
     public static final String NBT_STORED_POST_DAMAGE = "StoredPostDamage";
 
     public static IDamageInfo getInstance(LivingEntity entity) {
-        return CapabilityCaller.damageInfo(entity);
+        return Capabilities.damageInfo(entity);
     }
 
     @Override

@@ -201,6 +201,8 @@ public class Accessories {
     public static final RegistryObject<Accessory> DARK_SUN = registerSkill("dark_sun", () -> new SinglePassiveAccessory(Constant.DARK_SUN_CONVERT));
     public static final RegistryObject<Accessory> FADED_MOON = registerSkill("faded_moon", () -> new SinglePassiveAccessory(Constant.FADED_MOON_CONVERT));
 
+    public static final RegistryObject<Accessory> ELECTROSHOCK = registerSkill("electroshock", () -> new SinglePassiveAccessory());
+    public static final RegistryObject<Accessory> ENERGIZED = registerSkill("energized", EnergizedAccessory::new);
     public static final RegistryObject<Accessory> KNOWLEDGE_2 = registerSkill("ultima_knowledge", () -> new ExperienceAccessory(Constant.ULTIMA_KNOWLEDGE_XP_MODIFIER));
 
     public static final RegistryObject<Accessory> DUSKBLADE = registerSkill("duskblade_stats", () -> new AttributeOnlyAccessory()

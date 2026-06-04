@@ -1,0 +1,39 @@
+§n§lAttack Effects
+
+
+§n§lBasic Attack
+Is the default means by which
+a user deal damages also called
+standard, normal or AA
+(Auto Attack)
+
+§n§lOn-Hit
+§rTriggered when Basic Attack
+hit the target
+
+§n§lOn-Attacking
+Triggered when user completes
+their basic attack
+
+§n§lExecute
+A process of kill taget by
+dealing 100% target's max health
+through True Damage are under
+effect of minium health threshold
+
+§n§lTakedown
+Is the term used for situations
+where either a kill or an 
+assist is acceptable
+
+§n§lDamage over Time
+Also called DoT, used to term of
+damage from ability or effect
+that dealt extended period of
+time. An instance of damage is
+given by interval or a §nTick
+
+§n§lWound
+A effect/debuff that reduce your
+incoming heal or regenration by
+percentages

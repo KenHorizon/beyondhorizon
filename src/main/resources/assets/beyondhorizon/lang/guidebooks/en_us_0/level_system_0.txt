@@ -1,0 +1,42 @@
+Level system is the new one of 
+mechanics of the games that added
+this provide a increase stats by
+adding point with choosen category
+
+
+§lExp Points
+By click "+" it will consume some
+amount of your vanilla exp to the
+level system's exp points
+
+§lLevel Points
+Each time you level up you gain
+one level points this points can
+use to increase some various stats
+
+
+
+
+
+§lCategory Stats
+Level system have 6 attributes or
+stats
+- §nStrenght
+- §nAgility
+- §nDexerity
+- §nVitality
+- §nConstitution
+- §nIntelligene
+
+§nStrenght
+Increase your attack damage
+
+§nVitality
+Increase your max health
+
+§nAgility
+Increase your attack speed
+
+§nDexerity
+Increase your movement speed and
+reduce incoming fall damage

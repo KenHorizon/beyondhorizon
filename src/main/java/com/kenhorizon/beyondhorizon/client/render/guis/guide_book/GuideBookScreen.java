@@ -37,10 +37,13 @@ import java.util.stream.IntStream;
 
 public class GuideBookScreen extends Screen {
     public enum Pages {
-        INTRODUCTION(1),
-        DAMAGE_TYPES(1),
-        GAME_MECHANICS(1),
+        INTRODUCTION(0),
+        DAMAGE_TYPES(0),
+        EFFECT_TYPES(1),
+        GAME_MECHANICS(0),
         ACCESSORY(1),
+        LEVEL_SYSTEM(1),
+        DIFFICULTY(1),
         STATS(2);
 
         public int pages;
@@ -104,6 +107,7 @@ public class GuideBookScreen extends Screen {
     protected static final int X = 390;
     protected static final int Y = 245;
     private static final ResourceLocation LOCATION = BeyondHorizon.resourceGui("guide_book/guidebook.png");
+    private static final ResourceLocation DRAW0 = BeyondHorizon.resourceGui("guide_book/drawings_0.png");
     public List<Pages> allPageTypes = new ArrayList<>();
     public Pages pageType;
     public List<GuideBookIndexButton> indexButtons = new ArrayList<>();
@@ -238,15 +242,9 @@ public class GuideBookScreen extends Screen {
         switch (this.pageType) {
             case INTRODUCTION:
                 if (bookPages == 0) {
-                    drawItemStack(grap, new ItemStack(BHItems.GUIDE_BOOK.get()), 8, 20, 1.0F);
-                }
-
-                if (bookPages == 1) {
-                    drawItemStack(grap, new ItemStack(BHItems.GUIDE_BOOK.get()), 8, 38 + (16 * 0), 1.0F);
-                    drawItemStack(grap, new ItemStack(Items.IRON_SWORD), 8, 38 + (16 * 1), 1.0F);
-                    drawItemStack(grap, new ItemStack(BHItems.POWER_GLOVES.get()), 8, 38 + (16 * 2), 1.0F);
-                    drawItemStack(grap, new ItemStack(BHItems.PLAYER_TRACKER.get()), 8, 38 + (16 * 3), 1.0F);
-                    drawItemStack(grap, new ItemStack(BHItems.BOOK_OF_KNOWLEDGE.get()), 8, 38 + (16 * 4), 1.0F);
+//                    drawItemStack(grap, new ItemStack(BHItems.GUIDE_BOOK.get()), 8, 20, 1.0F);
+                    drawImage(grap, DRAW0, 12, 22, 0, 0, 168, 40, 512F);
+                    drawImage(grap, DRAW0, 12, 22 + 42, 0, 40, 168, 168, 512F);
                 }
             case DAMAGE_TYPES:
                 break;

@@ -5,7 +5,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 
 public class StackableTags {
-    protected final String NBT_ALL_STACKS = "entry";
+    protected final String NBT_ENTRY = "stackable_entry";
     protected final String NBT_STACKS = "stacks";
     protected final String NBT_STACKS_NAME = "id";
     protected final String NBT_STACKS_DURATION = "durations";
@@ -49,9 +49,10 @@ public class StackableTags {
 
     public CompoundTag saveNbt() {
         CompoundTag nbt = new CompoundTag();
-        nbt.put(NBT_ALL_STACKS, this.createList());
+        nbt.put(NBT_ENTRY, this.createList());
         return nbt;
     }
+
     private ListTag createList() {
         ListTag list = new ListTag();
         CompoundTag nbt = new CompoundTag();
@@ -62,8 +63,9 @@ public class StackableTags {
         list.add(nbt);
         return list;
     }
+
     public void loadNbt(CompoundTag nbt) {
-        ListTag list = nbt.getList(NBT_ALL_STACKS, Tag.TAG_COMPOUND);
+        ListTag list = nbt.getList(NBT_ENTRY, Tag.TAG_COMPOUND);
         for (int i = 0; i < list.size(); i++) {
             CompoundTag tag = list.getCompound(i);
             this.name = tag.getString(NBT_STACKS_NAME);

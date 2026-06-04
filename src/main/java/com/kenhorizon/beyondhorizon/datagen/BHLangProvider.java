@@ -198,6 +198,9 @@ public class BHLangProvider extends LanguageProvider {
         this.addGuideBookIndexes(GuideBookScreen.Pages.STATS, "Stats");
         this.addGuideBookIndexes(GuideBookScreen.Pages.GAME_MECHANICS, "Mechanics");
         this.addGuideBookIndexes(GuideBookScreen.Pages.ACCESSORY, "Accessory");
+        this.addGuideBookIndexes(GuideBookScreen.Pages.LEVEL_SYSTEM, "Level System");
+        this.addGuideBookIndexes(GuideBookScreen.Pages.DIFFICULTY, "Difficulty");
+        this.addGuideBookIndexes(GuideBookScreen.Pages.EFFECT_TYPES, "Effect Types");
     }
     private void addEnchantmentDesc(Supplier<? extends Enchantment> enchantments, String description) {
         this.add(enchantments.get().getDescriptionId() + ".desc", description);

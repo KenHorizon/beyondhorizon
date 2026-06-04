@@ -1,4 +1,4 @@
-§n§lTypes Types
+§n§lEffect Types
  §rAccessory came with two types
 of ability types §nActive §rand
 §nPassive
@@ -12,3 +12,6 @@ effect automatically
 special effect upon cast, by
 pressing their slot's designated
 hotkey
+
+§n§6§lAccessory Keybinds
+Alt + NumPads (1-6)

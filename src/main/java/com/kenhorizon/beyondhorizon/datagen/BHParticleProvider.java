@@ -33,6 +33,7 @@ public class BHParticleProvider extends ParticleDescriptionProvider {
         this.spriteSet(BHParticle.DRAGONIC_FLAME.get(), register("dragonic_flame"));
         this.spriteSet(BHParticle.RED_SKULL.get(), register("red_skull"));
         this.sprite(BHParticle.LIGHTNING.get(), register("lightning"));
+        this.sprite(BHParticle.CIRCLE_LIGHTNING.get(), register("lightning"));
 
     }
     private ResourceLocation register(String particleName) {

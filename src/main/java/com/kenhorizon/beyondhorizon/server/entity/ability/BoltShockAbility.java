@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.CircleLightningParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.LightningParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -42,17 +44,24 @@ public class BoltShockAbility extends AbilityEntity {
             double d0 = (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * this.getRadius();
             double d1 = (random.nextFloat() - 0.5F) + this.getDeltaMovement().y * this.getRadius();
             double d2 = (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * this.getRadius();
-            double dist = random.nextFloat() * (5.0F * this.getRadius());
+            double dist = random.nextFloat() * this.getRadius();
             double d3 = d0 * dist;
             double d4 = d1 * dist;
             double d5 = d2 * dist;
             this.level().addParticle(new LightningParticleOptions(0, 186, 255), this.getX() + d0, this.getY() + 0.5D, this.getZ() + d2, d3, d4, d5);
+            this.level().addParticle(new LightningParticleOptions(0, 186, 255), this.getX(), this.getY() + 2.5D, this.getZ(), 0, -2, 0);
         }
+
+        Vec3 vec3 = this.getDeltaMovement();
+        double d0 = this.getX() + vec3.x;
+        double d1 = this.getY() + vec3.y;
+        double d2 = this.getZ() + vec3.z;
+        this.level().addParticle(new CircleLightningParticleOptions(0.1F, 0, 186, 255), this.getX(), this.getY(0.5), this.getZ(), d0, d1, d2);
         float r = ColorUtil.getFARGB(0xFFFFFF)[0];
         float g = ColorUtil.getFARGB(0xFFFFFF)[1];
         float b = ColorUtil.getFARGB(0xFFFFFF)[2];
-        this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 15, r, g, b, 1.0F, 4.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(), this.getZ(), 0, -10, 0);
-        this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 15, r, g, b, 1.0F, 4.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+        this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 15, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, -10, 0);
+        this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 15, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
         this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 10000.0F, 0.8F + this.random.nextFloat() * 0.2F, false);
         this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.WEATHER, 2.0F, 0.5F + this.random.nextFloat() * 0.2F, false);
 

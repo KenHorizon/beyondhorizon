@@ -60,7 +60,9 @@ public class LightningParticle extends Particle {
         posestack.pushPose();
         posestack.translate(f, f1, f2);
         posestack.scale(scale, scale, scale);
-        LightningBoltData.BoltRenderInfo lightningBoltData = new LightningBoltData.BoltRenderInfo(0.5F, 0.1F, 0.5F, 0.85F, new Vector4f((float) r /255, (float) g /255, (float) b /255, (1.0F - ageProgress) * 0.8F), 0.1F);
+        LightningBoltData.BoltRenderInfo lightningBoltData = new LightningBoltData.BoltRenderInfo(
+                0.5F, 0.1F, 0.5F, 0.85F,
+                new Vector4f((float) r /255, (float) g /255, (float) b /255, (1.0F - ageProgress) * 0.8F), 0.1F);
         LightningBoltData bolt = new LightningBoltData(lightningBoltData, Vec3.ZERO, new Vec3(toX, toY, toZ), 4)
                 .size(0.05F)
                 .lifespan(this.lifetime)

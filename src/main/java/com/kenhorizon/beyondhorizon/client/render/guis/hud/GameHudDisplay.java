@@ -5,6 +5,8 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -58,9 +60,9 @@ public class GameHudDisplay extends Gui {
         if (stackableTags != null) {
             for (var allTags : stackableTags.getInstance()) {
                 ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + allTags.getName() + ".png");
-                if (getAllIcons != null && allTags.hasStacks()) {
+                if (getAllIcons != null && allTags.hasStacks() && AccessoryHelper.getAccessory(player, Accessories.ENERGIZED.get())) {
                     int x = this.hud.scaledWindowWidth / 2 - 91 + (24 * xPos);
-                    int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 32);
+                    int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 12);
                     String value = String.format("%s", allTags.getStack());
                     BlitHelper.draw(guiGraphics, ICON_BACKGROUND, x, y -1, 9.0F, 24, 24, 24, 24);
                     BlitHelper.draw(guiGraphics, getAllIcons, x, y - 1, 9.0F, 24, 24, 24, 24);

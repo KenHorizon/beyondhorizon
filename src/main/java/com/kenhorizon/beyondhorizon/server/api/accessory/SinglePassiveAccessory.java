@@ -198,7 +198,8 @@ public class SinglePassiveAccessory extends AccessorySkill {
                 if (!attacker.level().isClientSide()) {
                     if (sTag.isFullyStacked()) {
                         BeyondHorizon.LOGGER.debug("[Energize] Electroshock activated!");
-                        BoltShockAbility.spawn(attacker.level(), target.getX(), target.getY(0.05D), target.getZ(), damageDealt, 2.0F, 1, attacker);
+                        target.invulnerableTime = 0;
+                        BoltShockAbility.spawn(attacker.level(), target.getX(), target.getY(0.05D), target.getZ(), damageDealt * 0.40F, 2.0F, 1, attacker);
                         sTag.setStack(0);
                     }
                 }

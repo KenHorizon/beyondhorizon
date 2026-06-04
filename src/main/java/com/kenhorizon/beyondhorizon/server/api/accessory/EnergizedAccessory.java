@@ -16,7 +16,6 @@ public class EnergizedAccessory extends AccessorySkill {
         var stackTags = Capabilities.stackable(entity);
         if (stackTags != null) {
             var sTag = stackTags.getInstance(StackableTagInstance.ENERGIZE);
-            float stepProgress = entity.moveDist / entity.nextStep;
             if (!entity.level().isClientSide()) {
                 if (entity.moveDist > entity.nextStep) {
                     BeyondHorizon.LOGGER.debug("[Energize] Adding energize stacks!");

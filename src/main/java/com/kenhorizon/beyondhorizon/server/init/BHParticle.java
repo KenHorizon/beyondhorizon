@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
+import com.kenhorizon.beyondhorizon.client.particle.CircleLightningParticle;
 import com.kenhorizon.beyondhorizon.client.particle.world.*;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.mojang.serialization.Codec;
@@ -55,6 +56,12 @@ public class BHParticle {
         @Override
         public Codec<LightningParticleOptions> codec() {
             return LightningParticleOptions.CODEC;
+        }
+    });
+    public static final RegistryObject<ParticleType<CircleLightningParticleOptions>> CIRCLE_LIGHTNING = RegistryEntries.PARTICLE.register("circle_lightning", () -> new ParticleType<CircleLightningParticleOptions>(false, CircleLightningParticleOptions.DESERIALIZER) {
+        @Override
+        public Codec<CircleLightningParticleOptions> codec() {
+            return CircleLightningParticleOptions.CODEC;
         }
     });
     public static void register(IEventBus eventBus) {

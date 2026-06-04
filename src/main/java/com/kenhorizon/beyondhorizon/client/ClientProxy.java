@@ -221,6 +221,7 @@ public class ClientProxy extends ServerProxy {
         event.registerSpecial(BHParticle.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(BHParticle.STUN_PARTICLES.get(),new StunParticles.Provider());
         event.registerSpecial(BHParticle.LIGHTNING.get(), new LightningParticle.Provider());
+        event.registerSpecial(BHParticle.CIRCLE_LIGHTNING.get(), new CircleLightningParticle.Provider());
 
     }
     private void registerKeybinds(RegisterKeyMappingsEvent event) {

@@ -70,6 +70,7 @@ public class BoltShockAbility extends AbilityEntity {
         for (Entity entityOnRange : cleaveRange) {
             if (entityOnRange instanceof LivingEntity targetOnRange) {
                 if (targetOnRange == attacker || targetOnRange == this.getTarget()) continue;
+                if (targetOnRange.isAlliedTo(attacker)) continue;
                 if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
                     targetOnRange.hurt(BHDamageTypes.magicDamage(this), this.getBaseDamage());
                 }

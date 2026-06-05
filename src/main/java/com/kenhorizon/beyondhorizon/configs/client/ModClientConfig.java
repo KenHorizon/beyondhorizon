@@ -8,6 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 @SuppressWarnings({"rawtypes", "ConstantConditions"})
 public class ModClientConfig {
+    public static ForgeConfigSpec.BooleanValue REDUCE_DEBUG;
     public static ForgeConfigSpec.BooleanValue MUSIC_BOSS;
     public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR;
     public static ForgeConfigSpec.BooleanValue ATTRIBUTE_TOOLTIP_OVERHAUl;
@@ -29,6 +30,9 @@ public class ModClientConfig {
 
     public ModClientConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Beyond Horizon | Client Configs");
+        REDUCE_DEBUG = builder
+                .comment("Reduce the Debug infos by removing some of it.")
+                .define("Reduce Debug Infos", true);
         MUSIC_BOSS = builder
                 .comment("Toggle the boss theme music when the boss spawn or active")
                 .define("Music", true);

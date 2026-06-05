@@ -227,6 +227,7 @@ public class ServerEventHandler {
         event.register(LevelSystem.class);
         event.register(PlayerData.class);
         event.register(ActiveSkill.class);
+        event.register(StackableTags.class);
     }
 
 

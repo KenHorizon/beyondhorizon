@@ -74,4 +74,7 @@ public class Utils {
     public static boolean isCtrlPressed() {
         return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_CONTROL);
     }
+    public static boolean isAltPressed() {
+        return InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_ALT);
+    }
 }

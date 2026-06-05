@@ -75,9 +75,9 @@ public class CleaveAbility extends AbilityEntity {
     @Override
     protected void onEnd() {
         LivingEntity user = this.getCaster();
-        if (!this.onStartEvent) {
+        if (!this.sentEventSpike) {
             this.level().broadcastEntityEvent(this, (byte) 4);
-            this.onStartEvent = true;
+            this.sentEventSpike = true;
         }
         if (this.getCleaveType() == Type.CIRCLE) {
             this.cleaveAttack();

@@ -7,6 +7,8 @@ import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
+import com.kenhorizon.beyondhorizon.server.api.skills.SkillHelper;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -60,14 +62,15 @@ public class GameHudDisplay extends Gui {
         if (stackableTags != null) {
             for (var allTags : stackableTags.getInstance()) {
                 ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + allTags.getName() + ".png");
+                boolean flag = AccessoryHelper.getAccessory(player, Accessories.ENERGIZED.get()) || SkillHelper.getWeaponWithSkill(player, Skills.ENERGIZED.get());
                 if (getAllIcons != null && allTags.hasStacks() && AccessoryHelper.getAccessory(player, Accessories.ENERGIZED.get())) {
                     int x = this.hud.scaledWindowWidth / 2 - 91 + (24 * xPos);
-                    int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 12);
+                    int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
                     String value = String.format("%s", allTags.getStack());
                     BlitHelper.draw(guiGraphics, ICON_BACKGROUND, x, y -1, 9.0F, 24, 24, 24, 24);
                     BlitHelper.draw(guiGraphics, getAllIcons, x, y - 1, 9.0F, 24, 24, 24, 24);
                     int valueLenght = value.length();
-                    BlitHelper.drawStrings(guiGraphics, value,x + (5 + 9) - (valueLenght / 2), y + 12, ColorUtil.WHITE, true);
+                    BlitHelper.drawStrings(guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, ColorUtil.WHITE, true);
                     RenderSystem.disableBlend();
                     xPos++;
                 }

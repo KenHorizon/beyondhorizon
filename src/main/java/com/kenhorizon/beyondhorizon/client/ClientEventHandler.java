@@ -14,11 +14,15 @@ import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -26,6 +30,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.event.TickEvent;
@@ -35,8 +40,62 @@ import net.minecraftforge.fml.LogicalSide;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ClientEventHandler {
+    @SubscribeEvent
+    public void onDebugInformation(CustomizeGuiOverlayEvent.DebugText event) {
+        GuiGraphics guiGraphics = event.getGuiGraphics();
+        Minecraft minecraft = Minecraft.getInstance();
+        var leftInfo = event.getLeft();
+        var rightInfo = event.getRight();
+        if (BHConfigs.REDUCE_DEBUG && minecraft.options.renderDebug) {
+            rightInfo.clear();
+            leftInfo.clear();
+            renderNewDebug(guiGraphics);
+        }
+    }
+
+    private void renderNewDebug(GuiGraphics guiGraphics) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Font font = minecraft.font;
+        List<String> list = new ArrayList<>();
+        Entity entity = minecraft.getCameraEntity();
+        BlockPos blockpos = entity.blockPosition();
+        Direction direction = entity.getDirection();
+        String directionText;
+        switch (direction) {
+            case NORTH:
+                directionText = "Towards negative Z";
+                break;
+            case SOUTH:
+                directionText = "Towards positive Z";
+                break;
+            case WEST:
+                directionText = "Towards negative X";
+                break;
+            case EAST:
+                directionText = "Towards positive X";
+                break;
+            default:
+                directionText = "Invalid";
+        }
+        ChunkPos chunkpos = new ChunkPos(blockpos);
+        Level level = entity.level();
+        list.add(String.format(Locale.ROOT, "FPS: %s", minecraft.getFps()));
+        list.add(String.format(Locale.ROOT, "XYZ: %.2f / Y: %.2f /Z: %.2f", entity.getX(), entity.getY(), entity.getZ()));
+        list.add(String.format(Locale.ROOT, "Facing: %s (%s) (%.1f / %.1f)", direction, directionText, Mth.wrapDegrees(entity.getYRot()), Mth.wrapDegrees(entity.getXRot())));
+
+        int top = 2;
+        for (String msg : list) {
+            if (msg != null && !msg.isEmpty())
+            {
+                guiGraphics.fill(1, top - 1, 2 + font.width(msg) + 1, top + font.lineHeight - 1, -1873784752);
+                guiGraphics.drawString(font, msg, 2, top, 14737632, false);
+            }
+            top += font.lineHeight;
+        }
+    }
 
     @SubscribeEvent
     public void onLevelTick(TickEvent.LevelTickEvent event) {

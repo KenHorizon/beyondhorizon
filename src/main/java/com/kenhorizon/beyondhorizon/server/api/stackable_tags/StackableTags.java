@@ -1,5 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.api.stackable_tags;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
@@ -109,6 +112,20 @@ public class StackableTags {
     }
 
     public void tick(LivingEntity entity) {
+        if (this == StackableTagInstance.ENERGIZE) {
+            if (!entity.level().isClientSide()) {
+                float steps = entity.moveDist / entity.nextStep;
+                if (entity.moveDist > entity.nextStep) {
+                    this.add(1);
+                }
+                if (Utils.isAltPressed()) {
+                    BeyondHorizon.LOGGER.debug("{}", steps);
+                }
+                if (steps % 0.24F == 0) {
+                    this.add(1);
+                }
+            }
+        }
         if (this.getDuration() > 0) {
             if (entity.tickCount % this.getDurationPerTick() == 0) {
                 this.setDuration(this.getDuration() - 1);

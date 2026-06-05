@@ -17,6 +17,7 @@ public class BHConfigs {
     public static boolean DAMAGE_INDICATOR = true;
     public static boolean SCREEN_SHAKE = true;
     public static boolean MUSIC_BOSS = true;
+    public static boolean REDUCE_DEBUG = true;
     public static int SCREEN_SHAKE_AMOUNT = 100;
     public static GameHuds GAME_HUD = GameHuds.MOD;
     //SERVER
@@ -41,6 +42,7 @@ public class BHConfigs {
             GAME_HUD = ModClientConfig.GAME_HUD.get();
             DAMAGE_INDICATOR = ModClientConfig.DAMAGE_INDICATOR.get();
             MUSIC_BOSS = ModClientConfig.MUSIC_BOSS.get();
+            REDUCE_DEBUG = ModClientConfig.REDUCE_DEBUG.get();
             //---------------------------------------------------------------------//
             ENCHANTMENT_BREAK_LEVEL = ModCommonConfig.ENCHANTMENT_BREAK_LEVEL.get();
             ANVIL_COSTING = ModCommonConfig.ANVIL_COSTING.get();

@@ -112,8 +112,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.PIERCING_EDEGE.get(), "Piercing Edge", "Increase physical damage dealt by %s (+%s%% target's armor)%% to armored target");
         this.addSkills(Skills.BLAZING_CLEAVE.get(), "Blazing Cleave", "On-hit attack release a powerful shockwave that deal %s%% damage within %s range");
         //
-        this.addAccessory(Accessories.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100");
-        this.addAccessory(Accessories.ELECTROSHOCK.get(), "Electro Shock", "When fully Energized, your next basic attack strike the target with bolt of lightning dealing bonus 40% damage dealt magic damage");
+        this.addAccessory(Accessories.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100 (6 if attacking, 1 if moving)");
+        this.addAccessory(Accessories.ELECTROSHOCK.get(), "Electro Shock", "When fully Energized, your next basic attack strike the target with bolt of lightning dealing bonus 40% damage dealt magic damage of 2.5 radius unit");
         this.addAccessory(Accessories.FEATHER_FEET.get(), "Feather Feet", "Negate fall damage");
         this.addAccessory(Accessories.OVERGROWTH.get(), "Overgrowth", "Increase Bonus Max HP by %s%% (%s)");
         this.addAccessory(Accessories.DESPAIR_AND_DEFY.get(), "Despair And Defy", "Reduce %.2f%% post-mitigation damage and stored it and bleed per second of stored damage");

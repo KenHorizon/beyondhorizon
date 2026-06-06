@@ -33,6 +33,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.particle.FlameParticle;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
@@ -130,6 +132,10 @@ public class ClientProxy extends ServerProxy {
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
 
         Raid.RaiderType.create("ILLUSIONER", EntityType.ILLUSIONER, new int[]{0, 0, 1, 2, 2, 3, 4, 5});
+
+
+        ItemBlockRenderTypes.setRenderLayer(BHBlocks.IRON_LATTICE.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_IRON_LATTICE.get(), RenderType.cutout());
     }
 
     public void entityCreationAttribute(EntityAttributeCreationEvent event) {

@@ -18,3 +18,4 @@ Twilight Edge
 - if you have more than bonus ability power than on attack damage gain Faded Moon ability
 - Dark Sun: Convert 25% damage dealt into addtional bonus true damage on-hit
 - Faded Moon: Convert 25% Max Mana into additional bonus magic damage on-hit
+

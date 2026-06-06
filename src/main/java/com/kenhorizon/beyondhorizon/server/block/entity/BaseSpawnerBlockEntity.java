@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.block.entity;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.block.BlockProperties;
+import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.BHBaseSpawner;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
@@ -16,7 +16,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
@@ -88,15 +87,15 @@ public class BaseSpawnerBlockEntity extends BlockEntity implements BHBaseSpawner
 
     @Override
     public SpawnerState getState() {
-        return !this.getBlockState().hasProperty(BlockProperties.SPAWNER_STATE)
+        return !this.getBlockState().hasProperty(BHBlockProperties.SPAWNER_STATE)
                 ? SpawnerState.INACTIVE
-                : this.getBlockState().getValue(BlockProperties.SPAWNER_STATE);
+                : this.getBlockState().getValue(BHBlockProperties.SPAWNER_STATE);
     }
 
     @Override
     public void setState(Level level, SpawnerState spawnerState) {
         this.setChanged();
-        level.setBlockAndUpdate(this.worldPosition, this.getBlockState().setValue(BlockProperties.SPAWNER_STATE, spawnerState));
+        level.setBlockAndUpdate(this.worldPosition, this.getBlockState().setValue(BHBlockProperties.SPAWNER_STATE, spawnerState));
     }
 
     @Override

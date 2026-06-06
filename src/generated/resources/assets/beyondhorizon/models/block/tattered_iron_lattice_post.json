@@ -1,0 +1,7 @@
+{
+  "parent": "beyondhorizon:block/lattice_post",
+  "textures": {
+    "particle": "minecraft:block/iron_block",
+    "post": "beyondhorizon:block/iron_lattice_post"
+  }
+}

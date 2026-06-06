@@ -2,7 +2,8 @@ package com.kenhorizon.libs.client.data;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.datagen.BHBlockStateProvider;
-import com.kenhorizon.beyondhorizon.server.block.BlockProperties;
+import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
+import com.kenhorizon.beyondhorizon.server.block.fence.AdvanceFenceBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
@@ -315,12 +316,12 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
                                      ModelFile waitingForPlayer,
                                      ModelFile waitingForRewardEjection) {
         this.getVariantBuilder(block.get())
-                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.INACTIVE).modelForState().modelFile(inactive).addModel()
-                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.ACTIVE).modelForState().modelFile(active).addModel()
-                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.COOLDOWN).modelForState().modelFile(cooldown).addModel()
-                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.EJECTING_REWARD).modelForState().modelFile(ejectReward).addModel()
-                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.WAITING_FOR_PLAYERS).modelForState().modelFile(waitingForPlayer).addModel()
-                .partialState().with(BlockProperties.SPAWNER_STATE, SpawnerState.WAITING_FOR_REWARD_EJECTION).modelForState().modelFile(waitingForRewardEjection).addModel();
+                .partialState().with(BHBlockProperties.SPAWNER_STATE, SpawnerState.INACTIVE).modelForState().modelFile(inactive).addModel()
+                .partialState().with(BHBlockProperties.SPAWNER_STATE, SpawnerState.ACTIVE).modelForState().modelFile(active).addModel()
+                .partialState().with(BHBlockProperties.SPAWNER_STATE, SpawnerState.COOLDOWN).modelForState().modelFile(cooldown).addModel()
+                .partialState().with(BHBlockProperties.SPAWNER_STATE, SpawnerState.EJECTING_REWARD).modelForState().modelFile(ejectReward).addModel()
+                .partialState().with(BHBlockProperties.SPAWNER_STATE, SpawnerState.WAITING_FOR_PLAYERS).modelForState().modelFile(waitingForPlayer).addModel()
+                .partialState().with(BHBlockProperties.SPAWNER_STATE, SpawnerState.WAITING_FOR_REWARD_EJECTION).modelForState().modelFile(waitingForRewardEjection).addModel();
     }
 
     protected void flowerItem(RegistryObject<Block> flowerBlocks) {
@@ -479,6 +480,51 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
 
     private ResourceLocation extend(ResourceLocation rl, String suffix) {
         return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath() + suffix);
+    }
+    public void latticeBlock(RegistryObject<Block> block, String particlesString, String postsString, String latticeString) {
+        ResourceLocation particles = ResourceLocation.parse(particlesString);
+        ResourceLocation posts = BeyondHorizon.resource(String.format("block/%s", postsString));
+        ResourceLocation lattice = BeyondHorizon.resource(String.format("block/%s", latticeString));
+        ModelFile fullSide = models().withExistingParent(String.format("%s:block/", BeyondHorizon.ID) + name(block.get()) + "_" + "side_full", String.format("%s:block/lattice_side_full", BeyondHorizon.ID)).texture("post", posts).texture("lattice", lattice).texture("particle", particles);
+        ModelFile topSide = models().withExistingParent(String.format("%s:block/", BeyondHorizon.ID) + name(block.get()) + "_" + "side_top", String.format("%s:block/lattice_side_top", BeyondHorizon.ID)).texture("post", posts).texture("lattice", lattice).texture("particle", particles);
+        ModelFile middleSide = models().withExistingParent(String.format("%s:block/", BeyondHorizon.ID) + name(block.get()) + "_" + "side_middle", String.format("%s:block/lattice_side_middle", BeyondHorizon.ID)).texture("post", posts).texture("lattice", lattice).texture("particle", particles);
+        ModelFile bottomSide = models().withExistingParent(String.format("%s:block/", BeyondHorizon.ID) + name(block.get()) + "_" + "side_bottom", String.format("%s:block/lattice_side_bottom", BeyondHorizon.ID)).texture("post", posts).texture("lattice", lattice).texture("particle", particles);
+        ModelFile post = models().withExistingParent(String.format("%s:block/", BeyondHorizon.ID) + name(block.get()) + "_" + "post", String.format("%s:block/lattice_post", BeyondHorizon.ID)).texture("post", posts).texture("particle", particles);
+        ModelFile inventory = models().withExistingParent(String.format("%s:block/", BeyondHorizon.ID) + name(block.get()) + "_" + "inventory", String.format("%s:block/lattice_inventory", BeyondHorizon.ID)).texture("lattice", lattice).texture("post", posts).texture("particle", particles);
+        latticeBlockParts(block, post, fullSide, topSide, middleSide, bottomSide);
+        simpleBlockItem(block.get(), inventory);
+        blockItem(block, "inventory");
+    }
+
+    private void latticeBlockParts(RegistryObject<Block> object,
+                                   ModelFile post,
+                                   ModelFile fullSide,
+                                   ModelFile topSide,
+                                   ModelFile middleSide,
+                                   ModelFile bottomSide) {
+        getMultipartBuilder(object.get())
+                .part().modelFile(post).addModel().condition(AdvanceFenceBlock.POST, AdvanceFenceBlock.PostState.POST).end()
+
+                .part().modelFile(fullSide).addModel().condition(AdvanceFenceBlock.NORTH_FENCE, AdvanceFenceBlock.FenceSide.FULL).end()
+                .part().modelFile(topSide).addModel().condition(AdvanceFenceBlock.NORTH_FENCE, AdvanceFenceBlock.FenceSide.TOP).end()
+                .part().modelFile(middleSide).addModel().condition(AdvanceFenceBlock.NORTH_FENCE, AdvanceFenceBlock.FenceSide.MIDDLE).end()
+                .part().modelFile(bottomSide).addModel().condition(AdvanceFenceBlock.NORTH_FENCE, AdvanceFenceBlock.FenceSide.BOTTOM).end()
+
+                .part().modelFile(fullSide).rotationY(90).addModel().condition(AdvanceFenceBlock.EAST_FENCE, AdvanceFenceBlock.FenceSide.FULL).end()
+                .part().modelFile(topSide).rotationY(90).addModel().condition(AdvanceFenceBlock.EAST_FENCE, AdvanceFenceBlock.FenceSide.TOP).end()
+                .part().modelFile(middleSide).rotationY(90).addModel().condition(AdvanceFenceBlock.EAST_FENCE, AdvanceFenceBlock.FenceSide.MIDDLE).end()
+                .part().modelFile(bottomSide).rotationY(90).addModel().condition(AdvanceFenceBlock.EAST_FENCE, AdvanceFenceBlock.FenceSide.BOTTOM).end()
+
+                .part().modelFile(fullSide).rotationY(180).addModel().condition(AdvanceFenceBlock.SOUTH_FENCE, AdvanceFenceBlock.FenceSide.FULL).end()
+                .part().modelFile(topSide).rotationY(180).addModel().condition(AdvanceFenceBlock.SOUTH_FENCE, AdvanceFenceBlock.FenceSide.TOP).end()
+                .part().modelFile(middleSide).rotationY(180).addModel().condition(AdvanceFenceBlock.SOUTH_FENCE, AdvanceFenceBlock.FenceSide.MIDDLE).end()
+                .part().modelFile(bottomSide).rotationY(180).addModel().condition(AdvanceFenceBlock.SOUTH_FENCE, AdvanceFenceBlock.FenceSide.BOTTOM).end()
+
+                .part().modelFile(fullSide).rotationY(270).addModel().condition(AdvanceFenceBlock.WEST_FENCE, AdvanceFenceBlock.FenceSide.FULL).end()
+                .part().modelFile(topSide).rotationY(270).addModel().condition(AdvanceFenceBlock.WEST_FENCE, AdvanceFenceBlock.FenceSide.TOP).end()
+                .part().modelFile(middleSide).rotationY(270).addModel().condition(AdvanceFenceBlock.WEST_FENCE, AdvanceFenceBlock.FenceSide.MIDDLE).end()
+                .part().modelFile(bottomSide).rotationY(270).addModel().condition(AdvanceFenceBlock.WEST_FENCE, AdvanceFenceBlock.FenceSide.BOTTOM).end();
+
     }
 
     private boolean isEmpty(String string) {

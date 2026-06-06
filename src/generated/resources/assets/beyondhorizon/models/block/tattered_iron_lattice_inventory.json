@@ -1,0 +1,8 @@
+{
+  "parent": "beyondhorizon:block/lattice_inventory",
+  "textures": {
+    "lattice": "beyondhorizon:block/tattered_iron_lattice",
+    "particle": "minecraft:block/iron_block",
+    "post": "beyondhorizon:block/iron_lattice_post"
+  }
+}

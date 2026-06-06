@@ -1,0 +1,21 @@
+Kinetic Shard
+Innate Passive: Energize
+Passive Shock -> when fully energize basic attack deal 5 bonus magic damage
+
+Lightning Stone
+Innate Passive: Energize
+Passive: Electro shock
+
+Storm Rain Hilt
+Innate Passive: Energize
+
+Shattered Sheath
+Give 50% weapon damage bonus physical damage
+Consume less 50% durability
+
+Kinetic Sheath
+Innate Passive: Energize
+
+Razor Blade Guard
+
+Storm Razor (Weapon)

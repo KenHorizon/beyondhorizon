@@ -31,7 +31,7 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.axisBlock(BHBlocks.END_STONE_PILLAR);
         this.axisBlock(BHBlocks.END_GREY_PILLAR);
         this.blockWithItem(BHBlocks.CHISILLED_END_STONE);
-        this.blockWithItem(BHBlocks.CHISILLED_END_STONE_UNCARVED);
+        this.blockWithItem(BHBlocks.PLAIN_CHISILLED_END_STONE);
         this.blockWithItem(BHBlocks.END_GREY_STONE);
         this.blockWithItem(BHBlocks.END_GREY_BRICKS);
         this.slabBlocks(BHBlocks.END_GREY_BRICK_SLAB, BHBlocks.END_GREY_BRICKS);
@@ -40,6 +40,14 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.CHISELLED_BLACK_NETHER_BRICKS);
         this.axisBlock(BHBlocks.NETHER_PILLAR);
         this.blockWithItem(BHBlocks.POLISHED_NETHER);
+        this.blockWithItem(BHBlocks.CHISELLED_POLISHED_NETHER);
+        this.blockWithItem(BHBlocks.CHISELLED_POLISHED_BLACK_NETHER);
+        this.blockWithItem(BHBlocks.CUT_POLISHED_NETHER);
+        this.blockWithItem(BHBlocks.CUT_POLISHED_BLACK_NETHER);
+        this.blockWithItem(BHBlocks.MOLDY_CUT_NETHER_BRICKS);
+        this.blockWithItem(BHBlocks.PLAIN_POLISHED_BLACK_NETHER);
+        this.blockWithItem(BHBlocks.PLAIN_CHISELED_NETHER_BRICKS);
+        this.blockWithItem(BHBlocks.PLAIN_CHISELED_POLISHED_BLACKSTONE);
         this.slabBlocks(BHBlocks.POLISHED_NETHER_SLAB, BHBlocks.POLISHED_NETHER);
         this.stairsBlocks(BHBlocks.POLISHED_NETHER_STAIR, BHBlocks.POLISHED_NETHER);
         this.blockWithItem(BHBlocks.CUT_BLACK_NETHER_BRICKS);
@@ -58,5 +66,9 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.stairsBlocks(BHBlocks.DESOLATE_OBSIDIAN_BRICK_STAIR, BHBlocks.DESOLATE_OBSIDIAN_BRICKS);
         this.baseSpawnerBlocks(BHBlocks.SPAWNER, BeyondHorizon.resource("block/base_spawner_top"), BeyondHorizon.resource("block/base_spawner_bottom"), BeyondHorizon.resource("block/base_spawner_side"));
         this.blockWithItem(BHBlocks.GATE, BeyondHorizon.resource("block/gate_top"), BeyondHorizon.resource("block/gate_bottom"), BeyondHorizon.resource("block/gate_side"));
+
+
+        this.latticeBlock(BHBlocks.IRON_LATTICE, "minecraft:block/iron_block", "iron_lattice_post", "iron_lattice");
+        this.latticeBlock(BHBlocks.TATTERED_IRON_LATTICE, "minecraft:block/iron_block", "iron_lattice_post", "tattered_iron_lattice");
     }
 }

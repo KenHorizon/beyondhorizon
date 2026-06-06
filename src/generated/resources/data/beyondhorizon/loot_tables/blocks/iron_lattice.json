@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "beyondhorizon:chiselled_end_stone_uncarved"
+          "name": "beyondhorizon:iron_lattice"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "beyondhorizon:blocks/chiselled_end_stone_uncarved"
+  "random_sequence": "beyondhorizon:blocks/iron_lattice"
 }

@@ -80,7 +80,7 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_BRICK_SLAB.get(), BHBlocks.END_GREY_BRICKS.get());
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_STONE_TILES.get(), Blocks.END_STONE);
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.CHISILLED_END_STONE.get(), Blocks.END_STONE);
-        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.CHISILLED_END_STONE_UNCARVED.get(), Blocks.END_STONE);
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.PLAIN_CHISILLED_END_STONE.get(), Blocks.END_STONE);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STRING, 4)
                 .requires(BHItemTags.WOOL_FUR)

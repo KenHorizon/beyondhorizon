@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.server.block.GateBlocks;
 import com.kenhorizon.beyondhorizon.server.block.WorkbenchBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.FireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.WallFireBasinBlock;
+import com.kenhorizon.beyondhorizon.server.block.fence.LatticeFenceBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
@@ -48,6 +49,20 @@ public class BHBlocks {
             .register("dungeon_bricks", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.BEDROCK)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> IRON_LATTICE = RegistryBlocks
+            .register("iron_lattice", properties -> new LatticeFenceBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BARS)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> TATTERED_IRON_LATTICE = RegistryBlocks
+            .register("tattered_iron_lattice", properties -> new LatticeFenceBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BARS)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
             .dropSelf()
             .register();
 
@@ -125,7 +140,28 @@ public class BHBlocks {
             .register();
 
     public static final RegistryObject<Block> CUT_NETHER_BRICKS = RegistryBlocks
-            .register("cut_nether_bricks", properties -> new RotatedPillarBlock(NETHER_BRICKS))
+            .register("cut_nether_bricks", properties -> new Block(NETHER_BRICKS))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> MOLDY_CUT_NETHER_BRICKS = RegistryBlocks
+            .register("moldy_cut_nether_bricks", properties -> new Block(NETHER_BRICKS))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> CUT_POLISHED_NETHER = RegistryBlocks
+            .register("cut_polished_nether", properties -> new Block(NETHER_BRICKS))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> CHISELLED_POLISHED_NETHER = RegistryBlocks
+            .register("chiselled_polished_nether", properties -> new Block(NETHER_BRICKS))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()
@@ -141,6 +177,13 @@ public class BHBlocks {
     public static final RegistryObject<Block> NETHER_BRICK_LANTERN = RegistryBlocks
             .register("nether_brick_lantern", Block::new)
             .properties(p -> p.lightLevel(value -> { return 15; }))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> PLAIN_CHISELED_NETHER_BRICKS = RegistryBlocks
+            .register("plain_chiseled_nether_bricks", properties -> new Block(NETHER_BRICKS))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()
@@ -188,6 +231,21 @@ public class BHBlocks {
             .dropSelf()
             .register();
 
+
+    public static final RegistryObject<Block> CUT_POLISHED_BLACK_NETHER = RegistryBlocks
+            .register("cut_polished_black_nether", properties -> new Block(NETHER_BRICKS))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> CHISELLED_POLISHED_BLACK_NETHER = RegistryBlocks
+            .register("chiselled_polished_black_nether", properties -> new Block(NETHER_BRICKS))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
     public static final RegistryObject<Block> CUT_BLACK_NETHER_BRICKS = RegistryBlocks
             .register("cut_black_nether_bricks", properties -> new RotatedPillarBlock(NETHER_BRICKS))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
@@ -202,6 +260,7 @@ public class BHBlocks {
             .dropSelf()
             .register();
 
+
     public static final RegistryObject<Block> POLISHED_BLACK_NETHER = RegistryBlocks
             .register("polished_black_nether", properties -> new Block(NETHER_BRICKS))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
@@ -211,6 +270,20 @@ public class BHBlocks {
 
     public static final RegistryObject<Block> CHISELLED_BLACK_NETHER_BRICKS = RegistryBlocks
             .register("chiselled_black_nether_bricks", properties -> new Block(NETHER_BRICKS))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> PLAIN_POLISHED_BLACK_NETHER = RegistryBlocks
+            .register("plain_chiselled_black_nether_bricks", properties -> new Block(NETHER_BRICKS))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> PLAIN_CHISELED_POLISHED_BLACKSTONE = RegistryBlocks
+            .register("plain_chiseled_polished_blackstone", properties -> new Block(NETHER_BRICKS))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()
@@ -321,8 +394,8 @@ public class BHBlocks {
             .dropSelf()
             .register();
 
-    public static final RegistryObject<Block> CHISILLED_END_STONE_UNCARVED = RegistryBlocks
-            .register("chiselled_end_stone_uncarved", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.END_STONE_BRICKS)))
+    public static final RegistryObject<Block> PLAIN_CHISILLED_END_STONE = RegistryBlocks
+            .register("plain_chiselled_end_stone", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.END_STONE_BRICKS)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
             .dropSelf()

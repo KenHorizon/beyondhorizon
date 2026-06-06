@@ -36,9 +36,14 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.END_GREY_BRICKS);
         this.slabBlocks(BHBlocks.END_GREY_BRICK_SLAB, BHBlocks.END_GREY_BRICKS);
         this.stairsBlocks(BHBlocks.END_GREY_BRICK_STAIRS, BHBlocks.END_GREY_BRICKS);
+        this.blockWithItem(BHBlocks.CHIPPED_BRICKS);
+        this.slabBlocks(BHBlocks.CHIPPED_BRICK_SLAB, BHBlocks.CHIPPED_BRICKS);
+        this.stairsBlocks(BHBlocks.CHIPPED_BRICK_STAIRS, BHBlocks.CHIPPED_BRICKS);
         this.blockWithItem(BHBlocks.CUT_NETHER_BRICKS);
         this.blockWithItem(BHBlocks.CHISELLED_BLACK_NETHER_BRICKS);
         this.axisBlock(BHBlocks.NETHER_PILLAR);
+        this.blockWithItem(BHBlocks.CHIPPED_NETHER_BRICKS);
+        this.blockWithItem(BHBlocks.CHIPPED_BLACK_NETHER_BRICKS);
         this.blockWithItem(BHBlocks.POLISHED_NETHER);
         this.blockWithItem(BHBlocks.CHISELLED_POLISHED_NETHER);
         this.blockWithItem(BHBlocks.CHISELLED_POLISHED_BLACK_NETHER);

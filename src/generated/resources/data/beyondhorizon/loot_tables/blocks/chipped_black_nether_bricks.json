@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "beyondhorizon:siltstone_stair"
+          "name": "beyondhorizon:chipped_black_nether_bricks"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "beyondhorizon:blocks/siltstone_stair"
+  "random_sequence": "beyondhorizon:blocks/chipped_black_nether_bricks"
 }

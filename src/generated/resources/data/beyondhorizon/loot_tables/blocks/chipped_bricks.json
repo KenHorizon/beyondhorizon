@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "beyondhorizon:end_grey_brick_stair"
+          "name": "beyondhorizon:chipped_bricks"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "beyondhorizon:blocks/end_grey_brick_stair"
+  "random_sequence": "beyondhorizon:blocks/chipped_bricks"
 }

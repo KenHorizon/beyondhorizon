@@ -52,6 +52,25 @@ public class BHBlocks {
             .dropSelf()
             .register();
 
+    public static final RegistryObject<Block> CHIPPED_BRICKS = RegistryBlocks
+            .register("chipped_bricks", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.BRICKS)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+    public static final RegistryObject<Block> CHIPPED_BRICK_STAIRS = RegistryBlocks
+            .register("chipped_brick_stairs", properties -> new StairBlock(() -> BHBlocks.CHIPPED_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.BRICKS)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+    public static final RegistryObject<Block> CHIPPED_BRICK_SLAB = RegistryBlocks
+            .register("chipped_brick_slab", properties -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.BRICKS)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
     public static final RegistryObject<Block> IRON_LATTICE = RegistryBlocks
             .register("iron_lattice", properties -> new LatticeFenceBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BARS)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
@@ -94,7 +113,7 @@ public class BHBlocks {
             .register();
 
     public static final RegistryObject<Block> SILTSTONE_STAIRS = RegistryBlocks
-            .register("siltstone_stair", properties -> new StairBlock(() -> BHBlocks.SILTSTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE)))
+            .register("siltstone_stairs", properties -> new StairBlock(() -> BHBlocks.SILTSTONE.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.STONE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()
@@ -141,6 +160,13 @@ public class BHBlocks {
 
     public static final RegistryObject<Block> CUT_NETHER_BRICKS = RegistryBlocks
             .register("cut_nether_bricks", properties -> new Block(NETHER_BRICKS))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> CHIPPED_NETHER_BRICKS = RegistryBlocks
+            .register("chipped_nether_bricks", properties -> new Block(NETHER_BRICKS))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()
@@ -212,6 +238,13 @@ public class BHBlocks {
 
     public static final RegistryObject<Block> BLACK_NETHER_BRICKS = RegistryBlocks
             .register("black_nether_bricks", properties -> new RotatedPillarBlock(NETHER_BRICKS))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> CHIPPED_BLACK_NETHER_BRICKS = RegistryBlocks
+            .register("chipped_black_nether_bricks", properties -> new Block(NETHER_BRICKS))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()
@@ -367,7 +400,7 @@ public class BHBlocks {
             .register();
 
     public static final RegistryObject<Block> END_GREY_BRICK_STAIRS = RegistryBlocks
-            .register("end_grey_brick_stair", properties -> new StairBlock(() -> BHBlocks.END_GREY_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.END_STONE_BRICKS)))
+            .register("end_grey_brick_stairs", properties -> new StairBlock(() -> BHBlocks.END_GREY_BRICKS.get().defaultBlockState(), BlockBehaviour.Properties.copy(Blocks.END_STONE_BRICKS)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
             .dropSelf()

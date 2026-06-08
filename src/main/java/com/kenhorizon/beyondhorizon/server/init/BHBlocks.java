@@ -37,6 +37,11 @@ public class BHBlocks {
             .dontCreateItemBlocks()
             .register();
 
+    public static final RegistryObject<Block> GATE_BASE = RegistryBlocks
+            .register("gate_base", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BARS).noLootTable().isValidSpawn(BHBlocks::never)))
+            .dontCreateItemBlocks()
+            .register();
+
 
     public static final RegistryObject<Block> SPAWNER = RegistryBlocks
             .register("base_spawner", properties -> new BaseSpawnerBlock(SPAWNER_PROPERTIES))
@@ -165,6 +170,13 @@ public class BHBlocks {
             .properties(p -> p.strength(999999.99F))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> VOLCANIC_MANTLE = RegistryBlocks
+            .register("volcanic_mantle", properties -> new Block(NETHER_BRICKS))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
             .dropSelf()
             .register();
 

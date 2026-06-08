@@ -5,13 +5,16 @@ import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -22,9 +25,28 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
     private final AnimationState open = new AnimationState();
     private final AnimationState closingAnimation = new AnimationState();
     private final AnimationState close = new AnimationState();
+    private BlockState baseBlock = BHBlocks.GATE_BASE.get().defaultBlockState();
+    private BlockPos baseBlockPos;
 
-    public GateBlockBlockEntity(BlockPos blockPos, BlockState blockState) {
-        super(BHBlockEntity.GATE.get(), blockPos, blockState);
+    public GateBlockBlockEntity(BlockPos baseBlockPos, BlockState blockState) {
+        super(BHBlockEntity.GATE.get(), baseBlockPos, blockState);
+        this.baseBlockPos = baseBlockPos;
+    }
+
+    public void setBaseBlock(BlockState baseBlock) {
+        this.baseBlock = baseBlock;
+    }
+
+    public BlockState getBaseBlock() {
+        return this.baseBlock;
+    }
+
+    public void setBaseBlockPos(BlockPos baseBlockPos) {
+        this.baseBlockPos = baseBlockPos;
+    }
+
+    public BlockPos getBaseBlockPos() {
+        return baseBlockPos;
     }
 
     @Override
@@ -128,11 +150,13 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
         super.load(compound);
         this.animationTick = compound.getInt("animationTicks");
         this.setOpened(compound.getBoolean("isOpened"));
+        this.baseBlock = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), compound.getCompound("blockstate"));
     }
 
     @Override
     protected void saveAdditional(CompoundTag compound) {
         super.saveAdditional(compound);
+        compound.put("blockstate", NbtUtils.writeBlockState(this.baseBlock));
         compound.putInt("animationTicks", this.animationTick);
         compound.putBoolean("isOpened", this.isOpened());
     }

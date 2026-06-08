@@ -3,16 +3,22 @@ package com.kenhorizon.beyondhorizon.server.block;
 import com.kenhorizon.beyondhorizon.server.block.entity.GateBlockBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
+import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -37,6 +43,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 public class GateBlocks extends BaseEntityBlock {
+    public static final BooleanProperty ATTACHED = BlockStateProperties.ATTACHED;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     private static final VoxelShape CLOSED = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
@@ -44,12 +51,12 @@ public class GateBlocks extends BaseEntityBlock {
 
     public GateBlocks(Properties properties) {
         super(properties);
-        this.registerDefaultState(this.stateDefinition.any().setValue(LIT, Boolean.FALSE).setValue(OPEN, Boolean.FALSE));
+        this.registerDefaultState(this.stateDefinition.any().setValue(ATTACHED, Boolean.FALSE).setValue(LIT, Boolean.FALSE).setValue(OPEN, Boolean.FALSE));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(OPEN, LIT);
+        builder.add(OPEN, LIT,ATTACHED);
     }
 
     @Override
@@ -59,12 +66,38 @@ public class GateBlocks extends BaseEntityBlock {
 
     @Override
     public RenderShape getRenderShape(BlockState blockState) {
-        return RenderShape.MODEL;
+        return RenderShape.ENTITYBLOCK_ANIMATED;
     }
 
     @Override
     public VoxelShape getOcclusionShape(BlockState blockState, BlockGetter level, BlockPos blockPos) {
         return Shapes.empty();
+    }
+
+    @Override
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        ItemStack stack = player.getItemInHand(hand);
+        BlockPos hitBlockPos = hitResult.getBlockPos();
+        boolean flag = (level.getBlockState(hitBlockPos).getBlock() instanceof GateBlocks);
+        if (!stack.isEmpty() && stack.getItem() instanceof BlockItem blockItem && flag) {
+            var blockEntity = level.getExistingBlockEntity(blockPos);
+            if (blockEntity instanceof GateBlockBlockEntity gate) {
+                gate.setBaseBlock(blockItem.getBlock().defaultBlockState());
+            }
+            level.blockUpdated(hitBlockPos, this);
+            level.setBlockAndUpdate(blockPos, blockState.setValue(ATTACHED, true));
+            return InteractionResult.sidedSuccess(level.isClientSide());
+        }
+        if (stack.isEmpty() && player.isShiftKeyDown()) {
+            var blockEntity = level.getExistingBlockEntity(blockPos);
+            if (blockEntity instanceof GateBlockBlockEntity gate) {
+                gate.setBaseBlock(BHBlocks.GATE_BASE.get().defaultBlockState());
+            }
+            level.blockUpdated(hitBlockPos, this);
+            level.setBlockAndUpdate(blockPos, blockState.setValue(ATTACHED, false));
+            return InteractionResult.sidedSuccess(level.isClientSide());
+        }
+        return super.use(blockState, level, blockPos, player, hand, hitResult);
     }
 
     @Override
@@ -112,7 +145,7 @@ public class GateBlocks extends BaseEntityBlock {
     }
 
     private boolean doesFit(BlockPos pos, Level level) {
-        for (int i = 0; i <= 4; i++) {
+        for (int i = 0; i < 4; i++) {
             BlockPos blockpos2 = pos.above(i);
             BlockState blockstate = level.getBlockState(blockpos2);
             if (!blockstate.canBeReplaced()) return false;

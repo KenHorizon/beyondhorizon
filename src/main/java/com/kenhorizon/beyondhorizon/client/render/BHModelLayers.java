@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.model.blockentity.GateDoorModel;
 import com.kenhorizon.beyondhorizon.client.model.entity.BlazingInfernoModel;
 import com.kenhorizon.beyondhorizon.client.model.entity.BlazingSpearModel;
 import com.kenhorizon.beyondhorizon.client.model.entity.FayeFlaresModel;
@@ -18,6 +19,7 @@ public class BHModelLayers {
     public static final ModelLayerLocation INFERNO_SHIELD = createLocation("inferno_shield");
     public static final ModelLayerLocation BLAZING_SPEAR = createLocation("blazing_spear");
     public static final ModelLayerLocation FAYE_FLARES = createLocation("faye_flares");
+    public static final ModelLayerLocation GATE_DOOR = createLocation("gate_door");
 
     public static void register(final EntityRenderersEvent.RegisterLayerDefinitions event) {
         BeyondHorizon.LOGGER.info("Registering Model Layers...");
@@ -25,6 +27,7 @@ public class BHModelLayers {
         event.registerLayerDefinition(INFERNO_SHIELD, InfernoShieldModel::createBodyLayer);
         event.registerLayerDefinition(BLAZING_SPEAR, BlazingSpearModel::createBodyLayer);
         event.registerLayerDefinition(FAYE_FLARES, FayeFlaresModel::createBodyLayer);
+        event.registerLayerDefinition(GATE_DOOR, GateDoorModel::createBodyLayer);
     }
     private static ModelLayerLocation createOuterArmor(String model) {
         return createLocation(model, "outer_armor");

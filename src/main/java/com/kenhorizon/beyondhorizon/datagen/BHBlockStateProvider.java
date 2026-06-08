@@ -39,6 +39,7 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.CHIPPED_BRICKS);
         this.slabBlocks(BHBlocks.CHIPPED_BRICK_SLAB, BHBlocks.CHIPPED_BRICKS);
         this.stairsBlocks(BHBlocks.CHIPPED_BRICK_STAIRS, BHBlocks.CHIPPED_BRICKS);
+        this.blockWithItem(BHBlocks.VOLCANIC_MANTLE);
         this.blockWithItem(BHBlocks.HEART_OF_THE_FLAME);
         this.blockWithItem(BHBlocks.CUT_NETHER_BRICKS);
         this.slabBlocks(BHBlocks.CUT_NETHER_BRICK_SLAB, BHBlocks.CUT_NETHER_BRICKS);
@@ -76,6 +77,7 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.stairsBlocks(BHBlocks.DESOLATE_OBSIDIAN_BRICK_STAIR, BHBlocks.DESOLATE_OBSIDIAN_BRICKS);
         this.baseSpawnerBlocks(BHBlocks.SPAWNER, BeyondHorizon.resource("block/base_spawner_top"), BeyondHorizon.resource("block/base_spawner_bottom"), BeyondHorizon.resource("block/base_spawner_side"));
         this.blockWithItem(BHBlocks.GATE, BeyondHorizon.resource("block/gate_top"), BeyondHorizon.resource("block/gate_bottom"), BeyondHorizon.resource("block/gate_side"));
+        this.blockWithItem(BHBlocks.GATE_BASE, BeyondHorizon.resource("block/gate_top"), BeyondHorizon.resource("block/gate_bottom"), BeyondHorizon.resource("block/gate_side"));
 
 
         this.latticeBlock(BHBlocks.IRON_LATTICE, "minecraft:block/iron_block", "iron_lattice_post", "iron_lattice");

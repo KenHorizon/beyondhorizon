@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.client;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
+import com.kenhorizon.beyondhorizon.client.render.blockentity.ChainPulleyRenderer;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
@@ -129,6 +130,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
         BlockEntityRenderers.register(BHBlockEntity.BASE_SPAWNER.get(), BaseSpawnerRenderer::new);
         BlockEntityRenderers.register(BHBlockEntity.GATE.get(), GateDoorRenderer::new);
+        BlockEntityRenderers.register(BHBlockEntity.CHAIN_PULLEY.get(), ChainPulleyRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);

@@ -129,7 +129,7 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
 
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
-        if (getEntityUUID().isPresent()) {
+        if (this.getEntityUUID().isPresent()) {
             nbt.putUUID(NBT_OWNER, this.getEntityUUID().get());
         }
         nbt.putFloat(NBT_ORBIT_SCALE, this.getOrbitScale());

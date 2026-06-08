@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "beyondhorizon:block/heart_of_the_flame"
+  }
+}

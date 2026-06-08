@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "beyondhorizon:block/moldy_cut_nether_bricks",
+    "side": "beyondhorizon:block/moldy_cut_nether_bricks",
+    "top": "beyondhorizon:block/moldy_cut_nether_bricks"
+  }
+}

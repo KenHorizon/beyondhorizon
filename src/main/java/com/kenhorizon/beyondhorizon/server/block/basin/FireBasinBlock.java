@@ -85,7 +85,7 @@ public class FireBasinBlock extends Block implements SimpleWaterloggedBlock {
     @Override
     public boolean canSurvive(BlockState blockState, LevelReader level, BlockPos blockPos) {
         Direction direction = getConnectedDirection(blockState).getOpposite();
-        return Block.canSupportCenter(level, blockPos.relative(direction), direction.getOpposite());
+        return canSupportRigidBlock(level, blockPos.below());
     }
 
     @Override

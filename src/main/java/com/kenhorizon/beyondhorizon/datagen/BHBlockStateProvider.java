@@ -39,7 +39,10 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.CHIPPED_BRICKS);
         this.slabBlocks(BHBlocks.CHIPPED_BRICK_SLAB, BHBlocks.CHIPPED_BRICKS);
         this.stairsBlocks(BHBlocks.CHIPPED_BRICK_STAIRS, BHBlocks.CHIPPED_BRICKS);
+        this.blockWithItem(BHBlocks.HEART_OF_THE_FLAME);
         this.blockWithItem(BHBlocks.CUT_NETHER_BRICKS);
+        this.slabBlocks(BHBlocks.CUT_NETHER_BRICK_SLAB, BHBlocks.CUT_NETHER_BRICKS);
+        this.stairsBlocks(BHBlocks.CUT_NETHER_BRICK_STAIRS, BHBlocks.CUT_NETHER_BRICKS);
         this.blockWithItem(BHBlocks.CHISELLED_BLACK_NETHER_BRICKS);
         this.axisBlock(BHBlocks.NETHER_PILLAR);
         this.blockWithItem(BHBlocks.CHIPPED_NETHER_BRICKS);
@@ -50,6 +53,8 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.CUT_POLISHED_NETHER);
         this.blockWithItem(BHBlocks.CUT_POLISHED_BLACK_NETHER);
         this.blockWithItem(BHBlocks.MOLDY_CUT_NETHER_BRICKS);
+        this.slabBlocks(BHBlocks.MOLDY_CUT_NETHER_BRICK_SLAB, BHBlocks.MOLDY_CUT_NETHER_BRICKS);
+        this.stairsBlocks(BHBlocks.MOLDY_CUT_NETHER_BRICK_STAIRS, BHBlocks.MOLDY_CUT_NETHER_BRICKS);
         this.blockWithItem(BHBlocks.PLAIN_POLISHED_BLACK_NETHER);
         this.blockWithItem(BHBlocks.PLAIN_CHISELED_NETHER_BRICKS);
         this.blockWithItem(BHBlocks.PLAIN_CHISELED_POLISHED_BLACKSTONE);

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "beyondhorizon:block/cut_nether_brick_slab"
+    },
+    "type=double": {
+      "model": "beyondhorizon:block/cut_nether_bricks"
+    },
+    "type=top": {
+      "model": "beyondhorizon:block/cut_nether_brick_slab_top"
+    }
+  }
+}

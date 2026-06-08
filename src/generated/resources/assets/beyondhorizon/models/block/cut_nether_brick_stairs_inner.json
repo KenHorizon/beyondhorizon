@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "beyondhorizon:block/cut_nether_bricks",
+    "side": "beyondhorizon:block/cut_nether_bricks",
+    "top": "beyondhorizon:block/cut_nether_bricks"
+  }
+}

@@ -3,6 +3,8 @@ package com.kenhorizon.beyondhorizon.server.block;
 import com.kenhorizon.beyondhorizon.server.block.entity.GateBlockBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
+import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundBlockEntityDataPacket;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,10 +25,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -35,6 +34,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -66,7 +66,7 @@ public class GateBlocks extends BaseEntityBlock {
 
     @Override
     public RenderShape getRenderShape(BlockState blockState) {
-        return RenderShape.ENTITYBLOCK_ANIMATED;
+        return blockState.getValue(ATTACHED) ? RenderShape.ENTITYBLOCK_ANIMATED : RenderShape.MODEL;
     }
 
     @Override
@@ -77,27 +77,78 @@ public class GateBlocks extends BaseEntityBlock {
     @Override
     public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         ItemStack stack = player.getItemInHand(hand);
-        BlockPos hitBlockPos = hitResult.getBlockPos();
-        boolean flag = (level.getBlockState(hitBlockPos).getBlock() instanceof GateBlocks);
-        if (!stack.isEmpty() && stack.getItem() instanceof BlockItem blockItem && flag) {
-            var blockEntity = level.getExistingBlockEntity(blockPos);
-            if (blockEntity instanceof GateBlockBlockEntity gate) {
-                gate.setBaseBlock(blockItem.getBlock().defaultBlockState());
+        var blockEntity = level.getExistingBlockEntity(blockPos);
+        BlockState materialIn = getAllAcceptedBlocks(level, blockPos, stack);
+        if (blockEntity instanceof GateBlockBlockEntity gate) {
+            if (stack.isEmpty() && !player.isShiftKeyDown()) {
+                gate.setBaseBlock(Blocks.AIR.defaultBlockState());
+                gate.setChanged();
+                level.setBlockAndUpdate(blockPos, blockState.setValue(ATTACHED, false));
+                level.gameEvent(player, GameEvent.BLOCK_CHANGE, blockPos);
+                level.sendBlockUpdated(blockPos, blockState, blockState, 3);
+                gate.setConsumedItem(ItemStack.EMPTY);
+                return InteractionResult.SUCCESS;
             }
-            level.blockUpdated(hitBlockPos, this);
-            level.setBlockAndUpdate(blockPos, blockState.setValue(ATTACHED, true));
-            return InteractionResult.sidedSuccess(level.isClientSide());
-        }
-        if (stack.isEmpty() && player.isShiftKeyDown()) {
-            var blockEntity = level.getExistingBlockEntity(blockPos);
-            if (blockEntity instanceof GateBlockBlockEntity gate) {
-                gate.setBaseBlock(BHBlocks.GATE_BASE.get().defaultBlockState());
+            if (!blockState.getValue(ATTACHED)) {
+                gate.setBaseBlock(materialIn);
+                gate.setConsumedItem(stack);
+                gate.setChanged();
+                level.setBlockAndUpdate(blockPos, blockState.setValue(ATTACHED, true));
+                level.gameEvent(player, GameEvent.BLOCK_CHANGE, blockPos);
+                level.sendBlockUpdated(blockPos, blockState, blockState, 3);
+                return InteractionResult.SUCCESS;
             }
-            level.blockUpdated(hitBlockPos, this);
-            level.setBlockAndUpdate(blockPos, blockState.setValue(ATTACHED, false));
-            return InteractionResult.sidedSuccess(level.isClientSide());
         }
+
         return super.use(blockState, level, blockPos, player, hand, hitResult);
+    }
+
+    public BlockState getAllAcceptedBlocks(Level lvl, BlockPos pos, ItemStack item) {
+        if (!(item.getItem() instanceof BlockItem bi)) {
+            return null;
+        }
+        Block block = bi.getBlock();
+        BlockState appliedState = block.defaultBlockState();
+        if (block instanceof EntityBlock || block instanceof StairBlock || block instanceof SlabBlock) {
+            return null;
+        }
+        if (lvl != null) {
+            VoxelShape shape = appliedState.getShape(lvl, pos);
+            if (shape.isEmpty() || !shape.bounds().equals(Shapes.block().bounds())) {
+                return null;
+            }
+            VoxelShape collisionShape = appliedState.getCollisionShape(lvl, pos);
+            if (collisionShape.isEmpty()) {
+                return null;
+            }
+        }
+        return appliedState;
+    }
+
+    @Override
+    public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
+        if (blockState.getValue(LIT) && !level.hasNeighborSignal(blockPos)) {
+            level.setBlock(blockPos, blockState.cycle(LIT), 2);
+        }
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+        Direction direction = context.getClickedFace();
+        BlockPos blockpos = context.getClickedPos();
+        Direction.Axis direction$axis = direction.getAxis();
+        if (direction$axis == Direction.Axis.Y) {
+            BlockState blockstate = this.defaultBlockState().setValue(LIT, context.getLevel().hasNeighborSignal(context.getClickedPos()));
+            if (blockstate.canSurvive(context.getLevel(), blockpos) && this.doesFit(blockpos, context.getLevel())) {
+                return blockstate;
+            }
+        } else {
+            BlockState blockstate1 = this.defaultBlockState().setValue(LIT, context.getLevel().hasNeighborSignal(context.getClickedPos()));
+            if (blockstate1.canSurvive(context.getLevel(), context.getClickedPos()) && doesFit(context.getClickedPos(), context.getLevel())) {
+                return blockstate1;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -154,25 +205,6 @@ public class GateBlocks extends BaseEntityBlock {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        Direction direction = context.getClickedFace();
-        BlockPos blockpos = context.getClickedPos();
-        Direction.Axis direction$axis = direction.getAxis();
-        if (direction$axis == Direction.Axis.Y) {
-            BlockState blockstate = this.defaultBlockState().setValue(LIT, context.getLevel().hasNeighborSignal(context.getClickedPos()));
-            if (blockstate.canSurvive(context.getLevel(), blockpos) && this.doesFit(blockpos, context.getLevel())) {
-                return blockstate;
-            }
-        } else {
-            BlockState blockstate1 = this.defaultBlockState().setValue(LIT, context.getLevel().hasNeighborSignal(context.getClickedPos()));
-            if (blockstate1.canSurvive(context.getLevel(), context.getClickedPos()) && doesFit(context.getClickedPos(), context.getLevel())) {
-                return blockstate1;
-            }
-        }
-        return null;
-    }
-
-    @Override
     public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block neighborBlock, BlockPos neighborPos, boolean isMoving) {
         if (!level.isClientSide()) {
             boolean flag = blockState.getValue(LIT);
@@ -183,13 +215,6 @@ public class GateBlocks extends BaseEntityBlock {
                     level.setBlock(blockPos, blockState.cycle(LIT), 2);
                 }
             }
-        }
-    }
-
-    @Override
-    public void tick(BlockState blockState, ServerLevel level, BlockPos blockPos, RandomSource random) {
-        if (blockState.getValue(LIT) && !level.hasNeighborSignal(blockPos)) {
-            level.setBlock(blockPos, blockState.cycle(LIT), 2);
         }
     }
 

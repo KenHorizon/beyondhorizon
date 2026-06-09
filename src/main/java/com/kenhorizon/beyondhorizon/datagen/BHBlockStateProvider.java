@@ -77,8 +77,6 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.stairsBlocks(BHBlocks.DESOLATE_OBSIDIAN_BRICK_STAIR, BHBlocks.DESOLATE_OBSIDIAN_BRICKS);
         this.baseSpawnerBlocks(BHBlocks.SPAWNER, BeyondHorizon.resource("block/base_spawner_top"), BeyondHorizon.resource("block/base_spawner_bottom"), BeyondHorizon.resource("block/base_spawner_side"));
         this.blockWithItem(BHBlocks.GATE, BeyondHorizon.resource("block/gate_top"), BeyondHorizon.resource("block/gate_bottom"), BeyondHorizon.resource("block/gate_side"));
-        this.blockWithItem(BHBlocks.GATE_BASE, BeyondHorizon.resource("block/gate_top"), BeyondHorizon.resource("block/gate_bottom"), BeyondHorizon.resource("block/gate_side"));
-
 
         this.latticeBlock(BHBlocks.IRON_LATTICE, "minecraft:block/iron_block", "iron_lattice_post", "iron_lattice");
         this.latticeBlock(BHBlocks.TATTERED_IRON_LATTICE, "minecraft:block/iron_block", "iron_lattice_post", "tattered_iron_lattice");

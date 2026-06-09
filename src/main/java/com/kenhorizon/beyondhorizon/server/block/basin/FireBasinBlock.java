@@ -1,5 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.block.basin;
 
+import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -7,6 +9,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -34,6 +37,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -135,8 +139,19 @@ public class FireBasinBlock extends Block implements SimpleWaterloggedBlock {
                 level.playLocalSound(blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + random.nextFloat(), random.nextFloat() * 0.7F + 0.6F, false);
             }
         }
+        for (int i = 0; i < random.nextInt(7) + 1; ++i) {
+            float r = 1.0F;
+            float g = Mth.lerp((float) i / 2, 0.9F, 0.6F);
+            float b = 0;
+            level.addParticle(new ParticleTrailOptions(0, 0, 80,
+                            r,g,b, 1.0F, 1.0F, true, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(
+                            blockPos.getX() + (random.nextFloat() * 0.5F),
+                            blockPos.getY() + 2.5D,
+                            blockPos.getZ() + (random.nextFloat() * 0.5F))),
+                    blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D, 0, 0,0);
+        }
         if (random.nextInt(5) == 0) {
-            for(int i = 0; i < random.nextInt(1) + 1; ++i) {
+            for (int i = 0; i < random.nextInt(1) + 1; ++i) {
                 level.addParticle(ParticleTypes.LAVA, blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D, (random.nextFloat() / 2.0F), 5.0E-5D, (random.nextFloat() / 2.0F));
             }
         }

@@ -49,17 +49,17 @@ public class BaseSpawnerBlock extends BaseEntityBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        BlockEntity blockEntity = pLevel.getBlockEntity(pPos);
-        if (pLevel instanceof ServerLevel) {
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        BlockEntity blockEntity = level.getBlockEntity(blockPos);
+        if (level instanceof ServerLevel) {
             if (blockEntity instanceof BaseSpawnerBlockEntity spawnerBlockEntity) {
-                ItemStack itemstack = pPlayer.getItemInHand(pHand);
+                ItemStack itemstack = player.getItemInHand(hand);
                 if (itemstack.getItem() instanceof SpawnEggItem eggItem) {
                     EntityType<?> entitytype1 = eggItem.getType(itemstack.getTag());
-                    spawnerBlockEntity.setEntityId(entitytype1, pLevel.getRandom());
+                    spawnerBlockEntity.setEntityId(entitytype1, level.getRandom());
                     spawnerBlockEntity.setChanged();
-                    pLevel.sendBlockUpdated(pPos, pState, pState, 3);
-                    pLevel.gameEvent(pPlayer, GameEvent.BLOCK_CHANGE, pPos);
+                    level.sendBlockUpdated(blockPos, blockState, blockState, 3);
+                    level.gameEvent(player, GameEvent.BLOCK_CHANGE, blockPos);
                     itemstack.shrink(1);
                     return InteractionResult.CONSUME;
                 }

@@ -12,8 +12,11 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
@@ -23,9 +26,27 @@ import java.util.UUID;
 public class ChainPulleyBlockEntity extends BHBlockEntityBase<ChainPulleyBlockEntity> {
     private UUID chainedTo;
     private UUID chainedId;
+    private Entity chainedHolder;
+    private BlockEntity chainedHolderBlockEntity;
     public ChainPulleyBlockEntity(BlockPos baseBlockPos, BlockState blockState) {
         super(BHBlockEntity.CHAIN_PULLEY.get(), baseBlockPos, blockState);
         this.chainedId = UUID.randomUUID();
+    }
+
+    public void setChainedHolder(Entity entity) {
+        this.chainedHolder = entity;
+    }
+
+    public void setChainedHolderBlockEntity(BlockEntity entity) {
+        this.chainedHolderBlockEntity = entity;
+    }
+
+    public BlockEntity getChainedHolderBlockEntity() {
+        return chainedHolderBlockEntity;
+    }
+
+    public Entity getChainedHolder() {
+        return chainedHolder;
     }
 
     public void setChainedId(UUID chainedId) {
@@ -64,22 +85,22 @@ public class ChainPulleyBlockEntity extends BHBlockEntityBase<ChainPulleyBlockEn
     }
 
     @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
+    public void load(CompoundTag tag) {
+        super.load(tag);
         if (this.chainedId != null) {
-            this.chainedId = compound.getUUID("chained_id");
+            this.chainedId = tag.getUUID("chained_id");
         }
-        if (compound.hasUUID("chained_to")) {
-            this.chainedTo = compound.getUUID("chained_to");
+        if (tag.hasUUID("chained_to")) {
+            this.chainedTo = tag.getUUID("chained_to");
         }
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        compound.putUUID("chained_id", this.chainedId);
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.putUUID("chained_id", this.chainedId);
         if (this.chainedTo != null) {
-            compound.putUUID("chained_to", this.chainedTo);
+            tag.putUUID("chained_to", this.chainedTo);
         }
     }
 }

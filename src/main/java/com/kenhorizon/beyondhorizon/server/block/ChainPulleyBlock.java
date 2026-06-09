@@ -1,13 +1,18 @@
 package com.kenhorizon.beyondhorizon.server.block;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.block.entity.ChainPulleyBlockEntity;
 import com.kenhorizon.beyondhorizon.server.block.entity.GateBlockBlockEntity;
+import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
@@ -24,7 +29,9 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.*;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.pathfinder.PathComputationType;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -196,17 +203,30 @@ public class ChainPulleyBlock extends BaseEntityBlock {
     public BlockState updateShape(BlockState blockState, Direction direction, BlockState directionBlockState, LevelAccessor level, BlockPos currentPos, BlockPos directionPos) {
         return getConnectedDirection(blockState).getOpposite() == direction && !blockState.canSurvive(level, currentPos) ? Blocks.AIR.defaultBlockState() : super.updateShape(blockState, direction, directionBlockState, level, currentPos, directionPos);
     }
-    @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        ItemStack stack = player.getItemInHand(hand);
-        if (!stack.isEmpty() && stack.is(Items.CHAIN)) {
-            var blockEntity = level.getExistingBlockEntity(blockPos);
-            level.setBlockAndUpdate(blockPos, blockState.setValue(CHAINED, true));
+//    @Override
+//    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+//        ItemStack stack = player.getItemInHand(hand);
+//        if (!stack.isEmpty() && stack.is(Items.CHAIN)) {
+//            var blockEntity = level.getExistingBlockEntity(blockPos);
+//            var hitPos = hitResult.getBlockPos();
+//            if (blockEntity instanceof ChainPulleyBlockEntity bEntity) {
+//                if (blockState.getValue(CHAINED)) {
+//                    var bE = level.getExistingBlockEntity(hitPos);
+//                    if (bE instanceof ChainPulleyBlockEntity other) {
+//                        bEntity.setChainedHolderBlockEntity(other);
+//                        bEntity.setChainedTo(other.getChainedId());
+//                    }
+//                } else {
+//
+//                }
+//                bEntity.setChainedHolder(player);
+//                level.setBlockAndUpdate(blockPos, blockState.setValue(CHAINED, !blockState.getValue(CHAINED)));
+//            }
+//            return InteractionResult.sidedSuccess(level.isClientSide());
+//        }
+//        return super.use(blockState, level, blockPos, player, hand, hitResult);
+//    }
 
-            return InteractionResult.sidedSuccess(level.isClientSide());
-        }
-        return super.use(blockState, level, blockPos, player, hand, hitResult);
-    }
     protected static Direction getConnectedDirection(BlockState blockState) {
         switch ((AttachFace)blockState.getValue(FACE)) {
             case CEILING:

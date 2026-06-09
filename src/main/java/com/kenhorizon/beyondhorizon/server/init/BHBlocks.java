@@ -37,12 +37,6 @@ public class BHBlocks {
             .dontCreateItemBlocks()
             .register();
 
-    public static final RegistryObject<Block> GATE_BASE = RegistryBlocks
-            .register("gate_base", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BARS).noLootTable().isValidSpawn(BHBlocks::never)))
-            .dontCreateItemBlocks()
-            .register();
-
-
     public static final RegistryObject<Block> SPAWNER = RegistryBlocks
             .register("base_spawner", properties -> new BaseSpawnerBlock(SPAWNER_PROPERTIES))
             .mineable(RegistryBlocks.Mineable.PICKAXE)

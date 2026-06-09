@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.block.entity;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.block.GateBlocks;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
@@ -13,10 +14,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+
+import java.util.function.Supplier;
 
 public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity> {
     private int animationTick = 0;
@@ -25,16 +30,27 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
     private final AnimationState open = new AnimationState();
     private final AnimationState closingAnimation = new AnimationState();
     private final AnimationState close = new AnimationState();
-    private BlockState baseBlock = BHBlocks.GATE_BASE.get().defaultBlockState();
+    private BlockState baseBlock;
     private BlockPos baseBlockPos;
+    private ItemStack consumedItem;
 
     public GateBlockBlockEntity(BlockPos baseBlockPos, BlockState blockState) {
         super(BHBlockEntity.GATE.get(), baseBlockPos, blockState);
+        this.baseBlock = Blocks.AIR.defaultBlockState();
         this.baseBlockPos = baseBlockPos;
+        this.consumedItem = ItemStack.EMPTY;
     }
 
     public void setBaseBlock(BlockState baseBlock) {
         this.baseBlock = baseBlock;
+    }
+
+    public void setConsumedItem(ItemStack item) {
+        this.consumedItem = item;
+    }
+
+    public ItemStack getConsumedItem() {
+        return consumedItem;
     }
 
     public BlockState getBaseBlock() {
@@ -74,7 +90,7 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
                         level.playSound((Player)null, blockPos, SoundEvents.IRON_DOOR_OPEN, SoundSource.BLOCKS, 4F, level.random.nextFloat() * 0.2F + 1.0F);
                     }
                     if (entity.animationTick >= 20) {
-                        if (!level.isClientSide) {
+                        if (!level.isClientSide()) {
                             level.setBlock(blockPos, blockState.setValue(GateBlocks.OPEN, Boolean.TRUE), 2);
                             for (int i = 0; i <= 5; i++) {
                                 BlockPos blockpos2 = blockPos.above(i);
@@ -93,16 +109,17 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
                     }
                 }
             }
+
             if (!blockState.getValue(GateBlocks.LIT)) {
-                ++entity.animationTick;
                 if (blockState.getValue(GateBlocks.OPEN)) {
-                    if (entity.animationTick == 1) {
+                    if (entity.animationTick == 0) {
                         this.resetAnimationState(entity);
                         this.level.blockEvent(blockPos, this.getBlockState().getBlock(), 2, 0);
                         level.playSound((Player) null, blockPos, SoundEvents.IRON_DOOR_CLOSE, SoundSource.BLOCKS, 4F, level.random.nextFloat() * 0.2F + 1.0F);
                     }
+                    ++entity.animationTick;
                     if (entity.animationTick >= 20) {
-                        if (!level.isClientSide) {
+                        if (!level.isClientSide()) {
                             level.setBlock(blockPos, blockState.setValue(GateBlocks.OPEN, Boolean.FALSE), 2);
                             for (int i = 0; i <= 5; i++) {
                                 BlockPos blockpos2 = blockPos.above(i);
@@ -113,9 +130,10 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
                             }
                         }
                     }
+//                    this.setOpened(blockState.getValue(GateBlocks.OPEN));
                 } else {
                     entity.animationTick = 0;
-                    if (level.isClientSide) {
+                    if (level.isClientSide()) {
                         entity.openingAnimation.stop();
                         entity.open.stop();
                         entity.closingAnimation.stop();
@@ -128,8 +146,8 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
 
     private void particle(Level level, BlockPos blockPos, int amount) {
         for (int i = 0; i < amount; i++) {
-            level.addParticle(ParticleTypes.CLOUD, blockPos.getX() + 0.5F, blockPos.getY(), blockPos.getZ() + 0.5F, 0.0D, 0.0D, 0.0D);
-            level.addParticle(ParticleTypes.SMOKE, blockPos.getX() + 0.5F, blockPos.getY(), blockPos.getZ() + 0.5F, 0.0D, 0.0D, 0.0D);
+            level.addParticle(ParticleTypes.CLOUD, blockPos.getX() + 0.5F, blockPos.getY() + 0.5F, blockPos.getZ() + 0.5F, 0.0D, 0.0D, 0.0D);
+            level.addParticle(ParticleTypes.SMOKE, blockPos.getX() + 0.5F, blockPos.getY() + 0.5F, blockPos.getZ() + 0.5F, 0.0D, 0.0D, 0.0D);
         }
     }
 
@@ -146,19 +164,40 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
     }
 
     @Override
-    public void load(CompoundTag compound) {
-        super.load(compound);
-        this.animationTick = compound.getInt("animationTicks");
-        this.setOpened(compound.getBoolean("isOpened"));
-        this.baseBlock = NbtUtils.readBlockState(this.level.holderLookup(Registries.BLOCK), compound.getCompound("blockstate"));
+    protected void saveAdditional(CompoundTag tag) {
+        super.saveAdditional(tag);
+        tag.put("blockstate", NbtUtils.writeBlockState(this.getBaseBlock()));
+        tag.put("item", this.getConsumedItem().serializeNBT());
+        tag.putInt("animation_ticks", this.animationTick);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        compound.put("blockstate", NbtUtils.writeBlockState(this.baseBlock));
-        compound.putInt("animationTicks", this.animationTick);
-        compound.putBoolean("isOpened", this.isOpened());
+    public void load(CompoundTag tag) {
+        super.load(tag);
+        BlockState prevBaseBlock = this.getBaseBlock();
+        if (!tag.contains("blockstate")) {
+            this.setConsumedItem(ItemStack.EMPTY);
+            return;
+        }
+
+        this.animationTick = tag.getInt("animation_ticks");
+        this.setConsumedItem(ItemStack.of(tag.getCompound("item")));
+        this.setBaseBlock(NbtUtils.readBlockState(this.blockHolderGetter(), tag.getCompound("blockstate")));
+
+        BeyondHorizon.LOGGER.debug("[Gate Block] Prev {} | Current {} [Item: {}]",prevBaseBlock, this.getBaseBlock(), this.getConsumedItem());
+        if (prevBaseBlock != this.getBaseBlock()) {
+            BeyondHorizon.LOGGER.debug("Redrawingg");
+            this.redraw();
+        }
+    }
+
+    private void redraw() {
+        if (hasLevel()) {
+            this.level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 16);
+            this.level.getChunkSource()
+                    .getLightEngine()
+                    .checkBlock(worldPosition);
+        }
     }
 
     public boolean isOpened() {
@@ -167,11 +206,6 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
 
     public void setOpened(boolean opened) {
         isOpened = opened;
-    }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     public AnimationState getAnimationState(String input) {

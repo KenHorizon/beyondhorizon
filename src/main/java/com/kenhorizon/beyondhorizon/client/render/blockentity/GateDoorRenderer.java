@@ -54,7 +54,6 @@ public class GateDoorRenderer implements BlockEntityRenderer<GateBlockBlockEntit
         poseStack.popPose();
         BlockState blockstate = entity.getBaseBlock();
         Level level = entity.getLevel();
-        BeyondHorizon.LOGGER.debug("{} Block rendering is {}? | {}", blockstate.getBlock().getDescriptionId(), blockstate.getRenderShape().name(), level == null);
         if (level != null && blockstate.getRenderShape() != RenderShape.INVISIBLE) {
             poseStack.pushPose();
             poseStack.translate(0.5D, 0.0D, 0.5D);

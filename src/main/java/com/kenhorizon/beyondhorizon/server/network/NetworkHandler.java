@@ -47,7 +47,7 @@ public class NetworkHandler {
         net.registerMessage(id(), ServerboundBossbarPacket.class, ServerboundBossbarPacket::toBytes, ServerboundBossbarPacket::new, ServerboundBossbarPacket::handle);
         net.registerMessage(id(), ServerboundAbilityEffectPacket.class, ServerboundAbilityEffectPacket::toBytes, ServerboundAbilityEffectPacket::new, ServerboundAbilityEffectPacket::handle);
         net.registerMessage(id(), ServerboundPlayerSwingArmPacket.class, ServerboundPlayerSwingArmPacket::toBytes, ServerboundPlayerSwingArmPacket::new, ServerboundPlayerSwingArmPacket::handle);
-        net.registerMessage(id(), ServerboundBlockEntityDataPacket.class, ServerboundBlockEntityDataPacket::toBytes, ServerboundBlockEntityDataPacket::new, ServerboundBlockEntityDataPacket::handle);
+
     }
 
 

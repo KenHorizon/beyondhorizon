@@ -5,6 +5,8 @@ import com.kenhorizon.beyondhorizon.datagen.BHBlockStateProvider;
 import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import com.kenhorizon.beyondhorizon.server.block.fence.AdvanceFenceBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
+import com.kenhorizon.beyondhorizon.server.block.wire.WireLaneMode;
+import com.kenhorizon.beyondhorizon.server.block.wire.WiredBlock;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -529,7 +531,50 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
                 .part().modelFile(bottomSide).rotationY(270).addModel().condition(AdvanceFenceBlock.WEST_FENCE, AdvanceFenceBlock.FenceSide.BOTTOM).end();
 
     }
+    protected void redstoneLaneWithItem(WiredBlock block) {
+        ResourceLocation base_lane = BeyondHorizon.resource("block/wired_lane");
+        ResourceLocation side = extend(base_lane, "_side");
+        ResourceLocation front = extend(base_lane, "_front");
+        ResourceLocation front_powered = extend(base_lane, "_front_powered");
+        ResourceLocation bottom = extend(base_lane, "_bottom");
+        ResourceLocation top = extend(blockTexture(block), "_top_unpowered");
+        ResourceLocation top_powered = extend(blockTexture(block), "_top_powered");
 
+        ModelFile unpowered = models().cube(name(block) + "_unpowered", bottom, top, front, front, side, side).texture("particle", top);
+        ModelFile powered = models().cube(name(block) + "_powered", bottom, top_powered, front_powered, front_powered, side, side).texture("particle", top_powered);
+        if (name(block).equals("redstone_lane_l")) {
+            unpowered = models().cube(name(block) + "_unpowered", bottom, top, side, front, front, side).texture("particle", top);
+            powered = models().cube(name(block) + "_powered", bottom, top_powered, side, front_powered, front_powered, side).texture("particle", top_powered);
+        } else if (name(block).equals("redstone_lane_t")) {
+            unpowered = models().cube(name(block) + "_unpowered", bottom, top, side, front, front, front).texture("particle", top);
+            powered = models().cube(name(block) + "_powered", bottom, top_powered, side, front_powered, front_powered, front_powered).texture("particle", top_powered);
+        }
+
+        if (name(block).equals("redstone_lane_i")) {
+            getVariantBuilder(block)
+                    .partialState().with(WiredBlock.FACING, Direction.NORTH).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.UNPOWERED).modelForState().modelFile(unpowered).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.EAST).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.UNPOWERED).modelForState().modelFile(unpowered).rotationY(90).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.SOUTH).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.UNPOWERED).modelForState().modelFile(unpowered).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.WEST).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.UNPOWERED).modelForState().modelFile(unpowered).rotationY(90).addModel()
+
+                    .partialState().with(WiredBlock.FACING, Direction.NORTH).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.POWERED).modelForState().modelFile(powered).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.EAST).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.POWERED).modelForState().modelFile(powered).rotationY(90).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.SOUTH).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.POWERED).modelForState().modelFile(powered).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.WEST).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.POWERED).modelForState().modelFile(powered).rotationY(90).addModel();
+            } else {
+            getVariantBuilder(block)
+                    .partialState().with(WiredBlock.FACING, Direction.NORTH).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.UNPOWERED).modelForState().modelFile(unpowered).rotationY(180).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.EAST).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.UNPOWERED).modelForState().modelFile(unpowered).rotationY(270).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.SOUTH).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.UNPOWERED).modelForState().modelFile(unpowered).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.WEST).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.UNPOWERED).modelForState().modelFile(unpowered).rotationY(90).addModel()
+
+                    .partialState().with(WiredBlock.FACING, Direction.NORTH).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.POWERED).modelForState().modelFile(powered).rotationY(180).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.EAST).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.POWERED).modelForState().modelFile(powered).rotationY(270).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.SOUTH).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.POWERED).modelForState().modelFile(powered).addModel()
+                    .partialState().with(WiredBlock.FACING, Direction.WEST).with(WiredBlock.WIRE_LANE_MODE, WireLaneMode.POWERED).modelForState().modelFile(powered).rotationY(90).addModel();
+}
+        simpleBlockItem(block, models().getExistingFile(extend(blockTexture(block), "_unpowered")));
+    }
     private boolean isEmpty(String string) {
         return string.isBlank() || string.isEmpty();
     }

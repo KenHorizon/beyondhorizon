@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "beyondhorizon:block/wired_lane_bottom",
+    "east": "beyondhorizon:block/wired_lane_side",
+    "north": "beyondhorizon:block/wired_lane_front_powered",
+    "particle": "beyondhorizon:block/wired_lane_l_top_powered",
+    "south": "beyondhorizon:block/wired_lane_front_powered",
+    "up": "beyondhorizon:block/wired_lane_l_top_powered",
+    "west": "beyondhorizon:block/wired_lane_side"
+  }
+}

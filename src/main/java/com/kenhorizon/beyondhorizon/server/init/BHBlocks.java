@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.server.block.basin.FireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.WallFireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.fence.LatticeFenceBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
+import com.kenhorizon.beyondhorizon.server.block.wire.WiredBlock;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.core.BlockPos;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -24,7 +26,27 @@ public class BHBlocks {
 
     public static final BlockBehaviour.Properties NETHER_BRICKS = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.0F, 6.0F).sound(SoundType.NETHER_BRICKS);
     public static final BlockBehaviour.Properties SPAWNER_PROPERTIES = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).lightLevel(value -> value.getValue(BaseSpawnerBlock.SPAWNER_STATE).lightLevel()).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(50.0F).sound(BHSoundType.SPAWNER).noOcclusion().isViewBlocking(BHBlocks::never);
+    public static final BlockBehaviour.Properties WIRED_LANE = BlockBehaviour.Properties.of().mapColor(MapColor.FIRE).strength(1.5F, 6.0F).sound(SoundType.METAL).lightLevel(l -> { return 4; }).requiresCorrectToolForDrops().pushReaction(PushReaction.PUSH_ONLY);
 
+    public static final RegistryObject<Block> WIRED_LANE_I = RegistryBlocks
+            .register("wired_lane_i", properties -> new WiredBlock(WIRED_LANE))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> WIRED_LANE_L = RegistryBlocks
+            .register("wired_lane_l", properties -> new WiredBlock(WIRED_LANE))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+    public static final RegistryObject<Block> WIRED_LANE_T = RegistryBlocks
+            .register("wired_lane_t", properties -> new WiredBlock(WIRED_LANE))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
     public static final RegistryObject<Block> GATE = RegistryBlocks
             .register("gate", properties -> new GateBlocks(BlockBehaviour.Properties.copy(Blocks.IRON_BARS)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)

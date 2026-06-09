@@ -3,24 +3,17 @@ package com.kenhorizon.beyondhorizon.server.block;
 import com.kenhorizon.beyondhorizon.server.block.entity.GateBlockBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundBlockEntityDataPacket;
-import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -79,7 +72,7 @@ public class GateBlocks extends BaseEntityBlock {
         ItemStack stack = player.getItemInHand(hand);
         var blockEntity = level.getExistingBlockEntity(blockPos);
         BlockState materialIn = getAllAcceptedBlocks(level, blockPos, stack);
-        if (blockEntity instanceof GateBlockBlockEntity gate) {
+        if (blockEntity instanceof GateBlockBlockEntity gate && materialIn != null) {
             if (stack.isEmpty() && !player.isShiftKeyDown()) {
                 gate.setBaseBlock(Blocks.AIR.defaultBlockState());
                 gate.setChanged();

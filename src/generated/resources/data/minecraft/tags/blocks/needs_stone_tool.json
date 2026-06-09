@@ -1,5 +1,8 @@
 {
   "values": [
+    "beyondhorizon:wired_lane_i",
+    "beyondhorizon:wired_lane_l",
+    "beyondhorizon:wired_lane_t",
     "beyondhorizon:gate",
     "beyondhorizon:base_spawner",
     "beyondhorizon:dungeon_bricks",

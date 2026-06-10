@@ -1,15 +1,11 @@
 {
   "values": [
-    "beyondhorizon:wired_lane_i",
-    "beyondhorizon:wired_lane_l",
-    "beyondhorizon:wired_lane_t",
     "beyondhorizon:gate",
     "beyondhorizon:base_spawner",
     "beyondhorizon:dungeon_bricks",
     "beyondhorizon:chipped_bricks",
     "beyondhorizon:chipped_brick_stairs",
     "beyondhorizon:chipped_brick_slab",
-    "beyondhorizon:chain_pulley",
     "beyondhorizon:siltstone",
     "beyondhorizon:siltstone_slab",
     "beyondhorizon:siltstone_stairs",

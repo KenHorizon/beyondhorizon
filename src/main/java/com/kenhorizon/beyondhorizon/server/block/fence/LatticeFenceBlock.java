@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.block.fence;
 
+import com.kenhorizon.beyondhorizon.server.api.block.AdvanceFenceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class LatticeFenceBlock extends AdvanceFenceBlock {

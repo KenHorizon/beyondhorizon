@@ -1,13 +1,18 @@
 package com.kenhorizon.beyondhorizon.server;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
 
-public class Utils {
+import java.util.function.Supplier;
 
+public class Utils {
+    public static String getObjectDescription(Supplier<?> itemSupplier) {
+        return String.format("item.%s.%s.desc", BeyondHorizon.ID, itemSupplier.get());
+    }
     public static String translateToLocal(String s) {
         return I18n.get(s);
     }

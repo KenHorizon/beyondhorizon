@@ -4,17 +4,15 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.guis.guide_book.GuideBookScreen;
 import com.kenhorizon.beyondhorizon.configs.Configs;
+import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSets;
-import com.kenhorizon.beyondhorizon.server.init.BHCreativeTabs;
+import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
-import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.item.PlayerTrackerItem;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.data.PackOutput;
@@ -23,6 +21,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.common.data.LanguageProvider;
 
@@ -72,7 +71,7 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.BOSS_IS_DEFEATED, "The %s is defeated");
         this.addBossMessage(BHEntity.BLAZING_INFERNO.get(), "The ocean and desert guardian has awoken...");
 
-
+        //
 
         //
         this.addEnchantmentDesc(BHEnchantments.LIFESTEAL, "Grant healing equal to percentage of the damage dealt");
@@ -289,5 +288,15 @@ public class BHLangProvider extends LanguageProvider {
         this.add(String.format("death.attack.%s", path), name);
         this.add(String.format("death.attack.%s.player", path), player);
         this.add(String.format("death.attack.%s.item", path), item);
+    }
+    private void addItemLore(Supplier<? extends Item> item, String... desc) {
+        for (int i = 0; i < desc.length; i++) {
+            if (i == 0) {
+                this.add(Utils.getObjectDescription(item), desc[i]);
+            } else {
+                this.add(Utils.getObjectDescription(item) + "." + i, desc[i]);
+            }
+
+        }
     }
 }

@@ -17,6 +17,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BHEntity {
+
     public static final RegistryObject<EntityType<BlazingInferno>> BLAZING_INFERNO = RegistryEntity
             .register("blazing_inferno", BlazingInferno::new)
             .lang("Blazing Inferno")

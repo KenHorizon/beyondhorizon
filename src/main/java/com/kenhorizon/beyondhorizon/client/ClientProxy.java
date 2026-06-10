@@ -3,7 +3,6 @@ package com.kenhorizon.beyondhorizon.client;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
-import com.kenhorizon.beyondhorizon.client.render.blockentity.ChainPulleyRenderer;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
@@ -116,21 +115,22 @@ public class ClientProxy extends ServerProxy {
         MinecraftForge.EVENT_BUS.register(new GameHudDisplay());
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
         //bus.addListener(this::addRegisteredLayers);
-
+        //
+        EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
+        EntityRenderers.register(BHEntity.BOLT_SHOCK.get(), RenderNothing::new);
+        EntityRenderers.register(BHEntity.CLEAVE_ABILITY.get(), RenderNothing::new);
+        //
         EntityRenderers.register(BHEntity.FAYE_FLARES.get(), FayeFlaresRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO.get(), BlazingInfernoRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_ROD.get(), BlazingRodRenderer::new);
         EntityRenderers.register(BHEntity.INFERNO_SHIELD.get(), InfernoShieldRenderer::new);
-        EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
-        EntityRenderers.register(BHEntity.BOLT_SHOCK.get(), RenderNothing::new);
-        EntityRenderers.register(BHEntity.CLEAVE_ABILITY.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.BLAZING_SPEAR.get(), BlazingSpearRenderer::new);
         EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
         EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
+        //
         BlockEntityRenderers.register(BHBlockEntity.BASE_SPAWNER.get(), BaseSpawnerRenderer::new);
         BlockEntityRenderers.register(BHBlockEntity.GATE.get(), GateDoorRenderer::new);
-        BlockEntityRenderers.register(BHBlockEntity.CHAIN_PULLEY.get(), ChainPulleyRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);

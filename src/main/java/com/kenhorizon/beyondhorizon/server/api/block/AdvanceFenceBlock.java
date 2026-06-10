@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.block.fence;
+package com.kenhorizon.beyondhorizon.server.api.block;
 
 import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import net.minecraft.core.BlockPos;

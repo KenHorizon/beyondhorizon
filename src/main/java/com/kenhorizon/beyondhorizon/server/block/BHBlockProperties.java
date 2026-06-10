@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.block;
 
-import com.kenhorizon.beyondhorizon.server.block.fence.AdvanceFenceBlock;
+import com.kenhorizon.beyondhorizon.server.api.block.AdvanceFenceBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.block.wire.WireLaneMode;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;

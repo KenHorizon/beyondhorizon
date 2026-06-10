@@ -288,29 +288,29 @@ public class BHItems {
                 .register();
     }
 
-    public static RegistryObject<Item> basicItem(String name, RegistryTabs.Category category) {
+    private static RegistryObject<Item> basicItem(String name, RegistryTabs.Category category) {
         return RegistryItems.register(name, BasicItem::new).tab(category).model(ItemModels.GENERATED).register();
     }
 
-    public static RegistryObject<Item> woolFurItem(String name, RegistryTabs.Category category) {
+    private static RegistryObject<Item> woolFurItem(String name, RegistryTabs.Category category) {
         return RegistryItems.register(name, BasicItem::new).tab(category).tag(BHItemTags.WOOL_FUR).model(ItemModels.GENERATED).register();
     }
 
-    public static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> factory) {
+    private static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> factory) {
         return swordItem(name, materials, factory, ItemModels.HANDHELD);
     }
 
-    public static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> factory) {
+    private static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> factory) {
         return toolItem(name, materials, factory, ItemModels.HANDHELD);
     }
 
-    public static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> builder, ItemModels itemModels) {
+    private static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> builder, ItemModels itemModels) {
         return RegistryItems.register(name, properties -> builder.create(materials, properties)).tab(RegistryTabs.Category.COMBAT).model(itemModels).register();
     }
-    public static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> builder, ItemModels itemModels) {
+    private static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> builder, ItemModels itemModels) {
         return RegistryItems.register(name, properties -> builder.create(materials, properties)).tab(RegistryTabs.Category.TOOLS).model(itemModels).register();
     }
-    public static RegistryObject<Item> armorItem(String name, ArmorItem.Type type, ArmorBaseMaterials armorMaterial) {
+    private static RegistryObject<Item> armorItem(String name, ArmorItem.Type type, ArmorBaseMaterials armorMaterial) {
         return RegistryItems.register(name, properties -> new ArmorBaseItem(armorMaterial, type, properties)).tab(RegistryTabs.Category.COMBAT).model(ItemModels.GENERATED).register();
     }
 

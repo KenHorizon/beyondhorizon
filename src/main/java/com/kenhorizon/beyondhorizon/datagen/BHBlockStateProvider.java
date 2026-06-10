@@ -83,8 +83,5 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.latticeBlock(BHBlocks.TATTERED_IRON_LATTICE, "minecraft:block/iron_block", "iron_lattice_post", "tattered_iron_lattice");
 
 
-        this.redstoneLaneWithItem((WiredBlock) BHBlocks.WIRED_LANE_I.get());
-        this.redstoneLaneWithItem((WiredBlock) BHBlocks.WIRED_LANE_L.get());
-        this.redstoneLaneWithItem((WiredBlock) BHBlocks.WIRED_LANE_T.get());
     }
 }

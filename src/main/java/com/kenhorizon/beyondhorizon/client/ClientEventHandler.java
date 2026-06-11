@@ -10,6 +10,7 @@ import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotSc
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.api.event.DamageTiltEvent;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
@@ -43,6 +44,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class ClientEventHandler {
+
     @SubscribeEvent
     public void onDebugInformation(CustomizeGuiOverlayEvent.DebugText event) {
         GuiGraphics guiGraphics = event.getGuiGraphics();
@@ -50,7 +52,6 @@ public class ClientEventHandler {
         var leftInfo = event.getLeft();
         var rightInfo = event.getRight();
         if (BHConfigs.REDUCE_DEBUG && minecraft.options.renderDebug) {
-            rightInfo.clear();
             leftInfo.clear();
             renderNewDebug(guiGraphics);
         }
@@ -90,7 +91,7 @@ public class ClientEventHandler {
         for (String msg : list) {
             if (msg != null && !msg.isEmpty())
             {
-                guiGraphics.fill(1, top - 1, 2 + font.width(msg) + 1, top + font.lineHeight - 1, -1873784752);
+//                guiGraphics.fill(1, top - 1, 2 + font.width(msg) + 1, top + font.lineHeight - 1, -1873784752);
                 guiGraphics.drawString(font, msg, 2, top, 14737632, false);
             }
             top += font.lineHeight;

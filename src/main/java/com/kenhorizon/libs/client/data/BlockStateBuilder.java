@@ -5,6 +5,8 @@ import com.kenhorizon.beyondhorizon.datagen.BHBlockStateProvider;
 import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import com.kenhorizon.beyondhorizon.server.api.block.AdvanceFenceBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
+import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
+import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneMode;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -222,6 +224,7 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         axisBlock((RotatedPillarBlock) block.get(), extend(baseName, "_side"), extend(baseName, "_end"));
         axisBlockWithItem(block, extend(baseName, "_side"), extend(baseName, "_end"));
     }
+
     protected void standWallBasinBlocks(RegistryObject<Block> block) {
         ResourceLocation base = BeyondHorizon.resource("block/basin_base");
         ResourceLocation flame = BeyondHorizon.resource("block/basin_fire");
@@ -523,6 +526,108 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
                 .part().modelFile(middleSide).rotationY(270).addModel().condition(AdvanceFenceBlock.WEST_FENCE, AdvanceFenceBlock.FenceSide.MIDDLE).end()
                 .part().modelFile(bottomSide).rotationY(270).addModel().condition(AdvanceFenceBlock.WEST_FENCE, AdvanceFenceBlock.FenceSide.BOTTOM).end();
 
+    }
+
+    protected void poweredBlocks(RegistryObject<Block> block) {
+        ResourceLocation textures = BeyondHorizon.resource("block/" + name(block.get()));
+        ResourceLocation textureActive = extend(textures, "_active");
+        ModelFile base = models().cube(name(block.get()), textures, textures, textures, textures, textures, textures).texture("particle", textures);
+        ModelFile active = models().cube(name(block.get()) + "_active", textureActive, textureActive, textureActive, textureActive, textureActive, textureActive).texture("particle", textureActive).renderType("cutout_mipped");
+        poweredBlockState(block, base, active);
+        simpleBlockItem(block.get(), base);
+    }
+
+    private void poweredBlockState(RegistryObject<Block> block, ModelFile base, ModelFile active) {
+        getVariantBuilder(block.get()).forAllStatesExcept(blockState -> {
+            boolean powerLevel = blockState.getValue(BlockStateProperties.POWERED);
+            return ConfiguredModel.builder().modelFile(powerLevel ? active : base).build();
+        });
+    }
+    protected void redstoneTransmitter(RegistryObject<Block> block) {
+        ResourceLocation base_line = BeyondHorizon.resource("block/" + name(block.get()));
+        ResourceLocation n = extend(base_line, "_south");
+        ResourceLocation s = extend(base_line, "_north");
+        ResourceLocation side = extend(base_line, "_side");
+        ResourceLocation top = extend(base_line, "_top");
+        ResourceLocation nA = extend(base_line, "_south_active");
+        ResourceLocation sA = extend(base_line, "_north_active");
+        ResourceLocation sideA = extend(base_line, "_side_active");
+        ModelFile base = models().cube(name(block.get()),
+                top, top, n, s, side, side)
+                .texture("particle", top);
+        ModelFile active = models().cube(name(block.get()),
+                        top, top, nA, sA, sideA, sideA)
+                .texture("particle", top);
+        axisLitBlockState(block, base, active);
+        simpleBlockItem(block.get(), base);
+    }
+    protected void axisLitBlockState(RegistryObject<Block> block, ModelFile base, ModelFile active) {
+        getVariantBuilder(block.get()).forAllStates(blockState -> {
+            int yRot = ((int) blockState.getValue(BlockStateProperties.FACING).toYRot() + 180) % 360;
+            boolean isActive = blockState.getValue(BlockStateProperties.LIT);
+            return ConfiguredModel.builder().modelFile(isActive ? active : base).rotationY(yRot).uvLock(true).build();
+        });
+    }
+
+    protected void litBlocks(RegistryObject<Block> block) {
+        ResourceLocation textures = BeyondHorizon.resource("block/" + name(block.get()));
+        ResourceLocation textureActive = extend(textures, "_active");
+        ModelFile base = models().cube(name(block.get()), textures, textures, textures, textures, textures, textures).texture("particle", textures);
+        ModelFile active = models().cube(name(block.get()) + "_active", textureActive, textureActive, textureActive, textureActive, textureActive, textureActive).texture("particle", textureActive).renderType("cutout_mipped");
+        litBlockState(block, base, active);
+        simpleBlockItem(block.get(), base);
+    }
+
+    private void litBlockState(RegistryObject<Block> block, ModelFile base, ModelFile active) {
+        getVariantBuilder(block.get()).forAllStatesExcept(blockState -> {
+            boolean powerLevel = blockState.getValue(BlockStateProperties.LIT);
+            return ConfiguredModel.builder().modelFile(powerLevel ? active : base).build();
+        });
+    }
+
+    protected void redstoneLaneWithItem(RedstoneLaneBlock block) {
+        ResourceLocation base_lane = BeyondHorizon.resource("block/redstone_lane");
+        ResourceLocation side = extend(base_lane, "_side");
+        ResourceLocation front = extend(base_lane, "_front");
+        ResourceLocation front_powered = extend(base_lane, "_front_powered");
+        ResourceLocation bottom = extend(base_lane, "_bottom");
+        ResourceLocation top = extend(blockTexture(block), "_top_unpowered");
+        ResourceLocation top_powered = extend(blockTexture(block), "_top_powered");
+
+        ModelFile unpowered = models().cube(name(block) + "_unpowered", bottom, top, front, front, side, side).texture("particle", top);
+        ModelFile powered = models().cube(name(block) + "_powered", bottom, top_powered, front_powered, front_powered, side, side).texture("particle", top_powered);
+         if (name(block).equals("redstone_lane_l")) {
+            unpowered = models().cube(name(block) + "_unpowered", bottom, top, side, front, front, side).texture("particle", top);
+            powered = models().cube(name(block) + "_powered", bottom, top_powered, side, front_powered, front_powered, side).texture("particle", top_powered);
+        } else if (name(block).equals("redstone_lane_t")) {
+            unpowered = models().cube(name(block) + "_unpowered", bottom, top, side, front, front, front).texture("particle", top);
+            powered = models().cube(name(block) + "_powered", bottom, top_powered, side, front_powered, front_powered, front_powered).texture("particle", top_powered);
+        }
+
+        if (name(block).equals("redstone_lane_i")) {
+            getVariantBuilder(block)
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.NORTH).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.UNPOWERED).modelForState().modelFile(unpowered).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.EAST).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.UNPOWERED).modelForState().modelFile(unpowered).rotationY(90).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.SOUTH).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.UNPOWERED).modelForState().modelFile(unpowered).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.WEST).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.UNPOWERED).modelForState().modelFile(unpowered).rotationY(90).addModel()
+
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.NORTH).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.POWERED).modelForState().modelFile(powered).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.EAST).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.POWERED).modelForState().modelFile(powered).rotationY(90).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.SOUTH).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.POWERED).modelForState().modelFile(powered).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.WEST).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.POWERED).modelForState().modelFile(powered).rotationY(90).addModel();
+            } else {
+            getVariantBuilder(block)
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.NORTH).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.UNPOWERED).modelForState().modelFile(unpowered).rotationY(180).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.EAST).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.UNPOWERED).modelForState().modelFile(unpowered).rotationY(270).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.SOUTH).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.UNPOWERED).modelForState().modelFile(unpowered).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.WEST).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.UNPOWERED).modelForState().modelFile(unpowered).rotationY(90).addModel()
+
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.NORTH).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.POWERED).modelForState().modelFile(powered).rotationY(180).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.EAST).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.POWERED).modelForState().modelFile(powered).rotationY(270).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.SOUTH).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.POWERED).modelForState().modelFile(powered).addModel()
+                    .partialState().with(RedstoneLaneBlock.FACING, Direction.WEST).with(RedstoneLaneBlock.REDSTONE_LANE_MODE, RedstoneLaneMode.POWERED).modelForState().modelFile(powered).rotationY(90).addModel();
+        }
+        simpleBlockItem(block, models().getExistingFile(extend(blockTexture(block), "_unpowered")));
     }
     private boolean isEmpty(String string) {
         return string.isBlank() || string.isEmpty();

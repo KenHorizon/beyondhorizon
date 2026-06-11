@@ -1,0 +1,32 @@
+{
+  "variants": {
+    "facing=east,redstone_lane_mode=powered": {
+      "model": "beyondhorizon:block/redstone_lane_i_powered",
+      "y": 90
+    },
+    "facing=east,redstone_lane_mode=unpowered": {
+      "model": "beyondhorizon:block/redstone_lane_i_unpowered",
+      "y": 90
+    },
+    "facing=north,redstone_lane_mode=powered": {
+      "model": "beyondhorizon:block/redstone_lane_i_powered"
+    },
+    "facing=north,redstone_lane_mode=unpowered": {
+      "model": "beyondhorizon:block/redstone_lane_i_unpowered"
+    },
+    "facing=south,redstone_lane_mode=powered": {
+      "model": "beyondhorizon:block/redstone_lane_i_powered"
+    },
+    "facing=south,redstone_lane_mode=unpowered": {
+      "model": "beyondhorizon:block/redstone_lane_i_unpowered"
+    },
+    "facing=west,redstone_lane_mode=powered": {
+      "model": "beyondhorizon:block/redstone_lane_i_powered",
+      "y": 90
+    },
+    "facing=west,redstone_lane_mode=unpowered": {
+      "model": "beyondhorizon:block/redstone_lane_i_unpowered",
+      "y": 90
+    }
+  }
+}

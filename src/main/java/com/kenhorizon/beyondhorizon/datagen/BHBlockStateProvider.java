@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.block.wire.WiredBlock;
+import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.libs.client.data.BlockStateBuilder;
 import net.minecraft.data.PackOutput;
@@ -82,6 +82,11 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.latticeBlock(BHBlocks.IRON_LATTICE, "minecraft:block/iron_block", "iron_lattice_post", "iron_lattice");
         this.latticeBlock(BHBlocks.TATTERED_IRON_LATTICE, "minecraft:block/iron_block", "iron_lattice_post", "tattered_iron_lattice");
 
+        this.redstoneLaneWithItem((RedstoneLaneBlock) BHBlocks.REDSTONE_LANE_I.get());
+        this.redstoneLaneWithItem((RedstoneLaneBlock) BHBlocks.REDSTONE_LANE_L.get());
+        this.redstoneLaneWithItem((RedstoneLaneBlock) BHBlocks.REDSTONE_LANE_T.get());
+
+        this.redstoneTransmitter(BHBlocks.REDSTONE_LANE_TRANSMITTER);
 
     }
 }

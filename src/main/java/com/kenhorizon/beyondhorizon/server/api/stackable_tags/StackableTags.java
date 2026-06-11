@@ -118,9 +118,6 @@ public class StackableTags {
                 if (entity.moveDist > entity.nextStep) {
                     this.add(1);
                 }
-                if (Utils.isAltPressed()) {
-                    BeyondHorizon.LOGGER.debug("{}", steps);
-                }
                 if (steps % 0.24F == 0) {
                     this.add(1);
                 }

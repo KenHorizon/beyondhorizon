@@ -184,9 +184,8 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
         this.setConsumedItem(ItemStack.of(tag.getCompound("item")));
         this.setBaseBlock(NbtUtils.readBlockState(this.blockHolderGetter(), tag.getCompound("blockstate")));
 
-        BeyondHorizon.LOGGER.debug("[Gate Block] Prev {} | Current {} [Item: {}]",prevBaseBlock, this.getBaseBlock(), this.getConsumedItem());
+//        BeyondHorizon.LOGGER.debug("[Gate Block] Prev {} | Current {} [Item: {}]",prevBaseBlock, this.getBaseBlock(), this.getConsumedItem());
         if (prevBaseBlock != this.getBaseBlock()) {
-            BeyondHorizon.LOGGER.debug("Redrawingg");
             this.redraw();
         }
     }

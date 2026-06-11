@@ -1,15 +1,15 @@
-package com.kenhorizon.beyondhorizon.server.block.wire;
+package com.kenhorizon.beyondhorizon.server.block.redstone_lane;
 
 import net.minecraft.util.StringRepresentable;
 
-public enum WireLaneMode implements StringRepresentable {
+public enum RedstoneLaneMode implements StringRepresentable {
 
     UNPOWERED("unpowered"),
     POWERED("powered");
 
     private final String name;
 
-    private WireLaneMode(String string) { this.name = string; }
+    private RedstoneLaneMode(String string) { this.name = string; }
 
     public String toString() { return this.name; }
 

@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "beyondhorizon:block/redstone_lane_bottom",
+    "east": "beyondhorizon:block/redstone_lane_front_powered",
+    "north": "beyondhorizon:block/redstone_lane_side",
+    "particle": "beyondhorizon:block/redstone_lane_t_top_powered",
+    "south": "beyondhorizon:block/redstone_lane_front_powered",
+    "up": "beyondhorizon:block/redstone_lane_t_top_powered",
+    "west": "beyondhorizon:block/redstone_lane_front_powered"
+  }
+}

@@ -1,5 +1,9 @@
 {
   "values": [
+    "beyondhorizon:redstone_lane_i",
+    "beyondhorizon:redstone_lane_l",
+    "beyondhorizon:redstone_lane_t",
+    "beyondhorizon:redstone_lane_transmitter",
     "beyondhorizon:gate",
     "beyondhorizon:base_spawner",
     "beyondhorizon:dungeon_bricks",

@@ -16,6 +16,7 @@
     "common.accessor.AttributeRangeAccessor"
   ],
   "client": [
+    "client.GameRendererMixins",
     "client.accessor.FontAccessor"
   ]
 }

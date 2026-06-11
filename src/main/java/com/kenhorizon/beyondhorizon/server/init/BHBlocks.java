@@ -5,7 +5,9 @@ import com.kenhorizon.beyondhorizon.server.block.WorkbenchBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.FireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.WallFireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.fence.LatticeFenceBlock;
+import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneTransmitterBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
+import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.core.BlockPos;
@@ -25,6 +27,34 @@ public class BHBlocks {
     public static final BlockBehaviour.Properties NETHER_BRICKS = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.0F, 6.0F).sound(SoundType.NETHER_BRICKS);
     public static final BlockBehaviour.Properties SPAWNER_PROPERTIES = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).lightLevel(value -> value.getValue(BaseSpawnerBlock.SPAWNER_STATE).lightLevel()).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(50.0F).sound(BHSoundType.SPAWNER).noOcclusion().isViewBlocking(BHBlocks::never);
     public static final BlockBehaviour.Properties WIRED_LANE = BlockBehaviour.Properties.of().mapColor(MapColor.FIRE).strength(1.5F, 6.0F).sound(SoundType.METAL).lightLevel(l -> { return 4; }).requiresCorrectToolForDrops().pushReaction(PushReaction.PUSH_ONLY);
+
+    public static final RegistryObject<Block> REDSTONE_LANE_I = RegistryBlocks
+            .register("redstone_lane_i", properties -> new RedstoneLaneBlock(WIRED_LANE))
+            .itemName("Redstone Lane [Straight]")
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+    public static final RegistryObject<Block> REDSTONE_LANE_L = RegistryBlocks
+            .register("redstone_lane_l", properties -> new RedstoneLaneBlock(WIRED_LANE))
+            .itemName("Redstone Lane [Side]")
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+    public static final RegistryObject<Block> REDSTONE_LANE_T = RegistryBlocks
+            .register("redstone_lane_t", properties -> new RedstoneLaneBlock(WIRED_LANE))
+            .itemName("Redstone Lane [Section]")
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+    public static final RegistryObject<Block> REDSTONE_LANE_TRANSMITTER = RegistryBlocks
+            .register("redstone_lane_transmitter", properties -> new RedstoneLaneTransmitterBlock(WIRED_LANE))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
 
     public static final RegistryObject<Block> GATE = RegistryBlocks
             .register("gate", properties -> new GateBlocks(BlockBehaviour.Properties.copy(Blocks.IRON_BARS)))

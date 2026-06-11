@@ -30,6 +30,8 @@ import java.util.List;
 // I created one but its buggy and need to optimize, for time being ill use this for now.
 // https://github.com/hexnowloading/DungeonNowLoading/blob/2.11-1.20.1/common/src/main/java/dev/hexnowloading/dungeonnowloading/block/RedstoneLaneBlock.java
 
+// TODO: Make directional path allow redstone travel above and down, and build into single block that change side (Pipe block)
+// TODO: Optmized and clean some codes + Make a better textures (Copper might be best to do it)
 public class RedstoneLaneBlock extends DirectionalBlock {
 
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;

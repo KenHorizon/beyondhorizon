@@ -1,0 +1,33 @@
+{
+  "name": "beyondhorizon:relic_arena/grand_hall",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:relic_arena/grand_hall_left",
+        "processors": "beyondhorizon:relic_arena_generic_degradation"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:relic_arena/grand_hall_right",
+        "processors": "beyondhorizon:relic_arena_generic_degradation"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:relic_arena/grand_hall_end",
+        "processors": "beyondhorizon:relic_arena_generic_degradation"
+      }
+    }
+  ]
+}

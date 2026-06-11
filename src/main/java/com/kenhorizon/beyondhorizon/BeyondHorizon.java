@@ -82,6 +82,7 @@ public class BeyondHorizon
         BHEntity.register(eventBus);
         BHEffects.register(eventBus);
         BHRecipe.register(eventBus);
+        BHStructureTypes.register(eventBus);
         Skills.register(eventBus);
         Accessories.register(eventBus);
         PROXY.serverHandler();

@@ -6,7 +6,7 @@
       "y": 90
     },
     "facing=down,lit=true": {
-      "model": "beyondhorizon:block/redstone_lane_transmitter",
+      "model": "beyondhorizon:block/redstone_lane_transmitter_active",
       "uvlock": true,
       "y": 90
     },
@@ -16,7 +16,7 @@
       "y": 90
     },
     "facing=east,lit=true": {
-      "model": "beyondhorizon:block/redstone_lane_transmitter",
+      "model": "beyondhorizon:block/redstone_lane_transmitter_active",
       "uvlock": true,
       "y": 90
     },
@@ -25,7 +25,7 @@
       "uvlock": true
     },
     "facing=north,lit=true": {
-      "model": "beyondhorizon:block/redstone_lane_transmitter",
+      "model": "beyondhorizon:block/redstone_lane_transmitter_active",
       "uvlock": true
     },
     "facing=south,lit=false": {
@@ -34,7 +34,7 @@
       "y": 180
     },
     "facing=south,lit=true": {
-      "model": "beyondhorizon:block/redstone_lane_transmitter",
+      "model": "beyondhorizon:block/redstone_lane_transmitter_active",
       "uvlock": true,
       "y": 180
     },
@@ -44,7 +44,7 @@
       "y": 90
     },
     "facing=up,lit=true": {
-      "model": "beyondhorizon:block/redstone_lane_transmitter",
+      "model": "beyondhorizon:block/redstone_lane_transmitter_active",
       "uvlock": true,
       "y": 90
     },
@@ -54,7 +54,7 @@
       "y": 270
     },
     "facing=west,lit=true": {
-      "model": "beyondhorizon:block/redstone_lane_transmitter",
+      "model": "beyondhorizon:block/redstone_lane_transmitter_active",
       "uvlock": true,
       "y": 270
     }

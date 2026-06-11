@@ -1,0 +1,33 @@
+{
+  "name": "beyondhorizon:relic_arena/arena_platform_back",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:relic_arena/platform_right_back",
+        "processors": "beyondhorizon:relic_arena_generic_degradation"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:relic_arena/platform_left_back",
+        "processors": "beyondhorizon:relic_arena_generic_degradation"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:relic_arena/platform_middle_2",
+        "processors": "beyondhorizon:relic_arena_generic_degradation"
+      }
+    }
+  ]
+}

@@ -555,7 +555,7 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         ModelFile base = models().cube(name(block.get()),
                 top, top, n, s, side, side)
                 .texture("particle", top);
-        ModelFile active = models().cube(name(block.get()),
+        ModelFile active = models().cube(name(block.get()) + "_active",
                         top, top, nA, sA, sideA, sideA)
                 .texture("particle", top);
         axisLitBlockState(block, base, active);

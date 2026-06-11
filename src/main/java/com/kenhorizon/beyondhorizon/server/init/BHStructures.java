@@ -7,7 +7,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 
 public interface BHStructures {
 
-    ResourceKey<Structure> SANCTUARY = createKey("sanctuary");
+    ResourceKey<Structure> RELIC_ARENA = createKey("relic_arena");
 
     private static ResourceKey<Structure> createKey(String name) {
         return ResourceKey.create(Registries.STRUCTURE, BeyondHorizon.resource(name));

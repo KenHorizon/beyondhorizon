@@ -2,11 +2,11 @@
   "parent": "minecraft:block/cube",
   "textures": {
     "down": "beyondhorizon:block/redstone_lane_transmitter_top",
-    "east": "beyondhorizon:block/redstone_lane_transmitter_side_active",
-    "north": "beyondhorizon:block/redstone_lane_transmitter_south_active",
+    "east": "beyondhorizon:block/redstone_lane_transmitter_side",
+    "north": "beyondhorizon:block/redstone_lane_transmitter_south",
     "particle": "beyondhorizon:block/redstone_lane_transmitter_top",
-    "south": "beyondhorizon:block/redstone_lane_transmitter_north_active",
+    "south": "beyondhorizon:block/redstone_lane_transmitter_north",
     "up": "beyondhorizon:block/redstone_lane_transmitter_top",
-    "west": "beyondhorizon:block/redstone_lane_transmitter_side_active"
+    "west": "beyondhorizon:block/redstone_lane_transmitter_side"
   }
 }

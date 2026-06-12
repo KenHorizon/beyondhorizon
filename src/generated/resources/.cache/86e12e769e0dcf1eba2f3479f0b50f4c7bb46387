@@ -1,4 +1,4 @@
-// 1.20.1	2026-06-12T14:24:59.6339894	Block States: beyondhorizon
+// 1.20.1	2026-06-12T18:12:39.0217251	Block States: beyondhorizon
 69cd3a590aae9e8d13c1251b7794626b52b7994f assets/beyondhorizon/blockstates/base_spawner.json
 651f0ad742b8d8006e0bd59b3de4daa3b7d162c9 assets/beyondhorizon/blockstates/black_nether_bricks.json
 cb0934304cb3bb262c7ad8f53b2bb6104fc798b2 assets/beyondhorizon/blockstates/black_nether_brick_slab.json
@@ -57,7 +57,7 @@ e0ec7affcac6ffffce7b0b7c423944c11ae3d311 assets/beyondhorizon/blockstates/radian
 4ac65c5cc5e063ba33265b09adcccdbd42be0452 assets/beyondhorizon/blockstates/redstone_lane_l.json
 5b1b1ca05083693adbab3443582981311d633239 assets/beyondhorizon/blockstates/redstone_lane_t.json
 3f035ce79907eb12483774d6d320b00892e9198b assets/beyondhorizon/blockstates/redstone_lane_transmitter.json
-c6b996ac096706f6d08070ffba36f66df1fdfc97 assets/beyondhorizon/blockstates/redstone_wired.json
+4cbbd6024390c672355e3a99e8b2a3089bafbdef assets/beyondhorizon/blockstates/redstone_wired.json
 8312a62c3057a62fdb04f6e6bac722ad04268299 assets/beyondhorizon/blockstates/siltstone.json
 7e754e59c3ec7a691f3b2528cfafc00c5ec60de8 assets/beyondhorizon/blockstates/siltstone_bricks.json
 c6d41def11e27c649aedfb18a9ec465f89951c3a assets/beyondhorizon/blockstates/siltstone_brick_slab.json
@@ -174,6 +174,7 @@ fc4bd5abe864b818bae77ce05c33bd4a5cc321c4 assets/beyondhorizon/models/block/redst
 1d8868575336a6e6e4ae2e3c2e174bd33502d351 assets/beyondhorizon/models/block/redstone_lane_t_unpowered.json
 94d298cc0d437d611d1c6587452dc20263aacc36 assets/beyondhorizon/models/block/redstone_wired.json
 f3c0d7931d1a7b6e3dbd1ab8bacf7718572a386a assets/beyondhorizon/models/block/redstone_wired_full.json
+00a8bc7666dffd6a8b59b3ce9dcda3177e326caf assets/beyondhorizon/models/block/redstone_wired_section.json
 3dea8370f25d6683a9c8a71aecd4fab8580c2ddd assets/beyondhorizon/models/block/redstone_wired_side.json
 a9a86f223e92b38981e909ec44476b1c1d13b1b1 assets/beyondhorizon/models/block/siltstone.json
 9da6924b3b42460beecb69a2355e5400abec9513 assets/beyondhorizon/models/block/siltstone_bricks.json

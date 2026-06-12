@@ -1,57 +1,204 @@
 {
   "variants": {
-    "east=false,north=false,south=false,west=false": {
+    "down=false,east=false,north=false,south=false,up=false,west=false": {
       "model": "beyondhorizon:block/redstone_wired_full"
     },
-    "east=false,north=false,south=false,west=true": {
+    "down=false,east=false,north=false,south=false,up=false,west=true": {
       "model": "beyondhorizon:block/redstone_wired",
       "y": 90
     },
-    "east=false,north=false,south=true,west=false": {
+    "down=false,east=false,north=false,south=false,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=false,north=false,south=false,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=false,north=false,south=true,up=false,west=false": {
       "model": "beyondhorizon:block/redstone_wired"
     },
-    "east=false,north=false,south=true,west=true": {
+    "down=false,east=false,north=false,south=true,up=false,west=true": {
       "model": "beyondhorizon:block/redstone_wired_side",
       "y": 90
     },
-    "east=false,north=true,south=false,west=false": {
+    "down=false,east=false,north=false,south=true,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=false,north=false,south=true,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=false,north=true,south=false,up=false,west=false": {
       "model": "beyondhorizon:block/redstone_wired"
     },
-    "east=false,north=true,south=false,west=true": {
+    "down=false,east=false,north=true,south=false,up=false,west=true": {
       "model": "beyondhorizon:block/redstone_wired_side",
       "y": 180
     },
-    "east=false,north=true,south=true,west=false": {
+    "down=false,east=false,north=true,south=false,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=false,north=true,south=false,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=false,north=true,south=true,up=false,west=false": {
       "model": "beyondhorizon:block/redstone_wired"
     },
-    "east=false,north=true,south=true,west=true": {
+    "down=false,east=false,north=true,south=true,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_section",
+      "y": 90
+    },
+    "down=false,east=false,north=true,south=true,up=true,west=false": {
       "model": "beyondhorizon:block/redstone_wired_full"
     },
-    "east=true,north=false,south=false,west=false": {
+    "down=false,east=false,north=true,south=true,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=true,north=false,south=false,up=false,west=false": {
       "model": "beyondhorizon:block/redstone_wired",
       "y": 90
     },
-    "east=true,north=false,south=false,west=true": {
+    "down=false,east=true,north=false,south=false,up=false,west=true": {
       "model": "beyondhorizon:block/redstone_wired",
       "y": 90
     },
-    "east=true,north=false,south=true,west=false": {
+    "down=false,east=true,north=false,south=false,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=true,north=false,south=false,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=true,north=false,south=true,up=false,west=false": {
       "model": "beyondhorizon:block/redstone_wired_side"
     },
-    "east=true,north=false,south=true,west=true": {
+    "down=false,east=true,north=false,south=true,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_section"
+    },
+    "down=false,east=true,north=false,south=true,up=true,west=false": {
       "model": "beyondhorizon:block/redstone_wired_full"
     },
-    "east=true,north=true,south=false,west=false": {
+    "down=false,east=true,north=false,south=true,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=true,north=true,south=false,up=false,west=false": {
       "model": "beyondhorizon:block/redstone_wired_side",
       "y": 270
     },
-    "east=true,north=true,south=false,west=true": {
+    "down=false,east=true,north=true,south=false,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_section",
+      "y": 180
+    },
+    "down=false,east=true,north=true,south=false,up=true,west=false": {
       "model": "beyondhorizon:block/redstone_wired_full"
     },
-    "east=true,north=true,south=true,west=false": {
+    "down=false,east=true,north=true,south=false,up=true,west=true": {
       "model": "beyondhorizon:block/redstone_wired_full"
     },
-    "east=true,north=true,south=true,west=true": {
+    "down=false,east=true,north=true,south=true,up=false,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_section",
+      "y": 270
+    },
+    "down=false,east=true,north=true,south=true,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=true,north=true,south=true,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=false,east=true,north=true,south=true,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=false,south=false,up=false,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=false,south=false,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=false,south=false,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=false,south=false,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=false,south=true,up=false,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=false,south=true,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=false,south=true,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=false,south=true,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=true,south=false,up=false,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=true,south=false,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=true,south=false,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=true,south=false,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=true,south=true,up=false,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=true,south=true,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=true,south=true,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=false,north=true,south=true,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=false,south=false,up=false,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=false,south=false,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=false,south=false,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=false,south=false,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=false,south=true,up=false,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=false,south=true,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=false,south=true,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=false,south=true,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=true,south=false,up=false,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=true,south=false,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=true,south=false,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=true,south=false,up=true,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=true,south=true,up=false,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=true,south=true,up=false,west=true": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=true,south=true,up=true,west=false": {
+      "model": "beyondhorizon:block/redstone_wired_full"
+    },
+    "down=true,east=true,north=true,south=true,up=true,west=true": {
       "model": "beyondhorizon:block/redstone_wired_full"
     }
   }

@@ -8,8 +8,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 public class BHBlockProperties {
-    public static final BooleanProperty CHAINED = BooleanProperty.create("chained");
-
     public static final EnumProperty<SpawnerState> SPAWNER_STATE = EnumProperty.create("base_spawner_state", SpawnerState.class);
     public static final EnumProperty<RedstoneLaneMode> REDSTONE_LANE_MODE = EnumProperty.create("redstone_lane_mode", RedstoneLaneMode.class);
     public static final IntegerProperty REDSTONE_LANE_POWER = IntegerProperty.create("redstone_lane_power", 0, 150);

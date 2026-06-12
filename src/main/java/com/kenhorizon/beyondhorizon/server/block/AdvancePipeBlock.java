@@ -4,14 +4,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.material.FluidState;
 import org.jetbrains.annotations.Nullable;
 
 public class AdvancePipeBlock extends Block {
+    public static final BooleanProperty UP = BlockStateProperties.UP;
+    public static final BooleanProperty DOWN = BlockStateProperties.DOWN;
     public static final BooleanProperty NORTH = BlockStateProperties.NORTH;
     public static final BooleanProperty EAST = BlockStateProperties.EAST;
     public static final BooleanProperty SOUTH = BlockStateProperties.SOUTH;
@@ -24,53 +29,49 @@ public class AdvancePipeBlock extends Block {
     public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
         BlockGetter blockgetter = context.getLevel();
         BlockPos clickedPos = context.getClickedPos();
+        FluidState fluidState = context.getLevel().getFluidState(context.getClickedPos());
         BlockPos n = clickedPos.north();
         BlockPos s = clickedPos.south();
         BlockPos e = clickedPos.east();
         BlockPos w = clickedPos.west();
+        BlockPos u = clickedPos.above();
+        BlockPos d = clickedPos.below();
         BlockState nState = blockgetter.getBlockState(n);
-        BlockState SState = blockgetter.getBlockState(s);
+        BlockState sState = blockgetter.getBlockState(s);
         BlockState eState = blockgetter.getBlockState(e);
         BlockState wState = blockgetter.getBlockState(w);
-        return super.getStateForPlacement(context)
-                .setValue(NORTH, this.connectsTo(nState, nState.isFaceSturdy(blockgetter, n, Direction.SOUTH)))
-                .setValue(SOUTH, this.connectsTo(nState, SState.isFaceSturdy(blockgetter, s, Direction.NORTH)))
-                .setValue(EAST, this.connectsTo(nState, eState.isFaceSturdy(blockgetter, e, Direction.WEST)))
-                .setValue(WEST, this.connectsTo(nState, wState.isFaceSturdy(blockgetter, w, Direction.EAST)));
-    }
-
-    public boolean connectsTo(BlockState blockState, boolean solid) {
-        boolean flag = this.matchedBlocks(blockState);
-        return !isExceptionForConnection(blockState) && solid || flag;
-    }
-
-    private boolean matchedBlocks(BlockState blockState) {
-        return blockState.is(this);
+        BlockState uState = blockgetter.getBlockState(u);
+        BlockState dState = blockgetter.getBlockState(d);
+        BlockState newState = this.defaultBlockState()
+                .setValue(NORTH, nState.is(this))
+                .setValue(SOUTH, sState.is(this))
+                .setValue(EAST, eState.is(this))
+                .setValue(WEST, wState.is(this))
+                .setValue(UP, uState.is(this))
+                .setValue(DOWN, dState.is(this));
+        return newState;
     }
 
     @Override
-    public BlockState rotate(BlockState blockState, Rotation rotation) {
-        switch (rotation) {
-            case CLOCKWISE_180:
-                return blockState.setValue(NORTH, blockState.getValue(SOUTH)).setValue(EAST, blockState.getValue(WEST)).setValue(SOUTH, blockState.getValue(NORTH)).setValue(WEST, blockState.getValue(EAST));
-            case COUNTERCLOCKWISE_90:
-                return blockState.setValue(NORTH, blockState.getValue(EAST)).setValue(EAST, blockState.getValue(SOUTH)).setValue(SOUTH, blockState.getValue(WEST)).setValue(WEST, blockState.getValue(NORTH));
-            case CLOCKWISE_90:
-                return blockState.setValue(NORTH, blockState.getValue(WEST)).setValue(EAST, blockState.getValue(NORTH)).setValue(SOUTH, blockState.getValue(EAST)).setValue(WEST, blockState.getValue(SOUTH));
-            default:
-                return blockState;
-        }
-    }
-
-    @Override
-    public BlockState mirror(BlockState blockState, Mirror mirror) {
-        switch (mirror) {
-            case LEFT_RIGHT:
-                return blockState.setValue(NORTH, blockState.getValue(SOUTH)).setValue(SOUTH, blockState.getValue(NORTH));
-            case FRONT_BACK:
-                return blockState.setValue(EAST, blockState.getValue(WEST)).setValue(WEST, blockState.getValue(EAST));
-            default:
-                return super.mirror(blockState, mirror);
-        }
+    public BlockState updateShape(BlockState blockState, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos blockpos, BlockPos neighborBlockPos) {
+        BlockPos n = blockpos.north();
+        BlockPos e = blockpos.east();
+        BlockPos s = blockpos.south();
+        BlockPos w = blockpos.west();
+        BlockPos u = blockpos.above();
+        BlockPos d = blockpos.below();
+        BlockState nState = level.getBlockState(n);
+        BlockState eState = level.getBlockState(e);
+        BlockState sState = level.getBlockState(s);
+        BlockState wtState = level.getBlockState(w);
+        BlockState uState = level.getBlockState(u);
+        BlockState dState = level.getBlockState(d);
+        return blockState.setValue(NORTH, nState.is(this))
+                .setValue(NORTH, nState.is(this))
+                .setValue(EAST, eState.is(this))
+                .setValue(SOUTH, sState.is(this))
+                .setValue(WEST, wtState.is(this))
+                .setValue(UP, uState.is(this))
+                .setValue(DOWN, dState.is(this));
     }
 }

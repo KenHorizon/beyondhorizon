@@ -25,7 +25,16 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "projection": "rigid",
-        "location": "beyondhorizon:relic_arena/grand_hall_end",
+        "location": "beyondhorizon:relic_arena/grand_hall_right_end",
+        "processors": "beyondhorizon:relic_arena_generic_degradation"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:relic_arena/grand_hall_left_end",
         "processors": "beyondhorizon:relic_arena_generic_degradation"
       }
     }

@@ -2,11 +2,14 @@ package com.kenhorizon.libs.client.data;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.datagen.BHBlockStateProvider;
+import com.kenhorizon.beyondhorizon.server.block.AdvancePipeBlock;
 import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import com.kenhorizon.beyondhorizon.server.api.block.AdvanceFenceBlock;
+import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneWiredBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneMode;
+import com.kenhorizon.libs.registry.RegistryBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -583,6 +586,74 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
             boolean powerLevel = blockState.getValue(BlockStateProperties.LIT);
             return ConfiguredModel.builder().modelFile(powerLevel ? active : base).build();
         });
+    }
+
+    protected void redstoneWiredBlock(RegistryObject<Block> block) {
+        ResourceLocation base = BeyondHorizon.resource("block/redstone_wired");
+        ResourceLocation side = this.extend(base, "_side");
+        ResourceLocation top = this.extend(base, "_top");
+        ResourceLocation face = this.extend(base, "_face");
+        ResourceLocation right = this.extend(base, "_right");
+
+        ModelFile baseM = models().cube(name(block.get()), side, side, top, top, top, top).texture("particle", side);
+        ModelFile sideM = models().cube(name(block.get()) + "_side", right, right, top, top, top, top).texture("particle", side);
+        ModelFile fullM = models().cube(name(block.get()) + "_full", face, face, face, face, face, face).texture("particle", side);
+
+        this.getVariantBuilder(block.get()).forAllStates(blockState -> {
+            boolean l1 = (blockState.getValue(RedstoneWiredBlock.NORTH) && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST) && !blockState.getValue(RedstoneWiredBlock.WEST));
+
+            boolean l2 = (!blockState.getValue(RedstoneWiredBlock.NORTH) && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST) && !blockState.getValue(RedstoneWiredBlock.WEST));
+
+            boolean l3 = (blockState.getValue(RedstoneWiredBlock.NORTH) && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST) && blockState.getValue(RedstoneWiredBlock.WEST));
+
+            boolean l4 = (!blockState.getValue(RedstoneWiredBlock.NORTH) && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST) && blockState.getValue(RedstoneWiredBlock.WEST));
+
+            boolean n1 = (blockState.getValue(RedstoneWiredBlock.NORTH) && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST) && !blockState.getValue(RedstoneWiredBlock.WEST));
+            boolean n2 = (blockState.getValue(RedstoneWiredBlock.NORTH) && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST) && !blockState.getValue(RedstoneWiredBlock.WEST));
+
+            boolean s1 = (!blockState.getValue(RedstoneWiredBlock.NORTH) && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST) && !blockState.getValue(RedstoneWiredBlock.WEST));
+
+            boolean e1 = (!blockState.getValue(RedstoneWiredBlock.NORTH) && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST) && !blockState.getValue(RedstoneWiredBlock.WEST));
+            boolean e2 = (!blockState.getValue(RedstoneWiredBlock.NORTH) && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST) && blockState.getValue(RedstoneWiredBlock.WEST));
+
+            boolean w1 = (!blockState.getValue(RedstoneWiredBlock.NORTH) && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST) && blockState.getValue(RedstoneWiredBlock.WEST));
+
+            boolean full = (blockState.getValue(RedstoneWiredBlock.NORTH) && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST) && blockState.getValue(RedstoneWiredBlock.WEST));
+            if (full) {
+                return ConfiguredModel.builder().modelFile(fullM).build();
+            } else if (l1) {
+                return ConfiguredModel.builder().modelFile(sideM).rotationY(270).build();
+            } else if (l2) {
+                return ConfiguredModel.builder().modelFile(sideM).build();
+            } else if (l3) {
+                return ConfiguredModel.builder().modelFile(sideM).rotationY(180).build();
+            }  else if (l4) {
+                return ConfiguredModel.builder().modelFile(sideM).rotationY(90).build();
+            }  else if (n1 || n2) {
+                return ConfiguredModel.builder().modelFile(baseM).build();
+            }  else if (s1) {
+                return ConfiguredModel.builder().modelFile(baseM).build();
+            }  else if (e1 || e2) {
+                return ConfiguredModel.builder().modelFile(baseM).rotationY(90).build();
+            }   else if (w1) {
+                return ConfiguredModel.builder().modelFile(baseM).rotationY(90).build();
+            }  else {
+                return ConfiguredModel.builder().modelFile(fullM).build();
+            }
+        });
+
+        simpleBlockItem(block.get(), baseM);
     }
 
     protected void redstoneLaneWithItem(RedstoneLaneBlock block) {

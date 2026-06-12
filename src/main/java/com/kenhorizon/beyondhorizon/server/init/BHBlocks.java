@@ -6,6 +6,8 @@ import com.kenhorizon.beyondhorizon.server.block.basin.FireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.WallFireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.fence.LatticeFenceBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneTransmitterBlock;
+import com.kenhorizon.beyondhorizon.server.block.AdvancePipeBlock;
+import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneWiredBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
 import com.kenhorizon.libs.registry.RegistryBlocks;
@@ -27,6 +29,14 @@ public class BHBlocks {
     public static final BlockBehaviour.Properties NETHER_BRICKS = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.0F, 6.0F).sound(SoundType.NETHER_BRICKS);
     public static final BlockBehaviour.Properties SPAWNER_PROPERTIES = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).lightLevel(value -> value.getValue(BaseSpawnerBlock.SPAWNER_STATE).lightLevel()).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(50.0F).sound(BHSoundType.SPAWNER).noOcclusion().isViewBlocking(BHBlocks::never);
     public static final BlockBehaviour.Properties WIRED_LANE = BlockBehaviour.Properties.of().mapColor(MapColor.FIRE).strength(1.5F, 6.0F).sound(SoundType.METAL).lightLevel(l -> { return 4; }).requiresCorrectToolForDrops().pushReaction(PushReaction.PUSH_ONLY);
+
+    public static final RegistryObject<Block> REDSTONE_WIRED = RegistryBlocks
+            .register("redstone_wired", properties -> new RedstoneWiredBlock(WIRED_LANE))
+            .itemName("Test Block")
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
 
     public static final RegistryObject<Block> REDSTONE_LANE_I = RegistryBlocks
             .register("redstone_lane_i", properties -> new RedstoneLaneBlock(WIRED_LANE))

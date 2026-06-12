@@ -18,7 +18,7 @@
   "start_height": {
     "absolute": 10
   },
-  "max_distance_from_center": 0,
+  "max_distance_from_center": 128,
   "extra_surface_heightmap": "WORLD_SURFACE_WG",
   "use_expansion_hack": false
 }

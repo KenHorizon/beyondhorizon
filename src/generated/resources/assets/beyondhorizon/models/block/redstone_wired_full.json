@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "beyondhorizon:block/redstone_wired_face",
+    "east": "beyondhorizon:block/redstone_wired_face",
+    "north": "beyondhorizon:block/redstone_wired_face",
+    "particle": "beyondhorizon:block/redstone_wired_side",
+    "south": "beyondhorizon:block/redstone_wired_face",
+    "up": "beyondhorizon:block/redstone_wired_face",
+    "west": "beyondhorizon:block/redstone_wired_face"
+  }
+}

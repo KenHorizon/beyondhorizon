@@ -70,6 +70,8 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.stairsBlocks(BHBlocks.BLACK_NETHER_BRICK_STAIR, BHBlocks.BLACK_NETHER_BRICKS);
         this.blockWithItem(BHBlocks.POLISHED_BLACK_NETHER);
         this.blockWithItem(BHBlocks.NETHER_BRICK_LANTERN);
+        this.blockWithItem(BHBlocks.HELLSTONE_BRICKS);
+        this.blockWithItem(BHBlocks.HELLSTONE_COBBLESTONE);
         this.standBasinBlocks(BHBlocks.FIRE_BASIN);
         this.standWallBasinBlocks(BHBlocks.WALL_FIRE_BASIN);
         this.blockWithItem(BHBlocks.DESOLATE_OBSIDIAN);

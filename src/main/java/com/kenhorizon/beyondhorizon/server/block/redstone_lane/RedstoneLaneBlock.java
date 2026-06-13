@@ -115,7 +115,6 @@ public class RedstoneLaneBlock extends DirectionalBlock {
         } else {
             updatePowerStrength(blockState, level, blockPos);
         }
-
     }
 
     private void updatePowerStrength(BlockState blockState, Level level, BlockPos blockPos) {

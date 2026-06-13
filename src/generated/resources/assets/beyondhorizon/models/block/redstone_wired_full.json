@@ -4,7 +4,7 @@
     "down": "beyondhorizon:block/redstone_wired_face",
     "east": "beyondhorizon:block/redstone_wired_face",
     "north": "beyondhorizon:block/redstone_wired_face",
-    "particle": "beyondhorizon:block/redstone_wired_side",
+    "particle": "beyondhorizon:block/redstone_wired_vertical",
     "south": "beyondhorizon:block/redstone_wired_face",
     "up": "beyondhorizon:block/redstone_wired_face",
     "west": "beyondhorizon:block/redstone_wired_face"

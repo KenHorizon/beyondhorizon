@@ -140,6 +140,20 @@ public class BHBlocks {
             .dropSelf()
             .register();
 
+    public static final RegistryObject<Block> HELLSTONE_BRICKS = RegistryBlocks
+            .register("hellstone_bricks", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> HELLSTONE_COBBLESTONE = RegistryBlocks
+            .register("hellstone_cobblestone", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
     public static final RegistryObject<Block> SILTSTONE_SLAB = RegistryBlocks
             .register("siltstone_slab", properties -> new SlabBlock(BlockBehaviour.Properties.copy(Blocks.STONE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)

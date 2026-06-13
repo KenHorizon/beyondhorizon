@@ -590,92 +590,125 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
 
     protected void redstoneWiredBlock(RegistryObject<Block> block) {
         ResourceLocation base = BeyondHorizon.resource("block/redstone_wired");
-        ResourceLocation side = this.extend(base, "_side");
-        ResourceLocation top = this.extend(base, "_top");
-        ResourceLocation face = this.extend(base, "_face");
-        ResourceLocation section = this.extend(base, "_section");
-        ResourceLocation right = this.extend(base, "_right");
+        ResourceLocation hL = this.extend(base, "_horizontal");
+        ResourceLocation vL = this.extend(base, "_vertical");
+        ResourceLocation fL = this.extend(base, "_face");
+        ResourceLocation sL = this.extend(base, "_section");
+        ResourceLocation rL = this.extend(base, "_right");
+        ResourceLocation lL = this.extend(base, "_left");
+        ResourceLocation rLA = this.extend(base, "_right_alt");
+        ResourceLocation lLA = this.extend(base, "_left_alt");
+        ResourceLocation hlS = this.extend(base, "_horizontal_section");
+        ResourceLocation hlSA = this.extend(base, "_horizontal_section_alt");
 
-        ModelFile baseM = models().cube(name(block.get()), side, side, top, top, top, top).texture("particle", side);
-        ModelFile sectionM = models().cube(name(block.get()) + "_section", section, section, top, top, top, top).texture("particle", side);
-        ModelFile sideM = models().cube(name(block.get()) + "_side", right, right, top, top, top, top).texture("particle", side);
-        ModelFile fullM = models().cube(name(block.get()) + "_full", face, face, face, face, face, face).texture("particle", side);
+        ModelFile baseM = models().cube(name(block.get()), vL, vL, fL, fL, hL, hL).texture("particle", vL);
+        ModelFile upM = models().cube(name(block.get()) + "_horizontal", fL, fL, vL, vL, vL, vL).texture("particle", vL);
+        ModelFile upSectionW = models().cube(name(block.get()) + "_horizontal_section_west", hL, hL, hlS, hlSA, vL, vL).texture("particle", vL);
+        ModelFile upSectionE = models().cube(name(block.get()) + "_horizontal_section_east", hL, hL, hlSA, hlS, vL, vL).texture("particle", vL);
+        ModelFile upSectionN = models().cube(name(block.get()) + "_horizontal_section_north", hL, hL, hlS, hlSA, vL, vL).texture("particle", vL);
+        ModelFile upSectionS = models().cube(name(block.get()) + "_horizontal_section_south", hL, hL, hlS, hlSA, vL, vL).texture("particle", vL);
+        ModelFile upWest = models().cube(name(block.get()) + "_horizontal_west", hL, hL, rL, lL, vL, vL).texture("particle", vL);
+        ModelFile upEast = models().cube(name(block.get()) + "_horizontal_east", hL, hL, lL, rL, vL, vL).texture("particle", vL);
+        ModelFile upWestAlt = models().cube(name(block.get()) + "_horizontal_west_alt", hL, hL, rLA, lLA, vL, vL).texture("particle", vL);
+        ModelFile upEastAlt = models().cube(name(block.get()) + "_horizontal_east_alt", hL, hL, lLA, rLA, vL, vL).texture("particle", vL);
+        ModelFile sectionM = models().cube(name(block.get()) + "_section", sL, sL, hL, hL, hL, hL).texture("particle", vL);
+        ModelFile sideM = models().cube(name(block.get()) + "_side", rL, rL, hL, hL, hL, hL).texture("particle", vL);
+        ModelFile fullM = models().cube(name(block.get()) + "_full", fL, fL, fL, fL, fL, fL).texture("particle", vL);
 
         this.getVariantBuilder(block.get()).forAllStates(blockState -> {
-            boolean up = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+            //
+            boolean dsu = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean dnu = (blockState.getValue(RedstoneWiredBlock.NORTH)
                     && !blockState.getValue(RedstoneWiredBlock.SOUTH)
                     && !blockState.getValue(RedstoneWiredBlock.EAST)
                     && !blockState.getValue(RedstoneWiredBlock.WEST)
                     && blockState.getValue(RedstoneWiredBlock.UP)
-                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
-
-            boolean down = (!blockState.getValue(RedstoneWiredBlock.NORTH)
-                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
-                    && !blockState.getValue(RedstoneWiredBlock.EAST)
-                    && !blockState.getValue(RedstoneWiredBlock.WEST)
-                    && !blockState.getValue(RedstoneWiredBlock.UP)
                     && blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean deu = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean dwu = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && blockState.getValue(RedstoneWiredBlock.WEST)
+                    && blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+              //
+            boolean ne = (blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean nse = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean nw = (blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean sw = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
 
-            boolean l1 = (blockState.getValue(RedstoneWiredBlock.NORTH)
-                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
-                    && blockState.getValue(RedstoneWiredBlock.EAST)
-                    && !blockState.getValue(RedstoneWiredBlock.WEST)
-                    && !blockState.getValue(RedstoneWiredBlock.UP)
-                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            boolean l2 = (!blockState.getValue(RedstoneWiredBlock.NORTH)
-                    && blockState.getValue(RedstoneWiredBlock.SOUTH)
-                    && blockState.getValue(RedstoneWiredBlock.EAST)
-                    && !blockState.getValue(RedstoneWiredBlock.WEST)
-                    && !blockState.getValue(RedstoneWiredBlock.UP)
-                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            boolean l3 = (blockState.getValue(RedstoneWiredBlock.NORTH)
-                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
-                    && !blockState.getValue(RedstoneWiredBlock.EAST)
-                    && blockState.getValue(RedstoneWiredBlock.WEST)
-                    && !blockState.getValue(RedstoneWiredBlock.UP)
-                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            boolean l4 = (!blockState.getValue(RedstoneWiredBlock.NORTH)
-                    && blockState.getValue(RedstoneWiredBlock.SOUTH)
-                    && !blockState.getValue(RedstoneWiredBlock.EAST)
-                    && blockState.getValue(RedstoneWiredBlock.WEST)
-                    && !blockState.getValue(RedstoneWiredBlock.UP)
-                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            boolean n1 = (blockState.getValue(RedstoneWiredBlock.NORTH)
+            boolean n = (blockState.getValue(RedstoneWiredBlock.NORTH)
                     && !blockState.getValue(RedstoneWiredBlock.SOUTH)
                     && !blockState.getValue(RedstoneWiredBlock.EAST)
                     && !blockState.getValue(RedstoneWiredBlock.WEST)
                     && !blockState.getValue(RedstoneWiredBlock.UP)
                     && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            boolean n2 = (blockState.getValue(RedstoneWiredBlock.NORTH)
+
+            boolean ns = (blockState.getValue(RedstoneWiredBlock.NORTH)
                     && blockState.getValue(RedstoneWiredBlock.SOUTH)
                     && !blockState.getValue(RedstoneWiredBlock.EAST)
                     && !blockState.getValue(RedstoneWiredBlock.WEST)
                     && !blockState.getValue(RedstoneWiredBlock.UP)
                     && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            boolean s1 = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+
+            boolean s = (!blockState.getValue(RedstoneWiredBlock.NORTH)
                     && blockState.getValue(RedstoneWiredBlock.SOUTH)
                     && !blockState.getValue(RedstoneWiredBlock.EAST)
                     && !blockState.getValue(RedstoneWiredBlock.WEST)
                     && !blockState.getValue(RedstoneWiredBlock.UP)
                     && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            boolean e1 = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+
+            boolean e = (!blockState.getValue(RedstoneWiredBlock.NORTH)
                     && !blockState.getValue(RedstoneWiredBlock.SOUTH)
                     && blockState.getValue(RedstoneWiredBlock.EAST)
                     && !blockState.getValue(RedstoneWiredBlock.WEST)
                     && !blockState.getValue(RedstoneWiredBlock.UP)
                     && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            boolean e2 = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+
+            boolean ew = (!blockState.getValue(RedstoneWiredBlock.NORTH)
                     && !blockState.getValue(RedstoneWiredBlock.SOUTH)
                     && blockState.getValue(RedstoneWiredBlock.EAST)
                     && blockState.getValue(RedstoneWiredBlock.WEST)
                     && !blockState.getValue(RedstoneWiredBlock.UP)
                     && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            boolean w1 = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+
+            boolean w = (!blockState.getValue(RedstoneWiredBlock.NORTH)
                     && !blockState.getValue(RedstoneWiredBlock.SOUTH)
                     && !blockState.getValue(RedstoneWiredBlock.EAST)
                     && blockState.getValue(RedstoneWiredBlock.WEST)
                     && !blockState.getValue(RedstoneWiredBlock.UP)
                     && !blockState.getValue(RedstoneWiredBlock.DOWN));
+
             boolean full = (blockState.getValue(RedstoneWiredBlock.NORTH)
                     && blockState.getValue(RedstoneWiredBlock.SOUTH)
                     && blockState.getValue(RedstoneWiredBlock.EAST)
@@ -706,19 +739,95 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
                     && blockState.getValue(RedstoneWiredBlock.WEST)
                     && !blockState.getValue(RedstoneWiredBlock.UP)
                     && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            if (full) {
+
+            boolean cornerUPfull = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST)
+                    && blockState.getValue(RedstoneWiredBlock.WEST)
+                    && blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean up = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && blockState.getValue(RedstoneWiredBlock.UP)
+                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean upE = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && blockState.getValue(RedstoneWiredBlock.UP)
+                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean upW = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && blockState.getValue(RedstoneWiredBlock.WEST)
+                    && blockState.getValue(RedstoneWiredBlock.UP)
+                    && !blockState.getValue(RedstoneWiredBlock.DOWN));
+
+            boolean downE = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean downW = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+
+            boolean downWE = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST)
+                    && blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+
+            boolean upDown = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+
+            boolean down = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+
+            if (full || cornerUPfull) {
                 return ConfiguredModel.builder().modelFile(fullM).build();
-            } else if (l1) {
+            } else if (dnu) {
+                return ConfiguredModel.builder().modelFile(upSectionN).build();
+            } else if (dsu) {
+                return ConfiguredModel.builder().modelFile(upSectionS).build();
+            } else if (dwu) {
+                return ConfiguredModel.builder().modelFile(upSectionW).build();
+            } else if (deu) {
+                return ConfiguredModel.builder().modelFile(upSectionE).build();
+            } else if (downE) {
+                return ConfiguredModel.builder().modelFile(upEast).build();
+            } else if (downW) {
+                return ConfiguredModel.builder().modelFile(upWest).build();
+            } else if (upW) {
+                return ConfiguredModel.builder().modelFile(upWestAlt).build();
+            } else if (upE) {
+                return ConfiguredModel.builder().modelFile(upEastAlt).build();
+            } else if (ne) {
                 return ConfiguredModel.builder().modelFile(sideM).rotationY(270).build();
-            } else if (l2) {
+            } else if (nse) {
                 return ConfiguredModel.builder().modelFile(sideM).build();
-            } else if (l3) {
+            } else if (nw) {
                 return ConfiguredModel.builder().modelFile(sideM).rotationY(180).build();
-            }  else if (l4) {
+            }  else if (sw) {
                 return ConfiguredModel.builder().modelFile(sideM).rotationY(90).build();
-            }  else if (n1 || n2 || s1) {
+            }  else if (n || ns || s) {
                 return ConfiguredModel.builder().modelFile(baseM).build();
-            }  else if (e1 || e2 || w1) {
+            }  else if (e || w || ew) {
                 return ConfiguredModel.builder().modelFile(baseM).rotationY(90).build();
             } else if (cornerSWE) {
                 return ConfiguredModel.builder().modelFile(sectionM).build();
@@ -728,7 +837,9 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
                 return ConfiguredModel.builder().modelFile(sectionM).rotationY(90).build();
             } else if (cornerENW) {
                 return ConfiguredModel.builder().modelFile(sectionM).rotationY(180).build();
-            } else {
+            } else if (up || down || upDown) {
+                return ConfiguredModel.builder().modelFile(upM).build();
+            }  else {
                 return ConfiguredModel.builder().modelFile(fullM).build();
             }
         });

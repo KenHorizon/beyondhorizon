@@ -2,11 +2,11 @@
   "parent": "minecraft:block/cube",
   "textures": {
     "down": "beyondhorizon:block/redstone_wired_right",
-    "east": "beyondhorizon:block/redstone_wired_top",
-    "north": "beyondhorizon:block/redstone_wired_top",
-    "particle": "beyondhorizon:block/redstone_wired_side",
-    "south": "beyondhorizon:block/redstone_wired_top",
+    "east": "beyondhorizon:block/redstone_wired_horizontal",
+    "north": "beyondhorizon:block/redstone_wired_horizontal",
+    "particle": "beyondhorizon:block/redstone_wired_vertical",
+    "south": "beyondhorizon:block/redstone_wired_horizontal",
     "up": "beyondhorizon:block/redstone_wired_right",
-    "west": "beyondhorizon:block/redstone_wired_top"
+    "west": "beyondhorizon:block/redstone_wired_horizontal"
   }
 }

@@ -8,10 +8,10 @@
       "y": 90
     },
     "down=false,east=false,north=false,south=false,up=true,west=false": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal"
     },
     "down=false,east=false,north=false,south=false,up=true,west=true": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal_west_alt"
     },
     "down=false,east=false,north=false,south=true,up=false,west=false": {
       "model": "beyondhorizon:block/redstone_wired"
@@ -61,7 +61,7 @@
       "y": 90
     },
     "down=false,east=true,north=false,south=false,up=true,west=false": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal_east_alt"
     },
     "down=false,east=true,north=false,south=false,up=true,west=true": {
       "model": "beyondhorizon:block/redstone_wired_full"
@@ -106,16 +106,16 @@
       "model": "beyondhorizon:block/redstone_wired_full"
     },
     "down=true,east=false,north=false,south=false,up=false,west=false": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal"
     },
     "down=true,east=false,north=false,south=false,up=false,west=true": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal_west"
     },
     "down=true,east=false,north=false,south=false,up=true,west=false": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal"
     },
     "down=true,east=false,north=false,south=false,up=true,west=true": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal_section_west"
     },
     "down=true,east=false,north=false,south=true,up=false,west=false": {
       "model": "beyondhorizon:block/redstone_wired_full"
@@ -124,7 +124,7 @@
       "model": "beyondhorizon:block/redstone_wired_full"
     },
     "down=true,east=false,north=false,south=true,up=true,west=false": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal_section_south"
     },
     "down=true,east=false,north=false,south=true,up=true,west=true": {
       "model": "beyondhorizon:block/redstone_wired_full"
@@ -136,7 +136,7 @@
       "model": "beyondhorizon:block/redstone_wired_full"
     },
     "down=true,east=false,north=true,south=false,up=true,west=false": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal_section_north"
     },
     "down=true,east=false,north=true,south=false,up=true,west=true": {
       "model": "beyondhorizon:block/redstone_wired_full"
@@ -154,13 +154,13 @@
       "model": "beyondhorizon:block/redstone_wired_full"
     },
     "down=true,east=true,north=false,south=false,up=false,west=false": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal_east"
     },
     "down=true,east=true,north=false,south=false,up=false,west=true": {
       "model": "beyondhorizon:block/redstone_wired_full"
     },
     "down=true,east=true,north=false,south=false,up=true,west=false": {
-      "model": "beyondhorizon:block/redstone_wired_full"
+      "model": "beyondhorizon:block/redstone_wired_horizontal_section_east"
     },
     "down=true,east=true,north=false,south=false,up=true,west=true": {
       "model": "beyondhorizon:block/redstone_wired_full"

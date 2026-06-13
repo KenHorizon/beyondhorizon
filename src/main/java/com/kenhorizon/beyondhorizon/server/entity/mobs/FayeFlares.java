@@ -8,6 +8,7 @@ import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ai.*;
+import com.kenhorizon.beyondhorizon.server.entity.ai.control.FlightMoveControl;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -56,7 +57,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     public FayeFlares(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
         this.setExp(10);
-        this.moveControl = new FlyingMoveControl(this, 7, true);
+        this.moveControl = new FlightMoveControl(this, 1.7F, true);
         this.setMaxUpStep(2.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
@@ -158,7 +159,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
         FlyingPathNavigation flyingPathNavigation = new FlyingPathNavigation(this, level) {
             @Override
             public boolean isStableDestination(BlockPos blockPos) {
-                return !this.level.getBlockState(blockPos.below()).isAir();
+                return !this.level.getBlockState(blockPos.below(2)).isAir();
             }
         };
         flyingPathNavigation.setCanOpenDoors(false);
@@ -215,8 +216,14 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     @Override
     public void tick() {
         super.tick();
+        Vec3 vector3d = this.getDeltaMovement();
+        boolean flag = this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z >= 1.0E-3D;
         LivingEntity target = this.getTarget();
         if (this.fireballCooldown > 0) this.fireballCooldown--;
+        if (!this.onGround() && vector3d.y < 0.0D) {
+            this.setDeltaMovement(vector3d.multiply(1.0D, 0.4D, 1.0D));
+        }
+        this.setNoGravity(true);
     }
 
     @Override

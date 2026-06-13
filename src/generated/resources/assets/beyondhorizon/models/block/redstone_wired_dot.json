@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "beyondhorizon:block/redstone_wired_dot",
+    "east": "beyondhorizon:block/redstone_wired_dot",
+    "north": "beyondhorizon:block/redstone_wired_dot",
+    "particle": "beyondhorizon:block/redstone_wired_vertical",
+    "south": "beyondhorizon:block/redstone_wired_dot",
+    "up": "beyondhorizon:block/redstone_wired_dot",
+    "west": "beyondhorizon:block/redstone_wired_dot"
+  }
+}

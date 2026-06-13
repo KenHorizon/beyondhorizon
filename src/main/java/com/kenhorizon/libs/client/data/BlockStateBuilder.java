@@ -590,8 +590,13 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
 
     protected void redstoneWiredBlock(RegistryObject<Block> block) {
         ResourceLocation base = BeyondHorizon.resource("block/redstone_wired");
+        ResourceLocation dot = this.extend(base, "_dot");
         ResourceLocation hL = this.extend(base, "_horizontal");
         ResourceLocation vL = this.extend(base, "_vertical");
+        ResourceLocation vLEU = this.extend(base, "_vertical_end_up");
+        ResourceLocation vLEUA = this.extend(base, "_vertical_end_up_alt");
+        ResourceLocation hLED = this.extend(base, "_horizontal_end");
+        ResourceLocation hLEDA = this.extend(base, "_horizontal_end_alt");
         ResourceLocation fL = this.extend(base, "_face");
         ResourceLocation sL = this.extend(base, "_section");
         ResourceLocation rL = this.extend(base, "_right");
@@ -602,13 +607,19 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         ResourceLocation hlSA = this.extend(base, "_horizontal_section_alt");
 
         ModelFile baseM = models().cube(name(block.get()), vL, vL, fL, fL, hL, hL).texture("particle", vL);
+        ModelFile dotM = models().cube(name(block.get()) + "_dot", dot, dot, dot, dot, dot, dot).texture("particle", vL);
         ModelFile upM = models().cube(name(block.get()) + "_horizontal", fL, fL, vL, vL, vL, vL).texture("particle", vL);
+        ModelFile upMEU = models().cube(name(block.get()) + "_horizontal_end", fL, fL, vLEU, vLEU, vLEU, vLEU).texture("particle", vLEU);
+        ModelFile sideNSE = models().cube(name(block.get()) + "_side_ns", vLEU, vLEUA, fL, fL, hLED, hLEDA).texture("particle", vLEU);
+        ModelFile sideEWE = models().cube(name(block.get()) + "_side_ew", hLED, hLED, hLEDA, hLED, fL, fL).texture("particle", vLEU);
+        ModelFile sideCorners = models().cube(name(block.get()) + "_side_corners", lL, rL, lL, rL, lL, rL).texture("particle", vLEU);
         ModelFile upSectionW = models().cube(name(block.get()) + "_horizontal_section_west", hL, hL, hlS, hlSA, vL, vL).texture("particle", vL);
         ModelFile upSectionE = models().cube(name(block.get()) + "_horizontal_section_east", hL, hL, hlSA, hlS, vL, vL).texture("particle", vL);
-        ModelFile upSectionN = models().cube(name(block.get()) + "_horizontal_section_north", hL, hL, hlS, hlSA, vL, vL).texture("particle", vL);
-        ModelFile upSectionS = models().cube(name(block.get()) + "_horizontal_section_south", hL, hL, hlS, hlSA, vL, vL).texture("particle", vL);
+        ModelFile upSectionN = models().cube(name(block.get()) + "_horizontal_section_north", hL, hL, vL, vL, hlS, hlSA).texture("particle", vL);
+        ModelFile upSectionS = models().cube(name(block.get()) + "_horizontal_section_south", hL, hL, vL, vL, hlSA, hlS).texture("particle", vL);
         ModelFile upWest = models().cube(name(block.get()) + "_horizontal_west", hL, hL, rL, lL, vL, vL).texture("particle", vL);
         ModelFile upEast = models().cube(name(block.get()) + "_horizontal_east", hL, hL, lL, rL, vL, vL).texture("particle", vL);
+        ModelFile upNS = models().cube(name(block.get()) + "_horizontal_ns", vL, vL, vL, vL, rL, lL).texture("particle", vL);
         ModelFile upWestAlt = models().cube(name(block.get()) + "_horizontal_west_alt", hL, hL, rLA, lLA, vL, vL).texture("particle", vL);
         ModelFile upEastAlt = models().cube(name(block.get()) + "_horizontal_east_alt", hL, hL, lLA, rLA, vL, vL).texture("particle", vL);
         ModelFile sectionM = models().cube(name(block.get()) + "_section", sL, sL, hL, hL, hL, hL).texture("particle", vL);
@@ -616,6 +627,44 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         ModelFile fullM = models().cube(name(block.get()) + "_full", fL, fL, fL, fL, fL, fL).texture("particle", vL);
 
         this.getVariantBuilder(block.get()).forAllStates(blockState -> {
+            //
+            boolean dn = (blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean ds = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            //
+            boolean dne = (blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean dnw = (blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean dse = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean dsw = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
             //
             boolean dsu = (!blockState.getValue(RedstoneWiredBlock.NORTH)
                     && blockState.getValue(RedstoneWiredBlock.SOUTH)
@@ -648,7 +697,7 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
                     && !blockState.getValue(RedstoneWiredBlock.WEST)
                     && !blockState.getValue(RedstoneWiredBlock.UP)
                     && !blockState.getValue(RedstoneWiredBlock.DOWN));
-            boolean nse = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+            boolean se = (!blockState.getValue(RedstoneWiredBlock.NORTH)
                     && blockState.getValue(RedstoneWiredBlock.SOUTH)
                     && blockState.getValue(RedstoneWiredBlock.EAST)
                     && !blockState.getValue(RedstoneWiredBlock.WEST)
@@ -809,6 +858,10 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
                 return ConfiguredModel.builder().modelFile(upSectionW).build();
             } else if (deu) {
                 return ConfiguredModel.builder().modelFile(upSectionE).build();
+            } else if (dn) {
+                return ConfiguredModel.builder().modelFile(upNS).build();
+            } else if (ds) {
+                return ConfiguredModel.builder().modelFile(upNS).rotationY(180).build();
             } else if (downE) {
                 return ConfiguredModel.builder().modelFile(upEast).build();
             } else if (downW) {
@@ -819,15 +872,31 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
                 return ConfiguredModel.builder().modelFile(upEastAlt).build();
             } else if (ne) {
                 return ConfiguredModel.builder().modelFile(sideM).rotationY(270).build();
-            } else if (nse) {
+            } else if (se) {
                 return ConfiguredModel.builder().modelFile(sideM).build();
-            } else if (nw) {
+            } else if (dsw) {
+                return ConfiguredModel.builder().modelFile(sideCorners).rotationY(90).build();
+            } else if (dnw) {
+                return ConfiguredModel.builder().modelFile(sideCorners).rotationY(180).build();
+            } else if (dse) {
+                return ConfiguredModel.builder().modelFile(sideCorners).build();
+            } else if (dne) {
+                return ConfiguredModel.builder().modelFile(sideCorners).rotationY(270).build();
+            }  else if (nw) {
                 return ConfiguredModel.builder().modelFile(sideM).rotationY(180).build();
             }  else if (sw) {
                 return ConfiguredModel.builder().modelFile(sideM).rotationY(90).build();
-            }  else if (n || ns || s) {
+            }  else if (n) {
+                return ConfiguredModel.builder().modelFile(sideNSE).build();
+            }  else if (s) {
+                return ConfiguredModel.builder().modelFile(sideNSE).rotationY(180).build();
+            }  else if (ns) {
                 return ConfiguredModel.builder().modelFile(baseM).build();
-            }  else if (e || w || ew) {
+            }  else if (e) {
+                return ConfiguredModel.builder().modelFile(sideEWE).build();
+            }  else if (w) {
+                return ConfiguredModel.builder().modelFile(sideEWE).rotationY(180).build();
+            }  else if (ew) {
                 return ConfiguredModel.builder().modelFile(baseM).rotationY(90).build();
             } else if (cornerSWE) {
                 return ConfiguredModel.builder().modelFile(sectionM).build();
@@ -837,10 +906,14 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
                 return ConfiguredModel.builder().modelFile(sectionM).rotationY(90).build();
             } else if (cornerENW) {
                 return ConfiguredModel.builder().modelFile(sectionM).rotationY(180).build();
-            } else if (up || down || upDown) {
+            } else if (upDown) {
                 return ConfiguredModel.builder().modelFile(upM).build();
+            } else if (up) {
+                return ConfiguredModel.builder().modelFile(upMEU).rotationX(180).build();
+            } else if (down) {
+                return ConfiguredModel.builder().modelFile(upMEU).build();
             }  else {
-                return ConfiguredModel.builder().modelFile(fullM).build();
+                return ConfiguredModel.builder().modelFile(dotM).build();
             }
         });
 

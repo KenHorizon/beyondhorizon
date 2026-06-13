@@ -143,12 +143,12 @@ public class FireBasinBlock extends Block implements SimpleWaterloggedBlock {
             float r = 1.0F;
             float g = Mth.lerp((float) i / 2, 0.9F, 0.6F);
             float b = 0;
-            level.addParticle(new ParticleTrailOptions(0, 0, 80,
-                            r,g,b, 1.0F, 1.0F, true, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(
+            ParticleTrailOptions.add(level, TrailParticles.Behavior.FADE_N_SHRINK,
+                    blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D, 1.0F, 1.0F, r,g,b
+                    , 80, new Vec3(
                             blockPos.getX() + (random.nextFloat() * 0.5F),
                             blockPos.getY() + 2.5D,
-                            blockPos.getZ() + (random.nextFloat() * 0.5F))),
-                    blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D, 0, 0,0);
+                            blockPos.getZ() + (random.nextFloat() * 0.5F)));
         }
         if (random.nextInt(5) == 0) {
             for (int i = 0; i < random.nextInt(1) + 1; ++i) {

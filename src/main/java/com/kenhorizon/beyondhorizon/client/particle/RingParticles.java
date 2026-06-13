@@ -84,6 +84,7 @@ public class RingParticles extends TextureSheetParticle {
         float f1 = (float) (Mth.lerp(partialTicks, this.yo, this.y) - Vector3d.y());
         float f2 = (float) (Mth.lerp(partialTicks, this.zo, this.z) - Vector3d.z());
         Quaternionf quaternionf = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
+        Quaternionf quaternionf1 = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
         if (facesCamera) {
             if (this.roll == 0.0F) {
                 quaternionf = renderInfo.rotation();
@@ -95,10 +96,19 @@ public class RingParticles extends TextureSheetParticle {
         } else {
             Quaternionf quatX = MathUtils.quatFromRotationXYZ(pitch, 0, 0, false);
             Quaternionf quatY = MathUtils.quatFromRotationXYZ(0, yaw, 0, false);
+            Quaternionf quatX1 = MathUtils.quatFromRotationXYZ(-pitch, 0, 0, false);
+            Quaternionf quatY1 = MathUtils.quatFromRotationXYZ(0, -yaw, 0, false);
             quaternionf.mul(quatY);
             quaternionf.mul(quatX);
+            quaternionf1.mul(quatY1);
+            quaternionf1.mul(quatX1);
         }
 
+        this.drawRingsParticles(buffer, partialTicks, quaternionf, f, f1, f2);
+        this.drawRingsParticles(buffer, partialTicks, quaternionf1, f, f1, f2);
+    }
+
+    private void drawRingsParticles(VertexConsumer buffer, float partialTicks, Quaternionf quaternionf, float f, float f1, float f2) {
         Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);
         quaternionf.transform(vector3f1);
         Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};

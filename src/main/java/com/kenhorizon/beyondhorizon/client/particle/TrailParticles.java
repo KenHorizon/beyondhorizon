@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client.particle;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.client.render.BHParticleRenderType;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -26,9 +27,6 @@ public class TrailParticles extends TextureSheetParticle {
     public float g;
     public float b;
     public float opacity;
-    public boolean facesCamera;
-    public float yaw;
-    public float pitch;
     public float size;
     private final Vec3 target;
     private final Behavior behavior;
@@ -41,7 +39,9 @@ public class TrailParticles extends TextureSheetParticle {
         FADE_N_SHRINK
     }
 
-    public TrailParticles(ClientLevel world, double x, double y, double z, double motionX, double motionY, double motionZ, float yaw, float pitch, int duration, float r, float g, float b, float opacity, float size, boolean facesCamera, Behavior behavior, Vec3 target) {
+    public TrailParticles(ClientLevel world, double x, double y, double z, double motionX, double motionY, double motionZ,
+                          int duration, float r, float g, float b, float opacity, float size,
+                          Behavior behavior, Vec3 target) {
         super(world, x, y, z);
         this.target = target;
         this.setSize(1, 1);
@@ -52,9 +52,6 @@ public class TrailParticles extends TextureSheetParticle {
         this.gCol = g;
         this.bCol = b;
         this.opacity = opacity;
-        this.yaw = yaw;
-        this.pitch = pitch;
-        this.facesCamera = facesCamera;
         this.xd = motionX;
         this.yd = motionY;
         this.zd = motionZ;
@@ -67,9 +64,6 @@ public class TrailParticles extends TextureSheetParticle {
             this.alpha = this.opacity * 0.95f * (1 - (this.age + partialTick) / this.lifetime) + 0.05f;
         }
         this.quadSize = this.particleBehavior(var);
-//        this.rCol = this.r;
-//        this.gCol = this.g;
-//        this.bCol = this.b;
         super.render(buffer, camera, partialTick);
     }
     private float particleBehavior(float var) {
@@ -105,7 +99,7 @@ public class TrailParticles extends TextureSheetParticle {
 
     @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.PARTICLE_SHEET_LIT;
+        return BHParticleRenderType.PARTICLE_EMISSIVE;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -117,9 +111,9 @@ public class TrailParticles extends TextureSheetParticle {
 
         @Override
         public Particle createParticle(ParticleTrailOptions typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            TrailParticles particles = new TrailParticles(worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getYaw(),
-                    typeIn.getPitch(), typeIn.getDuration(), typeIn.getR(), typeIn.getG(), typeIn.getB(), typeIn.getA(), typeIn.getScale(),
-                    typeIn.getFacesCamera(), typeIn.getBehavior(), typeIn.getTarget());
+            TrailParticles particles = new TrailParticles(worldIn, x, y, z, xSpeed, ySpeed, zSpeed,
+                    typeIn.getDuration(), typeIn.getR(), typeIn.getG(), typeIn.getB(), typeIn.getA(), typeIn.getScale(),
+                    typeIn.getBehavior(), typeIn.getTarget());
             particles.setSpriteFromAge(this.spriteSet);
             return particles;
         }

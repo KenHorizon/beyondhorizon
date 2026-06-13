@@ -257,7 +257,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
             double o2x = (float) (-1 * Math.cos(getYaw()) * Math.cos(getPitch()));
             double o2y = (float) (-1 * Math.sin(getPitch()));
             double o2z = (float) (-1 * Math.sin(getYaw()) * Math.cos(getPitch()));
-            ParticleTrailOptions.add(level(), TrailParticles.Behavior.FADE,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz, 1.0F, this.getTrailA(), this.getTrailR(), this.getTrailG(), this.getTrailB(), true, 20, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
+            ParticleTrailOptions.add(level(), TrailParticles.Behavior.FADE,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz, 1.0F, this.getTrailA(), this.getTrailR(), this.getTrailG(), this.getTrailB(), 20, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
         }
     }
 

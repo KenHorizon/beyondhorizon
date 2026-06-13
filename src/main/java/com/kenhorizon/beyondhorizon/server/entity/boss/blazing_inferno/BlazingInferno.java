@@ -802,7 +802,6 @@ public class BlazingInferno extends BHBossEntity {
                     float g2 = ColorUtil.getFARGB(0xFFFFFF)[1];
                     float b3 = ColorUtil.getFARGB(0xFFFFFF)[2];
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 10, r1, g2, b3, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
-                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 10, r1, g2, b3, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
                     this.level().addParticle(new RoarParticleOptions(10, 255, 255, 255, 1.0F, 1.0F, 0.1F, 64.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
                 }
 
@@ -880,7 +879,6 @@ public class BlazingInferno extends BHBossEntity {
                     float g = ColorUtil.getFARGB(0xFFFFFF)[1];
                     float b = ColorUtil.getFARGB(0xFFFFFF)[2];
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 10, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
-                    this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 10, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
                     this.level().addParticle(new RoarParticleOptions(10, 255, 255, 255, 1.0F, 1.0F, 0.1F, 64.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
                 }
 
@@ -949,7 +947,6 @@ public class BlazingInferno extends BHBossEntity {
                 float g = ColorUtil.getFARGB(0xFFFFFF)[1];
                 float b = ColorUtil.getFARGB(0xFFFFFF)[2];
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 10, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
-                this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 10, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
                 this.level().addParticle(new RoarParticleOptions(40, 255, 255, 255, 1.0F, 1.0F, 0.1F, 128.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
             }
 
@@ -994,7 +991,6 @@ public class BlazingInferno extends BHBossEntity {
                 float g = ColorUtil.getFARGB(0xFFFFFF)[1];
                 float b = ColorUtil.getFARGB(0xFFFFFF)[2];
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 32, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
-                this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 32, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 64, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
                 EntityUtils.groundSlamParticles(this.level(), this.yBodyRot, this.getX(), this.getY(0.5D), this.getZ(), 6.5F,  0.25F, 0.065F);
                 this.level().addParticle(new RoarParticleOptions(32, 255, 255, 255, 1.0F, 1.0F, 0.1F, 64.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);

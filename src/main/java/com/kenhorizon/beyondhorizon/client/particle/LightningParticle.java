@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.particle;
 
 import com.kenhorizon.beyondhorizon.client.particle.world.LightningParticleOptions;
+import com.kenhorizon.beyondhorizon.client.render.BHParticleRenderType;
 import com.kenhorizon.beyondhorizon.client.render.LightningBoltData;
 import com.kenhorizon.beyondhorizon.client.render.LightningRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -11,6 +12,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -42,9 +44,14 @@ public class LightningParticle extends Particle {
         this.b = b;
 
     }
-
+    @Override
     public ParticleRenderType getRenderType() {
-        return ParticleRenderType.CUSTOM;
+        return BHParticleRenderType.PARTICLE_EMISSIVE;
+    }
+
+    @Override
+    public boolean shouldCull() {
+        return false;
     }
 
     public void render(VertexConsumer vertexConsumer, Camera camera, float partialTick) {
@@ -74,7 +81,10 @@ public class LightningParticle extends Particle {
         posestack.popPose();
     }
 
-
+    @Override
+    protected int getLightColor(float partialTick) {
+        return LightTexture.FULL_BRIGHT;
+    }
 
     @OnlyIn(Dist.CLIENT)
     public static final class Provider implements ParticleProvider<LightningParticleOptions> {

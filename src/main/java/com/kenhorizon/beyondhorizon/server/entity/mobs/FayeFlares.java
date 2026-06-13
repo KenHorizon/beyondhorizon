@@ -57,7 +57,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     public FayeFlares(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
         this.setExp(10);
-        this.moveControl = new FlightMoveControl(this, 1.7F, true);
+        this.moveControl = new FlightMoveControl(this, 1.21F, true);
         this.setMaxUpStep(2.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
@@ -219,11 +219,19 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
         Vec3 vector3d = this.getDeltaMovement();
         boolean flag = this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z >= 1.0E-3D;
         LivingEntity target = this.getTarget();
+
         if (this.fireballCooldown > 0) this.fireballCooldown--;
+        if (!this.level().isClientSide()) {
+            this.switchNavigator(this.getAnimationState(ID_BLAZING_ROD));
+        }
         if (!this.onGround() && vector3d.y < 0.0D) {
             this.setDeltaMovement(vector3d.multiply(1.0D, 0.4D, 1.0D));
         }
         this.setNoGravity(true);
+    }
+
+    private void switchNavigator(boolean focusOnTarget) {
+        this.moveControl = new FlightMoveControl(this, 0.7F, focusOnTarget);
     }
 
     @Override

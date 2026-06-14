@@ -617,6 +617,7 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         ModelFile upSectionE = models().cube(name(block.get()) + "_horizontal_section_east", hL, hL, hlSA, hlS, vL, vL).texture("particle", vL);
         ModelFile upSectionN = models().cube(name(block.get()) + "_horizontal_section_north", hL, hL, vL, vL, hlS, hlSA).texture("particle", vL);
         ModelFile upSectionS = models().cube(name(block.get()) + "_horizontal_section_south", hL, hL, vL, vL, hlSA, hlS).texture("particle", vL);
+        ModelFile upSectionD = models().cube(name(block.get()) + "_horizontal_section_down", hL, hL, sL, sL, hlSA, hlS).texture("particle", vL);
         ModelFile upWest = models().cube(name(block.get()) + "_horizontal_west", hL, hL, rL, lL, vL, vL).texture("particle", vL);
         ModelFile upEast = models().cube(name(block.get()) + "_horizontal_east", hL, hL, lL, rL, vL, vL).texture("particle", vL);
         ModelFile upNS = models().cube(name(block.get()) + "_horizontal_ns", vL, vL, vL, vL, rL, lL).texture("particle", vL);
@@ -627,7 +628,20 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         ModelFile fullM = models().cube(name(block.get()) + "_full", fL, fL, fL, fL, fL, fL).texture("particle", vL);
 
         this.getVariantBuilder(block.get()).forAllStates(blockState -> {
-            //
+
+            boolean dew = (!blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && !blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && blockState.getValue(RedstoneWiredBlock.EAST)
+                    && blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            boolean dns = (blockState.getValue(RedstoneWiredBlock.NORTH)
+                    && blockState.getValue(RedstoneWiredBlock.SOUTH)
+                    && !blockState.getValue(RedstoneWiredBlock.EAST)
+                    && !blockState.getValue(RedstoneWiredBlock.WEST)
+                    && !blockState.getValue(RedstoneWiredBlock.UP)
+                    && blockState.getValue(RedstoneWiredBlock.DOWN));
+            
             boolean dn = (blockState.getValue(RedstoneWiredBlock.NORTH)
                     && !blockState.getValue(RedstoneWiredBlock.SOUTH)
                     && !blockState.getValue(RedstoneWiredBlock.EAST)
@@ -850,6 +864,10 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
 
             if (full || cornerUPfull) {
                 return ConfiguredModel.builder().modelFile(fullM).build();
+            } else if (dns) {
+                return ConfiguredModel.builder().modelFile(upSectionD).rotationY(90).build();
+            } else if (dew) {
+                return ConfiguredModel.builder().modelFile(upSectionD).build();
             } else if (dnu) {
                 return ConfiguredModel.builder().modelFile(upSectionN).build();
             } else if (dsu) {

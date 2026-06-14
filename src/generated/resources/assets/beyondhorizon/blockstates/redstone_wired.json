@@ -146,7 +146,8 @@
       "model": "beyondhorizon:block/redstone_wired_dot"
     },
     "down=true,east=false,north=true,south=true,up=false,west=false": {
-      "model": "beyondhorizon:block/redstone_wired_dot"
+      "model": "beyondhorizon:block/redstone_wired_horizontal_section_down",
+      "y": 90
     },
     "down=true,east=false,north=true,south=true,up=false,west=true": {
       "model": "beyondhorizon:block/redstone_wired_dot"
@@ -161,7 +162,7 @@
       "model": "beyondhorizon:block/redstone_wired_horizontal_east"
     },
     "down=true,east=true,north=false,south=false,up=false,west=true": {
-      "model": "beyondhorizon:block/redstone_wired_dot"
+      "model": "beyondhorizon:block/redstone_wired_horizontal_section_down"
     },
     "down=true,east=true,north=false,south=false,up=true,west=false": {
       "model": "beyondhorizon:block/redstone_wired_horizontal_section_east"

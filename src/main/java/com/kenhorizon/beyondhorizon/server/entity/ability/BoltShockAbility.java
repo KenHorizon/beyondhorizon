@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.CircleLightningParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.LightningParticleOptions;
@@ -37,67 +38,58 @@ public class BoltShockAbility extends AbilityEntity {
     }
 
     @Override
-    protected void onStartClient() {
-        super.onStartClient();
-        for (int i = 0; i < 20; ++i) {
-            double d0 = (random.nextFloat() - 0.5F) + this.getDeltaMovement().x * this.getRadius();
-            double d1 = (random.nextFloat() - 0.5F) + this.getDeltaMovement().y * this.getRadius();
-            double d2 = (random.nextFloat() - 0.5F) + this.getDeltaMovement().z * this.getRadius();
-            double dist = random.nextFloat() * this.getRadius();
-            double d3 = d0 * dist;
-            double d4 = d1 * dist;
-            double d5 = d2 * dist;
-            this.level().addAlwaysVisibleParticle(new LightningParticleOptions(0, 186, 255), this.getX() + d0, this.getY() + 0.5D, this.getZ() + d2, d3, d4, d5);
-            this.level().addAlwaysVisibleParticle(new LightningParticleOptions(0, 186, 255), this.getX(), this.getY() + 2.5D, this.getZ(), 0, -2, 0);
-        }
-        this.level().addAlwaysVisibleParticle(new LightningParticleOptions(0, 186, 255), this.getX(), this.getY() + 10.5D, this.getZ(), 0.01D, -5.0D, 0.01D);
+    public void handleEntityEvent(byte id) {
+        super.handleEntityEvent(id);
+        if (id == 4) {
+            int colorCode = ColorUtil.combineRGB(0, 186, 255);
+            for (int i = 0; i < 20; ++i) {
+                double d0 = (random.nextFloat() - 1.5F) + this.getDeltaMovement().x * this.getRadius();
+                double d1 = (random.nextFloat() - 1.5F) + this.getDeltaMovement().y * this.getRadius();
+                double d2 = (random.nextFloat() - 1.5F) + this.getDeltaMovement().z * this.getRadius();
+                double dist = random.nextFloat() * this.getRadius();
+                double d3 = d0 * dist;
+                double d4 = d1 * dist;
+                double d5 = d2 * dist;
+                this.level().addAlwaysVisibleParticle(new LightningParticleOptions(0, 186, 255), this.getX() + d0, this.getY() + 0.5D, this.getZ() + d2, d3, d4, d5);
+            }
+            float r = ColorUtil.getFARGB(colorCode)[0];
+            float g = ColorUtil.getFARGB(colorCode)[1];
+            float b = ColorUtil.getFARGB(colorCode)[2];
 
-        float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-        float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-        float b = ColorUtil.getFARGB(0xFFFFFF)[2];
-        this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 15, r, g, b, 1.0F, 64.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, -10, 0);
-        this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 10000.0F, 0.8F + this.random.nextFloat() * 0.2F, false);
-        this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.WEATHER, 2.0F, 0.5F + this.random.nextFloat() * 0.2F, false);
+            this.level().addAlwaysVisibleParticle(new LightningParticleOptions(0, 186, 255), this.getX(), this.getY() + 10.5D, this.getZ(), 0.01D, -5.0D, 0.01D);
+
+            this.level().addParticle(new RingParticleOptions(0, (float) Math.PI / 2, 20, r, g, b, 1.0F, 32.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+
+        }
     }
 
     @Override
-    protected void onStart() {
+    protected void onEnd() {
+        if (!this.sentEventSpike) {
+            this.level().broadcastEntityEvent(this, (byte) 4);
+            this.sentEventSpike = true;
+        }
         this.dealDamage();
     }
 
     public void dealDamage() {
+        BeyondHorizon.LOGGER.debug("[Ability Entity/Bolt shock] Dealing damage!");
         LivingEntity attacker = this.getCaster();
         List<Entity> cleaveRange = this.level().getEntities(this, this.getBoundingBox().inflate(this.getRadius()));
         for (Entity entityOnRange : cleaveRange) {
             if (entityOnRange instanceof LivingEntity targetOnRange) {
-                if (targetOnRange == attacker || targetOnRange == this.getTarget()) continue;
-                if (attacker.isAlliedTo(targetOnRange)) continue;
-                if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
-                    targetOnRange.hurt(BHDamageTypes.magicDamage(this), this.getBaseDamage());
+                if (attacker == null) {
+                    if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
+                        targetOnRange.hurt(BHDamageTypes.magicDamage(this), this.getBaseDamage());
+                    }
+                } else {
+                    if (targetOnRange == attacker) continue;
+                    if (attacker.isAlliedTo(targetOnRange)) continue;
+                    if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
+                        targetOnRange.hurt(BHDamageTypes.magicDamage(this, attacker), this.getBaseDamage());
+                    }
                 }
             }
         }
-    }
-
-    private void smolder(int amount) {
-        for (int i = 0; i < amount; i++) {
-            final float velocity = 1.5F;
-            float yaw = (float) (random.nextFloat() * 2 * Math.PI);
-
-            float r = random.nextFloat() * 0.7F;
-            float x = r * Mth.cos(yaw);
-            float z = r * Mth.sin(yaw);
-
-            float motionY = random.nextFloat() * 0.8F;
-            float motionX = velocity * Mth.cos(yaw);
-            float motionZ = velocity * Mth.sin(yaw);
-            level().addParticle((new LightningParticleOptions(0, 186, 255)), this.getX() + x, this.getY() + 0.1, this.getZ() + z, motionX, motionY, motionZ);
-        }
-    }
-
-
-    @Override
-    public boolean shouldRender(double pX, double pY, double pZ) {
-        return super.shouldRender(pX, pY, pZ);
     }
 }

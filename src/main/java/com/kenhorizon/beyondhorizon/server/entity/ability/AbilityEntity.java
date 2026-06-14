@@ -36,6 +36,7 @@ import java.util.UUID;
 
 public abstract class AbilityEntity extends Entity implements ILinkedEntity, TraceableEntity {
     protected float damage = 5.0F;
+    protected float radius = 5.0F;
     protected boolean sentEventSpike = false;
     protected int duration = 60;
     protected int lifespan = 0;
@@ -59,7 +60,7 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     public static final String NBT_IGNORE_KNOCKBACK = "IgnoreKnockback";
     public static final String NBT_IGNORE_IMMUNITY_FRAME = "IgnoreImmunityFrame";
     public static final String NBT_OWNER = "Owner";
-    protected boolean clientSideStarted;
+    protected boolean clientSideStarted = false;
 
     public AbilityEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -137,15 +138,24 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     }
 
     public float getBaseDamage() {
-        return damage;
+        if (this.level().isClientSide()) {
+            return this.entityData.get(DAMAGE);
+        } else {
+            return damage;
+        }
     }
 
     public void setRadius(float radius) {
         this.entityData.set(RADIUS, radius);
+        this.radius = radius;
     }
 
     public float getRadius() {
-        return this.entityData.get(RADIUS);
+        if (this.level().isClientSide()) {
+            return this.entityData.get(RADIUS);
+        } else {
+            return this.radius;
+        }
     }
 
     public void setIgnoreIFrame(boolean shallIgnoreResistance) {
@@ -233,6 +243,7 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     public void handleEntityEvent(byte id) {
         super.handleEntityEvent(id);
         if (id == 4) {
+            BeyondHorizon.LOGGER.debug("[Ability entity] Client Sided Started!");
             this.clientSideStarted = true;
         }
     }
@@ -255,27 +266,26 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
                 }
             }
         } else {
-            if (this.getDelay() > 0) {
-                this.setDelay(this.getDelay() - 1);
-            } else {
+            if (this.getDelay() <= 0) {
                 this.onDuration();
                 if (!this.sentEventSpike) {
                     this.level().broadcastEntityEvent(this, (byte) 4);
                     this.sentEventSpike = true;
                 }
                 if (this.getLifeTime() == (this.getDelay())) {
-                    BeyondHorizon.LOGGER.debug("Ability entity is starting");
                     this.onStart();
                 }
                 this.setLifeTime(this.getLifeTime() + 1);
-                if (this.getLifeTime() == this.getDuration() - 1) {
-                    BeyondHorizon.LOGGER.debug("Ability entity is ended");
+                if (this.getLifeTime() > this.getDuration() - 1) {
                     this.onEnd();
                 }
 
                 if (this.getLifeTime() >= this.getDuration()) {
-                    BeyondHorizon.LOGGER.debug("Ability entity is discarding");
                     this.discard();
+                }
+            } else {
+                if (this.getDelay() > 0) {
+                    this.setDelay(this.getDelay() - 1);
                 }
             }
         }

@@ -1,7 +1,7 @@
 {
 	"parent": "minecraft:item/handheld",
 	"textures": {
-		"layer0": "beyondhorizon:item/cataclysm_darkin_scythe"
+		"layer0": "beyondhorizon:item/yamato"
 	},
 	"display": {
 		"thirdperson_righthand": {

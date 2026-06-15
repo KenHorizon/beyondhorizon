@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
-public enum DamageTags {
+public enum DamageTypeTags {
     DEFAULT,
     SELF_MAX_HEALTH,
     SELF_MISSING_HEALTH,

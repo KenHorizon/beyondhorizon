@@ -30,6 +30,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder HEAVY_STRING_BOW = new AccessoryBuilder(List.of(Accessories.POLYETHYLENE));
     public static final AccessoryBuilder KRAKEN_SLAYER = new AccessoryBuilder(List.of(Accessories.BRING_IT_DOWN));
     public static final AccessoryBuilder TITAN_GLOVES = new AccessoryBuilder(List.of(Accessories.SPELL_BLADE_2));
+    public static final AccessoryBuilder GLOVE_OF_AFTERSHOCK = new AccessoryBuilder(List.of(Accessories.TITANIC_CRESCENT));
     public static final AccessoryBuilder FLAME_OF_TORMENT = new AccessoryBuilder(List.of(Accessories.TORMENT));
     public static final AccessoryBuilder ETERNAL_LIFE = new AccessoryBuilder(List.of(Accessories.ETERNAL_LIFE));
     public static final AccessoryBuilder NULL_SWORD = new AccessoryBuilder(List.of(Accessories.NULLIFY));

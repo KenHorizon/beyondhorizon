@@ -56,6 +56,8 @@ import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -661,8 +663,7 @@ public class ServerEventHandler {
                 }
             }
         }
-        StatModifiers totalDamageTaken = new StatModifiers(1.0F, (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get()), 0.0F, 0.0F);
-        damageDealt = totalDamageTaken.applyTo(damageDealt);
+        damageDealt *= (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get());
         IDamageInfo damageInfo = Capabilities.damageInfo(target);
         if (damageInfo != null) {
             damageInfo.setPostDamage(damageDealt);
@@ -798,18 +799,21 @@ public class ServerEventHandler {
         }
         return itemStack.isEnchanted() ? 1 : 0;
     }
-    @SubscribeEvent
-    public void onEquipmentChangeEvent(LivingEquipmentChangeEvent event) {
-        LivingEntity entity = event.getEntity();
-        ItemStack from = event.getFrom();
-        ItemStack to = event.getTo();
-    }
+//    @SubscribeEvent
+//    public void onEquipmentChangeEvent(LivingEquipmentChangeEvent event) {
+//        LivingEntity entity = event.getEntity();
+//        ItemStack from = event.getFrom();
+//        ItemStack to = event.getTo();
+//    }
     // TODO: Pre Mitigation Damage Handler
     @SubscribeEvent
     public void onLivingHurtEvent(LivingHurtEvent event) {
         float damageDealt = event.getAmount();
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
+        if (source.getEntity() instanceof AbstractArrow) {
+            target.invulnerableTime = 0;
+        }
         if (source.getDirectEntity() == source.getEntity() && source.getEntity() instanceof LivingEntity && target != null) {
             if (source.getEntity() instanceof Player attacker) {
                 double getAttackSpeed = attacker.getAttributeValue(Attributes.ATTACK_SPEED);
@@ -848,8 +852,7 @@ public class ServerEventHandler {
                         }
                     }
                 }
-                StatModifiers totalDamageDealt = new StatModifiers(1.0F, (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get()), 0.0F, 0.0F);
-                damageDealt = totalDamageDealt.applyTo(damageDealt);
+                damageDealt *= (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
                 attackerCombatCore.activated();
             }
         }

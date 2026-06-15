@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:item/handheld",
 	"textures": {
-		"layer0": "beyondhorizon:item/cataclysm_guardian_sword"
+		"layer0": "beyondhorizon:item/yamato"
 	},
 	"display": {
 		"thirdperson_righthand": {

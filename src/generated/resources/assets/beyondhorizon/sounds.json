@@ -239,6 +239,72 @@
       "beyondhorizon:mob/blazing_inferno/theme"
     ]
   },
+  "mob.faye.flares.death": {
+    "sounds": [
+      "beyondhorizon:mob/faye/flares/death"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.faye.flares.death"
+  },
+  "mob.faye.flares.hurt": {
+    "sounds": [
+      "beyondhorizon:mob/faye/flares/hurt1",
+      "beyondhorizon:mob/faye/flares/hurt2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.faye.flares.hurt"
+  },
+  "mob.faye.flares.idle": {
+    "sounds": [
+      "beyondhorizon:mob/faye/flares/idle1",
+      "beyondhorizon:mob/faye/flares/idle2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.faye.flares.idle"
+  },
+  "mob.faye.flares.shoot": {
+    "sounds": [
+      "beyondhorizon:mob/faye/flares/shoot1",
+      "beyondhorizon:mob/faye/flares/shoot2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.faye.flares.shoot"
+  },
+  "mob.faye.wildfire.death": {
+    "sounds": [
+      "beyondhorizon:mob/faye/wildfire/death"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.faye.wildfire.death"
+  },
+  "mob.faye.wildfire.death_ray": {
+    "sounds": [
+      "beyondhorizon:mob/faye/wildfire/death_ray"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.faye.wildfire.death_ray"
+  },
+  "mob.faye.wildfire.death_ray_charging": {
+    "sounds": [
+      "beyondhorizon:mob/faye/wildfire/death_ray_charging"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.faye.wildfire.death_ray_charging"
+  },
+  "mob.faye.wildfire.hurt": {
+    "sounds": [
+      "beyondhorizon:mob/faye/wildfire/hurt1",
+      "beyondhorizon:mob/faye/wildfire/hurt2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.faye.wildfire.hurt"
+  },
+  "mob.faye.wildfire.idle": {
+    "sounds": [
+      "beyondhorizon:mob/faye/wildfire/idle1",
+      "beyondhorizon:mob/faye/wildfire/idle2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.faye.wildfire.idle"
+  },
+  "mob.faye.wildfire.shoot": {
+    "sounds": [
+      "beyondhorizon:mob/faye/wildfire/shoot1",
+      "beyondhorizon:mob/faye/wildfire/shoot2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.faye.wildfire.shoot"
+  },
   "mob.inferno_shield.break": {
     "sounds": [
       "beyondhorizon:mob/inferno_shield/break1",

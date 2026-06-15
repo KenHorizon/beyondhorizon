@@ -24,6 +24,18 @@ public class BHSounds {
     public static RegistryObject<SoundEvent> SPAWNER_OPEN_SHUTTER = RegistryHelper.registerSounds("block.base_spawner.open_shutter", "Spawner opens");
     public static RegistryObject<SoundEvent> SPAWNER_DETECT_PLAYER = RegistryHelper.registerSounds("block.base_spawner.detect_player", "Spawner charges up");
 
+    public static RegistryObject<SoundEvent> FAYE_WILDFIRE_IDLE = RegistryHelper.registerSounds("mob.faye.wildfire.idle", "Faye wildfire crackles");
+    public static RegistryObject<SoundEvent> FAYE_WILDFIRE_HURT = RegistryHelper.registerSounds("mob.faye.wildfire.hurt", "Faye wildfire hurt");
+    public static RegistryObject<SoundEvent> FAYE_WILDFIRE_DEATH = RegistryHelper.registerSounds("mob.faye.wildfire.death", "Faye wildfire death");
+    public static RegistryObject<SoundEvent> FAYE_WILDFIRE_SHOOT = RegistryHelper.registerSounds("mob.faye.wildfire.shoot", "Faye wildfire shoot");
+    public static RegistryObject<SoundEvent> FAYE_WILDFIRE_DEATH_RAY_CHARGING = RegistryHelper.registerSounds("mob.faye.wildfire.death_ray_charging", "Death ray charging");
+    public static RegistryObject<SoundEvent> FAYE_WILDFIRE_DEATH_RAY = RegistryHelper.registerSounds("mob.faye.wildfire.death_ray", "Death ray blast");
+
+    public static RegistryObject<SoundEvent> FAYE_FLARES_IDLE = RegistryHelper.registerSounds("mob.faye.flares.idle", "Faye flares crackles");
+    public static RegistryObject<SoundEvent> FAYE_FLARES_HURT = RegistryHelper.registerSounds("mob.faye.flares.hurt", "Faye flares hurt");
+    public static RegistryObject<SoundEvent> FAYE_FLARES_DEATH = RegistryHelper.registerSounds("mob.faye.flares.death", "Faye flares death");
+    public static RegistryObject<SoundEvent> FAYE_FLARES_SHOOT = RegistryHelper.registerSounds("mob.faye.flares.shoot", "Faye flares shoot");
+
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_THEME = RegistryHelper.registerSounds("mob.blazing_inferno.theme");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_HURT = RegistryHelper.registerSounds("mob.blazing_inferno.hurt", "Blazing inferno hurt");
     public static RegistryObject<SoundEvent> BLAZING_INFERNO_IDLE = RegistryHelper.registerSounds("mob.blazing_inferno.idle", "Blazing inferno crackles");

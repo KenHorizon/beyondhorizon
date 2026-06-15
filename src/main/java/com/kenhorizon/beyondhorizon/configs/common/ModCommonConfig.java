@@ -45,7 +45,7 @@ public class ModCommonConfig {
         builder.pop();
         builder.pop();
 
-        builder.push("Beyond Horizon | Common Configs");
+        builder.push("Beyond Horizon | Gameplay Configs");
         builder.push("Anvil Patch");
         ENABLE_MOB_LEVELS = builder
                 .worldRestart()

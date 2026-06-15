@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -59,7 +59,7 @@ public class ExtendedProjectile extends Projectile {
     public double zPower;
     private Vec3[] trailPositions = new Vec3[64];
     private int trailPointer = -1;
-    public DamageTags damageTags = DamageTags.DEFAULT;
+    public DamageTypeTags damageTypeTags = DamageTypeTags.DEFAULT;
     protected float damageTypeModifiers = 0.0F;
     public static final String NBT_DURATION = "Duration";
     public static final String NBT_LIFESPAN = "Lifespan";
@@ -96,17 +96,17 @@ public class ExtendedProjectile extends Projectile {
         return false;
     }
 
-    public void setDamage(DamageTags damageType, float damageModifiers) {
-        this.damageTags = damageType;
+    public void setDamage(DamageTypeTags damageType, float damageModifiers) {
+        this.damageTypeTags = damageType;
         this.damageTypeModifiers = damageModifiers;
     }
 
-    public void setDamageTypes(DamageTags damageTags) {
-        this.damageTags = damageTags;
+    public void setDamageTypes(DamageTypeTags damageTypeTags) {
+        this.damageTypeTags = damageTypeTags;
     }
 
-    public DamageTags getDamageTypes() {
-        return damageTags;
+    public DamageTypeTags getDamageTypes() {
+        return damageTypeTags;
     }
 
     @Override

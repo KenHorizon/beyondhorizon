@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.entity.mobs;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
@@ -9,18 +8,15 @@ import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ai.*;
 import com.kenhorizon.beyondhorizon.server.entity.ai.control.FlightMoveControl;
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -28,7 +24,6 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
@@ -43,6 +38,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -59,10 +55,10 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
         this.setExp(10);
         this.moveControl = new FlightMoveControl(this, 1.21F, true);
         this.setMaxUpStep(2.0F);
-        this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
-        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
+        this.setPathfindingMalus(BlockPathTypes.WATER, -16.0F);
+        this.setPathfindingMalus(BlockPathTypes.LAVA, -16.0F);
+        this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, -16.0F);
+        this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, -16.0F);
         this.refreshDimensions();
     }
 
@@ -146,12 +142,12 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
 
     @Override
     protected void playHurtSound(DamageSource source) {
-        this.playSound(BHSounds.BLAZING_INFERNO_HURT.get());
+        this.playSound(BHSounds.FAYE_FLARES_HURT.get());
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return BHSounds.BLAZING_INFERNO_DEATH.get();
+        return BHSounds.FAYE_FLARES_DEATH.get();
     }
 
     @Override
@@ -168,6 +164,10 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
         return flyingPathNavigation;
     }
 
+    @Override
+    protected @Nullable SoundEvent getAmbientSound() {
+        return BHSounds.FAYE_FLARES_IDLE.get();
+    }
 
     @Override
     protected AABB makeBoundingBox() {
@@ -222,7 +222,8 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
 
         if (this.fireballCooldown > 0) this.fireballCooldown--;
         if (!this.level().isClientSide()) {
-            this.switchNavigator(this.getAnimationState(ID_BLAZING_ROD));
+            boolean flag1 = this.getAnimationState(ID_BLAZING_ROD) && this.getAnimationTick() <= 60;
+            this.switchNavigator(flag1);
         }
         if (!this.onGround() && vector3d.y < 0.0D) {
             this.setDeltaMovement(vector3d.multiply(1.0D, 0.4D, 1.0D));
@@ -285,34 +286,30 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
                         this.getNavigation().moveTo(target, 1.0D);
                     }
                 }
-                if (this.getAnimationTick() == 60) {
-                    if (target != null) {
-                        this.performRangedAttack(3, target, 10, 1.0F, 5.0F);
-                        if (!this.isSilent()) {
-                            this.playSound(BHSounds.BLAZING_INFERNO_SHOOT.get(), 1.0F, 1.0F);
-                        }
+                if (target != null) {
+                    this.performRangedAttack(3, target, 10, 1.0F, 5.0F, 60);
+                    if (!this.isSilent()) {
+                        this.playSound(BHSounds.BLAZING_INFERNO_SHOOT.get(), 1.0F, 1.0F);
                     }
                 }
             }
         }
     }
-    private void performRangedAttack(int count, LivingEntity target, int initialFireRate, float velocity) {
-        this.performRangedAttack(count, target, initialFireRate, velocity, 0.0F);
-    }
 
-    private void performRangedAttack(int count, LivingEntity target, int initialFireRate, float velocity, float inaccuracy) {
-
-        for (int i = 0; i < count; i++) {
-            if (this.getAnimationTick() % (initialFireRate - i) == 0) {
-                this.doRoarParticle(this.getX(), this.getEyeY(), this.getZ(), 10, 255, 0, 0, 1.0F, 1.0F, 5.0F, 0.1F);
-                if (!this.isSilent()) {
-                    this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
+    private void performRangedAttack(int count, LivingEntity target, int initialFireRate, float velocity, float inaccuracy, int tickStartAt) {
+        if (this.getAnimationTick() > tickStartAt && this.getAnimationTick() <= tickStartAt + (initialFireRate)) {
+            for (int i = 0; i < count; i++) {
+                if (this.getAnimationTick() % (initialFireRate - i) == 0) {
+                    this.doRoarParticle(this.getX(), this.getEyeY(), this.getZ(), 10, 255, 0, 0, 1.0F, 1.0F, 5.0F, 0.1F);
+                    if (!this.isSilent()) {
+                        this.level().playSound((Player) null, this, BHSounds.FAYE_FLARES_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
+                    }
+                    this.shoot(1, target, velocity, inaccuracy, false);
                 }
-                this.shoot(1, target, velocity, inaccuracy, false);
             }
         }
-
     }
+
     private void shoot(int count, LivingEntity target, float velocity, float inaccuracy, boolean spread) {
         double offsetangle = Math.toRadians(12);
         for (int i = 0; i < count; ++i) {
@@ -321,7 +318,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
             double d1 = this.getY() + (this.getBbHeight() / 2) + 0.5D;
             double d2 = this.getZ();
             BlazingRod projectile = new BlazingRod(this.level(), d0, d1, d2, this);
-            projectile.setDamage(DamageTags.DEFAULT, 0.02F);
+            projectile.setDamage(DamageTypeTags.DEFAULT, 0.02F);
             projectile.setBaseDamage(1);
             double shootX = target.getX() - this.getX();
             double shootY = target.getBoundingBox().minY + target.getBbHeight() / 2 - projectile.getY();

@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static final float TITANIC_CRESCENT = 0.02F;
     public static final float HEAVY_STRING_KNOCKBACK = 1.20F;
     public static final float HEAVY_STRING_DAMAGE = 0.20F;
     public static final float DARK_SUN_CONVERT = 0.25F;

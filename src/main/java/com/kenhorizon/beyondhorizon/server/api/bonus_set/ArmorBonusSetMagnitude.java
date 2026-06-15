@@ -93,7 +93,7 @@ public class ArmorBonusSetMagnitude extends ArmorBonusSet implements IAttack, IE
         if (this == ArmorBonusSets.WILDFIRE_ARMOR_SET) {
             float totalDamage = (float) EntityUtils.getAttackDamage(entity);
             float dealDamage = this.getLevel() + (totalDamage * this.getMagnitude());
-            CleaveAbility.spawn(entity.level(), entity, entity, dealDamage, 8.0F, CleaveAbility.Type.CIRCLE);
+            CleaveAbility.spawn(entity.level(), entity, entity, dealDamage, 8.0F);
         }
         return damageDealt;
     }

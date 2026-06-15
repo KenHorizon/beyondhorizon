@@ -4,6 +4,9 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
+import com.kenhorizon.beyondhorizon.client.render.entity.ability.AbstractLaserBeamRenderer;
+import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
+import com.kenhorizon.beyondhorizon.client.render.entity.ability.InfernalRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
@@ -13,7 +16,6 @@ import com.kenhorizon.beyondhorizon.client.render.item.BHItemRenderProperties;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
-import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.EruptionRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.BlazingSpearRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
@@ -24,6 +26,7 @@ import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
+import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAccessoryInventoryPacket;
@@ -119,14 +122,17 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.BOLT_SHOCK.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.CLEAVE_ABILITY.get(), RenderNothing::new);
+        EntityRenderers.register(BHEntity.CLEAVE_CONE_ABILITY.get(), RenderNothing::new);
         //
         EntityRenderers.register(BHEntity.FAYE_FLARES.get(), FayeFlaresRenderer::new);
+        EntityRenderers.register(BHEntity.FAYE_WILDFIRE.get(), FayeWildfireRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO.get(), BlazingInfernoRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_ROD.get(), BlazingRodRenderer::new);
         EntityRenderers.register(BHEntity.INFERNO_SHIELD.get(), InfernoShieldRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_SPEAR.get(), BlazingSpearRenderer::new);
         EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
+        EntityRenderers.register(BHEntity.INFERNAL_RAY.get(), InfernalRayRenderer::new);
         EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
         //
         BlockEntityRenderers.register(BHBlockEntity.BASE_SPAWNER.get(), BaseSpawnerRenderer::new);
@@ -143,6 +149,7 @@ public class ClientProxy extends ServerProxy {
     }
 
     public void entityCreationAttribute(EntityAttributeCreationEvent event) {
+        event.put(BHEntity.FAYE_WILDFIRE.get(), FayeWildfire.createAttributes());
         event.put(BHEntity.FAYE_FLARES.get(), FayeFlares.createAttributes());
         event.put(BHEntity.BLAZING_INFERNO.get(), BlazingInferno.createAttributes());
         event.put(BHEntity.INFERNO_SHIELD.get(), InfernoShield.createAttributes());

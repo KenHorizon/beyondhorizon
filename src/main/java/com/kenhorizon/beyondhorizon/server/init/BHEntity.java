@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.init;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.ability.*;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
+import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingSpear;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
@@ -34,6 +35,15 @@ public class BHEntity {
             .properties(p -> p.sized(0.85F, 0.85F))
             .properties(EntityType.Builder::fireImmune)
             .register();
+
+    public static final RegistryObject<EntityType<FayeWildfire>> FAYE_WILDFIRE = RegistryEntity
+            .register("faye_wildfire", FayeWildfire::new)
+            .lang("Faye Wildfire")
+            .mobCategory(MobCategory.CREATURE)
+            .properties(p -> p.sized(0.85F, 1.85F))
+            .properties(EntityType.Builder::fireImmune)
+            .register();
+
 
     public static final RegistryObject<EntityType<BlazingSpear>> BLAZING_SPEAR = RegistryEntity
             .<BlazingSpear>register("blazing_spear", BlazingSpear::new)
@@ -78,6 +88,13 @@ public class BHEntity {
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
+    public static final RegistryObject<EntityType<InfernalRayAbility>> INFERNAL_RAY = RegistryEntity
+            .<InfernalRayAbility>register("infernal_ray", InfernalRayAbility::new)
+            .lang("Infernal Ray")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
     public static final RegistryObject<EntityType<BoltShockAbility>> BOLT_SHOCK = RegistryEntity
             .<BoltShockAbility>register("bolt_shock", BoltShockAbility::new)
             .lang("Bolt Shock")
@@ -98,6 +115,13 @@ public class BHEntity {
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(1.0F, 1.0F))
             .properties(EntityType.Builder::noSummon)
+            .register();
+
+    public static final RegistryObject<EntityType<CleaveConeAbility>> CLEAVE_CONE_ABILITY = RegistryEntity
+            .register("cleave_cone_ability", CleaveConeAbility::new)
+            .lang("Cleave")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
     public static final RegistryObject<EntityType<CleaveAbility>> CLEAVE_ABILITY = RegistryEntity

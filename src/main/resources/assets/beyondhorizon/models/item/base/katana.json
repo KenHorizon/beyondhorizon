@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"parent": "minecraft:item/handheld",
 	"textures": {
-		"layer0": "beyondhorizon:item/double_edge_inferno_sword"
+		"layer0": "beyondhorizon:item/yamato"
 	},
 	"display": {
 		"thirdperson_righthand": {

@@ -1,4 +1,4 @@
-// 1.20.1	2026-06-10T15:34:26.397099	Item Models: beyondhorizon
+// 1.20.1	2026-06-15T20:46:03.6163695	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -41,10 +41,12 @@ f067ccde0fbe79a96370293f0849fa7134d3cbf4 assets/beyondhorizon/models/item/debug1
 129d032085700e22ac6a154628aa796da073833c assets/beyondhorizon/models/item/debug3.json
 b6d7905f963a962b22096b351fb5a25a074cc44b assets/beyondhorizon/models/item/debug4.json
 1d9e52bd8c1b56a42a9108f713087fae5dd112cd assets/beyondhorizon/models/item/debug5.json
+c6d227757f2ec16ec6661a8a43c1a4beaa3f69df assets/beyondhorizon/models/item/debug6.json
 0ad0afa79066bdf0785e138f93c32736e2e7b074 assets/beyondhorizon/models/item/duskblade.json
 8378e7110a760b6399067781ffe496e0a4064340 assets/beyondhorizon/models/item/dwarf_miner_ring.json
 4936a8fe1baf590f02921d7f68d9ce4e3c50228c assets/beyondhorizon/models/item/elucidator.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/beyondhorizon/models/item/faye_flares_spawn_egg.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/beyondhorizon/models/item/faye_wildfire_spawn_egg.json
 035b7d601b8460735e57975e945be18c287fd89c assets/beyondhorizon/models/item/firefly_faye.json
 65f0489405fef913ab4bb6a384cf443555dc955b assets/beyondhorizon/models/item/flame_cell.json
 f3f17da522f0e0e1bcacd10c5dd90e305455a4a8 assets/beyondhorizon/models/item/flame_of_torment.json
@@ -52,6 +54,7 @@ f3f17da522f0e0e1bcacd10c5dd90e305455a4a8 assets/beyondhorizon/models/item/flame_
 c923bee1ccff397cdd4dca23ccc07fc5bce1d830 assets/beyondhorizon/models/item/fortune_shikigami.json
 62b9b00e51fb14818dff56c27375e5f3282eadcf assets/beyondhorizon/models/item/ghoul_heart.json
 d9c718afc0403d4be74867f1a668110ff6e2c197 assets/beyondhorizon/models/item/giant_slayer_sword.json
+4edbfa31509d378737bd1a8f4621e4ea174ec806 assets/beyondhorizon/models/item/glove_of_aftershock.json
 a9eace5b43f130675b6bdea261da76bf2990409a assets/beyondhorizon/models/item/golden_boots.json
 059eb6c42fa2437b04c703bcb5e859f611ac1b27 assets/beyondhorizon/models/item/gray_wool_fur.json
 29cf377062fa71bbce4483b3f6aab76c5f60b145 assets/beyondhorizon/models/item/green_wool_fur.json

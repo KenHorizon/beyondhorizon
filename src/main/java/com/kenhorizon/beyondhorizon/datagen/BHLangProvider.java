@@ -149,6 +149,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.GHOUL.get(), "Ghoul", "Hunger exhaustion increased by 150%, On-kill restore 5 hunger points and gain buff of Ghoul Will, and prevent user eat edible item");
         this.addAccessory(Accessories.FADED_MOON.get(), "Faded Moon", "Convert 25% Max Mana into additional bonus magic damage on-hit");
         this.addAccessory(Accessories.TWO_WORLD.get(), "Two World", "Gain Dark Sun and Faded Moon, If you have more than bonus attack damage to ability power enter Dark Sun and if you have more than ability power to attack damage enter Faded Moon ");
+        this.addAccessory(Accessories.TITANIC_CRESCENT.get(), "Titanic Crescent", "Basic attack on-hit deal bonus %s%% Max HP to the target and %s%% Max HP to others entity in a cone in the direction of the primary target");
         //
 
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon | Ingredients");

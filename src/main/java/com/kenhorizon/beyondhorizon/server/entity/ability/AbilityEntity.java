@@ -5,7 +5,7 @@ import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilityEffectPacket;
 import net.minecraft.nbt.CompoundTag;
@@ -41,7 +41,7 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     protected int duration = 60;
     protected int lifespan = 0;
     protected int delay = 0;
-    private DamageTags damageTags = DamageTags.DEFAULT;
+    private DamageTypeTags damageTypeTags = DamageTypeTags.DEFAULT;
     private float damageTagModifiers = 0.0F;
     private LivingEntity cachedCaster;
     private LivingEntity cachedTarget;
@@ -81,10 +81,16 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
 
     public void setCaster(LivingEntity caster) {
         this.cachedCaster = caster;
+        this.setCasterID(caster.getUUID());
     }
 
     public void setCasterID(UUID id) {
         this.entityData.set(CASTER, Optional.of(id));
+    }
+
+    public void setTarget(LivingEntity cachedTarget) {
+        this.cachedTarget = cachedTarget;
+        this.entityData.set(TARGET, Optional.of(cachedTarget.getUUID()));
     }
 
     public Optional<UUID> getTargetID() {
@@ -95,13 +101,13 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
         this.entityData.set(TARGET, Optional.of(id));
     }
 
-    public void setDamageTags(DamageTags damageTags, float damageTagModifiers) {
-        this.damageTags = damageTags;
+    public void setDamageTags(DamageTypeTags damageTypeTags, float damageTagModifiers) {
+        this.damageTypeTags = damageTypeTags;
         this.damageTagModifiers = damageTagModifiers;
     }
 
-    public DamageTags getDamageTags() {
-        return this.damageTags;
+    public DamageTypeTags getDamageTags() {
+        return this.damageTypeTags;
     }
 
     @Override
@@ -303,8 +309,8 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
         return this.cachedCaster;
     }
 
-    protected boolean dealDamage(LivingEntity entity, DamageTags damageTags, float damageTagsModifiers, float damage) {
-        return DamageHandler.damage(entity, false, this.setSourceDamage(entity), damageTags, damageTagsModifiers, damage);
+    protected boolean dealDamage(LivingEntity entity, DamageTypeTags damageTypeTags, float damageTagsModifiers, float damage) {
+        return DamageHandler.damage(entity, false, this.setSourceDamage(entity), damageTypeTags, damageTagsModifiers, damage);
     }
 
     public DamageSource setSourceDamage(LivingEntity entity) {

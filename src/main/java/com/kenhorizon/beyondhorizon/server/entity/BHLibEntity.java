@@ -67,8 +67,15 @@ public class BHLibEntity extends BHBaseEntity {
             }
         }
         if (this.getAnimation() > 0) {
+            if (this.getAnimationTick() == 0) {
+                this.onStartAnimation();
+            }
             this.setAnimationTick(this.getAnimationTick() + 1);
         }
+    }
+
+    public void onStartAnimation() {
+
     }
 
     public void randomLook() {

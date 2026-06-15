@@ -85,12 +85,12 @@ public class Skills {
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));
 
-    public static final RegistryObject<Skill> BLAZING_CLEAVE = registerSkill("blazing_cleave", () -> new CleaveEffectSkill(Constant.BLAZING_CLEAVE_DAMAGE, Constant.BLAZING_CLEAVE_RANGE, CleaveAbility.Type.CIRCLE)
+    public static final RegistryObject<Skill> BLAZING_CLEAVE = registerSkill("blazing_cleave", () -> new BlazingCleaveSkill(Constant.BLAZING_CLEAVE_DAMAGE, Constant.BLAZING_CLEAVE_RANGE)
             .universal()
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));
 
-    public static final RegistryObject<Skill> FEAST = registerSkill("feast", () -> new CleaveEffectSkill(Constant.BLAZING_CLEAVE_DAMAGE, Constant.BLAZING_CLEAVE_RANGE, CleaveAbility.Type.CIRCLE)
+    public static final RegistryObject<Skill> FEAST = registerSkill("feast", () -> new BlazingCleaveSkill(Constant.BLAZING_CLEAVE_DAMAGE, Constant.BLAZING_CLEAVE_RANGE)
             .universal()
             .format(Skill.Format.NORMAL)
             .type(Skill.Type.PASSIVE));

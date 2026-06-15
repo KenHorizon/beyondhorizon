@@ -4,11 +4,11 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRaySound;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -80,6 +80,10 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     private static final EntityDataAccessor<Boolean> HAS_PLAYER = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> CASTER = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> SOURCE = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> R = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> G = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> B = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> SCALE = SynchedEntityData.defineId(AbstractDeathRayAbility.class, EntityDataSerializers.FLOAT);
 
     public float prevYaw;
     public float prevPitch;
@@ -127,6 +131,26 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         getEntityData().define(CAN_BURN_TARGET, false);
         getEntityData().define(CASTER, -1);
         getEntityData().define(SOURCE, -1);
+        getEntityData().define(R, 255);
+        getEntityData().define(G, 255);
+        getEntityData().define(B, 255);
+        getEntityData().define(SCALE, 1.0F);
+    }
+    public void setColor(int r, int g, int b) {
+        this.getEntityData().set(R, r);
+        this.getEntityData().set(G, g);
+        this.getEntityData().set(B, b);
+    }
+
+    public int[] getColors() {
+        return new int[] {this.entityData.get(R), this.entityData.get(G), this.entityData.get(B)};
+    }
+    public void setScale(float scale) {
+        this.getEntityData().set(SCALE, scale);
+    }
+
+    public float getScale() {
+        return this.entityData.get(SCALE);
     }
 
     public void setDelay(int delay) {
@@ -247,6 +271,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
 
     protected void onStartParticle() {
         int particleCount = 4;
+        float[] colors = ColorUtil.getFARGB(ColorUtil.combineRGB(this.getColors()[0],this.getColors()[1],this.getColors()[2]));
         while (particleCount --> 0) {
             double radius = 1f;
             float yaw = (float) (random.nextFloat() * 2 * Math.PI);
@@ -257,7 +282,9 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
             double o2x = (float) (-1 * Math.cos(getYaw()) * Math.cos(getPitch()));
             double o2y = (float) (-1 * Math.sin(getPitch()));
             double o2z = (float) (-1 * Math.sin(getYaw()) * Math.cos(getPitch()));
-            ParticleTrailOptions.add(level(), TrailParticles.Behavior.FADE,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz, 1.0F, this.getTrailA(), this.getTrailR(), this.getTrailG(), this.getTrailB(), 20, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
+            ParticleTrailOptions.add(level(),
+                    TrailParticles.Behavior.FADE_N_SHRINK,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz,
+                    1.25F, 1.0F, colors[0], colors[1], colors[2], 20, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
         }
     }
 
@@ -362,10 +389,40 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     }
 
     @Override
-    protected void readAdditionalSaveData(CompoundTag nbt) {}
+    protected void readAdditionalSaveData(CompoundTag nbt) {
+        this.setYaw(nbt.getFloat("yaw"));
+        this.setPitch(nbt.getFloat("pitch"));
+        this.setScale(nbt.getFloat("scale"));
+        this.setColor(nbt.getInt("r"),nbt.getInt("g"),nbt.getInt("b"));
+        this.damageTypes = DamageTypes.values()[nbt.getInt("damage_types")];
+        this.setCanBurnTarget(nbt.getBoolean("can_burn_target"));
+        this.setImmunityFrameIgnore(nbt.getBoolean("ignore_immunity_frame"));
+        this.setIsScaleCurrentHealth(nbt.getBoolean("scale_with_current_health"));
+        this.setIsScaleMaxHealth(nbt.getBoolean("scale_with_max_health"));
+        this.setIsScaleMissingHealth(nbt.getBoolean("scale_with_missing_health"));
+        this.scaleCurrentHealthDamage(nbt.getFloat("max_current_damage"));
+        this.scaleMissingHealthDamage(nbt.getFloat("max_missing_damage"));
+        this.scaleMaxHealthDamage(nbt.getFloat("max_health_damage"));
+    }
 
     @Override
-    protected void addAdditionalSaveData(CompoundTag nbt) {}
+    protected void addAdditionalSaveData(CompoundTag nbt) {
+        nbt.putInt("r", this.getColors()[0]);
+        nbt.putInt("g", this.getColors()[1]);
+        nbt.putInt("b", this.getColors()[2]);
+        nbt.putFloat("yaw", this.getYaw());
+        nbt.putFloat("pitch", this.getPitch());
+        nbt.putFloat("scale", this.getScale());
+        nbt.putInt("damage_types", this.damageTypes.ordinal());
+        nbt.putBoolean("can_burn_target", this.isCanBurnTarget());
+        nbt.putBoolean("ignore_immunity_frame", this.isImmunityFrameIgnore());
+        nbt.putBoolean("scale_with_current_health", this.isScaleCurrentHealth());
+        nbt.putBoolean("scale_with_missing_health", this.isScaleMissingHealth());
+        nbt.putBoolean("scale_with_max_health", this.isScaleMaxHealth());
+        nbt.putFloat("max_current_damage", this.getScaleCurrentHealthDamage());
+        nbt.putFloat("max_missing_damage", this.getScaleMissingHealthDamage());
+        nbt.putFloat("max_health_damage", this.getScaleMaxHealthDamage());
+    }
 
     protected void calculateEndPos() {
         double radius = laserBeamRange;
@@ -436,22 +493,14 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         return distance < 1024;
     }
 
-    private void updateWithPlayer() {
+    protected void updateWithPlayer() {
         this.setYaw((float) ((caster.yHeadRot + 90) * Math.PI / 180.0D));
         this.setPitch((float) (-caster.getXRot() * Math.PI / 180.0D));
         Vec3 vecOffset = caster.getLookAngle().normalize().scale(1);
         this.setPos(caster.getX() + vecOffset.x(), caster.getY() + 1.2f + vecOffset.y(), caster.getZ() + vecOffset.z());
     }
 
-    private void updateWithBlazingInferno() {
-        this.setYaw((float) ((caster.yHeadRot + 90) * Math.PI / 180.0D));
-        this.setPitch((float) (-caster.getXRot() * Math.PI / 180.0D));
-        Vec3 vecOffset1 = new Vec3(0, 0, 0.6).yRot((float) Math.toRadians(-caster.getYRot()));
-        Vec3 vecOffset2 = new Vec3(1.2, 0, 0).yRot(-getYaw()).xRot(getPitch());
-        this.setPos(caster.getX() + vecOffset1.x() + vecOffset2.x(), caster.getY() + 1.5f + vecOffset1.y() + vecOffset2.y(), caster.getZ() + vecOffset1.z() + vecOffset2.z());
-    }
-
-    private void updateWithMob() {
+    protected void updateWithMob() {
         if (this.caster != null) {
             this.setYaw((float) ((caster.yHeadRot + 90) * Math.PI / 180.0D));
             this.setPitch((float) (-caster.getXRot() * Math.PI / 180.0D));
@@ -459,22 +508,6 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
             Vec3 vecOffset2 = new Vec3(1.2, 0, 0).yRot(-getYaw()).xRot(getPitch());
             this.setPos(caster.getX() + vecOffset1.x() + vecOffset2.x(), caster.getY() + 1.5f + vecOffset1.y() + vecOffset2.y(), caster.getZ() + vecOffset1.z() + vecOffset2.z());
         }
-    }
-
-    protected float getTrailA() {
-        return 1.0F;
-    }
-
-    protected float getTrailR() {
-        return 1.0F;
-    }
-
-    protected float getTrailG() {
-        return 1.0F;
-    }
-
-    protected float getTrailB() {
-        return 1.0F;
     }
 
     @Override
@@ -507,7 +540,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         }
     }
 
-    public void laserBeamConfiguration(DamageTypes types, float deathLaserBaseDamage) {
+    public void damageConfig(DamageTypes types, float deathLaserBaseDamage) {
         this.damageTypes = types;
         this.baseDamage = deathLaserBaseDamage;
     }

@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.render.entity.ability;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -27,14 +29,8 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
     private float beamSize = BEAM_RADIUS;
     private boolean clearerView = false;
 
-    public AbstractLaserBeamRenderer(EntityRendererProvider.Context context, float beamSize, float startRadius) {
-        super(context);
-        this.startRadius = startRadius;
-        this.beamSize = beamSize;
-    }
-
     public AbstractLaserBeamRenderer(EntityRendererProvider.Context context) {
-        this(context, BEAM_RADIUS, START_RADIUS);
+        super(context);
     }
 
     @Override
@@ -55,15 +51,15 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
             frame = 6;
         }
         VertexConsumer ivertexbuilder = bufferIn.getBuffer(BHRenderTypes.glowing(getTextureLocation(ability)));
-        renderStart(frame, poseStack, ivertexbuilder, packedLightIn);
-        renderBeam(length, 180f / (float) Math.PI * yaw, 180f / (float) Math.PI * pitch, frame, poseStack, ivertexbuilder, packedLightIn);
+        renderStart(ability.getScale(),frame, poseStack, ivertexbuilder, packedLightIn);
+        renderBeam(ability.getScale(), length, 180f / (float) Math.PI * yaw, 180f / (float) Math.PI * pitch, frame, poseStack, ivertexbuilder, packedLightIn);
         poseStack.pushPose();
         poseStack.translate(collidePosX - posX, collidePosY - posY, collidePosZ - posZ);
-        renderEnd(frame, ability.blockSide, poseStack, ivertexbuilder, packedLightIn);
+        renderEnd(ability.getScale(),frame, ability.blockSide, poseStack, ivertexbuilder, packedLightIn);
         poseStack.popPose();
     }
 
-    private void renderFlatQuad(int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
+    private void renderFlatQuad(float scale, int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
         float minU = 0 + 16F / TEXTURE_WIDTH * frame;
         float minV = 0;
         float maxU = minU + 16F / TEXTURE_WIDTH;
@@ -71,28 +67,28 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
         PoseStack.Pose matrixstack$entry = matrixStackIn.last();
         Matrix4f matrix4f = matrixstack$entry.pose();
         Matrix3f matrix3f = matrixstack$entry.normal();
-        drawVertex(matrix4f, matrix3f, builder, -this.getStartRadius(), -this.getStartRadius(), 0, minU, minV, 1, packedLightIn);
-        drawVertex(matrix4f, matrix3f, builder, -this.getStartRadius(), this.getStartRadius(), 0, minU, maxV, 1, packedLightIn);
-        drawVertex(matrix4f, matrix3f, builder, this.getStartRadius(), this.getStartRadius(), 0, maxU, maxV, 1, packedLightIn);
-        drawVertex(matrix4f, matrix3f, builder, this.getStartRadius(), -this.getStartRadius(), 0, maxU, minV, 1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, -this.getStartRadius() * scale, -this.getStartRadius() * scale, 0, minU, minV,1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, -this.getStartRadius() * scale, this.getStartRadius() * scale, 0, minU, maxV,1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, this.getStartRadius() * scale, this.getStartRadius() * scale, 0, maxU, maxV,1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, this.getStartRadius() * scale, -this.getStartRadius() * scale, 0, maxU, minV,1, packedLightIn);
     }
 
-    private void renderStart(int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
+    private void renderStart(float scale, int frame, PoseStack matrixStackIn, VertexConsumer builder,int packedLightIn) {
         if (clearerView) {
             return;
         }
         matrixStackIn.pushPose();
         Quaternionf quat = this.entityRenderDispatcher.cameraOrientation();
         matrixStackIn.mulPose(quat);
-        renderFlatQuad(frame, matrixStackIn, builder, packedLightIn);
+        renderFlatQuad(scale, frame, matrixStackIn, builder, packedLightIn);
         matrixStackIn.popPose();
     }
 
-    private void renderEnd(int frame, Direction side, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
+    private void renderEnd(float scale, int frame, Direction side, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
         matrixStackIn.pushPose();
         Quaternionf quat = this.entityRenderDispatcher.cameraOrientation();
         matrixStackIn.mulPose(quat);
-        renderFlatQuad(frame, matrixStackIn, builder, packedLightIn);
+        renderFlatQuad(scale, frame, matrixStackIn, builder, packedLightIn);
         matrixStackIn.popPose();
         if (side == null) {
             return;
@@ -102,11 +98,11 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
         sideQuat.mul(quatFromRotationXYZ(90, 0, 0, true));
         matrixStackIn.mulPose(sideQuat);
         matrixStackIn.translate(0, 0, -0.01f);
-        renderFlatQuad(frame, matrixStackIn, builder, packedLightIn);
+        renderFlatQuad(scale, frame, matrixStackIn, builder, packedLightIn);
         matrixStackIn.popPose();
     }
 
-    private void drawBeam(float length, int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
+    private void drawBeam(float scale, float length, int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
         float minU = 0;
         float minV = 16 / TEXTURE_HEIGHT + 1 / TEXTURE_HEIGHT * frame;
         float maxU = minU + 20 / TEXTURE_WIDTH;
@@ -115,13 +111,13 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
         Matrix4f matrix4f = matrixstack$entry.pose();
         Matrix3f matrix3f = matrixstack$entry.normal();
         float offset = clearerView ? -1 : 0;
-        drawVertex(matrix4f, matrix3f, builder, -this.getBeamSize(), offset, 0, minU, minV, 1, packedLightIn);
-        drawVertex(matrix4f, matrix3f, builder, -this.getBeamSize(), length, 0, minU, maxV, 1, packedLightIn);
-        drawVertex(matrix4f, matrix3f, builder, this.getBeamSize(), length, 0, maxU, maxV, 1, packedLightIn);
-        drawVertex(matrix4f, matrix3f, builder, this.getBeamSize(), offset, 0, maxU, minV, 1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, -this.getBeamSize() * scale, offset, 0, minU, minV, 1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, -this.getBeamSize() * scale, length, 0, minU, maxV, 1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, this.getBeamSize() * scale, length, 0, maxU, maxV, 1, packedLightIn);
+        drawVertex(matrix4f, matrix3f, builder, this.getBeamSize() * scale, offset, 0, maxU, minV, 1, packedLightIn);
     }
 
-    private void renderBeam(float length, float yaw, float pitch, int frame,  PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
+    private void renderBeam(float scale,float length, float yaw, float pitch, int frame,  PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(quatFromRotationXYZ(90, 0, 0, true));
         matrixStackIn.mulPose(quatFromRotationXYZ(0, 0, yaw - 90f, true));
@@ -130,21 +126,21 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
         if (!clearerView) {
             matrixStackIn.mulPose(quatFromRotationXYZ(0, Minecraft.getInstance().gameRenderer.getMainCamera().getXRot() + 90, 0, true));
         }
-        drawBeam(length, frame, matrixStackIn, builder, packedLightIn);
+        drawBeam(scale, length, frame, matrixStackIn, builder, packedLightIn);
         matrixStackIn.popPose();
 
         if (!clearerView) {
             matrixStackIn.pushPose();
             matrixStackIn.mulPose(quatFromRotationXYZ(0, -Minecraft.getInstance().gameRenderer.getMainCamera().getXRot() - 90, 0, true));
-            drawBeam(length, frame, matrixStackIn, builder, packedLightIn);
+            drawBeam(scale, length, frame, matrixStackIn, builder, packedLightIn);
             matrixStackIn.popPose();
         }
         matrixStackIn.popPose();
     }
-
     public void drawVertex(Matrix4f matrix, Matrix3f normals, VertexConsumer vertexBuilder, float offsetX, float offsetY, float offsetZ, float textureX, float textureY, float alpha, int packedLightIn) {
         vertexBuilder.vertex(matrix, offsetX, offsetY, offsetZ).color(1, 1, 1, 1 * alpha).uv(textureX, textureY).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLightIn).normal(normals, 0.0F, 1.0F, 0.0F).endVertex();
     }
+
     public Quaternionf quatFromRotationXYZ(float x, float y, float z, boolean degrees) {
         if (degrees) {
             x *= ((float)Math.PI / 180F);
@@ -160,12 +156,5 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
 
     public float getStartRadius() {
         return this.startRadius;
-    }
-
-    public abstract ResourceLocation getTexture();
-
-    @Override
-    public ResourceLocation getTextureLocation(AbstractDeathRayAbility entity) {
-        return this.getTexture();
     }
 }

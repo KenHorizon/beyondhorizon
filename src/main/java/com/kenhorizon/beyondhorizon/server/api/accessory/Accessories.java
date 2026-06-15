@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.datagen.BHLangProvider;
+import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
@@ -201,7 +202,8 @@ public class Accessories {
     public static final RegistryObject<Accessory> DARK_SUN = registerSkill("dark_sun", () -> new SinglePassiveAccessory(Constant.DARK_SUN_CONVERT));
     public static final RegistryObject<Accessory> FADED_MOON = registerSkill("faded_moon", () -> new SinglePassiveAccessory(Constant.FADED_MOON_CONVERT));
 
-    public static final RegistryObject<Accessory> ELECTROSHOCK = registerSkill("electroshock", () -> new SinglePassiveAccessory());
+    public static final RegistryObject<Accessory> TITANIC_CRESCENT = registerSkill("titanic_crescent", TitanicCrescentAccessory::new);
+    public static final RegistryObject<Accessory> ELECTROSHOCK = registerSkill("electroshock", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> ENERGIZED = registerSkill("energized", EnergizedAccessory::new);
     public static final RegistryObject<Accessory> KNOWLEDGE_2 = registerSkill("ultima_knowledge", () -> new ExperienceAccessory(Constant.ULTIMA_KNOWLEDGE_XP_MODIFIER));
 

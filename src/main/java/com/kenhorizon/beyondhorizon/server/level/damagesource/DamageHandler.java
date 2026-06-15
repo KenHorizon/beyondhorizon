@@ -15,11 +15,11 @@ public class DamageHandler {
         return AD > AP ? BHDamageTypes.physicalDamage(attacker, null) : BHDamageTypes.magicDamage(attacker, null);
     }
 
-    public static boolean damage(LivingEntity target, boolean bypassIFrame, DamageSource source, DamageTags damageTags, float damageModifiers, float amount) {
+    public static boolean damage(LivingEntity target, boolean bypassIFrame, DamageSource source, DamageTypeTags damageTypeTags, float damageModifiers, float amount) {
         if (bypassIFrame) {
             target.invulnerableTime = 0;
         }
-        switch (damageTags) {
+        switch (damageTypeTags) {
             case SELF_MAX_HEALTH -> {
                 if (source.getEntity() instanceof LivingEntity attacker) {
                     return target.hurt(source, maxHealth(attacker, amount, damageModifiers));
@@ -53,19 +53,19 @@ public class DamageHandler {
     }
 
     public static boolean instantKill(LivingEntity target, DamageSource source) {
-        return damage(target, BHDamageTypes.trueDamage(source.getEntity(), target), target.getMaxHealth(), DamageTags.INSTANT_KILL, target.getMaxHealth());
+        return damage(target, BHDamageTypes.trueDamage(source.getEntity(), target), target.getMaxHealth(), DamageTypeTags.INSTANT_KILL, target.getMaxHealth());
     }
 
-    public static boolean damage(LivingEntity target, DamageSource source, float amount, DamageTags damageTags, float damageModifiers) {
-        return damage(target, false, source, damageTags, damageModifiers, amount);
+    public static boolean damage(LivingEntity target, DamageSource source, float amount, DamageTypeTags damageTypeTags, float damageModifiers) {
+        return damage(target, false, source, damageTypeTags, damageModifiers, amount);
     }
 
     public static boolean damage(LivingEntity target, DamageSource source, float amount) {
-        return damage(target, false, source, DamageTags.DEFAULT, 0, amount);
+        return damage(target, false, source, DamageTypeTags.DEFAULT, 0, amount);
     }
 
     public static boolean damage(LivingEntity target, boolean bypassIFrame, DamageSource source, float amount) {
-        return damage(target, bypassIFrame, source, DamageTags.DEFAULT, 0, amount);
+        return damage(target, bypassIFrame, source, DamageTypeTags.DEFAULT, 0, amount);
     }
 
     public static float multiplier(float damageDealt, float modifier) {

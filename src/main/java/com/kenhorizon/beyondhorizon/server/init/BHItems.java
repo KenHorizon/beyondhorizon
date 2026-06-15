@@ -63,6 +63,12 @@ public class BHItems {
             .tab(RegistryTabs.Category.DEBUGS)
             .model(ItemModels.GENERATED)
             .register();
+    public static final RegistryObject<Item> DEBUG6 = RegistryItems
+            .register("debug6", DebugGodModeItems::new)
+            .itemName("Debug: Mob set to cant despawn")
+            .tab(RegistryTabs.Category.DEBUGS)
+            .model(ItemModels.HANDHELD)
+            .register();
 
     public static final RegistryObject<Item> GUIDE_BOOK = RegistryItems
             .register("guide_book", GuideBookItem::new)
@@ -134,6 +140,7 @@ public class BHItems {
     public static final RegistryObject<Item> HEAVY_STRING_BOW = accessoryItem("heavy_string_bow", AccessoryBuilder.HEAVY_STRING_BOW);
     public static final RegistryObject<Item> KRAKEN_SLAYER = accessoryItem("kraken_slayer", AccessoryBuilder.KRAKEN_SLAYER);
     public static final RegistryObject<Item> TITAN_GLOVES = accessoryItem("titan_gloves", AccessoryBuilder.TITAN_GLOVES);
+    public static final RegistryObject<Item> GLOVE_OF_AFTERSHOCK = accessoryItem("glove_of_aftershock", AccessoryBuilder.GLOVE_OF_AFTERSHOCK);
     public static final RegistryObject<Item> FLAME_OF_TORMENT = accessoryItem("flame_of_torment", AccessoryBuilder.FLAME_OF_TORMENT);
     public static final RegistryObject<Item> CURSED_SKULL = accessoryItem("cursed_skull", AccessoryBuilder.CURSED_SKULL);
     public static final RegistryObject<Item> RECURVE_ARROW = accessoryItem("recurve_arrow", AccessoryBuilder.RECURVE_ARROW);
@@ -278,6 +285,7 @@ public class BHItems {
 
     public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(139, 52, 1));
     public static final RegistryObject<Item> FAYE_FLARES_SPAWN_EGG = spawnEgg("faye_flares", BHEntity.FAYE_FLARES, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(182, 31, 0));
+    public static final RegistryObject<Item> FAYE_WILDFIRE_SPAWN_EGG = spawnEgg("faye_wildfire", BHEntity.FAYE_WILDFIRE, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(31, 31, 31));
 
 
     private static RegistryObject<Item> spawnEgg(String entityName, RegistryObject entityType, int backgroundColor, int highlightColor) {

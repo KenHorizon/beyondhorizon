@@ -28,6 +28,18 @@ public class BHSoundProvider extends SoundDefinitionFactory {
         this.add(BHSounds.HEAVY_ATTACK, "generic/heavy_hit/heavyhit", 3);
         this.add(BHSounds.ENTITY_EXECUTED, "generic/entity_executed");
 
+        this.add(BHSounds.FAYE_FLARES_HURT, "mob/faye/flares/hurt", 2);
+        this.add(BHSounds.FAYE_FLARES_IDLE, "mob/faye/flares/idle", 2);
+        this.add(BHSounds.FAYE_FLARES_SHOOT, "mob/faye/flares/shoot", 2);
+        this.add(BHSounds.FAYE_FLARES_DEATH, "mob/faye/flares/death");
+
+        this.add(BHSounds.FAYE_WILDFIRE_HURT, "mob/faye/wildfire/hurt", 2);
+        this.add(BHSounds.FAYE_WILDFIRE_IDLE, "mob/faye/wildfire/idle", 2);
+        this.add(BHSounds.FAYE_WILDFIRE_SHOOT, "mob/faye/wildfire/shoot", 2);
+        this.add(BHSounds.FAYE_WILDFIRE_DEATH, "mob/faye/wildfire/death");
+        this.add(BHSounds.FAYE_WILDFIRE_DEATH_RAY, "mob/faye/wildfire/death_ray");
+        this.add(BHSounds.FAYE_WILDFIRE_DEATH_RAY_CHARGING, "mob/faye/wildfire/death_ray_charging");
+
         this.add(BHSounds.BLAZING_INFERNO_THEME, "mob/blazing_inferno/theme");
         this.add(BHSounds.BLAZING_INFERNO_SPEAR, "mob/blazing_inferno/summon_spear");
         this.add(BHSounds.BLAZING_INFERNO_SCREAM, "mob/blazing_inferno/scream");

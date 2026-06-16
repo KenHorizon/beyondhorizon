@@ -11,27 +11,28 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.monster.Enemy;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class BHBossEntity extends BHLibEntity implements Enemy {
     private static final EntityDataAccessor<BlockPos> DATA_HOME_POS = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<String> DATA_DIMENSION_TYPE = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.STRING);
     public static final EntityDataAccessor<Integer> DATA_BOSS_PHASE = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.INT);
     public static final EntityDataAccessor<Integer> DATA_MAX_BOSS_PHASE = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.INT);
-    public static final String NBT_BOSS_PHASE = "BossPhase";
-    public static final String NBT_MAX_BOSS_PHASE = "BossPhaseMax";
-    public static final String NBT_HOME_X = "HomeX";
-    public static final String NBT_HOME_Y = "HomeY";
-    public static final String NBT_HOME_Z = "HomeZ";
-    public static final String NBT_DIMENSION_TYPE = "DimensionType";
+    public static final EntityDataAccessor<Integer> DATA_PLAYER_COUNT = SynchedEntityData.defineId(BHBossEntity.class, EntityDataSerializers.INT);
+    public static final String NBT_BOSS_PHASE = "boss_phase";
+    public static final String NBT_MAX_BOSS_PHASE = "boss_phase_max";
+    public static final String NBT_HOME_X = "home_x";
+    public static final String NBT_HOME_Y = "home_y";
+    public static final String NBT_HOME_Z = "home_z";
+    public static final String NBT_DIMENSION_TYPE = "dimension_type";
+    public static final String NBT_PLAYER_COUNT = "player_count";
     private int returnState;
     protected final int RETURN_STATE_COOLDOWN = 20;
     public BHBossEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
@@ -44,6 +45,7 @@ public class BHBossEntity extends BHLibEntity implements Enemy {
     public int getMaxBossPhase() {
         return this.entityData.get(DATA_MAX_BOSS_PHASE);
     }
+
     public void setBossPhase(int phase) {
         this.entityData.set(DATA_BOSS_PHASE, phase);
     }
@@ -67,14 +69,61 @@ public class BHBossEntity extends BHLibEntity implements Enemy {
     public String getDimensionType() {
         return this.entityData.get(DATA_DIMENSION_TYPE);
     }
+    public void setPlayerCount(int v) {
+        this.entityData.set(DATA_PLAYER_COUNT, v);
+    }
 
+    public int getPlayerCount() {
+        return this.entityData.get(DATA_PLAYER_COUNT);
+    }
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
+        this.entityData.define(DATA_PLAYER_COUNT, 0);
         this.entityData.define(DATA_BOSS_PHASE, 0);
         this.entityData.define(DATA_MAX_BOSS_PHASE, 0);
         this.entityData.define(DATA_HOME_POS, BlockPos.ZERO);
         this.entityData.define(DATA_DIMENSION_TYPE, "minecraft:overworld");
+    }
+
+    @Override
+    public boolean hurt(DamageSource source, float amount) {
+        double distSqr = calculateRange(source);
+        if (distSqr != -1) {
+            double limit = this.sourceRangeLimit();
+            double maxLimit = limit * 1.5;
+
+            double limitSqr = limit * limit;
+            double maxLimitSqr = maxLimit * maxLimit;
+
+            if (distSqr >= maxLimitSqr) {
+                return false;
+            }
+
+            if (distSqr > limitSqr) {
+                double distance = Math.sqrt(distSqr);
+                float multiplier = (float) ((maxLimit - distance) / (maxLimit - limit));
+                amount *= multiplier;
+
+                if (amount <= 0) return false;
+            }
+        }
+        return super.hurt(source, amount);
+    }
+
+    public double sourceRangeLimit() {
+        return Double.MAX_VALUE;
+    }
+
+    protected int getPlayerCounter(Level level) {
+        double range = 64.0D;
+        int playerCount = level.getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(range), player -> {
+            return !player.isSpectator()
+                    && !player.isCreative()
+                    && player.isAlive()
+                    && player.distanceToSqr(this) < (range * range);
+        }).size();
+        return playerCount;
     }
 
     @Override
@@ -103,6 +152,9 @@ public class BHBossEntity extends BHLibEntity implements Enemy {
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag dataNbt) {
         this.returnState = this.RETURN_STATE_COOLDOWN;
+        if (reason == MobSpawnType.SPAWNER) {
+
+        }
         return super.finalizeSpawn(level, difficulty, reason, data, dataNbt);
     }
 

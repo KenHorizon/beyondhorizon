@@ -1326,6 +1326,7 @@ public class BlazingInferno extends BHBossEntity {
             }
             CameraShake.spawn(this.level(), this.position(), 64, 0.12F, 10, 20);
             this.setIsPowered(true);
+            this.setPlayerCount(this.getPlayerCounter(this.level()));
             return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
@@ -1335,6 +1336,7 @@ public class BlazingInferno extends BHBossEntity {
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag dataNbt) {
         if (reason == MobSpawnType.COMMAND) {
             this.setIsPowered(true);
+            this.setPlayerCount(this.getPlayerCounter(this.level()));
         }
         return super.finalizeSpawn(level, difficulty, reason, data, dataNbt);
     }

@@ -64,7 +64,7 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
     public FayeWildfire(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
         this.setExp(10);
-        this.moveControl = new FlightMoveControl(this, 1.21F, true);
+        this.moveControl = new FlightMoveControl(this, 1.21F);
         this.setMaxUpStep(2.0F);
         this.setPathfindingMalus(BlockPathTypes.WATER, -16.0F);
         this.setPathfindingMalus(BlockPathTypes.LAVA, -16.0F);
@@ -167,7 +167,7 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                 super.tick();
                 if (this.entity.getAnimationTick() == 2) {
                     float radius = 0.80F;
-                    int duration = MathUtils.sec(2);
+                    int duration = MathUtils.sec(3);
                     InfernalRayAbility ability = new InfernalRayAbility(this.entity.level(), this.entity,
                             this.entity.getX() + radius * Math.sin(-this.entity.getYRot() * Math.PI / 180),
                             this.entity.getY() + 1.4, this.entity.getZ() + radius * Math.cos(-this.entity.getYRot() * Math.PI / 180),

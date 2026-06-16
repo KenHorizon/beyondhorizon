@@ -37,6 +37,10 @@ public class BHLibEntity extends BHBaseEntity {
         super(entityType, level);
     }
 
+    public double calculateRange(DamageSource damagesource) {
+        return damagesource.getEntity() != null ? distanceToSqr(damagesource.getEntity()) : -1;
+    }
+
     public void setExp(int xpPoints) {
         this.xpReward = xpPoints;
     }

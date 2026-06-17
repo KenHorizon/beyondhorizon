@@ -5,6 +5,8 @@ import net.minecraft.world.item.ItemStack;
 
 public interface IAccessoryEvent {
 
+    default void onKeypress(Player player, ItemStack itemStack, int slot) {}
+
     default void onChangePrevAccessorySlot(Player player, ItemStack itemStack) {}
 
     default void onChangePostAccessorySlot(Player player, ItemStack itemStack) {}

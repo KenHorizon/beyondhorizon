@@ -29,11 +29,11 @@ public class RoleClassCommand {
     private static int executeSetLevels(CommandSourceStack commandSource, ServerPlayer player, int amount) {
         LevelSystem role = Capabilities.levelSystem(player);
         if (role == null) {
-            commandSource.sendFailure(Component.translatable(Tooltips.COMMAND_ROLE_SET_FAILED, amount));
+            commandSource.sendFailure(Component.translatable(Tooltips.COMMAND_LEVEL_SET_FAILED, amount));
             return 0;
         } else {
             role.setLevel(amount);
-            commandSource.sendSuccess(() -> Component.translatable(Tooltips.COMMAND_ROLE_SET_SUCCESS, amount), true);
+            commandSource.sendSuccess(() -> Component.translatable(Tooltips.COMMAND_LEVEL_SET_SUCCESS, amount), true);
             return 1;
         }
     }

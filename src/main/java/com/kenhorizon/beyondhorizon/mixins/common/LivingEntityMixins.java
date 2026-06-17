@@ -35,18 +35,20 @@ import javax.annotation.Nullable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixins extends EntityMixins implements IBHDataEntity {
+    @Unique
     private static final EntityDataAccessor<CompoundTag> DATA_BH_TAG_FLAGS = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.COMPOUND_TAG);
+    @Unique
     private static final EntityDataAccessor<Byte> DATA_BH_SHARED_FLAGS = SynchedEntityData.defineId(LivingEntity.class, EntityDataSerializers.BYTE);
 
     @Shadow public abstract ItemStack getMainHandItem();
 
-    @Inject(at = @At("TAIL"), method = "Lnet/minecraft/world/entity/LivingEntity;defineSynchedData()V")
+    @Inject(at = @At("TAIL"), method = "defineSynchedData()V")
     private void beyondhorizonRegisterData(CallbackInfo ci) {
         entityData.define(DATA_BH_TAG_FLAGS, new CompoundTag());
         entityData.define(DATA_BH_SHARED_FLAGS, (byte) 0);
     }
 
-    @Inject(at = @At("TAIL"), method = "Lnet/minecraft/world/entity/LivingEntity;addAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
+    @Inject(at = @At("TAIL"), method = "addAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
     private void beyondhorizonWriteAdditional(CompoundTag compoundNBT, CallbackInfo ci) {
         CompoundTag data = getEntityData();
         if (data != null) {
@@ -54,7 +56,7 @@ public abstract class LivingEntityMixins extends EntityMixins implements IBHData
         }
     }
 
-    @Inject(at = @At("TAIL"), method = "Lnet/minecraft/world/entity/LivingEntity;readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
+    @Inject(at = @At("TAIL"), method = "readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
     private void beyondhorizonReadAdditional(CompoundTag compoundNBT, CallbackInfo ci) {
         if (compoundNBT.contains("BeyondHorizonData")) {
             setEntityData(compoundNBT.getCompound("BeyondHorizonData"));

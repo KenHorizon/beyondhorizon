@@ -174,8 +174,7 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                             (float) ((this.entity.yHeadRot + 90) * Math.PI / 180), (float) (-this.entity.getXRot() * Math.PI / 180), duration);
                     ability.damageConfig(AbstractDeathRayAbility.DamageTypes.DEFAULT, 1.0F);
                     ability.setCanBurnTarget(true);
-                    ability.scaleCurrentHealthDamage(0.2F);
-                    ability.setImmunityFrameIgnore(false);
+                    ability.setImmunityFrameIgnore(true);
                     this.entity.level().addFreshEntity(ability);
                 }
                 if (this.entity.getAnimationTick() >= 2) {

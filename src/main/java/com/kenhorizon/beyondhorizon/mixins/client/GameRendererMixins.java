@@ -36,7 +36,7 @@ public class GameRendererMixins {
         if (this.minecraft.getCameraEntity() instanceof LivingEntity entity) {
             DamageTiltEvent event = new DamageTiltEvent(entity);
             MinecraftForge.EVENT_BUS.post(event);
-            if (entity.hurtDuration <= 0 || event.isCanceled()) {
+            if (entity.invulnerableTime <= 0 || entity.hurtDuration <= 0 || event.isCanceled()) {
                 ci.cancel();
             }
         }

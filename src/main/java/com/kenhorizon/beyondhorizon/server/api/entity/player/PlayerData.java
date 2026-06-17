@@ -27,7 +27,7 @@ public class PlayerData {
     }
 
     public void removeMana(int amount) {
-        this.mana = Math.max(0, amount);
+        this.mana -= Math.max(0, amount);
     }
 
     public void setMana(double mana) {

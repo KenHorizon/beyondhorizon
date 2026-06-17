@@ -49,6 +49,10 @@ public class BHLangProvider extends LanguageProvider {
 
         this.add(Configs.CHANGE_DAMAGE_CALCULATION, "Change Damage Calculation");
 
+        this.add(Tooltips.TOOLTIP_COOLDOWN, "Cooldown: %s");
+        this.add(Tooltips.TOOLTIP_MANA_COST, "Mana: %s");
+        this.add(Tooltips.TOOLTIP_MANA_NOT_ENOUGH, "Mana not enough!");
+
         this.add(Tooltips.TOOLTIP_WORKBENCH, "Workbench");
         this.add(Tooltips.TOOLTIP_WORKBENCH_ITEMS, "Items");
         this.add(Tooltips.TOOLTIP_WORKBENCH_INGREDIENTS, "Ingredients");
@@ -59,12 +63,10 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.TOOLTIP_IMMUNE_TO, "Gain Immunity to %s");
         this.add(Tooltips.TOOLTIP_BUILTIN_RESOURCE, "Beyond Horizon: Builtin Resources");
 
-        this.add(Tooltips.COMMAND_ROLE_SET_FAILED, "Failed to change the role to %s");
-        this.add(Tooltips.COMMAND_ROLE_SET_SUCCESS, "Successfully changed the role to %s");
+        this.add(Tooltips.COMMAND_POINTS_FAILED, "Failed to change the role to %s");
+        this.add(Tooltips.COMMAND_POINTS_SUCCESS, "Successfully changed the role to %s");
         this.add(Tooltips.COMMAND_LEVEL_SET_FAILED, "Failed to set the level %s");
         this.add(Tooltips.COMMAND_LEVEL_SET_SUCCESS, "Successfully set the level %s");
-        this.add(Tooltips.COMMAND_POINTS_FAILED, "Failed to set the points %s");
-        this.add(Tooltips.COMMAND_POINTS_SUCCESS, "Successfully set the points %s");
         this.add(Tooltips.COMMAND_RESET_FAILED, "Failed to reset the roles");
         this.add(Tooltips.COMMAND_RESET_SUCCESS, "Successfully reset the roles");
 
@@ -150,6 +152,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.FADED_MOON.get(), "Faded Moon", "Convert 25% Max Mana into additional bonus magic damage on-hit");
         this.addAccessory(Accessories.TWO_WORLD.get(), "Two World", "Gain Dark Sun and Faded Moon, If you have more than bonus attack damage to ability power enter Dark Sun and if you have more than ability power to attack damage enter Faded Moon ");
         this.addAccessory(Accessories.TITANIC_CRESCENT.get(), "Titanic Crescent", "Basic attack on-hit deal bonus %s%% Max HP to the target and %s%% Max HP to others entity in a cone in the direction of the primary target");
+        this.addAccessory(Accessories.SWIFTNESS.get(), "Swiftness", "Inflict Speed boost effect for 5 seconds");
         //
 
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon | Ingredients");

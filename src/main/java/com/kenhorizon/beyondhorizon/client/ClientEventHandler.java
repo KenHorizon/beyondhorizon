@@ -10,11 +10,18 @@ import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotSc
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.api.event.DamageTiltEvent;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
+import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAcessoryKeyPacket;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -22,18 +29,28 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.block.BlockRenderDispatcher;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.event.*;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,6 +61,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class ClientEventHandler {
+
+    private static final ResourceLocation PHOSPOR = BeyondHorizon.resource("shaders/post/phospor_effect.json");
+    private static final ResourceLocation GHOUL_WILL = BeyondHorizon.resource("shaders/post/ghoul_will.json");
 
     @SubscribeEvent
     public void onDebugInformation(CustomizeGuiOverlayEvent.DebugText event) {
@@ -156,11 +176,58 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
+    public void postRenderStage(RenderLevelStageEvent event) {
+        Entity entity = Minecraft.getInstance().getCameraEntity();
+        boolean firstPerson = Minecraft.getInstance().options.getCameraType().isFirstPerson();
+        if (event.getStage() == RenderLevelStageEvent.Stage.AFTER_SKY) {
+            GameRenderer renderer = Minecraft.getInstance().gameRenderer;
+            this.doShaderEffect(entity instanceof LivingEntity afflicted && afflicted.hasEffect(BHEffects.GHOUL_WILL.get()), renderer, GHOUL_WILL);
+        }
+    }
+
+    private void doShaderEffect(boolean active, GameRenderer renderer, ResourceLocation shaders) {
+        if (active) {
+            if (renderer.currentEffect() == null || !shaders.toString().equals(renderer.currentEffect().getName())) {
+                attemptLoadShader(shaders);
+            }
+        } else if (renderer.currentEffect() != null && shaders.toString().equals(renderer.currentEffect().getName())) {
+            renderer.checkEntityPostEffect(null);
+        }
+    }
+
+    @SubscribeEvent
     public void onKeyPressClient(InputEvent.Key event) {
         if (event.getKey() == Keybinds.LEVEL_SYSTEM.getKey().getValue() && BeyondHorizon.PROXY.isKeyPressed(Keybinds.LEVEL_SYSTEM)) {
             BeyondHorizon.PROXY.openScreen(new LevelSystemScreen());
         }
+        if (event.getKey() == Keybinds.ACCESSORY_SLOTS.getKey().getValue()) {
+            Minecraft minecraft = Minecraft.getInstance();
+            Options options = minecraft.options;
+            Player player = minecraft.player;
+            if (player != null && player == BeyondHorizon.PROXY.clientPlayer()) {
+                for (int i = 0; i < 9; ++i) {
+                    boolean flag = BeyondHorizon.PROXY.isKeyDown(Keybinds.ACCESSORY_SLOTS);
+                    if (event.getKey() == options.keyHotbarSlots[i].getKey().getValue() && options.keyHotbarSlots[i].consumeClick()) {
+                        if (player.isSpectator()) {
+                            minecraft.gui.getSpectatorGui().onHotbarSelected(i);
+                        } else if (minecraft.screen != null || !flag) {
+                            player.getInventory().selected = i;
+                        } else {
+                            BeyondHorizon.LOGGER.debug("[Accessory] Slots Click {}", i);
+                            IAccessoryItemHandler handler = Capabilities.accessory(player);
+                            if (handler != null) {
+                                ItemStack itemStack = handler.getStackInSlot(i);
+                                if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?>) {
+                                    NetworkHandler.sendToServer(new ServerboundAcessoryKeyPacket(player.getId(), itemStack, i));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
+
     @SubscribeEvent
     public void computeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -218,5 +285,26 @@ public class ClientEventHandler {
         }
         gui.xMouse = event.getMouseX();
         gui.yMouse = event.getMouseY();
+    }
+
+    private void renderBreakingTexture(BlockState state, BlockPos pos, BlockAndTintGetter blockAndTintGetter,
+                                       PoseStack poseStack, RandomSource random, VertexConsumer vertexConsumer,
+                                       ModelData modelData) {
+        if (state.getRenderShape() == RenderShape.MODEL) {
+            BlockRenderDispatcher blockRenderDispatcher = Minecraft.getInstance().getBlockRenderer();
+            BakedModel bakedmodel = blockRenderDispatcher.getBlockModel(state);
+            long i = state.getSeed(pos);
+            blockRenderDispatcher.getModelRenderer().tesselateBlock(blockAndTintGetter, bakedmodel, state, pos, poseStack, vertexConsumer, true, random, i, OverlayTexture.NO_OVERLAY, modelData, null);
+        }
+    }
+    private static void attemptLoadShader(ResourceLocation resourceLocation) {
+        GameRenderer renderer = Minecraft.getInstance().gameRenderer;
+        if (ClientProxy.shaderLoadAttemptCooldown <= 0) {
+            renderer.loadEffect(resourceLocation);
+            if (!renderer.effectActive) {
+                ClientProxy.shaderLoadAttemptCooldown = 12000;
+                BeyondHorizon.LOGGER.warn("Could not load the shader {}, will attempt to load shader in 30 seconds", resourceLocation);
+            }
+        }
     }
 }

@@ -228,7 +228,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         if (this.tickCount > (Math.max(10, this.getDelay()))) {
             this.rayTicks();
         }
-        if (tickCount - (Math.max(10, this.getDelay())) > this.getDuration()) {
+        if (this.tickCount - (Math.max(10, this.getDelay())) > this.getDuration()) {
             on = false;
         }
     }
@@ -283,7 +283,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
             double o2y = (float) (-1 * Math.sin(getPitch()));
             double o2z = (float) (-1 * Math.sin(getYaw()) * Math.cos(getPitch()));
             ParticleTrailOptions.add(level(),
-                    TrailParticles.Behavior.FADE_N_SHRINK,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz,
+                    TrailParticles.Behavior.DEFAULT,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz,
                     1.25F, 1.0F, colors[0], colors[1], colors[2], 10, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
         }
     }

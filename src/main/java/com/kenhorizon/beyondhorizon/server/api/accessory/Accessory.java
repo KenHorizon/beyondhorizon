@@ -4,19 +4,23 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.resources.language.I18n;
@@ -30,6 +34,7 @@ import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.*;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -170,12 +175,20 @@ public abstract class Accessory {
         } else {
             maxWidth = Constant.TOOLTIP_MAX_TEXT_WITDH;
         }
-        List<FormattedCharSequence> wrappedText = font.split(this.tooltipDescription(itemStack), maxWidth);
-        for (FormattedCharSequence format : wrappedText) {
-            List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
-            Component text = Component.literal(texts.get(0).getString());
-            tooltip.add(this.spacing().append(ColorCodedText.applyFormat(text)).withStyle(Tooltips.TOOLTIP[0]).append(this.spacing()));
+        for (var tooltips : this.tooltipDescriptionList(itemStack)) {
+            List<FormattedCharSequence> wrappedText = font.split(tooltips, maxWidth);
+            for (FormattedCharSequence format : wrappedText) {
+                List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
+                Component text = Component.literal(texts.get(0).getString());
+                tooltip.add(this.spacing().append(ColorCodedText.applyFormat(text)).withStyle(Tooltips.TOOLTIP[0]).append(this.spacing()));
+            }
         }
+    }
+
+    protected List<MutableComponent> tooltipDescriptionList(ItemStack itemStack) {
+        List<MutableComponent> list = new ArrayList<>();
+        list.add(tooltipDescription(itemStack));
+        return list;
     }
 
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
@@ -252,6 +265,37 @@ public abstract class Accessory {
         return multimap;
     }
 
+    public boolean onKeyAccessorySlot(Player player) {
+        if (player == BeyondHorizon.PROXY.clientPlayer()) {
+            Minecraft minecraft = Minecraft.getInstance();
+            Options options = minecraft.options;
+            for (int i = 0; i < 9; ++i) {
+                boolean flag = BeyondHorizon.PROXY.isKeyDown(Keybinds.ACCESSORY_SLOTS);
+                BeyondHorizon.LOGGER.debug("[Accessory] Is Slots Click {} | {}", i, options.keyHotbarSlots[i].consumeClick());
+                if (options.keyHotbarSlots[i].consumeClick()) {
+                    if (player.isSpectator()) {
+                        minecraft.gui.getSpectatorGui().onHotbarSelected(i);
+                        return false;
+                    } else if (minecraft.screen != null || !flag) {
+                        player.getInventory().selected = i;
+                        return false;
+                    } else {
+                        BeyondHorizon.LOGGER.debug("[Accessory] Slots Click {}", i);
+                        IAccessoryItemHandler handler = Capabilities.accessory(player);
+                        if (handler != null) {
+                            ItemStack itemStack = handler.getStackInSlot(i);
+                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> container) {
+                                BeyondHorizon.LOGGER.debug("[Accessory] Slots has active skill {}", container.has(this));
+                                return container.has(this);
+                            }
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+        return false;
+    }
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
         return this.attributeModifiers;
     }

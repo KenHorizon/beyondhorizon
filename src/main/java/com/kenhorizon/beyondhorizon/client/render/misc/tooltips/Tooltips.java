@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.client.render.misc.tooltips;
 
-import com.ibm.icu.impl.Pair;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
@@ -19,8 +18,6 @@ import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEv
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @SuppressWarnings({"deprecation", "removal"})
 public class Tooltips {
@@ -31,15 +28,17 @@ public class Tooltips {
     public static final String HEALTH = "health";
 
     //
-    public static final String COMMAND_ROLE_SET_SUCCESS = String.format("command.%s.role_class.roles.succes", BeyondHorizon.ID);
-    public static final String COMMAND_ROLE_SET_FAILED = String.format("command.%s.role_class.roles.failure", BeyondHorizon.ID);
+    public static final String COMMAND_POINTS_FAILED = String.format("command.%s.role_class.points.failure", BeyondHorizon.ID);
+    public static final String COMMAND_POINTS_SUCCESS = String.format("command.%s.role_class.points.succes", BeyondHorizon.ID);
     public static final String COMMAND_LEVEL_SET_SUCCESS = String.format("command.%s.role_class.level.succes", BeyondHorizon.ID);
     public static final String COMMAND_LEVEL_SET_FAILED = String.format("command.%s.role_class.level.failure", BeyondHorizon.ID);
     public static final String COMMAND_RESET_SUCCESS = String.format("command.%s.role_class.reset.succes", BeyondHorizon.ID);
     public static final String COMMAND_RESET_FAILED = String.format("command.%s.role_class.reset.failure", BeyondHorizon.ID);
-    public static final String COMMAND_POINTS_SUCCESS = String.format("command.%s.role_class.points.succes", BeyondHorizon.ID);
-    public static final String COMMAND_POINTS_FAILED = String.format("command.%s.role_class.points.failure", BeyondHorizon.ID);
     //
+    public static final String TOOLTIP_COOLDOWN = String.format("tooltip.%s.cooldown", BeyondHorizon.ID);
+    public static final String TOOLTIP_MANA_COST = String.format("tooltip.%s.mana_cost", BeyondHorizon.ID);
+    public static final String TOOLTIP_MANA_NOT_ENOUGH = String.format("tooltip.%s.mana_not_enough", BeyondHorizon.ID);
+
     public static final String BOSS_IS_DEFEATED = String.format("boss.%s.defeated", BeyondHorizon.ID);
     public static final String SKILL_TYPE = String.format("tooltip.%s.skill_type", BeyondHorizon.ID);
     public static final String TOOLTIP_BONUS_ARMOR_SET = String.format("tooltip.%s.bonus_armor_set", BeyondHorizon.ID);

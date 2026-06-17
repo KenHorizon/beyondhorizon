@@ -75,6 +75,7 @@ import java.util.UUID;
 
 @SuppressWarnings({"removal"})
 public class ClientProxy extends ServerProxy {
+    public static int shaderLoadAttemptCooldown = 0;
     public static final Map<UUID, BHBossInfo.BossBar> BOSS_BAR_REGISTRY = new HashMap<>();
     @Override
     public void serverHandler() {
@@ -243,6 +244,7 @@ public class ClientProxy extends ServerProxy {
     }
     private void registerKeybinds(RegisterKeyMappingsEvent event) {
         event.register(Keybinds.LEVEL_SYSTEM);
+        event.register(Keybinds.ACCESSORY_SLOTS);
     }
 
     @Override

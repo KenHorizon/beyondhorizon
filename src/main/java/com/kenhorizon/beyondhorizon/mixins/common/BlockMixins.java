@@ -36,9 +36,6 @@ public abstract class BlockMixins {
             ci.cancel();
         }
         if (!event.isCanDropLoot()) {
-//            player.awardStat(Stats.BLOCK_MINED.get(blockState.getBlock()));
-//            player.causeFoodExhaustion(0.005F);
-//            Block.dropResources(blockState, level, blockPos, blockEntity, player, itemStack);
             ci.cancel();
         }
     }

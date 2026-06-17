@@ -210,6 +210,7 @@ public class BHItems {
     public static final RegistryObject<Item> VITALITY_STONE = accessoryItem("vitality_stone", AccessoryBuilder.VITALITY_STONE);
     public static final RegistryObject<Item> CINDER_STONE = accessoryItem("cinder_stone", AccessoryBuilder.CINDER_STONE);
     public static final RegistryObject<Item> CRYSTALLIZED_PLATE = accessoryItem("crystallized_plate", AccessoryBuilder.CRYSTALLIZED_PLATE);
+    public static final RegistryObject<Item> BOOTS_OF_SWIFTNESS = accessoryItemModel("boots_of_swiftness", AccessoryBuilder.BOOTS_OF_SWITFNESS);
 
     //
 
@@ -322,23 +323,34 @@ public class BHItems {
         return RegistryItems.register(name, properties -> new ArmorBaseItem(armorMaterial, type, properties)).tab(RegistryTabs.Category.COMBAT).model(ItemModels.GENERATED).register();
     }
 
+    private static RegistryObject<Item> accessoryItemModel(String name, AccessoryBuilder accessoryBuilder) {
+        return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder))
+                .tab(RegistryTabs.Category.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+    }
+
     private static RegistryObject<Item> accessoryItem(String name, AccessoryItemGroup group, AccessoryBuilder accessoryBuilder) {
-        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder))
+                .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
 
     private static RegistryObject<Item> accessoryItem(String name, AccessoryBuilder accessoryBuilder) {
-        return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+        return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder))
+                .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
+
     private static RegistryObject<Item> accessoryHandheldItem(String name, AccessoryItemGroup group, AccessoryBuilder accessoryBuilder) {
-        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.HANDHELD_ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder))
+                .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.HANDHELD_ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
 
     private static RegistryObject<Item> accessoryHandheldItemX32(String name, AccessoryItemGroup group, AccessoryBuilder accessoryBuilder) {
-        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.BIG_HANDHELD_ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder))
+                .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.BIG_HANDHELD_ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
 
     private static RegistryObject<Item> accessoryHandheldItemX64(String name, AccessoryItemGroup group, AccessoryBuilder accessoryBuilder) {
-        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder)).tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.BIG32_HANDHELD_ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder))
+                .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.BIG32_HANDHELD_ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
 
     public static void register(IEventBus eventBus) {

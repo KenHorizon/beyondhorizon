@@ -57,7 +57,9 @@ public class RegistryItems<T extends Item> {
         if (builder.tags != null) {
             BHItemTagsProvider.TAGS.put(this.registryObject, (TagKey<Item>) builder.tags);
         }
-        RegistryItemModels.register(this.registryObject, builder.model);
+        if (builder.model != null) {
+            RegistryItemModels.register(this.registryObject, builder.model);
+        }
         RegistryTabs.register(this.registryObject, builder.categories);
     }
 

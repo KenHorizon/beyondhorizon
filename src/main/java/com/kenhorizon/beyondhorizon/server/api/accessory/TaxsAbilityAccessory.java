@@ -7,7 +7,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.Vec3;
 
-public class TaxsAbilityAccessory extends AccessorySkill {
+public class TaxsAbilityAccessory extends AccessoryPassiveSkill {
 
     @Override
     public void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {

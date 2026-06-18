@@ -141,6 +141,7 @@ public class Constant {
     public static double WEAPON_CRITICAL_STRIKE_3 = 0.24D;
     public static double CRITICAL_STRIKE_0 = 0.15D;
     public static double CRITICAL_STRIKE_1 = 0.25D;
+    public static double STEALTH_CLOAK = 100.0D;
     public static double SWIFT_DAGGER_ATTACK_SPEED = 0.05D;
     public static double POWER_GLOVES_ATTACK_DAMAGE = 3;
     public static double POWER_GLOVES_KNOCBACK = 0.10D;

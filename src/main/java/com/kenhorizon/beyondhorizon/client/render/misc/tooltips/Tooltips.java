@@ -35,7 +35,10 @@ public class Tooltips {
     public static final String COMMAND_RESET_SUCCESS = String.format("command.%s.role_class.reset.succes", BeyondHorizon.ID);
     public static final String COMMAND_RESET_FAILED = String.format("command.%s.role_class.reset.failure", BeyondHorizon.ID);
     //
+    public static final String TOOLTIP_KEYBIND = String.format("tooltip.%s.keybind", BeyondHorizon.ID);
     public static final String TOOLTIP_COOLDOWN = String.format("tooltip.%s.cooldown", BeyondHorizon.ID);
+    public static final String TOOLTIP_MANA_COST_PER_SECOND = String.format("tooltip.%s.mana_cost.per_second", BeyondHorizon.ID);
+    public static final String TOOLTIP_MANA_COST_PERCENTAGES = String.format("tooltip.%s.mana_cost.percentage", BeyondHorizon.ID);
     public static final String TOOLTIP_MANA_COST = String.format("tooltip.%s.mana_cost", BeyondHorizon.ID);
     public static final String TOOLTIP_MANA_NOT_ENOUGH = String.format("tooltip.%s.mana_not_enough", BeyondHorizon.ID);
 
@@ -45,6 +48,7 @@ public class Tooltips {
     public static final String TOOLTIP_MINING_SPEED = String.format("tooltip.%s.mining_speed", BeyondHorizon.ID);
     public static final String TOOLTIP_ACCESSORY = String.format("item.%s.accessory", BeyondHorizon.ID);
     public static final String TOOLTIP_ACCESSORY_TYPE = String.format("item.%s.accessory.type", BeyondHorizon.ID);
+    public static final String TOOLTIP_ACCESSORY_SKILL_TYPE = String.format("item.%s.accessory.skill_type", BeyondHorizon.ID);
     public static final String TOOLTIP_INVENTORY = String.format("tooltip.%s.inventory", BeyondHorizon.ID);
     public static final String TOOLTIP_HEALTH_RECOVERY_POTION = String.format("tooltip.%s.recovery_potion.health", BeyondHorizon.ID);
     public static final String TOOLTIP_MANA_RECOVERY_POTION = String.format("tooltip.%s.recovery_potion.mana", BeyondHorizon.ID);

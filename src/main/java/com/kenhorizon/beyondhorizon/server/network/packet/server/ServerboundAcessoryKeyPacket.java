@@ -6,14 +6,10 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
-import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -59,7 +55,9 @@ public class ServerboundAcessoryKeyPacket {
                         if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> caller) {
                             for (Accessory accessory : caller.getAccessories()) {
                                 Optional<IAccessoryEvent> optional = accessory.IAccessory();
-                                optional.ifPresent(callback -> callback.onKeypress(player, itemStack, this.slots));
+                                optional.ifPresent(callback -> {
+                                    callback.onKeybindPressed(player, itemStack, this.slots);
+                                });
                             }
                         }
                     }

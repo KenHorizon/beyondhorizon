@@ -12,7 +12,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
-public class ThornsAccessory extends AccessorySkill {
+public class ThornsAccessory extends AccessoryPassiveSkill {
     float baseDamage;
     public ThornsAccessory(float baseDamage, float magnitude) {
         this.setMagnitude(magnitude);

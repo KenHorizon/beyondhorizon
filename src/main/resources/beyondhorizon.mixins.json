@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "beyondhorizon.refmap.mixins.json",
   "mixins": [
+    "common.AbsoptionMobEffectMixins",
     "common.BlockMixins",
     "common.DamageSourcesMixins",
     "common.EnchantmentMixins",

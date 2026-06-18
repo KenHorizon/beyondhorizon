@@ -15,7 +15,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
-public class ExtraDamageAccessory extends AccessorySkill {
+public class ExtraDamageAccessory extends AccessoryPassiveSkill {
     @FunctionalInterface
     public interface DamageTypeFunction {
         public float calculate(float magnitude, float level, MobType mobType, float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target);

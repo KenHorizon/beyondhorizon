@@ -36,7 +36,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.UUID;
 
-public class SinglePassiveAccessory extends AccessorySkill {
+public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     public static String NBT_BRING_IT_DOWN = "bring_it_down";
     protected int bringItDownStacks = 0;
     protected boolean bringItDownSFX = false;

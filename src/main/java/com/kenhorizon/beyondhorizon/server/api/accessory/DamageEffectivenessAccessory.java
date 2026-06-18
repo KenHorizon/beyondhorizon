@@ -7,7 +7,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-public class DamageEffectivenessAccessory extends AccessorySkill {
+public class DamageEffectivenessAccessory extends AccessoryPassiveSkill {
 
     public DamageEffectivenessAccessory(float magnitude) {
         super(magnitude, 1);

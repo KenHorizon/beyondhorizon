@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.api.event.PotionEffectParticleEvent;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.*;
@@ -18,6 +19,7 @@ import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
+import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
@@ -104,6 +106,16 @@ public class ServerEventHandler {
                         event.setCanDropLoot(optional.get().onHarverstDrop(entry.getValue(), player, event.getLevel(), itemStack, blockPos, blockState, event.getItemDrops()));
                     }
                 }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public void onParticleEffect(PotionEffectParticleEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity instanceof Player player) {
+            if (player.isInvisible() && AccessoryHelper.getAccessory(player, Accessories.STALKER.get())) {
+                event.setCanceled(true);
             }
         }
     }
@@ -509,7 +521,7 @@ public class ServerEventHandler {
             double followRange = mobs.getAttributeValue(Attributes.FOLLOW_RANGE);
             if (mobs.hasEffect(MobEffects.BLINDNESS)) {
                 if (target != null) {
-                    if (entity.distanceToSqr(target) > 5) {
+                    if (entity.distanceTo(target) > 5) {
                         mobs.setTarget(null);
                         mobs.setLastHurtByMob(null);
                     }
@@ -518,25 +530,39 @@ public class ServerEventHandler {
             if (getLastHurtByMob instanceof Player player) {
                 double stealth = player.getAttributeValue(BHAttributes.STEALTH.get());
                 if (stealth == 0.0D) return;
-                if (entity.distanceToSqr(player) < (Math.max(followRange - (followRange * stealth), 5))) {
+                if (entity.distanceTo(player) > (Math.max(followRange * stealth, 5))) {
                     mobs.setLastHurtByMob(null);
                 }
             }
             if (target instanceof Player player) {
                 double stealth = player.getAttributeValue(BHAttributes.STEALTH.get());
                 if (stealth == 0.0D) return;
-                if (entity.distanceToSqr(player) < (Math.max(followRange - (followRange * stealth), 5))) {
+                if (entity.distanceTo(player) > (Math.max(followRange * stealth, 5))) {
                     mobs.setTarget(null);
                 }
             }
         }
+    }
+    @SubscribeEvent
+    public void onVisibilityChanged(LivingEvent.LivingVisibilityEvent event) {
+        LivingEntity entity = event.getEntity();
+        Entity entityLookedAt = event.getLookingEntity();
+        double multiplier = 1.0D;
+        if (entity instanceof Player player) {
+            multiplier = 1.0D - player.getAttributeValue(BHAttributes.STEALTH.get());
+        }
+        if (entityLookedAt instanceof LivingEntity targetEntity) {
+            if (targetEntity.hasEffect(MobEffects.BLINDNESS)) {
+                multiplier = 0.05D;
+            }
+        }
+        event.modifyVisibility(multiplier);
     }
     //TODO: On-Hit Effects
     @SubscribeEvent
     public void onLivingAttackEvent(LivingAttackEvent event) {
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
-        float damage = event.getAmount();
         if (target instanceof Player player) {
             IAccessoryItemHandler handler = Capabilities.accessory(player);
             if (handler != null) {
@@ -629,7 +655,8 @@ public class ServerEventHandler {
                         }
                     }
                 }
-            }this.enchantmentOnHitEffect(attacker, damageDealt, source, target);
+            }
+            this.enchantmentOnHitEffect(attacker, damageDealt, source, target);
             damageDealt = this.enchantmentPostMitigationDamage(attacker, damageDealt, source, target);
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                 for (Skill trait : container.getSkills()) {
@@ -733,7 +760,6 @@ public class ServerEventHandler {
                 }
             }
         }
-        BeyondHorizon.LOGGER.debug("Duraiton {}", itemDuration);
         if (itemDuration > 0) {
             event.setDuration(event.getDuration() - itemDuration);
         }

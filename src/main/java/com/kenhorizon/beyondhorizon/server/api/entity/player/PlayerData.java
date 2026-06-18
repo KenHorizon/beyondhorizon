@@ -3,18 +3,21 @@ package com.kenhorizon.beyondhorizon.server.api.entity.player;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataSyncPacket;
+import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class PlayerData {
-    public static String NBT_MANA = "Mana";
-    public static String NBT_CRIT = "Crit";
-    public static String NBT_COMBAT_STANCE = "CombatStance";
-    protected boolean combatStance;
+    public static double MANA_DEDUCTION = 0.5D;
+    public static String NBT_MANA = "mana";
+    public static String NBT_CRIT = "crit";
     protected boolean crit;
+    protected boolean doDecut;
     protected double mana;
+    public int tickManaDeduct = 0;
+    protected final double manaDeduction = MANA_DEDUCTION;
     public Player player;
     public int tick;
 
@@ -27,7 +30,12 @@ public class PlayerData {
     }
 
     public void removeMana(int amount) {
-        this.mana -= Math.max(0, amount);
+        this.removeMana(amount, false);
+    }
+
+    public void removeMana(int amount, boolean doDecut) {
+        this.doDecut = doDecut;
+        this.mana = Math.max(0, this.mana - amount);
     }
 
     public void setMana(double mana) {
@@ -57,6 +65,7 @@ public class PlayerData {
     public void regenMana(ServerPlayer player) {
         if (this.getMana() < this.getMaxMana()) {
             float value = (float) player.getAttributeValue(BHAttributes.MANA_REGENERATION.get());
+            value *= (float) (this.doDecut ? this.manaDeduction : 1.0D);
             this.addMana((int) value);
         } else {
             this.setMana(this.getMaxMana());
@@ -64,10 +73,17 @@ public class PlayerData {
     }
 
     public boolean doRegenMana(Level level) {
-        return level.getServer().getTickCount() % 20 == 0;
+        return level.getServer().getTickCount() % 10 == 0;
     }
 
     public void tick(Level level) {
+        if (this.doDecut) {
+            this.tickManaDeduct++;
+            if (this.tickManaDeduct >= MathUtils.sec(3)) {
+                this.doDecut = false;
+                this.tickManaDeduct = 0;
+            }
+        }
         if (this.player instanceof ServerPlayer serverPlayer) {
             if (this.doRegenMana(level)) {
                 this.regenMana(serverPlayer);

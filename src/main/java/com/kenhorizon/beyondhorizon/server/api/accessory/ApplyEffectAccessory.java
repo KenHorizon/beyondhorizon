@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class ApplyEffectAccessory extends AccessorySkill {
+public class ApplyEffectAccessory extends AccessoryPassiveSkill {
     protected int seconds = 0;
     protected int amplifier = 0;
     protected int maxStack = 3;

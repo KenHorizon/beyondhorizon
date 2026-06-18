@@ -99,8 +99,9 @@ public class GameHudDisplay extends Gui {
         int y = this.hud.scaledWindowHeight - this.leftHeight;
         if (this.hud.hasAbsroption) {
             String absorption = String.format("%.0f", this.hud.absorption);
-            BlitHelper.draw(guiGraphics, HudSprites.ABSROPTION, x, y + 9, 9.0F, 9, 9, 9, 9);
-            BlitHelper.drawStrings(guiGraphics, absorption,x + (5 + 9), y + 10, ColorUtil.WHITE, true);
+            int abX = x + (5 + 9) - (24 + absorption.length());
+            BlitHelper.draw(guiGraphics, HudSprites.ABSROPTION, abX - (5 + 9), y -1, 9.0F, 9, 9, 9, 9);
+            BlitHelper.drawStrings(guiGraphics, absorption, abX, y, ColorUtil.WHITE, true);
         }
         String health = String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth);
         BlitHelper.draw(guiGraphics, HudSprites.HEALTH, x, y - 1, 9.0F, 9, 9, 9, 9);

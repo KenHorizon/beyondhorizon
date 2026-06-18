@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.datagen.BHLangProvider;
-import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
@@ -20,7 +19,7 @@ import java.util.function.Supplier;
  * {@link BHLangProvider}
  * */
 public class Accessories {
-    public static final RegistryObject<Accessory> NONE = registerSkill("none", AccessorySkill::new);
+    public static final RegistryObject<Accessory> NONE = registerSkill("none", AccessoryPassiveSkill::new);
 
     public static final RegistryObject<Accessory> SHEEN = registerSkill("sheen", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_DAMAGE, "57b45474-573e-4e5c-8e33-22a6b3f1f30b", Constant.SHEEN_AD, AttributeModifier.Operation.ADDITION));
@@ -179,8 +178,8 @@ public class Accessories {
     public static final RegistryObject<Accessory> DEATH = registerSkill("death", () -> new ExecuteAbilityAccessory(Constant.DEATH_HEALTH_THRESOHOLD));
     public static final RegistryObject<Accessory> TAXS = registerSkill("taxs", TaxsAbilityAccessory::new);
 
-    public static final RegistryObject<Accessory> FLUOROCARBON = registerSkill("fluorocarbon", () -> new StringBowAccessory(StringBowAccessory.Type.LIGHT));
-    public static final RegistryObject<Accessory> POLYETHYLENE = registerSkill("polyethylene", () -> new StringBowAccessory(StringBowAccessory.Type.HEAVY));
+    public static final RegistryObject<Accessory> FLUOROCARBON = registerSkill("fluorocarbon", () -> new StringBowAccessory(StringBowAccessory.StringBowType.LIGHT));
+    public static final RegistryObject<Accessory> POLYETHYLENE = registerSkill("polyethylene", () -> new StringBowAccessory(StringBowAccessory.StringBowType.HEAVY));
     public static final RegistryObject<Accessory> LIFE_SIPHON = registerSkill("life_siphon", () -> new SinglePassiveAccessory(Constant.SOUL_SIPHON_CURRENT_HEALTH_DAMAGE));
     public static final RegistryObject<Accessory> CORRUPTED_BITE = registerSkill("corrupted_bite", () -> new SinglePassiveAccessory(Constant.CORRUPTED_BITE_DAMAGE_SCALE));
     public static final RegistryObject<Accessory> ASCENSION = registerSkill("ascension", SinglePassiveAccessory::new);
@@ -203,6 +202,7 @@ public class Accessories {
     public static final RegistryObject<Accessory> FADED_MOON = registerSkill("faded_moon", () -> new SinglePassiveAccessory(Constant.FADED_MOON_CONVERT));
 
     public static final RegistryObject<Accessory> SWIFTNESS = registerSkill("swiftness", SwiftnessAccessory::new);
+    public static final RegistryObject<Accessory> STALKER = registerSkill("stalker", StalkerAccessory::new);
     public static final RegistryObject<Accessory> TITANIC_CRESCENT = registerSkill("titanic_crescent", TitanicCrescentAccessory::new);
     public static final RegistryObject<Accessory> ELECTROSHOCK = registerSkill("electroshock", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> ENERGIZED = registerSkill("energized", EnergizedAccessory::new);

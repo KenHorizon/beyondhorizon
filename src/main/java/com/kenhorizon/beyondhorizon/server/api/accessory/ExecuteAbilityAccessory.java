@@ -9,7 +9,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-public class ExecuteAbilityAccessory extends AccessorySkill {
+public class ExecuteAbilityAccessory extends AccessoryPassiveSkill {
     private float healthThereshold;
 
     public ExecuteAbilityAccessory(float healthThereshold) {

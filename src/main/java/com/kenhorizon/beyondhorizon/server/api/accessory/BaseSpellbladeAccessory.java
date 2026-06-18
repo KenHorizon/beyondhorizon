@@ -16,7 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public abstract class BaseSpellbladeAccessory extends AccessorySkill {
+public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
     public enum DamageType {
         PHYSICAL,
         MAGIC,

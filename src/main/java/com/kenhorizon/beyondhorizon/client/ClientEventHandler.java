@@ -10,8 +10,11 @@ import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotSc
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
@@ -197,29 +200,28 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public void onKeyPressClient(InputEvent.Key event) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Options options = minecraft.options;
+        Player player = minecraft.player;
+
         if (event.getKey() == Keybinds.LEVEL_SYSTEM.getKey().getValue() && BeyondHorizon.PROXY.isKeyPressed(Keybinds.LEVEL_SYSTEM)) {
             BeyondHorizon.PROXY.openScreen(new LevelSystemScreen());
         }
-        if (event.getKey() == Keybinds.ACCESSORY_SLOTS.getKey().getValue()) {
-            Minecraft minecraft = Minecraft.getInstance();
-            Options options = minecraft.options;
-            Player player = minecraft.player;
-            if (player != null && player == BeyondHorizon.PROXY.clientPlayer()) {
-                for (int i = 0; i < 9; ++i) {
-                    boolean flag = BeyondHorizon.PROXY.isKeyDown(Keybinds.ACCESSORY_SLOTS);
-                    if (event.getKey() == options.keyHotbarSlots[i].getKey().getValue() && options.keyHotbarSlots[i].consumeClick()) {
-                        if (player.isSpectator()) {
-                            minecraft.gui.getSpectatorGui().onHotbarSelected(i);
-                        } else if (minecraft.screen != null || !flag) {
-                            player.getInventory().selected = i;
-                        } else {
-                            BeyondHorizon.LOGGER.debug("[Accessory] Slots Click {}", i);
-                            IAccessoryItemHandler handler = Capabilities.accessory(player);
-                            if (handler != null) {
-                                ItemStack itemStack = handler.getStackInSlot(i);
-                                if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?>) {
-                                    NetworkHandler.sendToServer(new ServerboundAcessoryKeyPacket(player.getId(), itemStack, i));
-                                }
+        if (player != null && player == BeyondHorizon.PROXY.clientPlayer()) {
+            for (int i = 0; i < 9; ++i) {
+                boolean flag = BeyondHorizon.PROXY.isKeyDown(Keybinds.ACCESSORY_SLOTS);
+                if (options.keyHotbarSlots[i].consumeClick()) {
+                    if (player.isSpectator()) {
+                        minecraft.gui.getSpectatorGui().onHotbarSelected(i);
+                    } else if (minecraft.screen != null || !flag) {
+                        player.getInventory().selected = i;
+                    } else {
+                        BeyondHorizon.LOGGER.debug("[Accessory] Slots Click {}", i);
+                        IAccessoryItemHandler handler = Capabilities.accessory(player);
+                        if (handler != null) {
+                            ItemStack itemStack = handler.getStackInSlot(i);
+                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?>) {
+                                NetworkHandler.sendToServer(new ServerboundAcessoryKeyPacket(player.getId(), itemStack, i));
                             }
                         }
                     }
@@ -228,6 +230,17 @@ public class ClientEventHandler {
         }
     }
 
+    @SubscribeEvent
+    public void onPrePlayerRender(RenderPlayerEvent.Pre event) {
+        Player player = event.getEntity();
+        if (player != null) {
+            if (player.isInvisible()) {
+                if (AccessoryHelper.getAccessory(player, Accessories.STALKER.get())) {
+                    event.setCanceled(true);
+                }
+            }
+        }
+    }
     @SubscribeEvent
     public void computeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
         Minecraft minecraft = Minecraft.getInstance();

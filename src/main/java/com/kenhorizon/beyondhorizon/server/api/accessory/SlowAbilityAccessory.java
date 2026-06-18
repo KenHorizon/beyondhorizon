@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
-public class SlowAbilityAccessory extends AccessorySkill {
+public class SlowAbilityAccessory extends AccessoryPassiveSkill {
     public enum Type {
         ONHIT,
         ABILITY;

@@ -1,8 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
-import com.kenhorizon.beyondhorizon.server.api.skills.WeaponSkills;
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
-import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveConeAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.util.MathUtils;
 import net.minecraft.network.chat.Component;
@@ -11,7 +9,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-public abstract class CleaveEffectAccessory extends AccessorySkill {
+public abstract class CleaveEffectAccessory extends AccessoryPassiveSkill {
     public static final int CLEAVE_DURATION = 15;
     private float cleaveRange;
     protected CleaveAbility.Type type;

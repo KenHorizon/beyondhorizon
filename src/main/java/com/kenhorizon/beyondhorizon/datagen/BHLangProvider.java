@@ -49,8 +49,11 @@ public class BHLangProvider extends LanguageProvider {
 
         this.add(Configs.CHANGE_DAMAGE_CALCULATION, "Change Damage Calculation");
 
+        this.add(Tooltips.TOOLTIP_KEYBIND, "Button: %s + %s");
         this.add(Tooltips.TOOLTIP_COOLDOWN, "Cooldown: %s");
         this.add(Tooltips.TOOLTIP_MANA_COST, "Mana: %s");
+        this.add(Tooltips.TOOLTIP_MANA_COST_PERCENTAGES, "Mana: %s%%");
+        this.add(Tooltips.TOOLTIP_MANA_COST_PER_SECOND, "Mana: %s per second");
         this.add(Tooltips.TOOLTIP_MANA_NOT_ENOUGH, "Mana not enough!");
 
         this.add(Tooltips.TOOLTIP_WORKBENCH, "Workbench");
@@ -153,6 +156,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.TWO_WORLD.get(), "Two World", "Gain Dark Sun and Faded Moon, If you have more than bonus attack damage to ability power enter Dark Sun and if you have more than ability power to attack damage enter Faded Moon ");
         this.addAccessory(Accessories.TITANIC_CRESCENT.get(), "Titanic Crescent", "Basic attack on-hit deal bonus %s%% Max HP to the target and %s%% Max HP to others entity in a cone in the direction of the primary target");
         this.addAccessory(Accessories.SWIFTNESS.get(), "Swiftness", "Inflict Speed boost effect for 5 seconds");
+        this.addAccessory(Accessories.STALKER.get(), "Stalker", "Gain 100% Stealth and becoming invisible");
         //
 
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon | Ingredients");
@@ -165,6 +169,7 @@ public class BHLangProvider extends LanguageProvider {
         //
         this.add(Tooltips.TOOLTIP_ACCESSORY, "Accessory");
         this.add(Tooltips.TOOLTIP_ACCESSORY_TYPE, "Unique");
+        this.add(Tooltips.TOOLTIP_ACCESSORY_SKILL_TYPE, "%s");
         this.add(Tooltips.TOOLTIP_INVENTORY, "Inventory");
         this.add(Tooltips.TOOLTIP_HEALTH_RECOVERY_POTION, "Restore %s Health");
         this.add(Tooltips.TOOLTIP_MANA_RECOVERY_POTION, "Restore %s Mana");

@@ -211,6 +211,8 @@ public class BHItems {
     public static final RegistryObject<Item> CINDER_STONE = accessoryItem("cinder_stone", AccessoryBuilder.CINDER_STONE);
     public static final RegistryObject<Item> CRYSTALLIZED_PLATE = accessoryItem("crystallized_plate", AccessoryBuilder.CRYSTALLIZED_PLATE);
     public static final RegistryObject<Item> BOOTS_OF_SWIFTNESS = accessoryItemModel("boots_of_swiftness", AccessoryBuilder.BOOTS_OF_SWITFNESS);
+    public static final RegistryObject<Item> STEALTH_CLOAK = accessoryItem("stealth_cloak", AccessoryBuilder.STEALTH_CLOAK);
+
 
     //
 

@@ -1,9 +1,11 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
+import com.kenhorizon.beyondhorizon.client.api.event.PotionEffectParticleEvent;
 import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.core.Holder;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -25,9 +27,12 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -54,6 +59,14 @@ public abstract class LivingEntityMixins extends EntityMixins implements IBHData
         if (data != null) {
             compoundNBT.put("BeyondHorizonData", data);
         }
+    }
+
+    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"), method = "tickEffects")
+    private void onEffectParticleInit(Level instance, ParticleOptions particle, double x, double y, double z, double dx, double dy, double dz) {
+        PotionEffectParticleEvent event = new PotionEffectParticleEvent(_this(), particle, x, y, z, dx, dy, dz);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.isCanceled()) return;
+        instance.addParticle(event.getParticle(), event.getX(), event.getY(), event.getZ(), event.getDx(), event.getDy(), event.getDz());
     }
 
     @Inject(at = @At("TAIL"), method = "readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")

@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 
-public class GainBonusHealthAccessory extends AccessorySkill {
+public class GainBonusHealthAccessory extends AccessoryPassiveSkill {
     public enum Type {
         BASE,
         TOTAL

@@ -1,4 +1,4 @@
-// 1.20.1	2026-06-15T20:46:03.6163695	Item Models: beyondhorizon
+// 1.20.1	2026-06-18T12:22:46.8985082	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -120,6 +120,7 @@ e9cbfec3a01748b23a3a1fd084b12bd5706558c0 assets/beyondhorizon/models/item/starit
 8fcd84c0605d513029bb03e12119aeb4b8daef7f assets/beyondhorizon/models/item/starite_pickaxe.json
 6199f503fa163426069669bc26a076307dfecdab assets/beyondhorizon/models/item/starite_shovel.json
 e088cfc672483b94b88191d486af6451ef171a83 assets/beyondhorizon/models/item/starite_sword.json
+cfb205e7482085b60ff3863522216380d97c298d assets/beyondhorizon/models/item/stealth_cloak.json
 e76a33e9aa84f769c6cdb6746315d8fb943e35f8 assets/beyondhorizon/models/item/swift_dagger.json
 ddb4f39e2749d15a53bdac9c199b616cd3ce942e assets/beyondhorizon/models/item/talisman_of_ascension.json
 946a02d0e93616512ba47387c5010f334702f1b9 assets/beyondhorizon/models/item/thornmail.json

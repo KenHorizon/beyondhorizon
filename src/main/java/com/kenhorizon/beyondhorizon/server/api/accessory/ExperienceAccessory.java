@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
-public class ExperienceAccessory extends AccessorySkill {
+public class ExperienceAccessory extends AccessoryPassiveSkill {
     public ExperienceAccessory(double modifier) {
         this.setMagnitude((float) modifier);
         this.setLevel(1);

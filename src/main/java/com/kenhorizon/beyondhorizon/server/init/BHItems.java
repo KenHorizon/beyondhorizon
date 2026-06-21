@@ -208,10 +208,12 @@ public class BHItems {
     public static final RegistryObject<Item> AGILE_DAGGER = accessoryItem("agile_dagger", AccessoryBuilder.AGILE_DAGGER);
     public static final RegistryObject<Item> MASK_OF_AGONY = accessoryItem("mask_of_agony", AccessoryBuilder.DESPAIR_AND_DEFY);
     public static final RegistryObject<Item> VITALITY_STONE = accessoryItem("vitality_stone", AccessoryBuilder.VITALITY_STONE);
-    public static final RegistryObject<Item> CINDER_STONE = accessoryItem("cinder_stone", AccessoryBuilder.CINDER_STONE);
+    public static final RegistryObject<Item> CINDER_STONE = accessoryItem("cinder_stone", AccessoryItemGroup.IMMOLATE, AccessoryBuilder.CINDER_STONE);
+    public static final RegistryObject<Item> INFERNO_HEART_STONE = accessoryItem("inferno_heart_stone", AccessoryItemGroup.IMMOLATE, AccessoryBuilder.INFERNO_HEART_STONE);
     public static final RegistryObject<Item> CRYSTALLIZED_PLATE = accessoryItem("crystallized_plate", AccessoryBuilder.CRYSTALLIZED_PLATE);
     public static final RegistryObject<Item> BOOTS_OF_SWIFTNESS = accessoryItemModel("boots_of_swiftness", AccessoryBuilder.BOOTS_OF_SWITFNESS);
     public static final RegistryObject<Item> STEALTH_CLOAK = accessoryItem("stealth_cloak", AccessoryBuilder.STEALTH_CLOAK);
+    public static final RegistryObject<Item> SAINT_DEMON_CROWN = accessoryItem("saint_demon_crown", Rarity.EPIC, AccessoryBuilder.SAINT_DEMON_CROWN);
 
 
     //
@@ -337,6 +339,12 @@ public class BHItems {
 
     private static RegistryObject<Item> accessoryItem(String name, AccessoryBuilder accessoryBuilder) {
         return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder))
+                .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+    }
+
+    private static RegistryObject<Item> accessoryItem(String name, Rarity rarity, AccessoryBuilder accessoryBuilder) {
+        return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder))
+                .properties(properties -> properties.rarity(rarity))
                 .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
 

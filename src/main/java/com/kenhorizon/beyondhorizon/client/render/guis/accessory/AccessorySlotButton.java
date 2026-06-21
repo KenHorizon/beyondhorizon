@@ -23,7 +23,6 @@ import java.util.List;
 public class AccessorySlotButton extends Button {
     private final Screen parentGui;
     protected static final ResourceLocation BUTTON = BeyondHorizon.resourceGui("button/accessory.png");
-    protected static final ResourceLocation CANCEL = BeyondHorizon.resourceGui("button/accessory.png");
 
     public AccessorySlotButton(Screen parentGui, int x, int y) {
         super(x, y, 16, 16, CommonComponents.EMPTY, pButton -> {
@@ -74,7 +73,7 @@ public class AccessorySlotButton extends Button {
                 text.add(Component.translatable(Tooltips.TOOLTIP_INVENTORY));
                 graphics.renderComponentTooltip(mc.font, text, mouseX, mouseY);
             }
-            graphics.blit(CANCEL, this.getX(), this.getY(), 0, offset, 16, 16, 16, 32);
+            graphics.blit(BUTTON, this.getX(), this.getY(), 0, offset, 16, 16, 16, 32);
 
         }
         if (this.parentGui instanceof CreativeModeInventoryScreen creativInventory) {

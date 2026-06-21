@@ -17,7 +17,10 @@
     "common.accessor.AttributeRangeAccessor"
   ],
   "client": [
+    "client.AnvilScreenMixins",
     "client.GameRendererMixins",
-    "client.accessor.FontAccessor"
+    "client.HumanoidModelMixins",
+    "client.accessor.FontAccessor",
+    "client.accessor.ItemInHandRendererMixins"
   ]
 }

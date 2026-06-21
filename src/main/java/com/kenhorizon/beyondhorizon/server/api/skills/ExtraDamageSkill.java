@@ -5,7 +5,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -16,7 +16,7 @@ import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
-public class ExtraDamageSkill extends WeaponSkills {
+public class ExtraDamageSkill extends WeaponPassiveSkills {
     @FunctionalInterface
     public interface DamageTypeFunction {
         public float calculate(float magnitude, float level, MobType mobType, float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target);
@@ -101,7 +101,7 @@ public class ExtraDamageSkill extends WeaponSkills {
         }
         if (entity instanceof LivingEntity) {
             Vec3 vec3 = entity.getDeltaMovement().scale(20.0F);
-            float extraDamage = damageDealt * (float) MathUtils.perValue(vec3.length(), (magnitude * level), magnitude);
+            float extraDamage = damageDealt * (float) Maths.perValue(vec3.length(), (magnitude * level), magnitude);
             return damageDealt + extraDamage;
         }
         return damageDealt;

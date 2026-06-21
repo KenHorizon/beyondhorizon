@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
@@ -63,7 +63,7 @@ public class FlameStrikeAbility extends AbilityEntity {
             float pitch = (float) (this.random.nextFloat() * 2 * Math.PI);
             double ox = (float) (radius * Math.sin(yaw) * Math.sin(pitch));
             double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
-            ParticleTrailOptions.add(this.level(), TrailParticles.Behavior.FADE, this.getX() + ox, this.getY(), this.getZ() + oz, 3.0F, 1, 0.0F, 0.0F, 1.0F, 20, new Vec3(this.getX() + ox, this.getY() + 10, this.getZ() + oz));
+            TrailParticleOptions.add(this.level(), TrailParticles.Behavior.FADE, this.getX() + ox, this.getY(), this.getZ() + oz, 3.0F, 1, 0.0F, 0.0F, 1.0F, 20, new Vec3(this.getX() + ox, this.getY() + 10, this.getZ() + oz));
         }
     }
     @Override

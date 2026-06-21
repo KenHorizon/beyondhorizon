@@ -18,9 +18,15 @@ import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
+import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAcessoryKeyPacket;
+import com.kenhorizon.libs.client.ModelAnimationHandler;
+import com.kenhorizon.libs.client.ModelAnimations;
+import com.kenhorizon.libs.client.WeaponArmPose;
+import com.kenhorizon.libs.client.event.PlayerModelEvent;
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -32,6 +38,9 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.model.PlayerModel;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -42,9 +51,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.InventoryMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockAndTintGetter;
@@ -52,19 +68,25 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
+import org.lwjgl.glfw.GLFW;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class ClientEventHandler {
 
+    private WeaponArmPose weaponRightArmPose = WeaponArmPose.EMPTY;
+    private WeaponArmPose weaponLeftArmPose = WeaponArmPose.EMPTY;
     private static final ResourceLocation PHOSPOR = BeyondHorizon.resource("shaders/post/phospor_effect.json");
     private static final ResourceLocation GHOUL_WILL = BeyondHorizon.resource("shaders/post/ghoul_will.json");
 
@@ -197,6 +219,42 @@ public class ClientEventHandler {
             renderer.checkEntityPostEffect(null);
         }
     }
+    @Nullable
+    private Slot findSlot(AbstractContainerMenu menu, double x, double y, int posX, int posY) {
+        for(int i = 0; i < menu.slots.size(); ++i) {
+            Slot slot = menu.slots.get(i);
+            if (this.isHovering(posX, posY, slot, x, y) && slot.isActive()) {
+                return slot;
+            }
+        }
+
+        return null;
+    }
+    private boolean isHovering(int posX, int posY, Slot slot, double x, double y) {
+        return this.isHovering(posX, posY,slot.x, slot.y, 16, 16, x, y);
+    }
+    protected boolean isHovering(int posX, int posY, int x, int y, int w, int h, double mX, double mY) {
+        mX -= (double)posX;
+        mY -= (double)posY;
+        return mX >= (double)(x - 1) && mX < (double)(x + w + 1) && mY >= (double)(y - 1) && mY < (double)(y + h + 1);
+    }
+
+//    @SubscribeEvent
+//    public void onComputeFOVModifier(ComputeFovModifierEvent event) {
+//        ItemStack itemstack = event.getPlayer().getUseItem();
+//        if (event.getPlayer().isUsingItem()) {
+//            if (itemstack.getItem() instanceof BowItem) {
+//                int i = event.getPlayer().getTicksUsingItem();
+//                float f1 = (float) i / 20.0F;
+//                if (f1 > 1.0F) {
+//                    f1 = 1.0F;
+//                } else {
+//                    f1 *= f1;
+//                }
+//                event.setNewFovModifier(event.getFovModifier() * (1.0F - f1 * 0.15F));
+//            }
+//        }
+//    }
 
     @SubscribeEvent
     public void onKeyPressClient(InputEvent.Key event) {
@@ -265,6 +323,7 @@ public class ClientEventHandler {
             event.setRoll((float) (Math.sin((player.tickCount + partialTick) * 0.2F) * 10F));
         }
     }
+
     @SubscribeEvent
     public void onScreenInit(ScreenEvent.Init.Post event) {
         Screen eventScreen = event.getScreen();
@@ -275,8 +334,8 @@ public class ClientEventHandler {
             boolean isCreative = eventScreen instanceof CreativeModeInventoryScreen;
             int x = (gui.width - gui.getXSize()) / 2;
             int y = (gui.height - gui.getYSize()) / 2;
-            x += isCreative ? 173 : 58;
-            y += isCreative ? 65 : 8;
+            x += isCreative ? 173 : BHConfigs.ACCESSORY_BUTTON_X;
+            y += isCreative ? 65 : BHConfigs.ACCESSORY_BUTTON_Y;
             if (component.isVisible()) {
                 x += 10;
                 y += 10;
@@ -287,7 +346,7 @@ public class ClientEventHandler {
             AbstractContainerScreen<?> gui = (AbstractContainerScreen<?>) eventScreen;
             int x = (gui.width - gui.getXSize()) / 2;
             int y = (gui.height - gui.getYSize()) / 2;
-            event.addListener(new AccessorySlotButton(eventScreen, x - 40, y + 4));
+            event.addListener(new AccessorySlotButton(eventScreen, x + BHConfigs.ACCESSORY_BUTTON_X, y + BHConfigs.ACCESSORY_BUTTON_Y));
         }
     }
 
@@ -298,6 +357,76 @@ public class ClientEventHandler {
         }
         gui.xMouse = event.getMouseX();
         gui.yMouse = event.getMouseY();
+    }
+
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public void onPoseHand(PlayerModelEvent event) {
+        LivingEntity entity = (LivingEntity) event.getEntityIn();
+        float limbSwing = event.getLimbSwing();
+        float limbSwingAmount = event.getLimbSwingAmount();
+        float yaw = event.getYaw();
+        float pitch = event.getPitch();
+        this.weaponRightArmPose = ModelAnimationHandler.INSTANCE.getWeaponArmPose(entity, InteractionHand.MAIN_HAND);
+        this.weaponLeftArmPose = ModelAnimationHandler.INSTANCE.getWeaponArmPose(entity, InteractionHand.OFF_HAND);
+        boolean isRightHanded = entity.getMainArm() == HumanoidArm.RIGHT;
+//        if (entity instanceof AbstractClientPlayer player) {
+//            if (((IBHDataEntity) player).getBHSharedFlags(6)) {
+//                ModelAnimations.flyingAnim(player, ((IFlight) player).getFlightTick(), event.getYaw(), event.getPitch(), (PlayerModel<?>) event.getModel());
+//            }
+//        }
+        if (entity.isUsingItem()) {
+            boolean isMainHand = entity.getUsedItemHand() == InteractionHand.MAIN_HAND;
+            if (isMainHand == isRightHanded) {
+                this.poseRightArm(entity, (HumanoidModel<LivingEntity>) event.getModel());
+            } else {
+                this.poseLeftArm(entity, (HumanoidModel<LivingEntity>) event.getModel());
+            }
+        } else {
+            boolean isTwoHanded = isRightHanded ? this.weaponLeftArmPose.isTwoHanded() : this.weaponRightArmPose.isTwoHanded();
+            if (isRightHanded != isTwoHanded) {
+                this.poseLeftArm(entity, (HumanoidModel<LivingEntity>) event.getModel());
+                this.poseRightArm(entity, (HumanoidModel<LivingEntity>) event.getModel());
+            } else {
+                this.poseRightArm(entity, (HumanoidModel<LivingEntity>) event.getModel());
+                this.poseLeftArm(entity, (HumanoidModel<LivingEntity>) event.getModel());
+            }
+        }
+    }
+    private void poseRightArm(LivingEntity entity, HumanoidModel<LivingEntity> model) {
+        switch (this.weaponRightArmPose) {
+            case GUARDIAN_SWORD:
+                model.rightArm.xRot = model.rightArm.xRot * 0.5F - (float) Math.PI;
+                model.rightArm.yRot = 0.0F;
+                break;
+            case HOLDING_1:
+                model.rightArm.xRot = model.head.xRot - (float) Math.toRadians(80.0F);
+                model.rightArm.yRot = model.head.yRot;
+                break;
+            case HOLDING:
+                ModelAnimations.holding(model.rightArm, model.leftArm, model.head, true);
+                break;
+            default:
+                model.rightArmPose.applyTransform(model, entity, HumanoidArm.RIGHT);
+        }
+    }
+    private void poseLeftArm(LivingEntity entity, HumanoidModel<LivingEntity> model) {
+        switch (this.weaponLeftArmPose) {
+            case GUARDIAN_SWORD:
+                model.leftArm.xRot = model.leftArm.xRot * 0.5F - (float) Math.PI;
+                model.leftArm.yRot = 0.0F;
+                break;
+            case HOLDING_1:
+                model.leftArm.xRot = model.head.xRot - (float) Math.toRadians(80.0F);
+                model.leftArm.yRot = model.head.yRot;
+                break;
+            case HOLDING:
+                ModelAnimations.holding(model.rightArm, model.leftArm, model.head, false);
+                break;
+            default:
+                model.leftArmPose.applyTransform(model, entity, HumanoidArm.LEFT);
+        }
     }
 
     private void renderBreakingTexture(BlockState state, BlockPos pos, BlockAndTintGetter blockAndTintGetter,

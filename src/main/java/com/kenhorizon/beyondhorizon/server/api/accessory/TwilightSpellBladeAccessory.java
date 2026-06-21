@@ -1,11 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 
 public class TwilightSpellBladeAccessory extends BaseSpellbladeAccessory {
 

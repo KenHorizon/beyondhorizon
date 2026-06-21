@@ -19,7 +19,6 @@ import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
-import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
@@ -30,12 +29,11 @@ import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataSyncPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.api.skills.ActiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundPlayerSwingArmPacket;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
@@ -59,7 +57,6 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -142,6 +139,10 @@ public class ServerEventHandler {
                 PlayerData data = Capabilities.data(player);
                 NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) player);
                 NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) player);
+                PlayerData playerData = Capabilities.data(player);
+                if (playerData != null) {
+                    playerData.syncPlayerData(player);
+                }
             }
             if (event.getEntity() instanceof LivingEntity entity) {
                 IStackableInstance stackableTags = Capabilities.stackable(entity);
@@ -240,7 +241,6 @@ public class ServerEventHandler {
         event.register(IDamageInfo.class);
         event.register(LevelSystem.class);
         event.register(PlayerData.class);
-        event.register(ActiveSkill.class);
         event.register(StackableTags.class);
     }
 
@@ -273,6 +273,14 @@ public class ServerEventHandler {
         }
     }
 
+    private void syncSlot(ServerPlayer player) {
+        player.getCapability(BHCapabilties.ACCESSORY).ifPresent(handler -> {
+            for (int i = 0; i < handler.getSlots(); i++) {
+                ItemStack itemStack = handler.getStackInSlot(i);
+                BeyondHorizon.PROXY.syncAccessoryToPlayer(i, itemStack, player);
+            }
+        });
+    }
     @SubscribeEvent
     public void onPlayerCloned(PlayerEvent.Clone event) {
         Player player = event.getEntity();
@@ -293,14 +301,7 @@ public class ServerEventHandler {
         }
     }
 
-    private void syncSlot(ServerPlayer player) {
-        player.getCapability(BHCapabilties.ACCESSORY).ifPresent(handler -> {
-            for (int i = 0; i < handler.getSlots(); i++) {
-                ItemStack itemStack = handler.getStackInSlot(i);
-                BeyondHorizon.PROXY.syncAccessoryToPlayer(i, itemStack, player);
-            }
-        });
-    }
+
 
     private void onPlayerTick(Player player) {
         player.getCapability(BHCapabilties.ACCESSORY).ifPresent(handler -> {
@@ -607,7 +608,7 @@ public class ServerEventHandler {
         }
         if (target instanceof Player player) {
             if (source.getEntity() instanceof LivingEntity lEntity && lEntity instanceof EnderDragon) {
-                player.addEffect(new MobEffectInstance(BHEffects.DRAGONIC_FLAME.get(), MathUtils.sec(3), 1));
+                player.addEffect(new MobEffectInstance(BHEffects.DRAGONIC_FLAME.get(), Maths.sec(3), 1));
             }
             for (ArmorSet set : ArmorSetRegistry.getAll()) {
                 ArmorBonusSet armorBonusSet = set.getInstance();
@@ -937,6 +938,22 @@ public class ServerEventHandler {
         LivingEntity target = event.getEntity();
         DamageSource source = event.getSource();
         boolean cantDie = false;
+        if (target instanceof Player player) {
+            IAccessoryItemHandler handler = Capabilities.accessory(player);
+            if (handler != null) {
+                for (int i = 0; i < handler.getSlots(); i++) {
+                    final ItemStack itemStack = handler.getStackInSlot(i);
+                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> container) {
+                        for (Accessory trait : container.getAccessories()) {
+                            Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
+                            if (meleeWeaponCallback.isPresent()) {
+                                meleeWeaponCallback.get().onEntityDeath(player, itemStack);
+                            }
+                        }
+                    }
+                }
+            }
+        }
         if (source.getEntity() instanceof LivingEntity attacker) {
             ICombatCore attackerCombatCore = Capabilities.combat(attacker);
             ItemStack attackerStack = attacker.getMainHandItem();
@@ -952,7 +969,6 @@ public class ServerEventHandler {
                             for (Accessory trait : container.getAccessories()) {
                                 Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                                 if (meleeWeaponCallback.isPresent()) {
-                                    cantDie = meleeWeaponCallback.get().onEntityDeath(player, itemStack);
                                     meleeWeaponCallback.get().onEntityKilled(source, player, target);
                                 }
                             }

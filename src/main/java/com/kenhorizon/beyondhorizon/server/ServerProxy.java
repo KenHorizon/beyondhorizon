@@ -6,6 +6,7 @@ import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
@@ -41,7 +42,7 @@ public class ServerProxy {
         return false;
     }
 
-    public void syncAccessoryToPlayer(int slot, ItemStack itemStack, ServerPlayer serverPlayer) {}
+    public void syncAccessoryToPlayer(int slot, ItemStack itemStack, ServerPlayer player) {}
 
     public Vec3 getCameraRotation() {
         return Vec3.ZERO;

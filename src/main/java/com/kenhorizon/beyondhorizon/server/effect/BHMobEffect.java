@@ -93,7 +93,7 @@ public class BHMobEffect extends MobEffect {
             boolean cancelHeal = combatCore.OnCombat();
             if (!cancelHeal && entity.getHealth() < entity.getMaxHealth()) {
                 if (entity.tickCount % this.rapidHealingRate == 0) {
-                    BeyondHorizon.LOGGER.debug("Rapid Healing Debug: Rate:{} Limit:{} Minus:{}", this.rapidHealingRate, this.rapidHealingLimitRate, this.rapidHealingMinusRate);
+                    //BeyondHorizon.LOGGER.debug("Rapid Healing Debug: Rate:{} Limit:{} Minus:{}", this.rapidHealingRate, this.rapidHealingLimitRate, this.rapidHealingMinusRate);
                     entity.heal(0.5F);
                     if (this.rapidHealingRate > this.rapidHealingLimitRate) {
                         this.rapidHealingRate -= this.rapidHealingMinusRate;

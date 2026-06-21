@@ -292,16 +292,14 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         int startIndex = this.startIndex + (COLUMN * ROW);
         int craftW = 24;
         int craftH = 24;
-        for (int i = this.startIndex; i < startIndex; ++i) {
+        for (int i = this.startIndex; i < startIndex && i < this.menu.recipes.size(); ++i) {
             int index = i - this.startIndex;
             int x0 = ((this.leftPos + 7) - (this.imageWidth - 6)) + index % ROW * 24;
             int var0001 = index / ROW;
             int y0 = (this.topPos + POS_Y) + var0001 * 24 + 2;
-            for (int i0 = 0; i0 < this.menu.recipes.size(); i0++) {
-                if (mouseX >= x0 && mouseX <= x0 + craftW && mouseY >= y0 && mouseY <= y0 + craftH) {
-                    this.selectedRecipes = this.menu.recipes.get(index);
-                    break;
-                }
+            if (mouseX >= x0 && mouseX <= x0 + craftW && mouseY >= y0 && mouseY <= y0 + craftH) {
+                this.selectedRecipes = this.menu.recipes.get(i);
+                break;
             }
             int x1 = this.leftPos + 52;
             int y1 = this.topPos + 14;

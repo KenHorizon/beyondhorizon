@@ -47,36 +47,4 @@ public class GuardianSwordProperties extends ItemPropertiesSkill {
     public boolean onLeftClickProperties(ItemStack itemStack, Player player) {
         return true;
     }
-
-    protected void stab(LivingEntity user, float damage) {
-        double range = 2.5D;
-        Vec3 srcVec = user.getEyePosition();
-        Vec3 lookVec = user.getViewVector(1.0F);
-        Vec3 destVec = srcVec.add(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range);
-        float var9 = 1.0F;
-        List<Entity> possibleList = user.level().getEntities(user, user.getBoundingBox().expandTowards(lookVec.x() * range, lookVec.y() * range, lookVec.z() * range).inflate(var9, var9, var9));
-        boolean flag = false;
-        for (Entity entity : possibleList) {
-            if (entity instanceof LivingEntity) {
-                float borderSize = 0.5F;
-                AABB collisionBB = entity.getBoundingBox().inflate(borderSize, borderSize, borderSize);
-                Optional<Vec3> interceptPos = collisionBB.clip(srcVec, destVec);
-                if (collisionBB.contains(srcVec)) {
-                    flag =true;
-                } else if (interceptPos.isPresent()) {
-                    flag =true;
-                }
-
-                if (flag) {
-                    if (entity.hurt(BHDamageTypes.physicalDamage(user), damage)) {
-                        entity.invulnerableTime = - 20;
-                        int j = EnchantmentHelper.getFireAspect(user);
-                        if (j > 0 && !entity.isOnFire()) {
-                            entity.setSecondsOnFire(j * 4);
-                        }
-                    }
-                }
-            }
-        }
-    }
 }

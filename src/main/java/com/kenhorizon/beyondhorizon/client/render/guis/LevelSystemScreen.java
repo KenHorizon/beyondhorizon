@@ -9,7 +9,7 @@ import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundConsumePointsPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundSkillPointsPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
@@ -107,7 +107,7 @@ public class LevelSystemScreen extends Screen {
             String level = "Lvl: ";
             String levelPTS = String.format("%s", this.role.getLevel());
             int levelString = level.length();
-            String xpRequired = String.format("%s/%s", MathUtils.format(this.role.getExpProgress()), MathUtils.format(this.role.getXpNeededForNextLevel()));
+            String xpRequired = String.format("%s/%s", Maths.format(this.role.getExpProgress()), Maths.format(this.role.getXpNeededForNextLevel()));
             BlitHelper.drawStrings(guiGraphics, xpRequired, this.posX + 20, this.posY + 34, ColorUtil.GREEN);
             BlitHelper.drawStrings(guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 136, this.posY + 12, ColorUtil.WHITE, false);
             BlitHelper.drawStrings(guiGraphics, player.getName(), x, y, ColorUtil.WHITE);

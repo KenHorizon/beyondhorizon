@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.block.basin;
 
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -143,7 +143,7 @@ public class FireBasinBlock extends Block implements SimpleWaterloggedBlock {
             float r = 1.0F;
             float g = Mth.lerp((float) i / 2, 0.9F, 0.6F);
             float b = 0;
-            ParticleTrailOptions.add(level, TrailParticles.Behavior.FADE_N_SHRINK,
+            TrailParticleOptions.add(level, TrailParticles.Behavior.FADE_N_SHRINK,
                     blockPos.getX() + 0.5D, blockPos.getY() + 0.5D, blockPos.getZ() + 0.5D, 1.0F, 1.0F, r,g,b
                     , 80, new Vec3(
                             blockPos.getX() + (random.nextFloat() * 0.5F),

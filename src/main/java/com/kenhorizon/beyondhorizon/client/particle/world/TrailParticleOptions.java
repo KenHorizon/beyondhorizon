@@ -17,9 +17,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Locale;
 
-public class ParticleTrailOptions implements ParticleOptions {
-    public static final Deserializer<ParticleTrailOptions> DESERIALIZER = new Deserializer<ParticleTrailOptions>() {
-        public ParticleTrailOptions fromCommand(ParticleType<ParticleTrailOptions> particleTypeIn, StringReader reader) throws CommandSyntaxException {
+public class TrailParticleOptions implements ParticleOptions {
+    public static final Deserializer<TrailParticleOptions> DESERIALIZER = new Deserializer<TrailParticleOptions>() {
+        public TrailParticleOptions fromCommand(ParticleType<TrailParticleOptions> particleTypeIn, StringReader reader) throws CommandSyntaxException {
             reader.expect(' ');
             float yaw = (float) reader.readDouble();
             reader.expect(' ');
@@ -44,11 +44,11 @@ public class ParticleTrailOptions implements ParticleOptions {
             float targetY = reader.readFloat();
             reader.expect(' ');
             float targetZ = reader.readFloat();
-            return new ParticleTrailOptions(duration, r, g, b, a, scale, TrailParticles.Behavior.values()[mode], new Vec3(targetX, targetY, targetZ));
+            return new TrailParticleOptions(duration, r, g, b, a, scale, TrailParticles.Behavior.values()[mode], new Vec3(targetX, targetY, targetZ));
         }
 
-        public ParticleTrailOptions fromNetwork(ParticleType<ParticleTrailOptions> particleTypeIn, FriendlyByteBuf buffer) {
-            return new ParticleTrailOptions(buffer.readInt(), buffer.readFloat(), buffer.readFloat(),
+        public TrailParticleOptions fromNetwork(ParticleType<TrailParticleOptions> particleTypeIn, FriendlyByteBuf buffer) {
+            return new TrailParticleOptions(buffer.readInt(), buffer.readFloat(), buffer.readFloat(),
                     buffer.readFloat(), buffer.readFloat(), buffer.readFloat(),
                     TrailParticles.Behavior.values()[buffer.readInt()], new Vec3(buffer.readFloat(), buffer.readFloat(), buffer.readFloat()));
         }
@@ -63,7 +63,7 @@ public class ParticleTrailOptions implements ParticleOptions {
     private final Vec3 target;
     private final TrailParticles.Behavior behavior;
 
-    public ParticleTrailOptions(int duration, float r, float g, float b, float a, float scale, TrailParticles.Behavior behavior, Vec3 target) {
+    public TrailParticleOptions(int duration, float r, float g, float b, float a, float scale, TrailParticles.Behavior behavior, Vec3 target) {
         this.target = target;
         this.r = r;
         this.g = g;
@@ -96,7 +96,7 @@ public class ParticleTrailOptions implements ParticleOptions {
     }
 
     @Override
-    public ParticleType<ParticleTrailOptions> getType() {
+    public ParticleType<TrailParticleOptions> getType() {
         return BHParticle.TRAILS.get();
     }
 
@@ -140,19 +140,19 @@ public class ParticleTrailOptions implements ParticleOptions {
         return target;
     }
 
-    public static Codec<ParticleTrailOptions> CODEC = RecordCodecBuilder.create((codecBuilder) -> codecBuilder.group(
-                        Codec.FLOAT.fieldOf("r").forGetter(ParticleTrailOptions::getR),
-                        Codec.FLOAT.fieldOf("g").forGetter(ParticleTrailOptions::getG),
-                        Codec.FLOAT.fieldOf("b").forGetter(ParticleTrailOptions::getB),
-                        Codec.FLOAT.fieldOf("a").forGetter(ParticleTrailOptions::getA),
-                        Codec.FLOAT.fieldOf("scale").forGetter(ParticleTrailOptions::getScale),
-                        Codec.INT.fieldOf("duration").forGetter(ParticleTrailOptions::getDuration),
+    public static Codec<TrailParticleOptions> CODEC = RecordCodecBuilder.create((codecBuilder) -> codecBuilder.group(
+                        Codec.FLOAT.fieldOf("r").forGetter(TrailParticleOptions::getR),
+                        Codec.FLOAT.fieldOf("g").forGetter(TrailParticleOptions::getG),
+                        Codec.FLOAT.fieldOf("b").forGetter(TrailParticleOptions::getB),
+                        Codec.FLOAT.fieldOf("a").forGetter(TrailParticleOptions::getA),
+                        Codec.FLOAT.fieldOf("scale").forGetter(TrailParticleOptions::getScale),
+                        Codec.INT.fieldOf("duration").forGetter(TrailParticleOptions::getDuration),
                         Codec.STRING.fieldOf("behavior").forGetter((ParticleTrailOptions) -> ParticleTrailOptions.getBehavior().toString())
                 ).apply(codecBuilder, (r, g, b, a, scale, duration, behavior) ->
-                        new ParticleTrailOptions(duration, r, g, b, a, scale, TrailParticles.Behavior.valueOf(behavior), null))
+                        new TrailParticleOptions(duration, r, g, b, a, scale, TrailParticles.Behavior.valueOf(behavior), null))
         );
 
     public static void add(Level level, TrailParticles.Behavior behavior, double x, double y, double z, float scale, float a, float r, float g, float b, int duration, Vec3 destination) {
-        level.addParticle(new ParticleTrailOptions(duration,  a,  r,  g, b,  scale, behavior, destination), x, y, z, 0, 0,0);
+        level.addParticle(new TrailParticleOptions(duration,  a,  r,  g, b,  scale, behavior, destination), x, y, z, 0, 0,0);
     }
 }

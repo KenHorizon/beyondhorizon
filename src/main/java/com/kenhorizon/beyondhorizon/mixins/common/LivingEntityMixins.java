@@ -12,11 +12,13 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.EntityTypeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.CombatRules;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -112,6 +114,10 @@ public abstract class LivingEntityMixins extends EntityMixins implements IBHData
         }
         int air = bonusOxygen > 0 && _this().getRandom().nextDouble() >= (double) 1.0F / (bonusOxygen + (double) 1.0F) ? currentAir : currentAir - 1;
         cir.setReturnValue(air);
+    }
+    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z", ordinal = 7), method = "hurt")
+    private boolean modifiedHurt(DamageSource instance, TagKey<DamageType> tag) {
+        return instance.is(BHDamageTypeTags.NO_KNOCKBACK_DAMAGE) || instance.is(DamageTypeTags.IS_EXPLOSION);
     }
 
     @Inject(method = "calculateFallDamage", at = @At("RETURN"), cancellable = true)

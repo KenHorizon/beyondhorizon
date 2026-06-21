@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.particle;
 
 import com.kenhorizon.beyondhorizon.client.particle.world.IndicatorRingParticleOptions;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -80,8 +80,8 @@ public class IndicatorRingParticles extends TextureSheetParticle {
         float f1 = (float) (Mth.lerp(partialTicks, this.yo, this.y) - Vector3d.y());
         float f2 = (float) (Mth.lerp(partialTicks, this.zo, this.z) - Vector3d.z());
         Quaternionf quaternionf = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
-        Quaternionf quatX = MathUtils.quatFromRotationXYZ(pitch, 0, 0, false);
-        Quaternionf quatY = MathUtils.quatFromRotationXYZ(0, yaw, 0, false);
+        Quaternionf quatX = Maths.quatFromRotationXYZ(pitch, 0, 0, false);
+        Quaternionf quatY = Maths.quatFromRotationXYZ(0, yaw, 0, false);
         quaternionf.mul(quatY);
         quaternionf.mul(quatX);
         Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);

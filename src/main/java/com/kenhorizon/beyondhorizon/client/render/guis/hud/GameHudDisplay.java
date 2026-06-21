@@ -2,13 +2,17 @@ package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 
 import com.google.common.base.Preconditions;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillHelper;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
+import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
@@ -18,12 +22,17 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameHudDisplay extends Gui {
     private final static ResourceLocation ICON_BACKGROUND = BeyondHorizon.resourceGui("sprites/icon/effects/icon_backgrounds.png");
@@ -59,20 +68,33 @@ public class GameHudDisplay extends Gui {
         this.hud.update();
         var stackableTags = Capabilities.stackable(player);
         int xPos = 0;
+        IAccessoryItemHandler handler = Capabilities.accessory(player);
         if (stackableTags != null) {
-            for (var allTags : stackableTags.getInstance()) {
-                ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + allTags.getName() + ".png");
-                boolean flag = AccessoryHelper.getAccessory(player, Accessories.ENERGIZED.get()) || SkillHelper.getWeaponWithSkill(player, Skills.ENERGIZED.get());
-                if (getAllIcons != null && allTags.hasStacks() && AccessoryHelper.getAccessory(player, Accessories.ENERGIZED.get())) {
-                    int x = this.hud.scaledWindowWidth / 2 - 91 + (24 * xPos);
-                    int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
-                    String value = String.format("%s", allTags.getStack());
-                    BlitHelper.draw(guiGraphics, ICON_BACKGROUND, x, y -1, 9.0F, 24, 24, 24, 24);
-                    BlitHelper.draw(guiGraphics, getAllIcons, x, y - 1, 9.0F, 24, 24, 24, 24);
-                    int valueLenght = value.length();
-                    BlitHelper.drawStrings(guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, ColorUtil.WHITE, true);
-                    RenderSystem.disableBlend();
-                    xPos++;
+            if (handler != null) {
+                for (int i = 0; i < handler.getSlots(); i++) {
+                    ItemStack stack = handler.getStackInSlot(i);
+                    if (!stack.isEmpty() && stack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+                        for (var accessory : accessoryItems.getAccessories()) {
+                            if (accessory instanceof IStackIconOverlay overlay) {
+                                List<StackableTags> list = new ArrayList<>();
+                                list.add(overlay.getStacks());
+                                for (var allTags : list) {
+                                    ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + allTags.getName() + ".png");
+                                    if (allTags.hasStacks()) {
+                                        int x = this.hud.scaledWindowWidth / 2 - 91 + (26 * xPos);
+                                        int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
+                                        String value = String.format("%s", allTags.getStack());
+                                        BlitHelper.draw(guiGraphics, ICON_BACKGROUND, x, y -1, 9.0F, 24, 24, 24, 24);
+                                        BlitHelper.draw(guiGraphics, getAllIcons, x, y - 1, 9.0F, 24, 24, 24, 24);
+                                        int valueLenght = value.length();
+                                        BlitHelper.drawStrings(guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, ColorUtil.WHITE, true);
+                                        RenderSystem.disableBlend();
+                                        xPos++;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

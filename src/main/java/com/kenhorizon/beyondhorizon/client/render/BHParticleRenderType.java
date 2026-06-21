@@ -14,6 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public interface BHParticleRenderType {
+
     ParticleRenderType PARTICLE_EMISSIVE = new ParticleRenderType() {
         public void begin(BufferBuilder buffer, TextureManager manager) {
             RenderSystem.depthMask(true);

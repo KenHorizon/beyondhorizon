@@ -30,6 +30,9 @@ public class BHDamageTypes {
     public static final ResourceKey<DamageType> PHYSICAL_DAMAGE = createKey("physical_damage");
     public static final ResourceKey<DamageType> MAGIC_DAMAGE = createKey("magic_damage");
     public static final ResourceKey<DamageType> TRUE_DAMAGE = createKey("true_damage");
+    public static final ResourceKey<DamageType> NO_KNOCKBACK_PHYSICAL_DAMAGE = createKey("no_knockback_physical_damage");
+    public static final ResourceKey<DamageType> NO_KNOCKBACK_MAGIC_DAMAGE = createKey("no_knockback_magic_damage");
+    public static final ResourceKey<DamageType> NO_KNOCKBACK_TRUE_DAMAGE = createKey("no_knockback_true_damage");
     public static final ResourceKey<DamageType> LETHALITY = createKey("lethality");
     public static final ResourceKey<DamageType> ARMOR_PENETRATION = createKey("armor_penetration");
     public static final ResourceKey<DamageType> MAGIC_PENETRATION = createKey("magic_penetration");
@@ -37,7 +40,9 @@ public class BHDamageTypes {
     private static Registry<DamageType> damageTypes;
 
     public static void bootstrap(BootstapContext<DamageType> context) {
-        context.register(SPELL_DAMAGE_TRUE_DAMAGE, new DamageType("spell_damage_true_damage", 0.1F));
+        context.register(NO_KNOCKBACK_PHYSICAL_DAMAGE, new DamageType("no_knockback_physical_damage", 0.1F));
+        context.register(NO_KNOCKBACK_MAGIC_DAMAGE, new DamageType("no_knockback_magic_damage", 0.1F));
+        context.register(NO_KNOCKBACK_TRUE_DAMAGE, new DamageType("no_knockback_true_damage", 0.1F));
         context.register(SPELL_DAMAGE_MAGIC, new DamageType("spell_damage_magic", 0.1F));
         context.register(SPELL_DAMAGE_PHYSICAL, new DamageType("spell_damage_physical", 0.1F));
         context.register(PET_DAMAGE_TRUE_DAMAGE, new DamageType("pet_damage_true_damage", 0.1F));
@@ -121,11 +126,15 @@ public class BHDamageTypes {
     }
 
     public static DamageSource magicDamage(Entity source) {
-        return source(MAGIC_DAMAGE, source, source);
+        return source(MAGIC_DAMAGE, source, null);
     }
 
-    public static DamageSource blazingRod(Entity source, Entity cause) {
-        return source(BLAZING_ROD, source, cause);
+    public static DamageSource magicDamage(Entity source, boolean noKnocback) {
+        return physicalDamage(source, null, noKnocback);
+    }
+
+    public static DamageSource magicDamage(Entity source, Entity cause, boolean noKnocback) {
+        return source(noKnocback ? NO_KNOCKBACK_MAGIC_DAMAGE : MAGIC_DAMAGE, source, cause);
     }
 
     public static DamageSource physicalDamage(Entity source, Entity cause) {
@@ -133,7 +142,35 @@ public class BHDamageTypes {
     }
 
     public static DamageSource physicalDamage(Entity source) {
-        return source(PHYSICAL_DAMAGE, source);
+        return source(PHYSICAL_DAMAGE, source, null);
+    }
+
+    public static DamageSource physicalDamage(Entity source, boolean noKnocback) {
+        return physicalDamage(source, null, noKnocback);
+    }
+
+    public static DamageSource physicalDamage(Entity source, Entity cause, boolean noKnocback) {
+        return source(noKnocback ? NO_KNOCKBACK_TRUE_DAMAGE : TRUE_DAMAGE, source, cause);
+    }
+
+    public static DamageSource trueDamage(Entity source, Entity cause) {
+        return source(TRUE_DAMAGE, source, cause);
+    }
+
+    public static DamageSource trueDamage(Entity source, Entity cause, boolean noKnocback) {
+        return source(noKnocback ? NO_KNOCKBACK_TRUE_DAMAGE : TRUE_DAMAGE, source, cause);
+    }
+
+    public static DamageSource trueDamage(Entity source, boolean noKnocback) {
+        return source(noKnocback ? NO_KNOCKBACK_TRUE_DAMAGE : TRUE_DAMAGE, source, null);
+    }
+
+    public static DamageSource trueDamage(Entity source) {
+        return source(TRUE_DAMAGE, source, source);
+    }
+
+    public static DamageSource blazingRod(Entity source, Entity cause) {
+        return source(BLAZING_ROD, source, cause);
     }
 
     public static DamageSource nullify(Entity source, Entity target) {
@@ -142,13 +179,7 @@ public class BHDamageTypes {
     public static DamageSource nullify(Entity source) {
         return source(IGNORE_ENCHANTMENT_PROTECTION, source);
     }
-    public static DamageSource trueDamage(Entity source, Entity cause) {
-        return source(TRUE_DAMAGE, source, cause);
-    }
 
-    public static DamageSource trueDamage(Entity source) {
-        return source(TRUE_DAMAGE, source, source);
-    }
     private static ResourceKey<DamageType> createKey(String keyName) {
         return ResourceKey.create(Registries.DAMAGE_TYPE, BeyondHorizon.resource(keyName));
     }

@@ -3,9 +3,8 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 
-public abstract class StackingAbilitySkill extends WeaponSkills {
+public abstract class StackingAbilitySkill extends WeaponPassiveSkills {
     public enum StackType {
         HIT,
         KILL

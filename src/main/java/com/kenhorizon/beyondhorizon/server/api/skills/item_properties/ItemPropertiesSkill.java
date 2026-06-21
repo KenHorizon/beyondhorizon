@@ -1,11 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.item_properties;
 
 import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
-import com.kenhorizon.beyondhorizon.server.api.skills.WeaponSkills;
+import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
 
 import java.util.Optional;
 
-public class ItemPropertiesSkill extends WeaponSkills implements IItemProperties {
+public class ItemPropertiesSkill extends WeaponPassiveSkills implements IItemProperties {
 
     public ItemPropertiesSkill() {
         this.disableTooltip();

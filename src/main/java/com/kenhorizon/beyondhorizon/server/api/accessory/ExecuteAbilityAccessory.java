@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.sounds.SoundSource;
@@ -18,7 +18,7 @@ public class ExecuteAbilityAccessory extends AccessoryPassiveSkill {
 
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
-        return Component.translatable(this.createId(), MathUtils.format0(this.healthThereshold));
+        return Component.translatable(this.createId(), Maths.format0(this.healthThereshold));
     }
 
     public float getHealthExecute() {

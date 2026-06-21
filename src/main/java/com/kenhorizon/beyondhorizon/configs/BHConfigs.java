@@ -6,9 +6,12 @@ import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.configs.common.ModCommonConfig;
 import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.api.handler.anvil_patch.AnvilCostSettings;
+import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraftforge.fml.config.ModConfig;
 
 public class BHConfigs {
+    public static int ACCESSORY_BUTTON_X = 0;
+    public static int ACCESSORY_BUTTON_Y = 0;
     //CLIENT
     public static boolean ATTRIBUTE_TOOLTIP_OVERHAUl = true;
     public static boolean ADVANCED_TOOLTIP_ACCESSORY = true;
@@ -44,6 +47,8 @@ public class BHConfigs {
             DAMAGE_INDICATOR = ModClientConfig.DAMAGE_INDICATOR.get();
             MUSIC_BOSS = ModClientConfig.MUSIC_BOSS.get();
             REDUCE_DEBUG = ModClientConfig.REDUCE_DEBUG.get();
+            ACCESSORY_BUTTON_X = ModClientConfig.ACCESSORY_BUTTON_X.get();
+            ACCESSORY_BUTTON_Y = ModClientConfig.ACCESSORY_BUTTON_Y.get();
             //---------------------------------------------------------------------//
             ENABLE_MOB_LEVELS = ModCommonConfig.ENABLE_MOB_LEVELS.get();
             ENCHANTMENT_BREAK_LEVEL = ModCommonConfig.ENCHANTMENT_BREAK_LEVEL.get();

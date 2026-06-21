@@ -10,7 +10,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -77,7 +77,7 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
         if (this == BHEnchantments.STUNNING.get()) {
             float chances = 5.0F + (5.0F * level);
             if (random.nextFloat() * 100.0F <= chances) {
-                target.addEffect(new MobEffectInstance(BHEffects.STUN.get(), MathUtils.sec(1)));
+                target.addEffect(new MobEffectInstance(BHEffects.STUN.get(), Maths.sec(1)));
             }
         }
     }

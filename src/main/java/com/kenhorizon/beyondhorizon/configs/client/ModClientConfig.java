@@ -17,6 +17,10 @@ public class ModClientConfig {
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP;
     public static ForgeConfigSpec.BooleanValue SCREEN_SHAKE;
     public static ForgeConfigSpec.IntValue SCREEN_SHAKE_AMOUNT;
+    public static ForgeConfigSpec.IntValue ACCESSORY_BUTTON_X;
+    public static ForgeConfigSpec.IntValue ACCESSORY_BUTTON_Y;
+    public static ForgeConfigSpec.IntValue INV_ACCESSORY_BUTTON_X;
+    public static ForgeConfigSpec.IntValue INV_ACCESSORY_BUTTON_Y;
     public static ForgeConfigSpec.EnumValue<GameHuds> GAME_HUD;
 
     public static final ForgeConfigSpec SPEC;
@@ -53,6 +57,12 @@ public class ModClientConfig {
                 .comment("  [Vanilla]")
                 .comment("  - Vanilla Game Experience")
                 .defineEnum("In-Game Hud", GameHuds.MOD, GameHuds.VANILLA, GameHuds.MOD);
+        ACCESSORY_BUTTON_X = builder
+                .comment("X Position of Accessory Button in Accessory Screen")
+                .defineInRange("Accessory Button Position X", 58, -Integer.MAX_VALUE, Integer.MAX_VALUE);
+        ACCESSORY_BUTTON_Y = builder
+                .comment("Y Position of Accessory Button in Accessory Screen")
+                .defineInRange("Accessory Button Position Y", 8, -Integer.MAX_VALUE, Integer.MAX_VALUE);
         builder.pop();
         builder.push("Beyond Horizon | Tooltip Configs");
         ATTRIBUTE_TOOLTIP_OVERHAUl = builder

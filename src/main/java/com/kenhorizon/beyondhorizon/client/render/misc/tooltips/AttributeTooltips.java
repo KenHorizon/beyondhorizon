@@ -7,7 +7,7 @@ import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
@@ -99,9 +99,9 @@ public class AttributeTooltips {
         amount *= attributeAmount > 0.0D ? 1.0D : -1.0D;
         if (amount == 0.0D) return;
         if (checkIfPercentage(attribute)) {
-            tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), MathUtils.format(amount), displayName).withStyle(color)));
+            tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), Maths.format(amount), displayName).withStyle(color)));
         } else {
-            tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), MathUtils.format(amount), displayName).withStyle(color)));
+            tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
         }
     }
     private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount) {

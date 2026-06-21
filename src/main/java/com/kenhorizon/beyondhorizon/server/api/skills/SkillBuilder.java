@@ -6,13 +6,15 @@ import com.kenhorizon.libs.server.ReloadableHandler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class SkillBuilder implements IReloadable {
     public static final SkillBuilder NONE = new SkillBuilder(SkillTypes.UNIVERSAL, List.of(Skills.NONE));
     public static final SkillBuilder RADIANT_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.RADIANT));
-    public static final SkillBuilder GUARDIAN = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.GUARDIAN_SWORD_TRAIT, Skills.BLAZING_CLEAVE));
+    public static final SkillBuilder GUARDIAN = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.GUARDIAN_SWORD_TRAIT, Skills.BLAZING_CLEAVE, Skills.INFERNO_STRIKE));
     public static final SkillBuilder SOLARFLARE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.GUARDIAN_SWORD_TRAIT, Skills.BLAZING_CLEAVE));
     public static final SkillBuilder ELUDICATOR = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.DARK_BLADE));
     public static final SkillBuilder DARK_REPULSOR = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.PIERCING_EDEGE));
@@ -25,6 +27,7 @@ public class SkillBuilder implements IReloadable {
 
     protected List<Supplier<? extends Skill>> suppliers = new ArrayList<>();
     protected List<Skill> skills = new ArrayList<>();
+    protected Optional<Skill> actionTrait = Optional.empty();
     protected List<Skill> filter = new ArrayList<>();
     protected SkillTypes skillTypes;
 
@@ -48,16 +51,33 @@ public class SkillBuilder implements IReloadable {
             });
         });
 
+        AtomicReference<Skill> actionTraitRef = new AtomicReference<Skill>(null);
         this.skills = this.filter.stream().filter(skill -> {
             boolean isValid = this.skillTypes.getFilter().test(skill) && skill != Skills.NONE.get();
+            if (isValid && skill.isActive()) {
+                if (actionTraitRef.get() == null) {
+                    actionTraitRef.set(skill);
+                }
+                else {
+                    Skill.LOGGER.error(skill.errorNotMatch(skill));
+                    return false;
+                }
+            }
             if (!isValid) {
                 Skill.LOGGER.error(skill.errorNotMatch(skill));
             }
             return isValid;
         }).collect(Collectors.toUnmodifiableList());
+        Skill trait = actionTraitRef.get();
+        this.actionTrait = trait != null ? Optional.of(actionTraitRef.get()) : Optional.empty();
+
     }
 
     public List<Skill> getSkills() {
         return this.skills;
+    }
+
+    public Optional<Skill> getActionTrait() {
+        return actionTrait;
     }
 }

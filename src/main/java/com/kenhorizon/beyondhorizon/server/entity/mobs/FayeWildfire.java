@@ -2,13 +2,12 @@ package com.kenhorizon.beyondhorizon.server.entity.mobs;
 
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
-import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.InfernalRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ai.HurtByNearestTargetGoal;
 import com.kenhorizon.beyondhorizon.server.entity.ai.MobAttackGoal;
@@ -20,7 +19,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -58,8 +57,8 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
     public static final int ID_BLAZING_ROD = createAnimationID();
     public static final int ID_PREPARE_DEATH_RAY = createAnimationID();
     public static final int ID_DEATH_RAY = createAnimationID();
-    public AnimationTickers fireballCooldown = AnimationTickers.create(MathUtils.sec(3));
-    public AnimationTickers deathRayCooldown = AnimationTickers.create(MathUtils.sec(20));
+    public AnimationTickers fireballCooldown = AnimationTickers.create(Maths.sec(3));
+    public AnimationTickers deathRayCooldown = AnimationTickers.create(Maths.sec(20));
 
     public FayeWildfire(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -134,7 +133,7 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(1, new MobMoveGoal(this, false, 1.0F));
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_ANIMATION_EMPTY, 30, MathUtils.sec(3)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_ANIMATION_EMPTY, 30, Maths.sec(3)) {
             @Override
             public boolean canUse() {
                 return super.canUse() && this.entity.fireballCooldown.isReadyToUse();
@@ -146,13 +145,13 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                 this.entity.fireballCooldown.setCooldown();
             }
         });
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PREPARE_DEATH_RAY, ID_DEATH_RAY, 60, MathUtils.sec(5)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PREPARE_DEATH_RAY, ID_DEATH_RAY, 60, Maths.sec(5)) {
             @Override
             public boolean canUse() {
                 return super.canUse() && this.entity.deathRayCooldown.isReadyToUse();
             }
         });
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_DEATH_RAY, ID_DEATH_RAY, ID_ANIMATION_EMPTY, 30, MathUtils.sec(5)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_DEATH_RAY, ID_DEATH_RAY, ID_ANIMATION_EMPTY, 30, Maths.sec(5)) {
 
             @Override
             public void stop() {
@@ -167,7 +166,7 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                 super.tick();
                 if (this.entity.getAnimationTick() == 2) {
                     float radius = 0.80F;
-                    int duration = MathUtils.sec(3);
+                    int duration = Maths.sec(3);
                     InfernalRayAbility ability = new InfernalRayAbility(this.entity.level(), this.entity,
                             this.entity.getX() + radius * Math.sin(-this.entity.getYRot() * Math.PI / 180),
                             this.entity.getY() + 1.4, this.entity.getZ() + radius * Math.cos(-this.entity.getYRot() * Math.PI / 180),
@@ -315,7 +314,7 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                         double ox = (float) (radius * Math.sin(yaw) * Math.sin(pitch));
                         double oy = (float) (radius * Math.cos(pitch));
                         double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
-                        ParticleTrailOptions.add(this.level(), TrailParticles.Behavior.SHRINK, this.getX() + ox, this.getY() + oy + 0.1, this.getZ() + oz, 4.0F, 1, 0.0F, 0.0F, 1.0F, 10, new Vec3(this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ()));
+                        TrailParticleOptions.add(this.level(), TrailParticles.Behavior.SHRINK, this.getX() + ox, this.getY() + oy + 0.1, this.getZ() + oz, 4.0F, 1, 0.0F, 0.0F, 1.0F, 10, new Vec3(this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ()));
                     }
                 }
                 if (this.getAnimationTick() == 60) {
@@ -334,7 +333,7 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                 }
             }
             if (this.getAnimationState(ID_PREPARE_DEATH_RAY)) {
-                if (this.getAnimationTick() < MathUtils.sec(5)) {
+                if (this.getAnimationTick() < Maths.sec(5)) {
                     if (this.getAnimationTick() % 20L == 0) {
                         int particleCount = 128;
                         while (particleCount --> 0) {
@@ -344,7 +343,7 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                             double ox = (float) (radius * Math.sin(yaw) * Math.sin(pitch));
                             double oy = (float) (radius * Math.cos(pitch));
                             double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
-                            ParticleTrailOptions.add(this.level(), TrailParticles.Behavior.FADE_N_SHRINK, getX() + ox, getY() + oy + 0.1, getZ() + oz, 3.0F, 1, 0.0F, 0.0F, 1.0F, 20, new Vec3(this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ()));
+                            TrailParticleOptions.add(this.level(), TrailParticles.Behavior.FADE_N_SHRINK, getX() + ox, getY() + oy + 0.1, getZ() + oz, 3.0F, 1, 0.0F, 0.0F, 1.0F, 20, new Vec3(this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ()));
                         }
                         CameraShake.spawn(this, 32.0F, 0.55F, 10, 10);
                         float yaw = (float) Math.toRadians(-this.getYRot());

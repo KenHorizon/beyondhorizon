@@ -1,18 +1,34 @@
 package com.kenhorizon.beyondhorizon.server.api.entity.player;
 
+import com.google.common.collect.Maps;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAbilityCooldownPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataSyncPacket;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.libs.server.world.CooldownInstance;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
 
 public class PlayerData {
     public static double MANA_DEDUCTION = 0.5D;
     public static String NBT_MANA = "mana";
     public static String NBT_CRIT = "crit";
+
+    public static final String NBT_ENTRY = "ability_cooldown";
+    public static final String NBT_SLOT = "slot";
+    public static final String NBT_ID = "id";
+    public static final String NBT_COOLDOWN = "cooldown";
+    public static final String NBT_CDR = "cdr";
+    private final Map<String, CooldownInstance> skillManager;
+
     protected boolean crit;
     protected boolean doDecut;
     protected double mana;
@@ -23,10 +39,17 @@ public class PlayerData {
 
     public PlayerData(Player player) {
         this.player = player;
+        this.skillManager = Maps.newHashMap();
     }
 
     public void addMana(int amount) {
         this.mana += amount;
+    }
+
+    public void syncPlayerData(Player player) {
+        if (player instanceof ServerPlayer sPlayer) {
+            NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(this.saveNbt()), sPlayer);
+        }
     }
 
     public void removeMana(int amount) {
@@ -76,10 +99,71 @@ public class PlayerData {
         return level.getServer().getTickCount() % 10 == 0;
     }
 
+    // Cooldown Mechanics
+    public boolean isOnCooldown(String id) {
+        return this.skillManager.containsKey(id);
+    }
+
+    public void addCooldown(String id, int cooldown) {
+        this.skillManager.put(id, new CooldownInstance(cooldown));
+        this.onCooldownStarted(id);
+    }
+
+    public void addCooldown(String id, int cooldown, int cooldownReamining) {
+        this.skillManager.put(id, new CooldownInstance(cooldown, cooldownReamining));
+    }
+
+    public float getCooldownPercent(String id) {
+        return this.skillManager.getOrDefault(id, new CooldownInstance(0)).getCooldownPercent();
+    }
+
+    public int getCooldown(String id) {
+        return this.skillManager.getOrDefault(id, new CooldownInstance(0)).getCooldownRemaining();
+    }
+
+    public void removeCooldown(String id) {
+        this.skillManager.remove(id);
+        this.syncCooldown();
+    }
+
+    public boolean decrementCooldown(CooldownInstance instance, int amount) {
+        instance.decrementBy(amount);
+        return instance.getCooldownRemaining() <= 0;
+    }
+
+    public Map<String, CooldownInstance> getAllCooldowns() {
+        return this.skillManager;
+    }
+
+    public void clearCooldowns() {
+        this.skillManager.clear();
+        this.syncCooldown();
+    }
+
+    protected void onCooldownStarted(String id) {
+        this.syncCooldown();
+    }
+
+    protected void onCooldownEnded(String id) {
+        this.syncCooldown();
+    }
+
+    public void syncCooldown() {
+        if (this.player instanceof ServerPlayer sPlayer) {
+            NetworkHandler.sendToPlayer(new ClientboundAbilityCooldownPacket(this.skillManager), sPlayer);
+        }
+    }
+
     public void tick(Level level) {
+        var spells = this.skillManager.entrySet().stream()
+                .filter(x -> decrementCooldown(x.getValue(), 1)).toList();
+        spells.forEach(spell -> {
+            this.skillManager.remove(spell.getKey());
+            this.onCooldownEnded(spell.getKey());
+        });
         if (this.doDecut) {
             this.tickManaDeduct++;
-            if (this.tickManaDeduct >= MathUtils.sec(3)) {
+            if (this.tickManaDeduct >= Maths.sec(3)) {
                 this.doDecut = false;
                 this.tickManaDeduct = 0;
             }
@@ -88,19 +172,49 @@ public class PlayerData {
             if (this.doRegenMana(level)) {
                 this.regenMana(serverPlayer);
             }
-            NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(this.saveNbt()), serverPlayer);
         }
+        this.syncPlayerData(player);
     }
 
     public CompoundTag saveNbt() {
         CompoundTag nbt = new CompoundTag();
         nbt.putDouble(NBT_MANA, this.getMana());
         nbt.putBoolean(NBT_CRIT, this.isCrit());
+        nbt.put(NBT_ENTRY, this.cooldownListTags());
         return nbt;
     }
 
     public void loadNbt(CompoundTag nbt) {
         this.setMana(nbt.getDouble(NBT_MANA));
         this.setCrit(nbt.getBoolean(NBT_CRIT));
+        ListTag listTag = nbt.getList(NBT_ENTRY, 10);
+        for (int k = 0; k < nbt.size(); ++k) {
+            CompoundTag nbtData = listTag.getCompound(k);
+            int slot = nbtData.getByte(NBT_SLOT) & 255;
+            if (slot < skillManager.size()) {
+                String id = nbtData.getString(NBT_ID);
+                int abilityCooldown = nbtData.getInt(NBT_COOLDOWN);
+                int cooldown = nbtData.getInt(NBT_CDR);
+                this.skillManager.put(id, new CooldownInstance(abilityCooldown, cooldown));
+            }
+        }
+    }
+
+    private @NotNull ListTag cooldownListTags() {
+        ListTag listTag = new ListTag();
+        for (int i = 0; i < skillManager.size(); ++i) {
+            for (Map.Entry<String, CooldownInstance> entry : skillManager.entrySet()) {
+                CompoundTag tag = new CompoundTag();
+                tag.putByte(NBT_SLOT, (byte) i);
+                tag.putString(NBT_ID, entry.getKey());
+                tag.putInt(NBT_COOLDOWN, entry.getValue().getCooldown());
+                tag.putInt(NBT_CDR, entry.getValue().getCooldownRemaining());
+                listTag.add(tag);
+            }
+        }
+        return listTag;
+    }
+    public static PlayerData getInstance(Player player) {
+        return Capabilities.data(player);
     }
 }

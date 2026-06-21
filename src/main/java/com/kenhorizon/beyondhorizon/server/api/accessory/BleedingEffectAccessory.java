@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.DamageTypeTags;
@@ -21,7 +21,7 @@ public class BleedingEffectAccessory extends AccessoryPassiveSkill {
 
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
-        return Component.translatable(this.createId(), MathUtils.format0(this.getMagnitude()));
+        return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
     }
 
 

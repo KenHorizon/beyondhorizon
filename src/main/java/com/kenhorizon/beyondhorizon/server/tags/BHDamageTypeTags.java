@@ -7,6 +7,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
 
 public class BHDamageTypeTags {
+    public static final TagKey<DamageType> NO_KNOCKBACK_DAMAGE = create("no_knockback_damage");
     public static final TagKey<DamageType> IS_TRUE_DAMAGE = create("is_true_damage");
     public static final TagKey<DamageType> IS_ARMOR_PENETRATION = create("is_armor_penetration");
     public static final TagKey<DamageType> IS_MAGIC_PENETRATION = create("is_magic_penetration");

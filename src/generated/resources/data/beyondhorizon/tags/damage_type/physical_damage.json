@@ -1,5 +1,6 @@
 {
   "values": [
+    "beyondhorizon:no_knockback_physical_damage",
     "minecraft:player_attack",
     "minecraft:trident",
     "minecraft:falling_anvil",

@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.client.particle.CircleLightningParticle;
 import com.kenhorizon.beyondhorizon.client.particle.world.*;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.mojang.serialization.Codec;
@@ -40,10 +39,10 @@ public class BHParticle {
             return RingParticleOptions.CODEC;
         }
     });
-    public static final RegistryObject<ParticleType<ParticleTrailOptions>> TRAILS = RegistryEntries.PARTICLE.register("trails", () -> new ParticleType<ParticleTrailOptions>(false, ParticleTrailOptions.DESERIALIZER) {
+    public static final RegistryObject<ParticleType<TrailParticleOptions>> TRAILS = RegistryEntries.PARTICLE.register("trails", () -> new ParticleType<TrailParticleOptions>(false, TrailParticleOptions.DESERIALIZER) {
         @Override
-        public Codec<ParticleTrailOptions> codec() {
-            return ParticleTrailOptions.CODEC;
+        public Codec<TrailParticleOptions> codec() {
+            return TrailParticleOptions.CODEC;
         }
     });
     public static final RegistryObject<ParticleType<RoarParticleOptions>> ROAR = RegistryEntries.PARTICLE.register("roar", () -> new ParticleType<RoarParticleOptions>(false, RoarParticleOptions.DESERIALIZER) {

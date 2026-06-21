@@ -19,13 +19,14 @@ public class BHDamageTypesTagProvider extends DamageTypeTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.Provider provider) {
-        this.tag(BHDamageTypeTags.PHYSICAL_DAMAGE).add(DamageTypes.PLAYER_ATTACK, DamageTypes.TRIDENT, DamageTypes.FALLING_ANVIL, DamageTypes.MOB_ATTACK_NO_AGGRO, DamageTypes.MOB_PROJECTILE, DamageTypes.FALL, DamageTypes.CACTUS, DamageTypes.ARROW, DamageTypes.MOB_ATTACK, DamageTypes.MOB_ATTACK_NO_AGGRO, BHDamageTypes.PHYSICAL_DAMAGE);
-        this.tag(BHDamageTypeTags.MAGIC_DAMAGE).add(BHDamageTypes.MAGIC_DAMAGE, DamageTypes.MAGIC, DamageTypes.INDIRECT_MAGIC, BHDamageTypes.BLAZING_ROD, BHDamageTypes.MAGIC_BURNING);
+        this.tag(BHDamageTypeTags.NO_KNOCKBACK_DAMAGE).add(BHDamageTypes.NO_KNOCKBACK_MAGIC_DAMAGE, BHDamageTypes.NO_KNOCKBACK_TRUE_DAMAGE, BHDamageTypes.NO_KNOCKBACK_PHYSICAL_DAMAGE);
+        this.tag(BHDamageTypeTags.PHYSICAL_DAMAGE).add(BHDamageTypes.NO_KNOCKBACK_PHYSICAL_DAMAGE, DamageTypes.PLAYER_ATTACK, DamageTypes.TRIDENT, DamageTypes.FALLING_ANVIL, DamageTypes.MOB_ATTACK_NO_AGGRO, DamageTypes.MOB_PROJECTILE, DamageTypes.FALL, DamageTypes.CACTUS, DamageTypes.ARROW, DamageTypes.MOB_ATTACK, DamageTypes.MOB_ATTACK_NO_AGGRO, BHDamageTypes.PHYSICAL_DAMAGE);
+        this.tag(BHDamageTypeTags.MAGIC_DAMAGE).add(BHDamageTypes.NO_KNOCKBACK_MAGIC_DAMAGE, BHDamageTypes.MAGIC_DAMAGE, DamageTypes.MAGIC, DamageTypes.INDIRECT_MAGIC, BHDamageTypes.BLAZING_ROD, BHDamageTypes.MAGIC_BURNING);
         this.tag(BHDamageTypeTags.IS_MAGIC_PENETRATION).add(BHDamageTypes.MAGIC_PENETRATION);
         this.tag(BHDamageTypeTags.IS_ARMOR_PENETRATION).add(BHDamageTypes.ARMOR_PENETRATION, BHDamageTypes.LETHALITY, BHDamageTypes.TRUE_DAMAGE);
         this.tag(BHDamageTypeTags.IS_TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE).add(DamageTypes.INDIRECT_MAGIC);
         this.tag(BHDamageTypeTags.BURN_DAMAGE).add(BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING);
-        this.tag(BHDamageTypeTags.TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE, BHDamageTypes.TRUE_DAMAGE_BURNING);
+        this.tag(BHDamageTypeTags.TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE, BHDamageTypes.NO_KNOCKBACK_TRUE_DAMAGE, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(DamageTypeTags.BYPASSES_EFFECTS).add(BHDamageTypes.BLEED, BHDamageTypes.TRUE_DAMAGE, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(DamageTypeTags.BYPASSES_ENCHANTMENTS).add(BHDamageTypes.IGNORE_ENCHANTMENT_PROTECTION);
         this.tag(DamageTypeTags.IS_EXPLOSION).add(BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING, BHDamageTypes.BLAZING_ROD, BHDamageTypes.BEAM);

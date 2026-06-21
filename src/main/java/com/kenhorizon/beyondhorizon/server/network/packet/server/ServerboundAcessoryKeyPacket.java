@@ -51,13 +51,15 @@ public class ServerboundAcessoryKeyPacket {
                 if (entity instanceof Player player) {
                     IAccessoryItemHandler handler = Capabilities.accessory(player);
                     for (int i = 0; i < handler.getSlots(); i++) {
-                        ItemStack itemStack = handler.getStackInSlot(i);
-                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> caller) {
-                            for (Accessory accessory : caller.getAccessories()) {
-                                Optional<IAccessoryEvent> optional = accessory.IAccessory();
-                                optional.ifPresent(callback -> {
-                                    callback.onKeybindPressed(player, itemStack, this.slots);
-                                });
+                        if (i == this.slots) {
+                            ItemStack itemStack = handler.getStackInSlot(i);
+                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> caller) {
+                                for (Accessory accessory : caller.getAccessories()) {
+                                    Optional<IAccessoryEvent> optional = accessory.IAccessory();
+                                    optional.ifPresent(callback -> {
+                                        callback.onKeybindPressed(player, itemStack, this.slots);
+                                    });
+                                }
                             }
                         }
                     }

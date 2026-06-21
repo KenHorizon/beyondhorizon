@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.stackable_tags;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,26 +15,31 @@ public class StackableTagHandler implements IStackableInstance {
 
     @Override
     public void tick(LivingEntity entity) {
-        for (var tags : this.getAllTags()) {
+        for (var tags : this.getInstance()) {
             tags.tick(entity);
         }
     }
 
     @Override
     public void instance(LivingEntity entity) {
-        for (var tags : this.getAllTags()) {
-            if (nbtMap.containsKey(tags.getName())) tags.readNbt(nbtMap.get(tags.getName()));
+        for (var tags : this.getInstance()) {
+            if (nbtMap.containsKey(tags.getName())) {
+                BeyondHorizon.LOGGER.debug("Stack Data: {}", tags);
+                tags.readNbt(nbtMap.get(tags.getName()));
+            }
         }
+        BeyondHorizon.LOGGER.debug("Stack Tags Map: {}", nbtMap);
+
     }
 
     @Override
     public List<StackableTags> getInstance() {
-        return getAllTags();
+        return StackableTagInstance.getTags();
     }
 
     @Override
     public StackableTags getInstance(StackableTags instance) {
-        for (var tags : this.getAllTags()) {
+        for (var tags : this.getInstance()) {
             if (tags == instance) {
                 return tags;
             }
@@ -44,7 +50,7 @@ public class StackableTagHandler implements IStackableInstance {
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag nbt = new CompoundTag();
-        for (var tags : this.getAllTags()) {
+        for (var tags : this.getInstance()) {
             CompoundTag sTagData = tags.writeNbt();
             if (!sTagData.isEmpty()) {
                 nbt.put(tags.getName(), sTagData);
@@ -60,9 +66,4 @@ public class StackableTagHandler implements IStackableInstance {
             nbtMap.put(effectName, nbt.get(effectName));
         }
     }
-
-    public List<StackableTags> getAllTags() {
-        return StackableTagInstance.getTags();
-    }
-
 }

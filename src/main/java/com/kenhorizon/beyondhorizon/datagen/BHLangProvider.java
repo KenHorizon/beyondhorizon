@@ -50,11 +50,12 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Configs.CHANGE_DAMAGE_CALCULATION, "Change Damage Calculation");
 
         this.add(Tooltips.TOOLTIP_KEYBIND, "Button: %s + %s");
+        this.add(Tooltips.TOOLTIP_ON_COOLDOWN, "On Cooldown!");
         this.add(Tooltips.TOOLTIP_COOLDOWN, "Cooldown: %s");
         this.add(Tooltips.TOOLTIP_MANA_COST, "Mana: %s");
         this.add(Tooltips.TOOLTIP_MANA_COST_PERCENTAGES, "Mana: %s%%");
         this.add(Tooltips.TOOLTIP_MANA_COST_PER_SECOND, "Mana: %s per second");
-        this.add(Tooltips.TOOLTIP_MANA_NOT_ENOUGH, "Mana not enough!");
+        this.add(Tooltips.TOOLTIP_NOT_ENOUGH_MANA, "Not enough Mana!");
 
         this.add(Tooltips.TOOLTIP_WORKBENCH, "Workbench");
         this.add(Tooltips.TOOLTIP_WORKBENCH_ITEMS, "Items");
@@ -103,6 +104,7 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.SKILL_TYPE, "%s");
         this.add(Tooltips.TOOLTIP_BONUS_ARMOR_SET, "Bonus set:");
         this.add(Tooltips.TOOLTIP_MINING_SPEED, "%s Mining Speed");
+        this.addSkills(Skills.INFERNO_STRIKE.get(), "Inferno Strike", "Charges while being slowed by %s%% upto 3 seconds", "Recast: Release a Inferno Slash onward dealing (5% bonus AD)-(%s%% bonus AD) physical damage");
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional %.2f%% target's Current HP");
         this.addSkills(Skills.BLADE_EDGE.get(), "Blade Edge", "Deal additional +%s%% target's Max HP");
         this.addSkills(Skills.RADIANT.get(), "Radiant", "Deal additional damage to undead by +%s%%");
@@ -131,24 +133,23 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.JUMP_BOOST.get(), "Jump Boost", "Increase the jump height by %s%%");
         this.addAccessory(Accessories.ETERNAL_LIFE.get(), "Eternal Life", "Revive on death and consume Undying Totem in the inventory");
         this.addAccessory(Accessories.NULLIFY.get(), "Nullify", "Ignore enchantment protection by %s%% at same time your attack effectivness reduced by %s%%");
-        this.addAccessory(Accessories.LIFE_SIPHON.get(), "Life Siphon", "Deal additional %s%% target's current health");
-        this.addAccessory(Accessories.ASCENSION.get(), "Ascension", "All attributes are increased by 200%");
+        this.addAccessory(Accessories.LIFE_SIPHON.get(), "Life Siphon", "Deal additional %s%% target's Current HP");
         this.addAccessory(Accessories.CLEANSE.get(), "Cleanse", "Healing and Shielding are increased by 200%");
         this.addAccessory(Accessories.ROCK_SOLID.get(), "Rock Solid", "Reduce basic attack pre-mitigation damage by %s%%");
         this.addAccessory(Accessories.INFLAME.get(), "Inflame", "Attacks inflict Inflame that burn target for 0.5 magic damage per 0.5 seconds");
         this.addAccessory(Accessories.SPELL_BLADE_0.get(), "Spell Blade", "If damage not taken for %s seconds deal additional %s%% base AD physical damage on-hit");
         this.addAccessory(Accessories.SPELL_BLADE_1.get(), "Spell Blade", "If damage not taken for %s seconds deal additional (+%s%% AP) magic damage on-hit");
         this.addAccessory(Accessories.SPELL_BLADE_2.get(), "Spell Blade", "If damage not taken for %s seconds deal additional (+%s%% AD) physical damage on-hit");
-        this.addAccessory(Accessories.DEATH.get(), "Death", "If you deal post-mitigation damage that would leave a target below %s%% of their max health, execute them");
+        this.addAccessory(Accessories.DEATH.get(), "Death", "If you deal post-mitigation damage that would leave a target below %s%% of their Max HP, execute them");
         this.addAccessory(Accessories.TAXS.get(), "Taxs", "Killing a target will drop 1 emerald");
         this.addAccessory(Accessories.CORRUPTED_BITE.get(), "Corrupted Bite", "Deal additional (%s%% Total damage dealt) magic damage");
         this.addAccessory(Accessories.STING.get(), "Sting", "Basic Attack deal additional %s physical damage");
-        this.addAccessory(Accessories.TORMENT.get(), "Torment", "Dealing damage burn dealing 1% of the target's max health magic damage every 0.5 seconds for 3 seconds");
+        this.addAccessory(Accessories.TORMENT.get(), "Torment", "Dealing damage burn dealing 1% of the target's Max HP magic damage every 0.5 seconds for 3 seconds");
         this.addAccessory(Accessories.BRING_IT_DOWN.get(), "Bring It Down", "Basic attack grant a stack for 3 seconds, up to 2 stacks, at 2 stacks, the next attack consumes all stacks to deal (+%s per level) physical damage on-hit increased by %s%% based on target's missing health");
         this.addAccessory(Accessories.POLYETHYLENE.get(), "Polyethylene", "Increase ranged damage by %s%% and knockback by %s%%");
         this.addAccessory(Accessories.FLUOROCARBON.get(), "Fluorocarbon", "Reduce the draw time of Item");
         this.addAccessory(Accessories.DARK_SUN.get(), "Dark Sun", "Convert 25% damage dealt into addtional bonus true damage on-hit");
-        this.addAccessory(Accessories.NIGHTSTALKER.get(), "Nightstalker", "Increased all damage by 0-%s%% based on target missing health");
+        this.addAccessory(Accessories.NIGHTSTALKER.get(), "Nightstalker", "Increased all damage by 0-%s%% based on target Missing HP");
         this.addAccessory(Accessories.PENALTY_0.get(), "Penalty", "Reduce the attack effectiveness by %s%%");
         this.addAccessory(Accessories.EXCORIATE.get(), "Excoriate", "Gain random bonus critidal damage upto 0-%s%%, with the value of this changing of every 0.25 seconds");
         this.addAccessory(Accessories.GHOUL.get(), "Ghoul", "Hunger exhaustion increased by 150%, On-kill restore 5 hunger points and gain buff of Ghoul Will, and prevent user eat edible item");
@@ -157,6 +158,14 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.TITANIC_CRESCENT.get(), "Titanic Crescent", "Basic attack on-hit deal bonus %s%% Max HP to the target and %s%% Max HP to others entity in a cone in the direction of the primary target");
         this.addAccessory(Accessories.SWIFTNESS.get(), "Swiftness", "Inflict Speed boost effect for 5 seconds");
         this.addAccessory(Accessories.STALKER.get(), "Stalker", "Gain 100% Stealth and becoming invisible");
+        this.addAccessory(Accessories.SUPREMACY.get(), "Supremacy", "Stacks: %s",
+                "On-kill grant stacks %s",
+                "Each stacks increase all damage dealt by %s%%",
+                "Increased damage: %s%%",
+                "§4Lose %s%% stacks on death");
+        this.addAccessory(Accessories.IMMOLATE_0.get(), "Immolate", "Taking or dealing damage activates this passive for 3 seconds, Deal %s%% magic damage every second to enemies within 6 radius");
+        this.addAccessory(Accessories.IMMOLATE_1.get(), "Immolate", "Taking or dealing damage activates this passive for 3 seconds, Deal (%s%% bonus Max HP) magic damage every second to enemies within 6 radius");
+        this.addAccessory(Accessories.IMMOLATE_2.get(), "Immolate", "Taking or dealing damage activates this passive for 3 seconds, Deal (%s%% bonus Max HP) true damage every second to enemies within 6 radius");
         //
 
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon | Ingredients");

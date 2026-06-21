@@ -6,7 +6,7 @@ import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -60,7 +60,7 @@ public class ArmorBonusSetMagnitude extends ArmorBonusSet implements IAttack, IE
         for (int i = 0; i < this.tooltipLines(); i++) {
             String desc = String.format("%s.%s.%s.desc.%s", ArmorBonusSet.PREFIX, this.getId().getNamespace(), this.getId().getPath(), i);
             if (this.getMagnitude() > 0.0F) {
-                tooltips.add(this.space().append(Component.translatable(desc, MathUtils.format(this.getMagnitude() * 100.0F), MathUtils.format(this.getLevel() * 100.0F)).withStyle(ChatFormatting.DARK_GREEN)));
+                tooltips.add(this.space().append(Component.translatable(desc, Maths.format(this.getMagnitude() * 100.0F), Maths.format(this.getLevel() * 100.0F)).withStyle(ChatFormatting.DARK_GREEN)));
             } else {
                 tooltips.add(this.space().append(Component.translatable(desc).withStyle(ChatFormatting.GRAY)));
             }

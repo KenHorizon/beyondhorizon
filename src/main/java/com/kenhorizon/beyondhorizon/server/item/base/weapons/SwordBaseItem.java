@@ -5,19 +5,27 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
+import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
+import com.kenhorizon.beyondhorizon.server.item.IArmPose;
 import com.kenhorizon.beyondhorizon.server.item.ICustomHitSound;
 import com.kenhorizon.beyondhorizon.server.item.ICustomSweepParticle;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
+import com.kenhorizon.beyondhorizon.server.item.base.SkillBaseItems;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
+import com.kenhorizon.libs.client.WeaponAnimations;
+import com.kenhorizon.libs.client.WeaponArmPose;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,6 +36,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.MendingEnchantment;
 import net.minecraft.world.level.Level;
@@ -40,7 +50,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseItem>, IReloadable, ILeftClick, ICustomSweepParticle, ICustomHitSound {
+public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseItem>, IReloadable, ILeftClick, ICustomSweepParticle, ICustomHitSound, IArmPose {
     private final float attackDamage;
     private final float attackSpeed;
     private final float attackRange;
@@ -49,9 +59,11 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     protected final SkillBuilder skillBuilder;
     protected Multimap<Attribute, AttributeModifier> attributeModifiers;
     protected final Multimap<Attribute, AttributeModifier> otherAttributeModifiers = HashMultimap.create();
+    protected final SkillBaseItems skillBaseItems;
 
     public SwordBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, float attackRange, Properties properties, SkillBuilder skillbuilder) {
         super(materials, 0, attackSpeed, materials.fireImmune() ? properties.fireResistant() : properties);
+        this.skillBaseItems = new SkillBaseItems(this);
         this.materials = materials;
         this.skillBuilder = skillbuilder;
         this.attackDamage = materials.getAttackDamageBonus() + attackDamage - 1.0f;
@@ -131,10 +143,10 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
         return builder.build();
     }
 
-//    @Override
-//    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
-//        return this.materials == MeleeWeaponMaterials.WOOD ? 200 : 0;
-//    }
+    @Override
+    public int getBurnTime(ItemStack itemStack, @Nullable RecipeType<?> recipeType) {
+        return 0;
+    }
 
     @Override
     public boolean canDisableShield(ItemStack stack, ItemStack shield, LivingEntity entity, LivingEntity attacker) {
@@ -142,30 +154,59 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     }
 
     @Override
-    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
-        if (entity instanceof LivingEntity living) {
-            if (this.skills != null) {
-                this.skills.forEach((skill) -> {
-                    skill.entityProperties().ifPresent(callback -> {
-                        callback.onItemUpdate(itemStack, level, living, slot, isSelected);
-                    });
-                });
-            }
-        }
+    public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration) {
+        this.skillBaseItems.onUseTick(level, entity, itemStack, remainingUseDuration, this.skillBuilder);
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-        if (this.skills != null) {
-            for (int i = 0; i < this.skills.size(); i++) {
-                Skill skill = this.skills.get(i);
-                if (!skill.getAttributeModifiers().isEmpty()) {
-                    skill.addTooltipAttributes(itemStack, tooltip);
-                }
-                skill.addTooltip(itemStack, tooltip, this.skills.size(), Utils.isShiftPressed(), i == 0, i == (this.skills.size() - 1));
-            }
+    public InteractionResult useOn(UseOnContext useOnContext) {
+        return super.useOn(useOnContext);
+    }
+
+    @Override
+    public int getUseDuration(ItemStack itemStack) {
+        int original = super.getUseDuration(itemStack);
+        return this.skillBaseItems.getUseDuration(itemStack, original, this.skillBuilder);
+    }
+
+    @Override
+    public void releaseUsing(ItemStack itemStack, Level level, LivingEntity entity, int timeCharged) {
+        this.skillBaseItems.releaseUsing(level, entity, itemStack, timeCharged, this.skillBuilder);
+    }
+
+    @Override
+    public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity entity) {
+        if (entity instanceof Player player) {
+            this.skillBaseItems.finishUsingItem(level, player, itemStack, this.skillBuilder);
         }
-        super.appendHoverText(itemStack, level, tooltip, isAdvanced);
+        return super.finishUsingItem(itemStack, level, entity);
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        ItemStack itemStack = player.getItemInHand(hand);
+        return this.skillBaseItems.use(level, player, itemStack, hand, this.skillBuilder) == null ? super.use(level, player, hand) : this.skillBaseItems.use(level, player, itemStack, hand, this.skillBuilder);
+    }
+
+    @Override
+    public WeaponAnimations getWeaponAnimations(Player player, ItemStack itemStack) {
+
+        return WeaponAnimations.EMPTY;
+    }
+
+    @Override
+    public WeaponArmPose getWeaponArmPose(Player player, InteractionHand hand) {
+
+        return WeaponArmPose.EMPTY;
+    }
+    @Override
+    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
+        this.skillBaseItems.inventoryTick(itemStack, level, entity, slot, isSelected, this.skills);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
+        this.skillBaseItems.appendHoverText(itemStack, tooltip, this.skills);
     }
 
     @Override
@@ -178,16 +219,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        for (Skill skill : this.skills) {
-            if (skill.isEnchantmentCompatible(enchantment)) {
-                return true;
-            } else if (skill.isEnchantmentIncompatible(enchantment)) {
-                return false;
-            }
-        }
-        if (enchantment instanceof MendingEnchantment && this.materials.getUses() < 0) {
-            return false;
-        }
+        this.skillBaseItems.canApplyAtEnchantingTable(stack, enchantment, this.skills, this.materials);
         return super.canApplyAtEnchantingTable(stack, enchantment);
     }
 

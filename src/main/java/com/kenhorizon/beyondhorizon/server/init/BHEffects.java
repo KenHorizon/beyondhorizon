@@ -82,6 +82,8 @@ public class BHEffects {
                     .addAttributeModifier(BHAttributes.HEALING.get(), "4ca80eb7-871b-4751-af4e-c7ec47642425", -0.40D, AttributeModifier.Operation.MULTIPLY_BASE)
                     .addAttributeModifier(BHAttributes.HEALTH_REGENERATION.get(), "1331d9ae-32f1-4a33-87d9-cf0621a72aa3", -0.40D, AttributeModifier.Operation.MULTIPLY_BASE));
 
+    public static final RegistryObject<MobEffect> IMMOLATE =
+            RegistryHelper.registerEffects("immolate", BHAbilityMobEffect::new);
     public static void register(IEventBus eventBus) {
         RegistryEntries.MOB_EFFECTS.register(eventBus);
     }

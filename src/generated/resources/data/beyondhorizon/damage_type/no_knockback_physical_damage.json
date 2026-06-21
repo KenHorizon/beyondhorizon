@@ -1,5 +1,5 @@
 {
   "exhaustion": 0.1,
-  "message_id": "spell_damage_true_damage",
+  "message_id": "no_knockback_physical_damage",
   "scaling": "when_caused_by_living_non_player"
 }

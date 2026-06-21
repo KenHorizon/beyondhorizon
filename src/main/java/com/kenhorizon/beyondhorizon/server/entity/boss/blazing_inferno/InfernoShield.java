@@ -1,16 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno;
 
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
-import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
-import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.CombatUtil;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilityEffectPacket;
 import net.minecraft.nbt.CompoundTag;
@@ -22,7 +18,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -228,7 +223,7 @@ public class InfernoShield extends BHLibEntity implements ILinkedEntity, Traceab
         if (owner != null) {
             if (this.level().isClientSide()) {
                 for (int i = 0; i < 2; i++) {
-                    this.level().addParticle(new ParticleTrailOptions(20, 1.0F, 0.0F, 0.0F, 1.0F, 1.0F, TrailParticles.Behavior.SHRINK, owner.position().add(0, owner.getBbHeight() * 0.5D, 0)), this.getRandomX(0.25D), this.getY() + (this.getBbHeight() / 2), this.getRandomZ(0.25D), 0, 0, 0);
+                    this.level().addParticle(new TrailParticleOptions(20, 1.0F, 0.0F, 0.0F, 1.0F, 1.0F, TrailParticles.Behavior.SHRINK, owner.position().add(0, owner.getBbHeight() * 0.5D, 0)), this.getRandomX(0.25D), this.getY() + (this.getBbHeight() / 2), this.getRandomZ(0.25D), 0, 0, 0);
                 }
             }
             if (owner instanceof BlazingInferno blazingInferno) {

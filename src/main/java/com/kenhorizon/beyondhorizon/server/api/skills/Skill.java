@@ -84,8 +84,6 @@ public abstract class Skill {
     protected boolean isThrowing = false;
     protected Format format = Format.NORMAL;
     protected Type type = Type.PASSIVE;
-    protected int cooldown = 0;
-    protected int manaCost = 0;
     protected final AttributeTooltips attributeTooltip = new AttributeTooltips();
     protected boolean tooltipEnable = true;
     protected boolean tooltipNameEnable = true;
@@ -98,6 +96,10 @@ public abstract class Skill {
     public Category category;
     protected boolean isInnate = false;
     protected List<RegistryObject<? extends Skill>> innateSkills = new ArrayList<>();
+
+    public Skill(Type type) {
+        this.type = type;
+    }
 
     public Skill format(Format format) {
         this.format = format;
@@ -149,6 +151,10 @@ public abstract class Skill {
 
     public boolean isSkill() {
         return this.type != Type.ACTIVE;
+    }
+
+    public boolean isActive() {
+        return this.type == Type.ACTIVE;
     }
 
     public Skill isInnate() {
@@ -299,29 +305,25 @@ public abstract class Skill {
 
     protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
         Component text;
-        if (firstType) {
-            tooltip.add(Component.translatable(Tooltips.SKILL_TYPE, this.getType().getName()).withStyle(Tooltips.TOOLTIP[1]));
-        }
-        text = this.spacingTitle().append(Component.translatable(this.getDescriptionId()).withStyle(this.format.getChatFormatting()));
+        text = this.spacing().append(Component.literal(Utils.capitalize(this.getType().getName().toLowerCase(Locale.ROOT))).withStyle(Tooltips.TOOLTIP[1]).append(this.spacing()).append(this.spacing().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD))));
         tooltip.add(text);
     }
 
-    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first, boolean last) {
+    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
         if (!this.isTooltipEnable()) return;
         if (this.isTooltipNameEnable()) {
             this.addTooltipTitle(itemStack, tooltip, first);
         }
         if (!this.isTooltipDescriptionEnable()) return;
         boolean flag = size == 1;
-        boolean alwayShow = (BHConfigs.ADVANCED_TOOLTIP || BHConfigs.ADVANCED_TOOLTIP_SKILL) && flag;
-        if ((alwayShow || isShiftPressed) && I18n.exists(this.createId())) {
+        if (BHConfigs.ADVANCED_TOOLTIP && I18n.exists(this.createId())) {
+            this.addTooltipDescription(itemStack, tooltip);
+        } else if (BHConfigs.ADVANCED_TOOLTIP_SKILL && I18n.exists(this.createId())) {
+            this.addTooltipDescription(itemStack, tooltip);
+        } else if ((flag || isShiftPressed) && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
         }
-        if (last) {
-            tooltip.add(CommonComponents.space()) ;
-        }
     }
-
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
         Minecraft minecraft = Minecraft.getInstance();
         Font font = minecraft.font;
@@ -334,20 +336,33 @@ public abstract class Skill {
         } else {
             maxWidth = Constant.TOOLTIP_MAX_TEXT_WITDH;
         }
-        List<FormattedCharSequence> wrappedText = font.split(this.tooltipDescription(itemStack), maxWidth);
-        for (FormattedCharSequence format : wrappedText) {
-            List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
-            Component text = Component.literal(texts.get(0).getString());
-            tooltip.add(this.spacing().append(ColorCodedText.applyFormat(text)).withStyle(Tooltips.TOOLTIP[0]).append(this.spacing()));
+        for (var tooltips : this.tooltipDescriptionList(itemStack)) {
+            List<FormattedCharSequence> wrappedText = font.split(tooltips, maxWidth);
+            for (FormattedCharSequence format : wrappedText) {
+                List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
+                Component text = Component.literal(texts.get(0).getString());
+                if (tooltips.getStyle().getColor() == null) {
+                    tooltip.add(this.spacing().append(text).withStyle(Tooltips.TOOLTIP[0]).append(this.spacing()));
+                } else {
+                    tooltip.add(this.spacing().append(text).setStyle(tooltips.getStyle()).append(this.spacing()));
+                }
+            }
         }
     }
+    protected List<MutableComponent> tooltipDescriptionList(ItemStack itemStack) {
+        List<MutableComponent> list = new ArrayList<>();
+        list.add(tooltipDescription(itemStack));
+        return list;
+    }
+
+    protected MutableComponent tooltipDescription(ItemStack itemStack) {
+        return Component.translatable(this.createId());
+    }
+
     public void addTooltipAttributes(ItemStack itemStack, List<Component> tooltip) {
         if (this.isAttributeTooltipEnable()) {
             this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
         }
-    }
-    protected MutableComponent tooltipDescription(ItemStack itemStack) {
-        return Component.translatable(this.createId());
     }
 
     protected String createId(int lines) {
@@ -363,11 +378,9 @@ public abstract class Skill {
     }
 
     public MutableComponent spacing() {
-        return Component.literal("   ");
-    }
-    public MutableComponent spacingTitle() {
         return Component.literal("  ");
     }
+
     public boolean registerIcons() {
         return false;
     }

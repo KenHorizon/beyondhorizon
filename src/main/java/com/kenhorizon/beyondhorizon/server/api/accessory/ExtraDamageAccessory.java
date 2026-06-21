@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -65,7 +65,7 @@ public class ExtraDamageAccessory extends AccessoryPassiveSkill {
         }
         if (entity instanceof LivingEntity) {
             Vec3 vec3 = entity.getDeltaMovement().scale(20.0F);
-            return DamageHandler.multiplier(damageDealt, (float) MathUtils.perValue(vec3.length(), (magnitude * level), magnitude));
+            return DamageHandler.multiplier(damageDealt, (float) Maths.perValue(vec3.length(), (magnitude * level), magnitude));
         }
         return damageDealt;
     });
@@ -93,9 +93,9 @@ public class ExtraDamageAccessory extends AccessoryPassiveSkill {
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this.getMagnitude() > 0.0F && this.getLevel() > 0.0F) {
-            return Component.translatable(this.createId(), MathUtils.format0(this.getMagnitude()), this.getLevel());
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), this.getLevel());
         } else {
-            return Component.translatable(this.createId(), MathUtils.format0(this.getMagnitude()));
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
         }
     }
 

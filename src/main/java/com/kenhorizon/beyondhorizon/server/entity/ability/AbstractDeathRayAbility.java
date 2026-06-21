@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRaySound;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
@@ -282,7 +282,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
             double o2x = (float) (-1 * Math.cos(getYaw()) * Math.cos(getPitch()));
             double o2y = (float) (-1 * Math.sin(getPitch()));
             double o2z = (float) (-1 * Math.sin(getYaw()) * Math.cos(getPitch()));
-            ParticleTrailOptions.add(level(),
+            TrailParticleOptions.add(level(),
                     TrailParticles.Behavior.DEFAULT,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz,
                     1.25F, 1.0F, colors[0], colors[1], colors[2], 10, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
         }

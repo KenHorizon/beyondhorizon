@@ -4,7 +4,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 
-public class InflictFireAttackOnHitSkill extends WeaponSkills {
+public class InflictFireAttackOnHitSkill extends WeaponPassiveSkills {
     public InflictFireAttackOnHitSkill(int magnitude) {
         this.setMagnitude(magnitude);
     }

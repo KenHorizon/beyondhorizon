@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.item;
 
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.CommonComponents;
@@ -52,17 +52,17 @@ public class PlayerTrackerItem extends BasicItem {
         tooltip.add(Component.translatable(NBT_PLAYER_MAGIC_ARMOR).append(CommonComponents.space())
                 .append(Component.literal(String.format("%s", player.getAttributeValue(BHAttributes.MAGIC_RESISTANCE.get()))).withStyle(ChatFormatting.GREEN)));
         tooltip.add(Component.translatable(NBT_PLAYER_MOVEMENT_SPEED).append(CommonComponents.space())
-                .append(Component.literal(String.format("%s", MathUtils.format(player.getAttributeValue(Attributes.MOVEMENT_SPEED)))).withStyle(ChatFormatting.GREEN))
+                .append(Component.literal(String.format("%s", Maths.format(player.getAttributeValue(Attributes.MOVEMENT_SPEED)))).withStyle(ChatFormatting.GREEN))
                 .append(CommonComponents.space()).append(Component.translatable(NBT_PLAYER_MOVEMENT_SPEED_DIR)));
         tooltip.add(Component.translatable(NBT_PLAYER_DAMAGE_AMP).append(CommonComponents.space())
-                .append(Component.literal(String.format("%s%%", MathUtils.format(100.0D * player.getAttributeValue(BHAttributes.DAMAGE_DEALT.get())))).withStyle(ChatFormatting.GREEN)));
+                .append(Component.literal(String.format("%s%%", Maths.format(100.0D * player.getAttributeValue(BHAttributes.DAMAGE_DEALT.get())))).withStyle(ChatFormatting.GREEN)));
         tooltip.add(Component.translatable(NBT_PLAYER_DAMAGE_TAKEN).append(CommonComponents.space())
-                .append(Component.literal(String.format("%s%%", MathUtils.format(100.0D * player.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get())))).withStyle(ChatFormatting.GREEN)));
+                .append(Component.literal(String.format("%s%%", Maths.format(100.0D * player.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get())))).withStyle(ChatFormatting.GREEN)));
         tooltip.add(Component.translatable(NBT_PLAYER_KNOCKBACK_RESISTANCE).append(CommonComponents.space())
-                .append(Component.literal(String.format("%s%%", MathUtils.format(100.0D * player.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)))).withStyle(ChatFormatting.GREEN)));
+                .append(Component.literal(String.format("%s%%", Maths.format(100.0D * player.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE)))).withStyle(ChatFormatting.GREEN)));
         tooltip.add(Component.translatable(NBT_PLAYER_CRIT).append(CommonComponents.space())
-                .append(Component.literal(String.format("%s%%", MathUtils.format(100.0D * player.getAttributeValue(BHAttributes.CRITICAL_CHANCE.get())))).withStyle(ChatFormatting.GREEN)));
+                .append(Component.literal(String.format("%s%%", Maths.format(100.0D * player.getAttributeValue(BHAttributes.CRITICAL_CHANCE.get())))).withStyle(ChatFormatting.GREEN)));
         tooltip.add(Component.translatable(NBT_PLAYER_CRIT_DAMAGE).append(CommonComponents.space())
-                .append(Component.literal(String.format("%s%%", MathUtils.format(100.0D * player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get())))).withStyle(ChatFormatting.GREEN)));
+                .append(Component.literal(String.format("%s%%", Maths.format(100.0D * player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get())))).withStyle(ChatFormatting.GREEN)));
     }
 }

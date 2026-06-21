@@ -1,4 +1,4 @@
-// 1.20.1	2026-06-18T12:22:46.8985082	Item Models: beyondhorizon
+// 1.20.1	2026-06-21T13:08:53.6233725	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -71,6 +71,7 @@ fcb915cb476e9efab8be16e836a8bfe56865b090 assets/beyondhorizon/models/item/harves
 d7e626d382998b6a7f36cb0950d591375ab862d0 assets/beyondhorizon/models/item/hellstone_pickaxe.json
 761cb8ed2b8c1eb3de7893e5e117c62d9f948708 assets/beyondhorizon/models/item/hellstone_shovel.json
 371735e3272f3256b1289bff9d8988b8cf71a633 assets/beyondhorizon/models/item/hellstone_sword.json
+1e88040a163af9aa9659cc324ff424cada251e65 assets/beyondhorizon/models/item/inferno_heart_stone.json
 33ab8b1213915d33ded37edc9ffb60deba049ab7 assets/beyondhorizon/models/item/infinity_gem.json
 4982b6ebb0e0cc0b2755b177dea0e167737993a7 assets/beyondhorizon/models/item/iron_plated_boots.json
 a0d9fff7da5ef4f6361e78c61b790175e70b0799 assets/beyondhorizon/models/item/kraken_slayer.json
@@ -106,6 +107,7 @@ b536f256d1bb90c9b4f99ed198a63eb31467ecd6 assets/beyondhorizon/models/item/rectri
 e3f7cf59d038e3a6f17c79df06c355d94ddff921 assets/beyondhorizon/models/item/red_wool_fur.json
 533ab8d3a3371c5486acb82b5b88c9cf78b5e10d assets/beyondhorizon/models/item/ruby.json
 3746514904677291e1b4686b734a423c32cc7f67 assets/beyondhorizon/models/item/ruminative_beads.json
+d3bb1295badc6c093da32f871dec00fb59f86f52 assets/beyondhorizon/models/item/saint_demon_crown.json
 57a8249296a2127e5dbc9b4b7c82984516e55b27 assets/beyondhorizon/models/item/sapphire_crystal.json
 bf27c57b7a5f8f5a822a5a4e2b23b24638d803d5 assets/beyondhorizon/models/item/shadowcrust.json
 a664ea90911adb468fe30b38b448940bda161708 assets/beyondhorizon/models/item/sheen.json

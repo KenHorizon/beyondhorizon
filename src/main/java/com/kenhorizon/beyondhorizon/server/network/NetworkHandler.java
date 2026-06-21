@@ -36,8 +36,8 @@ public class NetworkHandler {
         net.registerMessage(id(), ClientboundAccessoryInventoryPacket.class, ClientboundAccessoryInventoryPacket::toBytes, ClientboundAccessoryInventoryPacket::new, ClientboundAccessoryInventoryPacket::handle);
         net.registerMessage(id(), ClientboundRoleClassSyncPacket.class, ClientboundRoleClassSyncPacket::toBytes, ClientboundRoleClassSyncPacket::new, ClientboundRoleClassSyncPacket::handle);
         net.registerMessage(id(), ClientboundPlayerDataSyncPacket.class, ClientboundPlayerDataSyncPacket::toBytes, ClientboundPlayerDataSyncPacket::new, ClientboundPlayerDataSyncPacket::handle);
-        net.registerMessage(id(), ClientboundActiveSkillSyncPacket.class, ClientboundActiveSkillSyncPacket::toBytes, ClientboundActiveSkillSyncPacket::new, ClientboundActiveSkillSyncPacket::handle);
         net.registerMessage(id(), ClientboundSetEntityChainedLinkPacket.class, ClientboundSetEntityChainedLinkPacket::toBytes, ClientboundSetEntityChainedLinkPacket::new, ClientboundSetEntityChainedLinkPacket::handle);
+        net.registerMessage(id(), ClientboundAbilityCooldownPacket.class, ClientboundAbilityCooldownPacket::toBytes, ClientboundAbilityCooldownPacket::new, ClientboundAbilityCooldownPacket::handle);
 
         net.registerMessage(id(), ServerboundWorkbenchCraftPacket.class, ServerboundWorkbenchCraftPacket::toBytes, ServerboundWorkbenchCraftPacket::new, ServerboundWorkbenchCraftPacket::handle);
         net.registerMessage(id(), ServerboundAccessoryInventoryPacket.class, ServerboundAccessoryInventoryPacket::toBytes, ServerboundAccessoryInventoryPacket::new, ServerboundAccessoryInventoryPacket::handle);

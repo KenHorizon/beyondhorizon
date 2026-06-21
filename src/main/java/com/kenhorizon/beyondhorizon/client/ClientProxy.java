@@ -4,13 +4,13 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
-import com.kenhorizon.beyondhorizon.client.render.entity.ability.AbstractLaserBeamRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.InfernalRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.ManaHud;
+import com.kenhorizon.beyondhorizon.client.render.item.AccessoryItemDecorations;
 import com.kenhorizon.beyondhorizon.client.render.item.BHArmorRenderProperties;
 import com.kenhorizon.beyondhorizon.client.render.item.BHItemRenderProperties;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.IconAttributesTooltip;
@@ -21,6 +21,7 @@ import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.BlazingSpea
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.BlazingRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
@@ -55,6 +56,7 @@ import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
+import net.minecraftforge.client.event.RegisterItemDecorationsEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -68,6 +70,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forgespi.language.IModFileInfo;
 import net.minecraftforge.forgespi.locating.IModFile;
 import net.minecraftforge.registries.DataPackRegistryEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,7 +93,13 @@ public class ClientProxy extends ServerProxy {
         IconAttributesTooltip.registerFactory();
         Tooltips.TitleBreakComponent.registerFactory();
     }
-
+    private void onRegisterItemDecorations(final RegisterItemDecorationsEvent event) {
+        for (Item item : ForgeRegistries.ITEMS) {
+            if (item instanceof IAccessoryItems<?> items) {
+                event.register(items.getItem(), new AccessoryItemDecorations<>(items));
+            }
+        }
+    }
     public void registerNewRegsitry(DataPackRegistryEvent.NewRegistry event) {
         BeyondHorizon.LOGGER.debug("Custom Registry is registered and created!");
         event.dataPackRegistry(BHRegistries.Keys.SPAWNER_BUILDER, SpawnerConfig.MAP_CODEC.codec());
@@ -290,7 +299,6 @@ public class ClientProxy extends ServerProxy {
     public void syncAccessoryToPlayer(int slot, ItemStack itemStack, ServerPlayer player) {
         NetworkHandler.sendToPlayer(new ServerboundAccessoryInventoryPacket(slot, player.getId(), itemStack), player);
     }
-
     @OnlyIn(Dist.CLIENT)
     @Override
     public Object getFontRenderer() {

@@ -12,7 +12,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -58,19 +58,19 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this == Accessories.NULLIFY.get()) {
-            return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F), MathUtils.format(this.getMagnitude() * 100.0F));
+            return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F), Maths.format(this.getMagnitude() * 100.0F));
         }
         if (this == Accessories.STING.get()) {
             return Component.translatable(this.createId(), (int) this.getMagnitude());
         }
         if (this == Accessories.BRING_IT_DOWN.get()) {
-            return Component.translatable(this.createId(), (int) this.getMagnitude(), MathUtils.format(Constant.BRING_IT_DOWN_INCREASED_DAMAGE * 100.0F));
+            return Component.translatable(this.createId(), (int) this.getMagnitude(), Maths.format(Constant.BRING_IT_DOWN_INCREASED_DAMAGE * 100.0F));
         }
         if (this == Accessories.EXCORIATE.get()) {
-            return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F));
+            return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F));
         }
         if (this == Accessories.NIGHTSTALKER.get()) {
-            return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F));
+            return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F));
         }
         return super.tooltipDescription(itemStack);
     }
@@ -291,7 +291,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
             if (attacker instanceof Player player) {
                 player.getFoodData().eat(5, 0);
             }
-            attacker.addEffect(new MobEffectInstance(BHEffects.GHOUL_WILL.get(), MathUtils.mins(5), 0, true, true));
+            attacker.addEffect(new MobEffectInstance(BHEffects.GHOUL_WILL.get(), Maths.mins(5), 0, true, true));
         }
     }
 

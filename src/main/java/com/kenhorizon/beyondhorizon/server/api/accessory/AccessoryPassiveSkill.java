@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
@@ -37,9 +37,9 @@ public class AccessoryPassiveSkill extends Accessory implements IEntityPropertie
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this.getMagnitude() > 0.0F && this.getLevel() > 0.0F) {
-            return Component.translatable(this.createId(), MathUtils.format0(this.getMagnitude()), this.getLevel());
+            return Component.translatable(this.createId(), Maths.format(100.0F * this.getMagnitude()), this.getLevel());
         } else {
-            return Component.translatable(this.createId(), MathUtils.format0(this.getMagnitude()));
+            return Component.translatable(this.createId(), Maths.format(100.0F * this.getMagnitude()));
         }
     }
 }

@@ -1,5 +1,6 @@
 {
   "values": [
+    "beyondhorizon:no_knockback_magic_damage",
     "beyondhorizon:magic_damage",
     "minecraft:magic",
     "minecraft:indirect_magic",

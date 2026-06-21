@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -37,7 +37,7 @@ public abstract class CleaveEffectAccessory extends AccessoryPassiveSkill {
 
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
-        return Component.translatable(this.createId(), MathUtils.format(this.getMagnitude() * 100.0F), MathUtils.format(this.getCleaveRange() * 100.0F));
+        return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F), Maths.format(this.getCleaveRange() * 100.0F));
     }
 
     @Override

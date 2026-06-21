@@ -12,6 +12,7 @@ public interface IStackableInstance extends INBTSerializable<CompoundTag> {
 
     void instance(LivingEntity entity);
 
+
     List<StackableTags> getInstance();
 
     StackableTags getInstance(StackableTags instance);

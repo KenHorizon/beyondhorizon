@@ -1,6 +1,7 @@
 {
   "values": [
     "beyondhorizon:true_damage",
+    "beyondhorizon:no_knockback_true_damage",
     "beyondhorizon:true_damage_burning"
   ]
 }

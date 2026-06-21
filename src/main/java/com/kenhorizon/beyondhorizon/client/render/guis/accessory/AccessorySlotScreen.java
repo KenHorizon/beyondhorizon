@@ -145,6 +145,7 @@ public class AccessorySlotScreen extends EffectRenderingInventoryScreen<Accessor
     protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
         int x = this.leftPos;
         int y = this.topPos;
+
         graphics.blit(InventoryScreen.INVENTORY_LOCATION, x, y, 0, 0, this.imageWidth, this.imageHeight);
         graphics.blit(ACCESSORY_LOCATION, x - 32, y,  0, 0, 32, 122);
         InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 75, 30, (float) (x + 51) - mouseX, (float) (y + 75 - 50) - mouseY, getMinecraft().player);

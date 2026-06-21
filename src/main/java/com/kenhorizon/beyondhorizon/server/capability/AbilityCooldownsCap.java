@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.api.skills.ActiveSkill;
+import com.kenhorizon.libs.server.world.AbilityCooldowns;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -15,9 +15,9 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
-public class ActiveSkillCap implements ICapabilityProvider, INBTSerializable<CompoundTag> {
+public class AbilityCooldownsCap implements ICapabilityProvider, INBTSerializable<CompoundTag> {
     public static ResourceLocation NAME = BeyondHorizon.resource("active_skill");
-    private final LazyOptional<ActiveSkill> handler = LazyOptional.of(ActiveSkill::new);
+    private final LazyOptional<AbilityCooldowns> handler = LazyOptional.of(AbilityCooldowns::new);
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
@@ -26,12 +26,12 @@ public class ActiveSkillCap implements ICapabilityProvider, INBTSerializable<Com
 
     @Override
     public CompoundTag serializeNBT() {
-        return this.handler.orElseThrow(NullPointerException::new).saveNbt();
+        return this.handler.orElseThrow(NullPointerException::new).serializeNBT();
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        this.handler.orElseThrow(NullPointerException::new).loadNbt(nbt);
+        this.handler.orElseThrow(NullPointerException::new).deserializeNBT(nbt);
     }
 
     public static boolean canAttachTo(ICapabilityProvider entity) {

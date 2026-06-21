@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -21,7 +21,7 @@ public class ThornsAccessory extends AccessoryPassiveSkill {
 
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
-        return Component.translatable(this.createId(), this.baseDamage, MathUtils.format0(this.getMagnitude()));
+        return Component.translatable(this.createId(), this.baseDamage, Maths.format0(this.getMagnitude()));
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ThornsAccessory extends AccessoryPassiveSkill {
             double damageInflict = bonusArmor * (this.getMagnitude() * this.getLevel());
             double baseDamage = this.baseDamage + damageInflict;
             if (DamageHandler.damage(attacker, true, BHDamageTypes.magicDamage(entity, attacker), (float) baseDamage)) {
-                attacker.addEffect(new MobEffectInstance(BHEffects.WOUNDED.get(), MathUtils.sec(3)));
+                attacker.addEffect(new MobEffectInstance(BHEffects.WOUNDED.get(), Maths.sec(3)));
             }
         }
         return damageDealt;

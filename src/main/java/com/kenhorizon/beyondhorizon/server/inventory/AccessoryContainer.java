@@ -6,14 +6,18 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameRules;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class AccessoryContainer extends ItemStackHandler implements IAccessoryItemHandler {
     protected NonNullList<ItemStack> previousStacks;
@@ -65,6 +69,32 @@ public class AccessoryContainer extends ItemStackHandler implements IAccessoryIt
         nbt.put("items", nbtTagList);
         nbt.putInt("size", this.stacks.size());
         return nbt;
+    }
+
+    @Override
+    public boolean contains(ItemStack itemStack) {
+        for (ItemStack itemstack : this.stacks) {
+            if (!itemstack.isEmpty() && ItemStack.isSameItemSameTags(itemstack, itemStack)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean contains(TagKey<Item> tagKey) {
+        for(ItemStack itemstack : this.stacks) {
+            if (!itemstack.isEmpty() && itemstack.is(tagKey)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int whatSlots(ItemStack itemStack) {
+        return this.stacks.indexOf(itemStack);
     }
 
     @Override

@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
@@ -152,12 +153,7 @@ public abstract class Accessory {
             this.addTooltipTitle(itemStack, tooltip, first);
         }
         if (!this.isTooltipDescriptionEnable()) return;
-//        BeyondHorizon.LOGGER.debug("[Accessory] Tooltip size: {}", size);
         boolean flag = size == 1;
-//        boolean alwayShow = (BHConfigs.ADVANCED_TOOLTIP || BHConfigs.ADVANCED_TOOLTIP_ACCESSORY) && flag;
-//        if ((alwayShow || isShiftPressed) && I18n.exists(this.createId())) {
-//            this.addTooltipDescription(itemStack, tooltip);
-//        }
         if (BHConfigs.ADVANCED_TOOLTIP && I18n.exists(this.createId())) {
             this.addTooltipDescription(itemStack, tooltip);
         } else if (BHConfigs.ADVANCED_TOOLTIP_ACCESSORY && I18n.exists(this.createId())) {
@@ -184,7 +180,11 @@ public abstract class Accessory {
             for (FormattedCharSequence format : wrappedText) {
                 List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
                 Component text = Component.literal(texts.get(0).getString());
-                tooltip.add(this.spacing().append(ColorCodedText.applyFormat(text)).withStyle(Tooltips.TOOLTIP[0]).append(this.spacing()));
+                if (tooltips.getStyle().getColor() == null) {
+                    tooltip.add(this.spacing().append(text).withStyle(Tooltips.TOOLTIP[0]).append(this.spacing()));
+                } else {
+                    tooltip.add(this.spacing().append(text).setStyle(tooltips.getStyle()).append(this.spacing()));
+                }
             }
         }
     }
@@ -330,6 +330,9 @@ public abstract class Accessory {
     }
 
     public MutableComponent addKeyBinds(int slot) {
-        return Component.translatable(Tooltips.TOOLTIP_KEYBIND, Keybinds.ACCESSORY_SLOTS.getKey().getDisplayName(), slot).withStyle(ChatFormatting.GOLD);
+        return Component.translatable(Tooltips.TOOLTIP_KEYBIND, Keybinds.ACCESSORY_SLOTS.getKey().getDisplayName(), slot + 1).withStyle(ChatFormatting.GOLD);
+    }
+    public MutableComponent addKeyBindDestinated() {
+        return Component.translatable(Tooltips.TOOLTIP_KEYBIND, Keybinds.ACCESSORY_SLOTS.getKey().getDisplayName(), "Destinated Slot").withStyle(ChatFormatting.GOLD);
     }
 }

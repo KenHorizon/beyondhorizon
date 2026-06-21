@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,7 +24,7 @@ public class StringBowAccessory extends AccessoryPassiveSkill {
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
         if (this.stringBowType == StringBowType.HEAVY) {
-            return Component.translatable(this.createId(), MathUtils.format0(Constant.HEAVY_STRING_DAMAGE), MathUtils.format0(Constant.HEAVY_STRING_KNOCKBACK));
+            return Component.translatable(this.createId(), Maths.format0(Constant.HEAVY_STRING_DAMAGE), Maths.format0(Constant.HEAVY_STRING_KNOCKBACK));
         } else {
             return super.tooltipDescription(itemStack);
         }

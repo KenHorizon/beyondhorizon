@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.DamageTypeTags;
@@ -22,7 +22,7 @@ public class DamageReductionAccessory extends AccessoryPassiveSkill {
     }
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
-        return Component.translatable(this.createId(), MathUtils.format0(this.damageReduce));
+        return Component.translatable(this.createId(), Maths.format0(this.damageReduce));
     }
 
     @Override

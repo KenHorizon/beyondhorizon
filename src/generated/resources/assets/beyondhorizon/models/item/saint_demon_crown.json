@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "beyondhorizon:item/accessory/saint_demon_crown"
+  }
+}

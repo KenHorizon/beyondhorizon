@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.entity.mobs;
 
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.ParticleTrailOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
@@ -13,7 +13,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -48,7 +48,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     public static int animationId = 1;
     public static final int ID_BLAZING_ROD = createAnimationID();
     public int fireballCooldown = 0;
-    public static final int FIREBALL_COOLDOWN = MathUtils.sec(3);
+    public static final int FIREBALL_COOLDOWN = Maths.sec(3);
 
     public FayeFlares(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -123,7 +123,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(1, new MobMoveGoal(this, false, 1.0F));
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
-        this.goalSelector.addGoal(1, new MobAttackGoal<FayeFlares>(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_ANIMATION_EMPTY, 30, MathUtils.sec(5)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<FayeFlares>(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_ANIMATION_EMPTY, 30, Maths.sec(5)) {
             @Override
             public boolean canUse() {
                 return super.canUse() && this.entity.fireballCooldown <= 0;
@@ -255,7 +255,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
                         double ox = (float) (radius * Math.sin(yaw) * Math.sin(pitch));
                         double oy = (float) (radius * Math.cos(pitch));
                         double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
-                        ParticleTrailOptions.add(this.level(), TrailParticles.Behavior.SHRINK, this.getX() + ox, this.getY() + oy + 0.1, this.getZ() + oz, 4.0F, 1, 0.0F, 0.0F, 1.0F, 10, new Vec3(this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ()));
+                        TrailParticleOptions.add(this.level(), TrailParticles.Behavior.SHRINK, this.getX() + ox, this.getY() + oy + 0.1, this.getZ() + oz, 4.0F, 1, 0.0F, 0.0F, 1.0F, 10, new Vec3(this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ()));
                     }
                 }
                 if (this.getAnimationTick() == 60) {

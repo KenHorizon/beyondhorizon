@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
-public class ExecuteDamageSkill extends WeaponSkills {
+public class ExecuteDamageSkill extends WeaponPassiveSkills {
     public ExecuteDamageSkill(float magnitude) {
         this.setMagnitude(magnitude);
     }

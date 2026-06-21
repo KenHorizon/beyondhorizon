@@ -18,4 +18,8 @@ Twilight Edge
 - if you have more than bonus ability power than on attack damage gain Faded Moon ability
 - Dark Sun: Convert 25% damage dealt into addtional bonus true damage on-hit
 - Faded Moon: Convert 25% Max Mana into additional bonus magic damage on-hit
-
+TODO:
+Bloody Runic
+- Bloodbath: Reduce damage by 15%, stored reduce damage is stored after out of combat dealing all the store damage as true damage
+- Bloodly Finger: 15% damage dealt heal the user, killing a target will remove all the stored damage and heal instead of damage
+- Blood and Flesh: Damage will not exceed to the max health of user by 2%

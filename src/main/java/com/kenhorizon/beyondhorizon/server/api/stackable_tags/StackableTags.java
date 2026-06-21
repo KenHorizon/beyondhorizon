@@ -39,24 +39,23 @@ public class StackableTags {
         this(name, maxStack, -1, -1);
     }
 
+    public StackableTags(String name) {
+        this(name, -1, -1, -1);
+    }
+
     public void name(String name) {
         this.name = name;
     }
 
     public void add(int v) {
-        if (this.maxStack == -1) {
-            this.stack += v;
-        } else {
-            this.stack = Math.min(this.maxStack, this.stack + v);
+        if (this.maxStack > 0 && this.stack >= this.maxStack) {
+            this.stack = this.maxStack;
         }
+        this.stack += v;
     }
 
     public void remove(int v) {
         this.stack = Math.max(0, this.stack - v);
-    }
-
-    public void onDeath(int v) {
-        this.stack = v;
     }
 
     public int getStack() {
@@ -132,24 +131,27 @@ public class StackableTags {
     
     public CompoundTag writeNbt() {
         CompoundTag nbt = new CompoundTag();
-        if (this.hasStacks()) {
-            nbt.putString(NBT_STACKS_NAME, this.getName());
-            nbt.putInt(NBT_STACKS, this.getStack());
-            nbt.putInt(NBT_STACKS_DURATION, this.getDuration());
-            nbt.putInt(NBT_DURATION_TICK, this.getDurationPerTick());
-            nbt.putInt(NBT_STACKS_MAX, this.getMaxStack());
-        }
+
+        nbt.putString(NBT_STACKS_NAME, this.getName());
+        nbt.putInt(NBT_STACKS, this.getStack());
+        nbt.putInt(NBT_STACKS_DURATION, this.getDuration());
+        nbt.putInt(NBT_STACKS_MAX, this.getMaxStack());
+        nbt.putInt(NBT_DURATION_TICK, this.getDurationPerTick());
         return nbt;
     }
     
     public void readNbt(Tag tag) {
         CompoundTag nbt = (CompoundTag) tag;
-        if (this.hasStacks()) {
-            this.setName(nbt.getString(NBT_STACKS_NAME));
-            this.setStack(nbt.getInt(NBT_STACKS));
-            this.setDuration(nbt.getInt(NBT_STACKS_DURATION));
-            this.setMaxStack(nbt.getInt(NBT_STACKS_MAX));
-            this.setDurationPerTick(nbt.getInt(NBT_DURATION_TICK));
-        }
+
+        this.setName(nbt.getString(NBT_STACKS_NAME));
+        this.setStack(nbt.getInt(NBT_STACKS));
+        this.setDuration(nbt.getInt(NBT_STACKS_DURATION));
+        this.setMaxStack(nbt.getInt(NBT_STACKS_MAX));
+        this.setDurationPerTick(nbt.getInt(NBT_DURATION_TICK));
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Name: %s | stacks: %s max: %s| duration: %s - per tick: %s", this.name, this.stack, this.maxStack, this.duration, this.durationPerTick);
     }
 }

@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,7 +13,7 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.UUID;
 
-public class HealthToDamageSkill extends WeaponSkills {
+public class HealthToDamageSkill extends WeaponPassiveSkills {
     private static final UUID ATTACK_DAMAGE_UUID = UUID.fromString("503acee5-96e0-400d-85ae-5549f60ad64c");
 
     public HealthToDamageSkill(float magnitude) {
@@ -27,7 +27,7 @@ public class HealthToDamageSkill extends WeaponSkills {
         if (itemStack.hasTag() && itemStack.getTag().contains(tagName)) {
             bonusAttackDamage = itemStack.getTag().getDouble(tagName);
         }
-        return Component.translatable(this.createId(), MathUtils.format0(this.getMagnitude()), Mth.ceil(bonusAttackDamage));
+        return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), Mth.ceil(bonusAttackDamage));
     }
 
     @Override

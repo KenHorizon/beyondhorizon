@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -109,7 +109,7 @@ public class ApplyEffectAccessory extends AccessoryPassiveSkill {
         if (this.effectOccured == 1.0D) {
             return Component.translatable(String.format("%s.desc", this.getDescriptionId()), getSeconds());
         } else {
-            return Component.translatable(String.format("%s.desc", this.getDescriptionId()), MathUtils.percentIntoDecimal(getEffectOccured()), getSeconds());
+            return Component.translatable(String.format("%s.desc", this.getDescriptionId()), Maths.percentIntoDecimal(getEffectOccured()), getSeconds());
         }
     }
 
@@ -129,7 +129,7 @@ public class ApplyEffectAccessory extends AccessoryPassiveSkill {
                 if (this.stacking) {
                     this.stackingEffect(attacker);
                 } else {
-                    attacker.addEffect(new MobEffectInstance(this.getMobEffects(), MathUtils.sec(this.seconds), this.getAmplifier(), this.isAmbient(), this.isVisible(), this.isShowIcon()));
+                    attacker.addEffect(new MobEffectInstance(this.getMobEffects(), Maths.sec(this.seconds), this.getAmplifier(), this.isAmbient(), this.isVisible(), this.isShowIcon()));
                 }
             }
         } else {
@@ -139,7 +139,7 @@ public class ApplyEffectAccessory extends AccessoryPassiveSkill {
                 if (this.stacking) {
                     this.stackingEffect(target);
                 } else {
-                    target.addEffect(new MobEffectInstance(this.getMobEffects(), MathUtils.sec(this.seconds), this.getAmplifier(), this.isAmbient(), this.isVisible(), this.isShowIcon()));
+                    target.addEffect(new MobEffectInstance(this.getMobEffects(), Maths.sec(this.seconds), this.getAmplifier(), this.isAmbient(), this.isVisible(), this.isShowIcon()));
                 }
             }
         }
@@ -153,7 +153,7 @@ public class ApplyEffectAccessory extends AccessoryPassiveSkill {
                 if (this.stacking) {
                     this.stackingEffect(attacker);
                 } else {
-                    attacker.addEffect(new MobEffectInstance(this.getMobEffects(), MathUtils.sec(this.seconds), this.amplifier, isAmbient(), isVisible(), isShowIcon()));
+                    attacker.addEffect(new MobEffectInstance(this.getMobEffects(), Maths.sec(this.seconds), this.amplifier, isAmbient(), isVisible(), isShowIcon()));
                 }
             }
         } else {
@@ -162,7 +162,7 @@ public class ApplyEffectAccessory extends AccessoryPassiveSkill {
                 if (this.stacking) {
                     this.stackingEffect(target);
                 } else {
-                    target.addEffect(new MobEffectInstance(this.getMobEffects(), MathUtils.sec(this.seconds), this.amplifier, isAmbient(), isVisible(), isShowIcon()));
+                    target.addEffect(new MobEffectInstance(this.getMobEffects(), Maths.sec(this.seconds), this.amplifier, isAmbient(), isVisible(), isShowIcon()));
                 }
             }
         }
@@ -177,7 +177,7 @@ public class ApplyEffectAccessory extends AccessoryPassiveSkill {
         } else {
             --stackingAmplifier;
         }
-        MobEffectInstance effectInstance = new MobEffectInstance(this.getMobEffects(), MathUtils.sec(this.seconds), stackingAmplifier, this.isAmbient, this.isVisible);
+        MobEffectInstance effectInstance = new MobEffectInstance(this.getMobEffects(), Maths.sec(this.seconds), stackingAmplifier, this.isAmbient, this.isVisible);
         target.addEffect(effectInstance);
     }
 }

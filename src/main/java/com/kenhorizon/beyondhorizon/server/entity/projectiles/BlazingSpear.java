@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.beyondhorizon.server.util.RaycastUtil;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -90,7 +90,7 @@ public class BlazingSpear extends ExtendedProjectile {
     @Override
     public void afterGotHit(LivingEntity entity) {
         entity.invulnerableTime = 0;
-        entity.addEffect(new MobEffectInstance(BHEffects.ROOTED.get(), MathUtils.sec(2)));
+        entity.addEffect(new MobEffectInstance(BHEffects.ROOTED.get(), Maths.sec(2)));
     }
 
     @Override

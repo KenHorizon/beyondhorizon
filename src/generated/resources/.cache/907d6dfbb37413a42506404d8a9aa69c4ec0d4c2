@@ -1,12 +1,13 @@
-// 1.20.1	2026-05-26T17:53:54.7967751	Tags for minecraft:damage_type mod id beyondhorizon
+// 1.20.1	2026-06-21T13:17:01.9863747	Tags for minecraft:damage_type mod id beyondhorizon
 4877f453090f267ad4468fd77bf2caaf35ced305 data/beyondhorizon/tags/damage_type/burn_damage.json
 2fd059e181a8715fdd0f9920e30a77ef30b88ba6 data/beyondhorizon/tags/damage_type/cant_store_damage.json
 611e653752a51e8c22464c130757c0fd2ce84a2b data/beyondhorizon/tags/damage_type/is_armor_penetration.json
 8ca2a364c4aa35aa5d60cf2c1a78650d600a740f data/beyondhorizon/tags/damage_type/is_magic_penetration.json
 585d589fb6b18b983c5d7d9744cfff127fd9f856 data/beyondhorizon/tags/damage_type/is_true_damage.json
-fa415142d96ab472e6da4f14719d1f328ff89c97 data/beyondhorizon/tags/damage_type/magic_damage.json
-eda5510b5b05c58a514969f0becaae2756373395 data/beyondhorizon/tags/damage_type/physical_damage.json
-75ce7c0bb91cc6a92adcde91141baba458ad5e7e data/beyondhorizon/tags/damage_type/true_damage.json
+e9b5ef949271e6fd3477412e78f918d5482365d5 data/beyondhorizon/tags/damage_type/magic_damage.json
+3870df08f77b1817a2530e694522fe2dc62dc680 data/beyondhorizon/tags/damage_type/no_knockback_damage.json
+8049c57020539b6773306c69740d3c306abf21c3 data/beyondhorizon/tags/damage_type/physical_damage.json
+8ba7119ff86a65657ed48ebe9704bec9772ef7c3 data/beyondhorizon/tags/damage_type/true_damage.json
 51343474d67d95987e614ef847c5335a0a3c8b8c data/minecraft/tags/damage_type/bypasses_cooldown.json
 066bbc1cb7d766976423b01b518a2a6b6862c699 data/minecraft/tags/damage_type/bypasses_effects.json
 cdf1b2f71720e9027aab4af47147a308c1dd65c0 data/minecraft/tags/damage_type/bypasses_enchantments.json

@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
-import com.kenhorizon.beyondhorizon.server.util.MathUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -29,7 +29,7 @@ public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
     protected BaseSpellbladeAccessory.DamageType damageType;
     public BaseSpellbladeAccessory(int attackInterval, float attackScale, DamageType damageType) {
         this.attackScale = attackScale;
-        this.attackInterval = MathUtils.sec(attackInterval);
+        this.attackInterval = Maths.sec(attackInterval);
         this.damageType = damageType;
     }
 
@@ -39,7 +39,7 @@ public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
 
     @Override
     protected MutableComponent tooltipDescription(ItemStack itemStack) {
-        return Component.translatable(this.createId(), MathUtils.format((this.attackInterval / 20.0F)), MathUtils.format(this.attackScale * 100.0F));
+        return Component.translatable(this.createId(), Maths.format((this.attackInterval / 20.0F)), Maths.format(this.attackScale * 100.0F));
     }
 
     @Override

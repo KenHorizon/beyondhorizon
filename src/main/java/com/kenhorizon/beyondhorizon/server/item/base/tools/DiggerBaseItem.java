@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
@@ -13,6 +12,7 @@ import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.item.ICustomHitSound;
 import com.kenhorizon.beyondhorizon.server.item.ICustomSweepParticle;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
+import com.kenhorizon.beyondhorizon.server.item.base.SkillBaseItems;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
@@ -38,7 +38,6 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -55,9 +54,11 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems<DiggerBase
     protected SkillBuilder skillBuilder;
     protected Multimap<Attribute, AttributeModifier> attributeModifiers;
     protected final Multimap<Attribute, AttributeModifier> otherAttributeModifiers = HashMultimap.create();
+    protected final SkillBaseItems skillBaseItems;
 
     public DiggerBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, float attackRange, TagKey<Block> blockTagKey, Properties properties, SkillBuilder skillBuilder) {
         super(0, 0, materials, blockTagKey, properties);
+        this.skillBaseItems = new SkillBaseItems(this);
         this.blockTagKey = blockTagKey;
         this.miningSpeed = materials.getSpeed();
         this.attackDamage = attackDamage + materials.getAttackDamageBonus() - 1.0F;
@@ -134,28 +135,11 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems<DiggerBase
 
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
-        if (entity instanceof LivingEntity living) {
-            if (this.skills != null) {
-                this.skills.forEach((skill) -> {
-                    skill.entityProperties().ifPresent(callback -> {
-                        callback.onItemUpdate(itemStack, level, living, slot, isSelected);
-                    });
-                });
-            }
-        }
+        this.skillBaseItems.inventoryTick(itemStack, level, entity, slot, isSelected, this.skills);
     }
     @Override
-    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-        if (this.skills != null) {
-            for (int i = 0; i < this.skills.size(); i++) {
-                Skill skill = this.skills.get(i);
-                if (!skill.getAttributeModifiers().isEmpty()) {
-                    skill.addTooltipAttributes(itemStack, tooltip);
-                }
-                skill.addTooltip(itemStack, tooltip, this.skills.size(), Utils.isShiftPressed(), i == 0, i == (this.skills.size() - 1));
-            }
-        }
-        super.appendHoverText(itemStack, level, tooltip, isAdvanced);
+    public void appendHoverText(ItemStack itemStack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
+        this.skillBaseItems.appendHoverText(itemStack, tooltip, this.skills);
     }
 
     @Override

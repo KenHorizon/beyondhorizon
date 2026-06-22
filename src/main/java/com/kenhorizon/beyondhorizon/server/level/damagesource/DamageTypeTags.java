@@ -9,5 +9,6 @@ public enum DamageTypeTags {
     TARGET_MISSING_HEALTH,
     TARGET_CURRENT_HEALTH,
     INSTANT_KILL,
+    MAGIC_DAMAGE,
     TRUE_DAMAGE
 }

@@ -104,7 +104,10 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.SKILL_TYPE, "%s");
         this.add(Tooltips.TOOLTIP_BONUS_ARMOR_SET, "Bonus set:");
         this.add(Tooltips.TOOLTIP_MINING_SPEED, "%s Mining Speed");
-        this.addSkills(Skills.INFERNO_STRIKE.get(), "Inferno Strike", "Charges while being slowed by %s%% upto 3 seconds", "Recast: Release a Inferno Slash onward dealing (5% bonus AD)-(%s%% bonus AD) physical damage");
+        this.addSkills(Skills.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100 (6 if attacking, 1 if moving)");
+        this.addSkills(Skills.INFERNAL_RAY.get(), "Infernal Ray", "Release a powerful Infernal Ray dealing %s %s within 2.5 radius of attacks");
+        this.addSkills(Skills.INFERNO_STRIKE.get(), "Inferno Strike", "Charges while being slowed by %s%% upto 3 seconds",
+                "Recast: Release a Inferno Slash onward dealing (5-%s%% bonus AD) physical damage");
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional %.2f%% target's Current HP");
         this.addSkills(Skills.BLADE_EDGE.get(), "Blade Edge", "Deal additional +%s%% target's Max HP");
         this.addSkills(Skills.RADIANT.get(), "Radiant", "Deal additional damage to undead by +%s%%");

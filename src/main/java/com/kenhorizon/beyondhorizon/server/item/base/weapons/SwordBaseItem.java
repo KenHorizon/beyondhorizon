@@ -191,13 +191,13 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     @Override
     public WeaponAnimations getWeaponAnimations(Player player, ItemStack itemStack) {
 
-        return WeaponAnimations.EMPTY;
+        return this.skillBaseItems.getWeaponAnimations(this.skillBuilder);
     }
 
     @Override
     public WeaponArmPose getWeaponArmPose(Player player, InteractionHand hand) {
 
-        return WeaponArmPose.EMPTY;
+        return this.skillBaseItems.getWeaponPose(this.skillBuilder);
     }
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {

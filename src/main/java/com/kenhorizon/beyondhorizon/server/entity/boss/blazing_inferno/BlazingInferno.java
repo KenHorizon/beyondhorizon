@@ -1810,7 +1810,7 @@ public class BlazingInferno extends BHBossEntity {
                         this.entity.getX() + radius * Math.sin(-this.entity.getYRot() * Math.PI / 180),
                         this.entity.getY() + 1.4, this.entity.getZ() + radius * Math.cos(-this.entity.getYRot() * Math.PI / 180),
                         (float) ((this.entity.yHeadRot + 90) * Math.PI / 180), (float) (-this.entity.getXRot() * Math.PI / 180), duration);
-                ability.damageConfig(AbstractDeathRayAbility.DamageTypes.CURRENT_HEALTH, 1.0F);
+                ability.damageConfig(AbstractDeathRayAbility.BeamDamageTags.CURRENT_HEALTH, 1.0F);
                 ability.setCanBurnTarget(true);
                 ability.scaleCurrentHealthDamage(0.2F);
                 ability.setImmunityFrameIgnore(true);

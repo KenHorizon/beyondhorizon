@@ -28,9 +28,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.ForgeMod;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public abstract class WeaponActiveSkills extends Skill implements IAttack, IEntityProperties, IItemProperties {
 
@@ -55,7 +53,6 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
     private float magnitude;
     private float level;
     protected WeaponActiveSkills.ManaCostType manaCostType = ManaCostType.DEFAULT;
-
     public WeaponActiveSkills() {
         super(Type.ACTIVE);
         this.isSkill = true;
@@ -111,9 +108,8 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
     @Override
     public InteractionResultHolder<ItemStack> use(ItemStack itemStack, Level level, Player player, InteractionHand hand) {
         PlayerData playerData = PlayerData.getInstance(player);
-        BeyondHorizon.LOGGER.debug("Ability ticking!");
         if (!level.isClientSide()) {
-            if (!player.isUsingItem() && playerData.isOnCooldown(this.getId())) {
+            if (playerData.isOnCooldown(this.getId())) {
                 player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_ON_COOLDOWN).withStyle(ChatFormatting.RED), true);
                 return InteractionResultHolder.fail(itemStack);
             }
@@ -121,7 +117,6 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
                 player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_NOT_ENOUGH_MANA).withStyle(ChatFormatting.RED), true);
                 return InteractionResultHolder.fail(itemStack);
             } else if (playerData.getMana() >= this.getManaCost()) {
-                playerData.addCooldown(this.getId(), this.getCooldown());
                 this.abilityUse(itemStack, level, player, hand);
                 return InteractionResultHolder.consume(itemStack);
             } else {
@@ -130,6 +125,16 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
             }
         }
         return InteractionResultHolder.pass(itemStack);
+    }
+
+    protected void addCooldownManaCost(Player player) {
+        PlayerData playerData = PlayerData.getInstance(player);
+        try {
+            playerData.addCooldown(this.getId(), this.getCooldown());
+            playerData.removeMana(this.getManaCost());
+        } catch (Exception e) {
+            BeyondHorizon.LOGGER.warn("Player data is null! returning!!");
+        }
     }
 
     public float getDuration(int duration) {
@@ -249,7 +254,18 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
 
     }
 
-    protected double abilityDamageDealt(Player player, Attribute attribute, float scaleDamage) {
-        return AttributeUtils.getBonus(player, attribute) * scaleDamage;
+
+    protected float additionalDamage(Player player, ItemStack itemStack) {
+        return 0;
+    }
+
+    protected double getScaleBonusAttribute(Player player, Attribute attribute, float scaleDamage) {
+        return this.getScaleAttribute(player, attribute, scaleDamage, true);
+    }
+    protected double getScaleTotalAttribute(Player player, Attribute attribute, float scaleDamage) {
+        return this.getScaleAttribute(player, attribute, scaleDamage, false);
+    }
+    private double getScaleAttribute(Player player, Attribute attribute, float scaleDamage, boolean getBonus) {
+        return getBonus ? AttributeUtils.getBonus(player, attribute) * scaleDamage : player.getAttributeValue(attribute) * scaleDamage;
     }
 }

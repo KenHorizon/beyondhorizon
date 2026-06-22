@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRendere
 import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.InfernalRayRenderer;
+import com.kenhorizon.beyondhorizon.client.render.entity.ability.InfernalSlashRenderer;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
@@ -133,6 +134,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.BOLT_SHOCK.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.CLEAVE_ABILITY.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.CLEAVE_CONE_ABILITY.get(), RenderNothing::new);
+        EntityRenderers.register(BHEntity.INFERNAL_SLASH_ABILITY.get(), InfernalSlashRenderer::new);
         //
         EntityRenderers.register(BHEntity.FAYE_FLARES.get(), FayeFlaresRenderer::new);
         EntityRenderers.register(BHEntity.FAYE_WILDFIRE.get(), FayeWildfireRenderer::new);
@@ -238,6 +240,7 @@ public class ClientProxy extends ServerProxy {
         event.registerSpriteSet(BHParticle.RED_SKULL.get(), FlameParticle.Provider::new);
         event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
         event.registerSpriteSet(BHParticle.BLEED.get(), BleedParticle.Provider::new);
+        event.registerSpriteSet(BHParticle.SLASH.get(), SlashParticles.Provider::new);
         event.registerSpriteSet(BHParticle.RING.get(), RingParticles.Provider::new);
         event.registerSpriteSet(BHParticle.RING_BIG.get(), RingParticles.Provider::new);
         event.registerSpriteSet(BHParticle.INDICATOR.get(), IndicatorRingParticles.Provider::new);

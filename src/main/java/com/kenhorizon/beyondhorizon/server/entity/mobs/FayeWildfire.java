@@ -171,7 +171,7 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                             this.entity.getX() + radius * Math.sin(-this.entity.getYRot() * Math.PI / 180),
                             this.entity.getY() + 1.4, this.entity.getZ() + radius * Math.cos(-this.entity.getYRot() * Math.PI / 180),
                             (float) ((this.entity.yHeadRot + 90) * Math.PI / 180), (float) (-this.entity.getXRot() * Math.PI / 180), duration);
-                    ability.damageConfig(AbstractDeathRayAbility.DamageTypes.DEFAULT, 1.0F);
+                    ability.damageConfig(AbstractDeathRayAbility.BeamDamageTags.DEFAULT, 1.0F);
                     ability.setCanBurnTarget(true);
                     ability.setImmunityFrameIgnore(true);
                     this.entity.level().addFreshEntity(ability);

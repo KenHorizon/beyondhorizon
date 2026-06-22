@@ -4,6 +4,8 @@ import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
+import com.kenhorizon.libs.client.WeaponAnimations;
+import com.kenhorizon.libs.client.WeaponArmPose;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -125,5 +127,25 @@ public class SkillBaseItems {
             if(trait.itemProperties().isPresent())
                 trait.itemProperties().get().finishedUsingItem(itemStack, level, player);
         }
+    }
+
+    public WeaponAnimations getWeaponAnimations(SkillBuilder builder) {
+        Optional<Skill> actionTrait = builder.getActionTrait();
+        if (actionTrait.isPresent()) {
+            Skill trait = actionTrait.get();
+            if(trait.itemProperties().isPresent())
+                return trait.itemProperties().get().getWeaponAnimations();
+        }
+        return WeaponAnimations.EMPTY;
+    }
+
+    public WeaponArmPose getWeaponPose(SkillBuilder builder) {
+        Optional<Skill> actionTrait = builder.getActionTrait();
+        if (actionTrait.isPresent()) {
+            Skill trait = actionTrait.get();
+            if(trait.itemProperties().isPresent())
+                return trait.itemProperties().get().getWeaponArmPose();
+        }
+        return WeaponArmPose.EMPTY;
     }
 }

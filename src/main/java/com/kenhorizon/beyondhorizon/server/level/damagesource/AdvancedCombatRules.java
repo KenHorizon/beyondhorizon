@@ -1,6 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.CombatRules;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class AdvancedCombatRules {
     public static final float MAX_ARMOR = 20.0F;
@@ -13,13 +18,6 @@ public class AdvancedCombatRules {
         float f = BASE_ARMOR_TOUGHNESS + toughnessAttribute / NUM_ARMOR_ITEMS;
         float f1 = Mth.clamp(resistance - damage / f, resistance * MIN_ARMOR_RATIO, MAX_ARMOR);
         return damage * (1.0F - f1 / ARMOR_PROTECTION_DIVIDER);
-    }
-
-    public static float applyDamage(float damage, float resistance, float toughnessAttribute) {
-        float toughness = BASE_ARMOR_TOUGHNESS + toughnessAttribute / NUM_ARMOR_ITEMS;
-        float finalDamage = resistance - damage / toughness;
-        float reduceDamage = 1.0F / (1.0F + (resistance / 100.0F));
-        return damage * reduceDamage;
     }
 
     public static float getDamageAfterMagicAbsorb(float damage, float enchantModifiers) {

@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -33,15 +34,8 @@ public abstract class CleaveEffectSkill extends WeaponPassiveSkills {
 
     @Override
     public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
-        target.invulnerableTime = 0;
-        target.hurt(BHDamageTypes.physicalDamage(attacker, null), this.dealDamage(target, attacker, damageDealt, itemStack));
-        target.invulnerableTime = 0;
-        if (this.type == CleaveAbility.Type.CONE) {
-            this.attackCleave(itemStack, target, attacker, damageDealt);
-        } else {
-            this.attackCleave(itemStack, target, attacker, damageDealt);
-//            CleaveAbility.spawn(attacker.level(), target , attacker, this.dealDamage(target, attacker, damageDealt, itemStack), this.getCleaveRange());
-        }
+        DamageType.PHYSICAL_DAMAGE.onHit(target, attacker, this.dealDamage(target, attacker, damageDealt, itemStack));
+        this.attackCleave(itemStack, target, attacker, damageDealt);
     }
 
     public abstract boolean coneAtTarget();

@@ -1,6 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static final float INFERNAL_AD = 0.15F;
+    public static final float INFERNAL_AP = 0.20F;
+    public static final float INFERNAL_BASE_DAMAGE = 1.0F;
     public static final float INFERNO_STRIKE_SCALE = 0.60F;
     public static final float INFERNO_STRIKE_SLOW = 0.45F;
     public static final int BASE_IMMOLATE_DAMAGE = 1;

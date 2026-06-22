@@ -64,7 +64,14 @@ public class Utils {
             return false;
         }
     }
-
+    public static String builderName(String name) {
+        String[] array = name.split("_");
+        StringBuilder builderName = new StringBuilder();
+        for (int i = 0; i < array.length; ++i) {
+            builderName.append(i == 0 ? array[i] : " " + array[i]);
+        }
+        return Utils.capitalize(builderName.toString());
+    }
     private static boolean isEmpty(final CharSequence cs) {
         return cs == null || cs.length() == 0;
     }

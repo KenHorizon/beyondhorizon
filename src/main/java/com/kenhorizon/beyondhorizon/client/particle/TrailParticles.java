@@ -57,6 +57,10 @@ public class TrailParticles extends TextureSheetParticle {
         this.rCol = r;
         this.gCol = g;
         this.bCol = b;
+        this.trailR = r;
+        this.trailG = g;
+        this.trailB = b;
+        this.trailA = this.alpha;
         this.opacity = opacity;
         this.xd = motionX;
         this.yd = motionY;
@@ -71,12 +75,12 @@ public class TrailParticles extends TextureSheetParticle {
             this.alpha = this.opacity * 0.95f * (1 - (this.age + partialTick) / this.lifetime) + 0.05f;
         }
         this.quadSize = this.particleBehavior(var);
-        this.renderTrail(camera, partialTick);
         super.render(buffer, camera, partialTick);
+//        this.renderTrail(buffer, camera, partialTick);
     }
 
-    public void renderTrail(Camera camera, float partialTick) {
-        if (trailPointer > -1) {
+    public void renderTrail(VertexConsumer buffer, Camera camera, float partialTick) {
+        if (this.trailPointer > -1) {
             MultiBufferSource.BufferSource bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
             VertexConsumer vertexconsumer = bufferSource.getBuffer(BHRenderTypes.getTrailEffect(getTrailTexture()));
 
@@ -167,7 +171,7 @@ public class TrailParticles extends TextureSheetParticle {
     }
 
     public float getTrailHeight() {
-        return 0.4F * this.quadSize;
+        return 0.14F;
     }
 
     public ResourceLocation getTrailTexture() {

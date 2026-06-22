@@ -1,7 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.item_properties.GuardianSwordProperties;
+import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.entity.MobType;
@@ -20,6 +22,10 @@ public class Skills {
 
     public static final RegistryObject<Skill> INFERNO_STRIKE = registerSkill("inferno_strike", () -> new InfernoStrikeSkill(Constant.INFERNO_STRIKE_SLOW, Constant.INFERNO_STRIKE_SCALE)
             .melee()
+            .format(Skill.Format.NORMAL));
+
+    public static final RegistryObject<Skill> INFERNAL_RAY = registerSkill("infernal_ray", () -> new InfernalRaySkill(Constant.INFERNAL_AD, Constant.INFERNAL_AP, Constant.INFERNAL_BASE_DAMAGE, true, DamageType.PHYSICAL_DAMAGE, AbstractDeathRayAbility.BeamDamageTags.DEFAULT)
+            .universal()
             .format(Skill.Format.NORMAL));
 
     public static final RegistryObject<Skill> RUINED_BLADE = registerSkill("ruined_blade", () -> new ExtraDamageSkill(Constant.RUINED_BLADE, ExtraDamageSkill.CURRENT_HEALTH)

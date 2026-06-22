@@ -27,6 +27,12 @@ public class BHParticle {
             return IndicatorRingParticleOptions.CODEC;
         }
     });
+    public static final RegistryObject<ParticleType<SlashParticleOptions>> SLASH = RegistryEntries.PARTICLE.register("slash", () -> new ParticleType<SlashParticleOptions>(false, SlashParticleOptions.DESERIALIZER) {
+        @Override
+        public Codec<SlashParticleOptions> codec() {
+            return SlashParticleOptions.CODEC;
+        }
+    });
     public static final RegistryObject<ParticleType<RingParticleOptions>> RING = RegistryEntries.PARTICLE.register("ring", () -> new ParticleType<RingParticleOptions>(false, RingParticleOptions.DESERIALIZER) {
         @Override
         public Codec<RingParticleOptions> codec() {

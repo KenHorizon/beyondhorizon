@@ -124,6 +124,13 @@ public class BHEntity {
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
+    public static final RegistryObject<EntityType<InfernalSlashAbility>> INFERNAL_SLASH_ABILITY = RegistryEntity
+            .register("infernal_slash_ability", InfernalSlashAbility::new)
+            .lang("Infernal Slash")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
     public static final RegistryObject<EntityType<CleaveAbility>> CLEAVE_ABILITY = RegistryEntity
             .register("cleave_ability", CleaveAbility::new)
             .lang("Cleave")

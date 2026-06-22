@@ -15,6 +15,12 @@ public class BlazingCleaveSkill extends CleaveEffectSkill {
     }
 
     @Override
+    public void attackCleave(ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+        CleaveAbility.spawn(attacker.level(), target , attacker, this.dealDamage(target, attacker, damageDealt, itemStack), this.getCleaveRange());
+
+    }
+
+    @Override
     public float dealDamage(LivingEntity target, LivingEntity attacker, float damageDealt, ItemStack itemStack) {
         return damageDealt * this.getMagnitude();
     }

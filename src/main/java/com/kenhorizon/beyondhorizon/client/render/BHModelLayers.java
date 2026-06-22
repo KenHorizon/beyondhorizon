@@ -18,6 +18,7 @@ public class BHModelLayers {
     public static final ModelLayerLocation FAYE_FLARES = createLocation("faye_flares");
     public static final ModelLayerLocation FAYE_WILDFIRE = createLocation("faye_wildfire");
     public static final ModelLayerLocation GATE_DOOR = createLocation("gate_door");
+    public static final ModelLayerLocation INFERNAL_SLASH = createLocation("infernal_slash");
 
     public static void register(final EntityRenderersEvent.RegisterLayerDefinitions event) {
         BeyondHorizon.LOGGER.info("Registering Model Layers...");
@@ -27,6 +28,7 @@ public class BHModelLayers {
         event.registerLayerDefinition(FAYE_FLARES, FayeFlaresModel::createBodyLayer);
         event.registerLayerDefinition(FAYE_WILDFIRE, FayeWildfireModel::createBodyLayer);
         event.registerLayerDefinition(GATE_DOOR, GateDoorModel::createBodyLayer);
+        event.registerLayerDefinition(INFERNAL_SLASH, InfernalSlashModel::createBodyLayer);
     }
     private static ModelLayerLocation createOuterArmor(String model) {
         return createLocation(model, "outer_armor");

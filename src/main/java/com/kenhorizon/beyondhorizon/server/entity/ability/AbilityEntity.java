@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilityEffectPacket;
@@ -41,13 +42,15 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     protected int duration = 60;
     protected int lifespan = 0;
     protected int delay = 0;
-    private DamageTypeTags damageTypeTags = DamageTypeTags.DEFAULT;
+    protected DamageType damageType = DamageType.PHYSICAL_DAMAGE;
+    protected DamageTypeTags damageTypeTags = DamageTypeTags.DEFAULT;
     private float damageTagModifiers = 0.0F;
     private LivingEntity cachedCaster;
     private LivingEntity cachedTarget;
     private ControlledAnimation animation = new ControlledAnimation(0);
     private static final EntityDataAccessor<Optional<UUID>> CASTER = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Optional<UUID>> TARGET = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.OPTIONAL_UUID);
+    private static final EntityDataAccessor<Integer> DAMAGE_TYPE = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> IGNORE_RESISTANCE = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.BOOLEAN);
@@ -57,6 +60,7 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     public static final String NBT_LIFESPAN = "LifeSpan";
     public static final String NBT_RADIUS = "Radius";
     public static final String NBT_DAMGE = "Damage";
+    public static final String NBT_DAMGE_TYPE = "DamageType";
     public static final String NBT_IGNORE_KNOCKBACK = "IgnoreKnockback";
     public static final String NBT_IGNORE_IMMUNITY_FRAME = "IgnoreImmunityFrame";
     public static final String NBT_OWNER = "Owner";
@@ -70,11 +74,26 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     protected void defineSynchedData() {
         this.entityData.define(CASTER, Optional.empty());
         this.entityData.define(TARGET, Optional.empty());
+        this.entityData.define(DAMAGE_TYPE, 0);
         this.entityData.define(RADIUS, 1.0F);
         this.entityData.define(DAMAGE, 5.0F);
         this.entityData.define(IGNORE_RESISTANCE, false);
         this.entityData.define(IGNORE_IMMUNITY_FRAME, false);
     }
+
+    public void setDamageType(DamageType damageType) {
+        this.damageType = damageType;
+        this.entityData.set(DAMAGE_TYPE, damageType.ordinal());
+    }
+
+    public DamageType getDamageType() {
+        if (this.level().isClientSide()) {
+            return DamageType.values()[this.entityData.get(DAMAGE_TYPE)];
+        } else {
+            return damageType;
+        }
+    }
+
     public Optional<UUID> getCasterID() {
         return this.entityData.get(CASTER);
     }
@@ -239,12 +258,6 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
 
     protected void onEnd() {}
 
-    protected void onStartClient() {}
-
-    protected void onDurationClient() {}
-
-    protected void onEndClient() {}
-
     @Override
     public void handleEntityEvent(byte id) {
         super.handleEntityEvent(id);
@@ -260,39 +273,29 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
         if (this.level().isClientSide()) {
             if (this.clientSideStarted) {
                 this.animation.increaseTimer();
-                this.onDurationClient();
-                if (this.getLifeTime() == 0) {
-                    BeyondHorizon.LOGGER.debug("[Ability entity] Client Side started!");
-                    this.onStartClient();
-                }
                 this.setLifeTime(this.getLifeTime() + 1);
-                if (this.getLifeTime() == this.getDuration() - 1) {
-                    BeyondHorizon.LOGGER.debug("[Ability entity] Client Side ended!");
-                    this.onEndClient();
-                }
+            }
+        }
+        if (this.getDelay() <= 0) {
+            this.onDuration();
+            if (!this.sentEventSpike) {
+                this.level().broadcastEntityEvent(this, (byte) 4);
+                this.sentEventSpike = true;
+            }
+            if (this.getLifeTime() == (this.getDelay())) {
+                this.onStart();
+            }
+            this.setLifeTime(this.getLifeTime() + 1);
+            if (this.getLifeTime() > this.getDuration() - 1) {
+                this.onEnd();
+            }
+
+            if (this.getLifeTime() >= this.getDuration()) {
+                this.discard();
             }
         } else {
-            if (this.getDelay() <= 0) {
-                this.onDuration();
-                if (!this.sentEventSpike) {
-                    this.level().broadcastEntityEvent(this, (byte) 4);
-                    this.sentEventSpike = true;
-                }
-                if (this.getLifeTime() == (this.getDelay())) {
-                    this.onStart();
-                }
-                this.setLifeTime(this.getLifeTime() + 1);
-                if (this.getLifeTime() > this.getDuration() - 1) {
-                    this.onEnd();
-                }
-
-                if (this.getLifeTime() >= this.getDuration()) {
-                    this.discard();
-                }
-            } else {
-                if (this.getDelay() > 0) {
-                    this.setDelay(this.getDelay() - 1);
-                }
+            if (this.getDelay() > 0) {
+                this.setDelay(this.getDelay() - 1);
             }
         }
     }

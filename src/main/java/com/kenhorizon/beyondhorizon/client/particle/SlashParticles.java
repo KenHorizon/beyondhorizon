@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.particle;
 
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.SlashParticleOptions;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -14,34 +15,25 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class RingParticles extends TextureSheetParticle {
+public class SlashParticles extends TextureSheetParticle {
 
     public float r;
     public float g;
     public float b;
     public float opacity;
-    public boolean facesCamera;
     public float yaw;
     public float pitch;
     public float size;
-    private final Behavior behavior;
-    private final SpriteSet spriteSet;
+    public final SpriteSet spriteSet;
 
-    public enum Behavior {
-        SHRINK,
-        GROW,
-        CONSTANT,
-        GROW_THEN_SHRINK
-    }
-
-    public RingParticles(SpriteSet spriteSet, ClientLevel level, double x, double y, double z,
-                         double motionX, double motionY, double motionZ,
-                         float yaw, float pitch, int duration,
-                         float r, float g, float b, float opacity, float size,
-                         boolean facesCamera, Behavior behavior) {
+    public SlashParticles(SpriteSet spriteSet,ClientLevel level, double x, double y, double z,
+                          double motionX, double motionY, double motionZ,
+                          float yaw, float pitch, int duration,
+                          float r, float g, float b, float opacity, float size) {
         super(level, x, y, z);
-        this.setSize(1, 1);
-        this.size = size * 0.1f;
+        this.setSize(size, size);
+        this.spriteSet = spriteSet;
+        this.size = size;
         this.lifetime = duration;
         this.alpha = 1;
         this.r = r;
@@ -50,12 +42,9 @@ public class RingParticles extends TextureSheetParticle {
         this.opacity = opacity;
         this.yaw = yaw;
         this.pitch = pitch;
-        this.facesCamera = facesCamera;
         this.xd = motionX;
         this.yd = motionY;
         this.zd = motionZ;
-        this.behavior = behavior;
-        this.spriteSet = spriteSet;
     }
 
     @Override
@@ -76,36 +65,25 @@ public class RingParticles extends TextureSheetParticle {
     @Override
     public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
         float var = (this.age + partialTicks) / this.lifetime;
-        this.quadSize = particleBehavior(var);
         this.alpha = this.opacity * 0.95f * (1 - (this.age + partialTicks) / this.lifetime) + 0.05f;
+        this.quadSize = this.size;
         this.rCol = r;
         this.gCol = g;
         this.bCol = b;
-
         Vec3 Vector3d = renderInfo.getPosition();
         float f = (float) (Mth.lerp(partialTicks, this.xo, this.x) - Vector3d.x());
         float f1 = (float) (Mth.lerp(partialTicks, this.yo, this.y) - Vector3d.y());
         float f2 = (float) (Mth.lerp(partialTicks, this.zo, this.z) - Vector3d.z());
         Quaternionf quaternionf = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
         Quaternionf quaternionf1 = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
-        if (facesCamera) {
-            if (this.roll == 0.0F) {
-                quaternionf = renderInfo.rotation();
-            } else {
-                quaternionf = new Quaternionf(renderInfo.rotation());
-                float f3 = Mth.lerp(partialTicks, this.oRoll, this.roll);
-                quaternionf.mul(Axis.ZP.rotation(f3));
-            }
-        } else {
-            Quaternionf quatX = Maths.quatFromRotationXYZ(pitch, 0, 0, false);
-            Quaternionf quatY = Maths.quatFromRotationXYZ(0, yaw, 0, false);
-            Quaternionf quatX1 = Maths.quatFromRotationXYZ(-pitch, 0, 0, false);
-            Quaternionf quatY1 = Maths.quatFromRotationXYZ(0, -yaw, 0, false);
-            quaternionf.mul(quatY);
-            quaternionf.mul(quatX);
-            quaternionf1.mul(quatY1);
-            quaternionf1.mul(quatX1);
-        }
+        Quaternionf quatX = Maths.quatFromRotationXYZ(pitch, 0, 0, false);
+        Quaternionf quatY = Maths.quatFromRotationXYZ(0, yaw, 0, false);
+        Quaternionf quatX1 = Maths.quatFromRotationXYZ(-pitch, 0, 0, false);
+        Quaternionf quatY1 = Maths.quatFromRotationXYZ(0, -yaw, 0, false);
+        quaternionf.mul(quatY);
+        quaternionf.mul(quatX);
+        quaternionf1.mul(quatY1);
+        quaternionf1.mul(quatX1);
 
         this.drawRingsParticles(buffer, partialTicks, quaternionf, f, f1, f2);
         this.drawRingsParticles(buffer, partialTicks, quaternionf1, f, f1, f2);
@@ -135,18 +113,6 @@ public class RingParticles extends TextureSheetParticle {
         buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f7, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
     }
 
-    private float particleBehavior(float var) {
-        if (this.behavior == Behavior.GROW) {
-            return this.size * var;
-        } else if (this.behavior == Behavior.SHRINK) {
-            return this.size * (1 - var);
-        } else if (this.behavior == Behavior.GROW_THEN_SHRINK) {
-            return (float) (size * (1 - var - Math.pow(2000, -var)));
-        } else {
-            return this.size;
-        }
-    }
-
     @Override
     public ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
@@ -158,7 +124,7 @@ public class RingParticles extends TextureSheetParticle {
     }
 
     @OnlyIn(Dist.CLIENT)
-    public static final class Provider implements ParticleProvider<RingParticleOptions> {
+    public static final class Provider implements ParticleProvider<SlashParticleOptions> {
         private final SpriteSet spriteSet;
 
         public Provider(SpriteSet sprite) {
@@ -166,8 +132,8 @@ public class RingParticles extends TextureSheetParticle {
         }
 
         @Override
-        public Particle createParticle(RingParticleOptions typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            RingParticles particle = new RingParticles(spriteSet, worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getYaw(), typeIn.getPitch(), typeIn.getDuration(), typeIn.getR(), typeIn.getG(), typeIn.getB(), typeIn.getA(), typeIn.getScale(), typeIn.getFacesCamera(), typeIn.getBehavior());
+        public Particle createParticle(SlashParticleOptions typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            SlashParticles particle = new SlashParticles(spriteSet, worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getYaw(), typeIn.getPitch(), typeIn.getDuration(), typeIn.getR(), typeIn.getG(), typeIn.getB(), typeIn.getA(), typeIn.getScale());
             particle.setSpriteFromAge(spriteSet);
             return particle;
         }

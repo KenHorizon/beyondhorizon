@@ -2,24 +2,29 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
+import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
-import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
+import com.kenhorizon.beyondhorizon.server.entity.ability.InfernalSlashAbility;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.libs.client.WeaponAnimations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +42,16 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
     }
 
     @Override
+    public WeaponAnimations getWeaponAnimations() {
+        return WeaponAnimations.GUARDIAN_SWORD;
+    }
+
+    @Override
     protected List<MutableComponent> tooltipDescriptions(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        list.add(Component.translatable(createId(0), this.maxSlow));
-        list.add(Component.translatable(createId(1), this.abilityDamageDealt(player, Attributes.ATTACK_DAMAGE, this.scaleDamage)));
+        list.add(Component.translatable(createId(0), Maths.format0(this.maxSlow)));
+        list.add(Component.translatable(createId(1), Maths.format0(this.scaleDamage)));
         return list;
     }
 
@@ -53,20 +63,24 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
             float durationFactor = (float) Mth.lerp((float) durations / Maths.sec(3), 0.0D, 1.0D);
             if (!((double) durationFactor < 0.1D)) {
                 if (!level.isClientSide()) {
-                    double damage = Mth.lerp(durationFactor, this.abilityDamageDealt(player, Attributes.ATTACK_DAMAGE, 0.05F), this.abilityDamageDealt(player, Attributes.ATTACK_DAMAGE, this.scaleDamage) * durationFactor);
-
+                    this.addCooldownManaCost(player);
+                    double damage = Mth.lerp(durationFactor, this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, 0.05F), this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, this.scaleDamage) * durationFactor);
+                    var color = ColorUtil.RED;
                     if (level instanceof ServerLevel sLevel) {
-                        float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-                        float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-                        float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+                        float r = ColorUtil.getFARGB(color)[0];
+                        float g = ColorUtil.getFARGB(color)[1];
+                        float b = ColorUtil.getFARGB(color)[2];
                         sLevel.sendParticles(new RingParticleOptions(0, (float) Math.PI / 2f, 33,
                                         r, g, b, 1.0F, 110F,
                                         false, RingParticles.Behavior.GROW),
                                 entity.getX(), entity.getY(), entity.getZ(), 1, 0,0, 0, 0);
                     }
-
                     CameraShake.spawn(level, player.position(), 8.0F, 0.02F, 20, 20);
-                    this.stab(player, 6.0, (float) damage, DamageTypes.PHYISCAL_DAMAGE);
+                    InfernalSlashAbility.spawn(level, player, (float) damage, DamageType.PHYSICAL_DAMAGE);
+                    AttributeInstance attributeInstance = player.getAttribute(Attributes.MOVEMENT_SPEED);
+                    if (attributeInstance.getModifier(SPEED_MODIFIER_SPRINTING_UUID) != null) {
+                        attributeInstance.removeModifier(SPEED_MODIFIER_SPRINTING);
+                    }
                 }
             }
         }
@@ -83,11 +97,30 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
     @Override
     public void onUsingTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration) {
         if (level.isClientSide()) {
-           if (entity.tickCount % 8L == 0) {
-                float r = ColorUtil.getFARGB(0xFF6500)[0];
-                float g = ColorUtil.getFARGB(0xFF6500)[1];
-                float b = ColorUtil.getFARGB(0xFF6500)[2];
-                level.addParticle(new RingParticleOptions(0, (float)Math.PI/2f, 33, r, g, b, 1.0F, 32, false, RingParticles.Behavior.GROW), entity.getX(), entity.getY() + 0.5D, entity.getZ(), 0, 0, 0);
+            int durations = this.getUseDuration(itemStack) - remainingUseDuration;
+            if (durations <= 0) return;
+            float durationFactor = (float) Mth.lerp((float) durations / Maths.sec(3), 0.0D, 1.0D);
+            if (!((double) durationFactor < 0.1D)) {
+                var color = ColorUtil.lerpG(durationFactor, ColorUtil.RED, ColorUtil.YELLOW);
+                if (entity.tickCount % 8L == 0) {
+                    float r = ColorUtil.getFARGB(color)[0];
+                    float g = ColorUtil.getFARGB(color)[1];
+                    float b = ColorUtil.getFARGB(color)[2];
+                    level.addParticle(new RingParticleOptions(0, (float)Math.PI / 2f, 33, r, g, b, 1.0F, 32, false, RingParticles.Behavior.GROW), entity.getX(), entity.getY() + 0.5D, entity.getZ(), 0, 0, 0);
+                    int particleCount = 16;
+                    while (particleCount --> 0) {
+                        double radius = 16.0F;
+                        float yaw = (float) (entity.getRandom().nextFloat() * 2 * Math.PI);
+                        float pitch = (float) (entity.getRandom().nextFloat() * 2 * Math.PI);
+                        double ox = (float) (radius * Math.sin(yaw) * Math.sin(pitch));
+                        double oy = (float) (radius * Math.cos(pitch));
+                        double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
+                        TrailParticleOptions.add(entity.level(), TrailParticles.Behavior.FADE_N_SHRINK,
+                                entity.getX() + ox, entity.getY() + oy + 0.1, entity.getZ() + oz, 1.50F,
+                                1, r, g, b,
+                                40, new Vec3(entity.getX(), entity.getY() + entity.getY() + 1.25F, entity.getZ()));
+                    }
+                }
             }
         }
     }

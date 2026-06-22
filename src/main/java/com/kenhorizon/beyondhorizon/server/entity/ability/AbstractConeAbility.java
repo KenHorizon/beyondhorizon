@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public abstract class AbstractConeAbility extends AbilityEntity {
     protected static final int FAIL_SAFE_EXPIRE_TIME = 20 * 20;
     protected final ConePart[] subParts;
-    protected boolean dealDamageActive = true;
     protected boolean coneAtTarget;
 
     public AbstractConeAbility(EntityType<?> entityType, Level level) {
@@ -70,7 +69,7 @@ public abstract class AbstractConeAbility extends AbilityEntity {
             this.subParts[i].setId(id + i + 1);
     }
 
-    protected static Vec3 rayTrace(Entity owner) {
+    protected Vec3 rayTrace(Entity owner) {
         float f = owner.getXRot();
         float f1 = owner.getYRot();
         float f2 = Mth.cos(-f1 * ((float) Math.PI / 180F) - (float) Math.PI);
@@ -81,15 +80,10 @@ public abstract class AbstractConeAbility extends AbilityEntity {
         float f7 = f2 * f4;
         return new Vec3(f6, f5, f7);
     }
+
     @Override
-    public void tick() {
-        super.tick();
-
-        if (this.getLifeTime() > FAIL_SAFE_EXPIRE_TIME) {
-            //This exists in case there is any bug with removing the cone onCastComplete
-            this.discard();
-        }
-
+    protected void onDuration() {
+        super.onDuration();
         //TODO: try this instead of the ray trace
         /*
         So. This is what vectors are for.
@@ -106,16 +100,14 @@ public abstract class AbstractConeAbility extends AbilityEntity {
 
         /* Hit Detection */
         if (!level().isClientSide()) {
-            if (this.dealDamageActive) {
-                for (Entity entity : this.getSubEntityCollisions()) {
-                    this.onHitEntity(new EntityHitResult(entity));
-                }
-                this.dealDamageActive = false;
+            for (Entity entity : this.getSubEntityCollisions()) {
+                this.onHitEntity(new EntityHitResult(entity));
             }
         } else {
             this.spawnParticles();
         }
     }
+
     private void coneWorks(LivingEntity owner, LivingEntity target) {
         if (owner != null && target != null) {
             var rayTraceVector = rayTrace(owner);
@@ -159,7 +151,7 @@ public abstract class AbstractConeAbility extends AbilityEntity {
                 var subEntity = subParts[i];
 
                 double distance = 1 + (i * scale * subEntity.getDimensions(null).width / 2);
-                Vec3 newVector = ownerEyePos.add(rayTraceVector.multiply(distance, distance, distance).reverse());
+                Vec3 newVector = ownerEyePos.add(rayTraceVector.multiply(distance, distance, distance));
                 subEntity.setPos(newVector);
                 subEntity.setDeltaMovement(newVector);
                 var vec3 = new Vec3(subEntity.getX(), subEntity.getY(), subEntity.getZ());
@@ -173,18 +165,14 @@ public abstract class AbstractConeAbility extends AbilityEntity {
         }
     }
 
-    public void setDealDamageActive() {
-        this.dealDamageActive = true;
-    }
-
     protected Set<Entity> getSubEntityCollisions() {
         List<Entity> collisions = new ArrayList<>();
         for (Entity conepart : this.subParts) {
-            collisions.addAll(this.level().getEntities(conepart, conepart.getBoundingBox()));
+            collisions.addAll(this.level().getEntities(conepart, conepart.getBoundingBox().inflate(this.getRadius())));
         }
 
         return collisions.stream().filter(target ->
-                target != getCaster() && target instanceof LivingEntity && hasLineOfSight(this, target)
+                target instanceof LivingEntity && target != getCaster()
         ).collect(Collectors.toSet());
     }
 

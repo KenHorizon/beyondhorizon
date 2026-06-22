@@ -340,12 +340,15 @@ public abstract class Skill {
             List<FormattedCharSequence> wrappedText = font.split(tooltips, maxWidth);
             for (FormattedCharSequence format : wrappedText) {
                 List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
-                Component text = Component.literal(texts.get(0).getString());
+                Component.literal(texts.get(0).getString()).setStyle(tooltips.getStyle().withColor(Tooltips.TOOLTIP[0]).withBold(tooltips.getStyle().isBold()).withUnderlined(tooltips.getStyle().isUnderlined()));
+                Component text;
                 if (tooltips.getStyle().getColor() == null) {
-                    tooltip.add(this.spacing().append(text).withStyle(Tooltips.TOOLTIP[0]).append(this.spacing()));
+                    text = Component.literal(texts.get(0).getString()).setStyle(tooltips.getStyle().withColor(Tooltips.TOOLTIP[0]).withBold(tooltips.getStyle().isBold()).withUnderlined(tooltips.getStyle().isUnderlined()));
                 } else {
-                    tooltip.add(this.spacing().append(text).setStyle(tooltips.getStyle()).append(this.spacing()));
+                    text = Component.literal(texts.get(0).getString()).setStyle(tooltips.getStyle());
                 }
+                tooltip.add(this.spacing().append(text).append(this.spacing()));
+
             }
         }
     }

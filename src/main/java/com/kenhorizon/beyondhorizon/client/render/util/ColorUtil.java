@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.client.render.util;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -12,13 +11,46 @@ public class ColorUtil {
     public static int GRAY = combineRGB(64, 64, 64);
     public static int RED = combineRGB(255, 0, 0);
     public static int GREEN = combineRGB(0, 255, 0);
+    public static int GOLD = combineRGB(255, 194, 0);
     public static int BLUE = combineRGB(0, 0, 255);
-    public static int GOLD = combineRGB(255, 216, 0);
+    public static int YELLOW = combineRGB(255, 216, 0);
 
     private static int round(float value) {
         return (int) (value * 255.0F + 0.5F);
     }
 
+    public static int lerp(float delta, int start, int end) {
+        int[] c1 = getARGB(start);
+        int[] c2 = getARGB(end);
+        int r = (int) (c1[0] + delta * (c2[0] - c1[0]));
+        int g = (int) (c1[1] + delta * (c2[1] - c1[1]));
+        int b = (int) (c1[2] + delta * (c2[2] - c1[2]));
+        return combineRGB(r, g, b);
+    }
+    public static int lerpR(float delta, int start, int end) {
+        int[] c1 = getARGB(start);
+        int[] c2 = getARGB(end);
+        int r = (int) (c1[0] + delta * (c2[0] - c1[0]));
+        int g = (int) (c1[1] + delta * (c2[1] - c1[1]));
+        int b = (int) (c1[2] + delta * (c2[2] - c1[2]));
+        return combineRGB(r, c1[1], c1[2]);
+    }
+    public static int lerpG(float delta, int start, int end) {
+        int[] c1 = getARGB(start);
+        int[] c2 = getARGB(end);
+        int r = (int) (c1[0] + delta * (c2[0] - c1[0]));
+        int g = (int) (c1[1] + delta * (c2[1] - c1[1]));
+        int b = (int) (c1[2] + delta * (c2[2] - c1[2]));
+        return combineRGB(c1[0], g, c1[2]);
+    }
+    public static int lerpB(float delta, int start, int end) {
+        int[] c1 = getARGB(start);
+        int[] c2 = getARGB(end);
+        int r = (int) (c1[0] + delta * (c2[0] - c1[0]));
+        int g = (int) (c1[1] + delta * (c2[1] - c1[1]));
+        int b = (int) (c1[2] + delta * (c2[2] - c1[2]));
+        return combineRGB(c1[0], c1[1], b);
+    }
     public static int[] getARGB(int colors) {
         int convertR = colors >> 16 & 0xFF;
         int convertG = colors >> 8 & 0xFF;

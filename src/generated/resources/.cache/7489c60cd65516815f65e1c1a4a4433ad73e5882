@@ -1,4 +1,4 @@
-// 1.20.1	2026-06-21T13:08:53.6233725	Item Models: beyondhorizon
+// 1.20.1	2026-06-23T21:09:13.6487368	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -134,6 +134,7 @@ ae16808a8f32bd65d5f0c3fefc23cb27d56b2d49 assets/beyondhorizon/models/item/ultima
 12cb0db145a6cec5e5d92822f58a2cd11cb243ab assets/beyondhorizon/models/item/unstable_runic_tome.json
 604d72d4a4e892b05266d1ab21ad191c3981ddeb assets/beyondhorizon/models/item/vitality_stone.json
 f686f70b3152320e6fc1068bb48927e6476e1cdd assets/beyondhorizon/models/item/vitamins.json
+118c1565790fdc6d4e66ac9a45743838f70f9e96 assets/beyondhorizon/models/item/void_bag.json
 41f7068f225096e7c63d10680eb07fb22c61cee7 assets/beyondhorizon/models/item/void_staff.json
 3e80aa584c6fe2bf44f4a9e3dd524e0c583895b5 assets/beyondhorizon/models/item/warden_mail.json
 d9280172e0fbb32be19997085d3deb47cc19b660 assets/beyondhorizon/models/item/ward_cleanse.json

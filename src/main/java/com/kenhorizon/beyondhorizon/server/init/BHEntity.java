@@ -125,7 +125,7 @@ public class BHEntity {
             .register();
 
     public static final RegistryObject<EntityType<InfernalSlashAbility>> INFERNAL_SLASH_ABILITY = RegistryEntity
-            .register("infernal_slash_ability", InfernalSlashAbility::new)
+            .<InfernalSlashAbility>register("infernal_slash_ability", InfernalSlashAbility::new)
             .lang("Infernal Slash")
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(0.5F, 0.5F))

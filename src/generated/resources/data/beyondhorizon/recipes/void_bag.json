@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:end_crystal"
+    },
+    "B": {
+      "item": "minecraft:echo_shard"
+    },
+    "E": {
+      "item": "minecraft:ender_eye"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "S": {
+      "item": "beyondhorizon:starite_ingot"
+    }
+  },
+  "pattern": [
+    "SBS",
+    "OEO",
+    "SAS"
+  ],
+  "result": {
+    "item": "beyondhorizon:void_bag"
+  },
+  "show_notification": true
+}

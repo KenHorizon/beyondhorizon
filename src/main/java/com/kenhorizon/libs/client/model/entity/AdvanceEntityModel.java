@@ -53,8 +53,8 @@ public abstract class AdvanceEntityModel<T extends Entity> extends EntityModel<T
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float r, float g, float b, float a) {
         this.root().render(poseStack, buffer, packedLight, packedOverlay, r, g, b, a);
     }
-    protected void animate(AnimationState animation, AnimationDefinition pAnimationDefinition, float pAgeInTicks) {
-        this.animate(animation, pAnimationDefinition, pAgeInTicks, 1.0F);
+    protected void animate(AnimationState animation, AnimationDefinition definition, float ageInTicks) {
+        this.animate(animation, definition, ageInTicks, 1.0F);
     }
 
     public void animateIdle(AnimationDefinition animationDefinition, float ageInTicks, float maxAnimationSpeed) {

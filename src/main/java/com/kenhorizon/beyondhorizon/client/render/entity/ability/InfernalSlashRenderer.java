@@ -20,6 +20,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.phys.Vec3;
 
 public class InfernalSlashRenderer extends EntityRenderer<InfernalSlashAbility> {
     private final InfernalSlashModel model;
@@ -36,12 +37,16 @@ public class InfernalSlashRenderer extends EntityRenderer<InfernalSlashAbility> 
     @Override
     public void render(InfernalSlashAbility entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
-        poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) + 90.0f));
-        poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) - 90.0f));
+//        float yRot = Mth.lerp(partialTicks, entity.yRotO, entity.getYRot());
+//        float xRot = Mth.lerp(partialTicks, entity.xRotO, entity.getXRot());
+//
+//        poseStack.mulPose(Axis.YP.rotationDegrees(yRot - 90.0F));
+//        poseStack.mulPose(Axis.ZP.rotationDegrees(xRot + 90.0F));
+
+        poseStack.mulPose(Axis.YP.rotationDegrees(entity.getYRot() + 180));
         VertexConsumer builder = buffer.getBuffer(RenderType.entityTranslucent(getTextureLocation(entity)));
         model.renderToBuffer(poseStack, builder, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();
-        super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
 
     @Override

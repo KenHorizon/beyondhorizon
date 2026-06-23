@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.server.item.GuideBookItem;
 import com.kenhorizon.beyondhorizon.server.item.PlayerTrackerItem;
+import com.kenhorizon.beyondhorizon.server.item.VoidBagItem;
 import com.kenhorizon.beyondhorizon.server.item.base.*;
 import com.kenhorizon.beyondhorizon.server.item.base.armor.ArmorBaseItem;
 import com.kenhorizon.beyondhorizon.server.item.base.tools.DiggerBaseItem;
@@ -72,6 +73,13 @@ public class BHItems {
 
     public static final RegistryObject<Item> GUIDE_BOOK = RegistryItems
             .register("guide_book", GuideBookItem::new)
+            .tab(RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
+
+    public static final RegistryObject<Item> VOID_BAG = RegistryItems
+            .register("void_bag", VoidBagItem::new)
+            .properties(p -> p.rarity(Rarity.EPIC).stacksTo(1).fireResistant())
             .tab(RegistryTabs.Category.MISC)
             .model(ItemModels.GENERATED)
             .register();

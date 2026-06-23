@@ -26,14 +26,14 @@ import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class AbilityEntity extends Entity implements ILinkedEntity, TraceableEntity {
     protected float damage = 5.0F;
@@ -275,6 +275,7 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
                 this.animation.increaseTimer();
                 this.setLifeTime(this.getLifeTime() + 1);
             }
+            this.spawnParticles();
         }
         if (this.getDelay() <= 0) {
             this.onDuration();
@@ -332,6 +333,28 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
             }
         }
         return false;
+    }
+
+    protected void checkEntityHit() {
+        if (!level().isClientSide()) {
+            for (Entity entity : this.getSubEntityCollisions()) {
+                this.onHitEntity(new EntityHitResult(entity));
+            }
+        }
+    }
+
+    protected Set<Entity> getSubEntityCollisions() {
+        List<Entity> collisions = new ArrayList<>(this.level().getEntities(this, this.getBoundingBox().inflate(this.getRadius())));
+        return collisions.stream().filter(target ->
+                target instanceof LivingEntity && target != getCaster()
+        ).collect(Collectors.toSet());
+    }
+
+    protected void onHitEntity(EntityHitResult hitResult) {
+
+    }
+    protected void spawnParticles() {
+
     }
 
     @Override

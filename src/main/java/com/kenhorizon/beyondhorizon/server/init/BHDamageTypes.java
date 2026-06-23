@@ -150,7 +150,7 @@ public class BHDamageTypes {
     }
 
     public static DamageSource physicalDamage(Entity source, Entity cause, boolean noKnocback) {
-        return source(noKnocback ? NO_KNOCKBACK_TRUE_DAMAGE : TRUE_DAMAGE, source, cause);
+        return source(noKnocback ? NO_KNOCKBACK_PHYSICAL_DAMAGE : PHYSICAL_DAMAGE, source, cause);
     }
 
     public static DamageSource trueDamage(Entity source, Entity cause) {

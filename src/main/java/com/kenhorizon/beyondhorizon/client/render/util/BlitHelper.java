@@ -113,23 +113,18 @@ public class BlitHelper {
     public static void renderIcons(GuiGraphics guiGraphics, TextureAtlasSprite textures, int x, int y, float scale, int uo, int vo, int width, int height, int textureWidth, int textureHeight) {
         PoseStack poseStack = new PoseStack();
         poseStack.pushPose();
+
         poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
         poseStack.scale(scale, scale, scale);
         guiGraphics.blit(textures.atlasLocation(), x, y, uo, vo, width, height, textureWidth, textureHeight);
         poseStack.popPose();
     }
     // DRAW BLIT
-    public static void draw(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, float scale) {
-        draw(guiGraphics, textures, x, y, scale, 0, 0, 255 ,255, 255, 255);
-    }
-    public static void draw(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, float scale, int width, int height, int textureWidth, int textureHeight) {
-        draw(guiGraphics, textures, x, y, scale, 0, 0, width ,height, textureWidth, textureHeight);
-    }
-    public static void draw(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, float scale, int width, int height, int size) {
-        draw(guiGraphics, textures, x, y, scale, 0, 0, width ,height, size, size);
+    public static void draw(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, float scale, int uo, int vo, int width, int height) {
+        draw(guiGraphics, textures, x, y, scale, uo, vo, width ,height, 256, 256);
     }
     public static void draw(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, float scale, int uo, int vo, int width, int height, int textureWidth, int textureHeight) {
-        PoseStack poseStack = RenderSystem.getModelViewStack();
+        PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
         poseStack.scale(scale, scale, scale);

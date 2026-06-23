@@ -20,11 +20,6 @@ import java.util.Locale;
 public class TrailParticleOptions implements ParticleOptions {
     public static final Deserializer<TrailParticleOptions> DESERIALIZER = new Deserializer<TrailParticleOptions>() {
         public TrailParticleOptions fromCommand(ParticleType<TrailParticleOptions> particleTypeIn, StringReader reader) throws CommandSyntaxException {
-            reader.expect(' ');
-            float yaw = (float) reader.readDouble();
-            reader.expect(' ');
-            float pitch = (float) reader.readDouble();
-            reader.expect(' ');
             float r = (float) reader.readDouble();
             reader.expect(' ');
             float g = (float) reader.readDouble();

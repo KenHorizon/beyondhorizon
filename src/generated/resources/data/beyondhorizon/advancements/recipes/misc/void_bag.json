@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:void_bag"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_void_bag": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:void_bag"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_void_bag",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:void_bag"
+    ]
+  },
+  "sends_telemetry_event": false
+}

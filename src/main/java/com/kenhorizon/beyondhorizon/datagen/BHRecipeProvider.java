@@ -88,6 +88,19 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                         inventoryTrigger(ItemPredicate.Builder.item().of(BHItemTags.WOOL_FUR).build()))
                 .save(consumer, getItemName(Items.STRING) + "_from_wool_fur");
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHItems.VOID_BAG.get())
+                .pattern("SBS")
+                .pattern("OEO")
+                .pattern("SAS")
+                .define('E', Items.ENDER_EYE)
+                .define('O', Blocks.OBSIDIAN)
+                .define('B', Items.ECHO_SHARD)
+                .define('A', Items.END_CRYSTAL)
+                .define('S', BHItems.STARITE_INGOT.get())
+                .unlockedBy("has_void_bag",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.VOID_BAG.get()).build()))
+                .save(consumer);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHItems.PLAYER_TRACKER.get())
                 .pattern("NGN")
                 .pattern("IRI")

@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.inventory.AccessoryMenu;
+import com.kenhorizon.beyondhorizon.server.inventory.VoidBagMenu;
 import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -13,6 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class BHMenu {
     public static final RegistryObject<MenuType<AccessoryMenu>> ACCESSORY_MENU = registerMenuType(AccessoryMenu::new, "accessory_menu");
     public static final RegistryObject<MenuType<WorkbenchMenu>> WORKBENCH_MENU = registerMenuType(WorkbenchMenu::new, "workbench_menu");
+    public static final RegistryObject<MenuType<VoidBagMenu>> VOID_BAG_MENU = registerMenuType(VoidBagMenu::createFromNetwork, "void_bag_menu");
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(IContainerFactory<T> factory, String name) {
         return RegistryEntries.MENUS.register(name, () -> IForgeMenuType.create(factory));

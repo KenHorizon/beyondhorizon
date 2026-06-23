@@ -273,6 +273,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     }
 
     protected void onStartParticle() {
+        this.start();
         int particleCount = 4;
         float[] colors = ColorUtil.getFARGB(ColorUtil.combineRGB(this.getColors()[0],this.getColors()[1],this.getColors()[2]));
         while (particleCount --> 0) {
@@ -289,6 +290,10 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
                     TrailParticles.Behavior.DEFAULT,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz,
                     1.25F, 1.0F, colors[0], colors[1], colors[2], 10, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
         }
+    }
+
+    protected void start() {
+
     }
 
     private void knockbackTarget(LivingEntity target, double strength, double x, double z, boolean ignoreResistance) {

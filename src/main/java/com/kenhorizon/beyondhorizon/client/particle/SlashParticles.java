@@ -28,13 +28,12 @@ public class SlashParticles extends TextureSheetParticle {
 
     public SlashParticles(SpriteSet spriteSet,ClientLevel level, double x, double y, double z,
                           double motionX, double motionY, double motionZ,
-                          float yaw, float pitch, int duration,
+                          float yaw, float pitch,
                           float r, float g, float b, float opacity, float size) {
         super(level, x, y, z);
-        this.setSize(size, size);
         this.spriteSet = spriteSet;
-        this.size = size;
-        this.lifetime = duration;
+        this.quadSize = size * 3.25f;
+        this.lifetime = 9;
         this.alpha = 1;
         this.r = r;
         this.g = g;
@@ -54,42 +53,29 @@ public class SlashParticles extends TextureSheetParticle {
 
     @Override
     public void tick() {
-        super.tick();
-        this.setSpriteFromAge(this.spriteSet);
-        if (age >= lifetime) {
-            remove();
+        if (this.age++ > this.lifetime) {
+            this.remove();
+        } else {
+            this.setSpriteFromAge(this.spriteSet);
         }
-        age++;
     }
 
     @Override
-    public void render(VertexConsumer buffer, Camera renderInfo, float partialTicks) {
-        float var = (this.age + partialTicks) / this.lifetime;
+    public void render(VertexConsumer buffer, Camera camera, float partialTicks) {
         this.alpha = this.opacity * 0.95f * (1 - (this.age + partialTicks) / this.lifetime) + 0.05f;
-        this.quadSize = this.size;
         this.rCol = r;
         this.gCol = g;
         this.bCol = b;
-        Vec3 Vector3d = renderInfo.getPosition();
+        Vec3 Vector3d = camera.getPosition();
         float f = (float) (Mth.lerp(partialTicks, this.xo, this.x) - Vector3d.x());
         float f1 = (float) (Mth.lerp(partialTicks, this.yo, this.y) - Vector3d.y());
         float f2 = (float) (Mth.lerp(partialTicks, this.zo, this.z) - Vector3d.z());
         Quaternionf quaternionf = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
-        Quaternionf quaternionf1 = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
         Quaternionf quatX = Maths.quatFromRotationXYZ(pitch, 0, 0, false);
         Quaternionf quatY = Maths.quatFromRotationXYZ(0, yaw, 0, false);
-        Quaternionf quatX1 = Maths.quatFromRotationXYZ(-pitch, 0, 0, false);
-        Quaternionf quatY1 = Maths.quatFromRotationXYZ(0, -yaw, 0, false);
         quaternionf.mul(quatY);
         quaternionf.mul(quatX);
-        quaternionf1.mul(quatY1);
-        quaternionf1.mul(quatX1);
 
-        this.drawRingsParticles(buffer, partialTicks, quaternionf, f, f1, f2);
-        this.drawRingsParticles(buffer, partialTicks, quaternionf1, f, f1, f2);
-    }
-
-    private void drawRingsParticles(VertexConsumer buffer, float partialTicks, Quaternionf quaternionf, float f, float f1, float f2) {
         Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);
         quaternionf.transform(vector3f1);
         Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
@@ -107,10 +93,15 @@ public class SlashParticles extends TextureSheetParticle {
         float f5 = this.getV0();
         float f6 = this.getV1();
         int j = this.getLightColor(partialTicks);
-        buffer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).uv(f8, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-        buffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(f8, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-        buffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(f7, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
-        buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f7, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).uv(f8, f6).color(r, g, b, this.alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(f8, f5).color(r, g, b, this.alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(f7, f5).color(r, g, b, this.alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f7, f6).color(r, g, b, this.alpha).uv2(j).endVertex();
+
+        buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f7, f6).color(r, g, b, this.alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(f7, f5).color(r, g, b, this.alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(f8, f5).color(r, g, b, this.alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).uv(f8, f6).color(r, g, b, this.alpha).uv2(j).endVertex();
     }
 
     @Override
@@ -133,7 +124,7 @@ public class SlashParticles extends TextureSheetParticle {
 
         @Override
         public Particle createParticle(SlashParticleOptions typeIn, ClientLevel worldIn, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-            SlashParticles particle = new SlashParticles(spriteSet, worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getYaw(), typeIn.getPitch(), typeIn.getDuration(), typeIn.getR(), typeIn.getG(), typeIn.getB(), typeIn.getA(), typeIn.getScale());
+            SlashParticles particle = new SlashParticles(spriteSet, worldIn, x, y, z, xSpeed, ySpeed, zSpeed, typeIn.getYaw(), typeIn.getPitch(), typeIn.getR(), typeIn.getG(), typeIn.getB(), typeIn.getA(), typeIn.getScale());
             particle.setSpriteFromAge(spriteSet);
             return particle;
         }

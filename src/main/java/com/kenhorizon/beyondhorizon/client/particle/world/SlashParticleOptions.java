@@ -33,13 +33,11 @@ public class SlashParticleOptions implements ParticleOptions {
             float a = (float) reader.readDouble();
             reader.expect(' ');
             float scale = (float) reader.readDouble();
-            reader.expect(' ');
-            int duration = reader.readInt();
-            return new SlashParticleOptions(yaw, pitch, duration, r, g, b, a, scale);
+            return new SlashParticleOptions(yaw, pitch, r, g, b, a, scale);
         }
 
         public SlashParticleOptions fromNetwork(ParticleType<SlashParticleOptions> particleTypeIn, FriendlyByteBuf buffer) {
-            return new SlashParticleOptions(buffer.readFloat(), buffer.readFloat(), buffer.readInt(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
+            return new SlashParticleOptions(buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat(), buffer.readFloat());
         }
     };
 
@@ -51,10 +49,9 @@ public class SlashParticleOptions implements ParticleOptions {
                     Codec.FLOAT.fieldOf("g").forGetter(SlashParticleOptions::getG),
                     Codec.FLOAT.fieldOf("b").forGetter(SlashParticleOptions::getB),
                     Codec.FLOAT.fieldOf("a").forGetter(SlashParticleOptions::getA),
-                    Codec.FLOAT.fieldOf("scale").forGetter(SlashParticleOptions::getScale),
-                    Codec.INT.fieldOf("duration").forGetter(SlashParticleOptions::getDuration)
-            ).apply(instance, (yaw, pitch, r, g, b, a, scale, duration) ->
-                    new SlashParticleOptions(yaw, pitch, duration, r, g, b, a, scale))
+                    Codec.FLOAT.fieldOf("scale").forGetter(SlashParticleOptions::getScale)
+            ).apply(instance, (yaw, pitch, r, g, b, a, scale) ->
+                    new SlashParticleOptions(yaw, pitch, r, g, b, a, scale))
     );
     private final float yaw;
     private final float pitch;
@@ -63,9 +60,8 @@ public class SlashParticleOptions implements ParticleOptions {
     private final float b;
     private final float a;
     private final float scale;
-    private final int duration;
 
-    public SlashParticleOptions(float yaw, float pitch, int duration, float r, float g, float b, float a, float scale) {
+    public SlashParticleOptions(float yaw, float pitch, float r, float g, float b, float a, float scale) {
         this.yaw = yaw;
         this.pitch = pitch;
         this.r = r;
@@ -73,7 +69,6 @@ public class SlashParticleOptions implements ParticleOptions {
         this.b = b;
         this.a = a;
         this.scale = scale;
-        this.duration = duration;
     }
 
     @Override
@@ -82,14 +77,13 @@ public class SlashParticleOptions implements ParticleOptions {
         buffer.writeFloat(this.g);
         buffer.writeFloat(this.b);
         buffer.writeFloat(this.scale);
-        buffer.writeInt(this.duration);
     }
 
     @SuppressWarnings("deprecation")
     @Override
     public String writeToString() {
-        return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %.2f %.2f %.2f %d", BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
-                this.yaw, this.pitch, this.r, this.g, this.b, this.scale, this.a, this.duration);
+        return String.format(Locale.ROOT, "%s %.2f %.2f %.2f %.2f %.2f %.2f %.2f", BuiltInRegistries.PARTICLE_TYPE.getKey(this.getType()),
+                this.yaw, this.pitch, this.r, this.g, this.b, this.scale, this.a);
     }
 
     @Override
@@ -130,10 +124,5 @@ public class SlashParticleOptions implements ParticleOptions {
     @OnlyIn(Dist.CLIENT)
     public float getScale() {
         return this.scale;
-    }
-
-    @OnlyIn(Dist.CLIENT)
-    public int getDuration() {
-        return this.duration;
     }
 }

@@ -26,7 +26,7 @@ public class InfernalSlashModel extends EntityModel<InfernalSlashAbility> {
         MeshDefinition meshdefinition = new MeshDefinition();
         PartDefinition partdefinition = meshdefinition.getRoot();
 
-        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition root = partdefinition.addOrReplaceChild("root", CubeListBuilder.create(), PartPose.offsetAndRotation(0.0F, 0.0F, 0.0F, 1.5708F, 0.0F, 0.0F));
 
         PartDefinition core = root.addOrReplaceChild("core", CubeListBuilder.create().texOffs(30, 33).addBox(-2.0F, -2.5F, -2.5F, 1.0F, 5.0F, 5.0F, new CubeDeformation(0.0F))
                 .texOffs(30, 33).mirror().addBox(1.0F, -2.5F, -2.5F, 1.0F, 5.0F, 5.0F, new CubeDeformation(0.0F)).mirror(false)
@@ -57,7 +57,9 @@ public class InfernalSlashModel extends EntityModel<InfernalSlashAbility> {
 
     @Override
     public void setupAnim(InfernalSlashAbility entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-
+        this.root.getAllParts().forEach(ModelPart::resetPose);
+        this.root.yRot = netHeadYaw * ((float)Math.PI / 180F);
+        this.root.xRot = headPitch * ((float)Math.PI / 180F);
     }
 
     @Override

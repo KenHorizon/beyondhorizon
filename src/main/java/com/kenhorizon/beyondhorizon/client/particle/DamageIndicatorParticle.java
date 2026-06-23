@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.particle;
 
+import com.kenhorizon.beyondhorizon.client.Fonts;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.mixins.client.accessor.FontAccessor;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -15,6 +16,7 @@ import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;

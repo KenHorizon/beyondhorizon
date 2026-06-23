@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.InfernalRayRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.InfernalSlashRenderer;
+import com.kenhorizon.beyondhorizon.client.render.guis.VoidBagScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
@@ -152,9 +153,9 @@ public class ClientProxy extends ServerProxy {
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
+        MenuScreens.register(BHMenu.VOID_BAG_MENU.get(), VoidBagScreen::new);
 
         Raid.RaiderType.create("ILLUSIONER", EntityType.ILLUSIONER, new int[]{0, 0, 1, 2, 2, 3, 4, 5});
-
 
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.IRON_LATTICE.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_IRON_LATTICE.get(), RenderType.cutout());

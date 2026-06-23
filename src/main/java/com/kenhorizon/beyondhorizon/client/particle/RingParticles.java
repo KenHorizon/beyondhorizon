@@ -78,16 +78,15 @@ public class RingParticles extends TextureSheetParticle {
         float var = (this.age + partialTicks) / this.lifetime;
         this.quadSize = particleBehavior(var);
         this.alpha = this.opacity * 0.95f * (1 - (this.age + partialTicks) / this.lifetime) + 0.05f;
-        this.rCol = r;
-        this.gCol = g;
-        this.bCol = b;
+        rCol = r;
+        gCol = g;
+        bCol = b;
 
         Vec3 Vector3d = renderInfo.getPosition();
-        float f = (float) (Mth.lerp(partialTicks, this.xo, this.x) - Vector3d.x());
-        float f1 = (float) (Mth.lerp(partialTicks, this.yo, this.y) - Vector3d.y());
-        float f2 = (float) (Mth.lerp(partialTicks, this.zo, this.z) - Vector3d.z());
+        float f = (float)(Mth.lerp(partialTicks, this.xo, this.x) - Vector3d.x());
+        float f1 = (float)(Mth.lerp(partialTicks, this.yo, this.y) - Vector3d.y());
+        float f2 = (float)(Mth.lerp(partialTicks, this.zo, this.z) - Vector3d.z());
         Quaternionf quaternionf = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
-        Quaternionf quaternionf1 = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
         if (facesCamera) {
             if (this.roll == 0.0F) {
                 quaternionf = renderInfo.rotation();
@@ -96,28 +95,20 @@ public class RingParticles extends TextureSheetParticle {
                 float f3 = Mth.lerp(partialTicks, this.oRoll, this.roll);
                 quaternionf.mul(Axis.ZP.rotation(f3));
             }
-        } else {
+        }
+        else {
             Quaternionf quatX = Maths.quatFromRotationXYZ(pitch, 0, 0, false);
             Quaternionf quatY = Maths.quatFromRotationXYZ(0, yaw, 0, false);
-            Quaternionf quatX1 = Maths.quatFromRotationXYZ(-pitch, 0, 0, false);
-            Quaternionf quatY1 = Maths.quatFromRotationXYZ(0, -yaw, 0, false);
             quaternionf.mul(quatY);
             quaternionf.mul(quatX);
-            quaternionf1.mul(quatY1);
-            quaternionf1.mul(quatX1);
         }
 
-        this.drawRingsParticles(buffer, partialTicks, quaternionf, f, f1, f2);
-        this.drawRingsParticles(buffer, partialTicks, quaternionf1, f, f1, f2);
-    }
-
-    private void drawRingsParticles(VertexConsumer buffer, float partialTicks, Quaternionf quaternionf, float f, float f1, float f2) {
         Vector3f vector3f1 = new Vector3f(-1.0F, -1.0F, 0.0F);
         quaternionf.transform(vector3f1);
         Vector3f[] avector3f = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
         float f4 = this.getQuadSize(partialTicks);
 
-        for (int i = 0; i < 4; ++i) {
+        for(int i = 0; i < 4; ++i) {
             Vector3f vector3f = avector3f[i];
             quaternionf.transform(vector3f);
             vector3f.mul(f4);
@@ -133,6 +124,12 @@ public class RingParticles extends TextureSheetParticle {
         buffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(f8, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
         buffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(f7, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
         buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f7, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+
+        buffer.vertex(avector3f[3].x(), avector3f[3].y(), avector3f[3].z()).uv(f7, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[2].x(), avector3f[2].y(), avector3f[2].z()).uv(f7, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[1].x(), avector3f[1].y(), avector3f[1].z()).uv(f8, f5).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+        buffer.vertex(avector3f[0].x(), avector3f[0].y(), avector3f[0].z()).uv(f8, f6).color(this.rCol, this.gCol, this.bCol, this.alpha).uv2(j).endVertex();
+
     }
 
     private float particleBehavior(float var) {

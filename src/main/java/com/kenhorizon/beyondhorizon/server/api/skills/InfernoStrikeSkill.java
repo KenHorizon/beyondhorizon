@@ -8,15 +8,18 @@ import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.ability.InfernalSlashAbility;
+import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.RaycastUtil;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -76,7 +79,12 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
                                 entity.getX(), entity.getY(), entity.getZ(), 1, 0,0, 0, 0);
                     }
                     CameraShake.spawn(level, player.position(), 8.0F, 0.02F, 20, 20);
-                    InfernalSlashAbility.spawn(level, player, (float) damage, DamageType.PHYSICAL_DAMAGE);
+
+                    Vec3 rotation = player.getLookAngle().normalize();
+                    var pos = player.position().add(rotation.scale(1.6));
+                    double dx = pos.x - player.getX();
+                    double dz = pos.z - player.getZ();
+                    InfernalSlashAbility.spawn(level, player, (float) damage, DamageType.PHYSICAL_DAMAGE, dx, 0, dz);
                     AttributeInstance attributeInstance = player.getAttribute(Attributes.MOVEMENT_SPEED);
                     if (attributeInstance.getModifier(SPEED_MODIFIER_SPRINTING_UUID) != null) {
                         attributeInstance.removeModifier(SPEED_MODIFIER_SPRINTING);
@@ -92,6 +100,11 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
         if (attributeInstance.getModifier(SPEED_MODIFIER_SPRINTING_UUID) != null) {
             attributeInstance.removeModifier(SPEED_MODIFIER_SPRINTING);
         }
+    }
+
+    @Override
+    public void onLeftClick(ItemStack itemStack, Player player) {
+
     }
 
     @Override
@@ -123,6 +136,7 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
                 }
             }
         }
+
     }
 
     @Override

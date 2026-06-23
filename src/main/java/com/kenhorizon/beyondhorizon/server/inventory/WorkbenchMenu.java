@@ -25,8 +25,8 @@ public class WorkbenchMenu extends AbstractContainerMenu {
     private final Level level;
     public List<WorkbenchRecipe> recipes = Lists.newArrayList();
 
-    public WorkbenchMenu(int id, Inventory playerInventory, FriendlyByteBuf buf) {
-        this(id, playerInventory, ContainerLevelAccess.NULL);
+    public WorkbenchMenu(int id, Inventory inventory, FriendlyByteBuf buf) {
+        this(id, inventory, ContainerLevelAccess.NULL);
     }
     public WorkbenchMenu(int id, Inventory inventory, final ContainerLevelAccess access) {
         super(BHMenu.WORKBENCH_MENU.get(), id);

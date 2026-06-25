@@ -9,18 +9,18 @@
       "item": "minecraft:echo_shard"
     },
     "E": {
-      "item": "minecraft:ender_eye"
+      "item": "minecraft:ender_chest"
     },
-    "O": {
-      "item": "minecraft:obsidian"
+    "N": {
+      "item": "minecraft:nether_star"
     },
     "S": {
       "item": "beyondhorizon:starite_ingot"
     }
   },
   "pattern": [
-    "SBS",
-    "OEO",
+    "SNS",
+    "BEB",
     "SAS"
   ],
   "result": {

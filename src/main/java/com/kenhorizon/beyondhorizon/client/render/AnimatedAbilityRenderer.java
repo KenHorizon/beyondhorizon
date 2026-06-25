@@ -17,12 +17,12 @@ import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public abstract class AnimatedAbilityRenderer<T extends AbilityEntity> extends EntityRenderer<T> {
-    private float alpha = 1.0F;
-    private float height = 1.0F;
-    private float minTextureX;
-    private float maxTextureX;
-    private float minTextureY;
-    private float maxTextureY;
+    protected float alpha = 1.0F;
+    protected float height = 1.0F;
+    protected float minTextureX;
+    protected float maxTextureX;
+    protected float minTextureY;
+    protected float maxTextureY;
     protected final ResourceLocation[] TEXTURE_PROGRESS;
     public AnimatedAbilityRenderer(EntityRendererProvider.Context context) {
         super(context);
@@ -35,7 +35,7 @@ public abstract class AnimatedAbilityRenderer<T extends AbilityEntity> extends E
             TEXTURE_PROGRESS[0] = BeyondHorizon.resource(String.format("%s.png", this.getTextureLocation()));
         } else {
             for (int i = 0; i < this.numberOfFrames(); i++){
-                TEXTURE_PROGRESS[i] = BeyondHorizon.resource(String.format("%s%s.png", this.getTextureLocation(), i));
+                TEXTURE_PROGRESS[i] = BeyondHorizon.resource(String.format("%s_%s.png", this.getTextureLocation(), i));
             }
         }
     }
@@ -90,7 +90,20 @@ public abstract class AnimatedAbilityRenderer<T extends AbilityEntity> extends E
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        return this.animatedTextureLocation(entity, entity.getLifeTime() * this.numberOfFrames() / entity.getDuration());
+        int var0 = (int) ((entity.tickCount * 0.5F) % this.numberOfFrames());
+        return this.animatedTextureLocation(entity, var0);
+    }
+
+    public ResourceLocation getTexture() {
+        return getTexture(0);
+    }
+
+    public ResourceLocation getTexture(int array) {
+        return TEXTURE_PROGRESS[array];
+    }
+
+    public ResourceLocation[] getTextures() {
+        return TEXTURE_PROGRESS;
     }
 
     public ResourceLocation animatedTextureLocation(T entity, int age) {

@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.Fonts;
 import com.kenhorizon.beyondhorizon.client.api.event.PotionEffectParticleEvent;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
@@ -200,7 +201,7 @@ public class ServerEventHandler {
                 int intAmount = (int) roundedAmount;
                 String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
                 Vec3 pos = entity.getEyePosition();
-                MutableComponent component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD);
+                MutableComponent component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD).withStyle(Fonts.DAMAGE_INDICATOR);
                 level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
 
             }
@@ -709,7 +710,7 @@ public class ServerEventHandler {
             String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
             Vec3 pos = target.getEyePosition();
             ChatFormatting damageIndColor = source.is(BHDamageTypeTags.PHYSICAL_DAMAGE) ? ChatFormatting.GOLD : source.is(BHDamageTypeTags.MAGIC_DAMAGE) ? ChatFormatting.BLUE : ChatFormatting.WHITE;
-            MutableComponent component = Component.literal(text).withStyle(isCrit ? ChatFormatting.DARK_RED : damageIndColor, ChatFormatting.BOLD);
+            MutableComponent component = Component.literal(text).withStyle(isCrit ? ChatFormatting.DARK_RED : damageIndColor, ChatFormatting.BOLD).withStyle(Fonts.DAMAGE_INDICATOR);
             level.sendParticles(new DamageIndicatorOptions(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
             event.setAmount(damageDealt);
         }
@@ -1094,10 +1095,6 @@ public class ServerEventHandler {
     public void onPlayerInteract(PlayerInteractEvent.LeftClickBlock event) {
         if (event.isCancelable() && event.getEntity().hasEffect(BHEffects.STUN.get())) {
             event.setCanceled(true);
-        }
-        ItemStack itemInHand = event.getEntity().getItemInHand(InteractionHand.MAIN_HAND);
-        if (itemInHand.getItem() instanceof ILeftClick leftClick) {
-            event.setCanceled(leftClick.preventClickOthers(itemInHand, event.getEntity()));
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageScaling;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +18,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,6 +26,12 @@ import net.minecraft.world.phys.*;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * <p>Extended projectile add more properties to enhance the projectiles</p>
@@ -33,35 +40,42 @@ import javax.annotation.Nullable;
  * @author KenHorizon
  * @version 1.0
  * */
-public class ExtendedProjectile extends Projectile {
+public abstract class ExtendedProjectile extends Projectile {
     private static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Byte> PIERCE_LEVEL = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> FIRED = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> LIFE_SPAN = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> DELAY = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Float> FADE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.FLOAT);
-    public static final EntityDataAccessor<Boolean> IGNITE_ATTACK = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Boolean> CAN_LIGHT_FIRE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
-    protected int duration = 0;
+    private static final EntityDataAccessor<Integer> DELAY = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Float> HP_DAMAGE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> FADE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> SPEED = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.FLOAT);
+    private static final EntityDataAccessor<Boolean> IGNITE_ATTACK = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> CAN_LIGHT_FIRE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
+    protected int duration = 160;
     protected int lifespan = 0;
+    protected float damageScalingHp = 0.0F;
+    protected float radius = 1.0F;
     protected float baseDamage = 1.0F;
     protected float speed = 0.25F;
     protected boolean ignitedAttack;
     protected boolean canLightFire;
     protected boolean inGround;
+    protected boolean isCrit;
     protected float fade = 0.0F;
     protected int delay = 0;
     public double xPower;
     public double yPower;
     public double zPower;
-    private Vec3[] trailPositions = new Vec3[64];
+    private final Vec3[] trailPositions = new Vec3[64];
     private int trailPointer = -1;
-    public DamageTypeTags damageTypeTags = DamageTypeTags.DEFAULT;
-    protected float damageTypeModifiers = 0.0F;
+    public DamageType damageType = DamageType.PHYSICAL_DAMAGE;
+    public DamageScaling damageScaling = DamageScaling.NONE;
     public static final String NBT_DURATION = "Duration";
+    public static final String NBT_DAMAGE_TYPE = "DamageType";
+    public static final String NBT_IS_CRIT = "Crit";
     public static final String NBT_LIFESPAN = "Lifespan";
     public static final String NBT_FADE = "Fade";
     public static final String NBT_DAMAGE = "Damage";
@@ -69,6 +83,9 @@ public class ExtendedProjectile extends Projectile {
     public static final String NBT_CAN_LIGHT_FIRE = "CanLightFire";
     public static final String NBT_IS_FIRED = "IsFired";
     public static final String NBT_POWER = "Power";
+    public static final String NBT_DAMAGE_SCALING = "DamageScaling";
+    public static final String NBT_HP_DAMAGE = "HpDamage";
+    public static final String NBT_RADIUS = "Radius";
     @Nullable
     protected BlockState lastState;
     protected final IntOpenHashSet ignoredEntities = new IntOpenHashSet();
@@ -86,27 +103,45 @@ public class ExtendedProjectile extends Projectile {
         this.entityData.define(DELAY, 20);
         this.entityData.define(FADE, 0.0F);
         this.entityData.define(SPEED, 0.25F);
+        this.entityData.define(HP_DAMAGE, 0.0F);
+        this.entityData.define(RADIUS, 1.0F);
         this.entityData.define(FIRED, true);
         this.entityData.define(IGNITE_ATTACK, false);
         this.entityData.define(CAN_LIGHT_FIRE, false);
     }
 
+    public void setScalingDamage(float scale, DamageScaling damageScaling) {
+        this.damageScaling = damageScaling;
+        this.setHPDamage(scale);
+    }
+
+    public void setHPDamage(float damageScalingHp) {
+        this.damageScalingHp = damageScalingHp;
+        this.entityData.set(HP_DAMAGE, damageScalingHp);
+    }
+    public float getHPDamage() {
+        return this.level().isClientSide() ? entityData.get(HP_DAMAGE) : damageScalingHp;
+    }
+
+    public void setRadius(float radius) {
+        this.radius = radius;
+        this.entityData.set(RADIUS, radius);
+    }
+    public float getRadius() {
+        return this.level().isClientSide() ? entityData.get(RADIUS) : radius;
+    }
+
+    public DamageType getDamageType() {
+        return damageType;
+    }
+
+    public void setDamageType(DamageType damageType) {
+        this.damageType = damageType;
+    }
+
     @Override
     public boolean isOnFire() {
         return false;
-    }
-
-    public void setDamage(DamageTypeTags damageType, float damageModifiers) {
-        this.damageTypeTags = damageType;
-        this.damageTypeModifiers = damageModifiers;
-    }
-
-    public void setDamageTypes(DamageTypeTags damageTypeTags) {
-        this.damageTypeTags = damageTypeTags;
-    }
-
-    public DamageTypeTags getDamageTypes() {
-        return damageTypeTags;
     }
 
     @Override
@@ -115,14 +150,27 @@ public class ExtendedProjectile extends Projectile {
         if (!this.level().isClientSide() && this.getFired()) {
             Entity entity = hitResult.getEntity();
             LivingEntity projectileOwner = (LivingEntity) this.getOwner();
+            float damage = this.getBaseDamage();
+            if (this.isCrit()) {
+                damage *= (float) projectileOwner.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
+            }
             if (entity instanceof LivingEntity target) {
                 if (this.isIgnitedAttack()) {
                     target.setSecondsOnFire(5);
                 }
-                boolean flag = DamageHandler.damage(target, this.setDamageSource(), this.getBaseDamage(), this.getDamageTypes(), this.damageTypeModifiers);
-
-                BeyondHorizon.LOGGER.info("Projectile Hit! {} Hurt {}", target, flag);
-                if (flag) {
+                float bonusDamage = 0.0F;
+                switch (this.getDamageScaling()) {
+                    case MAX_HEALTH:
+                        bonusDamage += this.getDamageScaling().MaxHP(target, this.getHPDamage());
+                        break;
+                    case MISSING_HEALTH:
+                        bonusDamage += this.getDamageScaling().MissingHP(target, this.getHPDamage());
+                        break;
+                    case CURRENT_HEALTH:
+                        bonusDamage += this.getDamageScaling().CurentHP(target, this.getHPDamage());
+                        break;
+                }
+                if (this.getDamageType().dealDamage(target, projectileOwner, damage + bonusDamage)) {
                     if (projectileOwner != null) {
                         this.afterGotHit(target);
                         this.doEnchantDamageEffects(projectileOwner, entity);
@@ -156,13 +204,45 @@ public class ExtendedProjectile extends Projectile {
         return this.level().damageSources().mobProjectile((Entity) this, (LivingEntity) this.getOwner());
     }
 
+//    protected void checkEntityHit() {
+//        if (!level().isClientSide()) {
+//            for (Entity entity : this.getSubEntityCollisions()) {
+//                this.onHitEntity(new EntityHitResult(entity));
+//            }
+//        }
+//    }
+//
+//    protected Set<Entity> getSubEntityCollisions() {
+//        List<Entity> collisions = new ArrayList<>(this.level().getEntities(this, this.getBoundingBox().inflate(1.0F)));
+//        return collisions.stream().filter(target ->
+//                target instanceof LivingEntity && target != getOwner()
+//        ).collect(Collectors.toSet());
+//    }
+
     @Override
     public void tick() {
         super.tick();
-        this.setLifeSpan(this.getLifeSpan() + 1);
         this.trail();
+        this.onStart();
+        this.setLifeSpan(this.getLifeSpan() + 1);
+        this.onDuration();
+        if (this.getLifeSpan() >= this.getDuration()) {
+            this.onEnd();
+        }
+        if (this.getLifeSpan() > this.getDuration()) {
+            this.discard();
+        }
     }
 
+    public void onStart() {
+
+    }
+    public void onEnd() {
+
+    }
+    public void onDuration() {
+
+    }
     protected boolean shouldFall() {
         return this.inGround && this.level().noCollision((new AABB(this.position(), this.position())).inflate(0.06D));
     }
@@ -193,6 +273,21 @@ public class ExtendedProjectile extends Projectile {
         this.setFlag(2, pNoPhysics);
     }
 
+    public void setCrit(boolean crit) {
+        isCrit = crit;
+    }
+
+    public boolean isCrit() {
+        return isCrit;
+    }
+
+    public void setDamageScaling(DamageScaling damageScaling) {
+        this.damageScaling = damageScaling;
+    }
+
+    public DamageScaling getDamageScaling() {
+        return damageScaling;
+    }
 
     protected void setFlag(int id, boolean value) {
         byte idFlags = this.entityData.get(ID_FLAGS);
@@ -201,9 +296,7 @@ public class ExtendedProjectile extends Projectile {
         } else {
             this.entityData.set(ID_FLAGS, (byte)(idFlags & ~id));
         }
-
     }
-
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
@@ -355,22 +448,30 @@ public class ExtendedProjectile extends Projectile {
         return ProjectileUtil.getEntityHitResult(this.level(), this, start, end, this.getBoundingBox().expandTowards(this.getDeltaMovement()).inflate(1.0D), this::canHitEntity);
     }
 
+
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
+        tag.putFloat(NBT_HP_DAMAGE, this.getHPDamage());
         tag.putInt(NBT_DURATION, this.getDuration());
         tag.putInt(NBT_LIFESPAN, this.getLifeSpan());
         tag.putFloat(NBT_FADE, this.getFade());
         tag.putFloat(NBT_DAMAGE, this.getBaseDamage());
         tag.putFloat(NBT_SPEED, this.getSpeed());
+        tag.putBoolean(NBT_IS_CRIT, this.isCrit());
         tag.putBoolean(NBT_CAN_LIGHT_FIRE, this.isCanLightFire());
         tag.putBoolean(NBT_IS_FIRED, this.getFired());
         tag.put(NBT_POWER, this.newDoubleList(new double[]{this.xPower, this.yPower, this.zPower}));
+        tag.putInt(NBT_DAMAGE_TYPE, this.getDamageType().ordinal());
+        tag.putInt(NBT_DAMAGE_SCALING, this.getDamageScaling().ordinal());
+    tag.putFloat(NBT_RADIUS, this.getRadius());
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        this.setRadius(tag.getFloat(NBT_RADIUS));
+        this.setHPDamage(tag.getInt(NBT_HP_DAMAGE));
         this.setDuration(tag.getInt(NBT_DURATION));
         this.setLifeSpan(tag.getInt(NBT_LIFESPAN));
         this.setFade(tag.getFloat(NBT_FADE));
@@ -378,6 +479,9 @@ public class ExtendedProjectile extends Projectile {
         this.setSpeed(tag.getFloat(NBT_SPEED));
         this.setCanLightFire(tag.getBoolean(NBT_CAN_LIGHT_FIRE));
         this.setFired(tag.getBoolean(NBT_IS_FIRED));
+        this.setCrit(tag.getBoolean(NBT_IS_CRIT));
+        this.setDamageType(DamageType.values()[tag.getInt(NBT_DAMAGE_TYPE)]);
+        this.setDamageScaling(DamageScaling.values()[tag.getInt(NBT_DAMAGE_SCALING)]);
         if (tag.contains(NBT_POWER, 9)) {
             ListTag listtag = tag.getList(NBT_POWER, 6);
             if (listtag.size() == 3) {
@@ -417,7 +521,109 @@ public class ExtendedProjectile extends Projectile {
         Vec3 d1 = this.trailPositions[i].subtract(d0);
         return d0.add(d1.scale(partialTick));
     }
+    // Copied from ProjectileUtil
+    //
+    public HitResult getHitResultOnMoveVector(Entity projectile, Predicate<Entity> filter) {
+        Vec3 vec3 = projectile.getDeltaMovement();
+        Level level = projectile.level();
+        Vec3 vec31 = projectile.position();
+        return getHitResult(vec31, projectile, filter, vec3, level);
+    }
 
+    public HitResult getHitResultOnViewVector(Entity projectile, Predicate<Entity> filter, double scale) {
+        Vec3 vec3 = projectile.getViewVector(0.0F).scale(scale);
+        Level level = projectile.level();
+        Vec3 vec31 = projectile.getEyePosition();
+        return getHitResult(vec31, projectile, filter, vec3, level);
+    }
+
+    private HitResult getHitResult(Vec3 start, Entity projectile, Predicate<Entity> filter, Vec3 end, Level level) {
+        Vec3 vec3 = start.add(end);
+        HitResult hitresult = level.clip(new ClipContext(start, vec3, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile));
+        if (hitresult.getType() != HitResult.Type.MISS) {
+            vec3 = hitresult.getLocation();
+        }
+
+        HitResult hitresult1 = getEntityHitResult(level, projectile, start, vec3, projectile.getBoundingBox().expandTowards(end).inflate(this.getRadius()), filter);
+        if (hitresult1 != null) {
+            hitresult = hitresult1;
+        }
+
+        return hitresult;
+    }
+
+    /**
+     * Gets the EntityRayTraceResult representing the entity hit
+     */
+    @Nullable
+    public EntityHitResult getEntityHitResult(Entity shooter, Vec3 start, Vec3 end, AABB box, Predicate<Entity> filter, double distance) {
+        Level level = shooter.level();
+        double d0 = distance;
+        Entity entity = null;
+        Vec3 vec3 = null;
+
+        for(Entity entity1 : level.getEntities(shooter, box, filter)) {
+            AABB aabb = entity1.getBoundingBox().inflate((double)entity1.getPickRadius());
+            Optional<Vec3> optional = aabb.clip(start, end);
+            if (aabb.contains(start)) {
+                if (d0 >= 0.0D) {
+                    entity = entity1;
+                    vec3 = optional.orElse(start);
+                    d0 = 0.0D;
+                }
+            } else if (optional.isPresent()) {
+                Vec3 vec31 = optional.get();
+                double d1 = start.distanceToSqr(vec31);
+                if (d1 < d0 || d0 == 0.0D) {
+                    if (entity1.getRootVehicle() == shooter.getRootVehicle() && !entity1.canRiderInteract()) {
+                        if (d0 == 0.0D) {
+                            entity = entity1;
+                            vec3 = vec31;
+                        }
+                    } else {
+                        entity = entity1;
+                        vec3 = vec31;
+                        d0 = d1;
+                    }
+                }
+            }
+        }
+
+        return entity == null ? null : new EntityHitResult(entity, vec3);
+    }
+
+    /**
+     * Gets the EntityHitResult representing the entity hit
+     */
+    @Nullable
+    public EntityHitResult getEntityHitResult(Level level, Entity projectile, Vec3 start, Vec3 end, AABB box, Predicate<Entity> filter) {
+        return getEntityHitResult(level, projectile, start, end, box, filter, 0.3F);
+    }
+
+    /**
+     * Gets the EntityHitResult representing the entity hit
+     */
+    @Nullable
+    public EntityHitResult getEntityHitResult(Level level, Entity projectile, Vec3 start, Vec3 end,
+                                                     AABB box, Predicate<Entity> filter, float radius) {
+        double d0 = Double.MAX_VALUE;
+        Entity entity = null;
+
+        for(Entity entity1 : level.getEntities(projectile, box, filter)) {
+            AABB aabb = entity1.getBoundingBox().inflate((double)radius);
+            Optional<Vec3> optional = aabb.clip(start, end);
+            if (optional.isPresent()) {
+                double d1 = start.distanceToSqr(optional.get());
+                if (d1 < d0) {
+                    entity = entity1;
+                    d0 = d1;
+                }
+            }
+        }
+
+        return entity == null ? null : new EntityHitResult(entity);
+    }
+      //
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         Entity entity = this.getOwner();
@@ -425,6 +631,7 @@ public class ExtendedProjectile extends Projectile {
         return new ClientboundAddEntityPacket(this.getId(), this.getUUID(), this.getX(), this.getY(), this.getZ(), this.getXRot(), this.getYRot(), this.getType(), i, new Vec3(this.xPower, this.yPower, this.zPower), 0.0D);
     }
 
+    @Override
     public void recreateFromPacket(ClientboundAddEntityPacket packet) {
         super.recreateFromPacket(packet);
         double d0 = packet.getXa();
@@ -436,5 +643,8 @@ public class ExtendedProjectile extends Projectile {
             this.yPower = d1 / d3 * 0.1D;
             this.zPower = d2 / d3 * 0.1D;
         }
+    }
+
+    protected void spawnParticle() {
     }
 }

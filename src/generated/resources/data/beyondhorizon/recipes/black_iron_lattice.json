@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "#": {
+      "item": "beyondhorizon:black_iron_nugget"
+    },
+    "N": {
+      "item": "beyondhorizon:black_iron_ingot"
+    }
+  },
+  "pattern": [
+    "N#N",
+    "N#N",
+    "N#N"
+  ],
+  "result": {
+    "item": "beyondhorizon:black_iron_lattice"
+  },
+  "show_notification": true
+}

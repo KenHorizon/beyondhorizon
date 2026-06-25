@@ -54,6 +54,11 @@ public class BlazingRod extends ExtendedProjectile {
     }
 
     @Override
+    public void onDuration() {
+        super.onDuration();
+    }
+
+    @Override
     public void tick() {
         Entity entity = this.getOwner();
         if (this.level().isClientSide() || (entity == null || !entity.isRemoved()) && this.level().hasChunkAt(this.blockPosition())) {

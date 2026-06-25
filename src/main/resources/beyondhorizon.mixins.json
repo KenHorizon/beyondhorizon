@@ -21,6 +21,7 @@
     "client.GameRendererMixins",
     "client.HumanoidModelMixins",
     "client.accessor.FontAccessor",
-    "client.accessor.ItemInHandRendererMixins"
+    "client.accessor.ItemInHandRendererMixins",
+    "client.accessor.LivingEntityRendererAccessory"
   ]
 }

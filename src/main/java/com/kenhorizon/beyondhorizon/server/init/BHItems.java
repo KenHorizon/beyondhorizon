@@ -19,6 +19,7 @@ import com.kenhorizon.libs.client.model.item.ItemModels;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryItems;
 import com.kenhorizon.libs.registry.RegistryTabs;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -87,10 +88,13 @@ public class BHItems {
     public static final RegistryObject<Item> HANDLE = basicItem("handle", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> FLAME_CELL = basicItem("flame_cell", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> WILDFIRE_FRAGMENT = basicItem("wildfire_fragment", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> RAW_BLACK_IRON = basicItem("raw_black_iron", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_LUMINITE = basicItem("raw_luminite", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_STARITE = basicItem("raw_starite", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_HELLSTONE = basicItem("raw_hellstone", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_EMBED_HELLSTONE = basicItem("raw_embed_hellstone", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> BLACK_IRON_INGOT = basicItem("black_iron_ingot", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> BLACK_IRON_NUGGET = basicItem("black_iron_nugget", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> HELLSTONE_INGOT = basicItem("hellstone_ingot", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> STARITE_INGOT = basicItem("starite_ingot", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> LUMINITE_INGOT = basicItem("luminite_ingot", RegistryTabs.Category.INGREDIENTS);
@@ -134,6 +138,12 @@ public class BHItems {
     public static final RegistryObject<Item> STARITE_PICKAXE = toolItem("starite_pickaxe", MeleeWeaponMaterials.STARITE, ItemBuilder.PICKAXE);
     public static final RegistryObject<Item> STARITE_SHOVEL = toolItem("starite_shovel", MeleeWeaponMaterials.STARITE, ItemBuilder.SHOVEL);
     public static final RegistryObject<Item> STARITE_HOE = toolItem("starite_hoe", MeleeWeaponMaterials.STARITE, ItemBuilder.HOE);
+
+    public static final RegistryObject<Item> BLACK_IRON_SWORD = swordItem("black_iron_sword", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.SWORD);
+    public static final RegistryObject<Item> BLACK_IRON_AXE = toolItem("black_iron_axe", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.AXE);
+    public static final RegistryObject<Item> BLACK_IRON_PICKAXE = toolItem("black_iron_pickaxe", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.PICKAXE);
+    public static final RegistryObject<Item> BLACK_IRON_SHOVEL = toolItem("black_iron_shovel", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.SHOVEL);
+    public static final RegistryObject<Item> BLACK_IRON_HOE = toolItem("black_iron_hoe", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.HOE);
     //
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = accessoryHandheldItem("broken_hero_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.BROKEN_HERO_SWORD);
     public static final RegistryObject<Item> SHEEN = accessoryHandheldItemX32("sheen", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.SHEEN);
@@ -144,6 +154,15 @@ public class BHItems {
 
     public static final RegistryObject<Item> VOID_STAFF = accessoryHandheldItem("void_staff", AccessoryItemGroup.BLIGHT, AccessoryBuilder.VOID_STAFF);
     //
+
+    public static final RegistryObject<Item> TOUGH_CLOTH = accessoryBasicItem("tough_cloth", AccessoryBuilder.TOUGH_CLOTH);
+    public static final RegistryObject<Item> NULL_MAGIC_RUNE = accessoryItem("null_magic_rune", AccessoryBuilder.NULL_MAGIC_RUNE);
+    public static final RegistryObject<Item> FIREFLY_FAYE = accessoryItem("firefly_faye", AccessoryBuilder.FIREFLY_FAYE);
+    public static final RegistryObject<Item> SAPPHIRE_CRYSTAL = accessoryItem("sapphire_crystal", AccessoryBuilder.SAPPHIRE_CRYSTAL);
+    public static final RegistryObject<Item> CHAIN_VEST = accessoryItem("chain_vest", AccessoryBuilder.CHAIN_VEST);
+    public static final RegistryObject<Item> RUMINATIVE_BEADS = accessoryItem("ruminative_beads", AccessoryBuilder.RUMINATIVE_BEADS);
+    public static final RegistryObject<Item> SPECTRAL_CLOAK = accessoryItem("spectral_cloak", AccessoryBuilder.SPECTRAL_CLOAK);
+     //
     public static final RegistryObject<Item> LIGHT_STRING_BOW = accessoryItem("light_string_bow", AccessoryBuilder.LIGHT_STRING_BOW);
     public static final RegistryObject<Item> HEAVY_STRING_BOW = accessoryItem("heavy_string_bow", AccessoryBuilder.HEAVY_STRING_BOW);
     public static final RegistryObject<Item> KRAKEN_SLAYER = accessoryItem("kraken_slayer", AccessoryBuilder.KRAKEN_SLAYER);
@@ -159,13 +178,6 @@ public class BHItems {
     public static final RegistryObject<Item> WARD_CLEANSE = accessoryItem("ward_cleanse", AccessoryBuilder.WARD_CLEANSE);
     public static final RegistryObject<Item> SOUL_SIPHON = accessoryItem("soul_siphon", AccessoryBuilder.SOUL_SIPHON);
     public static final RegistryObject<Item> DEATH_CONTRACT = accessoryItem("death_contract", AccessoryBuilder.DEATH_CONTRACT);
-    public static final RegistryObject<Item> TOUGH_CLOTH = accessoryItem("tough_cloth", AccessoryBuilder.TOUGH_CLOTH);
-    public static final RegistryObject<Item> NULL_MAGIC_RUNE = accessoryItem("null_magic_rune", AccessoryBuilder.NULL_MAGIC_RUNE);
-    public static final RegistryObject<Item> FIREFLY_FAYE = accessoryItem("firefly_faye", AccessoryBuilder.FIREFLY_FAYE);
-    public static final RegistryObject<Item> SAPPHIRE_CRYSTAL = accessoryItem("sapphire_crystal", AccessoryBuilder.SAPPHIRE_CRYSTAL);
-    public static final RegistryObject<Item> CHAIN_VEST = accessoryItem("chain_vest", AccessoryBuilder.CHAIN_VEST);
-    public static final RegistryObject<Item> RUMINATIVE_BEADS = accessoryItem("ruminative_beads", AccessoryBuilder.RUMINATIVE_BEADS);
-    public static final RegistryObject<Item> SPECTRAL_CLOAK = accessoryItem("spectral_cloak", AccessoryBuilder.SPECTRAL_CLOAK);
     public static final RegistryObject<Item> UNSTABLE_RUNIC_TOME = accessoryItem("unstable_runic_tome", AccessoryBuilder.UNSTABLE_RUNIC_TOME);
     public static final RegistryObject<Item> TRUE_HERO_GEM = accessoryItem("wraith_gem", AccessoryItemGroup.POWER_GEM, AccessoryBuilder.TRUE_HERO_SWORD);
     public static final RegistryObject<Item> INFINITY_GEM = accessoryItem("infinity_gem", AccessoryItemGroup.POWER_GEM, AccessoryBuilder.INFINITY_SWORD);
@@ -299,6 +311,7 @@ public class BHItems {
     public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(139, 52, 1));
     public static final RegistryObject<Item> FAYE_FLARES_SPAWN_EGG = spawnEgg("faye_flares", BHEntity.FAYE_FLARES, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(182, 31, 0));
     public static final RegistryObject<Item> FAYE_WILDFIRE_SPAWN_EGG = spawnEgg("faye_wildfire", BHEntity.FAYE_WILDFIRE, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(31, 31, 31));
+    public static final RegistryObject<Item> PYROLLIGER_SPAWN_EGG = spawnEgg("pyrolliger", BHEntity.PYROLLIGER, ColorUtil.RED, ColorUtil.YELLOW);
 
 
     private static RegistryObject<Item> spawnEgg(String entityName, RegistryObject entityType, int backgroundColor, int highlightColor) {
@@ -321,12 +334,12 @@ public class BHItems {
         return swordItem(name, materials, factory, ItemModels.HANDHELD);
     }
 
-    private static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> factory) {
-        return toolItem(name, materials, factory, ItemModels.HANDHELD);
+    private static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> factory, ItemModels itemModels) {
+        return RegistryItems.register(name, properties -> factory.create(materials, properties)).tab(RegistryTabs.Category.COMBAT).model(itemModels).register();
     }
 
-    private static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> builder, ItemModels itemModels) {
-        return RegistryItems.register(name, properties -> builder.create(materials, properties)).tab(RegistryTabs.Category.COMBAT).model(itemModels).register();
+    private static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> factory) {
+        return toolItem(name, materials, factory, ItemModels.HANDHELD);
     }
     private static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> builder, ItemModels itemModels) {
         return RegistryItems.register(name, properties -> builder.create(materials, properties)).tab(RegistryTabs.Category.TOOLS).model(itemModels).register();
@@ -345,11 +358,14 @@ public class BHItems {
                 .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
 
+    private static RegistryObject<Item> accessoryBasicItem(String name, AccessoryBuilder accessoryBuilder) {
+        return RegistryItems.register(name, item -> new AccessoryItem(AccessoryItemGroup.NONE, item, accessoryBuilder))
+                .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+    }
     private static RegistryObject<Item> accessoryItem(String name, AccessoryBuilder accessoryBuilder) {
         return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder))
                 .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
-
     private static RegistryObject<Item> accessoryItem(String name, Rarity rarity, AccessoryBuilder accessoryBuilder) {
         return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder))
                 .properties(properties -> properties.rarity(rarity))

@@ -131,7 +131,9 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
         PlayerData playerData = PlayerData.getInstance(player);
         try {
             playerData.addCooldown(this.getId(), this.getCooldown());
-            playerData.removeMana(this.getManaCost());
+            if (!player.isCreative()) {
+                playerData.removeMana(this.getManaCost());
+            }
         } catch (Exception e) {
             BeyondHorizon.LOGGER.warn("Player data is null! returning!!");
         }

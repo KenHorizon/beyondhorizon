@@ -456,35 +456,20 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
         simpleBlockWithItem(block.get(), model);
     }
 
-    public String name(Block block) {
-        return key(block).getPath();
+    public void latticeBlock(RegistryObject<Block> block, RegistryObject<Block> particle, String postsString, String latticeString) {
+        ResourceLocation rl = key(particle.get());
+        String namespace = rl.getNamespace();
+        String path = rl.getPath();
+        this.latticeBlock(block, String.format("%s:block/%s", namespace, path), postsString, latticeString);
     }
 
-    public ResourceLocation key(Block block) {
-        return ForgeRegistries.BLOCKS.getKey(block);
+    public void latticeBlock(RegistryObject<Block> block, Block particle, String postsString, String latticeString) {
+        ResourceLocation rl = key(particle);
+        String namespace = rl.getNamespace();
+        String path = rl.getPath();
+        this.latticeBlock(block, String.format("%s:block/%s", namespace, path), postsString, latticeString);
     }
 
-    private @NotNull ResourceLocation getResourceLocation(RegistryObject<Block> block, String textName) {
-        ResourceLocation bottomTexture;
-        if (isEmpty(textName)) {
-            bottomTexture = BeyondHorizon.resource(String.format("block/%s", name(block.get())));
-        } else {
-            bottomTexture = BeyondHorizon.resource(String.format("block/%s_%s", name(block.get()), textName));
-        }
-        return bottomTexture;
-    }
-
-    private @NotNull ResourceLocation getResourceLocation(RegistryObject<Block> block) {
-        return getResourceLocation(block, "");
-    }
-
-    private @NotNull ResourceLocation getBlank() {
-        return BeyondHorizon.resource(String.format("block/%s", "blank_block"));
-    }
-
-    private ResourceLocation extend(ResourceLocation rl, String suffix) {
-        return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath() + suffix);
-    }
     public void latticeBlock(RegistryObject<Block> block, String particlesString, String postsString, String latticeString) {
         ResourceLocation particles = ResourceLocation.parse(particlesString);
         ResourceLocation posts = BeyondHorizon.resource(String.format("block/%s", postsString));
@@ -984,6 +969,36 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
     }
     private boolean isEmpty(String string) {
         return string.isBlank() || string.isEmpty();
+    }
+
+    public String name(Block block) {
+        return key(block).getPath();
+    }
+
+    public ResourceLocation key(Block block) {
+        return ForgeRegistries.BLOCKS.getKey(block);
+    }
+
+    private @NotNull ResourceLocation getResourceLocation(RegistryObject<Block> block, String textName) {
+        ResourceLocation bottomTexture;
+        if (isEmpty(textName)) {
+            bottomTexture = BeyondHorizon.resource(String.format("block/%s", name(block.get())));
+        } else {
+            bottomTexture = BeyondHorizon.resource(String.format("block/%s_%s", name(block.get()), textName));
+        }
+        return bottomTexture;
+    }
+
+    private @NotNull ResourceLocation getResourceLocation(RegistryObject<Block> block) {
+        return getResourceLocation(block, "");
+    }
+
+    private @NotNull ResourceLocation getBlank() {
+        return BeyondHorizon.resource(String.format("block/%s", "blank_block"));
+    }
+
+    private ResourceLocation extend(ResourceLocation rl, String suffix) {
+        return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath() + suffix);
     }
 
 }

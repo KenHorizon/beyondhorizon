@@ -52,7 +52,7 @@ public abstract class BHBaseEntity extends PathfinderMob {
     public Player dataLastHurtByPlayer;
     public int dataLastHurtByPlayerTime;
     public boolean dropLootAfterDeathAnimation = true;
-    private BHBossInfo bossInfo = new BHBossInfo(this);
+    private final BHBossInfo bossInfo = new BHBossInfo(this);
     public BHBaseEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
     }

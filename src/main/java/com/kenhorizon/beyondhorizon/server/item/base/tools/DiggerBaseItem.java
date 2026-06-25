@@ -90,6 +90,10 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems<DiggerBase
         this.setupDefault();
     }
 
+    @Override
+    public float getDestroySpeed(ItemStack itemStack, BlockState blockState) {
+        return blockState.is(this.blockTagKey) ? this.speed : 1.0F;
+    }
 
     private void setupDefault() {
         ImmutableMultimap.Builder<Attribute, AttributeModifier> mapBuilder = ImmutableMultimap.builder();
@@ -166,13 +170,8 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems<DiggerBase
     }
 
     @Override
-    public boolean canAttackBlock(BlockState blockState, Level level, BlockPos blockPos, Player player) {
-        return false;
-    }
-
-    @Override
     public boolean mineBlock(ItemStack itemStack, Level level, BlockState blockState, BlockPos blockPos, LivingEntity entity) {
-        return false;
+        return super.mineBlock(itemStack, level, blockState, blockPos, entity);
     }
 
     @Override
@@ -233,6 +232,11 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems<DiggerBase
                 return true;
             }
         }
+        return false;
+    }
+
+    @Override
+    public boolean preventClickOthers(ItemStack stack, Player player) {
         return false;
     }
 

@@ -1,6 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.block.spawner.data;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
@@ -255,7 +258,11 @@ public class BHBaseSpawner {
             double f = blockPos.getZ() + 0.5D + (randomSource.nextDouble() - 0.5D) * 2.0D;
             level.sendParticles(ParticleTypes.POOF, d, e, f, 1, 0.0D, 0.0D, 0.0D, 0.0F);
             level.sendParticles(ParticleTypes.FLAME, d, e, f, 1, 0.0D, 0.0D, 0.0D, 0.0F);
-            level.sendParticles(ParticleTypes.SOUL, d, e, f, 1, 0.0D, 0.0D, 0.0D, 0.0F);
+            float[] colors = ColorUtil.getFARGB(ColorUtil.BLUE);
+            float[] colors1 = ColorUtil.getFARGB(ColorUtil.RED);
+            level.sendParticles(new TrailParticleOptions(40, colors[0], colors[1], colors[2], colors[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
+            level.sendParticles(new TrailParticleOptions(20, colors1[0], colors1[1], colors1[2], colors1[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
+
         }
     }
 
@@ -266,6 +273,11 @@ public class BHBaseSpawner {
             double f = blockPos.getX() + 0.5D + d;
             double g = blockPos.getY() + 0.1D + randomSource.nextFloat() * 0.8D;
             double h = blockPos.getZ() + 0.5D + e;
+            float[] colors = ColorUtil.getFARGB(ColorUtil.BLUE);
+            float[] colors1 = ColorUtil.getFARGB(ColorUtil.RED);
+            level.sendParticles(new TrailParticleOptions(40, colors[0], colors[1], colors[2], colors[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
+            level.sendParticles(new TrailParticleOptions(20, colors1[0], colors1[1], colors1[2], colors1[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
+
             level.sendParticles(ParticleTypes.FLAME, f, g, h, 1, 0.0D, 0.0D, 0.0D, 0.0F);
         }
     }
@@ -280,6 +292,11 @@ public class BHBaseSpawner {
             double j = randomSource.nextGaussian() * 0.02D;
             level.sendParticles(ParticleTypes.FLAME, d, e, f, 0, g, h, j * 0.25D, 0.5F);
             level.sendParticles(ParticleTypes.POOF, d, e, f, 0, g, h, j, 0.5F);
+            float[] colors = ColorUtil.getFARGB(ColorUtil.YELLOW);
+            float[] colors1 = ColorUtil.getFARGB(ColorUtil.GREEN);
+            level.sendParticles(new TrailParticleOptions(40, colors[0], colors[1], colors[2], colors[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
+            level.sendParticles(new TrailParticleOptions(20, colors1[0], colors1[1], colors1[2], colors1[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
+
         }
     }
 

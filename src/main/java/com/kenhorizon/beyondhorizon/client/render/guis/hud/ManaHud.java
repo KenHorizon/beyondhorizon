@@ -18,7 +18,7 @@ public class ManaHud implements IGuiOverlay {
         int x = screenWidth / 2 - 91;
         int y = screenHeight - (gui.leftHeight + 21);
         String health = String.format("%.0f/%.0f", this.hud.mana, this.hud.maxMana);
-        BlitHelper.draw(guiGraphics, HudSprites.MANA, x, y - 1, 9.0F, 9, 9, 9, 9);
+        BlitHelper.drawScaleBlit(guiGraphics, HudSprites.MANA, x, y - 1, 9.0F, 9, 9, 9, 9);
         BlitHelper.drawStrings(guiGraphics, health,x + (5 + 9), y, ColorUtil.combineRGB(0, 148, 255), true);
         gui.getMinecraft().getProfiler().pop();
     }

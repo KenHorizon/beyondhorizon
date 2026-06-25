@@ -52,17 +52,19 @@ public class ColorUtil {
         return combineRGB(c1[0], c1[1], b);
     }
     public static int[] getARGB(int colors) {
+        int convertA = colors >> 24 & 0xFF;
         int convertR = colors >> 16 & 0xFF;
         int convertG = colors >> 8 & 0xFF;
         int convertB = colors >> 0 & 0xFF;
-        return new int[]{convertR, convertG, convertB};
+        return new int[]{convertR, convertG, convertB, convertA};
     }
 
     public static float[] getFARGB(int colors) {
+        int convertA = colors >> 24 & 0xFF;
         int convertR = colors >> 16 & 0xFF;
         int convertG = colors >> 8 & 0xFF;
         int convertB = colors >> 0 & 0xFF;
-        return new float[]{(float) convertR / 255, (float) convertG / 255, (float) convertB / 255};
+        return new float[]{(float) convertR / 255, (float) convertG / 255, (float) convertB / 255, (float) convertA / 255};
     }
 
     public static int combineARGB(int a, int r, int g, int b) {

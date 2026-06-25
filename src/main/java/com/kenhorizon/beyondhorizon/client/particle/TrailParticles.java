@@ -138,18 +138,18 @@ public class TrailParticles extends TextureSheetParticle {
         this.yd *= 0.99;
         this.zd *= 0.99;
         this.trailA = 0.2F * Mth.clamp(age / (float) this.lifetime * 32.0F, 0.0F, 1.0F);
-        if (this.age++ >= this.lifetime) {
-            this.remove();
-        } else {
-            this.move(this.xd, this.yd, this.zd);
-            this.yd -= (double) this.gravity;
-        }
-        if (this.target != null) {
+        if (this.target != null | target == Vec3.ZERO) {
             int i = this.lifetime - this.age;
             double d0 = 1.0 / (double)i;
             this.x = Mth.lerp(d0, this.x, this.target.x());
             this.y = Mth.lerp(d0, this.y, this.target.y());
             this.z = Mth.lerp(d0, this.z, this.target.z());
+        }
+        if (this.age++ >= this.lifetime) {
+            this.remove();
+        } else {
+            this.move(this.xd, this.yd, this.zd);
+            this.yd -= (double) this.gravity;
         }
     }
 

@@ -4,30 +4,28 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
-import com.kenhorizon.beyondhorizon.client.render.entity.ability.BlazingInfernoRayRenderer;
-import com.kenhorizon.beyondhorizon.client.render.entity.ability.InfernalRayRenderer;
-import com.kenhorizon.beyondhorizon.client.render.entity.ability.InfernalSlashRenderer;
+import com.kenhorizon.beyondhorizon.client.render.entity.ability.*;
+import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.*;
 import com.kenhorizon.beyondhorizon.client.render.guis.VoidBagScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.ManaHud;
+import com.kenhorizon.beyondhorizon.client.render.guis.tooltip.ClientVoidBagTooltip;
 import com.kenhorizon.beyondhorizon.client.render.item.AccessoryItemDecorations;
 import com.kenhorizon.beyondhorizon.client.render.item.BHArmorRenderProperties;
 import com.kenhorizon.beyondhorizon.client.render.item.BHItemRenderProperties;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
-import com.kenhorizon.beyondhorizon.client.render.entity.ability.EruptionRenderer;
-import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.BlazingSpearRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
-import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.BlazingRodRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
+import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.init.*;
@@ -94,6 +92,7 @@ public class ClientProxy extends ServerProxy {
         bus.addListener(this::registerNewRegsitry);
         IconAttributesTooltip.registerFactory();
         Tooltips.TitleBreakComponent.registerFactory();
+        ClientVoidBagTooltip.registerFactory();
     }
     private void onRegisterItemDecorations(final RegisterItemDecorationsEvent event) {
         for (Item item : ForgeRegistries.ITEMS) {
@@ -135,14 +134,18 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.BOLT_SHOCK.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.CLEAVE_ABILITY.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.CLEAVE_CONE_ABILITY.get(), RenderNothing::new);
-        EntityRenderers.register(BHEntity.INFERNAL_SLASH_ABILITY.get(), InfernalSlashRenderer::new);
+        EntityRenderers.register(BHEntity.INFERNAL_SPEAR.get(), InfernalSpearRenderer::new);
+        EntityRenderers.register(BHEntity.PYROBOLT.get(), PyroboltRenderer::new);
+        EntityRenderers.register(BHEntity.BURNING_HEX_TRAP.get(), BurningHexTrapRenderer::new);
         //
         EntityRenderers.register(BHEntity.FAYE_FLARES.get(), FayeFlaresRenderer::new);
         EntityRenderers.register(BHEntity.FAYE_WILDFIRE.get(), FayeWildfireRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO.get(), BlazingInfernoRenderer::new);
+        EntityRenderers.register(BHEntity.PYROLLIGER.get(), PyrolligerRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_ROD.get(), BlazingRodRenderer::new);
         EntityRenderers.register(BHEntity.INFERNO_SHIELD.get(), InfernoShieldRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_SPEAR.get(), BlazingSpearRenderer::new);
+        EntityRenderers.register(BHEntity.PYRO_LANCE.get(), PyroLanceRenderer::new);
         EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
         EntityRenderers.register(BHEntity.INFERNAL_RAY.get(), InfernalRayRenderer::new);
@@ -158,13 +161,16 @@ public class ClientProxy extends ServerProxy {
         Raid.RaiderType.create("ILLUSIONER", EntityType.ILLUSIONER, new int[]{0, 0, 1, 2, 2, 3, 4, 5});
 
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.IRON_LATTICE.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(BHBlocks.BLACK_IRON_LATTICE.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_IRON_LATTICE.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_BLACK_IRON_LATTICE.get(), RenderType.cutout());
     }
 
     public void entityCreationAttribute(EntityAttributeCreationEvent event) {
         event.put(BHEntity.FAYE_WILDFIRE.get(), FayeWildfire.createAttributes());
         event.put(BHEntity.FAYE_FLARES.get(), FayeFlares.createAttributes());
         event.put(BHEntity.BLAZING_INFERNO.get(), BlazingInferno.createAttributes());
+        event.put(BHEntity.PYROLLIGER.get(), Pyrolliger.createAttributes());
         event.put(BHEntity.INFERNO_SHIELD.get(), InfernoShield.createAttributes());
     }
 
@@ -249,6 +255,7 @@ public class ClientProxy extends ServerProxy {
         event.registerSpriteSet(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), ExplodeParticles.HellfireOrb::new);
         event.registerSpriteSet(BHParticle.HELLFIRE_ORB_TRAIL.get(), SimpleTrailParticles.HellfireOrb::new);
         event.registerSpriteSet(BHParticle.TRAILS.get(), TrailParticles.Provider::new);
+        event.registerSpecial(BHParticle.AFTERIMAGE.get(), new AfterImageParticle.Provider());
         event.registerSpecial(BHParticle.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
         event.registerSpecial(BHParticle.STUN_PARTICLES.get(),new StunParticles.Provider());
         event.registerSpecial(BHParticle.LIGHTNING.get(), new LightningParticle.Provider());

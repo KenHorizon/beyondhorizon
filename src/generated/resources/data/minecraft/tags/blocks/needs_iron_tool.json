@@ -2,6 +2,8 @@
   "values": [
     "beyondhorizon:iron_lattice",
     "beyondhorizon:tattered_iron_lattice",
+    "beyondhorizon:black_iron_lattice",
+    "beyondhorizon:tattered_black_iron_lattice",
     "beyondhorizon:volcanic_mantle",
     "beyondhorizon:desolate_obsidian",
     "beyondhorizon:desolate_obsidian_bricks",
@@ -17,6 +19,8 @@
     "beyondhorizon:end_stone_pillar",
     "beyondhorizon:chiselled_end_stone",
     "beyondhorizon:plain_chiselled_end_stone",
+    "beyondhorizon:black_iron_ore",
+    "beyondhorizon:black_iron_block",
     "beyondhorizon:raw_starite_block",
     "beyondhorizon:starite_block"
   ]

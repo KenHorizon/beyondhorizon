@@ -48,9 +48,21 @@ public class BHBossBar {
             23,
             32,
             ChatFormatting.BLUE);
+    public static BHBossBar PYROLLIGER = new BHBossBar(
+            BeyondHorizon.resourceGui("sprites/bossbar/overlay/pyrolliger.png"),
+            15,
+            9,
+            15,
+            -3,
+            0,
+            256,
+            23,
+            32,
+            ChatFormatting.RED);
     static  {
         BOSS_BARS.put(new BHBossInfo.BossBar(0, RegistryHelper.getKeyOrThrow(BHEntity.BLAZING_INFERNO.get())), BLAZING_INFERNO);
         BOSS_BARS.put(new BHBossInfo.BossBar(1, RegistryHelper.getKeyOrThrow(BHEntity.BLAZING_INFERNO.get())), BLAZING_INFERNO_ENGRAGED);
+        BOSS_BARS.put(new BHBossInfo.BossBar(2, RegistryHelper.getKeyOrThrow(BHEntity.PYROLLIGER.get())), PYROLLIGER);
     }
 
     private final ResourceLocation container;

@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.server.inventory.VoidBagMenu;
+import com.kenhorizon.beyondhorizon.server.item.VoidBagItem;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -30,11 +31,14 @@ public class VoidBagCap implements ICapabilityProvider, ICapabilitySerializable<
 
     @Override
     public CompoundTag serializeNBT() {
-        return handler.resolve().get().serializeNBT();
+        CompoundTag tag = handler.resolve().get().serializeNBT();
+        this.itemStack.getOrCreateTag().put(VoidBagItem.NBT_BAG, tag);
+        return new CompoundTag();
     }
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        handler.resolve().get().deserializeNBT(nbt);
+        CompoundTag tagCopy = this.itemStack.getOrCreateTag().getCompound(VoidBagItem.NBT_BAG);
+        handler.resolve().get().deserializeNBT(tagCopy);
     }
 }

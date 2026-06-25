@@ -6,7 +6,7 @@ import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageScaling;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilityEffectPacket;
 import net.minecraft.nbt.CompoundTag;
@@ -43,7 +43,7 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     protected int lifespan = 0;
     protected int delay = 0;
     protected DamageType damageType = DamageType.PHYSICAL_DAMAGE;
-    protected DamageTypeTags damageTypeTags = DamageTypeTags.DEFAULT;
+    protected DamageScaling damageScaling;
     private float damageTagModifiers = 0.0F;
     private LivingEntity cachedCaster;
     private LivingEntity cachedTarget;
@@ -120,13 +120,13 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
         this.entityData.set(TARGET, Optional.of(id));
     }
 
-    public void setDamageTags(DamageTypeTags damageTypeTags, float damageTagModifiers) {
-        this.damageTypeTags = damageTypeTags;
+    public void setDamageTags(DamageScaling damageScaling, float damageTagModifiers) {
+        this.damageScaling = damageScaling;
         this.damageTagModifiers = damageTagModifiers;
     }
 
-    public DamageTypeTags getDamageTags() {
-        return this.damageTypeTags;
+    public DamageScaling getDamageTags() {
+        return this.damageScaling;
     }
 
     @Override
@@ -313,8 +313,8 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
         return this.cachedCaster;
     }
 
-    protected boolean dealDamage(LivingEntity entity, DamageTypeTags damageTypeTags, float damageTagsModifiers, float damage) {
-        return DamageHandler.damage(entity, false, this.setSourceDamage(entity), damageTypeTags, damageTagsModifiers, damage);
+    protected boolean dealDamage(LivingEntity entity, DamageScaling damageScaling, float damageTagsModifiers, float damage) {
+        return DamageHandler.damage(entity, false, this.setSourceDamage(entity), damageScaling, damageTagsModifiers, damage);
     }
 
     public DamageSource setSourceDamage(LivingEntity entity) {

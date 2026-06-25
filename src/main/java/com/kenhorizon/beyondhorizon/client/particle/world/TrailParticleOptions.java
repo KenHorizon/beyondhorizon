@@ -58,6 +58,10 @@ public class TrailParticleOptions implements ParticleOptions {
     private final Vec3 target;
     private final TrailParticles.Behavior behavior;
 
+    public TrailParticleOptions(int duration, float r, float g, float b, float a, float scale, TrailParticles.Behavior behavior) {
+        this(duration, r, g, b, a, scale, behavior, Vec3.ZERO);
+    }
+
     public TrailParticleOptions(int duration, float r, float g, float b, float a, float scale, TrailParticles.Behavior behavior, Vec3 target) {
         this.target = target;
         this.r = r;

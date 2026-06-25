@@ -60,7 +60,7 @@ public class BlazingSpearRenderer extends EntityRenderer<BlazingSpear> {
             renderTrail(entity, partialTicks, poseStack, buffer, r, g, b, 1.0F, packedLight);
             poseStack.popPose();
         }
-        super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
+//        super.render(entity, entityYaw, partialTicks, poseStack, buffer, packedLight);
     }
     private void renderTrail(BlazingSpear entityIn, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, float trailR, float trailG, float trailB, float trailA, int packedLightIn) {
         int sampleSize = 10;

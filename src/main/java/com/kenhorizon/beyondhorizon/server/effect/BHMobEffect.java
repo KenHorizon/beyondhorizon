@@ -1,6 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.effect;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.AfterImageParticleOptions;
+import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
+import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
@@ -46,6 +50,23 @@ public class BHMobEffect extends MobEffect {
                 if (player.tickCount % 40 == 0) {
                     player.heal(0.50F);
                     player.getFoodData().eat(1, 0);
+                }
+            }
+        }
+
+        if (this == BHEffects.BURNING_HEX.get()) {
+            entity.hurt(BHDamageTypes.burnMagic(), 0.1F + (0.1F * amplifier));
+            Level level = entity.level();
+            if (level instanceof ServerLevel sLevel) {
+                for (int i =0 ; i < 3; i++) {
+                    sLevel.sendParticles(ParticleTypes.FLAME, entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 2, 0,0,0, 0.05D);
+                    float[] colors = ColorUtil.getFARGB(ColorUtil.BLUE);
+                    float[] colors1 = ColorUtil.getFARGB(ColorUtil.RED);
+                    sLevel.sendParticles(new TrailParticleOptions(40, colors[0], colors[1], colors[2], colors[3], 1.15F,
+                            TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(entity.getRandomX(0.50D), entity.getRandomY() + 4.0D, entity.getRandomZ(0.50D))), entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 1, 0, 0, 0,0);
+                    sLevel.sendParticles(new TrailParticleOptions(40, colors1[0], colors1[1], colors1[2], colors1[3], 1.15F,
+                            TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(entity.getRandomX(0.50D), entity.getRandomY() + 4.0D, entity.getRandomZ(0.50D))), entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 1, 0, 0, 0,0);
+
                 }
             }
         }
@@ -204,6 +225,9 @@ public class BHMobEffect extends MobEffect {
         }
         if (this == BHEffects.ACID.get()) {
             return duration % 5 == 0;
+        }
+        if (this == BHEffects.BURNING_HEX.get()) {
+            return duration % 10 == 0;
         }
         if (this == BHEffects.INFLAME.get()) {
             return duration % 10 == 0;

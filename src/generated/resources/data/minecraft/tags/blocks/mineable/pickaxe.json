@@ -13,6 +13,8 @@
     "beyondhorizon:chipped_brick_slab",
     "beyondhorizon:iron_lattice",
     "beyondhorizon:tattered_iron_lattice",
+    "beyondhorizon:black_iron_lattice",
+    "beyondhorizon:tattered_black_iron_lattice",
     "beyondhorizon:workbench",
     "beyondhorizon:siltstone",
     "beyondhorizon:hellstone_bricks",
@@ -71,6 +73,8 @@
     "beyondhorizon:plain_chiselled_end_stone",
     "beyondhorizon:netherrack_hellstone_ore",
     "beyondhorizon:hellstone_ore",
+    "beyondhorizon:black_iron_ore",
+    "beyondhorizon:black_iron_block",
     "beyondhorizon:starite_ore",
     "beyondhorizon:raw_starite_block",
     "beyondhorizon:starite_block"

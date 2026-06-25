@@ -16,19 +16,27 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWeaponMaterials> {
+    BLACK_IRON("black_iron",
+            2,
+            250,
+            6.0F,
+            3.0F,
+            13, () -> {
+        return Ingredient.of(BHItems.BLACK_IRON_INGOT.get());
+    }),
     HELLSTONE("hellstone",
             2,
             650,
             6.0F,
-            2.0F,
+            4.0F,
             14, () -> {
         return Ingredient.of(BHItems.RAW_EMBED_HELLSTONE.get());
     }),
-    STARITE("adamantite",
+    STARITE("starite",
             3,
             2034,
             9.0F,
-            3.0F,
+            4.0F,
             27, () -> {
         return Ingredient.of(BHItems.STARITE_INGOT.get());
     }),

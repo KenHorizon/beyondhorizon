@@ -1,0 +1,53 @@
+Pyrolliger
+
+Health: 200
+Armor: 15
+Attack Damage: 16
+Damage Reduction: 10%
+Follow Range: 70
+
+Behavior:
+Pyrolliger have two set of mode, ranged and melee mode, Pyrolliger have own set of mana systems each seconds pyrolliger will gain 1 mana, after reaching max mana pyrolliger will perform its ultimate form
+and if pyrolliger abiltiy hit will gain 5 mana instead
+
+Attacks:
+All attacks of pyrolliger inflict burning hex that burn the and reduce healing received for 5 seconds
+
+Ranged:
+Pyrobolt - the pyrolliger summon 20 pyrobolt over the course of 1 second at current position at random directions
+Heat Wave - pyrolliger will idle for 3 seconds and release a 12 heat wave that damage and push back
+Dash - pyrollger charge upto 3 seconds and dash to targeted position
+Circular Pyro Slash - the pyrolliger 5 summon flaming slash to target interval within 2 seconds per attack
+Pyromaniac - the pyrolliger randomly place 10 burning hex trap that last for 5/10 seconds
+Pyro Lance - the pyrolliger summon 20 pyro lance that charge and home to player
+Pyro Gem - the pyrollger summon a gem above providing 10% damage reduce and every 15 seconds shot pyromanic beam
+
+Utilmate: Dragonic Firelord - the pyrolliger will charge upto 3 seconds, after will release a dragonic head that fire devasting pryomanic death ray
+
+Melee:
+Pyrolliger will equip Draconic Elder Sword
+
+Slash and Dash - the pyrolliger look at nearest target and dash to targeted position and after reaching the position will release a Circular pyro slash
+Cross Blade Pyro Blast - the pyrolliger release X pattern of 10 burning hex trap to position target
+Hail rain - Summon a burning hex sword that fire flaming sword for every 1 seconds
+Attack 1 - the pyrolliger use the sword and slashing 3 times, each slash it dash litte 
+Attack 2 - the pyrolliger will do arc damage within 180 degree
+Attack 3 - the pyrolliger will release a Pyrobolt after 2 seconds and after 3 seconds will release Circular Pyro Slash, then later will dash and do arc attack
+Burning Point - the pyrolliger charge upto 5 seconds and later will release a devasting flash point explosion
+Hex Eye - the pryolliger will summon hex eye that boost and see all the target on 24 radius
+
+Ultimate: Heart of the Inferno - the pyrolliger will do 2 phases, first phase will release pyro lance at target and random targets every 1 second
+after 10 seconds pass will be in second phase will do summon a Draconic Elder Sword that launch to targeted position
+
+
+Ranged:
+During ranged mode, pyrolliger will keep distance to player while casting ability, pyrolliger
+will cast in following order of ability
+
+
+
+
+
+Loot:
+Wildfire Fragments 15-30 (100%)
+Heart of the Inferno 1 (25%)

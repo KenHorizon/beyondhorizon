@@ -1,4 +1,4 @@
-// 1.20.1	2026-06-23T21:09:13.6487368	Item Models: beyondhorizon
+// 1.20.1	2026-06-25T06:56:49.29259	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -10,6 +10,13 @@ cabd63f40b0d87a6db691286dc1e3d50cd1b5f95 assets/beyondhorizon/models/item/ancien
 78febe81b88e0da4ea60007990d35aee7011bd44 assets/beyondhorizon/models/item/armor_plate.json
 0f1f8569bf318fc0f988a9301492cd9a01a19625 assets/beyondhorizon/models/item/ashes_of_flame.json
 142c6bc7e213af35d5c2e51239d068ec425b5bb1 assets/beyondhorizon/models/item/berserker_boots.json
+5c57579e8189a97648b892210f44c310499e82ec assets/beyondhorizon/models/item/black_iron_axe.json
+aebc9449a4de9b5c527741baa6a59a0431e60c7c assets/beyondhorizon/models/item/black_iron_hoe.json
+aa84fdbbabf2f75753a84b46207b724fbd3327f6 assets/beyondhorizon/models/item/black_iron_ingot.json
+3f0af6d55baf710417bb902aba7522c73ab397f8 assets/beyondhorizon/models/item/black_iron_nugget.json
+09bf049ae0eb544a2b241c30ddaa7d89822b7e8b assets/beyondhorizon/models/item/black_iron_pickaxe.json
+ba82a40c64a24eafea4e02a77c5bf517c061b455 assets/beyondhorizon/models/item/black_iron_shovel.json
+ed344b97115c2ee8211671e46a37986ef2c769be assets/beyondhorizon/models/item/black_iron_sword.json
 4a87309c6188e5c120a7bfce74bf8c2bfcfc58b1 assets/beyondhorizon/models/item/black_wool_fur.json
 f022045ce29f9a43dcec8a282abd2108896881b8 assets/beyondhorizon/models/item/blade_of_the_enderlord.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/beyondhorizon/models/item/blazing_inferno_spawn_egg.json
@@ -97,7 +104,9 @@ f05f22dd7f2938a372b7d647f2dbd51ffed27d86 assets/beyondhorizon/models/item/player
 77bc62c80e33b8216c5c8a6407feff4f8495678c assets/beyondhorizon/models/item/power_claw.json
 e27924fd60d10d0b9fb28da852db14123677eca3 assets/beyondhorizon/models/item/power_gloves.json
 b33263830e511f749b734f7555da90fbdfab7fcf assets/beyondhorizon/models/item/purple_wool_fur.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/beyondhorizon/models/item/pyrolliger_spawn_egg.json
 42c71d52f13ec13493d69a4ebf96119f77c8e18a assets/beyondhorizon/models/item/radiant.json
+44db167b345f0904c37b26083d506f92313227af assets/beyondhorizon/models/item/raw_black_iron.json
 086fc8638fa6096b640a1ced095f12591820bde3 assets/beyondhorizon/models/item/raw_embed_hellstone.json
 27b0177b6d8dcb0dce790c4fd90b4891a4b006ba assets/beyondhorizon/models/item/raw_hellstone.json
 e0a4998f74cc1d56c1b4d8d341d166863c3c1340 assets/beyondhorizon/models/item/raw_luminite.json

@@ -1,0 +1,8 @@
+{
+  "parent": "beyondhorizon:block/lattice_inventory",
+  "textures": {
+    "lattice": "beyondhorizon:block/tattered_black_iron_lattice",
+    "particle": "beyondhorizon:block/black_iron_block",
+    "post": "beyondhorizon:block/black_iron_lattice_post"
+  }
+}

@@ -27,16 +27,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Block.class)
 public abstract class BlockMixins {
-    @Inject(at = @At("HEAD"), method = "playerDestroy", cancellable = true)
+    @Inject(at = @At("HEAD"), method = "playerDestroy")
     private void modifiedPlayerDestroy(Level level, Player player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity, ItemStack itemStack, CallbackInfo ci) {
         LootParams.Builder builder = (new LootParams.Builder((ServerLevel) player.level())).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(blockPos)).withParameter(LootContextParams.BLOCK_STATE, blockState).withOptionalParameter(LootContextParams.BLOCK_ENTITY, blockEntity).withOptionalParameter(LootContextParams.THIS_ENTITY, player).withParameter(LootContextParams.TOOL, itemStack);
         HarvestBlockEvent event = new HarvestBlockEvent(level, blockPos, blockState, player, itemStack, blockState.getDrops(builder));
         MinecraftForge.EVENT_BUS.post(event);
-        if (!event.isCanceled()) {
-            ci.cancel();
-        }
-        if (!event.isCanDropLoot()) {
-            ci.cancel();
+        if (!event.isCanceled() || !event.isCanDropLoot()) {
+           return;
         }
     }
 }

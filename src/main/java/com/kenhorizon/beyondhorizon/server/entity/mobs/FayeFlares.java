@@ -9,10 +9,11 @@ import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ai.*;
 import com.kenhorizon.beyondhorizon.server.entity.ai.control.FlightMoveControl;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
+import com.kenhorizon.beyondhorizon.server.entity.util.AnimationTickers;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageScaling;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -47,8 +48,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     public AnimationState animationBlazingRod = new AnimationState();
     public static int animationId = 1;
     public static final int ID_BLAZING_ROD = createAnimationID();
-    public int fireballCooldown = 0;
-    public static final int FIREBALL_COOLDOWN = Maths.sec(3);
+    public AnimationTickers pyroboltCooldown = AnimationTickers.create(Maths.sec(3));
 
     public FayeFlares(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -123,16 +123,16 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(1, new MobMoveGoal(this, false, 1.0F));
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
-        this.goalSelector.addGoal(1, new MobAttackGoal<FayeFlares>(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_ANIMATION_EMPTY, 30, Maths.sec(5)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_ANIMATION_EMPTY, 30, Maths.sec(5)) {
             @Override
             public boolean canUse() {
-                return super.canUse() && this.entity.fireballCooldown <= 0;
+                return super.canUse() && this.entity.pyroboltCooldown.isReadyToUse();
             }
 
             @Override
             public void stop() {
                 super.stop();
-                this.entity.fireballCooldown = FIREBALL_COOLDOWN;
+                this.entity.pyroboltCooldown.setCooldown();
             }
         });
 
@@ -220,7 +220,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
         boolean flag = this.getDeltaMovement().x * this.getDeltaMovement().x + this.getDeltaMovement().z * this.getDeltaMovement().z >= 1.0E-3D;
         LivingEntity target = this.getTarget();
 
-        if (this.fireballCooldown > 0) this.fireballCooldown--;
+        this.pyroboltCooldown.cooldownTick();
         if (!this.level().isClientSide()) {
             boolean flag1 = this.getAnimationState(ID_BLAZING_ROD) && this.getAnimationTick() <= 60;
             this.switchNavigator(flag1);
@@ -318,7 +318,6 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
             double d1 = this.getY() + (this.getBbHeight() / 2) + 0.5D;
             double d2 = this.getZ();
             BlazingRod projectile = new BlazingRod(this.level(), d0, d1, d2, this);
-            projectile.setDamage(DamageTypeTags.DEFAULT, 0.02F);
             projectile.setBaseDamage(1);
             double shootX = target.getX() - this.getX();
             double shootY = target.getBoundingBox().minY + target.getBbHeight() / 2 - projectile.getY();

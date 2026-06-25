@@ -29,6 +29,7 @@ import com.kenhorizon.libs.client.event.PlayerModelEvent;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
@@ -76,6 +77,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.loading.FMLLoader;
 import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
@@ -89,7 +91,19 @@ public class ClientEventHandler {
     private WeaponArmPose weaponLeftArmPose = WeaponArmPose.EMPTY;
     private static final ResourceLocation PHOSPOR = BeyondHorizon.resource("shaders/post/phospor_effect.json");
     private static final ResourceLocation GHOUL_WILL = BeyondHorizon.resource("shaders/post/ghoul_will.json");
+    @SubscribeEvent
+    public void onTooltip(ItemTooltipEvent ev) {
+        ItemStack stack = ev.getItemStack();
 
+        // Debug (Show NBT data on *EVERYTHING*)
+
+        if(!FMLLoader.isProduction() && stack.hasTag() && ev.getFlags().isAdvanced())
+        {
+            // Format NBT debug string
+            String nbtStr = stack.getTag().toString();
+            ev.getToolTip().add(Component.literal("NBT: " + ChatFormatting.DARK_GRAY + nbtStr).withStyle(ChatFormatting.DARK_PURPLE));
+        }
+    }
     @SubscribeEvent
     public void onDebugInformation(CustomizeGuiOverlayEvent.DebugText event) {
         GuiGraphics guiGraphics = event.getGuiGraphics();

@@ -2,12 +2,14 @@ package com.kenhorizon.beyondhorizon.server.inventory;
 
 
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
+import com.kenhorizon.beyondhorizon.server.item.VoidBagItem;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -16,14 +18,16 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 
 public class VoidBagMenu extends AbstractContainerMenu {
-    private static final int SIZE = 9;
-    private static final int ROWS = 3;
+    public static final int SIZE = 9;
+    public static final int ROWS = 3;
     public static final int SLOTS = ROWS * SIZE;
     protected final ItemStack itemStack;
     protected final IItemHandler handler;
 
     public static VoidBagMenu createFromNetwork(int id, Inventory inventory, FriendlyByteBuf buf) {
-        ItemStack itemStacks = findItemStack(inventory);
+        VoidBagItem.SlotType slotType = buf.readEnum(VoidBagItem.SlotType.class);
+        int slot = buf.readInt();
+        ItemStack itemStacks = findItemStack(inventory, slotType, slot);
         return new VoidBagMenu(id, inventory, itemStacks);
     }
 
@@ -35,8 +39,8 @@ public class VoidBagMenu extends AbstractContainerMenu {
             for (int k = 0; k < SIZE; ++k) {
                 this.addSlot(new SlotItemHandler(this.handler, k + i * 9, 8 + k * 18, 18 + i * 18) {
                     @Override
-                    public boolean mayPlace(ItemStack pStack) {
-                        return !pStack.is(BHItemTags.NOT_ALLOWED_IN_VOID_BAG);
+                    public boolean mayPlace(ItemStack itemStack) {
+                        return !itemStack.is(BHItemTags.NOT_ALLOWED_IN_VOID_BAG);
                     }
                 });
             }
@@ -117,14 +121,30 @@ public class VoidBagMenu extends AbstractContainerMenu {
         }
     }
 
-    protected static ItemStack findItemStack(Inventory inventory) {
+    @Override
+    public void clicked(int slot, int button, ClickType clickType, Player player) {
+        if (slot >= 0 && getSlot(slot) != null && (getSlot(slot).getItem().equals(this.itemStack, false))) return;
+        super.clicked(slot, button, clickType, player);
+    }
+
+    public ItemStack getItemStack() {
+        return itemStack;
+    }
+
+    protected static ItemStack findItemStack(Inventory inventory, VoidBagItem.SlotType slotType, int slot) {
         ItemStack itemStack = ItemStack.EMPTY;
-        InteractionHand itemHand = inventory.player.getUsedItemHand();
-        if (itemHand == InteractionHand.MAIN_HAND) {
-            itemStack = inventory.player.getMainHandItem();
-        } else {
-            itemStack = inventory.player.getOffhandItem();
-            return itemStack;
+        switch (slotType) {
+            case HOTBAR:
+                itemStack = inventory.getItem(slot);
+                break;
+                case MAIN_HAND:
+                itemStack = inventory.player.getMainHandItem();
+                break;
+            case OFF_HAND:
+                itemStack = inventory.player.getOffhandItem();
+                break;
+            default:
+                break;
         }
         return itemStack;
     }

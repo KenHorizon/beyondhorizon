@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.7,
+  "group": "_from_smelting",
+  "ingredient": {
+    "item": "beyondhorizon:raw_black_iron"
+  },
+  "result": "beyondhorizon:black_iron_ingot"
+}

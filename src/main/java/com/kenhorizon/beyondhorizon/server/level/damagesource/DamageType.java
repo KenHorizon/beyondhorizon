@@ -3,17 +3,19 @@ package com.kenhorizon.beyondhorizon.server.level.damagesource;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public enum DamageType {
+    ADAPTIVE_DAMAGE,
     PHYSICAL_DAMAGE,
     MAGIC_DAMAGE,
     TRUE_DAMAGE;
 
-    private boolean dealDamage(LivingEntity target, LivingEntity attacker, float damage, boolean noKnockback) {
+    public boolean dealDamage(LivingEntity target, LivingEntity attacker, float damage, boolean noKnockback) {
         switch (this) {
             case PHYSICAL_DAMAGE -> {
                 return target.hurt(BHDamageTypes.physicalDamage(attacker, noKnockback), damage);
@@ -24,12 +26,29 @@ public enum DamageType {
             case TRUE_DAMAGE -> {
                 return target.hurt(BHDamageTypes.trueDamage(attacker, noKnockback), damage);
             }
+            case ADAPTIVE_DAMAGE -> {
+                double AD = AttributeUtils.getBonus(attacker, Attributes.ATTACK_DAMAGE);
+                double AP = attacker.getAttributeValue(BHAttributes.ABILITY_POWER.get());
+                if (AD == AP) {
+                    double BAD = attacker.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
+                    double BAP = attacker.getAttributeBaseValue(BHAttributes.ABILITY_POWER.get());
+                    if (BAD > BAP) {
+                        return target.hurt(BHDamageTypes.physicalDamage(attacker, noKnockback), damage);
+                    } else {
+                        return target.hurt(BHDamageTypes.magicDamage(attacker, noKnockback), damage);
+                    }
+                } else if (AD > AP) {
+                    return target.hurt(BHDamageTypes.physicalDamage(attacker, noKnockback), damage);
+                } else {
+                    return target.hurt(BHDamageTypes.magicDamage(attacker, noKnockback), damage);
+                }
+            }
             default -> {
                 return false;
             }
         }
     }
-    private boolean dealDamage(LivingEntity target, Entity source, LivingEntity attacker, float damage, boolean noKnockback) {
+    public boolean dealDamage(LivingEntity target, Entity source, LivingEntity attacker, float damage, boolean noKnockback) {
         switch (this) {
             case PHYSICAL_DAMAGE -> {
                 return target.hurt(BHDamageTypes.physicalDamage(source, attacker, noKnockback), damage);
@@ -39,6 +58,23 @@ public enum DamageType {
             }
             case TRUE_DAMAGE -> {
                 return target.hurt(BHDamageTypes.trueDamage(source, attacker, noKnockback), damage);
+            }
+            case ADAPTIVE_DAMAGE -> {
+                double AD = AttributeUtils.getBonus(attacker, Attributes.ATTACK_DAMAGE);
+                double AP = attacker.getAttributeValue(BHAttributes.ABILITY_POWER.get());
+                if (AD == AP) {
+                    double BAD = attacker.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
+                    double BAP = attacker.getAttributeBaseValue(BHAttributes.ABILITY_POWER.get());
+                    if (BAD > BAP) {
+                        return target.hurt(BHDamageTypes.physicalDamage(source, attacker, noKnockback), damage);
+                    } else {
+                        return target.hurt(BHDamageTypes.magicDamage(source, attacker, noKnockback), damage);
+                    }
+                } else if (AD > AP) {
+                    return target.hurt(BHDamageTypes.physicalDamage(attacker, noKnockback), damage);
+                } else {
+                    return target.hurt(BHDamageTypes.magicDamage(source, attacker, noKnockback), damage);
+                }
             }
             default -> {
                 return false;

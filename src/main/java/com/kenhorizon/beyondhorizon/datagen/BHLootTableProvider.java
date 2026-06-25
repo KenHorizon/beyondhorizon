@@ -1,10 +1,7 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.datagen.loot.BlazingInfernoLootTable;
-import com.kenhorizon.beyondhorizon.datagen.loot.EntityLootDropBuilder;
-import com.kenhorizon.beyondhorizon.datagen.loot.FayeFlaresLootTable;
-import com.kenhorizon.beyondhorizon.datagen.loot.FayeWildfireLootTable;
+import com.kenhorizon.beyondhorizon.datagen.loot.*;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
@@ -56,6 +53,7 @@ public class BHLootTableProvider {
         private final BlazingInfernoLootTable BLAZING_INFERNO = new BlazingInfernoLootTable(BHEntity.BLAZING_INFERNO.get());
         private final FayeFlaresLootTable FAYE_FLARES = new FayeFlaresLootTable(BHEntity.FAYE_FLARES.get());
         private final FayeWildfireLootTable FAYE_WILDFIRE = new FayeWildfireLootTable(BHEntity.FAYE_WILDFIRE.get());
+        private final PyrolligerLootTable PYROLLIGER = new PyrolligerLootTable(BHEntity.PYROLLIGER.get());
 
         public Entity() {
             super(FeatureFlags.REGISTRY.allFlags());
@@ -66,6 +64,7 @@ public class BHLootTableProvider {
             this.addRegister(BLAZING_INFERNO);
             this.addRegister(FAYE_FLARES);
             this.addRegister(FAYE_WILDFIRE);
+            this.addRegister(PYROLLIGER);
         }
 
         protected void addRegister(EntityLootDropBuilder builder) {

@@ -3,12 +3,12 @@ package com.kenhorizon.beyondhorizon.server.init;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.ability.*;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
+import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingSpear;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.*;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.libs.registry.RegistryEntity;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.world.entity.EntityType;
@@ -22,8 +22,17 @@ public class BHEntity {
     public static final RegistryObject<EntityType<BlazingInferno>> BLAZING_INFERNO = RegistryEntity
             .register("blazing_inferno", BlazingInferno::new)
             .lang("Blazing Inferno")
-            .mobCategory(MobCategory.CREATURE)
+            .mobCategory(BHMobCategory.BOSS)
             .properties(p -> p.sized(0.85F, 3.1F))
+            .properties(EntityType.Builder::fireImmune)
+            .tag(Tags.EntityTypes.BOSSES)
+            .register();
+
+    public static final RegistryObject<EntityType<Pyrolliger>> PYROLLIGER = RegistryEntity
+            .register("pyrolliger", Pyrolliger::new)
+            .lang("Pyrolliger")
+            .mobCategory(BHMobCategory.BOSS)
+            .properties(p -> p.sized(0.6F, 1.95F))
             .properties(EntityType.Builder::fireImmune)
             .tag(Tags.EntityTypes.BOSSES)
             .register();
@@ -52,6 +61,14 @@ public class BHEntity {
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
+    public static final RegistryObject<EntityType<PyroLance>> PYRO_LANCE = RegistryEntity
+            .<PyroLance>register("pyro_lance", PyroLance::new)
+            .lang("Pyro Lance")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
+
     public static final RegistryObject<EntityType<EruptionAbility>> ERUPTION = RegistryEntity
             .register("eruption", EruptionAbility::new)
             .lang("Eruption")
@@ -59,9 +76,23 @@ public class BHEntity {
             .properties(p -> p.sized(1.0F, 1.0F))
             .register();
 
+    public static final RegistryObject<EntityType<BurningHexTrapAbility>> BURNING_HEX_TRAP = RegistryEntity
+            .register("burning_hex_trap", BurningHexTrapAbility::new)
+            .lang("Burning Hex")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(1.0F, 1.0F))
+            .register();
+
     public static final RegistryObject<EntityType<BlazingRod>> BLAZING_ROD = RegistryEntity
             .<BlazingRod>register("blazing_rod", BlazingRod::new)
             .lang("Blazing Rod")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
+    public static final RegistryObject<EntityType<Pyrobolt>> PYROBOLT = RegistryEntity
+            .<Pyrobolt>register("pyrobolt", Pyrobolt::new)
+            .lang("Pyrobolt")
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();
@@ -124,9 +155,9 @@ public class BHEntity {
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
-    public static final RegistryObject<EntityType<InfernalSlashAbility>> INFERNAL_SLASH_ABILITY = RegistryEntity
-            .<InfernalSlashAbility>register("infernal_slash_ability", InfernalSlashAbility::new)
-            .lang("Infernal Slash")
+    public static final RegistryObject<EntityType<InfernalSpear>> INFERNAL_SPEAR = RegistryEntity
+            .<InfernalSpear>register("infernal_slash_ability", InfernalSpear::new)
+            .lang("Infernal Spear")
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();

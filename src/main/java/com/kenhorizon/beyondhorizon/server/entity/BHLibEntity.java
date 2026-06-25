@@ -167,15 +167,11 @@ public class BHLibEntity extends BHBaseEntity {
     }
 
     public void doDodge(int chance) {
-        this.doDodge(chance, 0);
-    }
-
-    public void doDodge(int chance, int animationId) {
         if (this.getRandomChances(chance)) return;
-        this.performDodge(animationId);
+        this.performDodge();
     }
 
-    private void performDodge(int animationId) {
+    private void performDodge() {
         List<Projectile> projectilesNearby = this.getEntitiesNearby(Projectile.class, 30);
         for (Projectile projectile : projectilesNearby) {
             Vec3 aActualMotion = new Vec3(projectile.getX() - projectile.xo, projectile.getY() - projectile.yo, projectile.getZ() - projectile.zo);
@@ -193,7 +189,6 @@ public class BHLibEntity extends BHBaseEntity {
                     dodgeVec = dodgeVec.scale(-1);
                 }
                 this.setDeltaMovement(getDeltaMovement().add(dodgeVec));
-                this.setAnimation(animationId);
             }
         }
     }

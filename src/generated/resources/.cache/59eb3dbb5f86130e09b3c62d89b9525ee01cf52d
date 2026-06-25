@@ -1,5 +1,8 @@
-// 1.20.1	2026-06-15T20:46:03.6213694	Loot Tables
+// 1.20.1	2026-06-25T06:56:49.29659	Loot Tables
 8746a4eeac79c482a536718181ba4487ca972efb data/beyondhorizon/loot_tables/blocks/base_spawner.json
+b945f9570325522c12625882654869189fd3f2e9 data/beyondhorizon/loot_tables/blocks/black_iron_block.json
+eba8354848810629d25562c2368b5ed8abe0a5f3 data/beyondhorizon/loot_tables/blocks/black_iron_lattice.json
+e5f018c52225e4dee5779c8148eb744f4ba9cfd7 data/beyondhorizon/loot_tables/blocks/black_iron_ore.json
 8b09cb1fe06d170e0264ba82bbc6c8b4067aa68a data/beyondhorizon/loot_tables/blocks/black_nether_bricks.json
 205c70737c2e30e621e2b811d8a5696aa3187f60 data/beyondhorizon/loot_tables/blocks/black_nether_brick_slab.json
 21d1fa69d320b5b79ae2f7bed209c0bd68210305 data/beyondhorizon/loot_tables/blocks/black_nether_brick_stair.json
@@ -68,6 +71,7 @@ e31918663c595634f1da5cfe74138072e4424b48 data/beyondhorizon/loot_tables/blocks/r
 f7894b7956ebb0f12de0aad402853d7590d280e4 data/beyondhorizon/loot_tables/blocks/siltstone_stairs.json
 831bfa16481b72e6ab661765c58b2d42a807ec43 data/beyondhorizon/loot_tables/blocks/starite_block.json
 86bf093dd06717cc06365f259c0a92b569b35f12 data/beyondhorizon/loot_tables/blocks/starite_ore.json
+5f7a373ab3f160c78afae1ee54b5ab42a287f060 data/beyondhorizon/loot_tables/blocks/tattered_black_iron_lattice.json
 6c066b516016a4fd1d3420493b2dc2ac36e5af4b data/beyondhorizon/loot_tables/blocks/tattered_iron_lattice.json
 5401ad849ca8f1fb18467917522d1d905861e9a9 data/beyondhorizon/loot_tables/blocks/voidstone.json
 d867defcf4abb6ce131bf1f1f3dc2e7cb7f8b2a0 data/beyondhorizon/loot_tables/blocks/volcanic_mantle.json
@@ -76,3 +80,4 @@ d867defcf4abb6ce131bf1f1f3dc2e7cb7f8b2a0 data/beyondhorizon/loot_tables/blocks/v
 f7ec18cb555289fe44f325021a763d8cf2719b43 data/beyondhorizon/loot_tables/entities/blazing_inferno.json
 5553cfd9a343588220aa057d019a7529c8dfb384 data/beyondhorizon/loot_tables/entities/faye_flares.json
 666ece14f21e302db4ba646f62c41080c02fde83 data/beyondhorizon/loot_tables/entities/faye_wildfire.json
+a13a318e87f8e3830120c6070da7ebb47459a7a0 data/beyondhorizon/loot_tables/entities/pyrolliger.json

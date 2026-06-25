@@ -1,71 +1,37 @@
 package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
-import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class DamageHandler {
-    public static DamageSource dealAdaptiveDamage(LivingEntity attacker, float damagedealt) {
-        double AD = AttributeUtils.getBonus(attacker, Attributes.ATTACK_DAMAGE);
-        double AP = AttributeUtils.getBonus(attacker, BHAttributes.ABILITY_POWER.get());
-        return AD > AP ? BHDamageTypes.physicalDamage(attacker, null) : BHDamageTypes.magicDamage(attacker, null);
-    }
-
-    public static boolean damage(LivingEntity target, boolean bypassIFrame, DamageSource source, DamageTypeTags damageTypeTags, float damageModifiers, float amount) {
+    public static boolean damage(LivingEntity target, boolean bypassIFrame, DamageSource source, DamageScaling damageScaling, float damageModifiers, float amount) {
         if (bypassIFrame) {
             target.invulnerableTime = 0;
         }
-        switch (damageTypeTags) {
-            case SELF_MAX_HEALTH -> {
+        switch (damageScaling) {
+            case MAX_HEALTH -> {
                 if (source.getEntity() instanceof LivingEntity attacker) {
-                    return target.hurt(source, maxHealth(attacker, amount, damageModifiers));
+                    return target.hurt(source, maxHealth(target, amount, damageModifiers));
                 }
             }
-            case SELF_MISSING_HEALTH -> {
+            case MISSING_HEALTH -> {
                 if (source.getEntity() instanceof LivingEntity attacker) {
-                    return target.hurt(source, missingHealth(attacker, amount, damageModifiers));
+                    return target.hurt(source, missingHealth(target, amount, damageModifiers));
                 }
             }
-            case SELF_CURRENT_HEALTH -> {
+            case CURRENT_HEALTH -> {
                 if (source.getEntity() instanceof LivingEntity attacker) {
-                    return target.hurt(source, currentHealth(attacker, amount, damageModifiers));
+                    return target.hurt(source, currentHealth(target, amount, damageModifiers));
                 }
-            }
-            case TARGET_MAX_HEALTH -> {
-                return target.hurt(source, maxHealth(target, amount, damageModifiers));
-            }
-            case TARGET_MISSING_HEALTH -> {
-                return target.hurt(source, missingHealth(target, amount, damageModifiers));
-            }
-            case TARGET_CURRENT_HEALTH -> {
-                return target.hurt(source, currentHealth(target, amount, damageModifiers));
-            }
-            case INSTANT_KILL -> {
-                return target.hurt(BHDamageTypes.trueDamage(source.getEntity(), target), target.getMaxHealth() * 9999.99F);
             }
             default -> target.hurt(source, amount);
         }
         return target.hurt(source, amount);
     }
 
-    public static boolean instantKill(LivingEntity target, DamageSource source) {
-        return damage(target, BHDamageTypes.trueDamage(source.getEntity(), target), target.getMaxHealth(), DamageTypeTags.INSTANT_KILL, target.getMaxHealth());
-    }
-
-    public static boolean damage(LivingEntity target, DamageSource source, float amount, DamageTypeTags damageTypeTags, float damageModifiers) {
-        return damage(target, false, source, damageTypeTags, damageModifiers, amount);
-    }
-
-    public static boolean damage(LivingEntity target, DamageSource source, float amount) {
-        return damage(target, false, source, DamageTypeTags.DEFAULT, 0, amount);
-    }
-
-    public static boolean damage(LivingEntity target, boolean bypassIFrame, DamageSource source, float amount) {
-        return damage(target, bypassIFrame, source, DamageTypeTags.DEFAULT, 0, amount);
+    public static boolean damage(LivingEntity target, DamageSource source, float amount, DamageScaling damageScaling, float damageModifiers) {
+        return damage(target, false, source, damageScaling, damageModifiers, amount);
     }
 
     public static float multiplier(float damageDealt, float modifier) {

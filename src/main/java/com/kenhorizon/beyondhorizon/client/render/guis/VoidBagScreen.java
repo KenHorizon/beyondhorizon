@@ -81,9 +81,6 @@ public class VoidBagScreen extends AbstractContainerScreen<VoidBagMenu> {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    private void stars(GuiGraphics guiGraphics, int x, int y) {
-    }
-
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         int x = (width - imageWidth) / 2;

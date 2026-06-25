@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.libs.client.data.BlockStateBuilder;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class BHBlockStateProvider extends BlockStateBuilder {
@@ -72,6 +73,8 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.NETHER_BRICK_LANTERN);
         this.blockWithItem(BHBlocks.HELLSTONE_BRICKS);
         this.blockWithItem(BHBlocks.HELLSTONE_COBBLESTONE);
+        this.blockWithItem(BHBlocks.BLACK_IRON_ORE);
+        this.blockWithItem(BHBlocks.BLACK_IRON_BLOCK);
         this.standBasinBlocks(BHBlocks.FIRE_BASIN);
         this.standWallBasinBlocks(BHBlocks.WALL_FIRE_BASIN);
         this.blockWithItem(BHBlocks.DESOLATE_OBSIDIAN);
@@ -81,8 +84,11 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.baseSpawnerBlocks(BHBlocks.SPAWNER, BeyondHorizon.resource("block/base_spawner_top"), BeyondHorizon.resource("block/base_spawner_bottom"), BeyondHorizon.resource("block/base_spawner_side"));
         this.blockWithItem(BHBlocks.GATE, BeyondHorizon.resource("block/gate_top"), BeyondHorizon.resource("block/gate_bottom"), BeyondHorizon.resource("block/gate_side"));
 
-        this.latticeBlock(BHBlocks.IRON_LATTICE, "minecraft:block/iron_block", "iron_lattice_post", "iron_lattice");
-        this.latticeBlock(BHBlocks.TATTERED_IRON_LATTICE, "minecraft:block/iron_block", "iron_lattice_post", "tattered_iron_lattice");
+        this.latticeBlock(BHBlocks.IRON_LATTICE, Blocks.IRON_BLOCK, "iron_lattice_post", "iron_lattice");
+        this.latticeBlock(BHBlocks.TATTERED_IRON_LATTICE, Blocks.IRON_BLOCK, "iron_lattice_post", "tattered_iron_lattice");
+
+        this.latticeBlock(BHBlocks.BLACK_IRON_LATTICE, BHBlocks.BLACK_IRON_BLOCK, "black_iron_lattice_post", "black_iron_lattice");
+        this.latticeBlock(BHBlocks.TATTERED_BLACK_IRON_LATTICE, BHBlocks.BLACK_IRON_BLOCK, "black_iron_lattice_post", "tattered_black_iron_lattice");
 
         this.redstoneWiredBlock(BHBlocks.REDSTONE_WIRED);
 

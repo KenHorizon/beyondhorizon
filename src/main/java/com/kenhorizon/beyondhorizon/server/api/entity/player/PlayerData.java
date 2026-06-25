@@ -105,12 +105,14 @@ public class PlayerData {
     }
 
     public void addCooldown(String id, int cooldown) {
-        this.skillManager.put(id, new CooldownInstance(cooldown));
+        int newCooldown = (int) (cooldown - (cooldown * this.player.getAttributeValue(BHAttributes.COOLDOWN.get())));
+        this.skillManager.put(id, new CooldownInstance(newCooldown));
         this.onCooldownStarted(id);
     }
 
     public void addCooldown(String id, int cooldown, int cooldownReamining) {
-        this.skillManager.put(id, new CooldownInstance(cooldown, cooldownReamining));
+        int newCooldown = (int) (cooldown - (cooldown * this.player.getAttributeValue(BHAttributes.COOLDOWN.get())));
+        this.skillManager.put(id, new CooldownInstance(newCooldown, cooldownReamining));
     }
 
     public float getCooldownPercent(String id) {

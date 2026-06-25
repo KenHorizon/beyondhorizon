@@ -6,4 +6,5 @@ import net.minecraft.network.chat.Style;
 public class Fonts {
     public static final Style RUNIC = Style.EMPTY.withFont(BeyondHorizon.resource("runic"));
     public static final Style GUIDE_BOOKS = Style.EMPTY.withFont(BeyondHorizon.resource("guidebooks"));
+    public static final Style DAMAGE_INDICATOR = Style.EMPTY.withFont(BeyondHorizon.resource("damage_indicator"));
 }

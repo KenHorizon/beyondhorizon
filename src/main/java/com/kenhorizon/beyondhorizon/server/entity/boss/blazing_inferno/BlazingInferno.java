@@ -22,10 +22,11 @@ import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingSpear;
 import com.kenhorizon.beyondhorizon.server.entity.util.AnimationTickers;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.util.DefaultDamageCaps;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.init.*;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTypeTags;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageScaling;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -75,7 +76,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
-
+/**
+ * @see BlazingInferno#registerGoals() Goals
+ * @see BlazingInferno#getAnimations() All Registered Animations
+ * @see BlazingInferno#onSyncedDataUpdated(EntityDataAccessor)  All Animations Client Synce
+ * @see BlazingInferno#aiStep() Logic fo all attacks
+ * @author KenHorizon
+ * @version 1.0
+ * */
 public class BlazingInferno extends BHBossEntity {
     private static final Predicate<Entity> SHOCKWAVE_EXCEPTION = (entity) -> {
         return entity.isAlive() && !(entity instanceof BlazingInferno);
@@ -171,19 +179,19 @@ public class BlazingInferno extends BHBossEntity {
     private final double powerShockwaveX = 4.0D;
     private final double powerShockwaveY = 1.0D;
     private final double powerShockwaveZ = 4.0D;
-    public static final EntityDataAccessor<Integer> SWELL = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Boolean> OVERHEAT = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Boolean> POWERED = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Boolean> IS_DASHING = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Boolean> ENRAGED = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
-    public static final EntityDataAccessor<Integer> DATA_SHIELD_COOLDOWN = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> SHIELD_COUNT = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> AWAKEN_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> ENRAGED_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> DASH_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> DASH_COUNT = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> GROUND_SLAM_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
-    public static final EntityDataAccessor<Integer> GROUND_SLAM_COUNT = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SWELL = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> OVERHEAT = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> POWERED = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> IS_DASHING = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> ENRAGED = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> DATA_SHIELD_COOLDOWN = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> SHIELD_COUNT = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> AWAKEN_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> ENRAGED_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DASH_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DASH_COUNT = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> GROUND_SLAM_PROGRESS = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> GROUND_SLAM_COUNT = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> SHIELD_ACTIVE = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> DEATH_RAY = SynchedEntityData.defineId(BlazingInferno.class, EntityDataSerializers.BOOLEAN);
     private int spearOfChoices;
@@ -213,7 +221,6 @@ public class BlazingInferno extends BHBossEntity {
                 .add(Attributes.KNOCKBACK_RESISTANCE, 1.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.2555F)
                 .add(Attributes.ATTACK_DAMAGE, 16.0D)
-                .add(Attributes.ATTACK_SPEED, 1.0F)
                 .add(Attributes.FOLLOW_RANGE, 70.0F)
                 .build();
     }
@@ -1332,6 +1339,25 @@ public class BlazingInferno extends BHBossEntity {
         return super.mobInteract(player, hand);
     }
 
+
+    private void performRangedAttack(int count, LivingEntity target, int initialFireRate, float velocity, int tickStartAt) {
+        this.performRangedAttack(count, target, initialFireRate, velocity, 0.0F, tickStartAt);
+    }
+
+    private void performRangedAttack(int count, LivingEntity target, int initialFireRate, float velocity, float inaccuracy, int tickStartAt) {
+        if (this.getAnimationTick() > tickStartAt && this.getAnimationTick() <= tickStartAt + (initialFireRate)) {
+            for (int i = 0; i < count; i++) {
+                if (this.getAnimationTick() % (initialFireRate - i) == 0) {
+                    this.doRoarParticle(this.getX(), this.getEyeY(), this.getZ(), 10, 255, 0, 0, 1.0F, 1.0F, 5.0F, 0.1F);
+                    if (!this.isSilent()) {
+                        this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
+                    }
+                    this.shoot(1, target, velocity, inaccuracy, false);
+                }
+            }
+        }
+    }
+
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty, MobSpawnType reason, @Nullable SpawnGroupData data, @Nullable CompoundTag dataNbt) {
         if (reason == MobSpawnType.COMMAND) {
@@ -1399,24 +1425,6 @@ public class BlazingInferno extends BHBossEntity {
         super.onSyncedDataUpdated(accessor);
     }
 
-    private void performRangedAttack(int count, LivingEntity target, int initialFireRate, float velocity, int tickStartAt) {
-        this.performRangedAttack(count, target, initialFireRate, velocity, 0.0F, tickStartAt);
-    }
-
-    private void performRangedAttack(int count, LivingEntity target, int initialFireRate, float velocity, float inaccuracy, int tickStartAt) {
-        if (this.getAnimationTick() > tickStartAt && this.getAnimationTick() <= tickStartAt + (initialFireRate)) {
-            for (int i = 0; i < count; i++) {
-                if (this.getAnimationTick() % (initialFireRate - i) == 0) {
-                    this.doRoarParticle(this.getX(), this.getEyeY(), this.getZ(), 10, 255, 0, 0, 1.0F, 1.0F, 5.0F, 0.1F);
-                    if (!this.isSilent()) {
-                        this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
-                    }
-                    this.shoot(1, target, velocity, inaccuracy, false);
-                }
-            }
-        }
-    }
-
     public void stopAnimations() {
         List<AnimationState> animationList = Arrays.stream(this.getAnimations()).toList();
         animationList.forEach(AnimationState::stop);
@@ -1455,7 +1463,7 @@ public class BlazingInferno extends BHBossEntity {
     private void shootSpear(LivingEntity target, Vec3 position, int timer) {
         BlazingSpear projectile = new BlazingSpear(this.level(), this);
         position = position.yRot(-this.getYRot() * ((float) Math.PI / 180F));
-        projectile.setDamage(DamageTypeTags.TARGET_CURRENT_HEALTH, 0.05F);
+        projectile.setDamageType(DamageType.PHYSICAL_DAMAGE);
         projectile.setBaseDamage(3);
         projectile.setPos(this.getX() - (double) (this.getBbWidth() + 1.0F) * 0.15D * (double) Mth.sin(this.yBodyRot * ((float) Math.PI / 180F)), this.getY() + (double) 1F, this.getZ() + (double) (this.getBbWidth() + 1.0F) * 0.15D * (double) Mth.cos(this.yBodyRot * ((float) Math.PI / 180F)));
         double d0 = position.x;
@@ -1488,9 +1496,9 @@ public class BlazingInferno extends BHBossEntity {
             double d2 = this.getZ();
             BlazingRod projectile = new BlazingRod(this.level(), d0, d1, d2, this);
             if (empowered) {
-                projectile.setDamage(DamageTypeTags.TARGET_CURRENT_HEALTH, 0.02F);
+                projectile.setScalingDamage(0.02F, DamageScaling.CURRENT_HEALTH);
             } else {
-                projectile.setDamage(DamageTypeTags.DEFAULT, 0.02F);
+                projectile.setDamageScaling(DamageScaling.NONE);
             }
             projectile.setBaseDamage(empowered ? 2 : 1);
             double shootX = target.getX() - this.getX();

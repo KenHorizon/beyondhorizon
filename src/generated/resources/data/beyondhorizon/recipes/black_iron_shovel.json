@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "beyondhorizon:black_iron_ingot"
+    },
+    "H": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "#",
+    "H",
+    "H"
+  ],
+  "result": {
+    "item": "beyondhorizon:black_iron_shovel"
+  },
+  "show_notification": true
+}

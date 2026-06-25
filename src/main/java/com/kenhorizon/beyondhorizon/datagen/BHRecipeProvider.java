@@ -60,17 +60,23 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         this.woolFurToWoolBlock(recipeFactory, BHItems.RED_WOOL_FUR.get(), Blocks.RED_WOOL);
         this.woolFurToWoolBlock(recipeFactory, BHItems.BLACK_WOOL_FUR.get(), Blocks.BLACK_WOOL);
         //
-        recipeFactory.createSword(BHItems.HELLSTONE_INGOT.get(), Items.IRON_INGOT, BHItems.HELLSTONE_SWORD.get(), "hellstone_sword");
-        recipeFactory.createPickaxe(BHItems.HELLSTONE_INGOT.get(), Items.IRON_INGOT, BHItems.HELLSTONE_PICKAXE.get(), "hellstone_pickaxe");
-        recipeFactory.createAxe(BHItems.HELLSTONE_INGOT.get(), Items.IRON_INGOT, BHItems.HELLSTONE_AXE.get(), "hellstone_axe");
-        recipeFactory.createShovel(BHItems.HELLSTONE_INGOT.get(), Items.IRON_INGOT, BHItems.HELLSTONE_SHOVEL.get(), "hellstone_shovel");
-        recipeFactory.createHoe(BHItems.HELLSTONE_INGOT.get(), Items.IRON_INGOT, BHItems.HELLSTONE_HOE.get(), "hellstone_hoe");
+        recipeFactory.createSword(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_SWORD.get(), "hellstone_sword");
+        recipeFactory.createPickaxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_PICKAXE.get(), "hellstone_pickaxe");
+        recipeFactory.createAxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_AXE.get(), "hellstone_axe");
+        recipeFactory.createShovel(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_SHOVEL.get(), "hellstone_shovel");
+        recipeFactory.createHoe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_HOE.get(), "hellstone_hoe");
 
-        recipeFactory.createSword(BHItems.STARITE_INGOT.get(), Items.IRON_INGOT, BHItems.STARITE_SWORD.get(), "starite_sword");
-        recipeFactory.createPickaxe(BHItems.STARITE_INGOT.get(), Items.IRON_INGOT, BHItems.STARITE_PICKAXE.get(), "starite_pickaxe");
-        recipeFactory.createAxe(BHItems.STARITE_INGOT.get(), Items.IRON_INGOT, BHItems.STARITE_AXE.get(), "starite_axe");
-        recipeFactory.createShovel(BHItems.STARITE_INGOT.get(), Items.IRON_INGOT, BHItems.STARITE_SHOVEL.get(), "starite_shovel");
-        recipeFactory.createHoe(BHItems.STARITE_INGOT.get(), Items.IRON_INGOT, BHItems.STARITE_HOE.get(), "starite_hoe");
+        recipeFactory.createSword(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_SWORD.get(), "starite_sword");
+        recipeFactory.createPickaxe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_PICKAXE.get(), "starite_pickaxe");
+        recipeFactory.createAxe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_AXE.get(), "starite_axe");
+        recipeFactory.createShovel(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_SHOVEL.get(), "starite_shovel");
+        recipeFactory.createHoe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_HOE.get(), "starite_hoe");
+
+        recipeFactory.createSword(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_SWORD.get(), "black_iron_sword");
+        recipeFactory.createPickaxe(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_PICKAXE.get(), "black_iron_pickaxe");
+        recipeFactory.createAxe(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_AXE.get(), "black_iron_axe");
+        recipeFactory.createShovel(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_SHOVEL.get(), "black_iron_shovel");
+        recipeFactory.createHoe(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_HOE.get(), "black_iron_hoe");
         //
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_BRICKS.get(), BHBlocks.END_GREY_STONE.get());
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_PILLAR.get(), BHBlocks.END_GREY_STONE.get());
@@ -88,13 +94,40 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                         inventoryTrigger(ItemPredicate.Builder.item().of(BHItemTags.WOOL_FUR).build()))
                 .save(consumer, getItemName(Items.STRING) + "_from_wool_fur");
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BHItems.BLACK_IRON_INGOT.get(),9)
+                .requires(BHBlocks.BLACK_IRON_BLOCK.get())
+                .unlockedBy("has_black_ingot_block",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHBlocks.BLACK_IRON_BLOCK.get()).build()))
+                .save(consumer, getItemName(BHItems.BLACK_IRON_INGOT.get()) + "_from_" + getItemName(BHBlocks.BLACK_IRON_BLOCK.get()));
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BHBlocks.TATTERED_BLACK_IRON_LATTICE.get())
+                .requires(BHBlocks.BLACK_IRON_LATTICE.get())
+                .unlockedBy("has_black_ingot_lattice",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHBlocks.BLACK_IRON_LATTICE.get()).build()))
+                .save(consumer, getItemName(BHBlocks.BLACK_IRON_LATTICE.get()) + "_from_" + getItemName(BHBlocks.TATTERED_BLACK_IRON_LATTICE.get()));
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BHBlocks.BLACK_IRON_LATTICE.get())
+                .requires(BHBlocks.TATTERED_BLACK_IRON_LATTICE.get())
+                .unlockedBy("has_black_ingot_lattice",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHBlocks.BLACK_IRON_LATTICE.get()).build()))
+                .save(consumer, getItemName(BHBlocks.TATTERED_BLACK_IRON_LATTICE.get()) + "_from_" + getItemName(BHBlocks.BLACK_IRON_LATTICE.get()));
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHBlocks.BLACK_IRON_BLOCK.get())
+                .pattern("###")
+                .pattern("###")
+                .pattern("###")
+                .define('#', BHItems.BLACK_IRON_INGOT.get())
+                .unlockedBy("has_black_iron_ingot",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.BLACK_IRON_INGOT.get()).build()))
+                .save(consumer);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHItems.VOID_BAG.get())
-                .pattern("SBS")
-                .pattern("OEO")
+                .pattern("SNS")
+                .pattern("BEB")
                 .pattern("SAS")
-                .define('E', Items.ENDER_EYE)
-                .define('O', Blocks.OBSIDIAN)
+                .define('E', Blocks.ENDER_CHEST)
                 .define('B', Items.ECHO_SHARD)
+                .define('N', Items.NETHER_STAR)
                 .define('A', Items.END_CRYSTAL)
                 .define('S', BHItems.STARITE_INGOT.get())
                 .unlockedBy("has_void_bag",
@@ -112,6 +145,17 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .unlockedBy("has_player_tracker",
                         inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.PLAYER_TRACKER.get()).build()))
                 .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BHBlocks.BLACK_IRON_LATTICE.get())
+                .pattern("N#N")
+                .pattern("N#N")
+                .pattern("N#N")
+                .define('N', BHItems.BLACK_IRON_INGOT.get())
+                .define('#', BHItems.BLACK_IRON_NUGGET.get())
+                .unlockedBy("has_black_ingot",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.BLACK_IRON_INGOT.get()).build()))
+                .save(consumer);
+
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BHBlocks.WORKBENCH.get())
                 .pattern("PCP")
@@ -213,6 +257,8 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
 
         oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, Maths.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_STARITE.get()), RecipeCategory.MISC, BHItems.STARITE_INGOT.get(), 0.7F, Maths.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.RAW_BLACK_IRON.get()), RecipeCategory.MISC, BHItems.BLACK_IRON_INGOT.get(), 0.7F, Maths.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.BLACK_IRON_HOE.get()), RecipeCategory.MISC, BHItems.BLACK_IRON_NUGGET.get(), 0.1F, Maths.sec(10));
 
     }
 

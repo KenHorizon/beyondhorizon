@@ -29,6 +29,8 @@ public class BHBlocks {
     public static final BlockBehaviour.Properties NETHER_BRICKS = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.0F, 6.0F).sound(SoundType.NETHER_BRICKS);
     public static final BlockBehaviour.Properties SPAWNER_PROPERTIES = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).lightLevel(value -> value.getValue(BaseSpawnerBlock.SPAWNER_STATE).lightLevel()).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(50.0F).sound(BHSoundType.SPAWNER).noOcclusion().isViewBlocking(BHBlocks::never);
     public static final BlockBehaviour.Properties WIRED_LANE = BlockBehaviour.Properties.of().mapColor(MapColor.FIRE).strength(1.5F, 6.0F).sound(SoundType.METAL).lightLevel(l -> { return 4; }).requiresCorrectToolForDrops().pushReaction(PushReaction.PUSH_ONLY);
+    public static final BlockBehaviour.Properties BLACK_IRON = BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops();
+    public static final BlockBehaviour.Properties BLACK_IRON_STEEL = BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(2.5F, 3.0F).sound(SoundType.METAL).requiresCorrectToolForDrops();
 
     public static final RegistryObject<Block> REDSTONE_WIRED = RegistryBlocks
             .register("redstone_wired", properties -> new RedstoneWiredBlock(WIRED_LANE))
@@ -122,6 +124,20 @@ public class BHBlocks {
 
     public static final RegistryObject<Block> TATTERED_IRON_LATTICE = RegistryBlocks
             .register("tattered_iron_lattice", properties -> new LatticeFenceBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BARS)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> BLACK_IRON_LATTICE = RegistryBlocks
+            .register("black_iron_lattice", properties -> new LatticeFenceBlock(BLACK_IRON_STEEL))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> TATTERED_BLACK_IRON_LATTICE = RegistryBlocks
+            .register("tattered_black_iron_lattice", properties -> new LatticeFenceBlock(BLACK_IRON_STEEL))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.IRON)
             .dropSelf()
@@ -528,7 +544,7 @@ public class BHBlocks {
             .register();
 
     public static final RegistryObject<Block> NETHERRACK_HELLSTONE_ORE = RegistryBlocks
-            .register("netherrack_hellstone_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
+            .register("netherrack_hellstone_ore", properties -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.DIAMOND)
             .oreDrop(BHItems.RAW_HELLSTONE, 1, 3)
@@ -541,8 +557,23 @@ public class BHBlocks {
             .oreDrop(BHItems.RAW_HELLSTONE, 1, 3)
             .register();
 
+    public static final RegistryObject<Block> BLACK_IRON_ORE = RegistryBlocks
+            .register("black_iron_ore", properties -> new DropExperienceBlock(BLACK_IRON))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .oreDrop(BHItems.RAW_BLACK_IRON, 1, 3)
+            .register();
+
+    public static final RegistryObject<Block> BLACK_IRON_BLOCK = RegistryBlocks
+            .register("black_iron_block", properties -> new Block(BLACK_IRON_STEEL))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .itemName("Block of Black Iron")
+            .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register();
+
     public static final RegistryObject<Block> STARITE_ORE = RegistryBlocks
-            .register("starite_ore", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
+            .register("starite_ore", properties -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.DIAMOND)
             .oreDrop(BHItems.RAW_STARITE, 1, 3)

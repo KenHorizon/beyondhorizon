@@ -57,6 +57,12 @@ public class BHParticle {
             return RoarParticleOptions.CODEC;
         }
     });
+    public static final RegistryObject<ParticleType<AfterImageParticleOptions>> AFTERIMAGE = RegistryEntries.PARTICLE.register("afterimage", () -> new ParticleType<AfterImageParticleOptions>(false, AfterImageParticleOptions.DESERIALIZER) {
+        @Override
+        public Codec<AfterImageParticleOptions> codec() {
+            return AfterImageParticleOptions.CODEC;
+        }
+    });
     public static final RegistryObject<ParticleType<LightningParticleOptions>> LIGHTNING = RegistryEntries.PARTICLE.register("lightning", () -> new ParticleType<LightningParticleOptions>(false, LightningParticleOptions.DESERIALIZER) {
         @Override
         public Codec<LightningParticleOptions> codec() {

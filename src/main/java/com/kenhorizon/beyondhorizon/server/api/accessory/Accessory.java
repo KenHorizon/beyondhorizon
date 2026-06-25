@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
@@ -38,6 +39,7 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class Accessory {
     public enum Type implements StringRepresentable {
@@ -66,6 +68,7 @@ public abstract class Accessory {
     private int level = 1;
     public static final String ATTRIBUTES_TAGS = "AttributeModifiers";
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
+    protected final Multimap<Attribute, AttributeModifier> duplicateAttributeModifiers = HashMultimap.create();
     public Skill.Category category;
     protected boolean isInnate = false;
     protected List<RegistryObject<? extends Accessory>> innateSkills = new ArrayList<>();
@@ -224,7 +227,9 @@ public abstract class Accessory {
 
     public Accessory addAttributes(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
         AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
-        this.attributeModifiers.put(attribute, attributemodifier);
+        if (!this.attributeModifiers.put(attribute, attributemodifier)) {
+            this.duplicateAttributeModifiers.put(attribute, attributemodifier);
+        }
         return this;
     }
 
@@ -242,6 +247,9 @@ public abstract class Accessory {
         if (this.getAttributeModifierByTags(itemStack).isEmpty()) return;
         for (Map.Entry<Attribute, AttributeModifier> entry : this.getAttributeModifierByTags(itemStack).entries()) {
             AttributeInstance attributeinstance = attributeMap.getInstance(entry.getKey());
+            for (Map.Entry<Attribute, AttributeModifier> entry1 : this.getDuplicateAttributeModifiers().entries()) {
+                BeyondHorizon.LOGGER.debug("{} : Amount {}", entry.getValue() == entry1.getValue(), entry1.getValue().getAmount() + entry.getValue().getAmount());
+            }
             if (attributeinstance != null) {
                 AttributeModifier attributemodifier = entry.getValue();
                 attributeinstance.removeModifier(attributemodifier);
@@ -271,11 +279,35 @@ public abstract class Accessory {
         }
         return multimap;
     }
-
+    public Multimap<Attribute, AttributeModifier> getDuplicateAttributeModifierByTags(ItemStack itemStack) {
+        CompoundTag nbt = itemStack.getOrCreateTag();
+        Multimap<Attribute, AttributeModifier> multimap;
+        if ((!itemStack.isEmpty() && !nbt.isEmpty()) && nbt.contains(ATTRIBUTES_TAGS, 9)) {
+            multimap = HashMultimap.create();
+            ListTag nbtList = nbt.getList(ATTRIBUTES_TAGS, 10);
+            for (int i = 0; i < nbtList.size(); ++i) {
+                CompoundTag tags = nbtList.getCompound(i);
+                Optional<Attribute> optional = Optional.ofNullable(ForgeRegistries.ATTRIBUTES.getValue(ResourceLocation.tryParse(tags.getString("attribute_name"))));
+                if (optional.isPresent()) {
+                    AttributeModifier attributeModifier = AttributeModifier.load(tags);
+                    if (attributeModifier != null && attributeModifier.getId().getLeastSignificantBits() != 0L && attributeModifier.getId().getMostSignificantBits() != 0L) {
+                        multimap.put(optional.get(), attributeModifier);
+                    }
+                }
+            }
+        } else {
+            multimap = this.duplicateAttributeModifiers.isEmpty() ? this.getDuplicateAttributeModifiers() : this.duplicateAttributeModifiers;
+        }
+        return multimap;
+    }
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
         return this.attributeModifiers;
     }
-    
+
+    public Multimap<Attribute, AttributeModifier> getDuplicateAttributeModifiers() {
+        return duplicateAttributeModifiers;
+    }
+
     public Optional<IAccessoryEvent> IAccessory() {
         return Optional.empty();
     }

@@ -28,7 +28,7 @@ public class NaturalHealingGoal extends Goal {
     @Override
     public void tick() {
         LivingEntity target = this.entity.getTarget();
-        if (this.timeCooldown > 0) this.timeCooldown --;
+        if (this.timeCooldown > 0) this.timeCooldown--;
         if (target != null) {
             this.timeCooldown = defaultTimeCooldown;
         }

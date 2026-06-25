@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "beyondhorizon:tattered_black_iron_lattice"
+    }
+  ],
+  "result": {
+    "item": "beyondhorizon:black_iron_lattice"
+  }
+}

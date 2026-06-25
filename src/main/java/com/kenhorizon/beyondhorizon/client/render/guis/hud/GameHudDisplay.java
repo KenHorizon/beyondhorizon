@@ -1,34 +1,24 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 
-import com.google.common.base.Preconditions;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
-import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
-import com.kenhorizon.beyondhorizon.server.api.skills.SkillHelper;
-import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
-import net.minecraftforge.client.model.generators.ModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.ArrayList;
@@ -84,8 +74,8 @@ public class GameHudDisplay extends Gui {
                                         int x = this.hud.scaledWindowWidth / 2 - 91 + (26 * xPos);
                                         int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
                                         String value = String.format("%s", allTags.getStack());
-                                        BlitHelper.draw(guiGraphics, ICON_BACKGROUND, x, y -1, 9.0F, 24, 24, 24, 24);
-                                        BlitHelper.draw(guiGraphics, getAllIcons, x, y - 1, 9.0F, 24, 24, 24, 24);
+                                        BlitHelper.drawBlit(guiGraphics, ICON_BACKGROUND, x, y -1, 0, 0, 24, 24, 24, 24);
+                                        BlitHelper.drawBlit(guiGraphics, getAllIcons, x, y - 1, 0, 0, 24, 24, 24, 24);
                                         int valueLenght = value.length();
                                         BlitHelper.drawStrings(guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, ColorUtil.WHITE, true);
                                         RenderSystem.disableBlend();
@@ -108,7 +98,7 @@ public class GameHudDisplay extends Gui {
         int x = this.hud.scaledWindowWidth / 2 - 91;
         int y = this.hud.scaledWindowHeight - (this.leftHeight + 11);
         String value = String.format("%.0f", this.hud.armor);
-        BlitHelper.draw(guiGraphics, HudSprites.ARMOR_FULL, x, y - 1, 9.0F, 9, 9, 9, 9);
+        BlitHelper.drawBlit(guiGraphics, HudSprites.ARMOR_FULL, x, y - 1, 0, 0, 9, 9, 9, 9);
         BlitHelper.drawStrings(guiGraphics, value,x + (5 + 9), y, ColorUtil.WHITE, true);
         RenderSystem.disableBlend();
         minecraft.getProfiler().pop();
@@ -122,11 +112,11 @@ public class GameHudDisplay extends Gui {
         if (this.hud.hasAbsroption) {
             String absorption = String.format("%.0f", this.hud.absorption);
             int abX = x + (5 + 9) - (24 + absorption.length());
-            BlitHelper.draw(guiGraphics, HudSprites.ABSROPTION, abX - (5 + 9), y -1, 9.0F, 9, 9, 9, 9);
+            BlitHelper.drawBlit(guiGraphics, HudSprites.ABSROPTION, abX - (5 + 9), y -1, 0, 0, 9, 9, 9, 9);
             BlitHelper.drawStrings(guiGraphics, absorption, abX, y, ColorUtil.WHITE, true);
         }
         String health = String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth);
-        BlitHelper.draw(guiGraphics, HudSprites.HEALTH, x, y - 1, 9.0F, 9, 9, 9, 9);
+        BlitHelper.drawBlit(guiGraphics, HudSprites.HEALTH, x, y - 1, 0, 0, 9, 9, 9, 9);
         BlitHelper.drawStrings(guiGraphics, health,x + (5 + 9), y, ColorUtil.combineRGB(249, 87, 87), true);
         this.minecraft.getProfiler().pop();
     }

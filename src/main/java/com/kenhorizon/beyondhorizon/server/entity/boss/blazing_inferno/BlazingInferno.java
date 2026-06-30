@@ -15,6 +15,7 @@ import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.EruptionAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ai.control.SmartBodyControl;
 import com.kenhorizon.beyondhorizon.server.entity.boss.BHBossEntity;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.ai.*;
@@ -50,6 +51,7 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
@@ -279,6 +281,11 @@ public class BlazingInferno extends BHBossEntity {
         this.entityData.define(POWERED, true);
         this.entityData.define(DEATH_RAY, false);
         this.entityData.define(OVERHEAT, false);
+    }
+
+    @Override
+    protected BodyRotationControl createBodyControl() {
+        return new SmartBodyControl(this);
     }
 
     @Override

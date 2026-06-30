@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
@@ -63,16 +64,22 @@ public class Pyrobolt extends BaseSpearProjectile {
 
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
-        var entity = entityHitResult.getEntity();
-        if (entity instanceof LivingEntity target) {
-            target.addEffect(new MobEffectInstance(BHEffects.BURNING_HEX.get(), Maths.sec(5)));
-            this.getDamageType().dealDamage(target, this, (LivingEntity) this.getOwner(), this.getBaseDamage());
+
+    }
+
+    @Override
+    public void afterGotHit(LivingEntity entity) {
+        var owner = this.getOwner();
+        if (owner instanceof LivingEntity owners && owners instanceof Pyrolliger boss) {
+            boss.addMana(2);
         }
+        entity.addEffect(new MobEffectInstance(BHEffects.BURNING_HEX.get(), Maths.sec(5)));
+        this.getDamageType().dealDamage(entity, this, (LivingEntity) this.getOwner(), this.getBaseDamage());
     }
 
     @Override
     public void onDuration() {
-        HitResult raytraceresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
+        HitResult raytraceresult = ExtendedProjectileUtil.getHitResultOnMoveVector(this, this.getRadius(), this::canHitEntity);
         if (raytraceresult.getType() != HitResult.Type.MISS) {
             this.onHit(raytraceresult);
         }

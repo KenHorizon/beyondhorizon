@@ -10,6 +10,7 @@
     "common.DamageSourcesMixins",
     "common.EnchantmentMixins",
     "common.EntityMixins",
+    "common.FoodDataMixins",
     "common.LivingEntityMixins",
     "common.MobMixins",
     "common.PlayerMixins",
@@ -17,11 +18,12 @@
     "common.accessor.AttributeRangeAccessor"
   ],
   "client": [
+    "client.AdvancementTabMixins",
     "client.AnvilScreenMixins",
     "client.GameRendererMixins",
     "client.HumanoidModelMixins",
     "client.accessor.FontAccessor",
-    "client.accessor.ItemInHandRendererMixins",
+    "client.ItemInHandRendererMixins",
     "client.accessor.LivingEntityRendererAccessory"
   ]
 }

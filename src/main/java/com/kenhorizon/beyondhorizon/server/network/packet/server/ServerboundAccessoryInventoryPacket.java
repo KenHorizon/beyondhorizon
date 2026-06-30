@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -44,8 +45,8 @@ public class ServerboundAccessoryInventoryPacket {
             if (playerSided != null) {
                 Entity entity = playerSided.level().getEntity(this.id);
                 if (entity instanceof Player player) {
-                    player.getCapability(BHCapabilties.ACCESSORY).ifPresent(handler -> {
-                        handler.setStackInSlot(this.slot, this.itemStack);
+                    AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                        handler.getStacks().setStackInSlot(this.slot, this.itemStack);
                     });
                 }
             }

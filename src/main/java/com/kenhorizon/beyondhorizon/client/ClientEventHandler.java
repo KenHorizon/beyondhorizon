@@ -12,13 +12,11 @@ import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
-import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
-import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAcessoryKeyPacket;
@@ -26,7 +24,6 @@ import com.kenhorizon.libs.client.ModelAnimationHandler;
 import com.kenhorizon.libs.client.ModelAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;
 import com.kenhorizon.libs.client.event.PlayerModelEvent;
-import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.ChatFormatting;
@@ -40,8 +37,6 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.client.model.PlayerModel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -58,8 +53,6 @@ import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.InventoryMenu;
-import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
@@ -78,7 +71,6 @@ import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.loading.FMLLoader;
-import org.lwjgl.glfw.GLFW;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -86,7 +78,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class ClientEventHandler {
-
     private WeaponArmPose weaponRightArmPose = WeaponArmPose.EMPTY;
     private WeaponArmPose weaponLeftArmPose = WeaponArmPose.EMPTY;
     private static final ResourceLocation PHOSPOR = BeyondHorizon.resource("shaders/post/phospor_effect.json");
@@ -94,11 +85,8 @@ public class ClientEventHandler {
     @SubscribeEvent
     public void onTooltip(ItemTooltipEvent ev) {
         ItemStack stack = ev.getItemStack();
-
         // Debug (Show NBT data on *EVERYTHING*)
-
-        if(!FMLLoader.isProduction() && stack.hasTag() && ev.getFlags().isAdvanced())
-        {
+        if(!FMLLoader.isProduction() && stack.hasTag() && ev.getFlags().isAdvanced()) {
             // Format NBT debug string
             String nbtStr = stack.getTag().toString();
             ev.getToolTip().add(Component.literal("NBT: " + ChatFormatting.DARK_GRAY + nbtStr).withStyle(ChatFormatting.DARK_PURPLE));
@@ -253,22 +241,26 @@ public class ClientEventHandler {
         return mX >= (double)(x - 1) && mX < (double)(x + w + 1) && mY >= (double)(y - 1) && mY < (double)(y + h + 1);
     }
 
-//    @SubscribeEvent
-//    public void onComputeFOVModifier(ComputeFovModifierEvent event) {
-//        ItemStack itemstack = event.getPlayer().getUseItem();
-//        if (event.getPlayer().isUsingItem()) {
-//            if (itemstack.getItem() instanceof BowItem) {
-//                int i = event.getPlayer().getTicksUsingItem();
-//                float f1 = (float) i / 20.0F;
-//                if (f1 > 1.0F) {
-//                    f1 = 1.0F;
-//                } else {
-//                    f1 *= f1;
-//                }
-//                event.setNewFovModifier(event.getFovModifier() * (1.0F - f1 * 0.15F));
-//            }
-//        }
-//    }
+    @SubscribeEvent
+    public void onComputeFOVModifier(ComputeFovModifierEvent event) {
+        ItemStack itemstack = event.getPlayer().getUseItem();
+        if (event.getPlayer().isUsingItem()) {
+            if (itemstack.getItem() instanceof BowItem) {
+                int i = event.getPlayer().getTicksUsingItem();
+                float f1 = (float) i / 20.0F;
+                if (f1 > 1.0F) {
+                    f1 = 1.0F;
+                } else {
+                    f1 *= f1;
+                }
+                event.setNewFovModifier(event.getFovModifier() * (1.0F - f1 * 0.15F));
+            }
+        }
+    }
+    @SubscribeEvent
+    public void onMouseButtonClient(InputEvent.MouseButton event) {
+
+    }
 
     @SubscribeEvent
     public void onKeyPressClient(InputEvent.Key event) {
@@ -288,14 +280,15 @@ public class ClientEventHandler {
                     } else if (minecraft.screen != null || !flag) {
                         player.getInventory().selected = i;
                     } else {
-                        BeyondHorizon.LOGGER.debug("[Accessory] Slots Click {}", i);
-                        IAccessoryItemHandler handler = Capabilities.accessory(player);
-                        if (handler != null) {
-                            ItemStack itemStack = handler.getStackInSlot(i);
-                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?>) {
-                                NetworkHandler.sendToServer(new ServerboundAcessoryKeyPacket(player.getId(), itemStack, i));
+//                        BeyondHorizon.LOGGER.debug("[Accessory] Slots Click {}", i);
+                        int finalI = i;
+                        AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                            var stacks = handler.getStacks();
+                            ItemStack itemStack = stacks.getStackInSlot(finalI);
+                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem) {
+                                NetworkHandler.sendToServer(new ServerboundAcessoryKeyPacket(player.getId(), itemStack, finalI));
                             }
-                        }
+                        });
                     }
                 }
             }
@@ -385,11 +378,6 @@ public class ClientEventHandler {
         this.weaponRightArmPose = ModelAnimationHandler.INSTANCE.getWeaponArmPose(entity, InteractionHand.MAIN_HAND);
         this.weaponLeftArmPose = ModelAnimationHandler.INSTANCE.getWeaponArmPose(entity, InteractionHand.OFF_HAND);
         boolean isRightHanded = entity.getMainArm() == HumanoidArm.RIGHT;
-//        if (entity instanceof AbstractClientPlayer player) {
-//            if (((IBHDataEntity) player).getBHSharedFlags(6)) {
-//                ModelAnimations.flyingAnim(player, ((IFlight) player).getFlightTick(), event.getYaw(), event.getPitch(), (PlayerModel<?>) event.getModel());
-//            }
-//        }
         if (entity.isUsingItem()) {
             boolean isMainHand = entity.getUsedItemHand() == InteractionHand.MAIN_HAND;
             if (isMainHand == isRightHanded) {

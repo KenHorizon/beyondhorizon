@@ -327,7 +327,6 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                     float yaw = (float) Math.toRadians(-this.getYRot());
                     float yaw2 = (float) Math.toRadians(-this.getYRot() + 180);
                     float pitch = (float) Math.toRadians(-this.getXRot());
-                    this.level().addAlwaysVisibleParticle(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), x, y, z, 0, 0, 0);
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw, pitch, 40, r, g, b, 1.0F, 50F, false, RingParticles.Behavior.GROW), x, y, z, 0, 0, 0);
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw2, pitch, 40, r, g, b, 1.0F, 50F, false, RingParticles.Behavior.GROW), x, y, z, 0, 0, 0);
                 }

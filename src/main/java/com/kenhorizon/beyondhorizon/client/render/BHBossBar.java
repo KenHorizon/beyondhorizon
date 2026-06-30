@@ -51,6 +51,17 @@ public class BHBossBar {
     public static BHBossBar PYROLLIGER = new BHBossBar(
             BeyondHorizon.resourceGui("sprites/bossbar/overlay/pyrolliger.png"),
             15,
+            5,
+            15,
+            -3,
+            0,
+            256,
+            23,
+            32,
+            ChatFormatting.RED);
+    public static BHBossBar PYROLLIGER_MANA = new BHBossBar(
+            BeyondHorizon.resourceGui("sprites/bossbar/overlay/pyrolliger_mana.png"),
+            15,
             9,
             15,
             -3,
@@ -63,6 +74,7 @@ public class BHBossBar {
         BOSS_BARS.put(new BHBossInfo.BossBar(0, RegistryHelper.getKeyOrThrow(BHEntity.BLAZING_INFERNO.get())), BLAZING_INFERNO);
         BOSS_BARS.put(new BHBossInfo.BossBar(1, RegistryHelper.getKeyOrThrow(BHEntity.BLAZING_INFERNO.get())), BLAZING_INFERNO_ENGRAGED);
         BOSS_BARS.put(new BHBossInfo.BossBar(2, RegistryHelper.getKeyOrThrow(BHEntity.PYROLLIGER.get())), PYROLLIGER);
+        BOSS_BARS.put(new BHBossInfo.BossBar(3, RegistryHelper.getKeyOrThrow(BHEntity.PYROLLIGER.get())), PYROLLIGER_MANA);
     }
 
     private final ResourceLocation container;
@@ -120,7 +132,7 @@ public class BHBossBar {
         int fontLenght = Minecraft.getInstance().font.width(bossBarName);
         int textX = screenW / 2 - fontLenght / 2;
         int textY = guiY;
-        BlitHelper.drawStrings(graphics, bossBarName, textX, textY, true);
+        BlitHelper.drawBorderedStrings(graphics, bossBarName, textX, textY);
         if (this.hasOverlay) {
             minecraft.getProfiler().push("customBossBarOverlay");
             RenderSystem.setShaderTexture(0, this.overlay);

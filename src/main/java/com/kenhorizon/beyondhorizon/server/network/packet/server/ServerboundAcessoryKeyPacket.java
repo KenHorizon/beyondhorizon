@@ -1,10 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryEvent;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
+import com.kenhorizon.beyondhorizon.server.api.accessory.*;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
@@ -49,20 +46,22 @@ public class ServerboundAcessoryKeyPacket {
             if (playerSided != null) {
                 Entity entity = playerSided.level().getEntity(this.id);
                 if (entity instanceof Player player) {
-                    IAccessoryItemHandler handler = Capabilities.accessory(player);
-                    for (int i = 0; i < handler.getSlots(); i++) {
-                        if (i == this.slots) {
-                            ItemStack itemStack = handler.getStackInSlot(i);
-                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> caller) {
-                                for (Accessory accessory : caller.getAccessories()) {
-                                    Optional<IAccessoryEvent> optional = accessory.IAccessory();
-                                    optional.ifPresent(callback -> {
-                                        callback.onKeybindPressed(player, itemStack, this.slots);
-                                    });
+                    AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                        var stacks = handler.getStacks();
+                        for (int i = 0; i < handler.getSlots(); i++) {
+                            if (i == this.slots) {
+                                ItemStack itemStack = stacks.getStackInSlot(i);
+                                if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem caller) {
+                                    for (Accessory accessory : caller.getAccessories()) {
+                                        Optional<IAccessoryEvent> optional = accessory.IAccessory();
+                                        optional.ifPresent(callback -> {
+                                            callback.onKeybindPressed(player, itemStack, this.slots);
+                                        });
+                                    }
                                 }
                             }
                         }
-                    }
+                    });
                 }
             }
 

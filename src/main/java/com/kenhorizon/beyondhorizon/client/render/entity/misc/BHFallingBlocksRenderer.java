@@ -31,6 +31,9 @@ public class BHFallingBlocksRenderer extends EntityRenderer<BHFallingBlocks> {
                 poseStack.pushPose();
                 BlockPos blockpos = BlockPos.containing(entity.getX(), entity.getBoundingBox().maxY, entity.getZ());
                 poseStack.translate(-0.5D, 0.0D, -0.5D);
+                if (entity.getMode() == BHFallingBlocks.FallingMoveType.SIMULATE_RUPTURE) {
+                    poseStack.mulPose(entity.getQuaternionf());
+                }
                 var model = this.dispatcher.getBlockModel(blockstate);
                 for (var renderType : model.getRenderTypes(blockstate, RandomSource.create(blockstate.getSeed(entity.getStartPos())), net.minecraftforge.client.model.data.ModelData.EMPTY))
                     this.dispatcher.getModelRenderer().tesselateBlock(level, model, blockstate, blockpos, poseStack, buffer.getBuffer(renderType), false, RandomSource.create(), blockstate.getSeed(entity.getStartPos()), OverlayTexture.NO_OVERLAY, net.minecraftforge.client.model.data.ModelData.EMPTY, renderType);

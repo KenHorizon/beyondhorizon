@@ -3,7 +3,9 @@ package com.kenhorizon.beyondhorizon.client.render.util;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
@@ -13,19 +15,6 @@ import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class BlitHelper {
-    public static void drawScaleBlit(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, float scale, int uo, int vo, int width, int height) {
-        drawScaleBlit(guiGraphics, textures, x, y, scale, uo, vo, width ,height, 256, 256);
-    }
-    public static void drawScaleBlit(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, float scale, int uo, int vo, int width, int height, int textureWidth, int textureHeight) {
-        PoseStack poseStack = guiGraphics.pose();
-        poseStack.pushPose();
-        poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
-        poseStack.scale(scale, scale, scale);
-        guiGraphics.blit(textures, x, y, uo, vo, width, height, textureWidth, textureHeight);
-        poseStack.popPose();
-    }
-
-
     public static void drawBlit(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, int uo, int vo, int width, int height) {
         drawBlit(guiGraphics, textures, x, y, uo, vo, width, height, 256, 256, 0xFFFFFFFF);
     }
@@ -45,56 +34,83 @@ public class BlitHelper {
         guiGraphics.blit(textures, x, y, uo, vo, width, height, textureWidth, textureHeight);
         RenderSystem.disableBlend();
     }
-    // DRAW STRINGS
-
-    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, boolean border) {
-        int coloredText = 0;
-        if (text.getStyle().getColor() != null) {
-            coloredText = TextColor.fromRgb(text.getStyle().getColor().getValue()).getValue();
-        } else {
-            coloredText = ColorUtil.combineRGB(255, 255, 255);
-        }
-        drawStrings(guiGraphics, text, x, y, coloredText, border, !border);
-    }
-
-    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, int color) {
-        int coloredText;
-        if (text.getStyle().getColor() != null) {
-            coloredText = TextColor.fromRgb(text.getStyle().getColor().getValue()).getValue();
-        } else {
-            coloredText = color;
-        }
-        drawStrings(guiGraphics, text, x, y, coloredText, false, false);
-    }
-
-    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y) {
-        int coloredText = 0;
-        if (text.getStyle().getColor() != null) {
-            coloredText = TextColor.fromRgb(text.getStyle().getColor().getValue()).getValue();
-        } else {
-            coloredText = ColorUtil.combineRGB(255, 255, 255);
-        }
-        drawStrings(guiGraphics, text, x, y, coloredText, false, true);
+    // DRAW TEXT
+    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y) {
+        drawStrings(guiGraphics, Component.literal(text), x, y, ColorUtil.WHITE, true);
     }
 
     public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color) {
-        drawStrings(guiGraphics, text, x, y, color, false, false);
-    }
-    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color, boolean borderOrdropShadow) {
-        drawStrings(guiGraphics, text, x, y, color, borderOrdropShadow, !borderOrdropShadow);
+        drawStrings(guiGraphics, Component.literal(text), x, y, color, true);
     }
 
-    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, int color, boolean border, boolean dropShadow) {
-        drawStrings(guiGraphics, text.getString(), x, y, color, border, dropShadow);
+
+    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y) {
+        drawStrings(guiGraphics, text.getString(), x, y, ColorUtil.WHITE, true);
     }
 
-    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color, boolean border, boolean dropShadow) {
-        if (border) {
-            guiGraphics.drawString(Minecraft.getInstance().font, text, x + 1, y, ColorUtil.combineRGB(0, 0, 0), false);
-            guiGraphics.drawString(Minecraft.getInstance().font, text, x - 1, y, ColorUtil.combineRGB(0, 0, 0), false);
-            guiGraphics.drawString(Minecraft.getInstance().font, text, x, y + 1, ColorUtil.combineRGB(0, 0, 0), false);
-            guiGraphics.drawString(Minecraft.getInstance().font, text, x, y - 1, ColorUtil.combineRGB(0, 0, 0), false);
-        }
-        guiGraphics.drawString(Minecraft.getInstance().font, text, x, y, color, dropShadow);
+    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, int color) {
+        drawStrings(guiGraphics, text.getString(), x, y, color, true);
+    }
+
+    public static void drawStrings(GuiGraphics guiGraphics, Component text, int x, int y, int color, boolean dropShadow) {
+        drawStrings(guiGraphics, text.getString(), x, y, color, dropShadow);
+    }
+
+    public static void drawStrings(GuiGraphics guiGraphics, String text, int x, int y, int color, boolean dropShadow) {
+        Minecraft mc = Minecraft.getInstance();
+        mc.font.drawInBatch(text, x, y, color, dropShadow, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
+    }
+
+    // DRAW BORDER TEXT
+    public static void drawBorderedStrings(GuiGraphics guiGraphics, String text, int x, int y) {
+        drawBorderedStrings(guiGraphics, Component.literal(text), x, y, ColorUtil.GRAY, ColorUtil.BLACK);
+    }
+    public static void drawBorderedStrings(GuiGraphics guiGraphics, String text, int x, int y, int color) {
+        drawBorderedStrings(guiGraphics, Component.literal(text), x, y, color, ColorUtil.BLACK);
+    }
+    public static void drawBorderedStrings(GuiGraphics guiGraphics, Component text, int x, int y) {
+        drawBorderedStrings(guiGraphics, text, x, y, ColorUtil.GRAY, ColorUtil.BLACK);
+    }
+    public static void drawBorderedStrings(GuiGraphics guiGraphics, Component text, int x, int y, int color) {
+        drawBorderedStrings(guiGraphics, text, x, y, color, ColorUtil.BLACK);
+    }
+    public static void drawBorderedStrings(GuiGraphics guiGraphics, Component text, int x, int y, int color, int borderColor) {
+        Minecraft mc = Minecraft.getInstance();
+        mc.font.drawInBatch8xOutline(text.getVisualOrderText(), x, y, color, borderColor, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), 15728880);
+    }
+    // AC
+    public static void blitWithColor(GuiGraphics guiGraphics, ResourceLocation p_283377_, int p_281970_, int p_282111_, int p_283134_, int p_282778_, int p_281478_, int p_281821_, float r, float g, float b, float a) {
+        blitWithColor(guiGraphics, p_283377_, p_281970_, p_282111_, 0, (float) p_283134_, (float) p_282778_, p_281478_, p_281821_, 256, 256, r, g, b, a);
+    }
+
+    public static void blitWithColor(GuiGraphics guiGraphics, ResourceLocation p_283573_, int p_283574_, int p_283670_, int p_283545_, float p_283029_, float p_283061_, int p_282845_, int p_282558_, int p_282832_, int p_281851_, float r, float g, float b, float a) {
+        blitWithColor(guiGraphics, p_283573_, p_283574_, p_283574_ + p_282845_, p_283670_, p_283670_ + p_282558_, p_283545_, p_282845_, p_282558_, p_283029_, p_283061_, p_282832_, p_281851_, r, g, b, a);
+    }
+
+    public static void blitWithColor(GuiGraphics guiGraphics, ResourceLocation p_282034_, int p_283671_, int p_282377_, int p_282058_, int p_281939_, float p_282285_, float p_283199_, int p_282186_, int p_282322_, int p_282481_, int p_281887_, float r, float g, float b, float a) {
+        blitWithColor(guiGraphics, p_282034_, p_283671_, p_283671_ + p_282058_, p_282377_, p_282377_ + p_281939_, 0, p_282186_, p_282322_, p_282285_, p_283199_, p_282481_, p_281887_, r, g, b, a);
+    }
+
+    public static void blitWithColor(GuiGraphics guiGraphics, ResourceLocation p_283272_, int p_283605_, int p_281879_, float p_282809_, float p_282942_, int p_281922_, int p_282385_, int p_282596_, int p_281699_, float r, float g, float b, float a) {
+        blitWithColor(guiGraphics, p_283272_, p_283605_, p_281879_, p_281922_, p_282385_, p_282809_, p_282942_, p_281922_, p_282385_, p_282596_, p_281699_, r, g, b, a);
+    }
+
+    private static void blitWithColor(GuiGraphics guiGraphics, ResourceLocation p_282639_, int p_282732_, int p_283541_, int p_281760_, int p_283298_, int p_283429_, int p_282193_, int p_281980_, float p_282660_, float p_281522_, int p_282315_, int p_281436_, float r, float g, float b, float a) {
+        blitWithColor(guiGraphics, p_282639_, p_282732_, p_283541_, p_281760_, p_283298_, p_283429_, (p_282660_ + 0.0F) / (float) p_282315_, (p_282660_ + (float) p_282193_) / (float) p_282315_, (p_281522_ + 0.0F) / (float) p_281436_, (p_281522_ + (float) p_281980_) / (float) p_281436_, r, g, b, a);
+    }
+
+    private static void blitWithColor(GuiGraphics guiGraphics, ResourceLocation texture, int startX, int endX, int startY, int endY, int zLevel, float u0, float u1, float v0, float v1, float r, float g, float b, float a) {
+        RenderSystem.setShaderTexture(0, texture);
+        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+        RenderSystem.enableBlend();
+        Matrix4f matrix4f = guiGraphics.pose().last().pose();
+        BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+        bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+        bufferbuilder.vertex(matrix4f, (float) startX, (float) startY, (float) zLevel).color(r, g, b, a).uv(u0, v0).endVertex();
+        bufferbuilder.vertex(matrix4f, (float) startX, (float) endY, (float) zLevel).color(r, g, b, a).uv(u0, v1).endVertex();
+        bufferbuilder.vertex(matrix4f, (float) endX, (float) endY, (float) zLevel).color(r, g, b, a).uv(u1, v1).endVertex();
+        bufferbuilder.vertex(matrix4f, (float) endX, (float) startY, (float) zLevel).color(r, g, b, a).uv(u1, v0).endVertex();
+        BufferUploader.drawWithShader(bufferbuilder.end());
+        RenderSystem.disableBlend();
     }
 }

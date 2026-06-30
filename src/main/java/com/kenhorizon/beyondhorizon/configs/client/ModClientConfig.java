@@ -11,6 +11,9 @@ public class ModClientConfig {
     public static ForgeConfigSpec.BooleanValue REDUCE_DEBUG;
     public static ForgeConfigSpec.BooleanValue MUSIC_BOSS;
     public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR;
+    public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR_USE_VANILLA_FONT;
+    public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR_TEXT_BOLD;
+    public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR_COLOR_FORMAT;
     public static ForgeConfigSpec.BooleanValue ATTRIBUTE_TOOLTIP_OVERHAUl;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_ACCESSORY;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_SKILL;
@@ -19,8 +22,6 @@ public class ModClientConfig {
     public static ForgeConfigSpec.IntValue SCREEN_SHAKE_AMOUNT;
     public static ForgeConfigSpec.IntValue ACCESSORY_BUTTON_X;
     public static ForgeConfigSpec.IntValue ACCESSORY_BUTTON_Y;
-    public static ForgeConfigSpec.IntValue INV_ACCESSORY_BUTTON_X;
-    public static ForgeConfigSpec.IntValue INV_ACCESSORY_BUTTON_Y;
     public static ForgeConfigSpec.EnumValue<GameHuds> GAME_HUD;
 
     public static final ForgeConfigSpec SPEC;
@@ -43,12 +44,26 @@ public class ModClientConfig {
         DAMAGE_INDICATOR = builder
                 .comment("Toggle to see the damage/heal dealt or take")
                 .define("Damage Indicator", true);
+        DAMAGE_INDICATOR_USE_VANILLA_FONT = builder
+                .comment("Toggle to render the damage indicator number into vanilla style font")
+                .define("Damage Indicator Vanilla Font", false);
+        DAMAGE_INDICATOR_TEXT_BOLD = builder
+                .comment("Toggle to see if the Damage indicator's number will render bold style")
+                .define("Damage Indicator Text Bold", true);
+        DAMAGE_INDICATOR_COLOR_FORMAT = builder
+                .comment("Toggle to change how damage indicator color rendered depends what type of damage is being hit")
+                .comment("If this disable the color is always rendered Gold")
+                .comment("Physical Damage -> Gold")
+                .comment("Magic Damage -> Blue")
+                .comment("True Damage -> White")
+                .comment("Raw Damage -> Red")
+                .define("Damage Indicator Color Format", true);
         SCREEN_SHAKE = builder
                 .comment("Allow to do screen shake effect")
                 .define("Screen Shake", true);
         SCREEN_SHAKE_AMOUNT = builder
                 .comment("Change how much Sceen Shake Effectiveness")
-                .comment("      Screen Shake Effectivness [1-100%]")
+                .comment("Screen Shake Effectivness [1-100%]")
                 .defineInRange("Screen Shake Multiplier", 100, 0, 100);
         GAME_HUD = builder
                 .comment("Change how your game's hud will be displayed")
@@ -66,20 +81,21 @@ public class ModClientConfig {
         builder.pop();
         builder.push("Beyond Horizon | Tooltip Configs");
         ATTRIBUTE_TOOLTIP_OVERHAUl = builder
-                .comment("  Replace all tooltips with new re-visual look and more dynamic")
-                .comment("  [Purpose of this to make the added attribute formatted dark green text instead of blue and replacing some attributes that are percentages like knockback resistance and etc.]")
+                .comment("Replace all tooltips with new re-visual")
+                .comment("Changes:")
+                .comment("All attribute based on percentages are now visually formated on percent instead of 0.1")
+                .comment("Replacing modified and addative attribute into dark green color format")
                 .define("Attribute Tooltip Overhaul", true);
         ADVANCED_TOOLTIP = builder
-                .comment("  Extend item's tooltip information")
+                .comment(" Extend item's tooltip information")
                 .define("Show Advanced Tooltip", true);
         ADVANCED_TOOLTIP_ACCESSORY = builder
-                .comment("  Extend item's tooltip information only in accessory")
-                .comment("      [Disabling Advance Tooltip will automatic disabled this]")
+                .comment("Extend item's tooltip information only in accessory")
+                .comment("[Disabling Advance Tooltip will automatic disabled this]")
                 .define("Show Advanced Tooltip On Accessory", true);
         ADVANCED_TOOLTIP_SKILL = builder
-                .comment("  Extend item's tooltip information only in accessory")
-                .comment("      [Disabling Advance Tooltip will automatic disabled this]")
-                .comment("      [Disabling Advance Tooltip will automatic disabled this]")
+                .comment("Extend item's tooltip information only in accessory")
+                .comment("[Disabling Advance Tooltip will automatic disabled this]")
                 .define("Show Advanced Tooltip On Skill", true);
         builder.pop();
     }

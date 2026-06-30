@@ -5,8 +5,8 @@ import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -58,12 +58,13 @@ public class GameHudDisplay extends Gui {
         this.hud.update();
         var stackableTags = Capabilities.stackable(player);
         int xPos = 0;
-        IAccessoryItemHandler handler = Capabilities.accessory(player);
+        IAccessoryStackHandler handler = Capabilities.accessory(player);
         if (stackableTags != null) {
             if (handler != null) {
-                for (int i = 0; i < handler.getSlots(); i++) {
-                    ItemStack stack = handler.getStackInSlot(i);
-                    if (!stack.isEmpty() && stack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+                var stacks = handler.getStacks();
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    ItemStack stack = stacks.getStackInSlot(i);
+                    if (!stack.isEmpty() && stack.getItem() instanceof IAccessoryItem accessoryItems) {
                         for (var accessory : accessoryItems.getAccessories()) {
                             if (accessory instanceof IStackIconOverlay overlay) {
                                 List<StackableTags> list = new ArrayList<>();
@@ -93,14 +94,12 @@ public class GameHudDisplay extends Gui {
     }
     public void renderArmor(GuiGraphics guiGraphics, float partialTicks) {
         minecraft.getProfiler().push("armor");
-        RenderSystem.enableBlend();
         this.hud.update();
         int x = this.hud.scaledWindowWidth / 2 - 91;
         int y = this.hud.scaledWindowHeight - (this.leftHeight + 11);
         String value = String.format("%.0f", this.hud.armor);
         BlitHelper.drawBlit(guiGraphics, HudSprites.ARMOR_FULL, x, y - 1, 0, 0, 9, 9, 9, 9);
-        BlitHelper.drawStrings(guiGraphics, value,x + (5 + 9), y, ColorUtil.WHITE, true);
-        RenderSystem.disableBlend();
+        BlitHelper.drawBorderedStrings(guiGraphics, value,x + (5 + 9), y, ColorUtil.WHITE);
         minecraft.getProfiler().pop();
     }
 
@@ -117,7 +116,7 @@ public class GameHudDisplay extends Gui {
         }
         String health = String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth);
         BlitHelper.drawBlit(guiGraphics, HudSprites.HEALTH, x, y - 1, 0, 0, 9, 9, 9, 9);
-        BlitHelper.drawStrings(guiGraphics, health,x + (5 + 9), y, ColorUtil.combineRGB(249, 87, 87), true);
+        BlitHelper.drawBorderedStrings(guiGraphics, health,x + (5 + 9), y, ColorUtil.combineRGB(249, 87, 87));
         this.minecraft.getProfiler().pop();
     }
 

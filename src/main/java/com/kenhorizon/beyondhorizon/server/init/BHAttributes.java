@@ -22,8 +22,8 @@ public class BHAttributes {
     public static final RegistryObject<Attribute> HEALTH_REGENERATION = registerAttributes("health_regeneration", 0.1D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> LETHALITY = registerAttributes("lethality", 0.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> ABILITY_POWER = registerAttributes("ability_power", 0.0D, 0.0D, MAX_VALUE, true);
-    public static final RegistryObject<Attribute> FLAT_MAGIC_PENETRATION = registerAttributes("flat.magic_penetration", 0.0D, -MAX_VALUE, MAX_VALUE, true);
-    public static final RegistryObject<Attribute> PERCENTAGE_MAGIC_PENETRATION = registerAttributes("percentage.magic_penetration", 0.0D, 0.0D, 1.0D, true);
+    public static final RegistryObject<Attribute> FLAT_MAGIC_PENETRATION = registerAttributes("flat.magic_penetration", "Magic Penetration", 0.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> PERCENTAGE_MAGIC_PENETRATION = registerAttributes("percentage.magic_penetration", "Magic Penetration", 0.0D, 0.0D, 1.0D, true);
     public static final RegistryObject<Attribute> MAGIC_RESISTANCE = registerAttributes("magic_resistance", 0.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> MANA_COST = registerAttributes("mana_cost", 0.0D, -1.0D, 1.0D, true);
     public static final RegistryObject<Attribute> MANA_REGENERATION = registerAttributes("mana_regeneration", 1.0D, 0.0D, MAX_VALUE, true);
@@ -39,7 +39,8 @@ public class BHAttributes {
     * Integrated from 1.20.2++ attributes changes
     * */
     public static final RegistryObject<Attribute> MINING_EFFICIENCY = registerAttributes("mining_efficiency", 1.0D, -MAX_VALUE, MAX_VALUE, true);
-    public static final RegistryObject<Attribute> MOVEMENT_EFFICIENCY = registerAttributes("movement_efficiency", 1.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> WATER_MINING_EFFICIENCY = registerAttributes("water_mining_efficiency", 0.0D, -MAX_VALUE, MAX_VALUE, true);
+    public static final RegistryObject<Attribute> MOVEMENT_EFFICIENCY = registerAttributes("movement_efficiency", 0.0D, -MAX_VALUE, MAX_VALUE, true);
     public static final RegistryObject<Attribute> BURNING_TIME = registerAttributes("burning_time", 1.0D, -MAX_VALUE, MAX_VALUE, true);
     public static final RegistryObject<Attribute> OXYGEN_BONUS = registerAttributes("oxygen_bonus", 1.0D, -MAX_VALUE, MAX_VALUE, true);
     public static final RegistryObject<Attribute> FALLDAMAGE_MULTIPLIER = registerAttributes("fall_damage_multiplier", 1.0D, -MAX_VALUE, MAX_VALUE, true);
@@ -59,7 +60,12 @@ public class BHAttributes {
         RegistryHelper.registerAttribiuteLang(name, register);
         return register;
     }
-
+    static RegistryObject<Attribute> registerAttributes(String name, String attributeName, double defaultValue, double min, double max, boolean syncable) {
+        String attributesName = String.format("attribute.%s.%s", BeyondHorizon.ID, name);
+        RegistryObject<Attribute> register = RegistryEntries.ATTRIBUTES.register(name, () -> new RangedAttribute(attributesName, defaultValue, min, max).setSyncable(syncable));
+        RegistryHelper.registerAttribiuteLang(attributeName, register);
+        return register;
+    }
     public static void register(IEventBus eventBus) {
         RegistryEntries.ATTRIBUTES.register(eventBus);
     }

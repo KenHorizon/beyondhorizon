@@ -6,32 +6,26 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
-import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
-import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
-import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.*;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -39,9 +33,9 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class Accessory {
+
     public enum Type implements StringRepresentable {
         PASSIVE,
         ACTIVE;
@@ -57,6 +51,7 @@ public abstract class Accessory {
     }
 
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final String ACCESSORY_ATTRIBUTES_TAGS = "accessory_attribute_modifiers";
     protected int cooldown = 0;
     protected int manaCost = 0;
     protected final AttributeTooltips attributeTooltip = new AttributeTooltips();
@@ -66,10 +61,8 @@ public abstract class Accessory {
     protected boolean attributeTooltipEnable = true;
     private float magnitude;
     private int level = 1;
-    public static final String ATTRIBUTES_TAGS = "AttributeModifiers";
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
-    protected final Multimap<Attribute, AttributeModifier> duplicateAttributeModifiers = HashMultimap.create();
-    public Skill.Category category;
+    protected final Multimap<Attribute, AttributeModifier> indetifierModifiers = HashMultimap.create();
     protected boolean isInnate = false;
     protected List<RegistryObject<? extends Accessory>> innateSkills = new ArrayList<>();
     @Nullable
@@ -127,9 +120,11 @@ public abstract class Accessory {
     public float getMagnitude() {
         return magnitude;
     }
+
     public List<RegistryObject<? extends Accessory>> innateSkill() {
         return this.innateSkills;
     }
+
     public Accessory innate(RegistryObject<Accessory> skill) {
         this.innateSkills.add(skill);
         return this;
@@ -150,6 +145,19 @@ public abstract class Accessory {
         return this;
     }
 
+    public Multimap<Attribute, AttributeModifier> registerAttributes(UUID uuid, ItemStack itemStack) {
+        Multimap<Attribute, AttributeModifier> map = HashMultimap.create();
+        for (var entryMap : this.getIndetifierModifiers().entries()) {
+            var staticModifier = entryMap.getValue();
+            var attribute = entryMap.getKey();
+            if (staticModifier != null) {
+                map.put(attribute, new AttributeModifier(uuid, staticModifier.getName(), staticModifier.getAmount(), staticModifier.getOperation()));
+            }
+        }
+        this.attributeModifiers.putAll(map);
+        return map;
+    }
+
     public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
         if (!this.isTooltipEnable()) return;
         if (this.isTooltipNameEnable()) {
@@ -167,41 +175,26 @@ public abstract class Accessory {
     }
 
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
-        Minecraft minecraft = Minecraft.getInstance();
-        Font font = minecraft.font;
-        int screenWidth = minecraft.getWindow().getScreenWidth();
-        int maxWidth;
-        if (screenWidth < 860) {
-            maxWidth = Constant.SMALL_TOOLTIP_MAX_TEXT_WITDH;
-        } else if (screenWidth > 860 && screenWidth < 1280) {
-            maxWidth = Constant.MEDUIM_TOOLTIP_MAX_TEXT_WITDH;
-        } else {
-            maxWidth = Constant.TOOLTIP_MAX_TEXT_WITDH;
-        }
-        for (var tooltips : this.tooltipDescriptionList(itemStack)) {
-            List<FormattedCharSequence> wrappedText = font.split(tooltips, maxWidth);
-            for (FormattedCharSequence format : wrappedText) {
-                List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
-                Component.literal(texts.get(0).getString()).setStyle(tooltips.getStyle().withColor(Tooltips.TOOLTIP[0]).withBold(tooltips.getStyle().isBold()).withUnderlined(tooltips.getStyle().isUnderlined()));
-                Component text;
-                if (tooltips.getStyle().getColor() == null) {
-                    text = Component.literal(texts.get(0).getString()).setStyle(tooltips.getStyle().withColor(Tooltips.TOOLTIP[0]).withBold(tooltips.getStyle().isBold()).withUnderlined(tooltips.getStyle().isUnderlined()));
-                } else {
-                    text = Component.literal(texts.get(0).getString()).setStyle(tooltips.getStyle());
-                }
-                tooltip.add(this.spacing().append(text).append(this.spacing()));
+        Minecraft mc = Minecraft.getInstance();
+        Player player = BeyondHorizon.PROXY.clientPlayer();
+        tooltip.addAll(this.makeTooltips(itemStack));
+    }
 
-            }
+    public static Optional<IAccessoryStackHandler> getInventory(LivingEntity entity) {
+        if (entity != null) {
+            return Optional.of((IAccessoryStackHandler) entity.getCapability(BHCapabilties.ACCESSORY));
+        } else {
+            return Optional.empty();
         }
     }
 
-    protected List<MutableComponent> tooltipDescriptionList(ItemStack itemStack) {
+    protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
-        list.add(tooltipDescription(itemStack));
+        list.add(makeTooltip(itemStack));
         return list;
     }
 
-    protected MutableComponent tooltipDescription(ItemStack itemStack) {
+    protected MutableComponent makeTooltip(ItemStack itemStack) {
         return Component.translatable(this.createId());
     }
 
@@ -219,101 +212,39 @@ public abstract class Accessory {
         tooltip.add(text);
     }
 
-    public void addTooltipAttributes(ItemStack itemStack, List<Component> tooltip) {
+    public void addTooltipAttributes(ItemStack itemStack, List<Component> tooltip, Multimap<Attribute, AttributeModifier> map) {
         if (this.isAttributeTooltipEnable()) {
-            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, this.getAttributeModifierByTags(itemStack));
+            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, map);
         }
     }
 
-    public Accessory addAttributes(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
-        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
-        if (!this.attributeModifiers.put(attribute, attributemodifier)) {
-            this.duplicateAttributeModifiers.put(attribute, attributemodifier);
-        }
+    public Accessory addAttributes(Attribute attribute, double amount, AttributeModifier.Operation operation) {
+        AttributeModifier attributemodifier = new AttributeModifier(UUID.randomUUID(), "Attribute Modifier", amount, operation);
+        this.indetifierModifiers.put(attribute, attributemodifier);
         return this;
     }
 
-    public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, ItemStack itemStack) {
-        if (this.getAttributeModifierByTags(itemStack).isEmpty()) return;
-        for (Map.Entry<Attribute, AttributeModifier> entry : this.getAttributeModifierByTags(itemStack).entries()) {
-            AttributeInstance attributeinstance = attributeMap.getInstance(entry.getKey());
-            if (attributeinstance != null) {
-                attributeinstance.removeModifier(entry.getValue());
-            }
-        }
+    public void removeAttributeModifiers(LivingEntity entity, Multimap<Attribute, AttributeModifier> modifier) {
+        AttributeMap attributeMap = entity.getAttributes();
+        attributeMap.removeAttributeModifiers(modifier);
     }
 
-    public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, ItemStack itemStack) {
-        if (this.getAttributeModifierByTags(itemStack).isEmpty()) return;
-        for (Map.Entry<Attribute, AttributeModifier> entry : this.getAttributeModifierByTags(itemStack).entries()) {
-            AttributeInstance attributeinstance = attributeMap.getInstance(entry.getKey());
-            for (Map.Entry<Attribute, AttributeModifier> entry1 : this.getDuplicateAttributeModifiers().entries()) {
-                BeyondHorizon.LOGGER.debug("{} : Amount {}", entry.getValue() == entry1.getValue(), entry1.getValue().getAmount() + entry.getValue().getAmount());
-            }
-            if (attributeinstance != null) {
-                AttributeModifier attributemodifier = entry.getValue();
-                attributeinstance.removeModifier(attributemodifier);
-                attributeinstance.addPermanentModifier(new AttributeModifier(attributemodifier.getId(), "Attribute Modifier", attributemodifier.getAmount(), attributemodifier.getOperation()));
-            }
-        }
+    public void addAttributeModifiers(LivingEntity entity, Multimap<Attribute, AttributeModifier> modifier) {
+        AttributeMap attributeMap = entity.getAttributes();
+        attributeMap.addTransientAttributeModifiers(modifier);
     }
 
-    public Multimap<Attribute, AttributeModifier> getAttributeModifierByTags(ItemStack itemStack) {
-        CompoundTag nbt = itemStack.getOrCreateTag();
-        Multimap<Attribute, AttributeModifier> multimap;
-        if ((!itemStack.isEmpty() && !nbt.isEmpty()) && nbt.contains(ATTRIBUTES_TAGS, 9)) {
-            multimap = HashMultimap.create();
-            ListTag nbtList = nbt.getList(ATTRIBUTES_TAGS, 10);
-            for (int i = 0; i < nbtList.size(); ++i) {
-                CompoundTag tags = nbtList.getCompound(i);
-                Optional<Attribute> optional = Optional.ofNullable(ForgeRegistries.ATTRIBUTES.getValue(ResourceLocation.tryParse(tags.getString("attribute_name"))));
-                if (optional.isPresent()) {
-                    AttributeModifier attributeModifier = AttributeModifier.load(tags);
-                    if (attributeModifier != null && attributeModifier.getId().getLeastSignificantBits() != 0L && attributeModifier.getId().getMostSignificantBits() != 0L) {
-                        multimap.put(optional.get(), attributeModifier);
-                    }
-                }
-            }
-        } else {
-            multimap = this.attributeModifiers.isEmpty() ? this.getDefaultAttributeModifiers() : this.attributeModifiers;
-        }
-        return multimap;
-    }
-    public Multimap<Attribute, AttributeModifier> getDuplicateAttributeModifierByTags(ItemStack itemStack) {
-        CompoundTag nbt = itemStack.getOrCreateTag();
-        Multimap<Attribute, AttributeModifier> multimap;
-        if ((!itemStack.isEmpty() && !nbt.isEmpty()) && nbt.contains(ATTRIBUTES_TAGS, 9)) {
-            multimap = HashMultimap.create();
-            ListTag nbtList = nbt.getList(ATTRIBUTES_TAGS, 10);
-            for (int i = 0; i < nbtList.size(); ++i) {
-                CompoundTag tags = nbtList.getCompound(i);
-                Optional<Attribute> optional = Optional.ofNullable(ForgeRegistries.ATTRIBUTES.getValue(ResourceLocation.tryParse(tags.getString("attribute_name"))));
-                if (optional.isPresent()) {
-                    AttributeModifier attributeModifier = AttributeModifier.load(tags);
-                    if (attributeModifier != null && attributeModifier.getId().getLeastSignificantBits() != 0L && attributeModifier.getId().getMostSignificantBits() != 0L) {
-                        multimap.put(optional.get(), attributeModifier);
-                    }
-                }
-            }
-        } else {
-            multimap = this.duplicateAttributeModifiers.isEmpty() ? this.getDuplicateAttributeModifiers() : this.duplicateAttributeModifiers;
-        }
-        return multimap;
-    }
+
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
         return this.attributeModifiers;
     }
 
-    public Multimap<Attribute, AttributeModifier> getDuplicateAttributeModifiers() {
-        return duplicateAttributeModifiers;
+    public Multimap<Attribute, AttributeModifier> getIndetifierModifiers() {
+        return indetifierModifiers;
     }
 
     public Optional<IAccessoryEvent> IAccessory() {
         return Optional.empty();
-    }
-    public
-    Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers() {
-        return ImmutableMultimap.of();
     }
 
     public MutableComponent spacing() {

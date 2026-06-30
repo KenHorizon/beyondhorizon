@@ -59,14 +59,15 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
     }
 
     @Override
-    protected List<MutableComponent> tooltipDescriptionList(ItemStack itemStack) {
+    protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         Player player = BeyondHorizon.PROXY.clientPlayer();
         if (player != null) {
-            IAccessoryItemHandler handler = Capabilities.accessory(player);
+            IAccessoryStackHandler handler = Capabilities.accessory(player);
             if (handler != null) {
-                if (handler.contains(itemStack)) {
-                    list.add(this.addKeyBinds(handler.whatSlots(itemStack)));
+                var stacks = handler.getStacks();
+                if (stacks.contains(itemStack)) {
+                    list.add(this.addKeyBinds(stacks.whatSlots(itemStack)));
                 }
             }
         }
@@ -97,7 +98,7 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
     }
 
     @Override
-    public void onChangePrevAccessorySlot(Player player, ItemStack itemStack) {
+    public void onUnequip(Player player, ItemStack itemStack) {
         this.active = false;
     }
 

@@ -36,80 +36,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class GuideBookScreen extends Screen {
-    public enum Pages {
-        INTRODUCTION(0),
-        DAMAGE_TYPES(0),
-        EFFECT_TYPES(1),
-        GAME_MECHANICS(0),
-        ACCESSORY(1),
-        LEVEL_SYSTEM(1),
-        DIFFICULTY(1),
-        STATS(2);
-
-        public int pages;
-        public static final ImmutableList<Pages> ALL_PAGES = ImmutableList.copyOf(Pages.values());
-        public static final ImmutableList<Integer> ALL_INDEXES = ImmutableList
-                .copyOf(IntStream.range(0, Pages.values().length).iterator());
-
-        Pages(int pages) {
-            this.pages = pages;
-        }
-        public static Set<Pages> containedPages(Collection<Integer> pages) {
-            return pages.stream().map(ALL_PAGES::get).collect(Collectors.toSet());
-        }
-        public static boolean hasAllPages(ItemStack book) {
-            return Ints.asList(book.getTag().getIntArray("Pages")).containsAll(ALL_INDEXES);
-        }
-
-        public static List<Integer> enumToInt(List<Pages> pages) {
-            return pages.stream().map(Pages::ordinal).collect(Collectors.toList());
-        }
-
-        public static Pages getRand() {
-            return Pages.values()[ThreadLocalRandom.current().nextInt(Pages.values().length)];
-
-        }
-
-        public static void addRandomPage(ItemStack book) {
-            if (book.getItem() instanceof GuideBookItem) {
-                List<Pages> list = Pages.possiblePages(book);
-                if (!list.isEmpty()) {
-                    addPage(list.get(ThreadLocalRandom.current().nextInt(list.size())), book);
-                }
-            }
-        }
-
-        public static List<Pages> possiblePages(ItemStack book) {
-            if (book.getItem() instanceof GuideBookItem) {
-                CompoundTag tag = book.getTag();
-                Collection<Pages> containedPages = containedPages(Ints.asList(tag.getIntArray("Pages")));
-                List<Pages> possiblePages = new ArrayList<>(ALL_PAGES);
-                possiblePages.removeAll(containedPages);
-                return possiblePages;
-            }
-            return Collections.emptyList();
-        }
-        public static boolean addPage(Pages page, ItemStack book) {
-            boolean flag = false;
-            if (book.getItem() instanceof GuideBookItem) {
-                CompoundTag tag = book.getTag();
-                final List<Integer> already = new ArrayList<>(Ints.asList(tag.getIntArray("Pages")));
-                if (!already.contains(page.ordinal())) {
-                    already.add(page.ordinal());
-                    flag = true;
-                }
-                tag.putIntArray("Pages", Ints.toArray(already));
-            }
-            return flag;
-        }
-    }
-
     protected static final int X = 390;
     protected static final int Y = 245;
     private static final ResourceLocation LOCATION = BeyondHorizon.resourceGui("guide_book/guidebook.png");
     private static final ResourceLocation DRAW0 = BeyondHorizon.resourceGui("guide_book/drawings_0.png");
-    public List<Pages> allPageTypes = new ArrayList<>();
-    public Pages pageType;
+    public List<GuideBookPages> allPageTypes = new ArrayList<>();
+    public GuideBookPages pageType;
     public List<GuideBookIndexButton> indexButtons = new ArrayList<>();
     public GuideBookChangePageButton previousPage;
     public GuideBookChangePageButton nextPage;
@@ -118,22 +50,16 @@ public class GuideBookScreen extends Screen {
     public int bookPagesTotal = 1;
     public int indexPages;
     public int indexPagesTotal = 1;
-    protected ItemStack itemStack;
     protected boolean index;
     protected Font font = getFont();
 
-    public GuideBookScreen(ItemStack itemStack) {
+    public GuideBookScreen() {
         super(Component.empty());
-        this.itemStack = itemStack;
-        if (!itemStack.isEmpty() && itemStack.getItem() != null && itemStack.getItem() == BHItems.GUIDE_BOOK.get()) {
-            if (itemStack.getTag() != null) {
-                Set<Pages> pages = Pages.containedPages(Ints.asList(itemStack.getTag().getIntArray("Pages")));
-                allPageTypes.addAll(pages);
-                // Make sure the pages are sorted according to the enum
-                allPageTypes.sort(Comparator.comparingInt(Enum::ordinal));
-                indexPagesTotal = (int) Math.ceil(pages.size() / 10D);
-            }
-        }
+        Set<GuideBookPages> pages = new HashSet<>();
+        Collections.addAll(pages, GuideBookPages.values());
+        allPageTypes.addAll(pages);
+        allPageTypes.sort(Comparator.comparingInt(Enum::ordinal));
+        indexPagesTotal = (int) Math.ceil(pages.size() / 10D);
         this.index = true;
     }
     private static Font getFont() {
@@ -157,7 +83,7 @@ public class GuideBookScreen extends Screen {
         this.indexButtons.clear();
         int centerX = (width - X) / 2;
         int centerY = (height - Y) / 2;
-        this.previousPage = new GuideBookChangePageButton(centerX + 15, centerY + 215, false, 0, (p_214132_1_) -> {
+        this.previousPage = new GuideBookChangePageButton(centerX - (15), centerY + 215, false, 0, (p_214132_1_) -> {
             if ((this.index ? this.indexPages > 0 : this.pageType != null)) {
                 if (this.index) {
                     this.indexPages--;
@@ -173,7 +99,7 @@ public class GuideBookScreen extends Screen {
             }
         });
         this.addRenderableWidget(previousPage);
-        this.nextPage = new GuideBookChangePageButton(centerX + 357, centerY + 215, true, 0, (p_214132_1_) -> {
+        this.nextPage = new GuideBookChangePageButton(centerX + (357 + 26), centerY + 215, true, 0, (p_214132_1_) -> {
             if ((this.index ? this.indexPages < this.indexPagesTotal - 1 : this.pageType != null && this.bookPages < this.pageType.pages)) {
                 if (this.index) {
                     this.indexPages++;
@@ -193,7 +119,7 @@ public class GuideBookScreen extends Screen {
                 GuideBookIndexButton button = new GuideBookIndexButton(centerX + 15 + (xIndex * 200),
                         centerY + 10 + (yIndex * 20) - (xIndex == 1 ? 20 : 0),
                         Component.translatable("guidebooks."
-                                + Pages.values()[allPageTypes.get(i).ordinal()].toString().toLowerCase()),
+                                + GuideBookPages.values()[allPageTypes.get(i).ordinal()].toString().toLowerCase()),
                         (btns) -> {
                             if (this.indexButtons.get(id - 2) != null && allPageTypes.get(id - 2) != null) {
                                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
@@ -243,12 +169,11 @@ public class GuideBookScreen extends Screen {
             case INTRODUCTION:
                 if (bookPages == 0) {
 //                    drawItemStack(grap, new ItemStack(BHItems.GUIDE_BOOK.get()), 8, 20, 1.0F);
-                    drawImage(grap, DRAW0, 12, 22, 0, 0, 168, 40, 512F);
-                    drawImage(grap, DRAW0, 12, 22 + 42, 0, 40, 168, 168, 512F);
+//                    drawImage(grap, DRAW0, 12, 22, 0, 0, 168, 40, 512F);
                 }
             case LEVEL_SYSTEM:
                 if (bookPages == 0) {
-                    drawImage(grap, DRAW0, 30, 256, 168, 0, 143, 82, 256F);
+//                    drawImage(grap, DRAW0, 30, 256, 168, 0, 143, 82, 256F);
                 }
             case DAMAGE_TYPES:
                 break;
@@ -284,13 +209,13 @@ public class GuideBookScreen extends Screen {
                 }
                 guiGraphics.pose().pushPose();
                 if (this.usingVanillaFont()) {
-                    guiGraphics.pose().scale(0.945F, 0.945F, 0.945F);
-                    guiGraphics.pose().translate(0, 5.5F, 0);
+                    guiGraphics.pose().scale(1, 1, 1);
+                    guiGraphics.pose().translate(0, 5.0F, 0);
                 }
                 if (linenumber <= 19) {
-                    font.drawInBatch(line, 15, 20 + linenumber * 10, 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
+                    this.font.drawInBatch(line, 15, 15 + linenumber * 10, 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
                 } else {
-                    font.drawInBatch(line, 220, (linenumber - 19) * 10, 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
+                    this.font.drawInBatch(line, 200, ((linenumber - 20) * 10) - 9, 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
                 }
                 linenumber++;
                 guiGraphics.pose().popPose();

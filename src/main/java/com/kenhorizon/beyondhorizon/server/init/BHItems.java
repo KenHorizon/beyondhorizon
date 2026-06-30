@@ -156,12 +156,12 @@ public class BHItems {
     //
 
     public static final RegistryObject<Item> TOUGH_CLOTH = accessoryBasicItem("tough_cloth", AccessoryBuilder.TOUGH_CLOTH);
-    public static final RegistryObject<Item> NULL_MAGIC_RUNE = accessoryItem("null_magic_rune", AccessoryBuilder.NULL_MAGIC_RUNE);
-    public static final RegistryObject<Item> FIREFLY_FAYE = accessoryItem("firefly_faye", AccessoryBuilder.FIREFLY_FAYE);
-    public static final RegistryObject<Item> SAPPHIRE_CRYSTAL = accessoryItem("sapphire_crystal", AccessoryBuilder.SAPPHIRE_CRYSTAL);
-    public static final RegistryObject<Item> CHAIN_VEST = accessoryItem("chain_vest", AccessoryBuilder.CHAIN_VEST);
-    public static final RegistryObject<Item> RUMINATIVE_BEADS = accessoryItem("ruminative_beads", AccessoryBuilder.RUMINATIVE_BEADS);
-    public static final RegistryObject<Item> SPECTRAL_CLOAK = accessoryItem("spectral_cloak", AccessoryBuilder.SPECTRAL_CLOAK);
+    public static final RegistryObject<Item> NULL_MAGIC_RUNE = accessoryBasicItem("null_magic_rune", AccessoryBuilder.NULL_MAGIC_RUNE);
+    public static final RegistryObject<Item> FIREFLY_FAYE = accessoryBasicItem("firefly_faye", AccessoryBuilder.FIREFLY_FAYE);
+    public static final RegistryObject<Item> SAPPHIRE_CRYSTAL = accessoryBasicItem("sapphire_crystal", AccessoryBuilder.SAPPHIRE_CRYSTAL);
+    public static final RegistryObject<Item> CHAIN_VEST = accessoryBasicItem("chain_vest", AccessoryBuilder.CHAIN_VEST);
+    public static final RegistryObject<Item> RUMINATIVE_BEADS = accessoryBasicItem("ruminative_beads", AccessoryBuilder.RUMINATIVE_BEADS);
+    public static final RegistryObject<Item> SPECTRAL_CLOAK = accessoryBasicItem("spectral_cloak", AccessoryBuilder.SPECTRAL_CLOAK);
      //
     public static final RegistryObject<Item> LIGHT_STRING_BOW = accessoryItem("light_string_bow", AccessoryBuilder.LIGHT_STRING_BOW);
     public static final RegistryObject<Item> HEAVY_STRING_BOW = accessoryItem("heavy_string_bow", AccessoryBuilder.HEAVY_STRING_BOW);

@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
+import com.google.common.collect.Lists;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageScaling;
@@ -16,9 +17,9 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,12 +27,7 @@ import net.minecraft.world.phys.*;
 import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * <p>Extended projectile add more properties to enhance the projectiles</p>
@@ -41,6 +37,20 @@ import java.util.stream.Collectors;
  * @version 1.0
  * */
 public abstract class ExtendedProjectile extends Projectile {
+
+    public static enum PickupType {
+        DISALLOWED,
+        ALLOWED,
+        CREATIVE_ONLY;
+
+        public static PickupType byOrdinal(int ordinal) {
+            if (ordinal < 0 || ordinal > values().length) {
+                ordinal = 0;
+            }
+
+            return values()[ordinal];
+        }
+    }
     private static final EntityDataAccessor<Byte> ID_FLAGS = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Byte> PIERCE_LEVEL = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BYTE);
     private static final EntityDataAccessor<Boolean> FIRED = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
@@ -88,11 +98,30 @@ public abstract class ExtendedProjectile extends Projectile {
     public static final String NBT_RADIUS = "Radius";
     @Nullable
     protected BlockState lastState;
+    @Nullable
+    protected IntOpenHashSet piercingIgnoreEntityIds;
+    @Nullable
+    protected List<Entity> piercedAndKilledEntities;
     protected final IntOpenHashSet ignoredEntities = new IntOpenHashSet();
+    protected PickupType pickup;
 
     protected ExtendedProjectile(EntityType<? extends Projectile> entityType, Level level) {
         super(entityType, level);
+        this.pickup = PickupType.DISALLOWED;
     }
+    protected ExtendedProjectile(EntityType<? extends Projectile> entityType, double x, double y, double z, Level level) {
+        this(entityType, level);
+        this.setPos(x, y, z);
+    }
+    protected ExtendedProjectile(EntityType<? extends Projectile> entityType, LivingEntity shooter, Level level) {
+        this(entityType, shooter.getX(), shooter.getEyeY() - 0.1F, shooter.getZ(), level);
+        this.setOwner(shooter);
+        if (shooter instanceof Player) {
+            this.pickup = PickupType.ALLOWED;
+        }
+    }
+
+
     @Override
     protected void defineSynchedData() {
         this.entityData.define(ID_FLAGS, (byte) 0);
@@ -150,7 +179,21 @@ public abstract class ExtendedProjectile extends Projectile {
         if (!this.level().isClientSide() && this.getFired()) {
             Entity entity = hitResult.getEntity();
             LivingEntity projectileOwner = (LivingEntity) this.getOwner();
+            boolean flag = entity.getType() == EntityType.ENDERMAN;
             float damage = this.getBaseDamage();
+            if (this.getPierceLevel() > 0) {
+                if (this.piercingIgnoreEntityIds == null) {
+                    this.piercingIgnoreEntityIds = new IntOpenHashSet(5);
+                    if (this.piercedAndKilledEntities == null) {
+                        this.piercedAndKilledEntities = Lists.newArrayListWithCapacity(5);
+                    }
+                    if (this.piercingIgnoreEntityIds.size() >= this.getPierceLevel() + 1) {
+                        this.discard();
+                        return;
+                    }
+                    this.piercingIgnoreEntityIds.add(entity.getId());
+                }
+            }
             if (this.isCrit()) {
                 damage *= (float) projectileOwner.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
             }
@@ -170,14 +213,25 @@ public abstract class ExtendedProjectile extends Projectile {
                         bonusDamage += this.getDamageScaling().CurentHP(target, this.getHPDamage());
                         break;
                 }
-                if (this.getDamageType().dealDamage(target, projectileOwner, damage + bonusDamage)) {
+                if (this.isOnFire() && !flag) {
+                    target.setSecondsOnFire(5);
+                }
+                if (this.doDamage(target, projectileOwner, damage + bonusDamage)) {
+                    if (flag) return;
                     if (projectileOwner != null) {
                         this.afterGotHit(target);
                         this.doEnchantDamageEffects(projectileOwner, entity);
                     }
+                    if (!entity.isAlive() && this.piercedAndKilledEntities != null) {
+                        this.piercedAndKilledEntities.add(target);
+                    }
                 }
             }
         }
+    }
+
+    public boolean doDamage(LivingEntity target, LivingEntity holder, float damage) {
+        return this.getDamageType().dealDamage(target, this, holder, damage);
     }
 
     public void afterGotHit(LivingEntity entity) {
@@ -226,10 +280,10 @@ public abstract class ExtendedProjectile extends Projectile {
         this.onStart();
         this.setLifeSpan(this.getLifeSpan() + 1);
         this.onDuration();
-        if (this.getLifeSpan() >= this.getDuration()) {
+        if (this.getLifeSpan() >= (this.getDuration() + this.getDelay())) {
             this.onEnd();
         }
-        if (this.getLifeSpan() > this.getDuration()) {
+        if (this.getLifeSpan() > (this.getDuration() + this.getDelay())) {
             this.discard();
         }
     }
@@ -521,114 +575,22 @@ public abstract class ExtendedProjectile extends Projectile {
         Vec3 d1 = this.trailPositions[i].subtract(d0);
         return d0.add(d1.scale(partialTick));
     }
-    // Copied from ProjectileUtil
-    //
-    public HitResult getHitResultOnMoveVector(Entity projectile, Predicate<Entity> filter) {
-        Vec3 vec3 = projectile.getDeltaMovement();
-        Level level = projectile.level();
-        Vec3 vec31 = projectile.position();
-        return getHitResult(vec31, projectile, filter, vec3, level);
-    }
 
-    public HitResult getHitResultOnViewVector(Entity projectile, Predicate<Entity> filter, double scale) {
-        Vec3 vec3 = projectile.getViewVector(0.0F).scale(scale);
-        Level level = projectile.level();
-        Vec3 vec31 = projectile.getEyePosition();
-        return getHitResult(vec31, projectile, filter, vec3, level);
-    }
-
-    private HitResult getHitResult(Vec3 start, Entity projectile, Predicate<Entity> filter, Vec3 end, Level level) {
-        Vec3 vec3 = start.add(end);
-        HitResult hitresult = level.clip(new ClipContext(start, vec3, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, projectile));
-        if (hitresult.getType() != HitResult.Type.MISS) {
-            vec3 = hitresult.getLocation();
-        }
-
-        HitResult hitresult1 = getEntityHitResult(level, projectile, start, vec3, projectile.getBoundingBox().expandTowards(end).inflate(this.getRadius()), filter);
-        if (hitresult1 != null) {
-            hitresult = hitresult1;
-        }
-
-        return hitresult;
-    }
-
-    /**
-     * Gets the EntityRayTraceResult representing the entity hit
-     */
-    @Nullable
-    public EntityHitResult getEntityHitResult(Entity shooter, Vec3 start, Vec3 end, AABB box, Predicate<Entity> filter, double distance) {
-        Level level = shooter.level();
-        double d0 = distance;
-        Entity entity = null;
-        Vec3 vec3 = null;
-
-        for(Entity entity1 : level.getEntities(shooter, box, filter)) {
-            AABB aabb = entity1.getBoundingBox().inflate((double)entity1.getPickRadius());
-            Optional<Vec3> optional = aabb.clip(start, end);
-            if (aabb.contains(start)) {
-                if (d0 >= 0.0D) {
-                    entity = entity1;
-                    vec3 = optional.orElse(start);
-                    d0 = 0.0D;
-                }
-            } else if (optional.isPresent()) {
-                Vec3 vec31 = optional.get();
-                double d1 = start.distanceToSqr(vec31);
-                if (d1 < d0 || d0 == 0.0D) {
-                    if (entity1.getRootVehicle() == shooter.getRootVehicle() && !entity1.canRiderInteract()) {
-                        if (d0 == 0.0D) {
-                            entity = entity1;
-                            vec3 = vec31;
-                        }
-                    } else {
-                        entity = entity1;
-                        vec3 = vec31;
-                        d0 = d1;
-                    }
-                }
-            }
-        }
-
-        return entity == null ? null : new EntityHitResult(entity, vec3);
-    }
-
-    /**
-     * Gets the EntityHitResult representing the entity hit
-     */
-    @Nullable
-    public EntityHitResult getEntityHitResult(Level level, Entity projectile, Vec3 start, Vec3 end, AABB box, Predicate<Entity> filter) {
-        return getEntityHitResult(level, projectile, start, end, box, filter, 0.3F);
-    }
-
-    /**
-     * Gets the EntityHitResult representing the entity hit
-     */
-    @Nullable
-    public EntityHitResult getEntityHitResult(Level level, Entity projectile, Vec3 start, Vec3 end,
-                                                     AABB box, Predicate<Entity> filter, float radius) {
-        double d0 = Double.MAX_VALUE;
-        Entity entity = null;
-
-        for(Entity entity1 : level.getEntities(projectile, box, filter)) {
-            AABB aabb = entity1.getBoundingBox().inflate((double)radius);
-            Optional<Vec3> optional = aabb.clip(start, end);
-            if (optional.isPresent()) {
-                double d1 = start.distanceToSqr(optional.get());
-                if (d1 < d0) {
-                    entity = entity1;
-                    d0 = d1;
-                }
-            }
-        }
-
-        return entity == null ? null : new EntityHitResult(entity);
-    }
       //
     @Override
     public Packet<ClientGamePacketListener> getAddEntityPacket() {
         Entity entity = this.getOwner();
         int i = entity == null ? 0 : entity.getId();
-        return new ClientboundAddEntityPacket(this.getId(), this.getUUID(), this.getX(), this.getY(), this.getZ(), this.getXRot(), this.getYRot(), this.getType(), i, new Vec3(this.xPower, this.yPower, this.zPower), 0.0D);
+        return new ClientboundAddEntityPacket(
+                this.getId(),
+                this.getUUID(),
+                this.getX(),
+                this.getY(),
+                this.getZ(),
+                this.getXRot(),
+                this.getYRot(),
+                this.getType(),
+                i, new Vec3(this.xPower, this.yPower, this.zPower), 0.0D);
     }
 
     @Override
@@ -643,6 +605,8 @@ public abstract class ExtendedProjectile extends Projectile {
             this.yPower = d1 / d3 * 0.1D;
             this.zPower = d2 / d3 * 0.1D;
         }
+        this.xRotO = this.getXRot();
+        this.yRotO = this.getYRot();
     }
 
     protected void spawnParticle() {

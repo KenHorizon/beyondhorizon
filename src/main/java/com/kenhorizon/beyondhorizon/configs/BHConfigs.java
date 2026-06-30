@@ -18,6 +18,9 @@ public class BHConfigs {
     public static boolean ADVANCED_TOOLTIP_SKILL = true;
     public static boolean ADVANCED_TOOLTIP = true;
     public static boolean DAMAGE_INDICATOR = true;
+    public static boolean DAMAGE_INDICATOR_VANILLA_FONT = true;
+    public static boolean DAMAGE_INDICATOR_COLOR_FORMAT = true;
+    public static boolean DAMAGE_INDICATOR_TEXT_BOLD = true;
     public static boolean SCREEN_SHAKE = true;
     public static boolean MUSIC_BOSS = true;
     public static boolean REDUCE_DEBUG = true;
@@ -29,9 +32,6 @@ public class BHConfigs {
     public static AnvilCostSettings ANVIL_COSTING = AnvilCostSettings.REMOVE_REPAIR_SCALING;
     public static int ANVIL_COST_CAP = -1;
     public static double ANVIL_BREAK_CHANCES = 12.0D;
-    //BLAZING INFENRO
-    public static double BLAZING_INFERNO_HP_MULTIPLIER = 1.0D;
-    public static double BLAZING_INFERNO_DAMAGE_MULTIPLIER = 1.0D;
 
     public static void bake(ModConfig config) {
         try {
@@ -45,6 +45,9 @@ public class BHConfigs {
             SCREEN_SHAKE_AMOUNT = ModClientConfig.SCREEN_SHAKE_AMOUNT.get();
             GAME_HUD = ModClientConfig.GAME_HUD.get();
             DAMAGE_INDICATOR = ModClientConfig.DAMAGE_INDICATOR.get();
+            DAMAGE_INDICATOR_VANILLA_FONT = ModClientConfig.DAMAGE_INDICATOR_USE_VANILLA_FONT.get();
+            DAMAGE_INDICATOR_COLOR_FORMAT = ModClientConfig.DAMAGE_INDICATOR_COLOR_FORMAT.get();
+            DAMAGE_INDICATOR_TEXT_BOLD = ModClientConfig.DAMAGE_INDICATOR_TEXT_BOLD.get();
             MUSIC_BOSS = ModClientConfig.MUSIC_BOSS.get();
             REDUCE_DEBUG = ModClientConfig.REDUCE_DEBUG.get();
             ACCESSORY_BUTTON_X = ModClientConfig.ACCESSORY_BUTTON_X.get();
@@ -55,9 +58,6 @@ public class BHConfigs {
             ANVIL_COSTING = ModCommonConfig.ANVIL_COSTING.get();
             ANVIL_BREAK_CHANCES = ModCommonConfig.ANVIL_BREAK_CHANCES.get();
             ANVIL_COST_CAP = ModCommonConfig.ANVIL_COST_CAP.get();
-            //---------------------------------------------------------------------//
-            BLAZING_INFERNO_HP_MULTIPLIER = ModCommonConfig.BLAZING_INFERNO_HP_MULTIPLIER.get();
-            BLAZING_INFERNO_DAMAGE_MULTIPLIER = ModCommonConfig.BLAZING_INFERNO_DAMAGE_MULTIPLIER.get();
 
         } catch (Exception e) {
             BeyondHorizon.LOGGER.warn("An exception was caused trying to load the config");

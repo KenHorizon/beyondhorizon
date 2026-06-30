@@ -18,7 +18,7 @@ public class WeaponPassiveSkills extends Skill implements IAttack, IEntityProper
     }
 
     @Override
-    protected MutableComponent tooltipDescription(ItemStack itemStack) {
+    protected MutableComponent makeTooltip(ItemStack itemStack) {
         if (this.getMagnitude() > 0.0F && this.getLevel() > 0.0F) {
             return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F), Maths.format(this.getLevel() * 100.0F));
         } else {

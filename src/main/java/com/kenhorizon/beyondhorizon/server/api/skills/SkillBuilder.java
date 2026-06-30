@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 
@@ -59,12 +60,12 @@ public class SkillBuilder implements IReloadable {
                     actionTraitRef.set(skill);
                 }
                 else {
-                    Skill.LOGGER.error(skill.errorNotMatch(skill));
+                    BeyondHorizon.LOGGER.error(skill.errorNotMatch(skill));
                     return false;
                 }
             }
             if (!isValid) {
-                Skill.LOGGER.error(skill.errorNotMatch(skill));
+                BeyondHorizon.LOGGER.error(skill.errorNotMatch(skill));
             }
             return isValid;
         }).collect(Collectors.toUnmodifiableList());

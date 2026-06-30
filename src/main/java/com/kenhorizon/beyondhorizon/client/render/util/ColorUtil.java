@@ -7,6 +7,7 @@ public class ColorUtil {
 
     public static int LIGHT_GRAY = combineRGB(192, 192, 192);
     public static int ORANGE = combineRGB(255, 106, 0);
+    public static int BLACK = combineRGB(0, 0 ,0);
     public static int WHITE = combineRGB(255, 255, 255);
     public static int GRAY = combineRGB(64, 64, 64);
     public static int RED = combineRGB(255, 0, 0);

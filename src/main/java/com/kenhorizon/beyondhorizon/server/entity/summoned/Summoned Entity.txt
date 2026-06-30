@@ -1,0 +1,15 @@
+Summoned Entity
+Author: Ken Horizon
+Base Foundation: Iron's n Spellbook
+
+
+Summoned Entity have own damage source called pet damage this came with three types of damage: physical, magic and true damage, summon entity will always
+stay at owner position, and they have no collision
+Summoned Entity will attack neareast hostile entity in the range of player, each summoned entity have unique attack range, summoned entity will priotize
+the targeted entity by the owner
+
+Summoned Entity will not despawn until the owner is killed or left the game, the owner have fix of 3 slots of summoned entity and can add by one or two
+by using items and potions
+
+The summoned item can be used as priotize target by looking at entity and RMB all summoned entity will target the locked target even the other summoned
+unit not came from the item will also attack the locked target

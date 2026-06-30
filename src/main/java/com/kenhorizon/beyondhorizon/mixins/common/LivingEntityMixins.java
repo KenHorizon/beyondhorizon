@@ -134,6 +134,11 @@ public abstract class LivingEntityMixins extends EntityMixins implements IBHData
 
         }
     }
+    @Inject(method = "getBlockSpeedFactor", at = @At("RETURN"), cancellable = true)
+    private void modifiedgetBlockSpeedFactor(CallbackInfoReturnable<Float> cir) {
+        float newSpeedFactor = (float) Mth.lerp(_this().getAttributeValue(BHAttributes.MOVEMENT_EFFICIENCY.get()), cir.getReturnValue(), 1.0F);
+        cir.setReturnValue(newSpeedFactor);
+    }
 
     @Inject(at = @At("HEAD"), method = "getDamageAfterArmorAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F", cancellable = true)
     private void beyondHorizon$getDamageAfterArmorAbsorb(DamageSource damageSource, float amount, CallbackInfoReturnable<Float> cir) {

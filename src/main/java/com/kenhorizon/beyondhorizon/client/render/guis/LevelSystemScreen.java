@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundConsumePointsPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundSkillPointsPacket;
@@ -12,10 +13,13 @@ import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.*;
@@ -52,7 +56,6 @@ public class LevelSystemScreen extends Screen {
 
     public record AttributePoint(int x, int y, LevelSystem.AttributePoints attributePoints) {}
     public record AttributeRemovePoints(int x, int y, LevelSystem.AttributePoints attributePoints) {}
-    public record SelectionClass(int x, int y, LevelSystem levelSystem) {}
 
     private int buttonCooldown;
     private final int buttonCooldownMax = 5;
@@ -66,7 +69,6 @@ public class LevelSystemScreen extends Screen {
     private Player player;
     private LevelSystemScreen.Category category = Category.ATTRIBUTES;
     private LevelSystemScreen.SubCategory subCategory = SubCategory.NONE;
-    public List<SelectionClass> selectionClass = new ArrayList<>();
     public List<AttributePoint> attributePoints = new ArrayList<>();
     public List<AttributeRemovePoints> attributeRemovePoints = new ArrayList<>();
     public static final ResourceLocation LOCATION = BeyondHorizon.resourceGui("level_system/level_system.png");
@@ -109,7 +111,7 @@ public class LevelSystemScreen extends Screen {
             int levelString = level.length();
             String xpRequired = String.format("%s/%s", Maths.format(this.role.getExpProgress()), Maths.format(this.role.getXpNeededForNextLevel()));
             BlitHelper.drawStrings(guiGraphics, xpRequired, this.posX + 20, this.posY + 34, ColorUtil.GREEN);
-            BlitHelper.drawStrings(guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 136, this.posY + 12, ColorUtil.WHITE, false);
+            BlitHelper.drawStrings(guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 136, this.posY + 12, ColorUtil.WHITE);
             BlitHelper.drawStrings(guiGraphics, player.getName(), x, y, ColorUtil.WHITE);
             BlitHelper.drawStrings(guiGraphics, level, x, y + 10, ColorUtil.WHITE);
             BlitHelper.drawStrings(guiGraphics, levelPTS, x + 10 + 4 + levelString, y + 10 , ColorUtil.GREEN);
@@ -185,16 +187,6 @@ public class LevelSystemScreen extends Screen {
         this.attributeRemovePoints.add(new AttributeRemovePoints(x + 7 + 62, y + 64 + 10, attributePoints));
     }
 
-    private void addSelectionButton(GuiGraphics guiGraphics, int x, int y, LevelSystem levelSystem) {
-        boolean isMatched = levelSystem.equals(this.role);
-        if (isMatched) {
-            guiGraphics.blit(LOCATION, x + 7, y + 60, 0, 198, 79, 32);
-        } else {
-            guiGraphics.blit(LOCATION, x + 7, y + 60, 0, 166, 79, 32);
-        }
-        this.selectionClass.add(new SelectionClass(x + 7, y + 60, levelSystem));
-    }
-
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         if (!this.role.isAlreadyReachedRequiredLevel()) {
@@ -204,33 +196,17 @@ public class LevelSystemScreen extends Screen {
             int levelAddY = this.posY + 10;
             this.mouseClickedCategory(mouseX, mouseY);
             if (this.category == Category.ATTRIBUTES) {
-                if (mouseX >= levelAddX && mouseX <= levelAddX + 12 && mouseY >= levelAddY && mouseY <= levelAddY + 12) {
-                    NetworkHandler.sendToServer(new ServerboundConsumePointsPacket(this.player.getId(), 30));
-                }
+                this.addPoints(mouseX, mouseY, levelAddX, levelAddY);
                 this.mouseSkillSetsRemovePoints(this.attributeRemovePoints, mouseX, mouseY);
-                this.mouseSkillSets(this.attributePoints, mouseX, mouseY);
             }
-//            if (this.category == Category.CLASS) {
-//                if (this.subCategory == SubCategory.CLASS_INFO) {
-//                    int backX = this.posX + 9;
-//                    int backY = this.posY + 11;
-//                    if (mouseX >= backX && mouseX <= backX + 12 && mouseY >= backY && mouseY <= backY + 12) {
-//                        this.subCategory = SubCategory.NONE;
-//                    }
-//                    int confirmX = this.posX + 128;
-//                    int confirmY = this.posY + 12;
-//                    if (mouseX >= confirmX && mouseX <= confirmX + 12 && mouseY >= confirmY && mouseY <= confirmY + 12) {
-//                        NetworkHandler.sendToServer(new ServerboundClassSelectionPacket(this.player.getId(), activeRole));
-//                    }
-//                }
-//                boolean isUnlocked = this.category.getFilter().test(activeRole);
-//                boolean jobless = activeRole == RoleClasses.NONE.get();
-//                this.mouseClassSelectionInfo(this.selectionClass, mouseX, mouseY);
-//            }
-//            if (this.category == Category.TRAIT) {
-//                boolean isUnlocked = this.category.getFilter().test(activeRole);
-//            }
             return super.mouseClicked(mouseX, mouseY, button);
+        }
+    }
+
+    private void addPoints(double mouseX, double mouseY, int levelAddX, int levelAddY) {
+        if (mouseX >= levelAddX && mouseX <= levelAddX + 12 && mouseY >= levelAddY && mouseY <= levelAddY + 12) {
+            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(BHSounds.LEVEL_SYSTEM_ADD.get(), 1.0F));
+            NetworkHandler.sendToServer(new ServerboundConsumePointsPacket(this.player.getId(), 30));
         }
     }
 
@@ -245,11 +221,12 @@ public class LevelSystemScreen extends Screen {
             }
         }
     }
+
     private void mouseSkillSetsRemovePoints(List<AttributeRemovePoints> list, double mouseX, double mouseY) {
-        for (int i = 0; i < list.size(); i++) {
-            AttributeRemovePoints sets = list.get(i);
+        for (AttributeRemovePoints sets : list) {
             int pts = this.role.getPointOfSkills(sets.attributePoints());
             if (pts > 0 && this.buttonCooldown == 0 && mouseX >= sets.x() && mouseX <= sets.x() + 12 && mouseY >= sets.y() && mouseY <= sets.y() + 12) {
+                this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(BHSounds.LEVEL_SYSTEM_REMOVE.get(), 1.0F));
                 NetworkHandler.sendToServer(new ServerboundSkillPointsPacket(this.player.getId(), sets.attributePoints(), -1));
                 this.buttonCooldown = this.buttonCooldownMax;
             }

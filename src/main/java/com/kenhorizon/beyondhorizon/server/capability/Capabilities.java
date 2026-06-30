@@ -1,11 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
+import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
-import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import net.minecraft.world.entity.Entity;
@@ -21,7 +21,7 @@ public class Capabilities {
     public static IStackableInstance stackable(LivingEntity entity) {
         return getCapability(entity, BHCapabilties.STACK_TAGS);
     }
-    public static IAccessoryItemHandler accessory(Player player) {
+    public static IAccessoryStackHandler accessory(Player player) {
         return getCapability(player, BHCapabilties.ACCESSORY);
     }
 

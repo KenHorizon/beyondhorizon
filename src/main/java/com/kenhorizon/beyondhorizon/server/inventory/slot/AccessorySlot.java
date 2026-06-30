@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.inventory.slot;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
@@ -12,10 +12,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class AccessorySlot extends SlotItemHandler {
     public static final ResourceLocation BLOCK_ATLAS = ResourceLocation.parse("textures/atlas/blocks.png");
-    public static final ResourceLocation EMPTY_ACCESSORY = BeyondHorizon.resource("item/empty_accessory_slot");
-    public final IAccessoryItemHandler handler;
-    public AccessorySlot(IAccessoryItemHandler handler, int index, int xPosition, int yPosition) {
-        super(handler, index, xPosition, yPosition);
+    public static final ResourceLocation EMPTY_ACCESSORY = BeyondHorizon.resource("item/slot/empty_accessory_slot");
+    public final IAccessoryStackHandler handler;
+    public AccessorySlot(IAccessoryStackHandler handler, int index, int xPosition, int yPosition) {
+        super(handler.getStacks(), index, xPosition, yPosition);
         this.handler = handler;
     }
 

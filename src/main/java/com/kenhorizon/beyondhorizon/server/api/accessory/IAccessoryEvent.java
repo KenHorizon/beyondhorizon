@@ -1,7 +1,14 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.UUID;
 
 public interface IAccessoryEvent {
 
@@ -9,7 +16,8 @@ public interface IAccessoryEvent {
         return false;
     }
 
-    default void onChangePrevAccessorySlot(Player player, ItemStack itemStack) {}
+    default void onUnequip(Player player, ItemStack itemStack) {}
 
-    default void onChangePostAccessorySlot(Player player, ItemStack itemStack) {}
+    default void onEquip(Player player, ItemStack itemStack) {}
+
 }

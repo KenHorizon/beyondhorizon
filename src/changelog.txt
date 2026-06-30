@@ -2,13 +2,15 @@ Development Progress
 
 
 ----- Boss -----
-Blazing Inferno (70% Completed)
-Pyrolliger (WIP)
+Blazing Inferno
+Pyrolliger
 Enderlord (WIP)
 
 ----- Miniboss -----
 Illager Mage (WIP)
 Rune Guardian Golem (WIP)
+Kranate (WIP)
+Scorch Crawler (WIP)
 
 
 ----- Mobs -----

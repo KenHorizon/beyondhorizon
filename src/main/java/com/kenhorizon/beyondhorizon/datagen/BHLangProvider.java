@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
+import com.kenhorizon.beyondhorizon.client.render.guis.guide_book.GuideBookPages;
 import com.kenhorizon.beyondhorizon.client.render.guis.guide_book.GuideBookScreen;
 import com.kenhorizon.beyondhorizon.configs.Configs;
 import com.kenhorizon.beyondhorizon.server.Utils;
@@ -224,14 +225,14 @@ public class BHLangProvider extends LanguageProvider {
         this.addDeathMessage(BHDamageTypes.LETHALITY, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.MAGIC_PENETRATION, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
         //
-        this.addGuideBookIndexes(GuideBookScreen.Pages.INTRODUCTION, "Introduction");
-        this.addGuideBookIndexes(GuideBookScreen.Pages.DAMAGE_TYPES, "Damage Types");
-        this.addGuideBookIndexes(GuideBookScreen.Pages.STATS, "Stats");
-        this.addGuideBookIndexes(GuideBookScreen.Pages.GAME_MECHANICS, "Mechanics");
-        this.addGuideBookIndexes(GuideBookScreen.Pages.ACCESSORY, "Accessory");
-        this.addGuideBookIndexes(GuideBookScreen.Pages.LEVEL_SYSTEM, "Level System");
-        this.addGuideBookIndexes(GuideBookScreen.Pages.DIFFICULTY, "Difficulty");
-        this.addGuideBookIndexes(GuideBookScreen.Pages.EFFECT_TYPES, "Effect Types");
+        this.addGuideBookIndexes(GuideBookPages.INTRODUCTION, "Introduction");
+        this.addGuideBookIndexes(GuideBookPages.DAMAGE_TYPES, "Damage Types");
+        this.addGuideBookIndexes(GuideBookPages.STATS, "Stats");
+        this.addGuideBookIndexes(GuideBookPages.GAME_MECHANICS, "Mechanics");
+        this.addGuideBookIndexes(GuideBookPages.ACCESSORY, "Accessory");
+        this.addGuideBookIndexes(GuideBookPages.LEVEL_SYSTEM, "Level System");
+        this.addGuideBookIndexes(GuideBookPages.DIFFICULTY, "Difficulty");
+        this.addGuideBookIndexes(GuideBookPages.EFFECT_TYPES, "Effect Types");
     }
     private void addEnchantmentDesc(Supplier<? extends Enchantment> enchantments, String description) {
         this.add(enchantments.get().getDescriptionId() + ".desc", description);
@@ -282,7 +283,7 @@ public class BHLangProvider extends LanguageProvider {
 
         }
     }
-    private void addGuideBookIndexes(GuideBookScreen.Pages pages, String name) {
+    private void addGuideBookIndexes(GuideBookPages pages, String name) {
         this.add("guidebooks." + pages.toString().toLowerCase(), name);
     }
     private void addAttributes(Supplier<? extends Attribute> attribute, String name) {

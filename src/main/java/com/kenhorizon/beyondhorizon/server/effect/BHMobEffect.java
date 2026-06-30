@@ -11,6 +11,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.RaycastUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,6 +19,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
@@ -46,6 +48,8 @@ public class BHMobEffect extends MobEffect {
     public void applyEffectTick(LivingEntity entity, int amplifier) {
         if (this == BHEffects.GHOUL_WILL.get()) {
             if (entity instanceof Player player) {
+                Entity lookedEntity = RaycastUtil.getEntityLookedAt(player);
+
                 player.getFoodData().setExhaustion(-999.0F);
                 if (player.tickCount % 40 == 0) {
                     player.heal(0.50F);

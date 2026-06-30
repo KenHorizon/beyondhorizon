@@ -57,8 +57,9 @@ public class BurningHexTrapAbility extends AbilityEntity {
     protected void onHitEntity(EntityHitResult hitResult) {
         var afflicted = hitResult.getEntity();
         if (afflicted instanceof LivingEntity entity) {
-            entity.addEffect(new MobEffectInstance(BHEffects.BURNING_HEX.get(), Maths.sec(5)));
-            this.getDamageType().dealDamage(entity, this.getCaster(), this.getBaseDamage(), true);
+            if (this.getDamageType().dealDamage(entity, this.getCaster(), this.getBaseDamage(), true)) {
+                entity.addEffect(new MobEffectInstance(BHEffects.BURNING_HEX.get(), Maths.sec(5)));
+            }
         }
     }
 }

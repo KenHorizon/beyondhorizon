@@ -135,7 +135,9 @@ public class BlazingSpear extends ExtendedProjectile {
             this.discard();
         }
         if (this.inGround) {
-            this.level().addParticle(ParticleTypes.LAVA, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+            if (this.random.nextInt(3) == 0) {
+                this.level().addParticle(ParticleTypes.LAVA, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
+            }
             if (this.lastState != blockstate && this.shouldFall()) {
                 this.startFalling();
             } else if (!this.level().isClientSide) {
@@ -231,44 +233,15 @@ public class BlazingSpear extends ExtendedProjectile {
             }
             this.setDeltaMovement(vec3.add(this.xPower, this.yPower, this.zPower).scale(motion));
             this.setPos(d7, d2, d3);
-            for(int j = 0; j < 4; ++j) {
-                float motionDrag = 0.25F;
-                this.level().addParticle(ParticleTypes.SMOKE, d7 - d5 * motionDrag, d2 - d6 * motionDrag, d3 - d1 * motionDrag, d5, d6, d1);
-                this.level().addParticle(ParticleTypes.FLAME, d7 - d5 * motionDrag, d2 - d6 * motionDrag, d3 - d1 * motionDrag, d5, d6, d1);
-                this.level().addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, d7 - d5 * motionDrag, d2 - d6 * motionDrag, d3 - d1 * motionDrag, d5, d6, d1);
-            }
             this.checkInsideBlocks();
             if (this.getLifeSpan() > this.getDelay()) {
                 Entity owner = this.getOwner();
-                if (entity instanceof Player player) {
-                    LivingEntity target = (LivingEntity) RaycastUtil.getEntityLookedAt(player);
-                    if (target != null) {
-                        double dx = target.getX() - this.getX();
-                        double dy = target.getY() + target.getBbHeight() * 0.5F - this.getY();
-                        double dz = target.getZ() - this.getZ();
-                        double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
-                        dx /= d;
-                        dy /= d;
-                        dz /= d;
-                        this.xPower = dx * this.getSpeed();
-                        this.yPower = dy * this.getSpeed();
-                        this.zPower = dz * this.getSpeed();
-                    }
-                }
                 if (owner instanceof Mob && ((Mob) owner).getTarget() != null) {
                     LivingEntity target = ((Mob) owner).getTarget();
-                    double dx = 0.0D;
-                    double dy = 0.0D;
-                    double dz = 0.0D;
-                    if (target == null) {
-                        dx = this.getWantedX() - this.getX();
-                        dy = this.getWantedY() - this.getY();
-                        dz = this.getWantedZ() - this.getZ();
-                    } else {
-                        dx = target.getX() - this.getX();
-                        dy = target.getY() - target.getBbHeight() * 0.5F - this.getY();
-                        dz = target.getZ() - this.getZ();
-                    }
+
+                    double dx = target.getX() - this.getX();
+                    double dy = target.getY() + target.getBbHeight() * 0.1D - this.getY();
+                    double dz = target.getZ() - this.getZ();
 
                     double d = Math.sqrt(dx * dx + dy * dy + dz * dz);
                     dx /= d;

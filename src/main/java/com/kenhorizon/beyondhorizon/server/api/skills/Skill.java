@@ -3,8 +3,8 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
-import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
@@ -12,42 +12,30 @@ import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
-import com.kenhorizon.beyondhorizon.server.util.Constant;
-import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class Skill {
-    public enum Category {
-        EQUIPPED,
-        ITEMS,
-        ENTITY
-    }
     public enum Type implements StringRepresentable {
         PASSIVE,
         ACTIVE;
@@ -77,7 +65,6 @@ public abstract class Skill {
         }
     }
 
-    public static final Logger LOGGER = LogUtils.getLogger();
     protected boolean isSkill = false;
     protected boolean isMelee = false;
     protected boolean isRanged = false;
@@ -93,7 +80,6 @@ public abstract class Skill {
     @Nullable
     protected String descriptionId;
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
-    public Category category;
     protected boolean isInnate = false;
     protected List<RegistryObject<? extends Skill>> innateSkills = new ArrayList<>();
 
@@ -105,12 +91,6 @@ public abstract class Skill {
         this.format = format;
         return this;
     }
-
-    public Skill category(Category category) {
-        this.category = category;
-        return this;
-    }
-
     public Skill type(Type type) {
         this.type = type;
         return this;
@@ -325,40 +305,18 @@ public abstract class Skill {
         }
     }
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
-        Minecraft minecraft = Minecraft.getInstance();
-        Font font = minecraft.font;
-        int screenWidth = minecraft.getWindow().getScreenWidth();
-        int maxWidth;
-        if (screenWidth < 860) {
-            maxWidth = Constant.SMALL_TOOLTIP_MAX_TEXT_WITDH;
-        } else if (screenWidth > 860 && screenWidth < 1280) {
-            maxWidth = Constant.MEDUIM_TOOLTIP_MAX_TEXT_WITDH;
-        } else {
-            maxWidth = Constant.TOOLTIP_MAX_TEXT_WITDH;
-        }
-        for (var tooltips : this.tooltipDescriptionList(itemStack)) {
-            List<FormattedCharSequence> wrappedText = font.split(tooltips, maxWidth);
-            for (FormattedCharSequence format : wrappedText) {
-                List<FormattedText> texts = Tooltips.recompose(List.of(ClientTooltipComponent.create(format)));
-                Component.literal(texts.get(0).getString()).setStyle(tooltips.getStyle().withColor(Tooltips.TOOLTIP[0]).withBold(tooltips.getStyle().isBold()).withUnderlined(tooltips.getStyle().isUnderlined()));
-                Component text;
-                if (tooltips.getStyle().getColor() == null) {
-                    text = Component.literal(texts.get(0).getString()).setStyle(tooltips.getStyle().withColor(Tooltips.TOOLTIP[0]).withBold(tooltips.getStyle().isBold()).withUnderlined(tooltips.getStyle().isUnderlined()));
-                } else {
-                    text = Component.literal(texts.get(0).getString()).setStyle(tooltips.getStyle());
-                }
-                tooltip.add(this.spacing().append(text).append(this.spacing()));
-
-            }
-        }
+        Minecraft mc = Minecraft.getInstance();
+        Player player = BeyondHorizon.PROXY.clientPlayer();
+        tooltip.addAll(this.makeTooltips(itemStack));
     }
-    protected List<MutableComponent> tooltipDescriptionList(ItemStack itemStack) {
+
+    protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
-        list.add(tooltipDescription(itemStack));
+        list.add(makeTooltip(itemStack));
         return list;
     }
 
-    protected MutableComponent tooltipDescription(ItemStack itemStack) {
+    protected MutableComponent makeTooltip(ItemStack itemStack) {
         return Component.translatable(this.createId());
     }
 

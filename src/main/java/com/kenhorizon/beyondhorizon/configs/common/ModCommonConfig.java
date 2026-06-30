@@ -1,9 +1,5 @@
 package com.kenhorizon.beyondhorizon.configs.common;
 
-import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.configs.BHConfigBuilder;
-import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.configs.Configs;
 import com.kenhorizon.beyondhorizon.server.api.handler.anvil_patch.AnvilCostSettings;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -12,11 +8,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 @SuppressWarnings({"rawtypes", "ConstantConditions"})
 public class ModCommonConfig {
-    public static ForgeConfigSpec.DoubleValue BLAZING_INFERNO_HP_MULTIPLIER;
-    public static ForgeConfigSpec.DoubleValue BLAZING_INFERNO_DAMAGE_MULTIPLIER;
-
     public static ForgeConfigSpec.BooleanValue ENABLE_MOB_LEVELS;
-    public static ForgeConfigSpec.BooleanValue CHANGE_DAMAGE_CALCULATION;
     public static ForgeConfigSpec.BooleanValue ENCHANTMENT_BREAK_LEVEL;
     public static ForgeConfigSpec.EnumValue<AnvilCostSettings> ANVIL_COSTING;
     public static ForgeConfigSpec.IntValue ANVIL_COST_CAP;
@@ -34,28 +26,13 @@ public class ModCommonConfig {
     }
 
     public ModCommonConfig(ForgeConfigSpec.Builder builder) {
-        builder.push("Beyond Horizon | Bosses");
-        builder.push("Blazing Inferno");
-        BLAZING_INFERNO_HP_MULTIPLIER = builder
-                .worldRestart()
-                .defineInRange("Blazing Inferno Health Multiplier", 1.0D, 0.0D, 1000000.0D);
-        BLAZING_INFERNO_DAMAGE_MULTIPLIER = builder
-                .worldRestart()
-                .defineInRange("Blazing Inferno Damage Multiplier", 1.0D, 0.0D, 1000000.0D);
-        builder.pop();
-        builder.pop();
-
         builder.push("Beyond Horizon | Gameplay Configs");
         builder.push("Anvil Patch");
         ENABLE_MOB_LEVELS = builder
                 .worldRestart()
                 .comment("Mob that spawn will have certain level ranging from 1-100 levels")
-                .comment("Each level increase thier health and damage by 5%")
+                .comment("Each level increase their overall stats")
                 .define("Spawn Mob with levels", false);
-        CHANGE_DAMAGE_CALCULATION = builder
-                .worldRestart()
-                .comment("Replace vanilla damage calcuation into new damage calculation")
-                .define("Change Damage Calculation", false);
         ANVIL_COSTING = builder
                 .worldRestart()
                 .comment("Change how anvil repair cost work")

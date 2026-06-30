@@ -1,34 +1,74 @@
 Blazing Inferno
-
-Health: 400
-Attack Damage: 16
+HP: 400
 Armor: 24
 Damage Reduction: 15%
-Follow Range: 70
+Damage: 16
 
-Phase 1: 50% -> 100%
-Phase 2: 1% -> 50%
+Summoning:
+Blazing inferno can be spawn by using flame cell on unpowered blazing inferno on the ruin flames
+the blazing inferno can be resummoned after defeating by using defenders of core flame
 
-Phase 1:
-Blazing Rod: Shoot blaze rod to player dealing 3 + 5% target current health (ignore iframe)
-Blazing Spear: Shoot a blazing spear that stay stationary for a seconds and shoot at target position after end of being stationary dealing 3 + 5% target current health
-Ground Slam: Blazing Inferno will stay stationary for 2 seconds and jump to target afterward, hit by jump will stunned
-Shockwave: Blazing Inferno will release a powerful blast that deal 15% attack damage and pushing away
-Eruption: Blazing Inferno stomp release magma below after few seconds will erupt dealing damage
+Attacks:
 
-Phase 2:
-Gain Ultimate and set new attacks
-Removed Attacks:
-Ground Slam and Shockwave
+Blazing Rods - Blazing inferno shoot 3 blaze rod projectiles that deal 1 + 2% target's current health magic damage
+	if enraged mode it deal 2 instead of 1 if Blazing inferno health drop on below 25% it started shooting 
+	from 3-10 projectiles
 
-Replace Attack
-Eruption -> Eye of Destruction
+Blazing Spears - Blazing inferno summon spears that home to target after shorts delay blazing inferno have 3 form of
+	attacks, first shoot 3 at same time, second shoot 3 at same time with no delay, and last is shoot one spear
+	every seconds
 
-New Attacks:
-Eye of Destruction
-Shocking Orb
-Hellfire
+Dash - Blazing inferno it idle for 2 seconds and later it dash to target dealing 25% total of attack damage
+	if blazing inferno on enraged mode it dash 3 times, at the end of dash on third times it will do a weaker
+	shockwave attack that deal no damage
 
-Loot:
-Wildfire Fragments 15-30 (100%)
-Heart of the Inferno 1 (25%)
+Shockwave - Blazing inferno charge upto 4 seconds and later will do a shockwave dealing 5% total of attack damage +
+	1% target's max health and knocking back and disabling shield for 5 seconds if blazing inferno is enraged it
+ 	deal 2% target's max health instead of 1%
+
+Ground Slam - Blazing inferno charge upto 3 seconds and jump on air and slamming within 12 radius on ground dealing 
+	5% total of attack damage + 11% target's max health and knocking up if blazing inferno enraged it will leap
+	to current target
+
+Death Ray - Blazing inferno will perform charge upto 5 seconds and it will release powerful death ray that deal
+	1 + 2% target's current health magic damage every 0.01 seconds
+
+Eruption - Blazing inferno will perform shockwave attack and release a bursting magma that deal 16 magic damage and
+	burn the target for 3 seconds
+
+Behavoir:
+The blazing inferno has two phases during first phase all attack are not empowered and mostly follow the current target
+when the blazing inferno drop on below 50% health it will on phase of enraged phase that become immune to all damage
+for 5 seconds and after the phase ended will immedietly perform a ultimate attack (Death Ray) and all attack are 
+empowered during all phases
+
+Drop:
+Wildfire fragments
+Heart of the inferno
+
+
+Aftermaths:
+The nether fortress start spawning a faye abo
+Desert and Deep Ocean Monolith are now accessible
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

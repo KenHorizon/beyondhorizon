@@ -3,8 +3,10 @@ package com.kenhorizon.beyondhorizon.mixins.common;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -16,6 +18,7 @@ import org.spongepowered.asm.mixin.Unique;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Mixin(Enchantment.class)
 public abstract class EnchantmentMixins implements IAttributeEnchantment, IAdditionalEnchantment {
@@ -32,28 +35,31 @@ public abstract class EnchantmentMixins implements IAttributeEnchantment, IAddit
 
     @Unique
     @Override
-    public void addAttributeModifiers(LivingEntity entity, int level, double multiplier) {
+    public void addAttributeModifiers(LivingEntity entity, EquipmentSlot slot,  int level) {
 //        BeyondHorizon.LOGGER.debug("Attribute Added {} {}", level, multiplier);
         AttributeMap attributeMap = entity.getAttributes();
         for (Map.Entry<Attribute, AttributeModifier> entry : this.enchantmentAttributeModifiers.entries()) {
             AttributeInstance attributeInstance = attributeMap.getInstance(entry.getKey());
             if (attributeInstance != null) {
-                AttributeModifier attributeModifier = entry.getValue();
-                attributeInstance.removeModifier(attributeModifier);
-                double amount = this.getAttributeModifierValue(level, attributeModifier) * (multiplier == 0 ? 1.0D : multiplier);
-                attributeInstance.addPermanentModifier(new AttributeModifier(attributeModifier.getId(), "Enchantment Attribute Modifiers", amount, attributeModifier.getOperation()));
+                UUID id = AdvancedEnchantment.ARMOR_MODIFIER_UUID_PER_TYPE.get(slot);
+                AttributeModifier modifier = attributeInstance.getModifier(id);
+                attributeInstance.removeModifier(modifier);
+                double amount = this.getAttributeModifierValue(level, modifier);
+                attributeInstance.addPermanentModifier(new AttributeModifier(id, "Enchantment Attribute Modifiers", amount, modifier.getOperation()));
             }
         }
     }
 
     @Unique
     @Override
-    public void removeAttributeModifiers(LivingEntity entity) {
+    public void removeAttributeModifiers(LivingEntity entity, EquipmentSlot slot) {
         AttributeMap attributeMap = entity.getAttributes();
         for (Map.Entry<Attribute, AttributeModifier> entry : this.enchantmentAttributeModifiers.entries()) {
             AttributeInstance attributeInstance = attributeMap.getInstance(entry.getKey());
             if (attributeInstance != null) {
-                attributeInstance.removeModifier(entry.getValue());
+                UUID id = AdvancedEnchantment.ARMOR_MODIFIER_UUID_PER_TYPE.get(slot);
+                AttributeModifier modifier = attributeInstance.getModifier(id);
+                attributeInstance.removeModifier(modifier);
             }
         }
     }

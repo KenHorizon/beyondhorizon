@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.item;
 
-import com.kenhorizon.beyondhorizon.client.render.guis.tooltip.ClientVoidBagTooltip;
-import com.kenhorizon.beyondhorizon.client.render.guis.tooltip.VoidBagTooltip;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.VoidBagTooltip;
+import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
 import com.kenhorizon.beyondhorizon.server.capability.VoidBagCap;
 import com.kenhorizon.beyondhorizon.server.inventory.VoidBagMenu;
 import net.minecraft.core.NonNullList;
@@ -58,7 +58,7 @@ public class VoidBagItem extends BasicItem {
     public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
         super.readShareTag(stack, nbt);
         if (nbt != null)  {
-            ItemStackHandler handler = (ItemStackHandler) (stack.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().orElseThrow());
+            QuiverItemStackHandler handler = (QuiverItemStackHandler) (stack.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().orElseThrow());
             handler.deserializeNBT(nbt.getCompound(VoidBagItem.NBT_BAG));
         }
     }

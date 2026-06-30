@@ -161,7 +161,7 @@ public class BHEnchantments {
                     .minCost(15)
                     .rarity(Enchantment.Rarity.RARE)
                     .category(EnchantmentCategory.WEAPON)
-                    .addAttributeModifier(BHAttributes.CRITICAL_CHANCE.get(), "688543d4-4dca-44dd-ac86-b37680c5d895", 0.10F, AttributeModifier.Operation.ADDITION)
+                    .addAttributeModifier(BHAttributes.CRITICAL_CHANCE.get(), 0.10F, AttributeModifier.Operation.ADDITION)
             ));
 
     public static RegistryObject<Enchantment> CRITICAL_DAMAGE = RegistryHelper.registerEnchantments("critical_damage",
@@ -172,7 +172,7 @@ public class BHEnchantments {
                     .minCost(15)
                     .rarity(Enchantment.Rarity.RARE)
                     .category(EnchantmentCategory.WEAPON)
-                    .addAttributeModifier(BHAttributes.CRITICAL_DAMAGE.get(), "6caab9fd-f5a7-45d4-85d8-6e260c03b8d0", 0.10F, AttributeModifier.Operation.MULTIPLY_BASE)
+                    .addAttributeModifier(BHAttributes.CRITICAL_DAMAGE.get(), 0.10F, AttributeModifier.Operation.MULTIPLY_BASE)
             ));
 
     public static RegistryObject<Enchantment> VIBRANCY = RegistryHelper.registerEnchantments("vibrancy",
@@ -183,7 +183,7 @@ public class BHEnchantments {
                     .minCost(15)
                     .rarity(Enchantment.Rarity.RARE)
                     .category(EnchantmentCategory.ARMOR)
-                    .addAttributeModifier(Attributes.MAX_HEALTH, "15ae4f73-5158-45b3-a385-1438b3dd85fc", 0.05F, AttributeModifier.Operation.MULTIPLY_TOTAL)
+                    .addAttributeModifier(Attributes.MAX_HEALTH, 0.05F, AttributeModifier.Operation.MULTIPLY_TOTAL)
             ));
 
     public static RegistryObject<Enchantment> SWIFTNESS = RegistryHelper.registerEnchantments("swiftness",
@@ -194,7 +194,7 @@ public class BHEnchantments {
                     .minCost(15)
                     .rarity(Enchantment.Rarity.RARE)
                     .category(EnchantmentCategory.ARMOR)
-                    .addAttributeModifier(Attributes.MOVEMENT_SPEED, "0aa88e93-0934-4cdd-a3ec-eef3e1867a85", 0.05F, AttributeModifier.Operation.MULTIPLY_TOTAL)
+                    .addAttributeModifier(Attributes.MOVEMENT_SPEED, 0.05F, AttributeModifier.Operation.MULTIPLY_TOTAL)
             ));
 
     public static RegistryObject<Enchantment> SPELL_BLADE = RegistryHelper.registerEnchantments("spell_blade",

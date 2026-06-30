@@ -1,5 +1,7 @@
 package com.kenhorizon.beyondhorizon.server;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.Fonts;
 import com.kenhorizon.beyondhorizon.client.api.event.PotionEffectParticleEvent;
@@ -9,6 +11,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.*;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
+import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.event.HarvestBlockEvent;
 import com.kenhorizon.beyondhorizon.server.api.handler.UndyingTotemAbility;
@@ -21,8 +24,8 @@ import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.init.*;
-import com.kenhorizon.beyondhorizon.server.inventory.AccessoryContainer;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
+import com.kenhorizon.beyondhorizon.server.item.QuiverItem;
 import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
@@ -35,6 +38,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundPlayerSwingArmPacket;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.util.QuiverHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
@@ -44,6 +48,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
@@ -51,7 +56,9 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
@@ -61,6 +68,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -68,19 +76,24 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.registries.ForgeRegistries;
+import org.w3c.dom.Attr;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
 
 public class ServerEventHandler {
     @SubscribeEvent
@@ -197,12 +210,9 @@ public class ServerEventHandler {
         float bonus = (float) (heal * event.getEntity().getAttributeValue(BHAttributes.HEALING.get()));
         if (entity.level() instanceof ServerLevel level) {
             if (entity.getHealth() < entity.getMaxHealth()) {
-                float roundedAmount = Math.round(heal * 10) / 10f;
-                int intAmount = (int) roundedAmount;
-                String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
-                Vec3 pos = entity.getEyePosition();
-                MutableComponent component = Component.literal(text).withStyle(ChatFormatting.GREEN, ChatFormatting.BOLD).withStyle(Fonts.DAMAGE_INDICATOR);
-                level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
+                if (BHConfigs.DAMAGE_INDICATOR) {
+                    damageIndicator(level, entity.getLastDamageSource(),true, heal, entity);
+                }
 
             }
         }
@@ -210,10 +220,10 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
-    public void onAttachCapabilities(AttachCapabilitiesEvent<Entity> event) {
+    public void onAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
         Entity entity = event.getObject();
         if (AccessoryInventoryCap.canAttachTo(entity)) {
-            event.addCapability(AccessoryInventoryCap.NAME, new AccessoryInventoryCap());
+            event.addCapability(AccessoryInventoryCap.NAME, new AccessoryInventoryCap((Player) entity));
         }
         if (DamageInfoCap.canAttachTo(entity)) {
             event.addCapability(DamageInfoCap.NAME, new DamageInfoCap());
@@ -227,21 +237,33 @@ public class ServerEventHandler {
         if (PlayerDataCap.canAttachTo(entity)) {
             event.addCapability(PlayerDataCap.NAME, new PlayerDataCap((Player) entity));
         }
-//        if (ActiveSkillCap.canAttachTo(entity)) {
-//            event.addCapability(ActiveSkillCap.NAME, new ActiveSkillCap());
-//        }
         if (StackableTagCap.canAttachTo(entity)) {
             event.addCapability(StackableTagCap.NAME, new StackableTagCap());
+        }
+    }
+    @SubscribeEvent
+    public void onAttachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
+        ItemStack stack = event.getObject();
+        Item item = stack.getItem();
+        IAccessoryItem accessoryItem = null;
+        if (item instanceof  IAccessoryItem itemCurio) {
+            accessoryItem = itemCurio;
+        }
+        if (accessoryItem != null && accessoryItem.hasCapability(stack)) {
+            ItemizedAccessoryCap itemizedCapability = new ItemizedAccessoryCap(accessoryItem, stack);
+            event.addCapability(BHCapabilties.ID_ITEM, AccessoryItemCap.createProvider(itemizedCapability));
         }
     }
 
     @SubscribeEvent
     public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(IAccessoryItemHandler.class);
+        event.register(IAccessoryStackHandler.class);
         event.register(ICombatCore.class);
         event.register(IDamageInfo.class);
         event.register(LevelSystem.class);
         event.register(PlayerData.class);
+        event.register(IAccessory.class);
+        event.register(IStackHandler.class);
         event.register(StackableTags.class);
     }
 
@@ -249,7 +271,7 @@ public class ServerEventHandler {
     @SubscribeEvent
     public void onPlayerDeath(LivingDeathEvent event) {
         if (event.getEntity() instanceof Player player) {
-            AccessoryContainer.dropContent(player);
+//            AccessoryStackHandler.dropContent(player);
         }
     }
     @SubscribeEvent
@@ -268,16 +290,12 @@ public class ServerEventHandler {
         if (player instanceof ServerPlayer serverPlayer) {
             this.syncSlot(serverPlayer);
         }
-        float healthRegen = (float) player.getAttributeValue(BHAttributes.HEALTH_REGENERATION.get());
-        if (player.tickCount % 10 == 0) {
-            player.heal(healthRegen);
-        }
     }
 
     private void syncSlot(ServerPlayer player) {
         player.getCapability(BHCapabilties.ACCESSORY).ifPresent(handler -> {
-            for (int i = 0; i < handler.getSlots(); i++) {
-                ItemStack itemStack = handler.getStackInSlot(i);
+            for (int i = 0; i < handler.getStacks().getSlots(); i++) {
+                ItemStack itemStack = handler.getStacks().getStackInSlot(i);
                 BeyondHorizon.PROXY.syncAccessoryToPlayer(i, itemStack, player);
             }
         });
@@ -303,48 +321,56 @@ public class ServerEventHandler {
     }
 
 
-
-    private void onPlayerTick(Player player) {
-        player.getCapability(BHCapabilties.ACCESSORY).ifPresent(handler -> {
+    // TODO: ACCESSORY LOGICS
+    private void accessoryLogics(Player player) {
+        AccessoryHelper.getInventory(player).ifPresent(handler -> {
+            var stacks = handler.getStacks();
             for (int inv = 0; inv < player.getInventory().getContainerSize(); inv++) {
                 ItemStack itemStacks = player.getInventory().getItem(inv);
-                if (!itemStacks.isEmpty() && itemStacks.getItem() instanceof IAccessoryItems<?>) {
-                    itemStacks.inventoryTick(player.level(), player, -1, false);
+                if (!itemStacks.isEmpty() && itemStacks.getItem() instanceof IAccessoryItem) {
+                    itemStacks.inventoryTick(player.level(), player, inv, false);
                 }
             }
-            for (int i = 0; i < handler.getSlots(); i++) {
-                ItemStack itemStacks = handler.getStackInSlot(i);
+            for (int i = 0; i < handler.getStacks().getSlots(); i++) {
+                AccessorySlotContext slotContext = new AccessorySlotContext("accessory", player, i);
+                ItemStack itemStacks = handler.getStacks().getStackInSlot(i);
                 if (!itemStacks.isEmpty()) {
                     itemStacks.inventoryTick(player.level(), player, -1, true);
                 }
-                if (itemStacks.getItem() instanceof IAccessoryItems<?> items) {
-                    for (Accessory accessory : items.getAccessories()) {
+                if (itemStacks.getItem() instanceof IAccessoryItem item) {
+                    for (Accessory accessory : item.getAccessories()) {
                         Optional<IEntityProperties> optional = accessory.IEntityProperties();
                         optional.ifPresent(callback -> callback.onEntityUpdate(player, itemStacks));
                     }
                 }
                 if (!player.level().isClientSide()) {
-                    ItemStack prevItemStack = handler.getPreviousItemStack(i);
+                    ItemStack prevItemStack = handler.getStacks().getPreviousItemStack(i);
                     if (!ItemStack.matches(itemStacks, prevItemStack)) {
+                        UUID uuid = AccessoryHelper.getSlotUuid(slotContext);
                         if (!prevItemStack.isEmpty()) {
-                            if (prevItemStack.getItem() instanceof IAccessoryItems<?> container) {
-                                for (Accessory accessory : container.getAccessories()) {
-                                    accessory.removeAttributeModifiers(player, player.getAttributes(), prevItemStack);
+                            Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, prevItemStack);
+                            BeyondHorizon.LOGGER.debug("[Debug: Accessory] [Prev] Attribute Modifiers : {}", map);
+                            player.getAttributes().removeAttributeModifiers(map);
+                            if (prevItemStack.getItem() instanceof IAccessoryItem item) {
+                                for (Accessory accessory : item.getAccessories()) {
+                                    accessory.removeAttributeModifiers(player, map);
                                     Optional<IAccessoryEvent> optional = accessory.IAccessory();
-                                    optional.ifPresent(callback -> callback.onChangePrevAccessorySlot(player, prevItemStack));
+                                    optional.ifPresent(callback -> callback.onUnequip(player, prevItemStack));
                                 }
                             }
                         }
                         if (!itemStacks.isEmpty()) {
-                            if (itemStacks.getItem() instanceof IAccessoryItems<?> container) {
-                                for (Accessory accessory : container.getAccessories()) {
-                                    accessory.addAttributeModifiers(player, player.getAttributes(), itemStacks);
+                            Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, itemStacks);
+//                            BeyondHorizon.LOGGER.debug("[Debug: Accessory] [Current] Attribute Modifiers : {}", map);
+                            player.getAttributes().addTransientAttributeModifiers(map);
+                            if (itemStacks.getItem() instanceof IAccessoryItem item) {
+                                for (Accessory accessory : item.getAccessories()) {
                                     Optional<IAccessoryEvent> optional = accessory.IAccessory();
-                                    optional.ifPresent(callback -> callback.onChangePostAccessorySlot(player, itemStacks));
+                                    optional.ifPresent(callback -> callback.onEquip(player, itemStacks));
                                 }
                             }
                         }
-                        handler.setPreviousItemStack(i, itemStacks.copy());
+                        stacks.setPreviousItemStack(i, itemStacks.copy());
                     }
                 }
             }
@@ -433,10 +459,11 @@ public class ServerEventHandler {
         LivingEntity entity = event.getEntity();
         ItemStack itemStack = entity.getMainHandItem();
         if (entity instanceof Player player) {
-            player.getCapability(BHCapabilties.ACCESSORY).ifPresent(handler -> {
-                for (int i = 0; i < handler.getSlots(); i++) {
-                    ItemStack itemStacks = handler.getStackInSlot(i);
-                    if (itemStacks.getItem() instanceof IAccessoryItems<?> items) {
+            AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                var stacks = handler.getStacks();
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    ItemStack itemStacks = stacks.getStackInSlot(i);
+                    if (itemStacks.getItem() instanceof IAccessoryItem items) {
                         for (Accessory accessory : items.getAccessories()) {
                             Optional<IEntityProperties> optional = accessory.IEntityProperties();
                             optional.ifPresent(callback -> callback.onEntityJump(player, itemStacks));
@@ -476,7 +503,6 @@ public class ServerEventHandler {
                 damageInfo.setPostStoredDamage(0.0F);
             }
         }
-        this.onEnchantmentTick(entity);
         if (entity.hasEffect(BHEffects.LETHAL_PROTECTION_COOLDOWN.get())) {
             entity.removeEffect(BHEffects.LETHAL_PROTECTION.get());
         }
@@ -487,7 +513,11 @@ public class ServerEventHandler {
             }
         }
         if (entity instanceof Player player) {
-            this.onPlayerTick(player);
+            this.accessoryLogics(player);
+            float healthRegen = (float) player.getAttributeValue(BHAttributes.HEALTH_REGENERATION.get());
+            if (player.tickCount % 10 == 0) {
+                player.heal(healthRegen);
+            }
             LevelSystem levelSystem = Capabilities.levelSystem(player);
             if (levelSystem != null) {
                 Optional<IEntityProperties> optional = levelSystem.IEntityProperties();
@@ -566,19 +596,20 @@ public class ServerEventHandler {
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
         if (target instanceof Player player) {
-            IAccessoryItemHandler handler = Capabilities.accessory(player);
-            if (handler != null) {
-                for (int i = 0; i < handler.getSlots(); i++) {
-                    final ItemStack itemStack = handler.getStackInSlot(i);
-                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> container) {
+            AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                var stacks = handler.getStacks();
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    final ItemStack itemStack = stacks.getStackInSlot(i);
+                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
                         for (Accessory trait : container.getAccessories()) {
                             Optional<IAttack> optional = trait.IAttackCallback();
                             optional.ifPresent(callback -> event.setCanceled(callback.canEntiyReceiveDamage(player, target, source)));
                         }
                     }
                 }
-            }
+            });
         }
+
         AttributeInstance evade = target.getAttribute(BHAttributes.EVADE.get());
         double dodgeChance = 0;
         if (evade != null) {
@@ -592,7 +623,7 @@ public class ServerEventHandler {
     // TODO: Post Mitigation Damage Handler
     @SubscribeEvent
     public void onLivingDamageEvent(LivingDamageEvent event) {
-        float damageDealt = event.getAmount();
+        AtomicReference<Float> damageDealt = new AtomicReference<>(event.getAmount());
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
         ItemStack targetMainHandItem = target.getMainHandItem();
@@ -603,7 +634,7 @@ public class ServerEventHandler {
             for (Skill trait : container.getSkills()) {
                 Optional<IAttack> weaponCallback = trait.attack();
                 if (weaponCallback.isPresent()) {
-                    damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
+                    damageDealt.set(weaponCallback.get().damageTaken(damageDealt.get(), source, target));
                 }
             }
         }
@@ -617,24 +648,24 @@ public class ServerEventHandler {
                 if (matches) {
                     var attackCallback = armorBonusSet.attack();
                     if (attackCallback.isPresent()) {
-                        damageDealt = attackCallback.get().damageTaken(damageDealt, source, player);
+                        damageDealt.set(attackCallback.get().damageTaken(damageDealt.get(), source, player));
                     }
                 }
             }
-            IAccessoryItemHandler handler = Capabilities.accessory(player);
-            if (handler != null) {
-                for (int i = 0; i < handler.getSlots(); i++) {
-                    final ItemStack itemStack = handler.getStackInSlot(i);
-                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+            AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                var stacks = handler.getStacks();
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    final ItemStack itemStack = stacks.getStackInSlot(i);
+                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem accessoryItems) {
                         for (Accessory trait : accessoryItems.getAccessories()) {
                             Optional<IAttack> weaponCallback = trait.IAttackCallback();
                             if (weaponCallback.isPresent()) {
-                                damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
+                                damageDealt.set(weaponCallback.get().damageTaken(damageDealt.get(), source, target));
                             }
                         }
                     }
                 }
-            }
+            });
         }
         if (source.getEntity() instanceof LivingEntity attacker) {
             ItemStack attackerStack = attacker.getMainHandItem();
@@ -643,7 +674,7 @@ public class ServerEventHandler {
                 double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
                 if (player.getRandom().nextDouble() <= criticalStrike) {
                     isCrit = true;
-                    damageDealt = (float) (damageDealt * criticalDamage);
+                    damageDealt.set((float) (damageDealt.get() * criticalDamage));
                     player.crit(target);
                 }
                 for (ArmorSet set : ArmorSetRegistry.getAll()) {
@@ -652,20 +683,20 @@ public class ServerEventHandler {
                     if (matches) {
                         var attackCallback = armorBonusSet.attack();
                         if (attackCallback.isPresent()) {
-                            damageDealt = attackCallback.get().postMigitationDamage(damageDealt, source, attacker, target);
-                            attackCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
+                            damageDealt.set(attackCallback.get().postMigitationDamage(damageDealt.get(), source, attacker, target));
+                            attackCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt.get());
                         }
                     }
                 }
             }
-            this.enchantmentOnHitEffect(attacker, damageDealt, source, target);
-            damageDealt = this.enchantmentPostMitigationDamage(attacker, damageDealt, source, target);
+            this.enchantmentOnHitEffect(attacker, damageDealt.get(), source, target);
+            damageDealt.set(this.enchantmentPostMitigationDamage(attacker, damageDealt.get(), source, target));
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                 for (Skill trait : container.getSkills()) {
                     Optional<IAttack> meleeWeaponCallback = trait.attack();
                     if (meleeWeaponCallback.isPresent()) {
-                        damageDealt = meleeWeaponCallback.get().postMigitationDamage(damageDealt, source, attacker, target);
-                        meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
+                        damageDealt.set(meleeWeaponCallback.get().postMigitationDamage(damageDealt.get(), source, attacker, target));
+                        meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt.get());
                     }
                 }
             }
@@ -673,31 +704,31 @@ public class ServerEventHandler {
                 LevelSystem levelSystem = Capabilities.levelSystem(player);
                 Optional<IAttack> attack = levelSystem.IAttack();
                 if (attack.isPresent()) {
-                    attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
+                    attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt.get());
                 }
-                IAccessoryItemHandler handler = Capabilities.accessory(player);
-                if (handler != null) {
-                    for (int i = 0; i < handler.getSlots(); i++) {
-                        final ItemStack itemStack = handler.getStackInSlot(i);
-                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+                AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                    var stacks = handler.getStacks();
+                    for (int i = 0; i < stacks.getSlots(); i++) {
+                        final ItemStack itemStack = stacks.getStackInSlot(i);
+                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem accessoryItems) {
                             for (Accessory trait : accessoryItems.getAccessories()) {
                                 Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                                 if (meleeWeaponCallback.isPresent()) {
-                                    damageDealt = meleeWeaponCallback.get().postMigitationDamage(damageDealt, source, attacker, target);
-                                    meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
+                                    damageDealt.set(meleeWeaponCallback.get().postMigitationDamage(damageDealt.get(), source, attacker, target));
+                                    meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt.get());
                                 }
                             }
                         }
                     }
-                }
+                });
             }
         }
-        damageDealt *= (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get());
+        damageDealt.updateAndGet(v -> (v * (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get())));
         IDamageInfo damageInfo = Capabilities.damageInfo(target);
         if (damageInfo != null) {
-            damageInfo.setPostDamage(damageDealt);
+            damageInfo.setPostDamage(damageDealt.get());
             if (!source.is(BHDamageTypeTags.CANT_STORE_DAMAGE)) {
-                damageInfo.setPostStoredDamage(damageInfo.postDamage() + damageDealt);
+                damageInfo.setPostStoredDamage(damageInfo.postDamage() + damageDealt.get());
             }
         }
         targetCombatCore.activated();
@@ -705,16 +736,39 @@ public class ServerEventHandler {
             Capabilities.data(player).setCrit(isCrit);
         }
         if (BHConfigs.DAMAGE_INDICATOR) {
-            float roundedAmount = Math.round(damageDealt * 10) / 10f;
-            int intAmount = (int) roundedAmount;
-            String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
-            Vec3 pos = target.getEyePosition();
-            ChatFormatting damageIndColor = source.is(BHDamageTypeTags.PHYSICAL_DAMAGE) ? ChatFormatting.GOLD : source.is(BHDamageTypeTags.MAGIC_DAMAGE) ? ChatFormatting.BLUE : ChatFormatting.WHITE;
-            MutableComponent component = Component.literal(text).withStyle(isCrit ? ChatFormatting.DARK_RED : damageIndColor, ChatFormatting.BOLD).withStyle(Fonts.DAMAGE_INDICATOR);
-            level.sendParticles(new DamageIndicatorOptions(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
-            event.setAmount(damageDealt);
+            damageIndicator(level, source, false, damageDealt.get(), target);
         }
+        event.setAmount(damageDealt.get());
     }
+
+
+    private static void damageIndicator(ServerLevel level, DamageSource source, boolean healing, float value, LivingEntity entity) {
+        float roundedAmount = Math.round(value * 10) / 10f;
+        int intAmount = (int) roundedAmount;
+        String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
+        Vec3 pos = entity.getEyePosition();
+        ChatFormatting damageIndColor;
+        if (healing) {
+            damageIndColor = ChatFormatting.GREEN;
+        } else {
+            if (BHConfigs.DAMAGE_INDICATOR_COLOR_FORMAT) {
+                damageIndColor = source.is(BHDamageTypeTags.PHYSICAL_DAMAGE) ? ChatFormatting.GOLD :
+                        source.is(BHDamageTypeTags.MAGIC_DAMAGE) ? ChatFormatting.BLUE :  source.is(BHDamageTypeTags.TRUE_DAMAGE) ? ChatFormatting.WHITE : ChatFormatting.RED;
+
+            } else {
+                damageIndColor = ChatFormatting.GOLD;
+            }
+        }
+        MutableComponent component = Component.literal(text).withStyle(damageIndColor);
+        if (BHConfigs.DAMAGE_INDICATOR_TEXT_BOLD) {
+            component.withStyle(ChatFormatting.BOLD);
+        }
+        if (!BHConfigs.DAMAGE_INDICATOR_VANILLA_FONT) {
+            component.withStyle(Fonts.DAMAGE_INDICATOR);
+        }
+        level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
+    }
+
     private int enchantmentModifiyExpDrop(LivingEntity attacker, int experienceDrop, LivingEntity target) {
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(attacker.getItemBySlot(slot));
@@ -739,31 +793,31 @@ public class ServerEventHandler {
         if (event.isCancelable() && (entity.hasEffect(BHEffects.PARALYZE.get()) || entity.hasEffect(BHEffects.STUN.get()))) {
             event.setCanceled(true);
         }
-        int itemDuration = 0;
+        AtomicInteger itemDuration = new AtomicInteger();
         if (EnchantmentHelper.getEnchantmentLevel(BHEnchantments.DRAW_SPEED.get(), entity) > 0) {
-            itemDuration = AdvancedEnchantment.getDrawSpeed(entity, duration);
+            itemDuration.set(AdvancedEnchantment.getDrawSpeed(entity, duration));
         }
         if (entity instanceof Player player) {
-            IAccessoryItemHandler handler = Capabilities.accessory(player);
-            if (handler != null) {
-                for (int i = 0; i < handler.getSlots(); i++) {
-                    final ItemStack itemStacks = handler.getStackInSlot(i);
-                    if (!itemStacks.isEmpty() && itemStacks.getItem() instanceof IAccessoryItems<?> container) {
+            AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                var stacks = handler.getStacks();
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    final ItemStack itemStacks = stacks.getStackInSlot(i);
+                    if (!itemStacks.isEmpty() && itemStacks.getItem() instanceof IAccessoryItem container) {
                         for (Accessory trait : container.getAccessories()) {
                             Optional<IAttack> rangedWeaponCallback = trait.IAttackCallback();
                             if (rangedWeaponCallback.isPresent()) {
-                                itemDuration = rangedWeaponCallback.get().onItemUseItem(itemStack, duration);
-                                if (itemDuration < 0) {
+                                itemDuration.set(rangedWeaponCallback.get().onItemUseItem(itemStack, duration));
+                                if (itemDuration.get() < 0) {
                                     event.setCanceled(true);
                                 }
                             }
                         }
                     }
                 }
-            }
+            });
         }
-        if (itemDuration > 0) {
-            event.setDuration(event.getDuration() - itemDuration);
+        if (itemDuration.get() > 0) {
+            event.setDuration(event.getDuration() - itemDuration.get());
         }
     }
 
@@ -795,55 +849,57 @@ public class ServerEventHandler {
         }
     }
 
-    public void onEnchantmentTick(LivingEntity entity) {
-        if (entity == null) return;
-        for (EquipmentSlot slot : EquipmentSlot.values()) {
-            for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
-                int level = EnchantmentHelper.getEnchantmentLevel(enchantment, entity);
-                if (level > 0) {
-                    ((IAttributeEnchantment) enchantment).addAttributeModifiers(entity, level, this.getArmorAttributeMultiplier(slot, entity));
-                } else {
-                    ((IAttributeEnchantment) enchantment).removeAttributeModifiers(entity);
+
+    @SubscribeEvent
+    public void onEquipmentChangeEvent(LivingEquipmentChangeEvent event) {
+        LivingEntity entity = event.getEntity();
+        ItemStack from = event.getFrom();
+        ItemStack to = event.getTo();
+        EquipmentSlot slot = event.getSlot();
+        if (!from.isEmpty()) {
+            var fromStackEnchantment = EnchantmentHelper.getEnchantments(from);
+            for (var enchants : fromStackEnchantment.entrySet()) {
+                if (enchants.getKey() instanceof IAttributeEnchantment instance) {
+                    instance.removeAttributeModifiers(entity, slot);
+                }
+            }
+        }
+        if (!to.isEmpty()) {
+            var toStackEnchantment = EnchantmentHelper.getEnchantments(to);
+            for (var enchants : toStackEnchantment.entrySet()) {
+                if (enchants.getKey() instanceof IAttributeEnchantment instance) {
+                    instance.addAttributeModifiers(entity, slot, enchants.getValue());
                 }
             }
         }
     }
-    // TODO: Check if each armor slot have items if you have items will add one if not minus one
-    private int getArmorAttributeMultiplier(EquipmentSlot slot, LivingEntity entity) {
-        int armorAttributeMultiplier = 0;
-        if (slot.isArmor()) {
-            armorAttributeMultiplier += this.checkArmorAttributeMultiplier(EquipmentSlot.FEET, entity);
-            armorAttributeMultiplier += this.checkArmorAttributeMultiplier(EquipmentSlot.LEGS, entity);
-            armorAttributeMultiplier += this.checkArmorAttributeMultiplier(EquipmentSlot.CHEST, entity);
-            armorAttributeMultiplier += this.checkArmorAttributeMultiplier(EquipmentSlot.HEAD, entity);
-        }
-        return armorAttributeMultiplier;
-    }
-
-    private int checkArmorAttributeMultiplier(EquipmentSlot slot, LivingEntity entity) {
-        ItemStack itemStack = entity.getItemBySlot(slot);
-        if (itemStack.isEmpty()) {
-            return 0;
-        }
-        return itemStack.isEnchanted() ? 1 : 0;
-    }
-//    @SubscribeEvent
-//    public void onEquipmentChangeEvent(LivingEquipmentChangeEvent event) {
-//        LivingEntity entity = event.getEntity();
-//        ItemStack from = event.getFrom();
-//        ItemStack to = event.getTo();
+//    public void onEnchantmentTick(LivingEntity entity) {
+//        if (entity == null) return;
+//        for (EquipmentSlot slot : EquipmentSlot.values()) {
+//            for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
+//                int level = EnchantmentHelper.getEnchantmentLevel(enchantment, entity);
+//                if (level > 0) {
+//                    ((IAttributeEnchantment) enchantment).addAttributeModifiers(entity, level);
+//                } else {
+//                    ((IAttributeEnchantment) enchantment).removeAttributeModifiers(entity);
+//                }
+//            }
+//        }
 //    }
+
     // TODO: Pre Mitigation Damage Handler
     @SubscribeEvent
     public void onLivingHurtEvent(LivingHurtEvent event) {
-        float damageDealt = event.getAmount();
+        AtomicReference<Float> damageDealt = new AtomicReference<>(event.getAmount());
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
         if (source.getEntity() instanceof AbstractArrow) {
+            target.hurtTime = 0;
             target.invulnerableTime = 0;
         }
-        if (source.getDirectEntity() == source.getEntity() && source.getEntity() instanceof LivingEntity && target != null) {
+        if (source.getEntity() instanceof LivingEntity && damageDealt.get() > 0.0F) {
             if (source.getEntity() instanceof Player attacker) {
+
                 double getAttackSpeed = attacker.getAttributeValue(Attributes.ATTACK_SPEED);
                 attacker.getAttackStrengthScale((float) getAttackSpeed);
                 target.invulnerableTime = target.invulnerableDuration - (int) getAttackSpeed;
@@ -855,48 +911,48 @@ public class ServerEventHandler {
                     LevelSystem levelSystem = Capabilities.levelSystem(player);
                     Optional<IAttack> attack = levelSystem.IAttack();
                     if (attack.isPresent()) {
-                        damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
+                        damageDealt.set(attack.get().preMigitationDamage(damageDealt.get(), source, attacker, target));
                     }
-                    IAccessoryItemHandler handler = Capabilities.accessory(player);
-                    if (handler != null) {
-                        for (int i = 0; i < handler.getSlots(); i++) {
-                            final ItemStack itemStack = handler.getStackInSlot(i);
-                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> container) {
+                    AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                        var stacks = handler.getStacks();
+                        for (int i = 0; i < stacks.getSlots(); i++) {
+                            final ItemStack itemStack = stacks.getStackInSlot(i);
+                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
                                 for (Accessory trait : container.getAccessories()) {
                                     Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                                     if (meleeWeaponCallback.isPresent()) {
-                                        damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                        damageDealt.set(meleeWeaponCallback.get().preMigitationDamage(damageDealt.get(), source, attacker, target));
                                     }
                                 }
                             }
                         }
-                    }
+                    });
                 }
                 if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                     for (Skill trait : container.getSkills()) {
                         Optional<IAttack> meleeWeaponCallback = trait.attack();
                         if (meleeWeaponCallback.isPresent()) {
-                            damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                            damageDealt.set(meleeWeaponCallback.get().preMigitationDamage(damageDealt.get(), source, attacker, target));
                         }
                     }
                 }
-                damageDealt *= (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
+                damageDealt.updateAndGet(v -> (v * (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get())));
                 attackerCombatCore.activated();
             }
         }
         if (target != null) {
             IDamageInfo damageInfo = Capabilities.damageInfo(target);
             if (damageInfo != null) {
-                damageInfo.setPreDamage(damageDealt);
+                damageInfo.setPreDamage(damageDealt.get());
                 if (!source.is(BHDamageTypeTags.CANT_STORE_DAMAGE)) {
-                    damageInfo.setPreStoredDamage(damageInfo.preDamage() + damageDealt);
+                    damageInfo.setPreStoredDamage(damageInfo.preDamage() + damageDealt.get());
                 }
                 if (source.getEntity() instanceof LivingEntity attacker) {
                     damageInfo.setLastAttacker(attacker);
                 }
             }
         }
-        event.setAmount(damageDealt);
+        event.setAmount(damageDealt.get());
     }
 
     @SubscribeEvent
@@ -917,20 +973,20 @@ public class ServerEventHandler {
                 }
             }
         }
-        IAccessoryItemHandler handler = Capabilities.accessory(player);
-        if (handler != null) {
-            for (int i = 0; i < handler.getSlots(); i++) {
-                final ItemStack stackInSlot = handler.getStackInSlot(i);
-                if (!stackInSlot.isEmpty() && stackInSlot.getItem() instanceof IAccessoryItems<?> container) {
+        AccessoryHelper.getInventory(player).ifPresent(handler -> {
+            var stacks = handler.getStacks();
+            for (int i = 0; i < stacks.getSlots(); i++) {
+                final ItemStack stackInSlot = stacks.getStackInSlot(i);
+                if (!stackInSlot.isEmpty() && stackInSlot.getItem() instanceof IAccessoryItem container) {
                     for (Accessory trait : container.getAccessories()) {
                         Optional<IEntityProperties> callback = trait.IEntityProperties();
                         if (callback.isPresent()) {
-                            modifiyDropExperience = callback.get().modifyExprienceDrop(droppedExperience, target, player);
+                            event.setDroppedExperience(callback.get().modifyExprienceDrop(droppedExperience, target, player));
                         }
                     }
                 }
             }
-        }
+        });
         event.setDroppedExperience(modifiyDropExperience);
     }
 
@@ -940,11 +996,11 @@ public class ServerEventHandler {
         DamageSource source = event.getSource();
         boolean cantDie = false;
         if (target instanceof Player player) {
-            IAccessoryItemHandler handler = Capabilities.accessory(player);
-            if (handler != null) {
-                for (int i = 0; i < handler.getSlots(); i++) {
-                    final ItemStack itemStack = handler.getStackInSlot(i);
-                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> container) {
+            AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                var stacks = handler.getStacks();
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    final ItemStack itemStack = stacks.getStackInSlot(i);
+                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
                         for (Accessory trait : container.getAccessories()) {
                             Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                             if (meleeWeaponCallback.isPresent()) {
@@ -953,7 +1009,7 @@ public class ServerEventHandler {
                         }
                     }
                 }
-            }
+            });
         }
         if (source.getEntity() instanceof LivingEntity attacker) {
             ICombatCore attackerCombatCore = Capabilities.combat(attacker);
@@ -962,11 +1018,11 @@ public class ServerEventHandler {
                 LevelSystem levelSystem = Capabilities.levelSystem(player);
                 Optional<IAttack> attack = levelSystem.IAttack();
                 attack.ifPresent(iAttack -> iAttack.onEntityKilled(source, attacker, target));
-                IAccessoryItemHandler handler = Capabilities.accessory(player);
-                if (handler != null) {
-                    for (int i = 0; i < handler.getSlots(); i++) {
-                        final ItemStack itemStack = handler.getStackInSlot(i);
-                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> container) {
+                AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                    var stacks = handler.getStacks();
+                    for (int i = 0; i < stacks.getSlots(); i++) {
+                        final ItemStack itemStack = stacks.getStackInSlot(i);
+                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
                             for (Accessory trait : container.getAccessories()) {
                                 Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                                 if (meleeWeaponCallback.isPresent()) {
@@ -975,7 +1031,7 @@ public class ServerEventHandler {
                             }
                         }
                     }
-                }
+                });
                 ServerLevel level = (ServerLevel) player.level();
 
                 if ((source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL))) {
@@ -1008,7 +1064,7 @@ public class ServerEventHandler {
     @SubscribeEvent
     public void onMiningSpeedUpdate(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
-        double originalSpeed = event.getOriginalSpeed();
+        AtomicReference<Float> originalSpeed = new AtomicReference<>(event.getOriginalSpeed());
         if (player != null) {
             Level level = player.level();
             BlockPos blockPos = player.getOnPos();
@@ -1020,24 +1076,24 @@ public class ServerEventHandler {
             } else {
                 miningEfficiency = 1.0D;
             }
-            double bonusMiningSpeed = originalSpeed * miningSpeed * miningEfficiency;
-            IAccessoryItemHandler handler = Capabilities.accessory(player);
-            if (handler != null) {
-                for (int i = 0; i < handler.getSlots(); i++) {
-                    final ItemStack itemStack = handler.getStackInSlot(i);
-                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItems<?> accessoryItems) {
+            float bonusMiningSpeed = (float) (originalSpeed.get() * miningSpeed * miningEfficiency);
+            AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                var stacks = handler.getStacks();
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    final ItemStack itemStack = stacks.getStackInSlot(i);
+                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem accessoryItems) {
                         for (Accessory trait : accessoryItems.getAccessories()) {
                             Optional<IEntityProperties> optional = trait.IEntityProperties();
                             if (optional.isPresent()) {
-                                originalSpeed = optional.get().onModifyMiningSpeed(player, blockState, blockPos, originalSpeed);
+                                originalSpeed.set((float) optional.get().onModifyMiningSpeed(player, blockState, blockPos, originalSpeed.get()));
                             }
                         }
                     }
                 }
-            }
-            originalSpeed += bonusMiningSpeed;
+            });
+            originalSpeed.updateAndGet(v -> (v + bonusMiningSpeed));
         }
-        event.setNewSpeed((float) originalSpeed);
+        event.setNewSpeed((float) originalSpeed.get());
     }
     @SubscribeEvent
     public void onPlayerInteract(PlayerInteractEvent.LeftClickEmpty event) {
@@ -1095,6 +1151,50 @@ public class ServerEventHandler {
     public void onPlayerInteract(PlayerInteractEvent.LeftClickBlock event) {
         if (event.isCancelable() && event.getEntity().hasEffect(BHEffects.STUN.get())) {
             event.setCanceled(true);
+        }
+    }
+    @SubscribeEvent
+    public void onGetProjectiles(LivingGetProjectileEvent event) {
+        if (event.getProjectileItemStack().isEmpty() && event.getEntity() instanceof Player player) {
+            ItemStack quiver = QuiverHelper.getQuiverStacks(player);
+            if (!quiver.isEmpty()) {
+                QuiverItemStackHandler handler = (QuiverItemStackHandler) quiver.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().orElseThrow();
+                Predicate<ItemStack> predicate = ((ProjectileWeaponItem) event.getProjectileWeaponItemStack().getItem()).getSupportedHeldProjectiles();
+//                ItemStack projectile = IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(predicate).findFirst().orElse(ItemStack.EMPTY);
+                ItemStack projectile = ItemStack.EMPTY;
+                for (int i = 0; i < handler.getSlots(); ++i) {
+                    projectile = handler.getStackInSlot(handler.getSelectedSlot());
+                }
+                if (!projectile.isEmpty()) {
+                    event.setProjectileItemStack(projectile);
+                }
+            }
+        }
+    }
+    @SubscribeEvent
+    public void onItemPickEvent(EntityItemPickupEvent event) {
+        ItemStack pickedUpStack = event.getItem().getItem().copy();
+        int beforeCount = pickedUpStack.getCount();
+        int afterCount = beforeCount;
+        Player player = event.getEntity();
+        Level level = player.level();
+        List<ItemStack> quivers = QuiverHelper.findValidQuivers(player);
+        if (!quivers.isEmpty()) {
+            for (ItemStack quiver : quivers) {
+                if (!pickedUpStack.isEmpty() && !quiver.isEmpty() && ((QuiverItem) quiver.getItem()).isAmmoValid(pickedUpStack, quiver)) {
+                    QuiverItemStackHandler quiverHandler = (QuiverItemStackHandler) quiver.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().orElseThrow();
+                    for (int i = 0; i < quiverHandler.getSlots(); i++) {
+                        pickedUpStack = quiverHandler.insertItem(i, pickedUpStack, false);
+                    }
+                }
+                if (pickedUpStack.isEmpty()) break;
+            }
+            afterCount = pickedUpStack.getCount();
+            if (afterCount < beforeCount) {
+                player.take(event.getItem(), beforeCount - afterCount);
+                event.getItem().getItem().setCount(afterCount);
+                level.playSound((Player) null, event.getItem().getX(), event.getItem().getY(), event.getItem().getZ(), SoundEvents.ITEM_PICKUP, player.getSoundSource(), 0.2F, (player.getRandom().nextFloat() - player.getRandom().nextFloat()) * 0.7F + 0.0F);
+            }
         }
     }
 }

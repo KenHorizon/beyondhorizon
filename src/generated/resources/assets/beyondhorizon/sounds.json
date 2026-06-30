@@ -140,6 +140,21 @@
     ],
     "subtitle": "subtitle.beyondhorizon.generic.heavy_attack"
   },
+  "generic.level_system.add": {
+    "sounds": [
+      "beyondhorizon:generic/level_system_add"
+    ]
+  },
+  "generic.level_system.leveled_up": {
+    "sounds": [
+      "beyondhorizon:generic/level_system_leveled_up"
+    ]
+  },
+  "generic.level_system.remove": {
+    "sounds": [
+      "beyondhorizon:generic/level_system_remove"
+    ]
+  },
   "mob.blazing_inferno.charge": {
     "sounds": [
       "beyondhorizon:mob/blazing_inferno/charging/charging1",

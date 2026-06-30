@@ -5,8 +5,7 @@ import com.kenhorizon.beyondhorizon.client.model.entity.BaseSpearModel;
 import com.kenhorizon.beyondhorizon.client.render.AnimatedTextureRenderer;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.PyroLance;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.Pyrobolt;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.HomingProjectile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -21,7 +20,7 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
-public class PyroLanceRenderer extends AnimatedTextureRenderer<PyroLance> {
+public class PyroLanceRenderer extends AnimatedTextureRenderer<HomingProjectile> {
     private final BaseSpearModel model;
     private final RandomSource random = RandomSource.create();
     private static final ResourceLocation TRAIL_TEXTURE = BeyondHorizon.resource("textures/particle/teletor_trail.png");
@@ -31,15 +30,15 @@ public class PyroLanceRenderer extends AnimatedTextureRenderer<PyroLance> {
     }
 
     @Override
-    protected int getBlockLightLevel(PyroLance entity, BlockPos blockPos) {
+    protected int getBlockLightLevel(HomingProjectile entity, BlockPos blockPos) {
         return 15;
     }
 
     @Override
-    public void render(PyroLance entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+    public void render(HomingProjectile entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
         poseStack.scale(-1.0F, -1.0F, 1.0F);
-//        poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
+        poseStack.mulPose(Axis.YP.rotationDegrees(-90.0F));
         poseStack.translate(0.25, 0.1, 0);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0f));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 90.0f));
@@ -71,7 +70,7 @@ public class PyroLanceRenderer extends AnimatedTextureRenderer<PyroLance> {
         return 6;
     }
 
-    private void renderTrail(PyroLance entityIn, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, float trailR, float trailG, float trailB, float trailA, int packedLightIn) {
+    private void renderTrail(HomingProjectile entityIn, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, float trailR, float trailG, float trailB, float trailA, int packedLightIn) {
         int sampleSize = 10;
         float trailHeight = 0.35F;
         float trailYRot = 0;

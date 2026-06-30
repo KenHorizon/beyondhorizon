@@ -18,11 +18,19 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
+import org.joml.Quaternionf;
 
 public class BHFallingBlocks extends Entity {
+    public enum FallingMoveType {
+        RENDER_MOVE,
+        OVERALL_MOVE,
+        SIMULATE_RUPTURE
+    }
     public int duration;
-    protected static final EntityDataAccessor<BlockPos> DATA_START_POS = SynchedEntityData.defineId(BHFallingBlocks.class, EntityDataSerializers.BLOCK_POS);
+    private static final EntityDataAccessor<String> MODE = SynchedEntityData.defineId(BHFallingBlocks.class, EntityDataSerializers.STRING);
+    protected static final EntityDataAccessor<BlockPos> BLOCKPOS = SynchedEntityData.defineId(BHFallingBlocks.class, EntityDataSerializers.BLOCK_POS);
     private static final EntityDataAccessor<BlockState> BLOCK_STATE = SynchedEntityData.defineId(BHFallingBlocks.class, EntityDataSerializers.BLOCK_STATE);
+    private static final EntityDataAccessor<Quaternionf> QUATERNION = SynchedEntityData.defineId(BHFallingBlocks.class, EntityDataSerializers.QUATERNION);
 
     public BHFallingBlocks(EntityType<BHFallingBlocks> type, Level level) {
         super(type, level);
@@ -42,16 +50,16 @@ public class BHFallingBlocks extends Entity {
     }
 
     public void setStartPos(BlockPos blockPos) {
-        this.entityData.set(DATA_START_POS, blockPos);
+        this.entityData.set(BLOCKPOS, blockPos);
     }
 
     public BlockPos getStartPos() {
-        return this.entityData.get(DATA_START_POS);
+        return this.entityData.get(BLOCKPOS);
     }
 
     @Override
     protected void defineSynchedData() {
-        this.entityData.define(DATA_START_POS, BlockPos.ZERO);
+        this.entityData.define(BLOCKPOS, BlockPos.ZERO);
         this.entityData.define(BLOCK_STATE, Blocks.AIR.defaultBlockState());
     }
 
@@ -62,6 +70,19 @@ public class BHFallingBlocks extends Entity {
     public void setBlockState(BlockState blockState) {
         this.entityData.set(BLOCK_STATE, blockState);
     }
+
+    public FallingMoveType getMode() {
+        String mode = this.entityData.get(MODE);
+        if (mode.isEmpty()) {
+            return FallingMoveType.RENDER_MOVE;
+        }
+        return FallingMoveType.valueOf(mode);
+    }
+
+    public void setMode(FallingMoveType type) {
+        this.entityData.set(MODE, type.toString());
+    }
+
 
     @Override
     public void tick() {
@@ -79,7 +100,13 @@ public class BHFallingBlocks extends Entity {
         }
 
     }
+    public Quaternionf getQuaternionf() {
+        return getEntityData().get(QUATERNION);
+    }
 
+    public void setQuaternionf(Quaternionf quaternionf) {
+        getEntityData().set(QUATERNION, quaternionf);
+    }
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         BlockState blockState = getBlockState();

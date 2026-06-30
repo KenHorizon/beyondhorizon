@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.inventory;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
 import com.kenhorizon.beyondhorizon.server.inventory.slot.AccessorySlot;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItemHandler;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
@@ -40,7 +40,7 @@ public class AccessoryMenu extends InventoryMenu {
     private static final EquipmentSlot[] SLOT_IDS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
     private final CraftingContainer craftSlots = new TransientCraftingContainer(this, 2, 2);
     private final ResultContainer resultSlots = new ResultContainer();
-    public final IAccessoryItemHandler handler;
+    public final IAccessoryStackHandler handler;
 
     public AccessoryMenu(int containerId, Inventory inventory, FriendlyByteBuf buf) {
         this(containerId, inventory);

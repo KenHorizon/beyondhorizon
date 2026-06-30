@@ -63,7 +63,7 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
     }
 
     @Override
-    protected List<MutableComponent> tooltipDescriptionList(ItemStack itemStack) {
+    protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         String tooltips;
         if (this.getManaCostType() == WeaponActiveSkills.ManaCostType.PERCENTAGE) {
@@ -73,17 +73,17 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
         }
         list.add(Component.translatable(tooltips, this.getManaCost()).withStyle(ChatFormatting.UNDERLINE));
         if (this.getCooldown() > 0) {
-            list.add(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (int) (this.getCooldown() / 20)).withStyle(ChatFormatting.UNDERLINE));
+            list.add(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, Maths.tickToSeconds(this.getCooldown())).withStyle(ChatFormatting.UNDERLINE));
         }
-        if (this.tooltipDescriptions(itemStack).isEmpty()) {
+        if (this.appendTooltips(itemStack).isEmpty()) {
             list.add(Component.translatable(createId(), Maths.format(this.getMagnitude())));
         } else {
-            list.addAll(this.tooltipDescriptions(itemStack));
+            list.addAll(this.appendTooltips(itemStack));
         }
         return list;
     }
 
-    protected List<MutableComponent> tooltipDescriptions(ItemStack itemStack) {
+    protected List<MutableComponent> appendTooltips(ItemStack itemStack) {
         return List.of();
     }
 

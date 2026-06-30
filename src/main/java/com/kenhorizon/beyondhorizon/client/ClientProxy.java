@@ -6,21 +6,21 @@ import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRendere
 import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.*;
+import com.kenhorizon.beyondhorizon.client.render.guis.QuiverBagScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.VoidBagScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.ManaHud;
-import com.kenhorizon.beyondhorizon.client.render.guis.tooltip.ClientVoidBagTooltip;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ClientVoidBagTooltip;
 import com.kenhorizon.beyondhorizon.client.render.item.AccessoryItemDecorations;
 import com.kenhorizon.beyondhorizon.client.render.item.BHArmorRenderProperties;
 import com.kenhorizon.beyondhorizon.client.render.item.BHItemRenderProperties;
-import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.IconAttributesTooltip;
 import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
@@ -90,17 +90,10 @@ public class ClientProxy extends ServerProxy {
         bus.addListener(this::addResourcesBuiltin);
         bus.addListener(this::registerGuiOverlays);
         bus.addListener(this::registerNewRegsitry);
-        IconAttributesTooltip.registerFactory();
-        Tooltips.TitleBreakComponent.registerFactory();
         ClientVoidBagTooltip.registerFactory();
+        MinecraftForge.EVENT_BUS.register(new TooltipsEventHandler());
     }
-    private void onRegisterItemDecorations(final RegisterItemDecorationsEvent event) {
-        for (Item item : ForgeRegistries.ITEMS) {
-            if (item instanceof IAccessoryItems<?> items) {
-                event.register(items.getItem(), new AccessoryItemDecorations<>(items));
-            }
-        }
-    }
+
     public void registerNewRegsitry(DataPackRegistryEvent.NewRegistry event) {
         BeyondHorizon.LOGGER.debug("Custom Registry is registered and created!");
         event.dataPackRegistry(BHRegistries.Keys.SPAWNER_BUILDER, SpawnerConfig.MAP_CODEC.codec());
@@ -155,6 +148,7 @@ public class ClientProxy extends ServerProxy {
         BlockEntityRenderers.register(BHBlockEntity.GATE.get(), GateDoorRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
+        MenuScreens.register(BHMenu.QUIVER_MENU.get(), QuiverBagScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
         MenuScreens.register(BHMenu.VOID_BAG_MENU.get(), VoidBagScreen::new);
 
@@ -219,10 +213,11 @@ public class ClientProxy extends ServerProxy {
             event.add(type, BHAttributes.SPELLVAMP.get());
             event.add(type, BHAttributes.HEALING.get());
             event.add(type, BHAttributes.SHIELDING.get());
-            event.add(type, BHAttributes.MOVEMENT_EFFICIENCY.get());
             event.add(type, BHAttributes.OXYGEN_BONUS.get());
             event.add(type, BHAttributes.BURNING_TIME.get());
             event.add(type, BHAttributes.FALLDAMAGE_MULTIPLIER.get());
+            event.add(type, BHAttributes.WATER_MINING_EFFICIENCY.get());
+            event.add(type, BHAttributes.MOVEMENT_EFFICIENCY.get());
             if (type == EntityType.PLAYER) {
                 event.add(type, BHAttributes.STEALTH.get());
                 event.add(type, BHAttributes.SNEAKING_SPEED.get());
@@ -250,10 +245,7 @@ public class ClientProxy extends ServerProxy {
         event.registerSpriteSet(BHParticle.SLASH.get(), SlashParticles.Provider::new);
         event.registerSpriteSet(BHParticle.RING.get(), RingParticles.Provider::new);
         event.registerSpriteSet(BHParticle.RING_BIG.get(), RingParticles.Provider::new);
-        event.registerSpriteSet(BHParticle.INDICATOR.get(), IndicatorRingParticles.Provider::new);
         event.registerSpriteSet(BHParticle.ROAR.get(), RoarParticles.Provider::new);
-        event.registerSpriteSet(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), ExplodeParticles.HellfireOrb::new);
-        event.registerSpriteSet(BHParticle.HELLFIRE_ORB_TRAIL.get(), SimpleTrailParticles.HellfireOrb::new);
         event.registerSpriteSet(BHParticle.TRAILS.get(), TrailParticles.Provider::new);
         event.registerSpecial(BHParticle.AFTERIMAGE.get(), new AfterImageParticle.Provider());
         event.registerSpecial(BHParticle.DAMAGE_INDICATOR.get(), new DamageIndicatorParticle.Provider());
@@ -264,6 +256,7 @@ public class ClientProxy extends ServerProxy {
     }
     private void registerKeybinds(RegisterKeyMappingsEvent event) {
         event.register(Keybinds.LEVEL_SYSTEM);
+        event.register(Keybinds.QUIVER_INVENTORY);
         event.register(Keybinds.ACCESSORY_SLOTS);
     }
 

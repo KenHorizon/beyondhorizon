@@ -27,11 +27,15 @@ public abstract class AnimatedTextureRenderer<T extends Entity> extends EntityRe
     protected final ResourceLocation[] TEXTURE_PROGRESS;
     public AnimatedTextureRenderer(EntityRendererProvider.Context context) {
         super(context);
+        this.TEXTURE_PROGRESS = new ResourceLocation[this.numberOfFrames()];
+        this.init();
+    }
+
+    public void init() {
         this.minTextureX = (float) this.textureSize() / this.textureWidth();
         this.maxTextureX = this.minTextureX + (float) this.textureSize() / this.textureWidth();
         this.minTextureY = (float) this.textureSize() / this.textureHeight();
         this.maxTextureY = this.minTextureY + (float) this.textureSize() / this.textureHeight();
-        this.TEXTURE_PROGRESS = new ResourceLocation[this.numberOfFrames()];
         if (this.numberOfFrames() == 1) {
             TEXTURE_PROGRESS[0] = BeyondHorizon.resource(String.format("%s.png", this.getTextureLocation()));
         } else {
@@ -91,10 +95,17 @@ public abstract class AnimatedTextureRenderer<T extends Entity> extends EntityRe
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        int var0 = (int) ((entity.tickCount * 0.5F) % this.numberOfFrames());
+        int var0 = (int) ((this.animatedTexture(entity) * this.animatedTextureSpeed(entity)) % this.numberOfFrames());
         return this.animatedTextureLocation(entity, var0);
     }
 
+    public int animatedTexture(T entity) {
+        return entity.tickCount;
+    }
+
+    public float animatedTextureSpeed(T entity) {
+        return 0.5F;
+    }
     public ResourceLocation getTexture() {
         return getTexture(0);
     }

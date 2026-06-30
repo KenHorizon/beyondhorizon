@@ -13,5 +13,6 @@ public class DamageSourcesMixins {
     @Inject(method = "<init>", at = @At("RETURN"))
     private void beyondhorizonCustomDamageSources(RegistryAccess registryAccess, CallbackInfo ci) {
         BHDamageTypes.init(registryAccess);
+
     }
 }

@@ -61,9 +61,9 @@ public class BHEntity {
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
-    public static final RegistryObject<EntityType<PyroLance>> PYRO_LANCE = RegistryEntity
-            .<PyroLance>register("pyro_lance", PyroLance::new)
-            .lang("Pyro Lance")
+    public static final RegistryObject<EntityType<Pyrolance>> PYRO_LANCE = RegistryEntity
+            .<Pyrolance>register("pyrolance", Pyrolance::new)
+            .lang("Pyrolance")
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();

@@ -22,31 +22,32 @@ public class Maths {
     public static String format0(float value) {
         return FORMAT.format(value * 100.0F);
     }
+
     public static String format0(double value) {
         return FORMAT.format(value * 100.0F);
     }
 
-    public static float toPercent(float a) {
+    public static float percentages(float a) {
         return a / 100.0F;
     }
 
-    public static float toPercent(float a, float b) {
+    public static float percentages(float a, float b) {
         return a / b;
     }
 
-    public static double toPercent(double a) {
+    public static double percentages(double a) {
         return a / 100.0D;
     }
 
-    public static double toPercent(double a, double b) {
+    public static double percentages(double a, double b) {
         return a / b;
     }
 
-    public static float percentIntoDecimal(float a) {
+    public static float decimal(float a) {
         return a * 100.0F;
     }
 
-    public static double percentIntoDecimal(double a) {
+    public static double decimal(double a) {
         return a * 100.0F;
     }
 
@@ -59,6 +60,10 @@ public class Maths {
             time += seconds * 72000;
         }
         return time;
+    }
+
+    public static float tick(int seconds) {
+        return Math.max(0, seconds / 20.0F);
     }
 
     public static int sec(float seconds) {
@@ -105,5 +110,13 @@ public class Maths {
 
     public static double perValue(double number, double perValue, double increment) {
         return (number / perValue) * increment;
+    }
+
+    public static float sampleNoise2D(int x, int z, float simplexSampleRate) {
+        return (float) ((BHSimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
+    }
+
+    public static float sampleNoise3D(int x, int y, int z, float simplexSampleRate) {
+        return (float) ((BHSimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
     }
 }

@@ -11,6 +11,7 @@ import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 
@@ -24,7 +25,7 @@ public class AccessorySlotScreen extends EffectRenderingInventoryScreen<Accessor
     public float yMouse;
     private boolean widthTooNarrow;
     private boolean buttonClicked;
-    public AccessorySlotScreen(AccessoryMenu menu, Inventory inventory, Component title) {
+    public AccessorySlotScreen(AccessoryMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, Component.translatable("container.crafting"));
         this.titleLabelX = 97;
         this.inventoryLabelY = 999;

@@ -7,6 +7,10 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BHSounds {
+    public static RegistryObject<SoundEvent> LEVEL_SYSTEM_ADD = RegistryHelper.registerSounds("generic.level_system.add");
+    public static RegistryObject<SoundEvent> LEVEL_SYSTEM_REMOVE = RegistryHelper.registerSounds("generic.level_system.remove");
+    public static RegistryObject<SoundEvent> LEVEL_SYSTEM_LEVELED_UP = RegistryHelper.registerSounds("generic.level_system.leveled_up");
+
     public static RegistryObject<SoundEvent> SPAWNER_BREAK = RegistryHelper.registerSounds("block.base_spawner.break", "Block broken");
     public static RegistryObject<SoundEvent> SPAWNER_PLACE = RegistryHelper.registerSounds("block.base_spawner.place", "Block placed");
     public static RegistryObject<SoundEvent> SPAWNER_STEP = RegistryHelper.registerSounds("block.base_spawner.step", "Block step");

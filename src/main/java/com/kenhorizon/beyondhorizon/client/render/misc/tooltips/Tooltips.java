@@ -21,12 +21,7 @@ import java.util.*;
 
 @SuppressWarnings({"deprecation", "removal"})
 public class Tooltips {
-
     public static final FormattedCharSequence SPACE = FormattedCharSequence.forward(" ", Style.EMPTY);
-    //
-    public static final String DAMAGE = "damage";
-    public static final String HEALTH = "health";
-
     //
     public static final String COMMAND_POINTS_FAILED = String.format("command.%s.role_class.points.failure", BeyondHorizon.ID);
     public static final String COMMAND_POINTS_SUCCESS = String.format("command.%s.role_class.points.succes", BeyondHorizon.ID);
@@ -62,7 +57,6 @@ public class Tooltips {
     public static final String TOOLTIP_WORKBENCH_HELP_0 = String.format("block.%s.workbench.help.0", BeyondHorizon.ID);
     public static final String TOOLTIP_WORKBENCH_HELP_1 = String.format("block.%s.workbench.help.1", BeyondHorizon.ID);
 
-    public static final String TOOLTIP_PREFIX = String.format("tooltip.%s.", BeyondHorizon.ID);
     public static final ChatFormatting[] ATTRIBUTES = {ChatFormatting.DARK_GREEN, ChatFormatting.RED};
     public static final ChatFormatting[] ENCHANTMENT = {ChatFormatting.GOLD, ChatFormatting.RED};
     public static final ChatFormatting[] TOOLTIP = {ChatFormatting.GRAY, ChatFormatting.DARK_GRAY};
@@ -82,111 +76,5 @@ public class Tooltips {
 
     public static String getBossMessage(EntityType<?> entityType, int line) {
         return String.format("boss.%s.%s.defeated.%s", BeyondHorizon.ID, entityType.getDescriptionId(), line);
-    }
-
-    public static class TitleBreakComponent implements TooltipComponent, ClientTooltipComponent {
-        @Override
-        public int getHeight() {
-            return 0;
-        }
-
-        @Override
-        public int getWidth(Font font) {
-            return 0;
-        }
-
-        public static void registerFactory() {
-            FMLJavaModLoadingContext.get().getModEventBus().addListener(TitleBreakComponent::onRegisterTooltipEvent);
-        }
-
-        private static void onRegisterTooltipEvent(RegisterClientTooltipComponentFactoriesEvent event) {
-            event.register(TitleBreakComponent.class, x -> x);
-        }
-    }
-
-    public static List<FormattedText> recompose(List<ClientTooltipComponent> components) {
-        List<FormattedText> recomposedLines = new ArrayList<>();
-        for (ClientTooltipComponent component : components) {
-            if (component instanceof ClientTextTooltip) {
-                RecomposerSink recomposer = new RecomposerSink();
-                ((ClientTextTooltip) component).text.accept(recomposer);
-                recomposedLines.add(recomposer.getFormattedText());
-            }
-        }
-        return recomposedLines;
-    }
-
-    public static int calculateTitleLines(List<ClientTooltipComponent> components) {
-        if (components == null || components.isEmpty()) {
-            return 0;
-        }
-        int titleLines = 0;
-        boolean foundTitleBreak = false;
-        for (ClientTooltipComponent component : components) {
-            if (component instanceof ClientTextTooltip) {
-                titleLines++;
-            } else if (component instanceof TitleBreakComponent) {
-                foundTitleBreak = true;
-                break;
-            }
-        }
-        if (!foundTitleBreak) {
-            titleLines = 1;
-        }
-
-        return titleLines;
-    }
-
-    public static List<ClientTooltipComponent> centerTitle(List<ClientTooltipComponent> components, Font font, int width, int titleLines) {
-        List<ClientTooltipComponent> result = new ArrayList<>(components);
-        if (components.isEmpty() || titleLines <= 0 || titleLines >= components.size()) {
-            return result;
-        }
-        int titleIndex = 0;
-        for (ClientTooltipComponent clientTooltipComponent : components) {
-            if (clientTooltipComponent instanceof ClientTextTooltip) {
-                break;
-            }
-            titleIndex++;
-        }
-        for (int i = 0; i < titleLines; i++) {
-            ClientTooltipComponent titleComponent = components.get(titleIndex + i);
-            if (titleComponent != null) {
-                List<FormattedText> formattedTexts = recompose(List.of(titleComponent));
-                if (formattedTexts.isEmpty()) {
-                    return result;
-                }
-                FormattedCharSequence title = Language.getInstance().getVisualOrder(formattedTexts.get(0));
-
-                while (ClientTooltipComponent.create(title).getWidth(font) < width) {
-                    title = FormattedCharSequence.fromList(List.of(SPACE, title, SPACE));
-                    if (title == null) {
-                        break;
-                    }
-                }
-                result.set(titleIndex + i, ClientTooltipComponent.create(title));
-            }
-        }
-        return result;
-    }
-
-    private static class RecomposerSink implements FormattedCharSink {
-        private final StringBuilder builder = new StringBuilder();
-        private final MutableComponent text = Component.literal("").withStyle(Style.EMPTY);
-
-        @Override
-        public boolean accept(int index, Style style, int charCode) {
-            builder.append(Character.toChars(charCode));
-            if (!style.equals(text.getStyle())) {
-                text.append(Component.literal(builder.toString()).withStyle(style));
-                builder.setLength(0);
-            }
-            return true;
-        }
-
-        public FormattedText getFormattedText() {
-            text.append(Component.literal(builder.toString()).withStyle(text.getStyle()));
-            return text;
-        }
     }
 }

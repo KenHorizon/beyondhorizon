@@ -8,7 +8,12 @@ Follow Range: 70
 
 Behavior:
 Pyrolliger have two set of mode, ranged and melee mode, Pyrolliger have own set of mana systems each seconds pyrolliger will gain 1 mana, after reaching max mana pyrolliger will perform its ultimate form
-and if pyrolliger abiltiy hit will gain 5 mana instead
+and if pyrolliger abiltiy hit will gain 2 mana instead, after pyrolliger use ultimate it will switch modes
+If pyrolliger are on ranged mode, it will keep it distance to player and slowly approaching while casting abilities if player is too close to pyrolliger will attempt to reposition itself away from player
+radius of 12 blocks
+if pyrolliger are on melee mode, pyrolliger gain 1 mana every 2 seconds instead of 1, the gain mana if abilities hit are now 1 instead of 2, but gain 5 mana if got hit,
+it will start running towards to player and using all melee abilities, if pyrolliger are close enough to player it will count to 6 seconds and will reposition itself and afterwards it will select
+1 in between of attacks 1,2 or 3, all projectiles deal less 20%
 
 Attacks:
 All attacks of pyrolliger inflict burning hex that burn the and reduce healing received for 5 seconds
@@ -17,6 +22,7 @@ Ranged:
 Pyrobolt - the pyrolliger summon 20 pyrobolt over the course of 1 second at current position at random directions
 Heat Wave - pyrolliger will idle for 3 seconds and release a 12 heat wave that damage and push back
 Dash - pyrollger charge upto 3 seconds and dash to targeted position
+Teleport - pyrollger will teleport away from the player if the player is too close to the pyrolliger within 5 seconds
 Circular Pyro Slash - the pyrolliger 5 summon flaming slash to target interval within 2 seconds per attack
 Pyromaniac - the pyrolliger randomly place 10 burning hex trap that last for 5/10 seconds
 Pyro Lance - the pyrolliger summon 20 pyro lance that charge and home to player
@@ -40,14 +46,35 @@ Ultimate: Heart of the Inferno - the pyrolliger will do 2 phases, first phase wi
 after 10 seconds pass will be in second phase will do summon a Draconic Elder Sword that launch to targeted position
 
 
-Ranged:
-During ranged mode, pyrolliger will keep distance to player while casting ability, pyrolliger
-will cast in following order of ability
-
-
-
-
-
 Loot:
 Wildfire Fragments 15-30 (100%)
 Heart of the Inferno 1 (25%)
+
+
+Aftermath:
+Arc Evoker and Arc Mage are now spawning in raid
+Ruined Arc Illager Castle are now accessable
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

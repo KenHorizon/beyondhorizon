@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.item;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryActiveSkill;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItems;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
@@ -12,9 +12,9 @@ import net.minecraftforge.client.IItemDecorator;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 
 public class AccessoryItemDecorations<T extends Item> implements IItemDecorator {
-    private final IAccessoryItems<T> items;
+    private final IAccessoryItem items;
     private static final ResourceLocation TEXTURE = BeyondHorizon.resourceGui("sprites/accessory_active_slot.png");
-    public AccessoryItemDecorations(IAccessoryItems<T> items) {
+    public AccessoryItemDecorations(IAccessoryItem items) {
         this.items = items;
     }
 

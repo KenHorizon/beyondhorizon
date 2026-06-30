@@ -77,7 +77,6 @@ public class FlameStrikeAbility extends AbilityEntity {
             this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 15, r, g, b, 1.0F, 4.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(), this.getZ(), 0, -10, 0);
 
         }
-        level().addParticle(BHParticle.HELLFIRE_ORB_EXPLOSION.get(), getX(), getY() + 0.1, getZ(), 0, 0, 0);
         this.dealDamage();
     }
 

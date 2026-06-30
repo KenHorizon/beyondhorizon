@@ -22,18 +22,11 @@ public class GuideBookItem extends BasicItem {
         super(properties.stacksTo(1));
     }
 
-
-    @Override
-    public void onCraftedBy(ItemStack stack, @NotNull Level worldIn, @NotNull Player playerIn) {
-        stack.setTag(new CompoundTag());
-        stack.getTag().putIntArray("Pages", new int[]{0});
-    }
-
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         if (level.isClientSide()) {
-            BeyondHorizon.PROXY.openScreen(new GuideBookScreen(itemStack));
+            BeyondHorizon.PROXY.openScreen(new GuideBookScreen());
         }
         return super.use(level, player, hand);
     }
@@ -41,21 +34,5 @@ public class GuideBookItem extends BasicItem {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(itemStack, level, tooltip, flag);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean selected) {
-        if (itemStack.getTag() == null) {
-            itemStack.setTag(new CompoundTag());
-            itemStack.getTag().putIntArray("Pages", new int[]{
-                    GuideBookScreen.Pages.INTRODUCTION.ordinal(),
-                    GuideBookScreen.Pages.DAMAGE_TYPES.ordinal(),
-                    GuideBookScreen.Pages.EFFECT_TYPES.ordinal(),
-                    GuideBookScreen.Pages.GAME_MECHANICS.ordinal(),
-                    GuideBookScreen.Pages.LEVEL_SYSTEM.ordinal(),
-                    GuideBookScreen.Pages.DIFFICULTY.ordinal(),
-                    GuideBookScreen.Pages.STATS.ordinal()
-            });
-        }
     }
 }

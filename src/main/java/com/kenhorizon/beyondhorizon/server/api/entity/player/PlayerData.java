@@ -21,12 +21,15 @@ public class PlayerData {
     public static double MANA_DEDUCTION = 0.5D;
     public static String NBT_MANA = "mana";
     public static String NBT_CRIT = "crit";
-
+//
     public static final String NBT_ENTRY = "ability_cooldown";
     public static final String NBT_SLOT = "slot";
     public static final String NBT_ID = "id";
     public static final String NBT_COOLDOWN = "cooldown";
     public static final String NBT_CDR = "cdr";
+    //
+    public static final String NBT_ABILITIES = "ability_skill";
+    public static final String NBT_ITEM_TEMP_ID = "temp_id";
     private final Map<String, CooldownInstance> skillManager;
 
     protected boolean crit;

@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.entity;
 
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundBossbarPacket;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerPlayer;
@@ -18,12 +19,17 @@ public class BHBossInfo extends ServerBossEvent {
     private final Set<ServerPlayer> unseen = new HashSet<>();
 
     public BHBossInfo(BHBaseEntity entity) {
-        super(entity.getDisplayName(), BossEvent.BossBarColor.PURPLE, BossBarOverlay.PROGRESS);
+        super(entity.getDisplayName(), BossEvent.BossBarColor.WHITE, BossBarOverlay.PROGRESS);
         this.setVisible(entity.hasBossBar());
         this.entity = entity;
         this.renderType = 0;
     }
-
+    public BHBossInfo(BHBaseEntity entity, Component displayName, int renderType) {
+        super(displayName, BossEvent.BossBarColor.WHITE, BossBarOverlay.PROGRESS);
+        this.setVisible(entity.hasBossBar());
+        this.entity = entity;
+        this.renderType = renderType;
+    }
     public int getRenderType() {
         return this.renderType;
     }

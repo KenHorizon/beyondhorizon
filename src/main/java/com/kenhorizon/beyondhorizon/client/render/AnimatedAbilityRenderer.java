@@ -90,8 +90,16 @@ public abstract class AnimatedAbilityRenderer<T extends AbilityEntity> extends E
 
     @Override
     public ResourceLocation getTextureLocation(T entity) {
-        int var0 = (int) ((entity.tickCount * 0.5F) % this.numberOfFrames());
+        int var0 = (int) ((this.animatedTexture(entity) * this.animatedTextureSpeed(entity)) % this.numberOfFrames());
         return this.animatedTextureLocation(entity, var0);
+    }
+
+    public int animatedTexture(T entity) {
+        return entity.tickCount;
+    }
+
+    public float animatedTextureSpeed(T entity) {
+        return 0.5F;
     }
 
     public ResourceLocation getTexture() {

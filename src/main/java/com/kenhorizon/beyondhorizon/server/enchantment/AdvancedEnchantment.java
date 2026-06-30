@@ -11,6 +11,7 @@ import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -23,16 +24,35 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
 
+import java.util.EnumMap;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+@SuppressWarnings({"unchecked"})
 public class AdvancedEnchantment extends Enchantment implements IAdditionalEnchantment {
+
+    private static final UUID MAINHAND = UUID.fromString("2d6e2d29-3d84-4304-835f-d82afcade70e");
+    private static final UUID OFFHAND = UUID.fromString("2d6e2d29-3d84-4304-835f-d82afcade70e");
+    private static final UUID HEAD = UUID.fromString("2d6e2d29-3d84-4304-835f-d82afcade70e");
+    private static final UUID CHEST = UUID.fromString("83a311be-dbd5-4588-979d-e253b2361e14");
+    private static final UUID LEGS = UUID.fromString("7f934657-98e6-4ca0-80d6-30dff0fe95c8");
+    private static final UUID FEET = UUID.fromString("9fe730ee-e682-4535-bda9-09185e85f964");
+    public static final EnumMap<EquipmentSlot, UUID> ARMOR_MODIFIER_UUID_PER_TYPE = (EnumMap) Util.make(new EnumMap(EquipmentSlot.class), (map) -> {
+        map.put(EquipmentSlot.MAINHAND, MAINHAND);
+        map.put(EquipmentSlot.OFFHAND, OFFHAND);
+        map.put(EquipmentSlot.HEAD, HEAD);
+        map.put(EquipmentSlot.CHEST, CHEST);
+        map.put(EquipmentSlot.LEGS, LEGS);
+        map.put(EquipmentSlot.FEET, FEET);
+    });
+
     protected final int maxLevel;
     protected final int maxCost;
     protected final int minCost;
@@ -279,13 +299,13 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
         /**
          * Handle by {@link IAttributeEnchantment} allow to add attributes for assigned enchantments
          * */
-        public Builder addAttributeModifier(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
-            AttributeModifier attributeModifier = new AttributeModifier(UUID.fromString(uuid), "Enchantment Attribute Modifier", amount, operation);
+        public Builder addAttributeModifier(Attribute attribute, double amount, AttributeModifier.Operation operation) {
+            AttributeModifier attributeModifier = new AttributeModifier("Enchantment Attribute Modifier", amount, operation);
             this.attributeModifiers.put(attribute, attributeModifier);
             return this;
         }
         public Builder addAttributeModifier(Attribute attribute, String uuid, double amount, double perLevel, AttributeModifier.Operation operation) {
-            AttributeModifier attributeModifier = new AttributeModifier(UUID.fromString(uuid), "Enchantment Attribute Modifier", amount, operation);
+            AttributeModifier attributeModifier = new AttributeModifier("Enchantment Attribute Modifier", amount, operation);
             this.perLevel = perLevel;
             this.attributeModifiers.put(attribute, attributeModifier);
             return this;

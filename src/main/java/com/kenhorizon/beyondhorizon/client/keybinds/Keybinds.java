@@ -13,15 +13,18 @@ public class Keybinds {
     public static final Map<String, String> KEYBINDING = new HashMap<>();
     public static final String KEY_CATEGORY = keyBind("category");
     public static final String KEY_LEVEL_SYSTEM = keyBind("level_system");
+    public static final String KEY_QUIVER_INVENTORY = keyBind("quiver_inventory");
     public static final String KEY_ACCESSORY_SKILL_SLOTS = keyBind("accessory_skill_slots");
 
     static  {
         KEYBINDING.put(KEY_CATEGORY, "Beyond Horizon");
         KEYBINDING.put(KEY_LEVEL_SYSTEM, "Level System");
+        KEYBINDING.put(KEY_QUIVER_INVENTORY, "Quiver Inventory");
         KEYBINDING.put(KEY_ACCESSORY_SKILL_SLOTS, "Accessory skill slots");
     }
 
     public static final KeyMapping LEVEL_SYSTEM = new KeyMapping(KEY_LEVEL_SYSTEM, KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_O, KEY_CATEGORY);
+    public static final KeyMapping QUIVER_INVENTORY = new KeyMapping(KEY_QUIVER_INVENTORY, KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_X, KEY_CATEGORY);
     public static final KeyMapping ACCESSORY_SLOTS = new KeyMapping(KEY_ACCESSORY_SKILL_SLOTS, KeyConflictContext.IN_GAME, InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_LEFT_CONTROL, KEY_CATEGORY);
 
     public static String keyBind(String name) {

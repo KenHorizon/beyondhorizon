@@ -26,10 +26,9 @@ public class GuideBookIndexButton extends Button {
             RenderSystem.enableBlend();
             RenderSystem.enableDepthTest();
             Font font = (Font) BeyondHorizon.PROXY.getFontRenderer();
-            boolean flag = isHoveredOrFocused();
-            guiGraphics.blit(BeyondHorizon.resourceGui("guide_book/widgets.png"), this.getX(), this.getY(), 0, flag ? 32 : 0, this.width, this.height);
+            guiGraphics.blit(BeyondHorizon.resourceGui("guide_book/widgets.png"), this.getX(), this.getY(), 0, 0, this.width, this.height);
             guiGraphics.setColor(1.0F, 1.0F, 1.0F, 1.0F);
-            int i = ColorUtil.LIGHT_GRAY;
+            int i = ColorUtil.WHITE;
             this.renderString(guiGraphics, font, i | Mth.ceil(this.alpha * 255.0F) << 24);
         }
     }

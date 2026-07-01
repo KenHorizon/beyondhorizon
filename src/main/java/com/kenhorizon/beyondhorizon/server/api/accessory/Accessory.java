@@ -12,6 +12,7 @@ import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
+import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
@@ -35,21 +36,6 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class Accessory {
-
-    public enum Type implements StringRepresentable {
-        PASSIVE,
-        ACTIVE;
-
-        @Override
-        public String getSerializedName() {
-            return this.name().toLowerCase(Locale.ROOT);
-        }
-
-        public String getName() {
-            return Utils.capitalize(this.name().toLowerCase(Locale.ROOT));
-        }
-    }
-
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String ACCESSORY_ATTRIBUTES_TAGS = "accessory_attribute_modifiers";
     protected int cooldown = 0;
@@ -67,22 +53,22 @@ public abstract class Accessory {
     protected List<RegistryObject<? extends Accessory>> innateSkills = new ArrayList<>();
     @Nullable
     protected String descriptionId;
-    protected Type type;
-    public Accessory(Type type, float magnitude, int level) {
+    protected ItemAbilityType type;
+    public Accessory(ItemAbilityType type, float magnitude, int level) {
         this.magnitude = magnitude;
         this.level = level;
         this.type = type;
     }
 
     public Accessory() {
-        this(Type.PASSIVE,0, 1);
+        this(ItemAbilityType.PASSIVE,0, 1);
     }
 
-    public Type getType() {
+    public ItemAbilityType getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(ItemAbilityType type) {
         this.type = type;
     }
 
@@ -177,7 +163,9 @@ public abstract class Accessory {
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
         Minecraft mc = Minecraft.getInstance();
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        tooltip.addAll(this.makeTooltips(itemStack));
+        for (var createTooltips : this.makeTooltips(itemStack)) {
+            tooltip.add(createTooltips.withStyle(Tooltips.TOOLTIP[0]));
+        }
     }
 
     public static Optional<IAccessoryStackHandler> getInventory(LivingEntity entity) {
@@ -190,12 +178,12 @@ public abstract class Accessory {
 
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
-        list.add(makeTooltip(itemStack));
+        list.add(this.makeTooltip(itemStack));
         return list;
     }
 
     protected MutableComponent makeTooltip(ItemStack itemStack) {
-        return Component.translatable(this.createId());
+        return Component.translatable(this.createId()).withStyle(Tooltips.TOOLTIP[0]);
     }
 
     protected String createId(int lines) {

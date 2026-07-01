@@ -1,4 +1,4 @@
-// 1.20.1	2026-06-25T06:56:49.29259	Item Models: beyondhorizon
+// 1.20.1	2026-07-01T15:46:55.4245848	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -49,6 +49,11 @@ f067ccde0fbe79a96370293f0849fa7134d3cbf4 assets/beyondhorizon/models/item/debug1
 b6d7905f963a962b22096b351fb5a25a074cc44b assets/beyondhorizon/models/item/debug4.json
 1d9e52bd8c1b56a42a9108f713087fae5dd112cd assets/beyondhorizon/models/item/debug5.json
 c6d227757f2ec16ec6661a8a43c1a4beaa3f69df assets/beyondhorizon/models/item/debug6.json
+1dbf3fda5ca433f564f97dfd7dbde1417078bfed assets/beyondhorizon/models/item/doran_blade.json
+4c6dad8100ea04c1776af967e66e6c7fadedcaad assets/beyondhorizon/models/item/doran_bow.json
+2c2cd687b88822c3c508bbd3c97a003987bfef12 assets/beyondhorizon/models/item/doran_helm.json
+176e7a4d859689e347c89f2d87f3d7f9dfca5a1f assets/beyondhorizon/models/item/doran_ring.json
+2cea2c9ef19e779b469ef6ab127d2c04831ce791 assets/beyondhorizon/models/item/doran_shield.json
 0ad0afa79066bdf0785e138f93c32736e2e7b074 assets/beyondhorizon/models/item/duskblade.json
 8378e7110a760b6399067781ffe496e0a4064340 assets/beyondhorizon/models/item/dwarf_miner_ring.json
 4936a8fe1baf590f02921d7f68d9ce4e3c50228c assets/beyondhorizon/models/item/elucidator.json
@@ -63,6 +68,7 @@ c923bee1ccff397cdd4dca23ccc07fc5bce1d830 assets/beyondhorizon/models/item/fortun
 d9c718afc0403d4be74867f1a668110ff6e2c197 assets/beyondhorizon/models/item/giant_slayer_sword.json
 4edbfa31509d378737bd1a8f4621e4ea174ec806 assets/beyondhorizon/models/item/glove_of_aftershock.json
 a9eace5b43f130675b6bdea261da76bf2990409a assets/beyondhorizon/models/item/golden_boots.json
+25f93bf11f407fad007027e844f84fcc139fb339 assets/beyondhorizon/models/item/gold_ring.json
 059eb6c42fa2437b04c703bcb5e859f611ac1b27 assets/beyondhorizon/models/item/gray_wool_fur.json
 29cf377062fa71bbce4483b3f6aab76c5f60b145 assets/beyondhorizon/models/item/green_wool_fur.json
 4b6d1aa17f7e359d6a63bcc3cf69ca414da718b6 assets/beyondhorizon/models/item/guardian_sword.json

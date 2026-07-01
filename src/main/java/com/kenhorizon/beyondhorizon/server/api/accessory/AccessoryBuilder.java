@@ -21,6 +21,11 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder CURSED_APPLE = new AccessoryBuilder(List.of(Accessories.BAD_APPLE));
     public static final AccessoryBuilder VITAMINS = new AccessoryBuilder(List.of(Accessories.VITAMINS));
 
+    public static final AccessoryBuilder DORAN_BLADE = new AccessoryBuilder(List.of(Accessories.DORAN_BLADE_STATS));
+    public static final AccessoryBuilder DORAN_RING = new AccessoryBuilder(List.of(Accessories.DORAN_RING_STATS));
+    public static final AccessoryBuilder DORAN_BOW = new AccessoryBuilder(List.of(Accessories.DORAN_BOW_STATS));
+    public static final AccessoryBuilder DORAN_SHIELD = new AccessoryBuilder(List.of(Accessories.DORAN_SHIELD_STATS));
+    public static final AccessoryBuilder DORAN_HELM = new AccessoryBuilder(List.of(Accessories.DORAN_HELM_STATS));
     public static final AccessoryBuilder INFERNO_HEART_STONE = new AccessoryBuilder(List.of(Accessories.INFERNO_HEART_STONE, Accessories.IMMOLATE_1));
     public static final AccessoryBuilder SAINT_DEMON_CROWN = new AccessoryBuilder(List.of(Accessories.SUPREMACY));
     public static final AccessoryBuilder STEALTH_CLOAK = new AccessoryBuilder(List.of(Accessories.STALKER));
@@ -49,8 +54,6 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder POWER_CLAW = new AccessoryBuilder(List.of(Accessories.POWER_CLAW));
     public static final AccessoryBuilder THORNMAIL = new AccessoryBuilder(List.of(Accessories.THORNS));
     public static final AccessoryBuilder BLOOD_OF_BERSERKER = new AccessoryBuilder(List.of(Accessories.RAGE));
-    public static final AccessoryBuilder GOLDEN_BOOTS = new AccessoryBuilder(List.of(Accessories.MINING_BOOTS, Accessories.BERSERKER_BOOTS, Accessories.IRON_PLATED_BOOTS, Accessories.BOOTS_2, Accessories.FIRE_IMMUNITY));
-    public static final AccessoryBuilder BASIC_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_1));
     public static final AccessoryBuilder DEATH_CONTRACT = new AccessoryBuilder(List.of(Accessories.DEATH, Accessories.TAXS));
     public static final AccessoryBuilder TOUGH_CLOTH = new AccessoryBuilder(List.of(Accessories.TOUGH_CLOTH));
     public static final AccessoryBuilder VITALITY_STONE = new AccessoryBuilder(List.of(Accessories.VITALITY_STONE));
@@ -80,9 +83,6 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder POWER_GLOVES = new AccessoryBuilder(List.of(Accessories.POWER_GLOVES));
     public static final AccessoryBuilder SWIFT_DAGGER = new AccessoryBuilder(List.of(Accessories.SWIFT_DAGGER));
     public static final AccessoryBuilder AETHER_WISP = new AccessoryBuilder(List.of(Accessories.AETHER_WISP));
-    public static final AccessoryBuilder BERSERKER_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_2, Accessories.BERSERKER_BOOTS));
-    public static final AccessoryBuilder IRON_PLATED_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_2, Accessories.IRON_PLATED_BOOTS));
-    public static final AccessoryBuilder MINER_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_2, Accessories.MINING_BOOTS));
     public static final AccessoryBuilder ANCIENT_PICKAXE = new AccessoryBuilder(List.of(Accessories.ANCIENT_PICKAXE));
     public static final AccessoryBuilder ANCIENT_CHISEL = new AccessoryBuilder(List.of(Accessories.ANCIENT_CHISEL));
     public static final AccessoryBuilder HEART_OF_THE_TREE = new AccessoryBuilder(List.of(Accessories.OVERGROWTH));
@@ -94,6 +94,13 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder RECTRIX = new AccessoryBuilder(List.of(Accessories.RECTRIX));
     public static final AccessoryBuilder FORTUNE_SHIKIGAMI = new AccessoryBuilder(List.of(Accessories.FORTUNE_SHIKIGAMI));
     public static final AccessoryBuilder DESPAIR_AND_DEFY = new AccessoryBuilder(List.of(Accessories.DESPAIR_AND_DEFY));
+    //
+    public static final AccessoryBuilder GOLDEN_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_3, Accessories.MINING_BOOTS, Accessories.BERSERKER_BOOTS, Accessories.IRON_PLATED_BOOTS, Accessories.FIRE_IMMUNITY));
+    public static final AccessoryBuilder BASIC_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_1));
+    public static final AccessoryBuilder IRON_PLATED_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_2, Accessories.IRON_PLATED_BOOTS));
+    public static final AccessoryBuilder MINER_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_2, Accessories.MINING_BOOTS));
+    public static final AccessoryBuilder BERSERKER_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_2, Accessories.BERSERKER_BOOTS));
+    //
 
     protected List<Supplier<? extends Accessory>> suppliers = new ArrayList<>();
     protected List<Accessory> accessories = new ArrayList<>();

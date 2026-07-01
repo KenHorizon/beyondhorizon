@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
@@ -69,6 +70,10 @@ public final class AccessoryHelper {
             }
         });
         return itemStacks.contains(itemStack);
+    }
+
+    public static boolean checkAccessorySlot(Item item) {
+        return checkAccessorySlot(BeyondHorizon.PROXY.clientPlayer(), item);
     }
 
     public static List<Accessory> getAccessories(ItemStack itemStack) {

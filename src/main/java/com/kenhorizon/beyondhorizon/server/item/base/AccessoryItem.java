@@ -18,6 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -127,9 +128,21 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
             Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, itemStack);
             if (!accessory.getAttributeModifiers().isEmpty()) {
                 size--;
-                accessory.addTooltipAttributes(itemStack, tooltip, map);
+                accessory.addTooltipAttributes(itemStack, tooltip, accessory.getAttributeModifiers());
             }
             accessory.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+
+        }
+        if (this.getItemGroup() != AccessoryItemGroup.NONE) {
+            tooltip.add(CommonComponents.space());
+            if (this.getItemGroup() == AccessoryItemGroup.UNIQUE) {
+                MutableComponent comp = Component.translatable(itemStack.getDescriptionId());
+                tooltip.add(Component.translatable(Tooltips.ACCESSORY_LIMITED_TO, comp).withStyle(Tooltips.TOOLTIP[1]).withStyle(ChatFormatting.UNDERLINE));
+
+            } else {
+                tooltip.add(Component.translatable(Tooltips.ACCESSORY_LIMITED_TO, Utils.capitalize(Utils.formatName(this.getItemGroup().name().toLowerCase()))).withStyle(Tooltips.TOOLTIP[1]).withStyle(ChatFormatting.UNDERLINE));
+
+            }
         }
     }
     @Override

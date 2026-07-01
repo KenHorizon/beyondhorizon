@@ -10,7 +10,9 @@ import com.kenhorizon.beyondhorizon.client.render.guis.QuiverBagScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.VoidBagScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.ArmorHud;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHuds;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.ManaHud;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ClientVoidBagTooltip;
 import com.kenhorizon.beyondhorizon.client.render.item.AccessoryItemDecorations;
@@ -19,6 +21,7 @@ import com.kenhorizon.beyondhorizon.client.render.item.BHItemRenderProperties;
 import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
@@ -90,9 +93,19 @@ public class ClientProxy extends ServerProxy {
         bus.addListener(this::addResourcesBuiltin);
         bus.addListener(this::registerGuiOverlays);
         bus.addListener(this::registerNewRegsitry);
+        bus.addListener(this::onRegisterItemDecorations);
         ClientVoidBagTooltip.registerFactory();
         MinecraftForge.EVENT_BUS.register(new TooltipsEventHandler());
     }
+
+    private void onRegisterItemDecorations(final RegisterItemDecorationsEvent event) {
+        for (Item item : ForgeRegistries.ITEMS) {
+            if (item instanceof IAccessoryItem accessoryItem) {
+                event.register(item, new AccessoryItemDecorations(item, accessoryItem));
+            }
+        }
+    }
+
 
     public void registerNewRegsitry(DataPackRegistryEvent.NewRegistry event) {
         BeyondHorizon.LOGGER.debug("Custom Registry is registered and created!");

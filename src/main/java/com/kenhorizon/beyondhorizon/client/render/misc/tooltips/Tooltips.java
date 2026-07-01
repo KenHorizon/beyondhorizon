@@ -30,6 +30,7 @@ public class Tooltips {
     public static final String COMMAND_RESET_SUCCESS = String.format("command.%s.role_class.reset.succes", BeyondHorizon.ID);
     public static final String COMMAND_RESET_FAILED = String.format("command.%s.role_class.reset.failure", BeyondHorizon.ID);
     //
+    public static final String ACCESSORY_LIMITED_TO = String.format("acessory.%s.limited_to", BeyondHorizon.ID);
     public static final String TOOLTIP_KEYBIND = String.format("tooltip.%s.keybind", BeyondHorizon.ID);
     public static final String TOOLTIP_ON_COOLDOWN = String.format("tooltip.%s.on_cooldown", BeyondHorizon.ID);
     public static final String TOOLTIP_COOLDOWN = String.format("tooltip.%s.cooldown", BeyondHorizon.ID);

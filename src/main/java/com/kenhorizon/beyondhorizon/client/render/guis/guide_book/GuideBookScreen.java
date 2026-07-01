@@ -64,10 +64,8 @@ public class GuideBookScreen extends Screen {
     }
     private static Font getFont() {
         if (!Minecraft.getInstance().options.languageCode.equalsIgnoreCase("en_us")) {
-            BeyondHorizon.LOGGER.debug("Using vanilla fonts");
             return Minecraft.getInstance().font;
         } else {
-            BeyondHorizon.LOGGER.debug("Using custom fonts");
             return (Font) BeyondHorizon.PROXY.getFontRenderer();
         }
     }
@@ -83,7 +81,7 @@ public class GuideBookScreen extends Screen {
         this.indexButtons.clear();
         int centerX = (width - X) / 2;
         int centerY = (height - Y) / 2;
-        this.previousPage = new GuideBookChangePageButton(centerX - (15), centerY + 215, false, 0, (p_214132_1_) -> {
+        this.previousPage = new GuideBookChangePageButton(centerX - 15, centerY + 215, false, 0, (p_214132_1_) -> {
             if ((this.index ? this.indexPages > 0 : this.pageType != null)) {
                 if (this.index) {
                     this.indexPages--;
@@ -99,7 +97,7 @@ public class GuideBookScreen extends Screen {
             }
         });
         this.addRenderableWidget(previousPage);
-        this.nextPage = new GuideBookChangePageButton(centerX + (357 + 26), centerY + 215, true, 0, (p_214132_1_) -> {
+        this.nextPage = new GuideBookChangePageButton(centerX + 357, centerY + 215, true, 0, (p_214132_1_) -> {
             if ((this.index ? this.indexPages < this.indexPagesTotal - 1 : this.pageType != null && this.bookPages < this.pageType.pages)) {
                 if (this.index) {
                     this.indexPages++;
@@ -167,22 +165,22 @@ public class GuideBookScreen extends Screen {
 //        imageFromTxt(grap);
         switch (this.pageType) {
             case INTRODUCTION:
-                if (bookPages == 0) {
+//                if (bookPages == 0) {
 //                    drawItemStack(grap, new ItemStack(BHItems.GUIDE_BOOK.get()), 8, 20, 1.0F);
 //                    drawImage(grap, DRAW0, 12, 22, 0, 0, 168, 40, 512F);
-                }
+//                }
             case LEVEL_SYSTEM:
-                if (bookPages == 0) {
+//                if (bookPages == 0) {
 //                    drawImage(grap, DRAW0, 30, 256, 168, 0, 143, 82, 256F);
-                }
+//                }
             case DAMAGE_TYPES:
                 break;
             case STATS:
                 break;
             case ACCESSORY:
-                if (bookPages == 0) {
-                    drawItemStack(grap, new ItemStack(BHItems.POWER_GLOVES.get()), 8, 20, 1.0F);
-                }
+//                if (bookPages == 0) {
+//                    drawItemStack(grap, new ItemStack(BHItems.POWER_GLOVES.get()), 8, 20, 1.0F);
+//                }
             default:
                 break;
         }
@@ -202,6 +200,8 @@ public class GuideBookScreen extends Screen {
         try {
             final List<String> lines = IOUtils.readLines(resource.get().open(), "UTF-8");
             int linenumber = 0;
+            int appendLines = 10;
+            int extralines = 1;
             for (String line : lines) {
                 line = line.trim();
                 if (line.contains("<") || line.contains(">")) {
@@ -213,9 +213,9 @@ public class GuideBookScreen extends Screen {
                     guiGraphics.pose().translate(0, 5.0F, 0);
                 }
                 if (linenumber <= 19) {
-                    this.font.drawInBatch(line, 15, 15 + linenumber * 10, 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
+                    this.font.drawInBatch(line, 15, (14 + extralines) + linenumber * appendLines, 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
                 } else {
-                    this.font.drawInBatch(line, 200, ((linenumber - 20) * 10) - 9, 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
+                    this.font.drawInBatch(line, 200, ((linenumber - 19) * appendLines) - (6 - extralines), 0X303030, false, guiGraphics.pose().last().pose(), guiGraphics.bufferSource(), Font.DisplayMode.NORMAL, 0, 15728880);
                 }
                 linenumber++;
                 guiGraphics.pose().popPose();

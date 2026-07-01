@@ -25,6 +25,28 @@ public class Accessories {
     public static final RegistryObject<Accessory> SHEEN = registerSkill("sheen", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_DAMAGE, Constant.SHEEN_AD, AttributeModifier.Operation.ADDITION));
 
+    public static final RegistryObject<Accessory> DORAN_BLADE_STATS = registerSkill("doran_blade_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.ATTACK_DAMAGE, Constant.ATTACKDAMAGE_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(Attributes.MAX_HEALTH, Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> DORAN_BOW_STATS = registerSkill("doran_bow_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.ATTACK_DAMAGE, Constant.ATTACKDAMAGE_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(Attributes.ATTACK_SPEED, 0.15D, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            .addAttributes(BHAttributes.OMNIVAMP.get(), 1.5D, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> DORAN_HELM_STATS = registerSkill("doran_helm_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.MAX_HEALTH, Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(Attributes.ARMOR, Constant.ARMOR_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MAGIC_RESISTANCE.get(), Constant.MAGIC_RESISTANCE_0, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> DORAN_SHIELD_STATS = registerSkill("doran_shield_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.MAX_HEALTH, Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.HEALTH_REGENERATION.get(), Constant.REGEN, AttributeModifier.Operation.MULTIPLY_TOTAL));
+
+    public static final RegistryObject<Accessory> DORAN_RING_STATS = registerSkill("doran_ring_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.ABILITY_POWER_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(Attributes.MAX_HEALTH, Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
+
     public static final RegistryObject<Accessory> CURSED_SKULL = registerSkill("cursed_skull", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MAX_HEALTH, Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
 
@@ -81,22 +103,22 @@ public class Accessories {
     public static final RegistryObject<Accessory> RUMINATIVE_BEADS = registerSkill("ruminative_beads", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.HEALTH_REGENERATION.get(),  Constant.REGEN, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-    public static final RegistryObject<Accessory> BOOTS_1 = registerSkill("boots_0", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> BOOTS_1 = registerSkill("boots_0", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MOVEMENT_SPEED,  Constant.BOOTS_TIER_1, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> BOOTS_2 = registerSkill("boots_1", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> BOOTS_2 = registerSkill("boots_1", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MOVEMENT_SPEED,  Constant.BOOTS_TIER_2, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> BOOTS_3 = registerSkill("boots_2", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> BOOTS_3 = registerSkill("boots_2", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MOVEMENT_SPEED,  Constant.BOOTS_TIER_3, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> BERSERKER_BOOTS = registerSkill("berserker_boots", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> BERSERKER_BOOTS = registerSkill("berserker_boots", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_SPEED,  Constant.BERSERKER_BOOTS, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-    public static final RegistryObject<Accessory> IRON_PLATED_BOOTS = registerSkill("iron_plated_boots", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> IRON_PLATED_BOOTS = registerSkill("iron_plated_boots", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.DAMAGE_TAKEN.get(),  -Constant.IRON_PLATED_BOOTS, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> MINING_BOOTS = registerSkill("mining_boots", () -> new BootsAccessory()
+    public static final RegistryObject<Accessory> MINING_BOOTS = registerSkill("mining_boots", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.MINING_SPEED.get(),  Constant.MINING_SPEED_BASIC, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> BRAVERY = registerSkill("bravery", () -> new AttributeOnlyAccessory()

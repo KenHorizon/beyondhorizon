@@ -169,12 +169,52 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                         inventoryTrigger(ItemPredicate.Builder.item().of(Blocks.CRAFTING_TABLE).build()))
                 .save(consumer);
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHItems.GOLD_RING.get())
+                .pattern(" # ")
+                .pattern("# #")
+                .pattern(" # ")
+                .define('#', Items.GOLD_INGOT)
+                .unlockedBy("has_gold_ring",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.GOLD_RING.get()).build()))
+                .save(consumer);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BHItems.RAW_EMBED_HELLSTONE.get())
                 .requires(BHItems.RAW_HELLSTONE.get())
                 .requires(Blocks.OBSIDIAN)
                 .unlockedBy("has_raw_hellstone",
                         inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.RAW_HELLSTONE.get()).build()))
                 .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.DORAN_BLADE.get(), 1)
+                .required(Items.IRON_SWORD)
+                .required(Items.GOLD_INGOT, 10)
+                .required(BHItems.GOLD_RING.get())
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.DORAN_BOW.get(), 1)
+                .required(Items.BOW)
+                .required(Items.GOLD_INGOT, 10)
+                .required(BHItems.GOLD_RING.get())
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.DORAN_HELM.get(), 1)
+                .required(Items.IRON_HELMET)
+                .required(Items.GOLD_INGOT, 10)
+                .required(BHItems.GOLD_RING.get())
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.DORAN_SHIELD.get(), 1)
+                .required(Items.SHIELD)
+                .required(Items.GOLD_INGOT, 10)
+                .required(BHItems.GOLD_RING.get())
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.DORAN_RING.get(), 1)
+                .required(BHItems.RUBY.get())
+                .required(Items.GOLD_INGOT, 10)
+                .required(BHItems.GOLD_RING.get())
+                .save(consumer);
+
+
 
         WorkbenchRecipeProvider.create(BHItems.NULL_MAGIC_RUNE.get(), 1)
                 .required(Items.EMERALD, 20)

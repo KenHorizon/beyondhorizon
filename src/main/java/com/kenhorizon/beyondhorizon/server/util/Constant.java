@@ -115,6 +115,11 @@ public class Constant {
     public static double ARMOR_2 = 6;
     public static double ARMOR_3 = 8;
     public static double ARMOR_4 = 10;
+    public static double ATTACKDAMAGE_0 = 2;
+    public static double ATTACKDAMAGE_1 = 4;
+    public static double ATTACKDAMAGE_2 = 6;
+    public static double ATTACKDAMAGE_3 = 8;
+    public static double ATTACKDAMAGE_4 = 10;
     public static double ABILITY_POWER_0 = 5;
     public static double ABILITY_POWER_1 = 10;
     public static double ABILITY_POWER_2 = 15;

@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -14,7 +15,7 @@ public class WeaponPassiveSkills extends Skill implements IAttack, IEntityProper
     private float level;
 
     public WeaponPassiveSkills() {
-        super(Type.PASSIVE);
+        super(ItemAbilityType.PASSIVE);
     }
 
     @Override

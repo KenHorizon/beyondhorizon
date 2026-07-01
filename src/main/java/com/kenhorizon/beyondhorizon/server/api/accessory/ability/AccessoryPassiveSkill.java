@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -14,11 +15,11 @@ import java.util.Optional;
 public class AccessoryPassiveSkill extends Accessory implements IEntityProperties, IAttack, IAccessoryEvent {
 
     public AccessoryPassiveSkill(float magnitude, int level) {
-        super(Type.PASSIVE, magnitude, level);
+        super(ItemAbilityType.PASSIVE, magnitude, level);
     }
 
     public AccessoryPassiveSkill() {
-        super(Type.PASSIVE, 0, 1);
+        super(ItemAbilityType.PASSIVE, 0, 1);
     }
 
     @Override

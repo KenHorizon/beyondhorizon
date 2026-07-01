@@ -1,10 +1,13 @@
 package com.kenhorizon.beyondhorizon.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.libs.registry.RegistryLanguage;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraftforge.registries.RegistryObject;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.function.Supplier;
@@ -72,6 +75,16 @@ public class Utils {
         }
         return Utils.capitalize(builderName.toString());
     }
+
+    public static String formatName(String name) {
+        String[] array = name.split("[_.]");
+        StringBuilder splitName = new StringBuilder();
+        for (int i = 0; i < array.length; ++i) {
+            splitName.append(i == 0 ? array[i] : " " + array[i]);
+        }
+        return splitName.toString();
+    }
+
     private static boolean isEmpty(final CharSequence cs) {
         return cs == null || cs.length() == 0;
     }

@@ -132,7 +132,7 @@ public class BHBossBar {
         int fontLenght = Minecraft.getInstance().font.width(bossBarName);
         int textX = screenW / 2 - fontLenght / 2;
         int textY = guiY;
-        BlitHelper.drawBorderedStrings(graphics, bossBarName, textX, textY);
+        BlitHelper.drawBorderedStrings(minecraft.font, graphics, bossBarName, textX, textY);
         if (this.hasOverlay) {
             minecraft.getProfiler().push("customBossBarOverlay");
             RenderSystem.setShaderTexture(0, this.overlay);

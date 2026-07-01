@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
+import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -30,7 +31,7 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
     protected boolean active;
 
     public AccessoryActiveSkill(ManaCostType manaCostType, float magnitude, int level) {
-        super(Type.ACTIVE, magnitude, level);
+        super(ItemAbilityType.ACTIVE, magnitude, level);
         this.manaCostType = manaCostType;
     }
 
@@ -39,7 +40,7 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
     }
 
     public AccessoryActiveSkill(ManaCostType manaCostType) {
-        super(Type.ACTIVE,0, 1);
+        super(ItemAbilityType.ACTIVE,0, 1);
         this.manaCostType = manaCostType;
     }
 

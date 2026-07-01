@@ -10,6 +10,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -31,7 +32,7 @@ public class GameHudDisplay extends Gui {
     private int leftHeight = 39;
     public GameHudDisplay() {
         super(Minecraft.getInstance(), Minecraft.getInstance().getItemRenderer());
-        this.minecraft = Minecraft.getInstance();
+        this.minecraft = this.getForgeGui().getMinecraft();
     }
 
     @SubscribeEvent(receiveCanceled = true)
@@ -78,7 +79,7 @@ public class GameHudDisplay extends Gui {
                                         BlitHelper.drawBlit(guiGraphics, ICON_BACKGROUND, x, y -1, 0, 0, 24, 24, 24, 24);
                                         BlitHelper.drawBlit(guiGraphics, getAllIcons, x, y - 1, 0, 0, 24, 24, 24, 24);
                                         int valueLenght = value.length();
-                                        BlitHelper.drawStrings(guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, ColorUtil.WHITE, true);
+                                        BlitHelper.drawStrings(minecraft.font, guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, ColorUtil.WHITE, true);
                                         RenderSystem.disableBlend();
                                         xPos++;
                                     }
@@ -99,7 +100,7 @@ public class GameHudDisplay extends Gui {
         int y = this.hud.scaledWindowHeight - (this.leftHeight + 11);
         String value = String.format("%.0f", this.hud.armor);
         BlitHelper.drawBlit(guiGraphics, HudSprites.ARMOR_FULL, x, y - 1, 0, 0, 9, 9, 9, 9);
-        BlitHelper.drawBorderedStrings(guiGraphics, value,x + (5 + 9), y, ColorUtil.WHITE);
+        BlitHelper.drawBorderedStrings(minecraft.font, guiGraphics, value,x + (5 + 9), y, ColorUtil.WHITE);
         minecraft.getProfiler().pop();
     }
 
@@ -112,11 +113,11 @@ public class GameHudDisplay extends Gui {
             String absorption = String.format("%.0f", this.hud.absorption);
             int abX = x + (5 + 9) - (24 + absorption.length());
             BlitHelper.drawBlit(guiGraphics, HudSprites.ABSROPTION, abX - (5 + 9), y -1, 0, 0, 9, 9, 9, 9);
-            BlitHelper.drawStrings(guiGraphics, absorption, abX, y, ColorUtil.WHITE, true);
+            BlitHelper.drawStrings(minecraft.font, guiGraphics, absorption, abX, y, ColorUtil.WHITE, true);
         }
         String health = String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth);
         BlitHelper.drawBlit(guiGraphics, HudSprites.HEALTH, x, y - 1, 0, 0, 9, 9, 9, 9);
-        BlitHelper.drawBorderedStrings(guiGraphics, health,x + (5 + 9), y, ColorUtil.combineRGB(249, 87, 87));
+        BlitHelper.drawBorderedStrings(getForgeGui().getMinecraft().font, guiGraphics, health,x + (5 + 9), y, ColorUtil.combineRGB(249, 87, 87));
         this.minecraft.getProfiler().pop();
     }
 

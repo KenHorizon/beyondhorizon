@@ -107,13 +107,12 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         int x = this.leftPos + (this.imageWidth/2);
         int y = this.topPos;
         int craftX = this.leftPos + (this.imageWidth / 2 - (120 / 2));
-        int craftY = y + 50;
+        int craftY = y + 52;
         int craftTextY = craftY + 2;
         Component mutableComponent = Component.translatable(Tooltips.TOOLTIP_WORKBENCH_FORGE);
         String craftText = mutableComponent.getString();
         int craftTextW = craftText.length();
         if (this.selectedRecipes != null) {
-
             Minecraft mc = Minecraft.getInstance();
             var player = mc.player;
             boolean flag = this.foundRecipes(player, this.selectedRecipes);
@@ -127,9 +126,9 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             if (!flag) {
                 guiGraphics.blitNineSliced(RESOURCE_GUI, craftX, craftY, 120, 14, 20 , 4, 200, 20, 0, 204);
             } else if (this.onHoveredSlot(this.leftPos + (this.imageWidth / 2 - (120 / 2)), 120, 12, y - 60, mouseX, mouseY)) {
-                guiGraphics.blitNineSliced(RESOURCE_GUI, craftX, craftY, 120, 14, 20 , 4, 200, 20, 0, 224);
+                guiGraphics.blitNineSliced(RESOURCE_GUI, craftX, craftY, 64, 14, 20 , 4, 200, 20, 0, 224);
             } else {
-                guiGraphics.blitNineSliced(RESOURCE_GUI, craftX, craftY, 120, 14, 20 , 4, 200, 20, 0, 184);
+                guiGraphics.blitNineSliced(RESOURCE_GUI, craftX, craftY, 64, 14, 20 , 4, 200, 20, 0, 184);
             }
             guiGraphics.drawCenteredString(this.font, mutableComponent, craftX + (craftTextW + (120 / 2) - 2), craftTextY, ColorUtil.WHITE);
             this.createLabel(guiGraphics, Tooltips.TOOLTIP_WORKBENCH_INGREDIENTS, this.leftPos + this.imageWidth + 20, this.topPos - 6, 64, 18);
@@ -137,7 +136,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             guiGraphics.blitNineSliced(RESOURCE_GUI, craftX, craftY, 120, 14, 20 , 4, 200, 20, 0, 204);
             guiGraphics.drawCenteredString(this.font, mutableComponent, craftX + (craftTextW + (120 / 2) - 2), craftTextY, ColorUtil.WHITE);
         }
-        this.createLabel(guiGraphics, Tooltips.TOOLTIP_WORKBENCH_ITEMS, this.leftPos - this.imageWidth + 20, this.topPos - 6, 64, 18);
+        this.createLabel(guiGraphics, Tooltips.TOOLTIP_WORKBENCH_ITEMS, this.leftPos - this.imageWidth + 20, this.topPos - 8, 64, 18);
         if (this.enableHelp) {
             if (this.onHoveredSlot(this.leftPos + 156, this.topPos + 4, 15, 12, mouseX, mouseY)) {
                 guiGraphics.blit(RESOURCE_GUI, this.leftPos + 156, this.topPos + 4, 212, 0, 12, 15);
@@ -184,17 +183,9 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         super.renderTooltip(guiGraphics, x, y);
         int startIndex = this.startIndex + (COLUMN * ROW);
         List<WorkbenchRecipe> list = this.menu.recipes;
-        int startX = ((this.leftPos + 7) - (this.imageWidth - 6)) + 8;
-        int startY = this.topPos + POS_Y + 8;
-        for (int i = this.startIndex; i < startIndex && i < this.menu.recipes.size(); i++) {
-            int index = i - this.startIndex;
-            int posX = startX + index % ROW * 24;
-            int var0001 = index / ROW;
-            int posY = startY + var0001 * 24 + 2;
-            if (x >= posX && x <= posX + 16 && y >= posY && y <= posY + 16) {
-                guiGraphics.renderTooltip(this.font, list.get(i).getResultItem(this.minecraft.level.registryAccess()), x, y);
-            }
-        }
+        int itemTooltipsX = this.leftPos + 7;
+        int itemTooltipsY = this.topPos + POS_Y;
+        renderItemsTooltips(guiGraphics, x, y, startIndex, itemTooltipsX, itemTooltipsY, list);
         if (this.selectedRecipes != null) {
             int recX = (this.leftPos + 7) + (this.imageWidth + 12);
             int recY = (this.topPos + POS_Y) + 2;
@@ -214,9 +205,23 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         }
     }
 
+    private void renderItemsTooltips(GuiGraphics guiGraphics, int mX, int mY, int startIndex, int startX, int startY, List<WorkbenchRecipe> list) {
+        int size = 25;
+        for (int i = this.startIndex; i < startIndex && i < this.menu.recipes.size(); i++) {
+            int index = i - this.startIndex;
+            int x = ((startX - (this.imageWidth - 6)) + index % ROW * size) + 10;
+            int var0001 = index / ROW;
+            int y = (startY + var0001 * size + 2);
+            boolean isHovering = this.onHoveredSlot(x, y, size - 1, size - 1, mX, mY);
+            if (isHovering) {
+                guiGraphics.renderTooltip(this.font, list.get(i).getResultItem(this.minecraft.level.registryAccess()), mX, mY);
+            }
+        }
+    }
+
     private void renderTooltipIngredients(GuiGraphics guiGraphics, int recipesItemX, int recipesItemY, int x, int y) {
         for (int j = 0; j < this.selectedRecipes.getIngredients().size(); j++) {
-            if (x >= recipesItemX && x <= recipesItemX + 24 && y >= recipesItemY && y <= recipesItemY + 24) {
+            if (x >= recipesItemX && x <= recipesItemX + 16 && y >= recipesItemY && y <= recipesItemY + 16) {
                 ItemStack itemStack = this.selectedRecipes.getIngredients().get(j).getItems()[0];
                 guiGraphics.renderTooltip(this.font, itemStack, x, y);
             }
@@ -245,7 +250,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             poseStack.pushPose();
             poseStack.translate(0, 0, 200);
             if (!(need == 1 || need == 0)) {
-                BlitHelper.drawStrings(guiGraphics, String.format("%s", need), x + 4, y + 10, ColorUtil.combineRGB(255, 255, 255), false);
+                BlitHelper.drawBorderedStrings(minecraft.font, guiGraphics, String.format("%s", need), x + 4, y + 10);
             }
             poseStack.popPose();
             x += PADDING_INGREDIENTS;
@@ -253,20 +258,20 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         poseStack.popPose();
     }
     public void renderRecipes(GuiGraphics guiGraphics, int posX, int posY, int mouseX, int mouseY, int startIndex) {
+        int size = 25;
         for (int i = this.startIndex; i < startIndex && i < this.menu.recipes.size(); ++i) {
             int index = i - this.startIndex;
-            int x = (posX - (this.imageWidth - 6)) + index % ROW * 24;
+            int x = ((posX - (this.imageWidth - 6)) + index % ROW * size) + 10;
             int var0001 = index / ROW;
-            int y = posY + var0001 * 24 + 2;
-            boolean isHovering = this.onHoveredSlot(x, y, 24, 24, mouseX, mouseY);
+            int y = (posY + var0001 * size + 2);
+            boolean isHovering = this.onHoveredSlot(x, y, size, size, mouseX, mouseY);
             WorkbenchRecipe recipe = this.menu.recipes.get(i);
             PoseStack poseStack = guiGraphics.pose();
             poseStack.pushPose();
-            guiGraphics.blitNineSliced(RESOURCE_GUI, x + 7, y - 2, 24, 24, 20, 4, 200, 20, 0, 184);
-            guiGraphics.renderItem(recipe.getResultItem(this.minecraft.level.registryAccess()), x + 10, y + 2);
-            guiGraphics.blit(RESOURCE_GUI, x + 10, y + 1, 0, 166, 18, 18);
+            guiGraphics.blit(RESOURCE_GUI, x, y, 176, 76, size, size);
+            guiGraphics.renderItem(recipe.getResultItem(this.minecraft.level.registryAccess()), x + 4, y + 4);
             if (isHovering) {
-                guiGraphics.blit(RESOURCE_GUI, x + 7, y - 2, 176, 15, 24, 24);
+                guiGraphics.blit(RESOURCE_GUI, x , y, 176, 101, size, size);
             }
             poseStack.popPose();
         }
@@ -340,7 +345,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         int count = 0;
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack slot = player.getInventory().getItem(i);
-            if (ingredient.test(slot)) {
+            if (ingredient.test(slot) && player.getInventory().contains(slot)) {
                 count += slot.getCount();
                 if (count >= needed) return true;
             }

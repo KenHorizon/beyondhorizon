@@ -11,6 +11,7 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
 import com.kenhorizon.beyondhorizon.server.data.IAttack;
 import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -36,41 +37,11 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class Skill {
-    public enum Type implements StringRepresentable {
-        PASSIVE,
-        ACTIVE;
-
-        @Override
-        public String getSerializedName() {
-            return this.name().toLowerCase(Locale.ROOT);
-        }
-
-        public String getName() {
-            return Utils.capitalize(this.name().toLowerCase(Locale.ROOT));
-        }
-    }
-
-    public enum Format {
-        NEGATIVE(ChatFormatting.RED),
-        NORMAL(ChatFormatting.YELLOW);
-
-        private final ChatFormatting chatFormatting;
-
-        private Format(ChatFormatting chatFormatting) {
-            this.chatFormatting = chatFormatting;
-        }
-
-        public ChatFormatting getChatFormatting() {
-            return this.chatFormatting;
-        }
-    }
-
     protected boolean isSkill = false;
     protected boolean isMelee = false;
     protected boolean isRanged = false;
     protected boolean isThrowing = false;
-    protected Format format = Format.NORMAL;
-    protected Type type = Type.PASSIVE;
+    protected ItemAbilityType type = ItemAbilityType.PASSIVE;
     protected final AttributeTooltips attributeTooltip = new AttributeTooltips();
     protected boolean tooltipEnable = true;
     protected boolean tooltipNameEnable = true;
@@ -83,15 +54,11 @@ public abstract class Skill {
     protected boolean isInnate = false;
     protected List<RegistryObject<? extends Skill>> innateSkills = new ArrayList<>();
 
-    public Skill(Type type) {
+    public Skill(ItemAbilityType type) {
         this.type = type;
     }
 
-    public Skill format(Format format) {
-        this.format = format;
-        return this;
-    }
-    public Skill type(Type type) {
+    public Skill type(ItemAbilityType type) {
         this.type = type;
         return this;
     }
@@ -130,11 +97,11 @@ public abstract class Skill {
     }
 
     public boolean isSkill() {
-        return this.type != Type.ACTIVE;
+        return this.type != ItemAbilityType.ACTIVE;
     }
 
     public boolean isActive() {
-        return this.type == Type.ACTIVE;
+        return this.type == ItemAbilityType.ACTIVE;
     }
 
     public Skill isInnate() {
@@ -169,7 +136,7 @@ public abstract class Skill {
         return this;
     }
 
-    public Skill.Type getType() {
+    public ItemAbilityType getType() {
         return this.type;
     }
 

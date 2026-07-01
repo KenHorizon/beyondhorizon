@@ -5,6 +5,7 @@ import net.minecraftforge.common.IExtensibleEnum;
 public enum AccessoryItemGroup implements IExtensibleEnum {
     NONE,
     UNIQUE,
+    STARTER,
     IMMOLATE,
     BLIGHT,
     INFORMATION,

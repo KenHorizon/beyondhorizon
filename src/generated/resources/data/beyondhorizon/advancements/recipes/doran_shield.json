@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipes": {
+      "conditions": {
+        "recipe": "beyondhorizon:doran_shield"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipes"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:doran_shield"
+    ]
+  },
+  "sends_telemetry_event": true
+}

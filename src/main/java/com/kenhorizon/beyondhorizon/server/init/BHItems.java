@@ -85,6 +85,7 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register();
 
+    public static final RegistryObject<Item> GOLD_RING = basicItem("gold_ring", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> HANDLE = basicItem("handle", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> FLAME_CELL = basicItem("flame_cell", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> WILDFIRE_FRAGMENT = basicItem("wildfire_fragment", RegistryTabs.Category.INGREDIENTS);
@@ -163,6 +164,11 @@ public class BHItems {
     public static final RegistryObject<Item> RUMINATIVE_BEADS = accessoryBasicItem("ruminative_beads", AccessoryBuilder.RUMINATIVE_BEADS);
     public static final RegistryObject<Item> SPECTRAL_CLOAK = accessoryBasicItem("spectral_cloak", AccessoryBuilder.SPECTRAL_CLOAK);
      //
+     public static final RegistryObject<Item> DORAN_BLADE = accessoryItem("doran_blade", AccessoryBuilder.DORAN_BLADE);
+    public static final RegistryObject<Item> DORAN_BOW = accessoryItem("doran_bow", AccessoryBuilder.DORAN_BOW);
+    public static final RegistryObject<Item> DORAN_HELM = accessoryItem("doran_helm", AccessoryBuilder.DORAN_HELM);
+    public static final RegistryObject<Item> DORAN_RING = accessoryItem("doran_ring", AccessoryBuilder.DORAN_RING);
+    public static final RegistryObject<Item> DORAN_SHIELD = accessoryItem("doran_shield", AccessoryBuilder.DORAN_SHIELD);
     public static final RegistryObject<Item> LIGHT_STRING_BOW = accessoryItem("light_string_bow", AccessoryBuilder.LIGHT_STRING_BOW);
     public static final RegistryObject<Item> HEAVY_STRING_BOW = accessoryItem("heavy_string_bow", AccessoryBuilder.HEAVY_STRING_BOW);
     public static final RegistryObject<Item> KRAKEN_SLAYER = accessoryItem("kraken_slayer", AccessoryBuilder.KRAKEN_SLAYER);
@@ -184,13 +190,15 @@ public class BHItems {
     public static final RegistryObject<Item> NULL_GEM = accessoryItem("null_gem", AccessoryItemGroup.POWER_GEM, AccessoryBuilder.NULL_SWORD);
     public static final RegistryObject<Item> CATALYST_GEM = accessoryItem("catalyst_gem", AccessoryItemGroup.POWER_GEM, AccessoryBuilder.ASCENDED_HERO_SWORD);
     public static final RegistryObject<Item> DARK_ESSESNCE_CRYSTAL = accessoryItem("dark_essence_crystal", AccessoryBuilder.MAGICAL_OPS);
+
     public static final RegistryObject<Item> BOOTS = accessoryItem("boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.BASIC_BOOTS);
     public static final RegistryObject<Item> GOLDEN_BOOTS = accessoryItem("golden_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.GOLDEN_BOOTS);
     public static final RegistryObject<Item> BERSERKER_BOOTS = accessoryItem("berserker_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.BERSERKER_BOOTS);
     public static final RegistryObject<Item> IRON_PLATED_BOOTS = accessoryItem("iron_plated_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.IRON_PLATED_BOOTS);
     public static final RegistryObject<Item> MINER_BOOTS = accessoryItem("miner_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.MINER_BOOTS);
+
     public static final RegistryObject<Item> BOOK_OF_KNOWLEDGE = accessoryItem("book_of_knowledge", AccessoryItemGroup.NONE, AccessoryBuilder.BOOK_OF_KNOWLEDGE);
-    public static final RegistryObject<Item> ULTIMA = accessoryItem("ultima", AccessoryItemGroup.UNIQUE, AccessoryBuilder.ULTIMA);
+    public static final RegistryObject<Item> ULTIMA = accessoryItem("ultima", AccessoryBuilder.ULTIMA);
     public static final RegistryObject<Item> ANCIENT_PICKAXE = accessoryItem("ancient_pickaxe", AccessoryBuilder.ANCIENT_PICKAXE);
     public static final RegistryObject<Item> ANCIENT_CHISEL = accessoryItem("ancient_chisel", AccessoryBuilder.ANCIENT_CHISEL);
     public static final RegistryObject<Item> MINER_GLOVES = accessoryItem("miner_gloves", AccessoryBuilder.MINER_GLOVES);
@@ -363,11 +371,18 @@ public class BHItems {
                 .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
     private static RegistryObject<Item> accessoryItem(String name, AccessoryBuilder accessoryBuilder) {
-        return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder))
+        return RegistryItems.register(name, item -> new AccessoryItem(AccessoryItemGroup.UNIQUE, item, accessoryBuilder))
                 .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }
+
+    private static RegistryObject<Item> accessoryItem(String name, AccessoryItemGroup group, Rarity rarity, AccessoryBuilder accessoryBuilder) {
+        return RegistryItems.register(name, item -> new AccessoryItem(group, item, accessoryBuilder))
+                .properties(properties -> properties.rarity(rarity))
+                .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
+    }
+
     private static RegistryObject<Item> accessoryItem(String name, Rarity rarity, AccessoryBuilder accessoryBuilder) {
-        return RegistryItems.register(name, item -> new AccessoryItem(item, accessoryBuilder))
+        return RegistryItems.register(name, item -> new AccessoryItem(AccessoryItemGroup.UNIQUE, item, accessoryBuilder))
                 .properties(properties -> properties.rarity(rarity))
                 .tab(RegistryTabs.Category.ACCESSORY).model(ItemModels.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();
     }

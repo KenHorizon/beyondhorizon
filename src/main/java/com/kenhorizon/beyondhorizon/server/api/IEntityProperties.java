@@ -10,6 +10,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public interface IEntityProperties {
 
     default void onItemUpdate(ItemStack itemStack, Level level, LivingEntity entity, int itemSlot, boolean isSelected) {}
@@ -28,5 +30,9 @@ public interface IEntityProperties {
 
     default int modifyExprienceDrop(int dropExperience, LivingEntity target, Player player) {
         return dropExperience;
+    }
+
+    default boolean makePiglinsNeutral() {
+        return false;
     }
 }

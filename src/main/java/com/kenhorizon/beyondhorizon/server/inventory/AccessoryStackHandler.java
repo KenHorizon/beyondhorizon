@@ -43,11 +43,8 @@ public class AccessoryStackHandler implements IAccessoryStackHandler {
 
     @Override
     public void deserializeNBT(CompoundTag nbt) {
-        if (nbt.contains(NBT_BASE_SIZE)) {
-            this.baseSize = nbt.getInt(NBT_BASE_SIZE);
-        }
-        if (nbt.contains(NBT_STACKS)) {
-            this.stackHandler.deserializeNBT(nbt);
-        }
+        this.baseSize = nbt.getInt(NBT_BASE_SIZE);
+//        this.stackHandler = new DynamicStackHandler(this.baseSize);
+        this.getStacks().deserializeNBT(nbt.getCompound(NBT_STACKS));
     }
 }

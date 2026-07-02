@@ -15,11 +15,9 @@ public class ImmuneDeathAccessory extends AccessoryPassiveSkill {
     public boolean onEntityDeath(Player player, ItemStack itemStack) {
         if (this == Accessories.ETERNAL_LIFE.get()) {
             if (player.level() instanceof ServerLevel slevel) {
-                if (!(player.isCreative() || player.isSpectator()) && !UndyingTotemAbility.onUse(slevel, (ServerPlayer) player)) {
-                    return true;
-                }
+                return !(player.isCreative() || player.isSpectator()) && !UndyingTotemAbility.onUse(slevel, (ServerPlayer) player);
             }
         }
-        return super.onEntityDeath(player, itemStack);
+        return false;
     }
 }

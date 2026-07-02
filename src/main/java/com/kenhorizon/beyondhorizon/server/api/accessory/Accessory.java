@@ -162,14 +162,6 @@ public abstract class Accessory {
         }
     }
 
-    public static Optional<IAccessoryStackHandler> getInventory(LivingEntity entity) {
-        if (entity != null) {
-            return Optional.of((IAccessoryStackHandler) entity.getCapability(BHCapabilties.ACCESSORY));
-        } else {
-            return Optional.empty();
-        }
-    }
-
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         list.add(this.makeTooltip(itemStack));

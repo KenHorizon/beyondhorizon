@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -22,5 +23,9 @@ public interface IAccessory {
 
     default UUID getSlotId() {
         return UUID.randomUUID();
+    }
+
+    default boolean makePiglinsNeutral() {
+        return false;
     }
 }

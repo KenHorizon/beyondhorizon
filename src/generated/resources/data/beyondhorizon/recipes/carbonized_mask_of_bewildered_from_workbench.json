@@ -1,0 +1,19 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:carbonized_bone"
+    },
+    {
+      "item": "beyondhorizon:mask_of_bewildered"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:carbonized_mask_of_bewildered"
+  }
+}

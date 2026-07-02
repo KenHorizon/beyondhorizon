@@ -46,6 +46,11 @@ public class GateDoorModel extends AdvanceEntityModel<Entity> {
         return this.root;
     }
 
+    @Override
+    public void animations(Entity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
+
+    }
+
     public void modelAnimations(GateBlockBlockEntity entity, float partialTick) {
         this.root().getAllParts().forEach(ModelPart::resetPose);
         float ageInTicks = entity.tickCount + partialTick;

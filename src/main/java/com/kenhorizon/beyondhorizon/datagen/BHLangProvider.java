@@ -111,6 +111,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.INFERNAL_RAY.get(), "Infernal Ray", "Release a powerful Infernal Ray dealing %s %s within 2.5 radius of attacks");
         this.addSkills(Skills.INFERNO_STRIKE.get(), "Inferno Strike", "Charges while being slowed by %s%% upto 3 seconds",
                 "Recast: Release a Inferno Slash onward dealing (5-%s%% bonus AD) physical damage");
+        this.addSkills(Skills.HEAVY_HITTER.get(), "Heavy Hitter", "Deal additional %.2f%% damage dealt per %s%% bonus attack speed", "Bonus Damage: %s%%");
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional %.2f%% target's Current HP");
         this.addSkills(Skills.BLADE_EDGE.get(), "Blade Edge", "Deal additional +%s%% target's Max HP");
         this.addSkills(Skills.RADIANT.get(), "Radiant", "Deal additional damage to undead by +%s%%");
@@ -126,6 +127,7 @@ public class BHLangProvider extends LanguageProvider {
         //
         this.addAccessory(Accessories.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100 (6 if attacking, 1 if moving)");
         this.addAccessory(Accessories.ELECTROSHOCK.get(), "Electro Shock", "When fully Energized, your next basic attack strike the target with bolt of lightning dealing bonus 40% damage dealt magic damage of 2.5 radius unit");
+        this.addAccessory(Accessories.MIDAS_AURA.get(), "Midas Aura", "Piglin will be come neutral");
         this.addAccessory(Accessories.FEATHER_FEET.get(), "Feather Feet", "Negate fall damage");
         this.addAccessory(Accessories.OVERGROWTH.get(), "Overgrowth", "Increase Bonus Max HP by %s%% (%s)");
         this.addAccessory(Accessories.DESPAIR_AND_DEFY.get(), "Despair And Defy", "Reduce %.2f%% post-mitigation damage and stored it and bleed per second of stored damage");

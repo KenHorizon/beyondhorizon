@@ -27,6 +27,7 @@ import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.server.entity.mobs.DragonHornet;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.init.*;
@@ -155,6 +156,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
         EntityRenderers.register(BHEntity.INFERNAL_RAY.get(), InfernalRayRenderer::new);
         EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
+        EntityRenderers.register(BHEntity.DRAGON_HORNET.get(), DragonHornetRenderer::new);
         //
         BlockEntityRenderers.register(BHBlockEntity.BASE_SPAWNER.get(), BaseSpawnerRenderer::new);
         BlockEntityRenderers.register(BHBlockEntity.GATE.get(), GateDoorRenderer::new);
@@ -178,6 +180,7 @@ public class ClientProxy extends ServerProxy {
         event.put(BHEntity.BLAZING_INFERNO.get(), BlazingInferno.createAttributes());
         event.put(BHEntity.PYROLLIGER.get(), Pyrolliger.createAttributes());
         event.put(BHEntity.INFERNO_SHIELD.get(), InfernoShield.createAttributes());
+        event.put(BHEntity.DRAGON_HORNET.get(), DragonHornet.createAttributes());
     }
 
 //    @OnlyIn(Dist.CLIENT)

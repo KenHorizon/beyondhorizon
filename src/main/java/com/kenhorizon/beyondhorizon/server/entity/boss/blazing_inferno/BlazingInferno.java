@@ -251,12 +251,12 @@ public class BlazingInferno extends BHBossEntity {
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
         this.goalSelector.addGoal(1, new PrepareDeathRayAttackGoal(this, ID_ANIMATION_EMPTY, ID_PREPARE_DEATH_RAY, ID_DEATH_RAY, Maths.sec(3), Maths.sec(5)));
         this.goalSelector.addGoal(1, new DeathRayAttackGoal(this, ID_DEATH_RAY, ID_DEATH_RAY, ID_IDLE_STATE, Maths.sec(5), Maths.sec(5)));
-//        this.goalSelector.addGoal(1, new EnragedDashAttackGoal(this, ID_ANIMATION_EMPTY, ID_DASHES, ID_SHOCKWAVE, 40));
-//        this.goalSelector.addGoal(1, new DashAttackGoal(this, ID_ANIMATION_EMPTY, ID_DASHES, ID_IDLE_STATE, 40, MathUtils.sec(3)));
-//        this.goalSelector.addGoal(1, new ShockwaveAttackGoal(this, ID_ANIMATION_EMPTY, ID_SHOCKWAVE, ID_IDLE_STATE, 40, MathUtils.sec(5)));
-//        this.goalSelector.addGoal(1, new EruptionAttackGoal(this, ID_ANIMATION_EMPTY, ID_ERUPTION, ID_IDLE_STATE, 20, MathUtils.sec(2)));
-//        this.goalSelector.addGoal(1, new RangedAttackGoal(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_IDLE_STATE, 30, MathUtils.sec(5)));
-//        this.goalSelector.addGoal(1, new SpearAttackGoal(this, ID_ANIMATION_EMPTY, ID_SPEAR, ID_IDLE_STATE, 30, MathUtils.sec(3)));
+        this.goalSelector.addGoal(1, new EnragedDashAttackGoal(this, ID_ANIMATION_EMPTY, ID_DASHES, ID_SHOCKWAVE, 40));
+        this.goalSelector.addGoal(1, new DashAttackGoal(this, ID_ANIMATION_EMPTY, ID_DASHES, ID_IDLE_STATE, 40, Maths.sec(3)));
+        this.goalSelector.addGoal(1, new ShockwaveAttackGoal(this, ID_ANIMATION_EMPTY, ID_SHOCKWAVE, ID_IDLE_STATE, 40, Maths.sec(5)));
+        this.goalSelector.addGoal(1, new EruptionAttackGoal(this, ID_ANIMATION_EMPTY, ID_ERUPTION, ID_IDLE_STATE, 20, Maths.sec(2)));
+        this.goalSelector.addGoal(1, new RangedAttackGoal(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_IDLE_STATE, 30, Maths.sec(5)));
+        this.goalSelector.addGoal(1, new SpearAttackGoal(this, ID_ANIMATION_EMPTY, ID_SPEAR, ID_IDLE_STATE, 30, Maths.sec(3)));
         this.goalSelector.addGoal(1, new GroundSlamAttackGoal(this, ID_ANIMATION_EMPTY, ID_GROUND_SLAM, ID_IDLE_STATE, Maths.sec(3)));
 
         this.goalSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
@@ -1545,17 +1545,6 @@ public class BlazingInferno extends BHBossEntity {
         this.getLookControl().setLookAt(target, 30, 30);
     }
 
-    public void doJumpTarget(LivingEntity target, double distance, double y) {
-        this.getNavigation().stop();
-        double posX = target == null ? 0 : (target.getX() - this.getX()) * distance;
-        double posY = y;
-        double posZ = target == null ? 0 : (target.getZ() - this.getZ()) * distance;
-        this.setDeltaMovement(posX, posY, posZ);
-    }
-    public void doJump(double distance) {
-        this.getNavigation().stop();
-        this.setDeltaMovement(this.getDeltaMovement().add(new Vec3(0, distance, 0)));
-    }
     public static class BlazingInfernoAwakenGoal extends MobStateGoal<BlazingInferno> {
 
         public BlazingInfernoAwakenGoal(BlazingInferno entity, int animation, int start, int end, int seeTick, int maxDuration) {

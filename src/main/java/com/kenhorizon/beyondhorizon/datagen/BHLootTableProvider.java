@@ -49,11 +49,19 @@ public class BHLootTableProvider {
     }
 
     public static class Entity extends EntityLootSubProvider {
-
-        private final BlazingInfernoLootTable BLAZING_INFERNO = new BlazingInfernoLootTable(BHEntity.BLAZING_INFERNO.get());
-        private final FayeFlaresLootTable FAYE_FLARES = new FayeFlaresLootTable(BHEntity.FAYE_FLARES.get());
-        private final FayeWildfireLootTable FAYE_WILDFIRE = new FayeWildfireLootTable(BHEntity.FAYE_WILDFIRE.get());
-        private final PyrolligerLootTable PYROLLIGER = new PyrolligerLootTable(BHEntity.PYROLLIGER.get());
+        static List<EntityLootDropBuilder> LOOT_DROP_BUILDERS = new ArrayList<>();
+//        private final BlazingInfernoLootTable BLAZING_INFERNO = new BlazingInfernoLootTable(BHEntity.BLAZING_INFERNO.get());
+//        private final FayeFlaresLootTable FAYE_FLARES = new FayeFlaresLootTable(BHEntity.FAYE_FLARES.get());
+//        private final FayeWildfireLootTable FAYE_WILDFIRE = new FayeWildfireLootTable(BHEntity.FAYE_WILDFIRE.get());
+//        private final PyrolligerLootTable PYROLLIGER = new PyrolligerLootTable(BHEntity.PYROLLIGER.get());
+//        private final DragonHornetLootTable DRAGON_HORNET = new DragonHornetLootTable(BHEntity.DRAGON_HORNET.get());
+        static {
+            LOOT_DROP_BUILDERS.add(new BlazingInfernoLootTable(BHEntity.BLAZING_INFERNO.get()));
+            LOOT_DROP_BUILDERS.add(new FayeFlaresLootTable(BHEntity.FAYE_FLARES.get()));
+            LOOT_DROP_BUILDERS.add(new FayeWildfireLootTable(BHEntity.FAYE_WILDFIRE.get()));
+            LOOT_DROP_BUILDERS.add(new PyrolligerLootTable(BHEntity.PYROLLIGER.get()));
+            LOOT_DROP_BUILDERS.add(new DragonHornetLootTable(BHEntity.DRAGON_HORNET.get()));
+        }
 
         public Entity() {
             super(FeatureFlags.REGISTRY.allFlags());
@@ -61,10 +69,12 @@ public class BHLootTableProvider {
 
         @Override
         public void generate() {
-            this.addRegister(BLAZING_INFERNO);
-            this.addRegister(FAYE_FLARES);
-            this.addRegister(FAYE_WILDFIRE);
-            this.addRegister(PYROLLIGER);
+            LOOT_DROP_BUILDERS.forEach(this::addRegister);
+//            this.addRegister(DRAGON_HORNET);
+//            this.addRegister(BLAZING_INFERNO);
+//            this.addRegister(FAYE_FLARES);
+//            this.addRegister(FAYE_WILDFIRE);
+//            this.addRegister(PYROLLIGER);
         }
 
         protected void addRegister(EntityLootDropBuilder builder) {

@@ -1,0 +1,19 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:adhesive_bandage"
+    },
+    {
+      "item": "beyondhorizon:cursed_apple"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:haunting_curse_bandage"
+  }
+}

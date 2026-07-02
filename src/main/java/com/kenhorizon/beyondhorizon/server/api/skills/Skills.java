@@ -26,6 +26,9 @@ public class Skills {
     public static final RegistryObject<Skill> INFERNAL_RAY = registerSkill("infernal_ray", () -> new InfernalRaySkill(Constant.INFERNAL_AD, Constant.INFERNAL_AP, Constant.INFERNAL_BASE_DAMAGE, true, DamageType.PHYSICAL_DAMAGE, AbstractDeathRayAbility.BeamDamageTags.DEFAULT)
             .universal());
 
+    public static final RegistryObject<Skill> HEAVY_HITTER = registerSkill("heavy_hitter", () -> new HeavyHitterSkill(Constant.HEAVY_HITTER_DAMAGE_PER_SCALE, Constant.HEAVY_HITTER_DAMAGE)
+            .melee());
+
     public static final RegistryObject<Skill> RUINED_BLADE = registerSkill("ruined_blade", () -> new ExtraDamageSkill(Constant.RUINED_BLADE, ExtraDamageSkill.CURRENT_HEALTH)
             .melee());
 

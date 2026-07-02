@@ -11,6 +11,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.*;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerDataHelper;
 import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.event.HarvestBlockEvent;
@@ -49,8 +50,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -63,6 +67,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Drowned;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Evoker;
+import net.minecraft.world.entity.monster.Shulker;
+import net.minecraft.world.entity.monster.hoglin.Hoglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.DyeColor;
@@ -72,12 +81,14 @@ import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
@@ -304,20 +315,15 @@ public class ServerEventHandler {
     public void onPlayerCloned(PlayerEvent.Clone event) {
         Player player = event.getEntity();
         Player oldPlayer = event.getOriginal();
-        if (event.isWasDeath()) {
-            oldPlayer.revive();
-            oldPlayer.getCapability(BHCapabilties.ACCESSORY).ifPresent(oldData -> {
-                player.getCapability(BHCapabilties.ACCESSORY).ifPresent(newData -> {
-                    newData.deserializeNBT(oldData.serializeNBT());
-                });
-            });
-            oldPlayer.getCapability(BHCapabilties.PLAYER_DATA).ifPresent(oldData -> {
-                player.getCapability(BHCapabilties.PLAYER_DATA).ifPresent(newData -> {
-                    newData.loadNbt(oldData.saveNbt());
-                });
-            });
-            oldPlayer.invalidateCaps();
-        }
+        oldPlayer.revive();
+        LazyOptional<IAccessoryStackHandler> oldAccHandler = AccessoryHelper.getInventory(oldPlayer);
+        LazyOptional<IAccessoryStackHandler> newAccHandler = AccessoryHelper.getInventory(player);
+        oldAccHandler.ifPresent(oldAcc -> newAccHandler.ifPresent(newAcc -> newAcc.deserializeNBT(oldAcc.serializeNBT())));
+
+
+        LazyOptional<PlayerData> oldPlayerDataHandler = PlayerDataHelper.getPlayerData(oldPlayer);
+        LazyOptional<PlayerData> newPlayerDataHandler = PlayerDataHelper.getPlayerData(player);
+        oldPlayerDataHandler.ifPresent(oldAcc -> newPlayerDataHandler.ifPresent(newAcc -> newAcc.loadNbt(oldAcc.saveNbt())));
     }
 
 
@@ -385,56 +391,130 @@ public class ServerEventHandler {
         DamageSource damageSource = event.getSource();
         boolean isPlayerKilled = damageSource.getDirectEntity() == damageSource.getEntity() && damageSource.getEntity() instanceof Player;
         float dropRateIncrease = 0.01F + (0.01F * lootingLevel);
-        Collection<ItemEntity> itemEntities = event.getDrops();
-        if (entity instanceof Sheep sheep) {
-            if (sheep.getColor() == DyeColor.WHITE && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.WHITE_WOOL_FUR.get())));
+        Collection<ItemEntity> entityDrops = event.getDrops();
+        if (!entity.isSpectator()) {
+            if (entity instanceof Sheep sheep) {
+                sheepDrops(sheep, random, entityDrops, entity, lootingLevel);
             }
-            if (sheep.getColor() == DyeColor.ORANGE && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.ORANGE_WOOL_FUR.get())));
+            if (entity instanceof Hoglin) {
+                if (random.nextDouble() <= 0.35F && isPlayerKilled) {
+                    entityDrops.add(this.createItemDrops(entity, new ItemStack(BHItems.HOGLIN_TUSK.get())));
+                }
             }
-            if (sheep.getColor() == DyeColor.MAGENTA && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.MAGENTA_WOOL_FUR.get())));
+            if (entity instanceof EnderMan) {
+                if (random.nextDouble() <= 0.35F && isPlayerKilled) {
+                    entityDrops.add(this.createItemDrops(entity, new ItemStack(BHItems.DUSK_LEATHER.get(), this.getRandomizedDropCount(random, 2, 5, lootingLevel))));
+                }
             }
-            if (sheep.getColor() == DyeColor.LIGHT_BLUE && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.LIGHT_BLUE_WOOL_FUR.get())));
+            if (entity instanceof Evoker) {
+                if (this.getRandomizedDrop(random, 0.25F, dropRateIncrease) && isPlayerKilled) {
+                    entityDrops.add(createItemDrops(entity, new ItemStack(BHItems.AMPLIFLYING_TOME.get(),
+                            this.getRandomizedDropCount(random,2,3, lootingLevel))));
+                }
+                if (random.nextDouble() <= 0.05D && isPlayerKilled) {
+                    entityDrops.add(createItemDrops(entity, new ItemStack(BHItems.ANKH_ETERNITY.get())));
+                }
             }
-            if (sheep.getColor() == DyeColor.YELLOW && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.YELLOW_WOOL_FUR.get())));
+            if (entity instanceof Shulker) {
+                if (this.getRandomizedDrop(random, 0.05F, dropRateIncrease) && isPlayerKilled) {
+                    entityDrops.add(createItemDrops(entity, new ItemStack(BHItems.BROKEN_SHULKER_SHELL.get())));
+                }
             }
-            if (sheep.getColor() == DyeColor.LIME && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.LIME_WOOL_FUR.get())));
+            if (entity instanceof Player player) {
+                AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                    Collection<ItemEntity> drops = new ArrayList<>();
+                    var stacks = handler.getStacks();
+                    boolean keepInventory = player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
+                    boolean finalKeepInventory = keepInventory;
+                    this.handleDrops(player, drops, stacks, finalKeepInventory);
+                    entityDrops.addAll(drops);
+                });
             }
-            if (sheep.getColor() == DyeColor.PINK && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.PINK_WOOL_FUR.get())));
+        }
+    }
+    private int getRandomizedDropCount(RandomSource random, int min, int max, int bonus) {
+        return random.nextIntBetweenInclusive(min, max) + bonus;
+    }
+    private boolean getRandomizedDrop(RandomSource random, float chance) {
+        return getRandomizedDrop(random, chance, 0.0F);
+    }
+    private boolean getRandomizedDrop(RandomSource random, float chance, float bonus) {
+        return random.nextDouble() <= Mth.clamp((chance + bonus), 0.0F, 1.0F);
+    }
+
+    private void handleDrops(Player player, Collection<ItemEntity> drops, IStackHandler stacks, boolean keepInv) {
+        for (int i = 0; i < stacks.getSlots();i++) {
+            ItemStack stack = stacks.getStackInSlot(i);
+            if (!stack.isEmpty()) {
+                if (keepInv) {
+                    continue;
+                }
+                if (!EnchantmentHelper.hasVanishingCurse(stack)) {
+                    drops.add(getDroppedItem(stack, player));
+                }
+                stacks.setStackInSlot(i, ItemStack.EMPTY);
             }
-            if (sheep.getColor() == DyeColor.GRAY && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.GRAY_WOOL_FUR.get())));
-            }
-            if (sheep.getColor() == DyeColor.LIGHT_GRAY && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.LIGHT_GRAY_WOOL_FUR.get())));
-            }
-            if (sheep.getColor() == DyeColor.CYAN && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.CYAN_WOOL_FUR.get())));
-            }
-            if (sheep.getColor() == DyeColor.PURPLE && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.PURPLE_WOOL_FUR.get())));
-            }
-            if (sheep.getColor() == DyeColor.BLUE && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.BLUE_WOOL_FUR.get())));
-            }
-            if (sheep.getColor() == DyeColor.BROWN && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.BROWN_WOOL_FUR.get())));
-            }
-            if (sheep.getColor() == DyeColor.GREEN && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.GREEN_WOOL_FUR.get())));
-            }
-            if (sheep.getColor() == DyeColor.RED && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.RED_WOOL_FUR.get())));
-            }
-            if (sheep.getColor() == DyeColor.BLACK && random.nextDouble() <= 1.0F) {
-                itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.BLACK_WOOL_FUR.get())));
-            }
+        }
+    }
+
+    private ItemEntity getDroppedItem(ItemStack droppedItem, LivingEntity entity) {
+        double d0 = entity.getY() - 0.30000001192092896D + entity.getEyeHeight();
+        ItemEntity entityitem = new ItemEntity(entity.level(), entity.getX(), d0, entity.getZ(), droppedItem);
+        entityitem.setPickUpDelay(40);
+        float f = entity.level().random.nextFloat() * 0.5F;
+        float f1 = entity.level().random.nextFloat() * ((float) Math.PI * 2F);
+        entityitem.setDeltaMovement((-Mth.sin(f1) * f), 0.20000000298023224D, (Mth.cos(f1) * f));
+        return entityitem;
+    }
+    private void sheepDrops(Sheep sheep, RandomSource random, Collection<ItemEntity> itemEntities, LivingEntity entity, int lootingLevel) {
+        int count = this.getRandomizedDropCount(random,2,3, lootingLevel);
+        if (sheep.getColor() == DyeColor.WHITE && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.WHITE_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.ORANGE && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.ORANGE_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.MAGENTA && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.MAGENTA_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.LIGHT_BLUE && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.LIGHT_BLUE_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.YELLOW && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.YELLOW_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.LIME && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.LIME_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.PINK && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.PINK_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.GRAY && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.GRAY_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.LIGHT_GRAY && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.LIGHT_GRAY_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.CYAN && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.CYAN_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.PURPLE && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.PURPLE_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.BLUE && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.BLUE_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.BROWN && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.BROWN_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.GREEN && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.GREEN_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.RED && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.RED_WOOL_FUR.get(), count)));
+        }
+        if (sheep.getColor() == DyeColor.BLACK && random.nextDouble() <= 1.0F) {
+            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.BLACK_WOOL_FUR.get(), count)));
         }
     }
 
@@ -774,7 +854,7 @@ public class ServerEventHandler {
                                 for (Accessory trait : container.getAccessories()) {
                                     Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                                     if (meleeWeaponCallback.isPresent()) {
-                                        damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                        damageDealt += meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
                                     }
                                 }
                             }
@@ -860,7 +940,7 @@ public class ServerEventHandler {
         Item item = event.getItem().getItem();
         ItemStack itemStack = item.getDefaultInstance();
         int duration = event.getDuration();
-        if (event.isCancelable() && (entity.hasEffect(BHEffects.PARALYZE.get()) || entity.hasEffect(BHEffects.STUN.get()))) {
+        if (event.isCancelable() && (entity.hasEffect(BHEffects.CURSED.get()) || entity.hasEffect(BHEffects.PARALYZE.get()) || entity.hasEffect(BHEffects.STUN.get()))) {
             event.setCanceled(true);
         }
         AtomicInteger itemDuration = new AtomicInteger();
@@ -962,7 +1042,8 @@ public class ServerEventHandler {
                 }
             }
         }
-        AccessoryHelper.getInventory(player).ifPresent(handler -> {
+        if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+            IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
             var stacks = handler.getStacks();
             for (int i = 0; i < stacks.getSlots(); i++) {
                 final ItemStack stackInSlot = stacks.getStackInSlot(i);
@@ -970,12 +1051,12 @@ public class ServerEventHandler {
                     for (Accessory trait : container.getAccessories()) {
                         Optional<IEntityProperties> callback = trait.IEntityProperties();
                         if (callback.isPresent()) {
-                            event.setDroppedExperience(callback.get().modifyExprienceDrop(droppedExperience, target, player));
+                            modifiyDropExperience += callback.get().modifyExprienceDrop(droppedExperience, target, player);
                         }
                     }
                 }
             }
-        });
+        }
         event.setDroppedExperience(modifiyDropExperience);
     }
 
@@ -983,11 +1064,47 @@ public class ServerEventHandler {
     public void onKilledEntiy(LivingDeathEvent event) {
         LivingEntity target = event.getEntity();
         DamageSource source = event.getSource();
-        boolean cantDie = false;
-        if (!(source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL))) {
-            if (target instanceof Player player) {
-                if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
-                    var handler = AccessoryHelper.getInventory(player).resolve().get();
+//        boolean cantDie = false;
+        if (target instanceof Player player) {
+            if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+                var handler = AccessoryHelper.getInventory(player).resolve().get();
+                var stacks = handler.getStacks();
+                if (!player.level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
+                    SimpleContainer accessory = new SimpleContainer(handler.getSlots());
+                    for (int i = 0; i < handler.getSlots(); i++) {
+                        accessory.setItem(i, stacks.getStackInSlot(i));
+                    }
+                    Containers.dropContents(player.level(), player, accessory);
+                    accessory.clearContent();
+                }
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    final ItemStack itemStack = stacks.getStackInSlot(i);
+                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem accessoryItem) {
+                        for (Accessory trait : accessoryItem.getAccessories()) {
+                            Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
+                            if (meleeWeaponCallback.isPresent()) {
+                                event.setCanceled(meleeWeaponCallback.get().onEntityDeath(player, itemStack));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        if (target.hasEffect(BHEffects.LETHAL_PROTECTION.get())) {
+            target.setHealth(1.0F);
+            target.addEffect(new MobEffectInstance(BHEffects.LETHAL_PROTECTION_COOLDOWN.get()));
+            event.setCanceled(true);
+        }
+        if (source.getEntity() instanceof LivingEntity attacker) {
+            ICombatCore attackerCombatCore = Capabilities.combat(attacker);
+            ItemStack attackerStack = attacker.getMainHandItem();
+            if (attacker instanceof Player player) {
+                LevelSystem levelSystem = Capabilities.levelSystem(player);
+                Optional<IAttack> attack = levelSystem.IAttack();
+                attack.ifPresent(callback -> callback.onEntityKilled(source, attacker, target));
+                AccessoryHelper.getInventory(player).ifPresent(handler -> {
                     var stacks = handler.getStacks();
                     for (int i = 0; i < stacks.getSlots(); i++) {
                         final ItemStack itemStack = stacks.getStackInSlot(i);
@@ -995,55 +1112,22 @@ public class ServerEventHandler {
                             for (Accessory trait : accessoryItem.getAccessories()) {
                                 Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                                 if (meleeWeaponCallback.isPresent()) {
-                                    event.setCanceled(meleeWeaponCallback.get().onEntityDeath(player, itemStack));
+                                    meleeWeaponCallback.get().onEntityKilled(source, player, target);
                                 }
                             }
                         }
                     }
-                }
+                });
+                ServerLevel level = (ServerLevel) player.level();
             }
-            if (source.getEntity() instanceof LivingEntity attacker) {
-                ICombatCore attackerCombatCore = Capabilities.combat(attacker);
-                ItemStack attackerStack = attacker.getMainHandItem();
-                if (attacker instanceof Player player) {
-                    LevelSystem levelSystem = Capabilities.levelSystem(player);
-                    Optional<IAttack> attack = levelSystem.IAttack();
-                    attack.ifPresent(callback -> callback.onEntityKilled(source, attacker, target));
-                    AccessoryHelper.getInventory(player).ifPresent(handler -> {
-                        var stacks = handler.getStacks();
-                        for (int i = 0; i < stacks.getSlots(); i++) {
-                            final ItemStack itemStack = stacks.getStackInSlot(i);
-                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem accessoryItem) {
-                                for (Accessory trait : accessoryItem.getAccessories()) {
-                                    Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
-                                    if (meleeWeaponCallback.isPresent()) {
-                                        meleeWeaponCallback.get().onEntityKilled(source, player, target);
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    ServerLevel level = (ServerLevel) player.level();
-
-//                    if (!(player.isCreative() || player.isSpectator()) && !UndyingTotemAbility.onUse(level, (ServerPlayer) player)) {
-//                        event.setCanceled(true);
-//                    }
-                    if (!(player.isCreative() || player.isSpectator()) && player.hasEffect(BHEffects.LETHAL_PROTECTION.get())) {
-                        player.setHealth(1.0F);
-                        player.addEffect(new MobEffectInstance(BHEffects.LETHAL_PROTECTION_COOLDOWN.get()));
-                        event.setCanceled(true);
-                    }
-                }
-                if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> skillItems) {
-                    for (Skill trait : skillItems.getSkills()) {
-                        Optional<IAttack> meleeWeaponCallback = trait.attack();
-                        meleeWeaponCallback.ifPresent(callback -> callback.onEntityKilled(source, attacker, target));
-                    }
+            if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> skillItems) {
+                for (Skill trait : skillItems.getSkills()) {
+                    Optional<IAttack> meleeWeaponCallback = trait.attack();
+                    meleeWeaponCallback.ifPresent(callback -> callback.onEntityKilled(source, attacker, target));
                 }
             }
         }
-
-        event.setCanceled(cantDie);
+//        event.setCanceled(cantDie);
     }
 
 

@@ -93,7 +93,7 @@ public class BlazingInfernoModel extends AdvanceEntityModel<BlazingInferno> {
     }
 
     @Override
-    public void setupAnim(BlazingInferno entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
+    public void animations(BlazingInferno entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
         this.resetModelDefault();
         this.headLook(this.head, yaw, pitch);
         if (entity.walkAnimation.isMoving()) {

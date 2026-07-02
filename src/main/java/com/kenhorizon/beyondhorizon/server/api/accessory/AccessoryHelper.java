@@ -42,6 +42,19 @@ public final class AccessoryHelper {
         return getAllAccessory(player).contains(accessory);
     }
 
+    public static boolean canNeutralizePiglins(Player player) {
+        return AccessoryHelper.getInventory(player).map(handler -> {
+            var stacks = handler.getStacks();
+            for (int i = 0; i < stacks.getSlots(); i++) {
+                ItemStack stack = stacks.getStackInSlot(i);
+                boolean canNeutralize = AccessoryHelper.getAccessory(stack).map(accessory ->
+                    accessory.makePiglinsNeutral()).orElse(false);
+                return true;
+            }
+            return false;
+        }).orElse(false);
+    }
+
     private static List<Accessory> getAllAccessory(Player player) {
         List<Accessory> result = new ArrayList<>();
         if (!player.isAlive()) return result;
@@ -89,19 +102,15 @@ public final class AccessoryHelper {
         if (!list.isEmpty()) {
             for (ItemStack inSlotItemStack : list) {
                 if (!inSlotItemStack.isEmpty() && inSlotItemStack.getItem() instanceof IAccessoryItem inSlotContainer) {
-
-                    if (((AccessoryItem) inSlotContainer).noGroupItem()) {
-                        isValid = true;
-                    } else {
-                        if (!(!ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack))) {
-                            return false;
-                        }
-                        if (ItemStack.isSameItem(inSlotItemStack, outsideStack)) {
-                            isValid = false;
-                            break;
-                        }
-                        isValid = !ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack);
+                    if (!(!ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack))) {
+                        return false;
                     }
+                    if (ItemStack.isSameItem(inSlotItemStack, outsideStack)) {
+                        isValid = false;
+                        break;
+                    }
+                    isValid = inSlotContainer.isCompatible(inSlotItemStack, outsideStack);
+//                    isValid = !ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack);
                 }
             }
         }
@@ -117,7 +126,7 @@ public final class AccessoryHelper {
         var stacks = handler.getStacks();
         for (int i = 0; i < stacks.getSlots(); i++) {
             ItemStack stackInSlot = stacks.getStackInSlot(i);
-            if (!stackInSlot.isEmpty() && (stackInSlot.getItem() instanceof IAccessoryItem)) {
+            if (!stackInSlot.isEmpty()) {
                 map.add(stackInSlot);
             }
         }

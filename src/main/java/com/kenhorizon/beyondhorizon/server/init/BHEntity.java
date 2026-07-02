@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.ability.*;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.server.entity.mobs.DragonHornet;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.*;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
@@ -40,7 +41,7 @@ public class BHEntity {
     public static final RegistryObject<EntityType<FayeFlares>> FAYE_FLARES = RegistryEntity
             .register("faye_flares", FayeFlares::new)
             .lang("Faye Flares")
-            .mobCategory(MobCategory.CREATURE)
+            .mobCategory(MobCategory.MONSTER)
             .properties(p -> p.sized(0.85F, 0.85F))
             .properties(EntityType.Builder::fireImmune)
             .register();
@@ -48,11 +49,19 @@ public class BHEntity {
     public static final RegistryObject<EntityType<FayeWildfire>> FAYE_WILDFIRE = RegistryEntity
             .register("faye_wildfire", FayeWildfire::new)
             .lang("Faye Wildfire")
-            .mobCategory(MobCategory.CREATURE)
+            .mobCategory(MobCategory.MONSTER)
             .properties(p -> p.sized(0.85F, 1.85F))
             .properties(EntityType.Builder::fireImmune)
             .register();
 
+
+    public static final RegistryObject<EntityType<DragonHornet>> DRAGON_HORNET = RegistryEntity
+            .register("dragon_hornet", DragonHornet::new)
+            .lang("Dragon Hornet")
+            .mobCategory(MobCategory.MONSTER)
+            .properties(p -> p.sized(0.85F, 0.65F))
+            .properties(EntityType.Builder::fireImmune)
+            .register();
 
     public static final RegistryObject<EntityType<BlazingSpear>> BLAZING_SPEAR = RegistryEntity
             .<BlazingSpear>register("blazing_spear", BlazingSpear::new)

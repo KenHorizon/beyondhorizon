@@ -13,13 +13,37 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder NONE = new AccessoryBuilder(List.of(Accessories.NONE));
 
     public static final AccessoryBuilder CARBONIZED_BONE = new AccessoryBuilder(List.of(Accessories.PRESERVED));
-    public static final AccessoryBuilder CURSED_BLINDFOLD = new AccessoryBuilder(List.of(Accessories.SEEK_ONE_SEEK_TWICE));
+    public static final AccessoryBuilder CURSED_BLINDFOLD = new AccessoryBuilder(List.of(Accessories.OWL_SIGHT));
     public static final AccessoryBuilder MASK_OF_BEWILDERED = new AccessoryBuilder(List.of(Accessories.UNBOTHERED));
     public static final AccessoryBuilder BROKEN_SHULKER_SHELL = new AccessoryBuilder(List.of(Accessories.WEIGHTS));
     public static final AccessoryBuilder ARMOR_PLATE = new AccessoryBuilder(List.of(Accessories.INVULNERABLE));
     public static final AccessoryBuilder ADHESIVE_BANDAGES = new AccessoryBuilder(List.of(Accessories.HEMORRHAGE_CONTROL));
     public static final AccessoryBuilder CURSED_APPLE = new AccessoryBuilder(List.of(Accessories.BAD_APPLE));
     public static final AccessoryBuilder VITAMINS = new AccessoryBuilder(List.of(Accessories.VITAMINS));
+    public static final AccessoryBuilder SUNGLASSES = new AccessoryBuilder(List.of(Accessories.LIGHTNESS));
+    public static final AccessoryBuilder DREAM_CATCHER = new AccessoryBuilder(List.of(Accessories.SWEET_DREAM));
+    public static final AccessoryBuilder CURSE_TORMENT = new AccessoryBuilder(List.of(Accessories.UNCURSED));
+    public static final AccessoryBuilder ANCIENT_CLOCK = new AccessoryBuilder(List.of(Accessories.UNCURSED));
+
+    public static final AccessoryBuilder BLIGHT_SKULL = new AccessoryBuilder(List.of(Accessories.SWEET_DREAM, Accessories.UNCURSED));
+    public static final AccessoryBuilder PROTECTED_SHADES = new AccessoryBuilder(List.of(Accessories.LIGHTNESS, Accessories.OWL_SIGHT));
+    public static final AccessoryBuilder REFINED_SHULKER_SHELL = new AccessoryBuilder(List.of(Accessories.WEIGHTS, Accessories.INVULNERABLE));
+    public static final AccessoryBuilder HAUNTING_CURSE_BANDAGES = new AccessoryBuilder(List.of(Accessories.BAD_APPLE, Accessories.HEMORRHAGE_CONTROL));
+    public static final AccessoryBuilder CARBONIZED_MASK_OF_BEWILDERED = new AccessoryBuilder(List.of(Accessories.PRESERVED, Accessories.UNBOTHERED));
+
+    public static final AccessoryBuilder ANKH_CHARM = new AccessoryBuilder(List.of(
+            Accessories.PRESERVED, Accessories.UNBOTHERED, Accessories.BAD_APPLE, Accessories.HEMORRHAGE_CONTROL, Accessories.WEIGHTS, Accessories.INVULNERABLE,
+            Accessories.SWEET_DREAM, Accessories.UNCURSED, Accessories.VITAMINS, Accessories.LIGHTNESS, Accessories.OWL_SIGHT));
+    public static final AccessoryBuilder ANKH_SHIELD = new AccessoryBuilder(List.of(
+            Accessories.FIRE_IMMUNITY,
+            Accessories.KNOCKBACK_RESISTANCE, Accessories.SHIELD, Accessories.PRESERVED, Accessories.UNBOTHERED, Accessories.BAD_APPLE, Accessories.HEMORRHAGE_CONTROL, Accessories.WEIGHTS, Accessories.INVULNERABLE,
+            Accessories.SWEET_DREAM, Accessories.UNCURSED, Accessories.VITAMINS, Accessories.LIGHTNESS, Accessories.OWL_SIGHT));
+
+    public static final AccessoryBuilder COBALT_SHIELD = new AccessoryBuilder(List.of(Accessories.KNOCKBACK_RESISTANCE));
+    public static final AccessoryBuilder STEEL_SIGIL = new AccessoryBuilder(List.of(Accessories.STEEL_SIGILS));
+    public static final AccessoryBuilder OBSIDIAN_PLATE = new AccessoryBuilder(List.of(Accessories.FIRE_IMMUNITY));
+    public static final AccessoryBuilder OBSIDIAN_SHIELD = new AccessoryBuilder(List.of(Accessories.FIRE_IMMUNITY, Accessories.KNOCKBACK_RESISTANCE, Accessories.SHIELD));
+    public static final AccessoryBuilder OBSIDIAN_SIGIL = new AccessoryBuilder(List.of(Accessories.FIRE_IMMUNITY, Accessories.STEEL_SIGILS, Accessories.KNOCKBACK_RESISTANCE));
 
     public static final AccessoryBuilder DORAN_BLADE = new AccessoryBuilder(List.of(Accessories.DORAN_BLADE_STATS));
     public static final AccessoryBuilder DORAN_RING = new AccessoryBuilder(List.of(Accessories.DORAN_RING_STATS));
@@ -27,6 +51,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder DORAN_SHIELD = new AccessoryBuilder(List.of(Accessories.DORAN_SHIELD_STATS));
     public static final AccessoryBuilder DORAN_HELM = new AccessoryBuilder(List.of(Accessories.DORAN_HELM_STATS));
     public static final AccessoryBuilder INFERNO_HEART_STONE = new AccessoryBuilder(List.of(Accessories.INFERNO_HEART_STONE, Accessories.IMMOLATE_1));
+    public static final AccessoryBuilder ROYAL_CROWN = new AccessoryBuilder(List.of(Accessories.MIDAS_AURA));
     public static final AccessoryBuilder SAINT_DEMON_CROWN = new AccessoryBuilder(List.of(Accessories.SUPREMACY));
     public static final AccessoryBuilder STEALTH_CLOAK = new AccessoryBuilder(List.of(Accessories.STALKER));
     public static final AccessoryBuilder LIGHTNING_STONE = new AccessoryBuilder(List.of(Accessories.ENERGIZED, Accessories.ELECTROSHOCK));
@@ -75,13 +100,13 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder SPECTRAL_CLOAK = new AccessoryBuilder(List.of(Accessories.SPECTRAL_CLOAK));
     public static final AccessoryBuilder UNSTABLE_RUNIC_TOME = new AccessoryBuilder(List.of(Accessories.UNSTABLE_RUNIC_TOME));
     public static final AccessoryBuilder MAGICAL_OPS = new AccessoryBuilder(List.of(Accessories.MAGICAL_OPS));
-    public static final AccessoryBuilder BOOTS_OF_SWITFNESS = new AccessoryBuilder(List.of(Accessories.SWIFTNESS));
+    public static final AccessoryBuilder BOOTS_OF_SWITFNESS = new AccessoryBuilder(List.of(Accessories.BOOTS_2, Accessories.SWIFTNESS));
     public static final AccessoryBuilder CRYSTALLIZED_PLATE = new AccessoryBuilder(List.of(Accessories.CRYSTALLIZED_PLATE));
     public static final AccessoryBuilder CINDER_STONE = new AccessoryBuilder(List.of(Accessories.CINDER_STONE, Accessories.BURN_EFFECT));
-    public static final AccessoryBuilder AGILE_DAGGER = new AccessoryBuilder(List.of(Accessories.AGILE_DAGGER));
+    public static final AccessoryBuilder STATIKK_DAGGER = new AccessoryBuilder(List.of(Accessories.STATIKK_DAGGER));
+    public static final AccessoryBuilder SWIFT_DAGGER = new AccessoryBuilder(List.of(Accessories.SWIFT_DAGGER));
     public static final AccessoryBuilder HARPOON_HEAD = new AccessoryBuilder(List.of(Accessories.HARPOON_HEAD));
     public static final AccessoryBuilder POWER_GLOVES = new AccessoryBuilder(List.of(Accessories.POWER_GLOVES));
-    public static final AccessoryBuilder SWIFT_DAGGER = new AccessoryBuilder(List.of(Accessories.SWIFT_DAGGER));
     public static final AccessoryBuilder AETHER_WISP = new AccessoryBuilder(List.of(Accessories.AETHER_WISP));
     public static final AccessoryBuilder ANCIENT_PICKAXE = new AccessoryBuilder(List.of(Accessories.ANCIENT_PICKAXE));
     public static final AccessoryBuilder ANCIENT_CHISEL = new AccessoryBuilder(List.of(Accessories.ANCIENT_CHISEL));

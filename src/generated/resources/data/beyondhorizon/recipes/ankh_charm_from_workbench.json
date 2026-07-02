@@ -1,0 +1,39 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:blight_skull"
+    },
+    {
+      "item": "beyondhorizon:protected_shades"
+    },
+    {
+      "item": "beyondhorizon:carbonized_mask_of_bewildered"
+    },
+    {
+      "item": "beyondhorizon:haunting_curse_bandage"
+    },
+    {
+      "item": "beyondhorizon:refined_shulker_shell"
+    },
+    {
+      "item": "beyondhorizon:vitamins"
+    },
+    {
+      "item": "beyondhorizon:ancient_clock"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:ankh_charm"
+  }
+}

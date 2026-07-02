@@ -68,7 +68,7 @@ public class FayeWildfireModel extends AdvanceEntityModel<FayeWildfire> {
     }
 
     @Override
-    public void setupAnim(FayeWildfire entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
+    public void animations(FayeWildfire entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
         this.resetModelDefault();
         this.headLook(this.head, yaw, pitch);
         if (entity.walkAnimation.isMoving()) {

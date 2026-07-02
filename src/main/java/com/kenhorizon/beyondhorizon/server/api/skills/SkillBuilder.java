@@ -25,6 +25,7 @@ public class SkillBuilder implements IReloadable {
     public static final SkillBuilder HARVESTER = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.RADIANT));
     public static final SkillBuilder INFLICT_FIRE = new SkillBuilder(SkillTypes.UNIVERSAL, List.of(Skills.BURN_EFFECT));
     public static final SkillBuilder GIANT_SLAYER_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.TRANNY));
+    public static final SkillBuilder CLAYMORE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.HEAVY_HITTER));
 
     protected List<Supplier<? extends Skill>> suppliers = new ArrayList<>();
     protected List<Skill> skills = new ArrayList<>();

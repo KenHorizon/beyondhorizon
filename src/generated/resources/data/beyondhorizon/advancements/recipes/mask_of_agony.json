@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipes": {
+      "conditions": {
+        "recipe": "beyondhorizon:mask_of_agony"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipes"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:mask_of_agony"
+    ]
+  },
+  "sends_telemetry_event": true
+}

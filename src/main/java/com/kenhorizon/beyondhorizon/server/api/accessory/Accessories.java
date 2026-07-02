@@ -22,6 +22,16 @@ import java.util.function.Supplier;
 public class Accessories {
     public static final RegistryObject<Accessory> NONE = registerSkill("none", AccessoryPassiveSkill::new);
 
+    public static final RegistryObject<Accessory> STEEL_SIGILS = registerSkill("steel_sigils", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.ATTACK_DAMAGE, Constant.ATTACKDAMAGE_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(Attributes.ARMOR, Constant.ARMOR_0, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> KNOCKBACK_RESISTANCE = registerSkill("knockback_resistance", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.KNOCKBACK_RESISTANCE, 1.0D, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> SHIELD = registerSkill("shield", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.ARMOR, Constant.ARMOR_1, AttributeModifier.Operation.ADDITION));
+
     public static final RegistryObject<Accessory> SHEEN = registerSkill("sheen", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_DAMAGE, Constant.SHEEN_AD, AttributeModifier.Operation.ADDITION));
 
@@ -78,9 +88,13 @@ public class Accessories {
             .addAttributes(Attributes.MAX_HEALTH,  Constant.MAX_HEALTH_1, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.COOLDOWN.get(),  Constant.COOLDOWN_0, AttributeModifier.Operation.ADDITION));
 
-    public static final RegistryObject<Accessory> AGILE_DAGGER = registerSkill("agile_dagger", () -> new AttributeOnlyAccessory()
+    public static final RegistryObject<Accessory> STATIKK_DAGGER = registerSkill("statikk_dagger", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.ATTACK_SPEED,  Constant.ATTACKSPEED_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.CRITICAL_CHANCE.get(),  Constant.CRITICAL_STRIKE_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(Attributes.MOVEMENT_SPEED,  Constant.BOOTS_TIER_1, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> SWIFT_DAGGER = registerSkill("swift_dagger", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.ATTACK_SPEED, Constant.SWIFT_DAGGER_ATTACK_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Accessory> CHAIN_VEST = registerSkill("chain_vest", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ARMOR, Constant.ARMOR_1, AttributeModifier.Operation.ADDITION));
@@ -147,9 +161,6 @@ public class Accessories {
             .addAttributes(Attributes.ATTACK_DAMAGE,  Constant.POWER_GLOVES_ATTACK_DAMAGE, AttributeModifier.Operation.ADDITION)
             .addAttributes(Attributes.ATTACK_KNOCKBACK, Constant.POWER_GLOVES_KNOCBACK, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-    public static final RegistryObject<Accessory> SWIFT_DAGGER = registerSkill("swift_dagger", () -> new AttributeOnlyAccessory()
-            .addAttributes(Attributes.ATTACK_SPEED, Constant.SWIFT_DAGGER_ATTACK_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
-
     public static final RegistryObject<Accessory> MAGICAL_OPS = registerSkill("magical_ops", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.MAGICAL_OPS, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
@@ -202,9 +213,13 @@ public class Accessories {
     public static final RegistryObject<Accessory> INVULNERABLE = registerSkill("invulnerable", () -> new ImmunityEffectAccessory(BHEffectTags.INVULNERABLE_IMMUNE_TO).removeOnTick());
     public static final RegistryObject<Accessory> HEMORRHAGE_CONTROL = registerSkill("hemorrhage_control", () -> new ImmunityEffectAccessory(BHEffectTags.HEMORRHAGE_CONTROL_IMMUNE_TO).removeOnTick());
     public static final RegistryObject<Accessory> BAD_APPLE = registerSkill("bad_apple", () -> new ImmunityEffectAccessory(BHEffectTags.BODY_POISON_IMMUNE_TO).removeOnTick());
-    public static final RegistryObject<Accessory> SEEK_ONE_SEEK_TWICE = registerSkill("seek_one_seek_twice", () -> new ImmunityEffectAccessory(BHEffectTags.SEEK_ONE_SEEK_TWICE_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> OWL_SIGHT = registerSkill("owl_sight", () -> new ImmunityEffectAccessory(BHEffectTags.OWL_SIGHT_IMMUNE_TO).removeOnTick());
     public static final RegistryObject<Accessory> UNBOTHERED = registerSkill("unbothered", () -> new ImmunityEffectAccessory(BHEffectTags.UNBOTHERED_IMMUNE_TO).removeOnTick());
     public static final RegistryObject<Accessory> PRESERVED = registerSkill("preserved", () -> new ImmunityEffectAccessory(BHEffectTags.PRESERVED_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> LIGHTNESS = registerSkill("lightness", () -> new ImmunityEffectAccessory(BHEffectTags.LIGHTNESS_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> SWEET_DREAM = registerSkill("sweet_dream", () -> new ImmunityEffectAccessory(BHEffectTags.SWEET_DREAM_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> UNCURSED = registerSkill("uncursed", () -> new ImmunityEffectAccessory(BHEffectTags.UNCURSED_IMMUNE_TO).removeOnTick());
+    public static final RegistryObject<Accessory> PACE = registerSkill("pace", () -> new ImmunityEffectAccessory(BHEffectTags.PACE_IMMUNE_TO).removeOnTick());
 
     public static final RegistryObject<Accessory> VENOM = registerSkill("venom", () -> new ApplyEffectAccessory((int) Constant.VENOM_DURATION, (int) Constant.VENOM_POISON_LEVEL, MobEffects.POISON, BHEffects.LETHAL_POISON.get())
             .chances(Constant.VENOM_INFLICT_CHANCE));
@@ -252,6 +267,7 @@ public class Accessories {
     public static final RegistryObject<Accessory> SWIFTNESS = registerSkill("swiftness", SwiftnessAccessory::new);
     public static final RegistryObject<Accessory> STALKER = registerSkill("stalker", StalkerAccessory::new);
     public static final RegistryObject<Accessory> TITANIC_CRESCENT = registerSkill("titanic_crescent", TitanicCrescentAccessory::new);
+    public static final RegistryObject<Accessory> MIDAS_AURA = registerSkill("midas_aura", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> ELECTROSHOCK = registerSkill("electroshock", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> ENERGIZED = registerSkill("energized", EnergizedAccessory::new);
     public static final RegistryObject<Accessory> KNOWLEDGE_2 = registerSkill("ultima_knowledge", () -> new ExperienceAccessory(Constant.ULTIMA_KNOWLEDGE_XP_MODIFIER));

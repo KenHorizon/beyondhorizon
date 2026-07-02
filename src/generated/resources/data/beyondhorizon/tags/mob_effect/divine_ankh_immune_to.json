@@ -1,13 +1,18 @@
 {
   "values": [
-    "minecraft:hunger",
-    "minecraft:mining_fatigue",
-    "minecraft:unluck",
+    "#beyondhorizon:sweet_dream_immune_to",
+    "#beyondhorizon:pace_immune_to",
+    "#beyondhorizon:uncursed_immune_to",
     "#beyondhorizon:lightness_immune_to",
     "#beyondhorizon:owl_sight_immune_to",
+    "#beyondhorizon:haunting_guise_immune_to",
     "#beyondhorizon:body_poison_immune_to",
     "#beyondhorizon:weight_immune_to",
-    "#beyondhorizon:brute_resistance_immune_to",
-    "#beyondhorizon:haunting_guise_immune_to"
+    "#beyondhorizon:vitamins_immune_to",
+    "#beyondhorizon:hemorrhage_control_immune_to",
+    "#beyondhorizon:invulnerable_immune_to",
+    "#beyondhorizon:unbothered_immune_to",
+    "#beyondhorizon:preserved_immune_to",
+    "#beyondhorizon:brute_resistance_immune_to"
   ]
 }

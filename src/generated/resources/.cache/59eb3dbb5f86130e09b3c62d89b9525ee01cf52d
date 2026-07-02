@@ -1,4 +1,4 @@
-// 1.20.1	2026-06-25T06:56:49.29659	Loot Tables
+// 1.20.1	2026-07-02T23:06:09.561932	Loot Tables
 8746a4eeac79c482a536718181ba4487ca972efb data/beyondhorizon/loot_tables/blocks/base_spawner.json
 b945f9570325522c12625882654869189fd3f2e9 data/beyondhorizon/loot_tables/blocks/black_iron_block.json
 eba8354848810629d25562c2368b5ed8abe0a5f3 data/beyondhorizon/loot_tables/blocks/black_iron_lattice.json
@@ -78,6 +78,7 @@ d867defcf4abb6ce131bf1f1f3dc2e7cb7f8b2a0 data/beyondhorizon/loot_tables/blocks/v
 8b972173b1e63fad3771dd6d6010124e223eddc7 data/beyondhorizon/loot_tables/blocks/wall_fire_basin.json
 48d89e7c826d617dd1d08ded3516a74334420742 data/beyondhorizon/loot_tables/blocks/workbench.json
 f7ec18cb555289fe44f325021a763d8cf2719b43 data/beyondhorizon/loot_tables/entities/blazing_inferno.json
+8a184673ef5f94be845dc12508fbdb304160d246 data/beyondhorizon/loot_tables/entities/dragon_hornet.json
 5553cfd9a343588220aa057d019a7529c8dfb384 data/beyondhorizon/loot_tables/entities/faye_flares.json
 666ece14f21e302db4ba646f62c41080c02fde83 data/beyondhorizon/loot_tables/entities/faye_wildfire.json
 a13a318e87f8e3830120c6070da7ebb47459a7a0 data/beyondhorizon/loot_tables/entities/pyrolliger.json

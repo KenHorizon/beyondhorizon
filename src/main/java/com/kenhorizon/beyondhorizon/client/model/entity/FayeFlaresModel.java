@@ -51,9 +51,9 @@ public class FayeFlaresModel extends AdvanceEntityModel<FayeFlares> {
     }
 
     @Override
-    public void setupAnim(FayeFlares entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+    public void animations(FayeFlares entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
         this.resetModelDefault();
-        this.headLook(this.core, netHeadYaw, headPitch);
+        this.headLook(this.core, yaw, pitch);
         this.animateIdle(FayeFlaresAnim.GENERAL, ageInTicks, 0.75F);
     }
 

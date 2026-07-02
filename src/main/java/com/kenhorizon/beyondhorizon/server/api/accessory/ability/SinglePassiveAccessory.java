@@ -286,6 +286,14 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
+    public boolean makePiglinsNeutral() {
+        if (this == Accessories.MIDAS_AURA.get()) {
+            return true;
+        }
+        return super.makePiglinsNeutral();
+    }
+
+    @Override
     public void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {
         if (this == Accessories.GHOUL.get()) {
             if (attacker instanceof Player player) {

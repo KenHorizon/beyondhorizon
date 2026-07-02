@@ -4,32 +4,24 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.api.accessory.*;
-import com.kenhorizon.beyondhorizon.server.capability.AccessoryItemCap;
-import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.item.BasicItem;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -67,12 +59,15 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
         return builder;
     }
 
+
+    @Override
     public AccessoryItemGroup getItemGroup() {
         return this.accessoryItemGroup;
     }
 
+    @Override
     public boolean noGroupItem() {
-        return this.getItemGroup() == AccessoryItemGroup.NONE;
+        return (this.getItemGroup() == AccessoryItemGroup.NONE || this.getItemGroup() == AccessoryItemGroup.UNIQUE);
     }
 
     @Override
@@ -82,7 +77,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
 
     @Override
     public boolean isCompatible(ItemStack inSlot, ItemStack outside) {
-        if (checkIsOnNoneCategory(inSlot, outside)) {
+        if (checkIfNoGroup(inSlot, outside)) {
             return true;
         }
         return checkCompatible(inSlot, outside);
@@ -93,7 +88,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
         return IAccessoryItem.super.getAttributeModifiers(stack);
     }
 
-    protected boolean checkIsOnNoneCategory(ItemStack inSlot, ItemStack outside) {
+    protected boolean checkIfNoGroup(ItemStack inSlot, ItemStack outside) {
         return ((AccessoryItem) inSlot.getItem()).noGroupItem() || ((AccessoryItem) outside.getItem()).noGroupItem();
     }
 
@@ -126,12 +121,11 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
             }
             UUID uuid = UUID.nameUUIDFromBytes("accessory".getBytes());
             Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, itemStack);
-            if (!accessory.getAttributeModifiers().isEmpty()) {
+            if (!map.isEmpty() && i == 0) {
                 size--;
-                accessory.addTooltipAttributes(itemStack, tooltip, accessory.getAttributeModifiers());
+                accessory.addTooltipAttributes(itemStack, tooltip, map);
             }
             accessory.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
-
         }
         if (this.getItemGroup() != AccessoryItemGroup.NONE) {
             tooltip.add(CommonComponents.space());
@@ -153,6 +147,17 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
     @Override
     public List<Accessory> getAccessories() {
         return ImmutableList.copyOf(this.accessories);
+    }
+
+    @Override
+    public boolean makePiglinsNeutral() {
+        for (Accessory accessory : this.accessories) {
+            Optional<IEntityProperties> callback = accessory.IEntityProperties();
+            if (callback.isPresent()) {
+                return callback.get().makePiglinsNeutral();
+            }
+        }
+        return false;
     }
 
     @Override

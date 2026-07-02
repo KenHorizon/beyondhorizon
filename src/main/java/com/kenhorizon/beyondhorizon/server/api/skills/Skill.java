@@ -273,7 +273,13 @@ public abstract class Skill {
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
         Minecraft mc = Minecraft.getInstance();
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        tooltip.addAll(this.makeTooltips(itemStack));
+        for (var createTooltips : this.makeTooltips(itemStack)) {
+            if (createTooltips.getStyle().getColor() == null) {
+                tooltip.add(createTooltips.withStyle(Tooltips.TOOLTIP[0]).setStyle(createTooltips.getStyle()));
+            } else {
+                tooltip.add(createTooltips.setStyle(createTooltips.getStyle()));
+            }
+        }
     }
 
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {

@@ -13,7 +13,7 @@ public class ExperienceAccessory extends AccessoryPassiveSkill {
     @Override
     public int modifyExprienceDrop(int dropExperience, LivingEntity target, Player player) {
         int newDropExperience = dropExperience + (int) (dropExperience * (this.getMagnitude() * this.getLevel()));
-        BeyondHorizon.LOGGER.info("Exp Drop {} Modified Exp Drop {}", dropExperience, newDropExperience);
+//        BeyondHorizon.LOGGER.info("Exp Drop {} | Modified Exp Drop {}", dropExperience, newDropExperience);
         return newDropExperience;
     }
 }

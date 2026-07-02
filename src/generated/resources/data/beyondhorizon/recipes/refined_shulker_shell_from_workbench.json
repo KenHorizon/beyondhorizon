@@ -1,0 +1,19 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:broken_shulker_shell"
+    },
+    {
+      "item": "beyondhorizon:armor_plate"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:refined_shulker_shell"
+  }
+}

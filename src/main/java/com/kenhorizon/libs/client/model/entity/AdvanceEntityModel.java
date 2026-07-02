@@ -1,5 +1,7 @@
 package com.kenhorizon.libs.client.model.entity;
 
+import com.kenhorizon.beyondhorizon.client.model.animation.BlazingInfernoAnim;
+import com.kenhorizon.beyondhorizon.server.entity.mobs.DragonHornet;
 import com.kenhorizon.libs.client.animation.AdvanceKeyframeAnimation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -43,6 +45,13 @@ public abstract class AdvanceEntityModel<T extends Entity> extends EntityModel<T
             return modelPart.getChild(name);
         });
     }
+
+    @Override
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
+        this.animations(entity,limbSwing,limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    }
+
+    public abstract void animations(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch);
 
     protected void headLook(ModelPart head, float yaw, float pitch) {
         head.xRot = pitch * ((float) Math.PI / 180F);

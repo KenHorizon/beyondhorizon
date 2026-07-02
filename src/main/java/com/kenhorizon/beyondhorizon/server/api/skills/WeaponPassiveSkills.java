@@ -14,8 +14,16 @@ public class WeaponPassiveSkills extends Skill implements IAttack, IEntityProper
     private float magnitude;
     private float level;
 
-    public WeaponPassiveSkills() {
+    public WeaponPassiveSkills(float magnitude, float level) {
         super(ItemAbilityType.PASSIVE);
+    }
+
+    public WeaponPassiveSkills(float magnitude) {
+        this(magnitude, 1);
+    }
+
+    public WeaponPassiveSkills() {
+        this(0, 1);
     }
 
     @Override

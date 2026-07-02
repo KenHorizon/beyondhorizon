@@ -28,4 +28,9 @@ public class ItemizedAccessoryCap implements IAccessory {
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(UUID uuid, ItemStack stack) {
         return this.accessoryItem.getAttributeModifiers(uuid, stack);
     }
+
+    @Override
+    public boolean makePiglinsNeutral() {
+        return this.accessoryItem.makePiglinsNeutral();
+    }
 }

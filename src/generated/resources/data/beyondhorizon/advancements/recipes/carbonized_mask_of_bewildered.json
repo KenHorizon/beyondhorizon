@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipes": {
+      "conditions": {
+        "recipe": "beyondhorizon:carbonized_mask_of_bewildered"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipes"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:carbonized_mask_of_bewildered"
+    ]
+  },
+  "sends_telemetry_event": true
+}

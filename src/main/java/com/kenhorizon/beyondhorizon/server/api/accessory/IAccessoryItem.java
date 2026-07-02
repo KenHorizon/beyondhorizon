@@ -22,14 +22,23 @@ public interface IAccessoryItem {
     boolean isCompatible(ItemStack inSlot, ItemStack outside);
     //
 
+    AccessoryItemGroup getItemGroup();
+
+    boolean noGroupItem();
+
     default boolean hasCapability(ItemStack stack) {
         return true;
     }
+
     default Multimap<Attribute, AttributeModifier> getAttributeModifiers(UUID uuid, ItemStack stack) {
         return this.getAttributeModifiers(stack);
     }
 
     default Multimap<Attribute, AttributeModifier> getAttributeModifiers(ItemStack stack) {
         return defaultInstance.getAttributeModifiers(stack);
+    }
+
+    default boolean makePiglinsNeutral() {
+        return false;
     }
 }

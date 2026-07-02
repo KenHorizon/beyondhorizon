@@ -297,6 +297,61 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .required(BHItems.HARPOON_HEAD.get())
                 .required(BHItems.BROKEN_HERO_SWORD.get())
                 .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.STATIKK_DAGGER.get(), 1)
+                .required(BHItems.SWIFT_DAGGER.get())
+                .required(BHItems.LEATHER_AGILITY.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.MASK_OF_AGONY.get(), 1)
+                .required(BHItems.ASHES_OF_FLAME.get())
+                .required(BHItems.AETHER_WISP.get())
+                .required(BHItems.CURSED_SKULL.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.STEEL_SIGIL.get(), 1)
+                .required(BHItems.TOUGH_CLOTH.get())
+                .required(BHItems.TOUGH_CLOTH.get())
+                .required(Items.IRON_SWORD)
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.OBSIDIAN_SIGIL.get(), 1)
+                .required(BHItems.OBSIDIAN_PLATE.get())
+                .required(BHItems.STEEL_SIGIL.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.OBSIDIAN_SHIELD.get(), 1)
+                .required(BHItems.OBSIDIAN_PLATE.get())
+                .required(BHItems.COBALT_SHIELD.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.REFINED_SHULKER_SHELL.get(), 1)
+                .required(BHItems.BROKEN_SHULKER_SHELL.get())
+                .required(BHItems.ARMOR_PLATE.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.CARBONIZED_MASK_OF_BEWILDERED.get(), 1)
+                .required(BHItems.CARBONIZED_BONE.get())
+                .required(BHItems.MASK_OF_BEWILDERED.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.HAUNTING_CURSE_BANDAGES.get(), 1)
+                .required(BHItems.ADHESIVE_BANDAGES.get())
+                .required(BHItems.CURSED_APPLE.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.PROTECTED_SHADES.get(), 1)
+                .required(BHItems.SUNGLASSES.get())
+                .required(BHItems.CURSED_BLINDFOLD.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.BLIGHT_SKULL.get(), 1)
+                .required(BHItems.DREAM_CATCHER.get())
+                .required(BHItems.CURSE_TORMENT.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.ANKH_CHARM.get(), 1)
+                .required(BHItems.BLIGHT_SKULL.get())
+                .required(BHItems.PROTECTED_SHADES.get())
+                .required(BHItems.CARBONIZED_MASK_OF_BEWILDERED.get())
+                .required(BHItems.HAUNTING_CURSE_BANDAGES.get())
+                .required(BHItems.REFINED_SHULKER_SHELL.get())
+                .required(BHItems.VITAMINS.get())
+                .required(BHItems.ANCIENT_CLOCK.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.ANKH_SHIELD.get(), 1)
+                .required(BHItems.ANKH_CHARM.get())
+                .required(BHItems.OBSIDIAN_SHIELD.get())
+                .save(consumer);
 
         oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, Maths.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_STARITE.get()), RecipeCategory.MISC, BHItems.STARITE_INGOT.get(), 0.7F, Maths.sec(10));

@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client.model.entity;
 
 import com.kenhorizon.beyondhorizon.client.model.animation.PyrolligerAnim;
 import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -87,9 +88,8 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
 
         return LayerDefinition.create(meshdefinition, 128, 128);
     }
-
     @Override
-    public void setupAnim(Pyrolliger entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
+    public void animations(Pyrolliger entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
         this.resetModelDefault();
         this.sword.visible = entity.getMode() == Pyrolliger.Mode.MELEE;
         this.headLook(this.head, yaw, pitch);

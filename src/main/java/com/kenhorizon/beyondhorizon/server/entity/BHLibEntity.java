@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -10,10 +11,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.entity.AnimationState;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -191,6 +190,45 @@ public class BHLibEntity extends BHBaseEntity {
                 this.setDeltaMovement(getDeltaMovement().add(dodgeVec));
             }
         }
+    }
+    public void doJumpTarget(LivingEntity target, double distance, double y) {
+        this.getNavigation().stop();
+        double posX = target == null ? 0 : (target.getX() - this.getX()) * distance;
+        double posY = y;
+        double posZ = target == null ? 0 : (target.getZ() - this.getZ()) * distance;
+        this.setDeltaMovement(posX, posY, posZ);
+    }
+
+    public void doJumpTarget(double distance, double y) {
+        this.getNavigation().stop();
+        Vec3 rotation = this.getLookAngle().normalize();
+        var pos = this.position().add(rotation.scale(1.6));
+        double posX = (pos.x() - this.getX()) * distance;
+        double posY = y;
+        double posZ = (pos.z() - this.getZ()) * distance;
+        this.setDeltaMovement(posX, posY, posZ);
+    }
+
+    public void doJump(double distance) {
+        this.getNavigation().stop();
+        this.setDeltaMovement(this.getDeltaMovement().add(new Vec3(0, distance, 0)));
+    }
+
+    public boolean checkAndDealDamage(LivingEntity target, float multiplier, double extraRange, DamageType damageType) {
+        if (target != null && this.hasLineOfSight(target) && this.distanceTo(target) < this.getBbWidth() + target.getBbWidth() + extraRange) {
+            float attackDamage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier;
+            boolean flag = damageType.dealDamage(target, this, attackDamage);
+            if (flag) {
+                target.knockback(0.8D + 0.5D * multiplier, this.getX() - target.getX(), this.getZ() - target.getZ());
+                Entity entity = target.getVehicle();
+                if (entity instanceof LivingEntity) {
+                    entity.setDeltaMovement(target.getDeltaMovement());
+                    damageType.dealDamage((LivingEntity) entity, this, attackDamage * 0.5F);
+                }
+            }
+            return flag;
+        }
+        return false;
     }
 
     public boolean inBetweenHealth(float to, float from) {

@@ -1,0 +1,19 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:obsidian_plate"
+    },
+    {
+      "item": "beyondhorizon:steel_sigil"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:obsidian_sigil"
+  }
+}

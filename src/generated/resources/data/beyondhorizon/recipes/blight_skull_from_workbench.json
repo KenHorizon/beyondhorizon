@@ -1,0 +1,19 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:dream_catcher"
+    },
+    {
+      "item": "beyondhorizon:cursed_torment"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:blight_skull"
+  }
+}

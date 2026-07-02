@@ -22,19 +22,16 @@ public class UndyingTotemAbility {
             return true;
         }
 
-        if (AccessoryHelper.getAccessory(player, Accessories.ETERNAL_LIFE.get())) {
-            player.awardStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING));
-            CriteriaTriggers.USED_TOTEM.trigger(player, totemstack);
-            player.setHealth(1.0F);
-            player.removeAllEffects();
-            player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
-            player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
-            player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
-            world.broadcastEntityEvent(player, (byte) 35);
-            totemstack.shrink(1);
-            return false;
-        }
-        return true;
+        player.awardStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING));
+        CriteriaTriggers.USED_TOTEM.trigger(player, totemstack);
+        player.setHealth(1.0F);
+        player.removeAllEffects();
+        player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
+        player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
+        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
+        world.broadcastEntityEvent(player, (byte) 35);
+        totemstack.shrink(1);
+        return false;
     }
 
     @Nullable

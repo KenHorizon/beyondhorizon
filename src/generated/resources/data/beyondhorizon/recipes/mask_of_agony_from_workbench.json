@@ -1,0 +1,23 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:ashes_of_flame"
+    },
+    {
+      "item": "beyondhorizon:aether_wisp"
+    },
+    {
+      "item": "beyondhorizon:cursed_skull"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:mask_of_agony"
+  }
+}

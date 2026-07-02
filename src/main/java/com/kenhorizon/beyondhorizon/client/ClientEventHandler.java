@@ -161,7 +161,7 @@ public class ClientEventHandler {
         Minecraft minecraft = Minecraft.getInstance();
         Player player = event.getEntity();
         if (player != null) {
-            if (player.hasEffect(BHEffects.CURSED.get()) || player.hasEffect(BHEffects.FEAR.get())) {
+            if (player.hasEffect(BHEffects.FEAR.get())) {
                 if (minecraft.options.keyDown.isDown()) {
                     event.getInput().forwardImpulse += 2F;
                 }

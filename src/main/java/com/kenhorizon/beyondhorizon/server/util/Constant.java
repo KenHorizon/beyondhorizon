@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static final float HEAVY_HITTER_DAMAGE_PER_SCALE = 0.25F;
+    public static final float HEAVY_HITTER_DAMAGE = 0.05F;
     public static final float INFERNAL_AD = 0.15F;
     public static final float INFERNAL_AP = 0.20F;
     public static final float INFERNAL_BASE_DAMAGE = 1.0F;
@@ -86,6 +88,7 @@ public class Constant {
     public static float[] PICKAXE = {1.0F, 1.6F};
     public static float[] SHOVEL = {2.5F, 1.0F};
     public static float[] SWORD = {6.0F, 1.6F};
+    public static float[] CLAYMORE = {7.0F, 1.0F};
     public static float[] REFINED_SWORD = {7.0F, 1.6F};
     public static float[] SPEAR = {5.0F, 1.45F, 5.0F};
     public static float[] GLAIVE = {5.5F, 1.45F, 5.0F};
@@ -120,6 +123,11 @@ public class Constant {
     public static double ATTACKDAMAGE_2 = 6;
     public static double ATTACKDAMAGE_3 = 8;
     public static double ATTACKDAMAGE_4 = 10;
+    public static double ATTACKSPEED_0 = 0.10D;
+    public static double ATTACKSPEED_1 = 0.15D;
+    public static double ATTACKSPEED_2 = 0.20D;
+    public static double ATTACKSPEED_3 = 0.25D;
+    public static double ATTACKSPEED_4 = 0.30D;
     public static double ABILITY_POWER_0 = 5;
     public static double ABILITY_POWER_1 = 10;
     public static double ABILITY_POWER_2 = 15;

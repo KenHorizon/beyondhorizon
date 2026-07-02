@@ -38,10 +38,6 @@ public class BHMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEffe
                         MobEffects.POISON,
                         BHEffects.LETHAL_POISON.get()
                 );
-        this.tag(BHEffectTags.TOUGH_SKIN_IMMUNE_TO)
-                .add(
-                        BHEffects.BLEED.get()
-                );
         this.tag(BHEffectTags.VITAMINS_IMMUNE_TO)
                 .add(
                         MobEffects.HUNGER
@@ -57,6 +53,24 @@ public class BHMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEffe
         this.tag(BHEffectTags.LIGHTNESS_IMMUNE_TO)
                 .add(
                         MobEffects.WITHER
+                );
+        this.tag(BHEffectTags.SWEET_DREAM_IMMUNE_TO)
+                .add(
+                        BHEffects.FEAR.get()
+                );
+        this.tag(BHEffectTags.UNCURSED_IMMUNE_TO)
+                .add(
+                        BHEffects.CURSED.get(),
+                        MobEffects.UNLUCK
+                );
+        this.tag(BHEffectTags.PACE_IMMUNE_TO)
+                .add(
+                        MobEffects.MOVEMENT_SLOWDOWN,
+                        MobEffects.DIG_SLOWDOWN
+                );
+        this.tag(BHEffectTags.LIGHTNESS_IMMUNE_TO)
+                .add(
+                        MobEffects.DARKNESS
                 );
         this.tag(BHEffectTags.HEMORRHAGE_CONTROL_IMMUNE_TO)
                 .add(
@@ -74,22 +88,21 @@ public class BHMobEffectTagsProvider extends IntrinsicHolderTagsProvider<MobEffe
                 .add(
                         MobEffects.WITHER
                 );
-        this.tag(BHEffectTags.SEEK_ONE_SEEK_TWICE_IMMUNE_TO)
-                .add(
-                        MobEffects.BLINDNESS
-                );
         this.tag(BHEffectTags.DIVINE_ANKH_IMMUNE_TO)
-                .add(
-                        MobEffects.HUNGER,
-                        MobEffects.DIG_SLOWDOWN,
-                        MobEffects.UNLUCK
-                )
+                .addTag(BHEffectTags.SWEET_DREAM_IMMUNE_TO)
+                .addTag(BHEffectTags.PACE_IMMUNE_TO)
+                .addTag(BHEffectTags.UNCURSED_IMMUNE_TO)
                 .addTag(BHEffectTags.LIGHTNESS_IMMUNE_TO)
                 .addTag(BHEffectTags.OWL_SIGHT_IMMUNE_TO)
+                .addTag(BHEffectTags.HAUNTING_GUISE_IMMUNE_TO)
                 .addTag(BHEffectTags.BODY_POISON_IMMUNE_TO)
                 .addTag(BHEffectTags.WEIGHT_IMMUNE_TO)
-                .addTag(BHEffectTags.BRUTE_RESISTANCE_IMMUNE_TO)
-                .addTag(BHEffectTags.HAUNTING_GUISE_IMMUNE_TO);
+                .addTag(BHEffectTags.VITAMINS_IMMUNE_TO)
+                .addTag(BHEffectTags.HEMORRHAGE_CONTROL_IMMUNE_TO)
+                .addTag(BHEffectTags.INVULNERABLE_IMMUNE_TO)
+                .addTag(BHEffectTags.UNBOTHERED_IMMUNE_TO)
+                .addTag(BHEffectTags.PRESERVED_IMMUNE_TO)
+                .addTag(BHEffectTags.BRUTE_RESISTANCE_IMMUNE_TO);
     }
 
     @Override

@@ -1,0 +1,23 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    20,
+    5,
+    5
+  ],
+  "ingredients": [
+    {
+      "item": "minecraft:leather"
+    },
+    {
+      "item": "minecraft:iron_ingot"
+    },
+    {
+      "item": "minecraft:string"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:quiver"
+  }
+}

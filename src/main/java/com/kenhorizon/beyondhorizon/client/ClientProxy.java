@@ -6,14 +6,13 @@ import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRendere
 import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.*;
-import com.kenhorizon.beyondhorizon.client.render.guis.QuiverBagScreen;
+import com.kenhorizon.beyondhorizon.client.render.guis.QuiverScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.VoidBagScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
-import com.kenhorizon.beyondhorizon.client.render.guis.hud.ArmorHud;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
-import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHuds;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.ManaHud;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ClientQuiverTooltip;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ClientVoidBagTooltip;
 import com.kenhorizon.beyondhorizon.client.render.item.AccessoryItemDecorations;
 import com.kenhorizon.beyondhorizon.client.render.item.BHArmorRenderProperties;
@@ -21,7 +20,6 @@ import com.kenhorizon.beyondhorizon.client.render.item.BHItemRenderProperties;
 import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
-import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
@@ -94,6 +92,7 @@ public class ClientProxy extends ServerProxy {
         bus.addListener(this::registerGuiOverlays);
         bus.addListener(this::registerNewRegsitry);
         bus.addListener(this::onRegisterItemDecorations);
+        ClientQuiverTooltip.registerFactory();
         ClientVoidBagTooltip.registerFactory();
         MinecraftForge.EVENT_BUS.register(new TooltipsEventHandler());
     }
@@ -161,7 +160,7 @@ public class ClientProxy extends ServerProxy {
         BlockEntityRenderers.register(BHBlockEntity.GATE.get(), GateDoorRenderer::new);
 
         MenuScreens.register(BHMenu.ACCESSORY_MENU.get(), AccessorySlotScreen::new);
-        MenuScreens.register(BHMenu.QUIVER_MENU.get(), QuiverBagScreen::new);
+        MenuScreens.register(BHMenu.QUIVER_MENU.get(), QuiverScreen::new);
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
         MenuScreens.register(BHMenu.VOID_BAG_MENU.get(), VoidBagScreen::new);
 

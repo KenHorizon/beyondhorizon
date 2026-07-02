@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.bonus_set;
 
-import com.kenhorizon.beyondhorizon.server.data.IAttack;
-import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.api.IAttack;
+import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;

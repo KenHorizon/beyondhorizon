@@ -175,7 +175,7 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .pattern(" # ")
                 .define('#', Items.GOLD_INGOT)
                 .unlockedBy("has_gold_ring",
-                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.GOLD_RING.get()).build()))
+                        inventoryTrigger(ItemPredicate.Builder.item().of(Items.GOLD_INGOT).build()))
                 .save(consumer);
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, BHItems.RAW_EMBED_HELLSTONE.get())
                 .requires(BHItems.RAW_HELLSTONE.get())
@@ -214,8 +214,11 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .required(BHItems.GOLD_RING.get())
                 .save(consumer);
 
-
-
+        WorkbenchRecipeProvider.create(BHItems.QUIVER.get(), 1)
+                .required(Items.LEATHER, 20)
+                .required(Items.IRON_INGOT, 5)
+                .required(Items.STRING, 5)
+                .save(consumer);
         WorkbenchRecipeProvider.create(BHItems.NULL_MAGIC_RUNE.get(), 1)
                 .required(Items.EMERALD, 20)
                 .required(BHItems.RUBY.get(), 20)

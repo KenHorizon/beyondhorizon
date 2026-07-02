@@ -2,8 +2,8 @@ package com.kenhorizon.beyondhorizon.server.api.bonus_set;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.server.data.IAttack;
-import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.api.IAttack;
+import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -11,11 +11,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 public abstract class ArmorBonusSet implements ArmorSet {
     public static final String PREFIX = "armor_bonus_set";

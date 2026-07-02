@@ -51,6 +51,7 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Configs.CHANGE_DAMAGE_CALCULATION, "Change Damage Calculation");
 
         this.add(Tooltips.ACCESSORY_LIMITED_TO, "Limited to 1 %s");
+        this.add(Tooltips.TOOLTIP_AMMO_COLLECT, "Ammo Collect: %s!");
         this.add(Tooltips.TOOLTIP_KEYBIND, "Button: %s + %s");
         this.add(Tooltips.TOOLTIP_ON_COOLDOWN, "On Cooldown!");
         this.add(Tooltips.TOOLTIP_COOLDOWN, "Cooldown: %s");

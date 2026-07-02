@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.data;
+package com.kenhorizon.beyondhorizon.server.api;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -33,6 +33,10 @@ public interface IAttack {
     }
 
     default void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {}
+
+    default boolean onDeathKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {
+        return false;
+    }
 
     default int expDrop(int dropExperience, int originalAmount, LivingEntity target, Player player) {
         return dropExperience;

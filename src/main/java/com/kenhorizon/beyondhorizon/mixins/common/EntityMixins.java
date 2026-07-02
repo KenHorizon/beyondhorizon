@@ -120,4 +120,32 @@ public abstract class EntityMixins {
     public final double getZ(double random) {
         throw new IllegalStateException("Mixin failed to shadow the \"Entity.getZ()\" method!");
     }
+    @Shadow
+    public double getX()
+    {
+        throw new IllegalStateException("Mixin failed to shadow the \"Entity.getX()\" method!");
+    }
+
+    @Shadow
+    public double getY()
+    {
+        throw new IllegalStateException("Mixin failed to shadow the \"Entity.getY()\" method!");
+    }
+
+    @Shadow
+    public double getZ()
+    {
+        throw new IllegalStateException("Mixin failed to shadow the \"Entity.getZ()\" method!");
+    }
+    @Shadow
+    public int getId()
+    {
+        throw new IllegalStateException("Mixin failed to shadow the \"Entity.getId()\" method!");
+    }
+
+    @Shadow
+    public void discard()
+    {
+        throw new IllegalStateException("Mixin failed to shadow the \"Entity.discard()\" method!");
+    }
 }

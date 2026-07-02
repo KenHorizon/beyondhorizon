@@ -49,6 +49,7 @@ public class NetworkHandler {
         net.registerMessage(id(), ServerboundAbilityEffectPacket.class, ServerboundAbilityEffectPacket::toBytes, ServerboundAbilityEffectPacket::new, ServerboundAbilityEffectPacket::handle);
         net.registerMessage(id(), ServerboundPlayerSwingArmPacket.class, ServerboundPlayerSwingArmPacket::toBytes, ServerboundPlayerSwingArmPacket::new, ServerboundPlayerSwingArmPacket::handle);
         net.registerMessage(id(), ServerboundAcessoryKeyPacket.class, ServerboundAcessoryKeyPacket::toBytes, ServerboundAcessoryKeyPacket::new, ServerboundAcessoryKeyPacket::handle);
+        net.registerMessage(id(), ServerboundQuiverSelectedArrowPacket.class, ServerboundQuiverSelectedArrowPacket::toBytes, ServerboundQuiverSelectedArrowPacket::new, ServerboundQuiverSelectedArrowPacket::handle);
 
     }
 

@@ -12,6 +12,7 @@ import java.util.Map;
 public class Keybinds {
     public static final Map<String, String> KEYBINDING = new HashMap<>();
     public static final String KEY_CATEGORY = keyBind("category");
+    public static final String KEY_DASH = keyBind("dash");
     public static final String KEY_LEVEL_SYSTEM = keyBind("level_system");
     public static final String KEY_QUIVER_INVENTORY = keyBind("quiver_inventory");
     public static final String KEY_ACCESSORY_SKILL_SLOTS = keyBind("accessory_skill_slots");

@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.data;
+package com.kenhorizon.beyondhorizon.server.api;
 
 import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.core.BlockPos;

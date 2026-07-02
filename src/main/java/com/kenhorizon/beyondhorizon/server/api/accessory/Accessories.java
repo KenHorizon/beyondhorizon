@@ -209,7 +209,7 @@ public class Accessories {
     public static final RegistryObject<Accessory> VENOM = registerSkill("venom", () -> new ApplyEffectAccessory((int) Constant.VENOM_DURATION, (int) Constant.VENOM_POISON_LEVEL, MobEffects.POISON, BHEffects.LETHAL_POISON.get())
             .chances(Constant.VENOM_INFLICT_CHANCE));
 
-    public static final RegistryObject<Accessory> ETERNAL_LIFE = registerSkill("eternal_life", () -> new SinglePassiveAccessory(Constant.JUMP_BOOST));
+    public static final RegistryObject<Accessory> ETERNAL_LIFE = registerSkill("eternal_life", ImmuneDeathAccessory::new);
     public static final RegistryObject<Accessory> NULLIFY = registerSkill("nullify", () -> new SinglePassiveAccessory(Constant.JUMP_BOOST));
     public static final RegistryObject<Accessory> JUMP_BOOST = registerSkill("jump_boost", () -> new SinglePassiveAccessory(Constant.JUMP_BOOST));
     public static final RegistryObject<Accessory> FIRE_IMMUNITY = registerSkill("fire_immunity", SinglePassiveAccessory::new);

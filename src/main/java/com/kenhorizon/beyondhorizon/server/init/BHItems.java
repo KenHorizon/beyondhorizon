@@ -3,10 +3,7 @@ package com.kenhorizon.beyondhorizon.server.init;
 import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
-import com.kenhorizon.beyondhorizon.server.item.BasicItem;
-import com.kenhorizon.beyondhorizon.server.item.GuideBookItem;
-import com.kenhorizon.beyondhorizon.server.item.PlayerTrackerItem;
-import com.kenhorizon.beyondhorizon.server.item.VoidBagItem;
+import com.kenhorizon.beyondhorizon.server.item.*;
 import com.kenhorizon.beyondhorizon.server.item.base.*;
 import com.kenhorizon.beyondhorizon.server.item.base.armor.ArmorBaseItem;
 import com.kenhorizon.beyondhorizon.server.item.base.tools.DiggerBaseItem;
@@ -82,6 +79,12 @@ public class BHItems {
             .register("void_bag", VoidBagItem::new)
             .properties(p -> p.rarity(Rarity.EPIC).stacksTo(1).fireResistant())
             .tab(RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
+
+    public static final RegistryObject<Item> QUIVER = RegistryItems
+            .register("quiver", QuiverItem::new)
+            .tab(RegistryTabs.Category.COMBAT, RegistryTabs.Category.MISC)
             .model(ItemModels.GENERATED)
             .register();
 

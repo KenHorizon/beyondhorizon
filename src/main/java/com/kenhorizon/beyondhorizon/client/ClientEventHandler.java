@@ -37,6 +37,8 @@ import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.model.HumanoidModel;
+import net.minecraft.client.player.Input;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -62,6 +64,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
@@ -73,25 +76,14 @@ import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.loading.FMLLoader;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class ClientEventHandler {
     private WeaponArmPose weaponRightArmPose = WeaponArmPose.EMPTY;
     private WeaponArmPose weaponLeftArmPose = WeaponArmPose.EMPTY;
     private static final ResourceLocation PHOSPOR = BeyondHorizon.resource("shaders/post/phospor_effect.json");
     private static final ResourceLocation GHOUL_WILL = BeyondHorizon.resource("shaders/post/ghoul_will.json");
-    @SubscribeEvent
-    public void onTooltip(ItemTooltipEvent ev) {
-        ItemStack stack = ev.getItemStack();
-        // Debug (Show NBT data on *EVERYTHING*)
-        if(!FMLLoader.isProduction() && stack.hasTag() && ev.getFlags().isAdvanced()) {
-            // Format NBT debug string
-            String nbtStr = stack.getTag().toString();
-            ev.getToolTip().add(Component.literal("NBT: " + ChatFormatting.DARK_GRAY + nbtStr).withStyle(ChatFormatting.DARK_PURPLE));
-        }
-    }
+
     @SubscribeEvent
     public void onDebugInformation(CustomizeGuiOverlayEvent.DebugText event) {
         GuiGraphics guiGraphics = event.getGuiGraphics();
@@ -151,7 +143,7 @@ public class ClientEventHandler {
         if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.END) {
             BossMusicPlayer.tick();
         }
-        if (event.level.isClientSide) {
+        if (event.level.isClientSide()) {
             return;
         }
         if (event.phase == TickEvent.Phase.START) {
@@ -160,9 +152,14 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
+    public void onLevelClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase != TickEvent.Phase.END) return;
+    }
+
+    @SubscribeEvent
     public void onMovementInput(MovementInputUpdateEvent event) {
         Minecraft minecraft = Minecraft.getInstance();
-        Player player = minecraft.player;
+        Player player = event.getEntity();
         if (player != null) {
             if (player.hasEffect(BHEffects.CURSED.get()) || player.hasEffect(BHEffects.FEAR.get())) {
                 if (minecraft.options.keyDown.isDown()) {
@@ -200,9 +197,16 @@ public class ClientEventHandler {
         ItemStack itemStack = event.getItemStack();
         AttributeTooltips attributeTooltips = new AttributeTooltips();
         attributeTooltips.addTooltips(itemStack, player, flag, tooltip);
+
+
+        if(!FMLLoader.isProduction() && itemStack.hasTag() && event.getFlags().isAdvanced()) {
+            // Format NBT debug string
+            String nbtStr = itemStack.getTag().toString();
+            event.getToolTip().add(Component.literal("NBT: " + ChatFormatting.DARK_GRAY + nbtStr).withStyle(ChatFormatting.DARK_PURPLE));
+        }
     }
 
-    @SubscribeEvent
+        @SubscribeEvent
     public void postRenderStage(RenderLevelStageEvent event) {
         Entity entity = Minecraft.getInstance().getCameraEntity();
         boolean firstPerson = Minecraft.getInstance().options.getCameraType().isFirstPerson();
@@ -220,25 +224,6 @@ public class ClientEventHandler {
         } else if (renderer.currentEffect() != null && shaders.toString().equals(renderer.currentEffect().getName())) {
             renderer.checkEntityPostEffect(null);
         }
-    }
-    @Nullable
-    private Slot findSlot(AbstractContainerMenu menu, double x, double y, int posX, int posY) {
-        for(int i = 0; i < menu.slots.size(); ++i) {
-            Slot slot = menu.slots.get(i);
-            if (this.isHovering(posX, posY, slot, x, y) && slot.isActive()) {
-                return slot;
-            }
-        }
-
-        return null;
-    }
-    private boolean isHovering(int posX, int posY, Slot slot, double x, double y) {
-        return this.isHovering(posX, posY,slot.x, slot.y, 16, 16, x, y);
-    }
-    protected boolean isHovering(int posX, int posY, int x, int y, int w, int h, double mX, double mY) {
-        mX -= (double)posX;
-        mY -= (double)posY;
-        return mX >= (double)(x - 1) && mX < (double)(x + w + 1) && mY >= (double)(y - 1) && mY < (double)(y + h + 1);
     }
 
     @SubscribeEvent
@@ -280,7 +265,6 @@ public class ClientEventHandler {
                     } else if (minecraft.screen != null || !flag) {
                         player.getInventory().selected = i;
                     } else {
-//                        BeyondHorizon.LOGGER.debug("[Accessory] Slots Click {}", i);
                         int finalI = i;
                         AccessoryHelper.getInventory(player).ifPresent(handler -> {
                             var stacks = handler.getStacks();

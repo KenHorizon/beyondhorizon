@@ -34,6 +34,7 @@ public class Tooltips {
     public static final String TOOLTIP_KEYBIND = String.format("tooltip.%s.keybind", BeyondHorizon.ID);
     public static final String TOOLTIP_ON_COOLDOWN = String.format("tooltip.%s.on_cooldown", BeyondHorizon.ID);
     public static final String TOOLTIP_COOLDOWN = String.format("tooltip.%s.cooldown", BeyondHorizon.ID);
+    public static final String TOOLTIP_AMMO_COLLECT = String.format("tooltip.%s.ammo_collect", BeyondHorizon.ID);
     public static final String TOOLTIP_MANA_COST_PER_SECOND = String.format("tooltip.%s.mana_cost.per_second", BeyondHorizon.ID);
     public static final String TOOLTIP_MANA_COST_PERCENTAGES = String.format("tooltip.%s.mana_cost.percentage", BeyondHorizon.ID);
     public static final String TOOLTIP_MANA_COST = String.format("tooltip.%s.mana_cost", BeyondHorizon.ID);

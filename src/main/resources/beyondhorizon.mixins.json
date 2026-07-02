@@ -6,6 +6,7 @@
   "refmap": "beyondhorizon.refmap.mixins.json",
   "mixins": [
     "common.AbsoptionMobEffectMixins",
+    "common.AbstractArrowMixins",
     "common.BlockMixins",
     "common.DamageSourcesMixins",
     "common.EnchantmentMixins",
@@ -14,6 +15,7 @@
     "common.LivingEntityMixins",
     "common.MobMixins",
     "common.PlayerMixins",
+    "common.ProjectileMixins",
     "common.accessor.AttributeAccessor",
     "common.accessor.AttributeRangeAccessor"
   ],
@@ -22,8 +24,8 @@
     "client.AnvilScreenMixins",
     "client.GameRendererMixins",
     "client.HumanoidModelMixins",
-    "client.accessor.FontAccessor",
     "client.ItemInHandRendererMixins",
+    "client.accessor.FontAccessor",
     "client.accessor.LivingEntityRendererAccessory"
   ]
 }

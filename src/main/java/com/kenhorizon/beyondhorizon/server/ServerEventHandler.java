@@ -1,10 +1,10 @@
 package com.kenhorizon.beyondhorizon.server;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.Fonts;
 import com.kenhorizon.beyondhorizon.client.api.event.PotionEffectParticleEvent;
+import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.*;
@@ -18,8 +18,8 @@ import com.kenhorizon.beyondhorizon.server.api.handler.UndyingTotemAbility;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.*;
-import com.kenhorizon.beyondhorizon.server.data.IAttack;
-import com.kenhorizon.beyondhorizon.server.data.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.api.IAttack;
+import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
@@ -83,12 +83,12 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.player.ArrowLooseEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import org.w3c.dom.Attr;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -623,18 +623,17 @@ public class ServerEventHandler {
     // TODO: Post Mitigation Damage Handler
     @SubscribeEvent
     public void onLivingDamageEvent(LivingDamageEvent event) {
-        AtomicReference<Float> damageDealt = new AtomicReference<>(event.getAmount());
+        float damageDealt = event.getAmount();
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
         ItemStack targetMainHandItem = target.getMainHandItem();
         ICombatCore targetCombatCore = Capabilities.combat(target);
         if (event.isCanceled() || source.is(DamageTypes.GENERIC_KILL) || !(target.level() instanceof ServerLevel level)) return;
-        boolean isCrit = false;
         if (!targetMainHandItem.isEmpty() && target.getMainHandItem().getItem() instanceof ISkillItems<?> container) {
             for (Skill trait : container.getSkills()) {
                 Optional<IAttack> weaponCallback = trait.attack();
                 if (weaponCallback.isPresent()) {
-                    damageDealt.set(weaponCallback.get().damageTaken(damageDealt.get(), source, target));
+                    damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
                 }
             }
         }
@@ -646,13 +645,14 @@ public class ServerEventHandler {
                 ArmorBonusSet armorBonusSet = set.getInstance();
                 boolean matches = set.matches(player);
                 if (matches) {
-                    var attackCallback = armorBonusSet.attack();
-                    if (attackCallback.isPresent()) {
-                        damageDealt.set(attackCallback.get().damageTaken(damageDealt.get(), source, player));
+                    var weaponCallback = armorBonusSet.attack();
+                    if (weaponCallback.isPresent()) {
+                        damageDealt = weaponCallback.get().damageTaken(damageDealt, source, player);
                     }
                 }
             }
-            AccessoryHelper.getInventory(player).ifPresent(handler -> {
+            if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+                IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
                 var stacks = handler.getStacks();
                 for (int i = 0; i < stacks.getSlots(); i++) {
                     final ItemStack itemStack = stacks.getStackInSlot(i);
@@ -660,43 +660,36 @@ public class ServerEventHandler {
                         for (Accessory trait : accessoryItems.getAccessories()) {
                             Optional<IAttack> weaponCallback = trait.IAttackCallback();
                             if (weaponCallback.isPresent()) {
-                                damageDealt.set(weaponCallback.get().damageTaken(damageDealt.get(), source, target));
+                                damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
                             }
                         }
                     }
                 }
-            });
+            }
         }
         if (source.getEntity() instanceof LivingEntity attacker) {
             ItemStack attackerStack = attacker.getMainHandItem();
             if (attacker instanceof Player player) {
-                double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_CHANCE.get());
-                double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
-                if (player.getRandom().nextDouble() <= criticalStrike) {
-                    isCrit = true;
-                    damageDealt.set((float) (damageDealt.get() * criticalDamage));
-                    player.crit(target);
-                }
                 for (ArmorSet set : ArmorSetRegistry.getAll()) {
                     ArmorBonusSet armorBonusSet = set.getInstance();
                     boolean matches = set.matches(player);
                     if (matches) {
-                        var attackCallback = armorBonusSet.attack();
-                        if (attackCallback.isPresent()) {
-                            damageDealt.set(attackCallback.get().postMigitationDamage(damageDealt.get(), source, attacker, target));
-                            attackCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt.get());
+                        var meleeWeaponCallback = armorBonusSet.attack();
+                        if (meleeWeaponCallback.isPresent()) {
+                            damageDealt = meleeWeaponCallback.get().postMigitationDamage(damageDealt, source, attacker, target);
+                            meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
                         }
                     }
                 }
             }
-            this.enchantmentOnHitEffect(attacker, damageDealt.get(), source, target);
-            damageDealt.set(this.enchantmentPostMitigationDamage(attacker, damageDealt.get(), source, target));
+            this.enchantmentOnHitEffect(attacker, damageDealt, source, target);
+            damageDealt = this.enchantmentPostMitigationDamage(attacker, damageDealt, source, target);
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
                 for (Skill trait : container.getSkills()) {
                     Optional<IAttack> meleeWeaponCallback = trait.attack();
                     if (meleeWeaponCallback.isPresent()) {
-                        damageDealt.set(meleeWeaponCallback.get().postMigitationDamage(damageDealt.get(), source, attacker, target));
-                        meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt.get());
+                        damageDealt = meleeWeaponCallback.get().postMigitationDamage(damageDealt, source, attacker, target);
+                        meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
                     }
                 }
             }
@@ -704,9 +697,10 @@ public class ServerEventHandler {
                 LevelSystem levelSystem = Capabilities.levelSystem(player);
                 Optional<IAttack> attack = levelSystem.IAttack();
                 if (attack.isPresent()) {
-                    attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt.get());
+                    attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
                 }
-                AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+                    IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
                     var stacks = handler.getStacks();
                     for (int i = 0; i < stacks.getSlots(); i++) {
                         final ItemStack itemStack = stacks.getStackInSlot(i);
@@ -714,31 +708,107 @@ public class ServerEventHandler {
                             for (Accessory trait : accessoryItems.getAccessories()) {
                                 Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                                 if (meleeWeaponCallback.isPresent()) {
-                                    damageDealt.set(meleeWeaponCallback.get().postMigitationDamage(damageDealt.get(), source, attacker, target));
-                                    meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt.get());
+                                    damageDealt = meleeWeaponCallback.get().postMigitationDamage(damageDealt, source, attacker, target);
+                                    meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
                                 }
                             }
                         }
                     }
-                });
+                }
             }
         }
-        damageDealt.updateAndGet(v -> (v * (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get())));
+        damageDealt *= (float) target.getAttributeValue(BHAttributes.DAMAGE_TAKEN.get());
         IDamageInfo damageInfo = Capabilities.damageInfo(target);
         if (damageInfo != null) {
-            damageInfo.setPostDamage(damageDealt.get());
+            damageInfo.setPostDamage(damageDealt);
             if (!source.is(BHDamageTypeTags.CANT_STORE_DAMAGE)) {
-                damageInfo.setPostStoredDamage(damageInfo.postDamage() + damageDealt.get());
+                damageInfo.setPostStoredDamage(damageInfo.postDamage() + damageDealt);
             }
         }
         targetCombatCore.activated();
-        if (target instanceof Player player) {
-            Capabilities.data(player).setCrit(isCrit);
-        }
         if (BHConfigs.DAMAGE_INDICATOR) {
-            damageIndicator(level, source, false, damageDealt.get(), target);
+            damageIndicator(level, source, false, damageDealt, target);
         }
-        event.setAmount(damageDealt.get());
+        event.setAmount(damageDealt);
+    }
+
+    // TODO: Pre Mitigation Damage Handler
+    @SubscribeEvent
+    public void onLivingHurtEvent(LivingHurtEvent event) {
+        float damageDealt = event.getAmount();
+        DamageSource source = event.getSource();
+        LivingEntity target = event.getEntity();
+        boolean isCrit = false;
+        if (source.getEntity() instanceof AbstractArrow) {
+            target.hurtTime = 0;
+            target.invulnerableTime = 0;
+        }
+        if (source.getEntity() instanceof LivingEntity && damageDealt > 0.0F) {
+            if (source.getEntity() instanceof Player player) {
+                double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_CHANCE.get());
+                double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
+                if (player.getRandom().nextDouble() <= criticalStrike) {
+                    isCrit = true;
+                    damageDealt = (float) (damageDealt * criticalDamage);
+                    player.crit(target);
+                }
+                double getAttackSpeed = player.getAttributeValue(Attributes.ATTACK_SPEED);
+                player.getAttackStrengthScale((float) getAttackSpeed);
+                target.invulnerableTime = target.invulnerableDuration - (int) getAttackSpeed;
+            }
+            if (source.getEntity() instanceof LivingEntity attacker) {
+                ICombatCore attackerCombatCore = Capabilities.combat(attacker);
+                ItemStack attackerStack = attacker.getMainHandItem();
+                if (attacker instanceof Player player) {
+                    LevelSystem levelSystem = Capabilities.levelSystem(player);
+                    Optional<IAttack> attack = levelSystem.IAttack();
+                    if (attack.isPresent()) {
+                        damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
+                    }
+                    if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+                        IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
+                        var stacks = handler.getStacks();
+                        for (int i = 0; i < stacks.getSlots(); i++) {
+                            final ItemStack itemStack = stacks.getStackInSlot(i);
+                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
+                                for (Accessory trait : container.getAccessories()) {
+                                    Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
+                                    if (meleeWeaponCallback.isPresent()) {
+                                        damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
+                    for (Skill trait : container.getSkills()) {
+                        Optional<IAttack> meleeWeaponCallback = trait.attack();
+                        if (meleeWeaponCallback.isPresent()) {
+                            damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                        }
+                    }
+                }
+                damageDealt *= (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
+                attackerCombatCore.activated();
+            }
+        }
+        if (target != null) {
+            IDamageInfo damageInfo = Capabilities.damageInfo(target);
+            if (target instanceof Player player) {
+                Capabilities.data(player).setCrit(isCrit);
+            }
+            if (damageInfo != null) {
+                damageInfo.setPreDamage(damageDealt);
+                if (!source.is(BHDamageTypeTags.CANT_STORE_DAMAGE)) {
+                    damageInfo.setPreStoredDamage(damageInfo.preDamage() + damageDealt);
+                }
+                if (source.getEntity() instanceof LivingEntity attacker) {
+                    damageInfo.setLastAttacker(attacker);
+                }
+            }
+        }
+        event.setAmount(damageDealt);
     }
 
 
@@ -873,87 +943,6 @@ public class ServerEventHandler {
             }
         }
     }
-//    public void onEnchantmentTick(LivingEntity entity) {
-//        if (entity == null) return;
-//        for (EquipmentSlot slot : EquipmentSlot.values()) {
-//            for (Enchantment enchantment : ForgeRegistries.ENCHANTMENTS) {
-//                int level = EnchantmentHelper.getEnchantmentLevel(enchantment, entity);
-//                if (level > 0) {
-//                    ((IAttributeEnchantment) enchantment).addAttributeModifiers(entity, level);
-//                } else {
-//                    ((IAttributeEnchantment) enchantment).removeAttributeModifiers(entity);
-//                }
-//            }
-//        }
-//    }
-
-    // TODO: Pre Mitigation Damage Handler
-    @SubscribeEvent
-    public void onLivingHurtEvent(LivingHurtEvent event) {
-        AtomicReference<Float> damageDealt = new AtomicReference<>(event.getAmount());
-        DamageSource source = event.getSource();
-        LivingEntity target = event.getEntity();
-        if (source.getEntity() instanceof AbstractArrow) {
-            target.hurtTime = 0;
-            target.invulnerableTime = 0;
-        }
-        if (source.getEntity() instanceof LivingEntity && damageDealt.get() > 0.0F) {
-            if (source.getEntity() instanceof Player attacker) {
-
-                double getAttackSpeed = attacker.getAttributeValue(Attributes.ATTACK_SPEED);
-                attacker.getAttackStrengthScale((float) getAttackSpeed);
-                target.invulnerableTime = target.invulnerableDuration - (int) getAttackSpeed;
-            }
-            if (source.getEntity() instanceof LivingEntity attacker) {
-                ICombatCore attackerCombatCore = Capabilities.combat(attacker);
-                ItemStack attackerStack = attacker.getMainHandItem();
-                if (attacker instanceof Player player) {
-                    LevelSystem levelSystem = Capabilities.levelSystem(player);
-                    Optional<IAttack> attack = levelSystem.IAttack();
-                    if (attack.isPresent()) {
-                        damageDealt.set(attack.get().preMigitationDamage(damageDealt.get(), source, attacker, target));
-                    }
-                    AccessoryHelper.getInventory(player).ifPresent(handler -> {
-                        var stacks = handler.getStacks();
-                        for (int i = 0; i < stacks.getSlots(); i++) {
-                            final ItemStack itemStack = stacks.getStackInSlot(i);
-                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
-                                for (Accessory trait : container.getAccessories()) {
-                                    Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
-                                    if (meleeWeaponCallback.isPresent()) {
-                                        damageDealt.set(meleeWeaponCallback.get().preMigitationDamage(damageDealt.get(), source, attacker, target));
-                                    }
-                                }
-                            }
-                        }
-                    });
-                }
-                if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
-                    for (Skill trait : container.getSkills()) {
-                        Optional<IAttack> meleeWeaponCallback = trait.attack();
-                        if (meleeWeaponCallback.isPresent()) {
-                            damageDealt.set(meleeWeaponCallback.get().preMigitationDamage(damageDealt.get(), source, attacker, target));
-                        }
-                    }
-                }
-                damageDealt.updateAndGet(v -> (v * (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get())));
-                attackerCombatCore.activated();
-            }
-        }
-        if (target != null) {
-            IDamageInfo damageInfo = Capabilities.damageInfo(target);
-            if (damageInfo != null) {
-                damageInfo.setPreDamage(damageDealt.get());
-                if (!source.is(BHDamageTypeTags.CANT_STORE_DAMAGE)) {
-                    damageInfo.setPreStoredDamage(damageInfo.preDamage() + damageDealt.get());
-                }
-                if (source.getEntity() instanceof LivingEntity attacker) {
-                    damageInfo.setLastAttacker(attacker);
-                }
-            }
-        }
-        event.setAmount(damageDealt.get());
-    }
 
     @SubscribeEvent
     public void onExperienceDropEvent(LivingExperienceDropEvent event) {
@@ -995,63 +984,65 @@ public class ServerEventHandler {
         LivingEntity target = event.getEntity();
         DamageSource source = event.getSource();
         boolean cantDie = false;
-        if (target instanceof Player player) {
-            AccessoryHelper.getInventory(player).ifPresent(handler -> {
-                var stacks = handler.getStacks();
-                for (int i = 0; i < stacks.getSlots(); i++) {
-                    final ItemStack itemStack = stacks.getStackInSlot(i);
-                    if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
-                        for (Accessory trait : container.getAccessories()) {
-                            Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
-                            if (meleeWeaponCallback.isPresent()) {
-                                meleeWeaponCallback.get().onEntityDeath(player, itemStack);
-                            }
-                        }
-                    }
-                }
-            });
-        }
-        if (source.getEntity() instanceof LivingEntity attacker) {
-            ICombatCore attackerCombatCore = Capabilities.combat(attacker);
-            ItemStack attackerStack = attacker.getMainHandItem();
-            if (attacker instanceof Player player) {
-                LevelSystem levelSystem = Capabilities.levelSystem(player);
-                Optional<IAttack> attack = levelSystem.IAttack();
-                attack.ifPresent(iAttack -> iAttack.onEntityKilled(source, attacker, target));
-                AccessoryHelper.getInventory(player).ifPresent(handler -> {
+        if (!(source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL))) {
+            if (target instanceof Player player) {
+                if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+                    var handler = AccessoryHelper.getInventory(player).resolve().get();
                     var stacks = handler.getStacks();
                     for (int i = 0; i < stacks.getSlots(); i++) {
                         final ItemStack itemStack = stacks.getStackInSlot(i);
-                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
-                            for (Accessory trait : container.getAccessories()) {
+                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem accessoryItem) {
+                            for (Accessory trait : accessoryItem.getAccessories()) {
                                 Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                                 if (meleeWeaponCallback.isPresent()) {
-                                    meleeWeaponCallback.get().onEntityKilled(source, player, target);
+                                    event.setCanceled(meleeWeaponCallback.get().onEntityDeath(player, itemStack));
                                 }
                             }
                         }
                     }
-                });
-                ServerLevel level = (ServerLevel) player.level();
+                }
+            }
+            if (source.getEntity() instanceof LivingEntity attacker) {
+                ICombatCore attackerCombatCore = Capabilities.combat(attacker);
+                ItemStack attackerStack = attacker.getMainHandItem();
+                if (attacker instanceof Player player) {
+                    LevelSystem levelSystem = Capabilities.levelSystem(player);
+                    Optional<IAttack> attack = levelSystem.IAttack();
+                    attack.ifPresent(callback -> callback.onEntityKilled(source, attacker, target));
+                    AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                        var stacks = handler.getStacks();
+                        for (int i = 0; i < stacks.getSlots(); i++) {
+                            final ItemStack itemStack = stacks.getStackInSlot(i);
+                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem accessoryItem) {
+                                for (Accessory trait : accessoryItem.getAccessories()) {
+                                    Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
+                                    if (meleeWeaponCallback.isPresent()) {
+                                        meleeWeaponCallback.get().onEntityKilled(source, player, target);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    ServerLevel level = (ServerLevel) player.level();
 
-                if ((source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL))) {
-                    if (!(player.isCreative() || player.isSpectator()) && !UndyingTotemAbility.onUse(level, (ServerPlayer) player)) {
-                        event.setCanceled(true);
-                    }
+//                    if (!(player.isCreative() || player.isSpectator()) && !UndyingTotemAbility.onUse(level, (ServerPlayer) player)) {
+//                        event.setCanceled(true);
+//                    }
                     if (!(player.isCreative() || player.isSpectator()) && player.hasEffect(BHEffects.LETHAL_PROTECTION.get())) {
                         player.setHealth(1.0F);
                         player.addEffect(new MobEffectInstance(BHEffects.LETHAL_PROTECTION_COOLDOWN.get()));
                         event.setCanceled(true);
                     }
                 }
-            }
-            if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
-                for (Skill trait : container.getSkills()) {
-                    Optional<IAttack> meleeWeaponCallback = trait.attack();
-                    meleeWeaponCallback.ifPresent(iAttack -> iAttack.onEntityKilled(source, attacker, target));
+                if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> skillItems) {
+                    for (Skill trait : skillItems.getSkills()) {
+                        Optional<IAttack> meleeWeaponCallback = trait.attack();
+                        meleeWeaponCallback.ifPresent(callback -> callback.onEntityKilled(source, attacker, target));
+                    }
                 }
             }
         }
+
         event.setCanceled(cantDie);
     }
 
@@ -1159,7 +1150,7 @@ public class ServerEventHandler {
             ItemStack quiver = QuiverHelper.getQuiverStacks(player);
             if (!quiver.isEmpty()) {
                 QuiverItemStackHandler handler = (QuiverItemStackHandler) quiver.getCapability(ForgeCapabilities.ITEM_HANDLER).resolve().orElseThrow();
-                Predicate<ItemStack> predicate = ((ProjectileWeaponItem) event.getProjectileWeaponItemStack().getItem()).getSupportedHeldProjectiles();
+//                Predicate<ItemStack> predicate = ((ProjectileWeaponItem) event.getProjectileWeaponItemStack().getItem()).getSupportedHeldProjectiles();
 //                ItemStack projectile = IntStream.range(0, handler.getSlots()).mapToObj(handler::getStackInSlot).filter(predicate).findFirst().orElse(ItemStack.EMPTY);
                 ItemStack projectile = ItemStack.EMPTY;
                 for (int i = 0; i < handler.getSlots(); ++i) {
@@ -1171,6 +1162,7 @@ public class ServerEventHandler {
             }
         }
     }
+
     @SubscribeEvent
     public void onItemPickEvent(EntityItemPickupEvent event) {
         ItemStack pickedUpStack = event.getItem().getItem().copy();

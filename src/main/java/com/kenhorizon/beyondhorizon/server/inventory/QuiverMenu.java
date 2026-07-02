@@ -20,7 +20,7 @@ import net.minecraftforge.items.SlotItemHandler;
 import org.jetbrains.annotations.NotNull;
 
 public class QuiverMenu extends AbstractContainerMenu {
-    protected static final int SIZE = 5;
+    public static final int SIZE = 5;
     protected final ItemStack itemStack;
     protected final IItemHandler handler;
     public static final ResourceLocation BLOCK_ATLAS = ResourceLocation.parse("textures/atlas/blocks.png");

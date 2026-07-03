@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
 import com.kenhorizon.beyondhorizon.client.model.animation.PyrolligerAnim;
+import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
-import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -15,6 +15,8 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
     private final ModelPart root;
     private final ModelPart body;
     private final ModelPart head;
+    private final ModelPart eyebrowL;
+    private final ModelPart eyebrowR;
     private final ModelPart nose;
     private final ModelPart leftArm;
     private final ModelPart leftArmBone;
@@ -30,6 +32,8 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
         this.root = root.getChild("root");
         this.body = this.root.getChild("body");
         this.head = this.body.getChild("head");
+        this.eyebrowL = this.head.getChild("eyebrowL");
+        this.eyebrowR = this.head.getChild("eyebrowR");
         this.nose = this.head.getChild("nose");
         this.leftArm = this.body.getChild("leftArm");
         this.leftArmBone = this.leftArm.getChild("leftArmBone");
@@ -51,18 +55,21 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
         PartDefinition body = root.addOrReplaceChild("body", CubeListBuilder.create().texOffs(0, 22).addBox(-4.0F, -12.0F, -3.0F, 8.0F, 20.0F, 6.0F, new CubeDeformation(0.25F))
                 .texOffs(28, 40).addBox(-4.0F, -12.0F, -3.0F, 8.0F, 12.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -12.0F, 0.0F));
 
-        PartDefinition head = body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(28, 22).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(0.0F))
-                .texOffs(38, 0).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(0.5F)), PartPose.offset(0.0F, -12.0F, 0.0F));
+        PartDefinition head = body.addOrReplaceChild("head", CubeListBuilder.create().texOffs(28, 22).addBox(-4.0F, -10.0F, -4.0F, 8.0F, 10.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -12.0F, 0.0F));
+
+        PartDefinition eyebrowL = head.addOrReplaceChild("eyebrowL", CubeListBuilder.create().texOffs(60, 38).addBox(-3.0F, -1.0F, 0.023F, 3.0F, 2.0F, 0.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.0F, -5.0F, -4.025F));
+
+        PartDefinition eyebrowR = head.addOrReplaceChild("eyebrowR", CubeListBuilder.create().texOffs(60, 38).mirror().addBox(0.0F, -1.0F, 0.023F, 3.0F, 2.0F, 0.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(1.0F, -5.0F, -4.025F));
 
         PartDefinition nose = head.addOrReplaceChild("nose", CubeListBuilder.create().texOffs(60, 18).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -2.0F, -4.0F));
 
-        PartDefinition leftArm = body.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(22, 58).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(5.0F, -10.0F, 0.0F));
+        PartDefinition leftArm = body.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(22, 58).mirror().addBox(-1.0F, -1.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(5.0F, -11.0F, 0.0F));
 
-        PartDefinition leftArmBone = leftArm.addOrReplaceChild("leftArmBone", CubeListBuilder.create().texOffs(56, 40).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(1.0F, 4.0F, 0.0F));
+        PartDefinition leftArmBone = leftArm.addOrReplaceChild("leftArmBone", CubeListBuilder.create().texOffs(56, 40).mirror().addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(1.0F, 5.0F, 0.0F));
 
-        PartDefinition rightArm = body.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(22, 58).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-5.0F, -10.0F, 0.0F));
+        PartDefinition rightArm = body.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(22, 58).addBox(-3.0F, -1.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-5.0F, -11.0F, 0.0F));
 
-        PartDefinition rightArmBone = rightArm.addOrReplaceChild("rightArmBone", CubeListBuilder.create().texOffs(56, 40).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.0F, 4.0F, 0.0F));
+        PartDefinition rightArmBone = rightArm.addOrReplaceChild("rightArmBone", CubeListBuilder.create().texOffs(56, 40).addBox(-2.0F, 0.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.0F, 5.0F, 0.0F));
 
         PartDefinition sword = rightArmBone.addOrReplaceChild("sword", CubeListBuilder.create().texOffs(0, 48).addBox(-0.5F, -1.0022F, -8.3293F, 1.0F, 2.0F, 10.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 0).addBox(-0.5F, -2.0022F, -28.3293F, 1.0F, 4.0F, 18.0F, new CubeDeformation(0.0F))
@@ -91,14 +98,26 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
     @Override
     public void animations(Pyrolliger entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
         this.resetModelDefault();
-        this.sword.visible = entity.getMode() == Pyrolliger.Mode.MELEE;
+        this.sword.visible = entity.isVisibleSword();
         this.headLook(this.head, yaw, pitch);
-        if (entity.walkAnimation.isMoving()) {
+        if (entity.walkAnimation.isMoving() && entity.getMode() == Pyrolliger.Mode.RANGED) {
             this.animateWalk(PyrolligerAnim.WALKING_RANGED, limbSwing, limbSwingAmount, 1.0F, 1.0F);
         }
-        this.animate(entity.animationPyrobolt, PyrolligerAnim.FIREBALL1, ageInTicks);
+        if (entity.walkAnimation.isMoving() && entity.getMode() == Pyrolliger.Mode.MELEE) {
+            this.animateWalk(PyrolligerAnim.WALKING_MELEE, limbSwing, limbSwingAmount, 1.0F, 1.0F);
+        }
+        this.animate(entity.animationIdle1, PyrolligerAnim.IDLE1, ageInTicks);
+        this.animate(entity.animationIdle2, PyrolligerAnim.IDLE2, ageInTicks);
+        this.animate(entity.animationPyrobolt1, PyrolligerAnim.FIREBALL1, ageInTicks);
         this.animate(entity.animationPyrolance, PyrolligerAnim.FIREBALL2, ageInTicks);
         this.animate(entity.animationBurningHexTrap, PyrolligerAnim.SUMMON_HEX, ageInTicks);
+        this.animate(entity.animationRangedUlt, PyrolligerAnim.RANGED_ULT, ageInTicks);
+        this.animate(entity.animationMeleeUlt, PyrolligerAnim.MELEE_STANCE, ageInTicks);
+        this.animate(entity.animationStanceMelee, PyrolligerAnim.MELEE_SWITCH, ageInTicks);
+        this.animate(entity.animationStanceRanged, PyrolligerAnim.RANGED_SWITCH, ageInTicks);
+        this.animate(entity.animationAtk1, PyrolligerAnim.ATTACK1, ageInTicks);
+        this.animate(entity.animationAtk2, PyrolligerAnim.ATTACK2, ageInTicks);
+        this.animate(entity.animationAtk3, PyrolligerAnim.ATTACK3, ageInTicks);
     }
 
     @Override

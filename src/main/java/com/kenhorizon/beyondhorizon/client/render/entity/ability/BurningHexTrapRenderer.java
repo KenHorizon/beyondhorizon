@@ -42,7 +42,7 @@ public class BurningHexTrapRenderer extends AnimatedAbilityRenderer<BurningHexTr
         poseStack.mulPose(Axis.YP.rotationDegrees(rotation * 2.25F - 90.0F));
         VertexConsumer vertexConsumer = buffer.getBuffer(BHRenderTypes.glowing(this.getTexture()));
         RenderSystem.setShader(GameRenderer::getRendertypeEntityTranslucentShader);
-        float factor = ((float) entity.getLifeTime() / entity.getDuration());
+        float factor = ((float) entity.getLifeTime() / (entity.getDuration() + entity.getDelay()));
         float scale = (entity.getRadius() * (1.0F - factor));
         poseStack.scale(1.0F + scale, 1.0F, 1.0F + scale);
         RenderSystem.setShaderColor(1, 1, 1, 1.0F - factor);

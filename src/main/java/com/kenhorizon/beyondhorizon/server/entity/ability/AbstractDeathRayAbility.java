@@ -4,10 +4,9 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRaySound;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
@@ -275,7 +274,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     protected void onStartParticle() {
         this.start();
         int particleCount = 4;
-        float[] colors = ColorUtil.getFARGB(ColorUtil.combineRGB(this.getColors()[0],this.getColors()[1],this.getColors()[2]));
+        float[] colors = Colors.getFARGB(Colors.combineRGB(this.getColors()[0],this.getColors()[1],this.getColors()[2]));
         while (particleCount --> 0) {
             double radius = 1f;
             float yaw = (float) (random.nextFloat() * 2 * Math.PI);

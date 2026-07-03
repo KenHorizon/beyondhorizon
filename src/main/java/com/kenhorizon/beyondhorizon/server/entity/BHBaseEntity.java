@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.client.sound.BossMusic;
 import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -381,6 +382,36 @@ public abstract class BHBaseEntity extends PathfinderMob {
             }
         }
         return flag;
+    }
+
+    public boolean doAreaAttack(float range, float arc, float damageMultiplier, int shieldBreakTicks, float applyKnockbackMultiplier, DamageType damageType) {
+        List<LivingEntity> entitiesHit = this.getEntityLivingBaseNearby(range, 6, range, range);
+        float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damageMultiplier;
+        for (LivingEntity entityHit : entitiesHit) {
+            float entityHitAngle = (float) ((Math.atan2(entityHit.getZ() - this.getZ(), entityHit.getX() - this.getX()) * (180 / Math.PI) - 90) % 360);
+            float entityAttackingAngle = this.yBodyRot % 360;
+            if (entityHitAngle < 0) {
+                entityHitAngle += 360;
+            }
+            if (entityAttackingAngle < 0) {
+                entityAttackingAngle += 360;
+            }
+            float entityRelativeAngle = entityHitAngle - entityAttackingAngle;
+            float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
+            if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
+                damageType.dealDamage(entityHit, this, damage);
+                if (entityHit instanceof Player player) {
+                    if (player.isBlocking()) {
+                        EntityUtils.disableShield(player, shieldBreakTicks);
+                        player.getUseItem().hurtAndBreak(400, entityHit, players -> players.broadcastBreakEvent(player.getUsedItemHand()));
+
+                    }
+                }
+                entityHit.setDeltaMovement(entityHit.getDeltaMovement().x * applyKnockbackMultiplier, entityHit.getDeltaMovement().y, entityHit.getDeltaMovement().z * applyKnockbackMultiplier);
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

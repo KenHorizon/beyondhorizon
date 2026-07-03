@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.*;
@@ -341,11 +341,11 @@ public class BHItems {
             .model(ItemModels.BIG32_HANDHELD)
             .register();
 
-    public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(139, 52, 1));
-    public static final RegistryObject<Item> FAYE_FLARES_SPAWN_EGG = spawnEgg("faye_flares", BHEntity.FAYE_FLARES, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(182, 31, 0));
-    public static final RegistryObject<Item> FAYE_WILDFIRE_SPAWN_EGG = spawnEgg("faye_wildfire", BHEntity.FAYE_WILDFIRE, ColorUtil.combineRGB(255, 248, 71), ColorUtil.combineRGB(31, 31, 31));
-    public static final RegistryObject<Item> PYROLLIGER_SPAWN_EGG = spawnEgg("pyrolliger", BHEntity.PYROLLIGER, ColorUtil.RED, ColorUtil.YELLOW);
-    public static final RegistryObject<Item> DRAGON_HORNET_SPAWN_EGG = spawnEgg("dragon_hornet", BHEntity.DRAGON_HORNET, ColorUtil.YELLOW, ColorUtil.ORANGE);
+    public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, Colors.combineRGB(255, 248, 71), Colors.combineRGB(139, 52, 1));
+    public static final RegistryObject<Item> FAYE_FLARES_SPAWN_EGG = spawnEgg("faye_flares", BHEntity.FAYE_FLARES, Colors.combineRGB(255, 248, 71), Colors.combineRGB(182, 31, 0));
+    public static final RegistryObject<Item> FAYE_WILDFIRE_SPAWN_EGG = spawnEgg("faye_wildfire", BHEntity.FAYE_WILDFIRE, Colors.combineRGB(255, 248, 71), Colors.combineRGB(31, 31, 31));
+    public static final RegistryObject<Item> PYROLLIGER_SPAWN_EGG = spawnEgg("pyrolliger", BHEntity.PYROLLIGER, Colors.RED, Colors.YELLOW);
+    public static final RegistryObject<Item> DRAGON_HORNET_SPAWN_EGG = spawnEgg("dragon_hornet", BHEntity.DRAGON_HORNET, Colors.YELLOW, Colors.ORANGE);
 
 
     private static RegistryObject<Item> spawnEgg(String entityName, RegistryObject entityType, int backgroundColor, int highlightColor) {

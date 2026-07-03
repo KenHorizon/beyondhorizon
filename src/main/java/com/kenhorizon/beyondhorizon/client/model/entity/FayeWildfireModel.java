@@ -1,8 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
-import com.kenhorizon.beyondhorizon.client.model.animation.BlazingInfernoAnim;
 import com.kenhorizon.beyondhorizon.client.model.animation.FayeWildfireAnim;
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
@@ -74,7 +72,7 @@ public class FayeWildfireModel extends AdvanceEntityModel<FayeWildfire> {
         if (entity.walkAnimation.isMoving()) {
             this.applyStatic(FayeWildfireAnim.WALKING);
         }
-        this.animateIdle(FayeWildfireAnim.GENERAL, ageInTicks, 0.75F);
+        this.animate(FayeWildfireAnim.GENERAL, ageInTicks, 0.75F);
         this.animate(entity.animationBlazingRod, FayeWildfireAnim.SHOOT, ageInTicks);
         this.animate(entity.animationPrepDeathRay, FayeWildfireAnim.PREPARE_DEATH_RAY, ageInTicks);
         this.animate(entity.animationDeathRay, FayeWildfireAnim.DEATH_RAY, ageInTicks);

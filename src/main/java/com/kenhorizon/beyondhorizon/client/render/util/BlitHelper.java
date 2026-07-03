@@ -1,19 +1,12 @@
 package com.kenhorizon.beyondhorizon.client.render.util;
 
-import com.mojang.blaze3d.font.GlyphInfo;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.font.FontSet;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextColor;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Matrix4f;
@@ -34,14 +27,14 @@ public class BlitHelper {
 
     public static void drawBlit(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, int uo, int vo, int width, int height, int textureWidth, int textureHeight, int color) {
         RenderSystem.enableBlend();
-        float[] colors = ColorUtil.getFARGB(color);
+        float[] colors = Colors.getFARGB(color);
         RenderSystem.setShaderColor(colors[0], colors[1], colors[2], colors[3]);
         guiGraphics.blit(textures, x, y, uo, vo, width, height, textureWidth, textureHeight);
         RenderSystem.disableBlend();
     }
     // DRAW TEXT
     public static void drawStrings(Font font, GuiGraphics guiGraphics, String text, int x, int y) {
-        drawStrings(font, guiGraphics, Component.literal(text), x, y, ColorUtil.WHITE, true);
+        drawStrings(font, guiGraphics, Component.literal(text), x, y, Colors.WHITE, true);
     }
 
     public static void drawStrings(Font font, GuiGraphics guiGraphics, String text, int x, int y, int color) {
@@ -50,7 +43,7 @@ public class BlitHelper {
 
 
     public static void drawStrings(Font font, GuiGraphics guiGraphics, Component text, int x, int y) {
-        drawStrings(font, guiGraphics, text.getString(), x, y, ColorUtil.WHITE, true);
+        drawStrings(font, guiGraphics, text.getString(), x, y, Colors.WHITE, true);
     }
 
     public static void drawStrings(Font font, GuiGraphics guiGraphics, Component text, int x, int y, int color) {
@@ -67,28 +60,32 @@ public class BlitHelper {
 
     // DRAW BORDER TEXT
     public static void drawBorderedStrings(Font font, GuiGraphics guiGraphics, String text, int x, int y) {
-        drawBorderedStrings(font,guiGraphics, Component.literal(text), x, y, ColorUtil.LIGHT_GRAY, ColorUtil.BLACK);
+        drawBorderedStrings(font,guiGraphics, Component.literal(text), x, y, Colors.LIGHT_GRAY, Colors.BLACK);
     }
     public static void drawBorderedStrings(Font font, GuiGraphics guiGraphics, String text, int x, int y, int color) {
-        drawBorderedStrings(font,guiGraphics, Component.literal(text), x, y, color, ColorUtil.BLACK);
+        drawBorderedStrings(font,guiGraphics, Component.literal(text), x, y, color, Colors.BLACK);
     }
     public static void drawBorderedStrings(Font font, GuiGraphics guiGraphics, Component text, int x, int y) {
-        drawBorderedStrings(font,guiGraphics, text, x, y, ColorUtil.LIGHT_GRAY, ColorUtil.BLACK);
+        drawBorderedStrings(font,guiGraphics, text, x, y, Colors.LIGHT_GRAY, Colors.BLACK);
     }
     public static void drawBorderedStrings(Font font, GuiGraphics guiGraphics, Component text, int x, int y, int color) {
-        drawBorderedStrings(font,guiGraphics, text, x, y, color, ColorUtil.BLACK);
+        drawBorderedStrings(font,guiGraphics, text, x, y, color, Colors.BLACK);
     }
     public static void drawBorderedStrings(Font font, GuiGraphics guiGraphics, Component text, int x, int y, int color, int borderColor) {
+        int i = adjustColor(borderColor);
         for (int j = -1; j <= 1; ++j) {
             for (int k = -1; k <= 1; ++k) {
                 if (j != 0 || k != 0) {
-                    guiGraphics.drawString(font,text.getVisualOrderText(), x + j, y + k, borderColor, false);
+                    guiGraphics.drawString(font,text.getVisualOrderText(), x + j, y + k, i, false);
                 }
             }
         }
         guiGraphics.drawString(font,text.getVisualOrderText(), x, y, color, false);
         // Issues of rendering using minecraft.font where the text are visible on Screen UIs like Inventory, and others
 //        font.drawInBatch8xOutline(text.getVisualOrderText(), x, y, color, borderColor, matrix4f, guiGraphics.bufferSource(), LightTexture.FULL_BRIGHT);
+    }
+    private static int adjustColor(int color) {
+        return (color & -67108864) == 0 ? color | -16777216 : color;
     }
     // AC
     public static void blitWithColor(GuiGraphics guiGraphics, ResourceLocation p_283377_, int p_281970_, int p_282111_, int p_283134_, int p_282778_, int p_281478_, int p_281821_, float r, float g, float b, float a) {

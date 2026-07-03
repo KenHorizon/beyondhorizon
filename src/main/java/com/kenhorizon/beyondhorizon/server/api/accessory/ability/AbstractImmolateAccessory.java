@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -24,9 +24,9 @@ public abstract class AbstractImmolateAccessory extends AccessoryPassiveSkill {
                 Level level = entity.level();
                 if (entity.tickCount % this.immolatePerSecond() == 0) {
                     if (level instanceof ServerLevel sLevel) {
-                        float r = ColorUtil.getFARGB(colorRing())[0];
-                        float g = ColorUtil.getFARGB(colorRing())[1];
-                        float b = ColorUtil.getFARGB(colorRing())[2];
+                        float r = Colors.getFARGB(colorRing())[0];
+                        float g = Colors.getFARGB(colorRing())[1];
+                        float b = Colors.getFARGB(colorRing())[2];
                         sLevel.sendParticles(new RingParticleOptions(0, (float) -Math.PI / 2, 10, r, g, b, 1.0F, 32.0F, false, RingParticles.Behavior.GROW), entity.getX(), entity.getY(), entity.getZ(), 2, 0,0 ,0 ,0);
                     }
                     for (LivingEntity affected : entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(6.0D, 2.0F, 6.0D))) {

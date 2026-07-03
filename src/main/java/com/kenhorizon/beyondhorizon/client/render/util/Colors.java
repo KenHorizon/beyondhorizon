@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.client.render.util;
 import net.minecraft.util.Mth;
 import org.apache.commons.lang3.math.NumberUtils;
 
-public class ColorUtil {
+public class Colors {
 
     public static int LIGHT_GRAY = combineRGB(192, 192, 192);
     public static int ORANGE = combineRGB(255, 106, 0);

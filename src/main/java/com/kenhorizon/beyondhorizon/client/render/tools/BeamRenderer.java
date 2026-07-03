@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.tools;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -32,9 +32,9 @@ public class BeamRenderer {
                 beamAlpha *= (float) minecraft.player.distanceToSqr(entity);
             }
         }
-        float R = ColorUtil.getARGB(colors)[0] / 255f;
-        float G = ColorUtil.getARGB(colors)[1] / 255f;
-        float B = ColorUtil.getARGB(colors)[2] / 255f;
+        float R = Colors.getARGB(colors)[0] / 255f;
+        float G = Colors.getARGB(colors)[1] / 255f;
+        float B = Colors.getARGB(colors)[2] / 255f;
 
         float beamRadius = 0.05F * radius;
         float glowRadius = beamRadius + (beamRadius * 0.2F);
@@ -65,9 +65,9 @@ public class BeamRenderer {
     public static void renderBeam(ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, long worldTime, BlockEntity entity, float radius, float height, int colors) {
         RenderSystem.enableDepthTest();
         float beamAlpha = 0.85F;
-        float R = ColorUtil.getARGB(colors)[0] / 255f;
-        float G = ColorUtil.getARGB(colors)[1] / 255f;
-        float B = ColorUtil.getARGB(colors)[2] / 255f;
+        float R = Colors.getARGB(colors)[0] / 255f;
+        float G = Colors.getARGB(colors)[1] / 255f;
+        float B = Colors.getARGB(colors)[2] / 255f;
         float beamRadius = 0.05F * radius;
         float glowRadius = beamRadius + (beamRadius * 0.2F);
         float beamHeight = height;

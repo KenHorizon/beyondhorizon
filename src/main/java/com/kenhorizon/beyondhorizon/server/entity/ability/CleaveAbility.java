@@ -2,17 +2,13 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -44,9 +40,9 @@ public class CleaveAbility extends AbilityEntity {
         super.handleEntityEvent(id);
         if (id == 4) {
 
-            float r = ColorUtil.getFARGB(0xFF6500)[0];
-            float g = ColorUtil.getFARGB(0xFF6500)[1];
-            float b = ColorUtil.getFARGB(0xFF6500)[2];
+            float r = Colors.getFARGB(0xFF6500)[0];
+            float g = Colors.getFARGB(0xFF6500)[1];
+            float b = Colors.getFARGB(0xFF6500)[2];
             this.level().addParticle(new RingParticleOptions(0, (float) Math.PI / 2, CLEAVE_DURATION, r, g, b, 1.0F, 32.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
 
         }

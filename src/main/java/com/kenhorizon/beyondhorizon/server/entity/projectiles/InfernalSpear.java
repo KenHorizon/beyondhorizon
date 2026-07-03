@@ -60,7 +60,7 @@ public class InfernalSpear extends BaseSpearProjectile {
 
     @Override
     public void onDuration() {
-        HitResult raytraceresult = ExtendedProjectileUtil.getHitResultOnMoveVector(this, this.getRadius(), this::canHitEntity);
+        HitResult raytraceresult = ExtendedProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (raytraceresult.getType() != HitResult.Type.MISS) {
             this.onHit(raytraceresult);
         }

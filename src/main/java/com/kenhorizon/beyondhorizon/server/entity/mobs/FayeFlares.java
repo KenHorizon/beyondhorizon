@@ -4,16 +4,14 @@ import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ai.*;
 import com.kenhorizon.beyondhorizon.server.entity.ai.control.FlightMoveControl;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.entity.util.AnimationTickers;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageScaling;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -259,9 +257,9 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
                     }
                 }
                 if (this.getAnimationTick() == 60) {
-                    float r = ColorUtil.getFARGB(0xFF0000)[0];
-                    float g = ColorUtil.getFARGB(0xFF0000)[1];
-                    float b = ColorUtil.getFARGB(0xFF0000)[2];
+                    float r = Colors.getFARGB(0xFF0000)[0];
+                    float g = Colors.getFARGB(0xFF0000)[1];
+                    float b = Colors.getFARGB(0xFF0000)[2];
                     double x = this.getX();
                     double y = this.getY() + this.getBbHeight() / 2;
                     double z = this.getZ();

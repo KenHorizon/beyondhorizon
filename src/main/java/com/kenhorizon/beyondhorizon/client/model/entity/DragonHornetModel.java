@@ -1,9 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
-import com.kenhorizon.beyondhorizon.client.model.animation.BlazingInfernoAnim;
 import com.kenhorizon.beyondhorizon.client.model.animation.DragonHornetAnim;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.DragonHornet;
-import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -62,7 +60,7 @@ public class DragonHornetModel extends AdvanceEntityModel<DragonHornet> {
     @Override
     public void animations(DragonHornet entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
         this.resetModelDefault();
-        this.animateIdle(DragonHornetAnim.GENERAL, ageInTicks, 1.0F);
+        this.animate(DragonHornetAnim.GENERAL, ageInTicks, 1.0F);
         this.animate(entity.animationDeath, DragonHornetAnim.DEATH, ageInTicks);
         this.animate(entity.animationAttack, DragonHornetAnim.ATTACK, ageInTicks);
     }

@@ -1,7 +1,5 @@
 package com.kenhorizon.libs.client.model.entity;
 
-import com.kenhorizon.beyondhorizon.client.model.animation.BlazingInfernoAnim;
-import com.kenhorizon.beyondhorizon.server.entity.mobs.DragonHornet;
 import com.kenhorizon.libs.client.animation.AdvanceKeyframeAnimation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -66,7 +64,7 @@ public abstract class AdvanceEntityModel<T extends Entity> extends EntityModel<T
         this.animate(animation, definition, ageInTicks, 1.0F);
     }
 
-    public void animateIdle(AnimationDefinition animationDefinition, float ageInTicks, float maxAnimationSpeed) {
+    public void animate(AnimationDefinition animationDefinition, float ageInTicks, float maxAnimationSpeed) {
         long speed = (long) (ageInTicks * 50.0F * maxAnimationSpeed);
         AdvanceKeyframeAnimation.animate(this, animationDefinition, speed, 1.0F, ANIMATION_VECTOR_CACHE);
     }

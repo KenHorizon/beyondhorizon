@@ -1,27 +1,18 @@
 package com.kenhorizon.beyondhorizon.server.entity.mobs;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
-import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
-import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ai.HurtByNearestTargetGoal;
 import com.kenhorizon.beyondhorizon.server.entity.ai.MobAttackGoal;
 import com.kenhorizon.beyondhorizon.server.entity.ai.MobMoveGoal;
 import com.kenhorizon.beyondhorizon.server.entity.ai.control.FlightMoveControl;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.entity.util.AnimationTickers;
-import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -129,12 +120,6 @@ public class DragonHornet extends BHLibEntity implements FlyingAnimal {
         this.goalSelector.addGoal(1, new MobMoveGoal(this, false, 1.0F));
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
         this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_ATTACK, ID_ANIMATION_EMPTY, 20, Maths.sec(2)) {
-
-            @Override
-            public void start() {
-                super.start();
-                BeyondHorizon.LOGGER.debug("Randomized {}", this.entity.getRandom().nextBoolean() ? 1 : 2);
-            }
 
             @Override
             public boolean canUse() {

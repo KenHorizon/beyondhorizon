@@ -1,13 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.nbt.CompoundTag;
@@ -15,7 +13,6 @@ import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -114,7 +111,22 @@ public abstract class HomingProjectile extends ExtendedProjectile {
     @Override
     public void tick() {
         super.tick();
-        HitResult raytraceresult = ExtendedProjectileUtil.getHitResultOnMoveVector(this, this.getRadius(), this::canHitEntity);
+        if (!this.level().isClientSide()) {
+            if (this.finalTarget == null || !this.finalTarget.isAlive() || (this.finalTarget instanceof Player && this.finalTarget.isSpectator())) {
+                this.discard();
+            } else {
+                if (this.distanceTo(this.finalTarget) > 1.5F && this.getLifeSpan() > 3 && this.getLifeSpan() < 40) {
+                    Vec3 currentVelocity = this.getDeltaMovement();
+                    Vec3 toTarget = this.targetPos.subtract(this.position());
+                    Vec3 desiredDirection = toTarget.normalize();
+                    double turnFactor = 0.16;
+                    Vec3 newDirection = currentVelocity.normalize().scale(1.0 - turnFactor)
+                            .add(desiredDirection.scale(turnFactor)).normalize();
+                    this.assignDirectionalMovement(newDirection, this.getInertia());
+                }
+            }
+        }
+        HitResult raytraceresult = ExtendedProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (raytraceresult.getType() != HitResult.Type.MISS) {
             this.onHit(raytraceresult);
         }
@@ -124,26 +136,10 @@ public abstract class HomingProjectile extends ExtendedProjectile {
         double d1 = this.getY() + vec3.y;
         double d2 = this.getZ() + vec3.z;
         float f = this.getInertia();
-        float[] colors = ColorUtil.getFARGB(ColorUtil.GOLD);
+        float[] colors = Colors.getFARGB(Colors.GOLD);
         this.level().addParticle(new TrailParticleOptions(40, colors[0], colors[1], colors[2], colors[3], 1.0F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d0, d1, d2)), d0, d1, d2, 0, 0, 0);
         this.setDeltaMovement(vec3.add(this.xPower, this.yPower, this.zPower).scale((double)f));
         this.setPos(d0, d1, d2);
-        if (!this.level().isClientSide()) {
-            if (this.finalTarget == null || !this.finalTarget.isAlive() || (this.finalTarget instanceof Player && this.finalTarget.isSpectator())) {
-                this.discard();
-            } else {
-                Vec3 currentVelocity = this.getDeltaMovement();
-                Vec3 toTarget = this.targetPos.subtract(this.position());
-                double distance = toTarget.length();
-                if (distance == 3) {
-                    Vec3 desiredDirection = toTarget.normalize();
-                    double turnFactor = 0.16;
-                    Vec3 newDirection = currentVelocity.normalize().scale(1.0 - turnFactor)
-                            .add(desiredDirection.scale(turnFactor)).normalize();
-                    this.assignDirectionalMovement(newDirection, this.getInertia());
-                }
-            }
-        }
     }
     
 

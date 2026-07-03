@@ -2,21 +2,15 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.CircleLightningParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.LightningParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.init.BHParticle;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
@@ -41,7 +35,7 @@ public class BoltShockAbility extends AbilityEntity {
     public void handleEntityEvent(byte id) {
         super.handleEntityEvent(id);
         if (id == 4) {
-            int colorCode = ColorUtil.combineRGB(0, 186, 255);
+            int colorCode = Colors.combineRGB(0, 186, 255);
             for (int i = 0; i < 20; ++i) {
                 double d0 = (random.nextFloat() - 1.5F) + this.getDeltaMovement().x * this.getRadius();
                 double d1 = (random.nextFloat() - 1.5F) + this.getDeltaMovement().y * this.getRadius();
@@ -52,9 +46,9 @@ public class BoltShockAbility extends AbilityEntity {
                 double d5 = d2 * dist;
                 this.level().addAlwaysVisibleParticle(new LightningParticleOptions(0, 186, 255), this.getX() + d0, this.getY() + 0.5D, this.getZ() + d2, d3, d4, d5);
             }
-            float r = ColorUtil.getFARGB(colorCode)[0];
-            float g = ColorUtil.getFARGB(colorCode)[1];
-            float b = ColorUtil.getFARGB(colorCode)[2];
+            float r = Colors.getFARGB(colorCode)[0];
+            float g = Colors.getFARGB(colorCode)[1];
+            float b = Colors.getFARGB(colorCode)[2];
 
             this.level().addAlwaysVisibleParticle(new LightningParticleOptions(0, 186, 255), this.getX(), this.getY() + 10.5D, this.getZ(), 0.01D, -5.0D, 0.01D);
 

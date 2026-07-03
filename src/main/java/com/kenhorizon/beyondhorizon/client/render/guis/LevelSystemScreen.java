@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.guis;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
@@ -13,13 +13,11 @@ import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.*;
@@ -110,11 +108,11 @@ public class LevelSystemScreen extends Screen {
             String levelPTS = String.format("%s", this.role.getLevel());
             int levelString = level.length();
             String xpRequired = String.format("%s/%s", Maths.format(this.role.getExpProgress()), Maths.format(this.role.getXpNeededForNextLevel()));
-            BlitHelper.drawStrings(minecraft.font, guiGraphics, xpRequired, this.posX + 20, this.posY + 34, ColorUtil.GREEN);
-            BlitHelper.drawStrings(minecraft.font,guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 136, this.posY + 12, ColorUtil.WHITE);
-            BlitHelper.drawStrings(minecraft.font,guiGraphics, player.getName(), x, y, ColorUtil.WHITE);
-            BlitHelper.drawStrings(minecraft.font,guiGraphics, level, x, y + 10, ColorUtil.WHITE);
-            BlitHelper.drawStrings(minecraft.font,guiGraphics, levelPTS, x + 10 + 4 + levelString, y + 10 , ColorUtil.GREEN);
+            BlitHelper.drawStrings(minecraft.font, guiGraphics, xpRequired, this.posX + 20, this.posY + 34, Colors.GREEN);
+            BlitHelper.drawStrings(minecraft.font,guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 136, this.posY + 12, Colors.WHITE);
+            BlitHelper.drawStrings(minecraft.font,guiGraphics, player.getName(), x, y, Colors.WHITE);
+            BlitHelper.drawStrings(minecraft.font,guiGraphics, level, x, y + 10, Colors.WHITE);
+            BlitHelper.drawStrings(minecraft.font,guiGraphics, levelPTS, x + 10 + 4 + levelString, y + 10 , Colors.GREEN);
         }
 
         if (this.category == Category.ATTRIBUTES) {
@@ -125,9 +123,9 @@ public class LevelSystemScreen extends Screen {
             this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 1), LevelSystem.AttributePoints.DEXERITY);
             this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 2), LevelSystem.AttributePoints.INTELLIGENGE);
             if (!this.role.isAlreadyReachedRequiredLevel()) {
-                guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, ColorUtil.combineARGB(100, 0, 0,0));
+                guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, Colors.combineARGB(100, 0, 0,0));
                 String warningText = String.format("You need to be level %s", Constant.LEVEL_SYSTEM_UNLOCKED);
-                BlitHelper.drawStrings(minecraft.font, guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, ColorUtil.combineRGB(200, 0 , 0), true);
+                BlitHelper.drawStrings(minecraft.font, guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, Colors.combineRGB(200, 0 , 0), true);
             }
         }
 //        if (this.category == Category.CLASS) {
@@ -172,10 +170,10 @@ public class LevelSystemScreen extends Screen {
         guiGraphics.blit(LOCATION, x + 7, y + 60, 0, 166, 79, 32);
         String text = attributePoints.getName();
         String lvl = String.format("%s", pts);
-        BlitHelper.drawStrings(minecraft.font,guiGraphics, text, x + 12, y + 65, ColorUtil.WHITE, false);
-        int colorPts = pts > 0 ? ColorUtil.WHITE : ColorUtil.combineRGB(255, 0, 0);
+        BlitHelper.drawStrings(minecraft.font,guiGraphics, text, x + 12, y + 65, Colors.WHITE, false);
+        int colorPts = pts > 0 ? Colors.WHITE : Colors.combineRGB(255, 0, 0);
         int lvlPY = y + 76;
-        BlitHelper.drawStrings(minecraft.font,guiGraphics, "lvl:", x + 12, lvlPY, ColorUtil.WHITE, false);
+        BlitHelper.drawStrings(minecraft.font,guiGraphics, "lvl:", x + 12, lvlPY, Colors.WHITE, false);
         BlitHelper.drawStrings(minecraft.font,guiGraphics, lvl, x + 34, lvlPY, colorPts, false);
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();

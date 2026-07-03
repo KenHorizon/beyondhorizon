@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
-import com.kenhorizon.beyondhorizon.client.model.animation.BlazingInfernoAnim;
 import com.kenhorizon.beyondhorizon.client.model.animation.FayeFlaresAnim;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
@@ -54,7 +53,7 @@ public class FayeFlaresModel extends AdvanceEntityModel<FayeFlares> {
     public void animations(FayeFlares entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
         this.resetModelDefault();
         this.headLook(this.core, yaw, pitch);
-        this.animateIdle(FayeFlaresAnim.GENERAL, ageInTicks, 0.75F);
+        this.animate(FayeFlaresAnim.GENERAL, ageInTicks, 0.75F);
     }
 
     @Override

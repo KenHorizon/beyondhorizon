@@ -79,6 +79,7 @@ public class BHLangProvider extends LanguageProvider {
 
         this.add(Tooltips.BOSS_IS_DEFEATED, "The %s is defeated");
         this.addBossMessage(BHEntity.BLAZING_INFERNO.get(), "The ocean and desert guardian has awoken...");
+        this.addBossMessage(BHEntity.PYROLLIGER.get(), "Ancient seal has been destroyed!, Dark Entity is escaped");
 
         //
 

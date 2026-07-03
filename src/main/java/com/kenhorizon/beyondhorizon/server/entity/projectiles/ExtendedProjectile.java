@@ -28,6 +28,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * <p>Extended projectile add more properties to enhance the projectiles</p>
@@ -64,6 +65,8 @@ public abstract class ExtendedProjectile extends Projectile {
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> IGNITE_ATTACK = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> CAN_LIGHT_FIRE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> RICOCHET = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> RICOCHET_BOUNCE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.INT);
     protected int duration = 160;
     protected int lifespan = 0;
     protected float damageScalingHp = 0.0F;
@@ -76,13 +79,17 @@ public abstract class ExtendedProjectile extends Projectile {
     protected boolean isCrit;
     protected float fade = 0.0F;
     protected int delay = 0;
-    public double xPower;
-    public double yPower;
-    public double zPower;
+    protected double xPower;
+    protected double yPower;
+    protected double zPower;
+    protected boolean ricochet = false;
+    protected int ricochetBounce = 1;
     private final Vec3[] trailPositions = new Vec3[64];
     private int trailPointer = -1;
     public DamageType damageType = DamageType.PHYSICAL_DAMAGE;
     public DamageScaling damageScaling = DamageScaling.NONE;
+    public static final String NBT_RICOCHET_BOUNCE = "RicochetBounce";
+    public static final String NBT_RICOCHET = "Ricochet";
     public static final String NBT_DURATION = "Duration";
     public static final String NBT_DAMAGE_TYPE = "DamageType";
     public static final String NBT_IS_CRIT = "Crit";
@@ -96,6 +103,7 @@ public abstract class ExtendedProjectile extends Projectile {
     public static final String NBT_DAMAGE_SCALING = "DamageScaling";
     public static final String NBT_HP_DAMAGE = "HpDamage";
     public static final String NBT_RADIUS = "Radius";
+    public Consumer<ExtendedProjectile> postEffectDamage;
     @Nullable
     protected BlockState lastState;
     @Nullable
@@ -219,6 +227,9 @@ public abstract class ExtendedProjectile extends Projectile {
                 if (this.doDamage(target, projectileOwner, damage + bonusDamage)) {
                     if (flag) return;
                     if (projectileOwner != null) {
+                        if (this.postEffectDamage != null) {
+                            this.postEffectDamage.accept(this);
+                        }
                         this.afterGotHit(target);
                         this.doEnchantDamageEffects(projectileOwner, entity);
                     }

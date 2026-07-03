@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
@@ -13,7 +13,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -63,23 +62,13 @@ public class Pyrobolt extends BaseSpearProjectile {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
-
-    }
-
-    @Override
     public void afterGotHit(LivingEntity entity) {
-        var owner = this.getOwner();
-        if (owner instanceof LivingEntity owners && owners instanceof Pyrolliger boss) {
-            boss.addMana(2);
-        }
         entity.addEffect(new MobEffectInstance(BHEffects.BURNING_HEX.get(), Maths.sec(5)));
-        this.getDamageType().dealDamage(entity, this, (LivingEntity) this.getOwner(), this.getBaseDamage());
     }
 
     @Override
     public void onDuration() {
-        HitResult raytraceresult = ExtendedProjectileUtil.getHitResultOnMoveVector(this, this.getRadius(), this::canHitEntity);
+        HitResult raytraceresult = ExtendedProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
         if (raytraceresult.getType() != HitResult.Type.MISS) {
             this.onHit(raytraceresult);
         }
@@ -89,7 +78,7 @@ public class Pyrobolt extends BaseSpearProjectile {
         double d1 = this.getY() + vec3.y;
         double d2 = this.getZ() + vec3.z;
         float f = this.getInertia();
-        float[] colors = ColorUtil.getFARGB(ColorUtil.GOLD);
+        float[] colors = Colors.getFARGB(Colors.GOLD);
         this.level().addParticle(new TrailParticleOptions(40, colors[0], colors[1], colors[2], colors[3], 1.0F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d0, d1, d2)), d0, d1, d2, 0, 0, 0);
         this.setDeltaMovement(vec3.add(this.xPower, this.yPower, this.zPower).scale((double)f));
         this.setPos(d0, d1, d2);

@@ -1,9 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
-import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
-import com.kenhorizon.beyondhorizon.client.particle.world.SlashParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import net.minecraft.world.entity.EntityType;

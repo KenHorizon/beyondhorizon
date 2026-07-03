@@ -5,7 +5,7 @@ import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.InfernalSpear;
@@ -65,11 +65,11 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
                 if (!level.isClientSide()) {
                     this.addCooldownManaCost(player);
                     double damage = Mth.lerp(durationFactor, this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, 0.05F), this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, this.scaleDamage) * durationFactor);
-                    var color = ColorUtil.RED;
+                    var color = Colors.RED;
                     if (level instanceof ServerLevel sLevel) {
-                        float r = ColorUtil.getFARGB(color)[0];
-                        float g = ColorUtil.getFARGB(color)[1];
-                        float b = ColorUtil.getFARGB(color)[2];
+                        float r = Colors.getFARGB(color)[0];
+                        float g = Colors.getFARGB(color)[1];
+                        float b = Colors.getFARGB(color)[2];
                         sLevel.sendParticles(new RingParticleOptions(0, (float) Math.PI / 2f, 33,
                                         r, g, b, 1.0F, 110F,
                                         false, RingParticles.Behavior.GROW),
@@ -111,11 +111,11 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
             if (durations <= 0) return;
             float durationFactor = (float) Mth.lerp((float) durations / Maths.sec(3), 0.0D, 1.0D);
             if (!((double) durationFactor < 0.1D)) {
-                var color = ColorUtil.lerpG(durationFactor, ColorUtil.RED, ColorUtil.YELLOW);
+                var color = Colors.lerpG(durationFactor, Colors.RED, Colors.YELLOW);
                 if (entity.tickCount % 8L == 0) {
-                    float r = ColorUtil.getFARGB(color)[0];
-                    float g = ColorUtil.getFARGB(color)[1];
-                    float b = ColorUtil.getFARGB(color)[2];
+                    float r = Colors.getFARGB(color)[0];
+                    float g = Colors.getFARGB(color)[1];
+                    float b = Colors.getFARGB(color)[2];
                     level.addParticle(new RingParticleOptions(0, (float)Math.PI / 2f, 33, r, g, b, 1.0F, 32, false, RingParticles.Behavior.GROW), entity.getX(), entity.getY() + 0.5D, entity.getZ(), 0, 0, 0);
                     int particleCount = 16;
                     while (particleCount --> 0) {

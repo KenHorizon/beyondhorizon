@@ -25,10 +25,7 @@ import net.minecraft.world.entity.TraceableEntity;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.*;
 import net.minecraftforge.fluids.FluidType;
 import org.jetbrains.annotations.Nullable;
 
@@ -259,10 +256,15 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     protected void onEnd() {}
 
     @Override
+    protected AABB makeBoundingBox() {
+        return super.makeBoundingBox().inflate(this.getRadius());
+    }
+
+    @Override
     public void handleEntityEvent(byte id) {
         super.handleEntityEvent(id);
         if (id == 4) {
-            BeyondHorizon.LOGGER.debug("[Ability entity] Client Sided Started!");
+//            BeyondHorizon.LOGGER.debug("[Ability entity] Client Sided Started!");
             this.clientSideStarted = true;
         }
     }

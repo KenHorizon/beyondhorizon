@@ -44,7 +44,7 @@ public class BaseSpearProjectile extends ExtendedProjectile {
         Entity entity = this.getOwner();
         if (this.level().isClientSide() || (entity == null || !entity.isRemoved()) && this.level().hasChunkAt(this.blockPosition())) {
             super.tick();
-            HitResult hitresult = ExtendedProjectileUtil.getHitResultOnMoveVector(this, this.getRadius(), this::canHitEntity);
+            HitResult hitresult = ExtendedProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
             if (hitresult.getType() != HitResult.Type.MISS && !ForgeEventFactory.onProjectileImpact(this, hitresult)) {
                 this.onHit(hitresult);
             }

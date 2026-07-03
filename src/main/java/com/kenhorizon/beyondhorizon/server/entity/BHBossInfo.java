@@ -45,6 +45,7 @@ public class BHBossInfo extends ServerBossEvent {
             }
         }
     }
+
     public void setRenderType(int renderType) {
         if (renderType != this.renderType) {
             this.renderType = renderType;

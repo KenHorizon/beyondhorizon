@@ -231,6 +231,7 @@
   "block.beyondhorizon.workbench.name": "Workbench",
   "boss.beyondhorizon.defeated": "The %s is defeated",
   "boss.beyondhorizon.defeated.entity.beyondhorizon.blazing_inferno": "The ocean and desert guardian has awoken...",
+  "boss.beyondhorizon.defeated.entity.beyondhorizon.pyrolliger": "Ancient seal has been destroyed!, Dark Entity is escaped",
   "command.beyondhorizon.role_class.level.failure": "Failed to set the level %s",
   "command.beyondhorizon.role_class.level.succes": "Successfully set the level %s",
   "command.beyondhorizon.role_class.points.failure": "Failed to change the role to %s",

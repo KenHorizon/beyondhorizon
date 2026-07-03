@@ -1,28 +1,21 @@
 package com.kenhorizon.beyondhorizon.server.block.spawner.data;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
-import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.PlayerDetector;
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.ExtraCodecs;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -43,7 +36,6 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -258,8 +250,8 @@ public class BHBaseSpawner {
             double f = blockPos.getZ() + 0.5D + (randomSource.nextDouble() - 0.5D) * 2.0D;
             level.sendParticles(ParticleTypes.POOF, d, e, f, 1, 0.0D, 0.0D, 0.0D, 0.0F);
             level.sendParticles(ParticleTypes.FLAME, d, e, f, 1, 0.0D, 0.0D, 0.0D, 0.0F);
-            float[] colors = ColorUtil.getFARGB(ColorUtil.BLUE);
-            float[] colors1 = ColorUtil.getFARGB(ColorUtil.RED);
+            float[] colors = Colors.getFARGB(Colors.BLUE);
+            float[] colors1 = Colors.getFARGB(Colors.RED);
             level.sendParticles(new TrailParticleOptions(40, colors[0], colors[1], colors[2], colors[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
             level.sendParticles(new TrailParticleOptions(20, colors1[0], colors1[1], colors1[2], colors1[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
 
@@ -273,8 +265,8 @@ public class BHBaseSpawner {
             double f = blockPos.getX() + 0.5D + d;
             double g = blockPos.getY() + 0.1D + randomSource.nextFloat() * 0.8D;
             double h = blockPos.getZ() + 0.5D + e;
-            float[] colors = ColorUtil.getFARGB(ColorUtil.BLUE);
-            float[] colors1 = ColorUtil.getFARGB(ColorUtil.RED);
+            float[] colors = Colors.getFARGB(Colors.BLUE);
+            float[] colors1 = Colors.getFARGB(Colors.RED);
             level.sendParticles(new TrailParticleOptions(40, colors[0], colors[1], colors[2], colors[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
             level.sendParticles(new TrailParticleOptions(20, colors1[0], colors1[1], colors1[2], colors1[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
 
@@ -292,8 +284,8 @@ public class BHBaseSpawner {
             double j = randomSource.nextGaussian() * 0.02D;
             level.sendParticles(ParticleTypes.FLAME, d, e, f, 0, g, h, j * 0.25D, 0.5F);
             level.sendParticles(ParticleTypes.POOF, d, e, f, 0, g, h, j, 0.5F);
-            float[] colors = ColorUtil.getFARGB(ColorUtil.YELLOW);
-            float[] colors1 = ColorUtil.getFARGB(ColorUtil.GREEN);
+            float[] colors = Colors.getFARGB(Colors.YELLOW);
+            float[] colors1 = Colors.getFARGB(Colors.GREEN);
             level.sendParticles(new TrailParticleOptions(40, colors[0], colors[1], colors[2], colors[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
             level.sendParticles(new TrailParticleOptions(20, colors1[0], colors1[1], colors1[2], colors1[3], 1.15F, TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(d, e + 4.0D, f)), d, e, f, 1, 0, 0, 0,0);
 

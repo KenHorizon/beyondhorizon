@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
@@ -561,9 +561,9 @@ public class BlazingInferno extends BHBossEntity {
                     int particleCount = this.getEnragedProgress();
                     while (particleCount --> 0) {
                         double radius = 8.0F;
-                        float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-                        float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-                        float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+                        float r = Colors.getFARGB(0xFFFFFF)[0];
+                        float g = Colors.getFARGB(0xFFFFFF)[1];
+                        float b = Colors.getFARGB(0xFFFFFF)[2];
 
                         float yaw = (float) (this.random.nextFloat() * 2 * Math.PI);
                         float pitch = (float) (this.random.nextFloat() * 2 * Math.PI);
@@ -716,9 +716,9 @@ public class BlazingInferno extends BHBossEntity {
                 if (this.level().isClientSide()) {
                     float yaw = (float) Math.toRadians(-this.getYRot());
                     float pitch = (float) Math.toRadians(-this.getXRot());
-                    int r = ColorUtil.getARGB(0xFFFFFF)[0];
-                    int g = ColorUtil.getARGB(0xFFFFFF)[1];
-                    int b = ColorUtil.getARGB(0xFFFFFF)[2];
+                    int r = Colors.getARGB(0xFFFFFF)[0];
+                    int g = Colors.getARGB(0xFFFFFF)[1];
+                    int b = Colors.getARGB(0xFFFFFF)[2];
                     this.doRoarParticle(this.getX(), this.getY(0.5D), this.getZ(), 10, 255, 255, 255, 1.0F, 1.0F, 0.1F, 10.0F);
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 11, r, g, b, 1.0F, 16.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw, pitch, 15, r, g, b, 1.0F, 32.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ(), 0, 0, 0);
@@ -753,9 +753,9 @@ public class BlazingInferno extends BHBossEntity {
                 }
             }
             if (this.level().isClientSide() && this.getAnimationTick() % fireRate == 0) {
-                float r = ColorUtil.getFARGB(0xFF0000)[0];
-                float g = ColorUtil.getFARGB(0xFF0000)[1];
-                float b = ColorUtil.getFARGB(0xFF0000)[2];
+                float r = Colors.getFARGB(0xFF0000)[0];
+                float g = Colors.getFARGB(0xFF0000)[1];
+                float b = Colors.getFARGB(0xFF0000)[2];
                 double x = this.getX();
                 double y = this.getY() + this.getBbHeight() / 2;
                 double z = this.getZ();
@@ -811,15 +811,15 @@ public class BlazingInferno extends BHBossEntity {
                 if (!this.isSilent()) {
                     this.level().playSound((Player) null, this, BHSounds.BLAZING_INFERNO_GROWL.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
                 }
-                float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-                float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-                float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+                float r = Colors.getFARGB(0xFFFFFF)[0];
+                float g = Colors.getFARGB(0xFFFFFF)[1];
+                float b = Colors.getFARGB(0xFFFFFF)[2];
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 11, r, g, b, 1.0F, 128.0F, true, RingParticles.Behavior.GROW), this.getX(), this.getY(0.05D), this.getZ(), 0, 0, 0);
                 CameraShake.spawn(this.level(), this.position(), 16.0F, 0.05F, 5, 20);
                 if (this.level().isClientSide()) {
-                    float r1 = ColorUtil.getFARGB(0xFFFFFF)[0];
-                    float g2 = ColorUtil.getFARGB(0xFFFFFF)[1];
-                    float b3 = ColorUtil.getFARGB(0xFFFFFF)[2];
+                    float r1 = Colors.getFARGB(0xFFFFFF)[0];
+                    float g2 = Colors.getFARGB(0xFFFFFF)[1];
+                    float b3 = Colors.getFARGB(0xFFFFFF)[2];
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 10, r1, g2, b3, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
                     this.level().addParticle(new RoarParticleOptions(10, 255, 255, 255, 1.0F, 1.0F, 0.1F, 64.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
                 }
@@ -855,9 +855,9 @@ public class BlazingInferno extends BHBossEntity {
                         CameraShake.spawn(this, 32.0F, 0.55F, 10, 10);
                         float yaw = (float) Math.toRadians(-this.getYRot());
                         float pitch = (float) Math.toRadians(-this.getXRot());
-                        float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-                        float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-                        float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+                        float r = Colors.getFARGB(0xFFFFFF)[0];
+                        float g = Colors.getFARGB(0xFFFFFF)[1];
+                        float b = Colors.getFARGB(0xFFFFFF)[2];
                         this.level().addAlwaysVisibleParticle(new RingParticleOptions(yaw, pitch, 15, r, g, b, 1.0F, 32.0F, true, RingParticles.Behavior.SHRINK), this.getX(), this.getY() + this.getBbHeight() / 2 + 0.5F, this.getZ(), 0, 0, 0);
                     }
                 }
@@ -894,9 +894,9 @@ public class BlazingInferno extends BHBossEntity {
             if (this.getDashProgress() >= this.getDashCount()) {
                 CameraShake.spawn(this.level(), this.position(), 16.0F, 0.05F, 5, 20);
                 if (this.level().isClientSide()) {
-                    float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-                    float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-                    float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+                    float r = Colors.getFARGB(0xFFFFFF)[0];
+                    float g = Colors.getFARGB(0xFFFFFF)[1];
+                    float b = Colors.getFARGB(0xFFFFFF)[2];
                     this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 10, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
                     this.level().addParticle(new RoarParticleOptions(10, 255, 255, 255, 1.0F, 1.0F, 0.1F, 64.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
                 }
@@ -931,9 +931,9 @@ public class BlazingInferno extends BHBossEntity {
         }
         if (this.getAnimationState(ID_GROUND_SLAM)) {
             this.playSound(BHSounds.BLAZING_INFERNO_SCREAM.get());
-            float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-            float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-            float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+            float r = Colors.getFARGB(0xFFFFFF)[0];
+            float g = Colors.getFARGB(0xFFFFFF)[1];
+            float b = Colors.getFARGB(0xFFFFFF)[2];
             this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, Maths.sec(8) - 1, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(0.05D), this.getZ(), 0, 0, 0);
 
         }
@@ -949,9 +949,9 @@ public class BlazingInferno extends BHBossEntity {
         int swell = this.getSwell();
         if (swell > 0 && this.swell == 0) {
             this.playSound(BHSounds.BLAZING_INFERNO_SCREAM.get());
-            float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-            float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-            float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+            float r = Colors.getFARGB(0xFFFFFF)[0];
+            float g = Colors.getFARGB(0xFFFFFF)[1];
+            float b = Colors.getFARGB(0xFFFFFF)[2];
             this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, Maths.sec(8) - 1, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(0.05D), this.getZ(), 0, 0, 0);
         }
 
@@ -985,9 +985,9 @@ public class BlazingInferno extends BHBossEntity {
         if (this.getAnimationTick() == Maths.sec(4)) {
             CameraShake.spawn(this.level(), this.position(), 24.0F, 0.05F, 5, 20);
             if (this.level().isClientSide()) {
-                float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-                float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-                float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+                float r = Colors.getFARGB(0xFFFFFF)[0];
+                float g = Colors.getFARGB(0xFFFFFF)[1];
+                float b = Colors.getFARGB(0xFFFFFF)[2];
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 10, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.55D), this.getZ(), 0, 0, 0);
                 this.level().addParticle(new RoarParticleOptions(40, 255, 255, 255, 1.0F, 1.0F, 0.1F, 128.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
             }
@@ -1026,9 +1026,9 @@ public class BlazingInferno extends BHBossEntity {
         if (this.getAnimationTick() > Maths.sec(6) && this.doGroundSmashFX && this.onGround()) {
             this.doGroundSmashFX = false;
             if (this.level().isClientSide()) {
-                float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-                float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-                float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+                float r = Colors.getFARGB(0xFFFFFF)[0];
+                float g = Colors.getFARGB(0xFFFFFF)[1];
+                float b = Colors.getFARGB(0xFFFFFF)[2];
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 32, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, 64, r, g, b, 1.0F, 128.0F, false, RingParticles.Behavior.GROW), this.getX(), this.getY(), this.getZ(), 0, 0, 0);
                 EntityUtils.groundSlamParticles(this.level(), this.yBodyRot, this.getX(), this.getY(0.5D), this.getZ(), 6.5F,  0.25F, 0.065F);
@@ -1142,9 +1142,9 @@ public class BlazingInferno extends BHBossEntity {
                 if (block.getRenderShape() != RenderShape.MODEL) {
                     block = Blocks.AIR.defaultBlockState();
                 }
-                float r = ColorUtil.getFARGB(0xFF0000)[0];
-                float g = ColorUtil.getFARGB(0xFF0000)[1];
-                float b = ColorUtil.getFARGB(0xFF0000)[2];
+                float r = Colors.getFARGB(0xFF0000)[0];
+                float g = Colors.getFARGB(0xFF0000)[1];
+                float b = Colors.getFARGB(0xFF0000)[2];
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, Maths.sec(3), r, g, b, 1.0F, 16.0F, false, RingParticles.Behavior.SHRINK), hitX, pos.getY() + 1.5D, hitZ,0, 0, 0);
                 this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, -(float) Math.PI / 2, Maths.sec(3), r, g, b, 1.0F, 16.0F, false, RingParticles.Behavior.SHRINK), hitX, pos.getY() + 1.5D, hitZ,0, 0, 0);
 

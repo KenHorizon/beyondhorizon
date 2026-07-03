@@ -30,6 +30,10 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public abstract class Accessory {
+    public enum Tags {
+        NONE, // Bonuses can stack each others
+        UNIQUE // Bonuses do not stack each others
+    }
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String ACCESSORY_ATTRIBUTES_TAGS = "accessory_attribute_modifiers";
     protected int cooldown = 0;
@@ -48,6 +52,7 @@ public abstract class Accessory {
     @Nullable
     protected String descriptionId;
     protected ItemAbilityType type;
+    protected Tags tags = Tags.NONE;
     public Accessory(ItemAbilityType type, float magnitude, int level) {
         this.magnitude = magnitude;
         this.level = level;
@@ -107,6 +112,11 @@ public abstract class Accessory {
 
     public Accessory innate(RegistryObject<Accessory> skill) {
         this.innateSkills.add(skill);
+        return this;
+    }
+
+    public Accessory tagUnique() {
+        this.tags = Tags.UNIQUE;
         return this;
     }
 

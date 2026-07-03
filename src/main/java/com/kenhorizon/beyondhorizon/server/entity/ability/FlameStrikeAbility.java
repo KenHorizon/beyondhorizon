@@ -4,10 +4,9 @@ import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.ColorUtil;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -71,9 +70,9 @@ public class FlameStrikeAbility extends AbilityEntity {
         if (this.level().isClientSide()) {
             this.circleParticle(6);
 
-            float r = ColorUtil.getFARGB(0xFFFFFF)[0];
-            float g = ColorUtil.getFARGB(0xFFFFFF)[1];
-            float b = ColorUtil.getFARGB(0xFFFFFF)[2];
+            float r = Colors.getFARGB(0xFFFFFF)[0];
+            float g = Colors.getFARGB(0xFFFFFF)[1];
+            float b = Colors.getFARGB(0xFFFFFF)[2];
             this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) -Math.PI / 2, 15, r, g, b, 1.0F, 4.0F, false, RingParticles.Behavior.SHRINK), this.getX(), this.getY(), this.getZ(), 0, -10, 0);
 
         }

@@ -99,7 +99,7 @@ public class BlazingInfernoModel extends AdvanceEntityModel<BlazingInferno> {
         if (entity.walkAnimation.isMoving()) {
             this.applyStatic(BlazingInfernoAnim.WALKING);
         }
-        this.animateIdle(BlazingInfernoAnim.GENERAL, ageInTicks, 0.75F);
+        this.animate(BlazingInfernoAnim.GENERAL, ageInTicks, 0.75F);
         this.animate(entity.animationActive, BlazingInfernoAnim.ACTIVE, ageInTicks);
         this.animate(entity.animationInactive, BlazingInfernoAnim.INACTIVE, ageInTicks);
         this.animate(entity.animationDeath, BlazingInfernoAnim.DEATH, ageInTicks);

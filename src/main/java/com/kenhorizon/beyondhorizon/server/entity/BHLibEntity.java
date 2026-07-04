@@ -1,5 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -17,7 +20,9 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BHLibEntity extends BHBaseEntity {
     public AnimationState idleAnimation = new AnimationState();
@@ -39,6 +44,7 @@ public class BHLibEntity extends BHBaseEntity {
     public double calculateRange(DamageSource damagesource) {
         return damagesource.getEntity() != null ? distanceToSqr(damagesource.getEntity()) : -1;
     }
+
 
     public void setExp(int xpPoints) {
         this.xpReward = xpPoints;

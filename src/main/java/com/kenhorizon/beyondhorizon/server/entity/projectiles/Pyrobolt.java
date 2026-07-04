@@ -13,6 +13,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -45,6 +46,9 @@ public class Pyrobolt extends BaseSpearProjectile {
     public Pyrobolt(Level level, DamageType damageType, LivingEntity owner, float damage,
                     double dx, double dy, double dz, boolean crit) {
         this(BHEntity.PYROBOLT.get(), level, owner.getX(), owner.getY(), owner.getZ(), dx, dy, dz);
+        if (!(owner instanceof Player)) {
+            this.setDelay(20);
+        }
         this.setOwner(owner);
         this.setRot(owner.getYRot(), owner.getXRot());
         this.setBaseDamage(damage);

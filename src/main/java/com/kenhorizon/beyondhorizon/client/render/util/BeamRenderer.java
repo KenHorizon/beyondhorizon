@@ -1,7 +1,6 @@
-package com.kenhorizon.beyondhorizon.client.render.tools;
+package com.kenhorizon.beyondhorizon.client.render.util;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,17 +18,28 @@ import org.joml.Matrix4f;
 public class BeamRenderer {
     public static final ResourceLocation DEFAULT_LOCATION = BeyondHorizon.resource("textures/entity/effect/beam.png");
 
-    public static void renderBeam(PoseStack poseStack, MultiBufferSource buffer, float partialTicks, long worldTime, Entity entity, float radius, float height, int colors) {
-        renderBeam(DEFAULT_LOCATION, poseStack, buffer, partialTicks, worldTime, entity, radius, height, colors);
+    public static void renderBeam(PoseStack poseStack, MultiBufferSource buffer, float partialTicks, Entity entity) {
+        renderBeam(poseStack, buffer, partialTicks, entity, 0.0F, 1.0F, 0xFFFFFF);
+    }
+
+    public static void renderBeam(PoseStack poseStack, MultiBufferSource buffer, float partialTicks, Entity entity, int colors) {
+        renderBeam(poseStack, buffer, partialTicks, entity, 0.0F, 1.0F, colors);
+    }
+
+    public static void renderBeam(PoseStack poseStack, MultiBufferSource buffer, float partialTicks, Entity entity, float radius, float height) {
+        renderBeam(poseStack, buffer, partialTicks, entity, radius, height, 0xFFFFFF);
+    }
+
+    public static void renderBeam(PoseStack poseStack, MultiBufferSource buffer, float partialTicks, Entity entity, float radius, float height, int colors) {
+        renderBeam(DEFAULT_LOCATION, poseStack, buffer, partialTicks, entity.level().getGameTime(), entity, radius, height, colors);
     }
 
     public static void renderBeam(ResourceLocation texture, PoseStack poseStack, MultiBufferSource buffer, float partialTicks, long worldTime, Entity entity, float radius, float height, int colors) {
         RenderSystem.enableDepthTest();
         float beamAlpha = 0.85F;
-        Minecraft minecraft = Minecraft.getInstance();
         if (entity != null) {
-            if (minecraft.player != null && minecraft.player.distanceToSqr(entity) < 2f) {
-                beamAlpha *= (float) minecraft.player.distanceToSqr(entity);
+            if (Minecraft.getInstance().player.distanceToSqr(entity) < 2f) {
+                beamAlpha *= (float) Minecraft.getInstance().player.distanceToSqr(entity);
             }
         }
         float R = Colors.getARGB(colors)[0] / 255f;

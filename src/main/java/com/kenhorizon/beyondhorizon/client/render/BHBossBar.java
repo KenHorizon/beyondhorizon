@@ -109,12 +109,12 @@ public class BHBossBar {
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, this.base);
         this.drawBossBar(graphics, x + 1 + baseX, y + baseY, event.getBossEvent());
-        Component bossBarName = event.getBossEvent().getName().copy().withStyle(this.textColor);
+        Component bossBarName = event.getBossEvent().getName().copy();
         minecraft.getProfiler().pop();
         int fontLenght = Minecraft.getInstance().font.width(bossBarName);
         int textX = screenW / 2 - fontLenght / 2;
         int textY = guiY;
-        BlitHelper.drawBorderedStrings(minecraft.font, graphics, bossBarName, textX, textY);
+        BlitHelper.drawBorderedStrings(minecraft.font, graphics, bossBarName, textX, textY, this.textColor.getColor().intValue());
         if (this.hasOverlay) {
             minecraft.getProfiler().push("customBossBarOverlay");
             RenderSystem.setShaderTexture(0, this.overlay);

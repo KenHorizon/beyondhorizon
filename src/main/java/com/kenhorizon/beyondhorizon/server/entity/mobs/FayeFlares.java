@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.entity.mobs;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
@@ -116,6 +117,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     }
     @Override
     protected void registerGoals() {
+        super.registerGoals();
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0D, 80));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 8.0F));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));

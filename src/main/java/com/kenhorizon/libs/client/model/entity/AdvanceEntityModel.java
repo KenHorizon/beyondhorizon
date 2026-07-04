@@ -44,6 +44,7 @@ public abstract class AdvanceEntityModel<T extends Entity> extends EntityModel<T
         });
     }
 
+
     @Override
     public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
         this.animations(entity,limbSwing,limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
@@ -60,6 +61,7 @@ public abstract class AdvanceEntityModel<T extends Entity> extends EntityModel<T
     public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float r, float g, float b, float a) {
         this.root().render(poseStack, buffer, packedLight, packedOverlay, r, g, b, a);
     }
+
     protected void animate(AnimationState animation, AnimationDefinition definition, float ageInTicks) {
         this.animate(animation, definition, ageInTicks, 1.0F);
     }

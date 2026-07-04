@@ -413,7 +413,13 @@ public abstract class ExtendedProjectile extends Projectile {
             return this.duration;
         }
     }
-
+    public int getDurationWithDelay() {
+        if (this.level().isClientSide()) {
+            return this.entityData.get(DURATION) + this.entityData.get(DELAY);
+        } else {
+            return this.duration + delay;
+        }
+    }
     public void setDuration(int duration) {
         this.duration = duration;
         this.entityData.set(DURATION, duration);
@@ -556,6 +562,11 @@ public abstract class ExtendedProjectile extends Projectile {
             }
         }
     }
+
+    public boolean onDelay() {
+        return this.getLifeSpan() <= this.getDelay();
+    }
+
     private void trail() {
         Vec3 vec3 = this.getDeltaMovement();
         this.setYRot(-((float) Mth.atan2(vec3.x, vec3.z)) * (180F / (float) Math.PI)) ;

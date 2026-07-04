@@ -5,6 +5,8 @@ import com.kenhorizon.beyondhorizon.client.model.entity.BaseSpearModel;
 import com.kenhorizon.beyondhorizon.client.render.AnimatedTextureRenderer;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
+import com.kenhorizon.beyondhorizon.client.render.util.BeamRenderer;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.Pyrobolt;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -42,6 +44,9 @@ public class PyroboltRenderer extends AnimatedTextureRenderer<Pyrobolt> {
         poseStack.translate(0.25, 0.1, 0);
         poseStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0f));
         poseStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot()) + 90.0f));
+        if (entity.onDelay()) {
+            BeamRenderer.renderBeam(poseStack, buffer, packedLight, entity, Colors.RED);
+        }
         VertexConsumer builder = buffer.getBuffer(BHRenderTypes.glowing(getTextureLocation(entity)));
         model.renderToBuffer(poseStack, builder, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();

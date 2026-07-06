@@ -4,7 +4,6 @@ import net.minecraftforge.common.IExtensibleEnum;
 
 public enum ItemModels implements IExtensibleEnum {
     NONE(null),
-    RUNE(ItemModelType.RUNES),
     ACCESSORY(ItemModelType.ACCESSORY),
     HANDHELD_ACCESSORY(ItemModelType.ACCESSORY_HANDHELD),
     BIG_HANDHELD_ACCESSORY(ItemModelType.ACCESSORY_HANDHELD_BIG),
@@ -20,6 +19,9 @@ public enum ItemModels implements IExtensibleEnum {
     BIG32_HANDHELD(ItemModelType.BIG32_HANDHELD),
     REFINED_SWORD(ItemModelType.REFINED_SWORD),
     X16_BOW(ItemModelType.X16_BOW),
+    INHAND(ItemModelType.INHAND),
+    BIG_INHAND(ItemModelType.BIG_INHAND),
+    BIG32_INHAND(ItemModelType.BIG32_INHAND),
     // VANILLA
     BUILTIN_ENTITY(ItemModelType.BUILTIN_ENTITY),
     GENERATED(ItemModelType.GENERATED),

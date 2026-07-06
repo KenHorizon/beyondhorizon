@@ -113,6 +113,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.INFERNO_STRIKE.get(), "Inferno Strike", "Charges while being slowed by %s%% upto 3 seconds",
                 "Recast: Release a Inferno Slash onward dealing (5-%s%% bonus AD) physical damage");
         this.addSkills(Skills.HEAVY_HITTER.get(), "Heavy Hitter", "Deal additional %.2f%% damage dealt per %s%% bonus attack speed", "Bonus Damage: %s%%");
+        this.addSkills(Skills.CELESTIAL_STRIKE.get(), "Celestial Strike", "Basic attack on-hit deal bonus %s%% damage dealt to the target and %s%% damage dealt to others entity in a cone in the direction of the primary target");
+        this.addSkills(Skills.PERFECT_STRIKE.get(), "Perfect Strike", "Attacks always crit, if held by mobs its deal %s%% damage dealt instead");
         this.addSkills(Skills.RUINED_BLADE.get(), "Ruined Blade", "Deal additional %.2f%% target's Current HP");
         this.addSkills(Skills.BLADE_EDGE.get(), "Blade Edge", "Deal additional +%s%% target's Max HP");
         this.addSkills(Skills.RADIANT.get(), "Radiant", "Deal additional damage to undead by +%s%%");

@@ -11,6 +11,7 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
+import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkbenchRecipe implements Recipe<Container> {
+public class WorkbenchRecipe implements CraftingRecipe {
     protected final List<Ingredient> ingredient;
     protected final ItemStack result;
     protected final ResourceLocation recipeId;
@@ -29,11 +30,6 @@ public class WorkbenchRecipe implements Recipe<Container> {
         this.result = result;
         this.ingredient = ingredient;
         this.counts = counts;
-    }
-
-    @Override
-    public boolean matches(Container container, Level level) {
-        return true;
     }
 
     public ItemStack getResultItem(RegistryAccess access) {
@@ -47,13 +43,19 @@ public class WorkbenchRecipe implements Recipe<Container> {
         return nonnulllist;
     }
 
-    @Override
-    public ItemStack assemble(Container container, RegistryAccess access) {
-        return this.result.copy();
-    }
 
     public List<Integer> getCounts() {
         return counts;
+    }
+
+    @Override
+    public boolean matches(CraftingContainer pContainer, Level pLevel) {
+        return true;
+    }
+
+    @Override
+    public ItemStack assemble(CraftingContainer pContainer, RegistryAccess pRegistryAccess) {
+        return this.result.copy();
     }
 
     @Override
@@ -80,6 +82,12 @@ public class WorkbenchRecipe implements Recipe<Container> {
     public RecipeType<?> getType() {
         return Type.getInstance();
     }
+
+    @Override
+    public CraftingBookCategory category() {
+        return CraftingBookCategory.MISC;
+    }
+
     public static class Type implements RecipeType<WorkbenchRecipe> {
         private Type() {}
         private static final WorkbenchRecipe.Type INSTANCE = new WorkbenchRecipe.Type();
@@ -88,6 +96,7 @@ public class WorkbenchRecipe implements Recipe<Container> {
             return INSTANCE;
         }
     }
+
     public static class Serializer implements RecipeSerializer<WorkbenchRecipe> {
 
         private static final WorkbenchRecipe.Serializer INSTANCE = new WorkbenchRecipe.Serializer();

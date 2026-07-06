@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.client;
 
+import com.google.common.collect.ImmutableList;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
@@ -8,7 +9,7 @@ import com.kenhorizon.beyondhorizon.client.render.entity.ability.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.*;
 import com.kenhorizon.beyondhorizon.client.render.guis.QuiverScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.VoidBagScreen;
-import com.kenhorizon.beyondhorizon.client.render.guis.WorkbenchScreen;
+import com.kenhorizon.beyondhorizon.client.render.guis.workbench.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.ManaHud;
@@ -20,6 +21,8 @@ import com.kenhorizon.beyondhorizon.client.render.item.BHItemRenderProperties;
 import com.kenhorizon.beyondhorizon.client.particle.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
+import com.kenhorizon.beyondhorizon.client.render.shaders.BakedModelShadeLayerFullbright;
+import com.kenhorizon.beyondhorizon.client.util.EmissiveBlocks;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
@@ -34,9 +37,11 @@ import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAccessoryInventoryPacket;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.recipe.WorkbenchRecipe;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.RecipeBookCategories;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.particle.FlameParticle;
@@ -46,6 +51,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.repository.Pack;
@@ -54,18 +60,17 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
+import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.item.*;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
-import net.minecraftforge.client.event.RegisterItemDecorationsEvent;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -75,6 +80,7 @@ import net.minecraftforge.registries.DataPackRegistryEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -95,7 +101,6 @@ public class ClientProxy extends ServerProxy {
         bus.addListener(this::onRegisterItemDecorations);
         ClientQuiverTooltip.registerFactory();
         ClientVoidBagTooltip.registerFactory();
-        MinecraftForge.EVENT_BUS.register(new TooltipsEventHandler());
     }
 
     private void onRegisterItemDecorations(final RegisterItemDecorationsEvent event) {
@@ -134,6 +139,8 @@ public class ClientProxy extends ServerProxy {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         MinecraftForge.EVENT_BUS.register(new GameHudDisplay());
         MinecraftForge.EVENT_BUS.register(new ClientEventHandler());
+        MinecraftForge.EVENT_BUS.register(new TooltipsEventHandler());
+        bus.addListener(this::bakeModels);
         //bus.addListener(this::addRegisteredLayers);
         //
         EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
@@ -172,6 +179,17 @@ public class ClientProxy extends ServerProxy {
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.BLACK_IRON_LATTICE.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_IRON_LATTICE.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_BLACK_IRON_LATTICE.get(), RenderType.cutout());
+    }
+
+    private void bakeModels(final ModelEvent.ModifyBakingResult e) {
+        long time = System.currentTimeMillis();
+        for (ResourceLocation id : e.getModels().keySet()) {
+            if (EmissiveBlocks.registered().stream().anyMatch(str -> id.toString().startsWith(str))) {
+                e.getModels().put(id, new BakedModelShadeLayerFullbright(e.getModels().get(id)));
+            }
+        }
+        BeyondHorizon.LOGGER.info("Loaded emissive block models in {} ms", System.currentTimeMillis() - time);
+
     }
 
     public void entityCreationAttribute(EntityAttributeCreationEvent event) {

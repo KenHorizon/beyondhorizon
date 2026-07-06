@@ -315,14 +315,6 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
         return this.cachedCaster;
     }
 
-    protected boolean dealDamage(LivingEntity entity, DamageScaling damageScaling, float damageTagsModifiers, float damage) {
-        return DamageHandler.damage(entity, false, this.setSourceDamage(entity), damageScaling, damageTagsModifiers, damage);
-    }
-
-    public DamageSource setSourceDamage(LivingEntity entity) {
-        return BHDamageTypes.physicalDamage(this, entity);
-    }
-
     public boolean checkEntity(Entity entity) {
         Vec3 from = this.position();
         int numChecks = 3;

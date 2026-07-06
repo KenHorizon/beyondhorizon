@@ -21,6 +21,7 @@ public class PlayerData {
     public static double MANA_DEDUCTION = 0.5D;
     public static String NBT_MANA = "mana";
     public static String NBT_CRIT = "crit";
+    public static String NBT_DO_CRIT = "do_crit";
 //
     public static final String NBT_ENTRY = "ability_cooldown";
     public static final String NBT_SLOT = "slot";
@@ -32,6 +33,7 @@ public class PlayerData {
     public static final String NBT_ITEM_TEMP_ID = "temp_id";
     private final Map<String, CooldownInstance> skillManager;
 
+    protected boolean doCrit;
     protected boolean crit;
     protected boolean doDecut;
     protected double mana;
@@ -79,7 +81,13 @@ public class PlayerData {
     public boolean isCrit() {
         return this.crit;
     }
+    public void setDoCrit(boolean crit) {
+        this.doCrit = crit;
+    }
 
+    public boolean isDoCrit() {
+        return this.doCrit;
+    }
     public void setDefaults() {
         this.mana = this.player.getAttributeBaseValue(BHAttributes.MAX_MANA.get());
     }
@@ -185,6 +193,7 @@ public class PlayerData {
         CompoundTag nbt = new CompoundTag();
         nbt.putDouble(NBT_MANA, this.getMana());
         nbt.putBoolean(NBT_CRIT, this.isCrit());
+        nbt.putBoolean(NBT_DO_CRIT, this.isDoCrit());
         nbt.put(NBT_ENTRY, this.cooldownListTags());
         return nbt;
     }
@@ -192,6 +201,7 @@ public class PlayerData {
     public void loadNbt(CompoundTag nbt) {
         this.setMana(nbt.getDouble(NBT_MANA));
         this.setCrit(nbt.getBoolean(NBT_CRIT));
+        this.setDoCrit(nbt.getBoolean(NBT_DO_CRIT));
         ListTag listTag = nbt.getList(NBT_ENTRY, 10);
         for (int k = 0; k < nbt.size(); ++k) {
             CompoundTag nbtData = listTag.getCompound(k);

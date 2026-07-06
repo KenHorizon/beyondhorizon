@@ -341,6 +341,13 @@ public class BHItems {
             .model(ItemModels.BIG32_HANDHELD)
             .register();
 
+    public static final RegistryObject<Item> STELLAR_AXE = RegistryItems
+            .register("stellar_axe", item -> ItemBuilder.STELLAR_AXE.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG32_INHAND)
+            .register();
+
     public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, Colors.combineRGB(255, 248, 71), Colors.combineRGB(139, 52, 1));
     public static final RegistryObject<Item> FAYE_FLARES_SPAWN_EGG = spawnEgg("faye_flares", BHEntity.FAYE_FLARES, Colors.combineRGB(255, 248, 71), Colors.combineRGB(182, 31, 0));
     public static final RegistryObject<Item> FAYE_WILDFIRE_SPAWN_EGG = spawnEgg("faye_wildfire", BHEntity.FAYE_WILDFIRE, Colors.combineRGB(255, 248, 71), Colors.combineRGB(31, 31, 31));

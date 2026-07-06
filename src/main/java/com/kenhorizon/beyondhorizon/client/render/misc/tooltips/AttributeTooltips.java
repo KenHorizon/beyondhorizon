@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.client.render.misc.tooltips;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.util.AttributePercentage;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
@@ -29,6 +30,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +43,19 @@ public class AttributeTooltips {
                 Attribute attribute = entry.getKey();
                 double attributeAmount = getAttributeAmount(player, itemStack, attribute, attributeModifier.getAmount());
                 makeTooltips(tooltip, attribute, attributeModifier, attributeAmount);
+            }
+        }
+    }
+    public void makeAttributeTooltip(Player player, List<Component> tooltip, ItemStack itemStack, int startLine) {
+        int indexAppend = 0;
+        for (EquipmentSlot equipmentSlot : EquipmentSlot.values()) {
+            Multimap<Attribute, AttributeModifier> multimap = itemStack.getAttributeModifiers(equipmentSlot);
+            for (Map.Entry<Attribute, AttributeModifier> entry : multimap.entries()) {
+                AttributeModifier attributeModifier = entry.getValue();
+                Attribute attribute = entry.getKey();
+                double attributeAmount = getAttributeAmount(player, itemStack, attribute, attributeModifier.getAmount());
+                makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, startLine + indexAppend);
+                indexAppend++;
             }
         }
     }
@@ -91,6 +106,24 @@ public class AttributeTooltips {
     public void makeAttributeTooltip(ItemStack stack, List<Component> tooltip, Multimap<Attribute, AttributeModifier> modifierMap) {
         makeAttributeTooltip(stack, tooltip, modifierMap, null);
     }
+    private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount, ChatFormatting colors, int startLine) {
+        try {
+            double amount = formatAttributeValues(attribute, attributeModifier, attributeAmount);
+            ChatFormatting color = colors == null ? Tooltips.attributeColorFormat(attributeAmount) : colors;
+            Component displayName = Component.translatable(attribute.getDescriptionId());
+            String isPositive = amount > 0.0D ? "plus" : "take";
+            amount *= attributeAmount > 0.0D ? 1.0D : -1.0D;
+            if (amount == 0.0D) return;
+            if (checkIfPercentage(attribute)) {
+                tooltip.set(startLine, CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), Maths.format(amount), displayName).withStyle(color)));
+            } else {
+                tooltip.set(startLine, CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
+            }
+        } catch (Exception e) {
+            BeyondHorizon.LOGGER.debug("Out of bounds: {} : {}", startLine, tooltip.size());
+        }
+    }
+
     private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount, ChatFormatting colors) {
         double amount = formatAttributeValues(attribute, attributeModifier, attributeAmount);
         ChatFormatting color = colors == null ? Tooltips.attributeColorFormat(attributeAmount) : colors;
@@ -104,27 +137,25 @@ public class AttributeTooltips {
             tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
         }
     }
-    private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount) {
-         makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, null);
+    private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount, int startLine) {
+         makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, null, startLine);
     }
-
+    private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount) {
+        makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, null);
+    }
 
     public void addTooltips(ItemStack itemStack, Player player, TooltipFlag context, List<Component> tooltip) {
         int lastAttributeLine = 0;
-        int firstHandLine = 0;
-        Integer lastGreenAttributeIndex = null;
         String prefix = "attribute.modifier";
-        String attributeEqualsPrefix = "attribute.modifier.equals.0";
-        String handPrefix = "item.modifiers";
 
         if (BHConfigs.ATTRIBUTE_TOOLTIP_OVERHAUl) {
             for (int i = 0; i < tooltip.size(); i++) {
                 var component = tooltip.get(i);
-                var content = component.getContents();
-                this.removeTooltip(tooltip, prefix);
+//                BeyondHorizon.LOGGER.debug("Tooltip lines: {}", this.removeTooltip(tooltip, prefix));
+                lastAttributeLine = this.removeTooltip(tooltip, prefix);
             }
-            this.makeAttributeTooltip(player, tooltip, itemStack);
-            this.makePotionTooltip(itemStack, tooltip);
+            this.makeAttributeTooltip(player, tooltip, itemStack, lastAttributeLine);
+            this.makePotionTooltip(itemStack, tooltip, lastAttributeLine);
         }
         this.makeEnchantmentAttributeTooltip(player, tooltip, itemStack);
 
@@ -135,7 +166,12 @@ public class AttributeTooltips {
         }
     }
 
-    public void makePotionTooltip(ItemStack itemStack, List<Component> tooltips) {
+    public void makePotionTooltip(ItemStack itemStack, List<Component> tooltips, int lastAttribueLine) {
+        int remaining = tooltips.size() - lastAttribueLine;
+        List<Component> lists = new ArrayList<>();
+        for (int i = 0; i < remaining; i++) {
+            lists.add(tooltips.get(lastAttribueLine + i));
+        }
         if (itemStack.getItem() instanceof PotionItem || itemStack.getItem() instanceof LingeringPotionItem || itemStack.getItem() instanceof TippedArrowItem) {
             List<Pair<Attribute, AttributeModifier>> list = Lists.newArrayList();
             for (MobEffectInstance instance : PotionUtils.getMobEffects(itemStack)) {
@@ -151,11 +187,12 @@ public class AttributeTooltips {
             }
             if (!list.isEmpty()) {
                 this.makePotionTooltip(tooltips, list);
+                tooltips.addAll(lists);
             }
         }
     }
 
-    private void removeTooltip(List<Component> tooltip, String startWith) {
+    private int removeTooltip(List<Component> tooltip, String startWith) {
         for (EquipmentSlot slots : EquipmentSlot.values()) {
             for (int i = 0; i < tooltip.size(); i++) {
                 Component component = tooltip.get(i);
@@ -163,23 +200,25 @@ public class AttributeTooltips {
                     for (Component vanillaAttribute : mutableComponents.getSiblings()) {
                         if (vanillaAttribute.getContents() instanceof TranslatableContents translatableContents) {
                             if (translatableContents.getKey().startsWith(startWith)) {
-                                tooltip.remove(i);
-                                break;
+//                                tooltip.remove(i);
+                                return i;
                             }
                         }
                     }
                     if (mutableComponents.getContents() instanceof TranslatableContents translatableContents) {
                         if (translatableContents.getKey().startsWith(startWith)) {
-                            tooltip.remove(i);
-                            break;
+//                            tooltip.remove(i);
+                            return i;
                         }
                     }
                 }
             }
         }
+        return 0;
     }
+
     private boolean checkIfPercentage(Attribute attribute) {
-        return AttributeReader.INSTANCE.getAttributePercentages(attribute);
+        return AttributePercentage.isMatch(attribute);
     }
 
     private double getAttributeAmount(LivingEntity entity, ItemStack itemStack, Attribute attribute, double attributeAmount) {

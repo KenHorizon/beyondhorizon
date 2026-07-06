@@ -47,6 +47,10 @@ public class ItemModelType {
             .itemType(RegistryItemModels.Type.HANDHELD).suffix("accessory").build();
     public static ItemModelDefinition ACCESSORY_HANDHELD_BIG32 = ItemModelDefinition.Builder.create(BaseModels.X64_HANDHELD)
             .itemType(RegistryItemModels.Type.HANDHELD).suffix("accessory").build();
-    public static ItemModelDefinition RUNES = ItemModelDefinition.Builder.create(BaseModels.ACCESSORY)
-            .itemType(RegistryItemModels.Type.HOLD).suffix("rune").build();
+    public static ItemModelDefinition INHAND = ItemModelDefinition.Builder.create(BaseModels.HANDHELD)
+            .itemType(RegistryItemModels.Type.INHAND).build();
+    public static ItemModelDefinition BIG_INHAND = ItemModelDefinition.Builder.create(BaseModels.X32_HANDHELD)
+            .itemType(RegistryItemModels.Type.INHAND).build();
+    public static ItemModelDefinition BIG32_INHAND = ItemModelDefinition.Builder.create(BaseModels.X64_HANDHELD)
+            .itemType(RegistryItemModels.Type.INHAND).build();
 }

@@ -32,4 +32,5 @@ public class ItemBuilder {
     public static final Factory<SwordBaseItem> RADIANT = ((materials, properties) -> new SwordBaseItem(materials, Constant.RADIANT_SWORD, properties, SkillBuilder.RADIANT));
     public static final Factory<SwordBaseItem> HARVESTER = ((materials, properties) -> new SwordBaseItem(materials, Constant.HARVESTER, properties, SkillBuilder.HARVESTER));
     public static final Factory<SwordBaseItem> SOLARFLARE = ((materials, properties) -> new SwordBaseItem(materials, Constant.SOLARFLARE, properties, SkillBuilder.SOLARFLARE));
+    public static final Factory<SwordBaseItem> STELLAR_AXE = ((materials, properties) -> new SwordBaseItem(materials, Constant.SOLARFLARE, properties, SkillBuilder.STELLAR_AXE));
 }

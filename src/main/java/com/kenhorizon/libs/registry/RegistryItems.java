@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.datagen.BHItemTagsProvider;
 import com.kenhorizon.libs.client.model.item.ItemModels;
 import com.kenhorizon.libs.server.ModifiedNonNullFunction;
 import com.kenhorizon.libs.server.ModifiedNonNullUnaryOperator;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.util.NonNullFunction;

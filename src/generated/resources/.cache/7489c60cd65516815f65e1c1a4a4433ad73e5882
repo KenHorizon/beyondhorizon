@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-03T03:34:57.2956363	Item Models: beyondhorizon
+// 1.20.1	2026-07-07T07:39:11.0480315	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -159,6 +159,7 @@ e088cfc672483b94b88191d486af6451ef171a83 assets/beyondhorizon/models/item/starit
 a342dd179cb65f18e0a8f34143875ae63854b267 assets/beyondhorizon/models/item/statikk_dagger.json
 cfb205e7482085b60ff3863522216380d97c298d assets/beyondhorizon/models/item/stealth_cloak.json
 5342f95a4b277733ffc8fd88b2f7b2c995692668 assets/beyondhorizon/models/item/steel_sigil.json
+9e81b32e88d8a00f5aabbf12246a00ca832f47e7 assets/beyondhorizon/models/item/stellar_axe.json
 326ce09e276af52094cd1658323755d78ad610eb assets/beyondhorizon/models/item/stinger.json
 d617fe55cbda36db4790c461083207f1056177bb assets/beyondhorizon/models/item/sunglasses.json
 e76a33e9aa84f769c6cdb6746315d8fb943e35f8 assets/beyondhorizon/models/item/swift_dagger.json

@@ -1,0 +1,120 @@
+Stone Runes Guardians (Fracture)
+// Runes Accessory
+- Obtainable at Stone Rune Guardian Rooms
+- Accessory Item that have unique ability, RMB will open a GUI that player can choose certain abilities
+	Each runes have 3 subsets and 1 keystone and only 1 per subsets can be pick
+	- Only one runes can be put on accessory slots
+
+Domination - Burst damage and target access
+Inspiration - Creative Utility
+Precision - Improve attack and sustained damage
+Resolve - Durability 
+Socrecy - Empowered ability and resoucrce manipulation
+
+Precision
+Slot 1:
+- Absoption: On-kill restore heal for 1-10 (based on Level)
+- Triumph: On-kill restore 5% missing health and drop 1-5 emeralds
+- Pressence of Mind: On-kill restore mana for 15% max mana
+Slot 2:
+- Legend: Speed: Gain 10% bonus attack speed
+- Legend: Haste: Gain 10% bonus movement speed
+- Legend: Blood: Gain 5% life steal
+Slot 3:
+- Last Stand: Deal 5% increased damage while below 60% target's Max HP and increase upto 11% increased damage while below 30% target's Max HP
+- Fatality: Deal 8% increased damage to target below 40% Max HP
+- Cut Down: Deal 8% increased damage to target above 60% Max HP
+Keystone:
+- Press the attack: Damaging target grant 1 stacks per instance of damage, upto 3 stacks, the third stack consume all stacks dealing 6-12 adaptive damage, and gain effect of Vulnerable for 5 seconds, refresh the duration when on combat
+	CD: 6 seconds
+- Accumulate: Damaging target grant 1 stacks upto 10 stacks lasting of 5 seconds, each stacks grant 2% increased damage at max stacks increased the damage to 3% instead of 2%
+- Fleet Footwork: Gain ability of energize, When fully energived your next basic attack heal you for 7-21(based on Level) and gain effect of Speed 1-3(based on level) for 5 seconds
+
+Domination
+Slot 1:
+- Cheap shot: Out of combat next basic attack deal 5 bonus true damage CD: 5
+- Taste of blood: Attacks Heals for 2-10 (based on level) + (5% bonus AD) (+5% ability power) CD: 20
+- Sudden Impact: Deal additional (2% damage dealt) bonus true damage when Sneaking
+Slot 2:
+- Relentless Force: Deal additional (5% damage dealt) bonus true damage
+- Bruting Force: Gain 2-10 (based on level) attack damage and ability power
+- Bolt and Force: Arrows and Swords now deal 20% more damage
+Slot 3: 
+- Treasure Hunter: Mobs now chances to double its drops
+- Relentless Hunter: On-kill gain Rage Effect for 5 seconds (increase speed and damage)
+- Ultimate Hunter: On-kill gain Hunter's Prey Effect for 15 seconds (Deal increased damage when holder's health are greater on targeted's health)
+Keystone:
+- Dark Harvest: Dealing damage below 50% target health deal additional (20% damage dealt) bonus adaptive damage, on-kill reduce by 20% current cooldown CD: 20
+- Thunder lord: Dealing damage gain 1 stacks, upto 3 stacks, within max stacks target causes them strike by lightning dealing them 5-20 (based on level) either physical or magic damage
+- Thousand Blade: Initiating combat to target within 0.25 seconds for 3 seconds, causing all post-mitigation damage dealt to target deal 7% bonus true damage CD: 1mins
+
+
+Socrecy 
+Slot 1:
+- Absolute Ego: Gain 10 ability power and 200% mana regeneration
+- Absolute Power: Increased ability power by 10%
+- Absolute Focus: Grant 10 ability power and attack damage while above 70% Max HP
+
+Slot 2:
+- Celerity: All movement speed bonuses increased by 10%
+- Transcendence: for each 10 level grant 5% cooldown
+- Scorch: Dealing ability damage to target set burning for 5 seconds
+Slot 3:
+- Acrana Domination: All ability damage increased by 12%
+- Nimbus Cloak: Droping 30% Grant Speed Effect 3 for 2 seconds
+- Mana Flow: Damaging targets grant Holder of Mana Recovery (Increase the mana regeneration)
+Keystone:
+- Burning Sensation: Damaging target inflict deathfire for 5 seconds (Deal 1.5 + (12% bonus D)(1.2% AP) magic damage per 0.25 seconds)
+- Arcana Comet: Damaging target summon arcane comet that deal (10% bonus AD)(2% AP) adapative damage and slow them for 1.5 seconds CD: 20
+- Surging Lightning: Damaging target equal to 25% of their Max HP within 3 seconds, blast a shockwave that deal 100% of (10% bonus AD)(2% AP) adapative damage and gaining effect of Speed 5 for 1 seconds
+
+Resolve 
+Slot 1:
+- Plated Body: Increased all armor and magic resistance by 5%
+- Durable Body: Gain 5% Damage Reduction
+- Rock Solid: Reduce physical damage by 5%
+Slot 2:
+- Bone Plating: After taking damage to target activate bone plating effect for 5 seconds (reduce all income damage by 5)
+- Second Wind: After taking damage grant effect of Metidate (Increase Health Regen by 200%)
+- Nature Flower: Grant 5% Shielding and Healing
+Slot 3:
+- Overgrowth: Gain 20 max health and 50 Health Regen
+- Demolish: Attacks grant of demolish to target upto 3 stacks, at max stacks against to target have 3 stacks deal additional (20% max HP) bonus physical damage CD: 1min
+- Shield Bash: Whiled Shielded(Absoption) your basic attack deal additional (1% bonus hp)(+15% shield amount) magic damage
+Keystone:
+- Aftershock: Takedown will release a shockwave that deal (2.5% bonus HP) and knocking back
+- Grasp of the undying: On-Combat grant stacks per seconds upto 3 stacks, at max stacks your next basic attack deal additional (1.5% bonus HP) bonus magic damage and heal for (1.5% bonus hp)
+- Stone Tower: On-Combat dropping 40% Max HP grant of Tower Guard (Reduce damage and deal magic damage on hit) for 15 seconds CD: 1min
+
+Inspiration 
+Slot 1:
+- Adaptive Attack: Convert all of your ability power into attack damage, additional increase your total attack damage by 10%
+- Adaptive Power: Convert all of your attack damage into ability power
+- Adaptive Durability: Gain max heal equal to 50% of your max mana
+Slot 2:
+- Jack of all trades:
+- Cosmic Insight: Gain +8% cooldown reduction and Increased the cooldown cap to 50% instead of 40%
+- Celestial Trail: Gain 7.5% Movement speed while facing enemy
+Slot 3:
+- Celestial Boots: Takedown enemy will gain stacks of retribution upto 50 retributions, at max stacks gain 20% movement speed, if boots present in slots gain additional 10% bonuses
+- Celestial Blessing: Takedown heal 10% max hp and 20% max mana
+- Celestial Rampage: Takedown your two next basic attack inflict torment for 3 seconds
+Keystone:
+- First Strike: On-hit grant additional 5.5% post-mitigation damage true damage CD: 3 mins
+- Galial Reaction: On-hit grant 25% chance of slowing for 3 seconds
+- Fortune Teller: Gain 20% discount on trading, having each 1 emerald grant 0.01 luck upto 10 luck
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

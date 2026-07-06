@@ -222,7 +222,7 @@ public class ServerEventHandler {
         if (entity.level() instanceof ServerLevel level) {
             if (entity.getHealth() < entity.getMaxHealth()) {
                 if (BHConfigs.DAMAGE_INDICATOR) {
-                    damageIndicator(level, entity.getLastDamageSource(),true, heal, entity);
+                    damageIndicator(level, entity.getLastDamageSource(), true, heal, entity);
                 }
 
             }
@@ -823,55 +823,58 @@ public class ServerEventHandler {
             target.hurtTime = 0;
             target.invulnerableTime = 0;
         }
-        if (source.getEntity() instanceof LivingEntity && damageDealt > 0.0F) {
-            if (source.getEntity() instanceof Player player) {
-                double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_CHANCE.get());
-                double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
-                if (player.getRandom().nextDouble() <= criticalStrike) {
-                    isCrit = true;
-                    damageDealt = (float) (damageDealt * criticalDamage);
-                    player.crit(target);
+        if (source.getEntity() instanceof LivingEntity attacker && damageDealt > 0.0F) {
+            if (attacker instanceof Player player) {
+                PlayerData playerData = Capabilities.data(player);
+                if (playerData != null) {
+                    double criticalStrike = player.getAttributeValue(BHAttributes.CRITICAL_CHANCE.get());
+                    double criticalDamage = player.getAttributeValue(BHAttributes.CRITICAL_DAMAGE.get());
+                    if (player.getRandom().nextDouble() <= criticalStrike || playerData.isDoCrit()) {
+                        isCrit = true;
+                        damageDealt = (float) (damageDealt * criticalDamage);
+                        player.crit(target);
+                        playerData.setDoCrit(false);
+                    }
+                    playerData.setCrit(isCrit);
                 }
                 double getAttackSpeed = player.getAttributeValue(Attributes.ATTACK_SPEED);
                 player.getAttackStrengthScale((float) getAttackSpeed);
                 target.invulnerableTime = target.invulnerableDuration - (int) getAttackSpeed;
             }
-            if (source.getEntity() instanceof LivingEntity attacker) {
-                ICombatCore attackerCombatCore = Capabilities.combat(attacker);
-                ItemStack attackerStack = attacker.getMainHandItem();
-                if (attacker instanceof Player player) {
-                    LevelSystem levelSystem = Capabilities.levelSystem(player);
-                    Optional<IAttack> attack = levelSystem.IAttack();
-                    if (attack.isPresent()) {
-                        damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
-                    }
-                    if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
-                        IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
-                        var stacks = handler.getStacks();
-                        for (int i = 0; i < stacks.getSlots(); i++) {
-                            final ItemStack itemStack = stacks.getStackInSlot(i);
-                            if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
-                                for (Accessory trait : container.getAccessories()) {
-                                    Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
-                                    if (meleeWeaponCallback.isPresent()) {
-                                        damageDealt += meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
-                                    }
+            ICombatCore attackerCombatCore = Capabilities.combat(attacker);
+            ItemStack attackerStack = attacker.getMainHandItem();
+            if (attacker instanceof Player player) {
+                LevelSystem levelSystem = Capabilities.levelSystem(player);
+                Optional<IAttack> attack = levelSystem.IAttack();
+                if (attack.isPresent()) {
+                    damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
+                }
+                if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+                    IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
+                    var stacks = handler.getStacks();
+                    for (int i = 0; i < stacks.getSlots(); i++) {
+                        final ItemStack itemStack = stacks.getStackInSlot(i);
+                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
+                            for (Accessory trait : container.getAccessories()) {
+                                Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
+                                if (meleeWeaponCallback.isPresent()) {
+                                    damageDealt += meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
                                 }
                             }
                         }
                     }
                 }
-                if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
-                    for (Skill trait : container.getSkills()) {
-                        Optional<IAttack> meleeWeaponCallback = trait.attack();
-                        if (meleeWeaponCallback.isPresent()) {
-                            damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
-                        }
+            }
+            if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
+                for (Skill trait : container.getSkills()) {
+                    Optional<IAttack> meleeWeaponCallback = trait.attack();
+                    if (meleeWeaponCallback.isPresent()) {
+                        damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
                     }
                 }
-                damageDealt *= (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
-                attackerCombatCore.activated();
             }
+            damageDealt *= (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
+            attackerCombatCore.activated();
         }
         if (target != null) {
             IDamageInfo damageInfo = Capabilities.damageInfo(target);
@@ -892,7 +895,14 @@ public class ServerEventHandler {
     }
 
 
-    private static void damageIndicator(ServerLevel level, DamageSource source, boolean healing, float value, LivingEntity entity) {
+    private static void damageIndicator(ServerLevel level, DamageSource source,  boolean healing, float value, LivingEntity entity) {
+        boolean isCrit = false;
+        if (source.getEntity() instanceof Player player) {
+            PlayerData playerData = Capabilities.data(player);
+            if (playerData != null) {
+                isCrit = playerData.isCrit();
+            }
+        }
         float roundedAmount = Math.round(value * 10) / 10f;
         int intAmount = (int) roundedAmount;
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
@@ -905,8 +915,12 @@ public class ServerEventHandler {
                 damageIndColor = source.is(BHDamageTypeTags.PHYSICAL_DAMAGE) ? ChatFormatting.GOLD :
                         source.is(BHDamageTypeTags.MAGIC_DAMAGE) ? ChatFormatting.BLUE :  source.is(BHDamageTypeTags.TRUE_DAMAGE) ? ChatFormatting.WHITE : ChatFormatting.RED;
 
+
             } else {
                 damageIndColor = ChatFormatting.GOLD;
+            }
+            if (isCrit) {
+                damageIndColor = ChatFormatting.DARK_RED;
             }
         }
         MutableComponent component = Component.literal(text).withStyle(damageIndColor);
@@ -916,7 +930,7 @@ public class ServerEventHandler {
         if (!BHConfigs.DAMAGE_INDICATOR_VANILLA_FONT) {
             component.withStyle(Fonts.DAMAGE_INDICATOR);
         }
-        level.sendParticles(new DamageIndicatorOptions(component, false), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
+        level.sendParticles(new DamageIndicatorOptions(component, isCrit), pos.x, pos.y, pos.z, 1, 0.1D, 0.1D, 0.1D, 0);
     }
 
     private int enchantmentModifiyExpDrop(LivingEntity attacker, int experienceDrop, LivingEntity target) {

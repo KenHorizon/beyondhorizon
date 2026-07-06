@@ -189,8 +189,8 @@ public abstract class Skill {
     }
 
 
-    public Skill addAttributes(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
-        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
+    public Skill addAttributes(Attribute attribute, double amount, AttributeModifier.Operation operation) {
+        AttributeModifier attributemodifier = new AttributeModifier(UUID.randomUUID(), "Attribute Modifier", amount, operation);
         this.attributeModifiers.put(attribute, attributemodifier);
         return this;
     }

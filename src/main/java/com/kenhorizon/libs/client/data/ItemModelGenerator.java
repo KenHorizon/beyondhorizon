@@ -2,6 +2,7 @@ package com.kenhorizon.libs.client.data;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.libs.client.model.item.ItemModelDefinition;
+import com.kenhorizon.libs.client.model.item.ItemModelType;
 import com.kenhorizon.libs.registry.RegistryItemModels;
 import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.resources.ResourceLocation;
@@ -34,6 +35,8 @@ public class ItemModelGenerator {
                 throw new RuntimeException("Second Model coudn't find during Data Json Creation!!");
             }
             createThrowingWeaponItemModel(item, itemModelDefinition.baseModel(), itemModelDefinition.secondModel());
+        } else if (itemModelDefinition.itemType() == RegistryItemModels.Type.INHAND) {
+            customItemRenderer(item, itemModelDefinition.suffix(), itemModelDefinition.baseModel());
         } else if (itemModelDefinition.itemType() == RegistryItemModels.Type.HANDHELD) {
             createWeaponItemModel(item, itemModelDefinition.baseModel(), itemModelDefinition.suffix());
         } else if (itemModelDefinition.itemType() == RegistryItemModels.Type.BOW_HOLD) {
@@ -54,14 +57,35 @@ public class ItemModelGenerator {
         return createSimpleItem(item, suffix, baseModels);
     }
 
-    private ResourceLocation customItemRenderer(Supplier<? extends Item> item, String itemPath, ResourceLocation model) {
-        String name = key(item.get()).getPath();
-        return this.itemModelProvider.withExistingParent(itemPath, model)
-                .customLoader(SeparateTransformsModelBuilder::begin).base(this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(String.format("item/%s_model", name)))))
-                .perspective(ItemDisplayContext.GUI, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(String.format("item/%s_icon", name)))))
-                .perspective(ItemDisplayContext.FIXED, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(String.format("item/%s_icon", name)))))
-                .perspective(ItemDisplayContext.GROUND, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(String.format("item/%s_icon", name)))))
-                .end().getLocation();
+    private ResourceLocation customItemRenderer(Supplier<? extends Item> item, String suffix, ResourceLocation model) {
+        String itemPath = key(item.get()).getPath();
+        var textureHand = BeyondHorizon.resource(String.format("item/%s", itemPath));
+        var textureInv = BeyondHorizon.resource(String.format("item/%s_inv", itemPath));
+        String itemTextureOverlay = getItemTexture(suffix, itemPath) + "_overlay";
+        ResourceLocation overlayLocation = BeyondHorizon.resource(itemTextureOverlay);
+        if (this.itemModelProvider.existingFileHelper.exists(overlayLocation, TEXTURE)) {
+            return this.itemModelProvider.withExistingParent(itemPath, model)
+                    .customLoader(SeparateTransformsModelBuilder::begin).base(this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(model))
+                            .texture("layer0", textureHand) .texture("layer1", overlayLocation))
+                    .perspective(ItemDisplayContext.GUI, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BaseModels.GENERATED))
+                            .texture("layer0", textureInv) .texture("layer1", overlayLocation))
+                    .perspective(ItemDisplayContext.FIXED, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BaseModels.GENERATED))
+                            .texture("layer0", textureInv) .texture("layer1", overlayLocation))
+                    .perspective(ItemDisplayContext.GROUND, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BaseModels.GENERATED))
+                            .texture("layer0", textureInv) .texture("layer1", overlayLocation))
+                    .end().getLocation();
+        } else {
+            return this.itemModelProvider.withExistingParent(itemPath, model)
+                    .customLoader(SeparateTransformsModelBuilder::begin).base(this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(model))
+                            .texture("layer0", textureHand))
+                    .perspective(ItemDisplayContext.GUI, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BaseModels.GENERATED))
+                            .texture("layer0", textureInv))
+                    .perspective(ItemDisplayContext.FIXED, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BaseModels.GENERATED))
+                            .texture("layer0", textureInv))
+                    .perspective(ItemDisplayContext.GROUND, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BaseModels.GENERATED))
+                            .texture("layer0", textureInv))
+                    .end().getLocation();
+        }
     }
 
     private ResourceLocation createWeaponItemModel(Supplier<? extends Item> item, ResourceLocation baseModels, String suffix) {

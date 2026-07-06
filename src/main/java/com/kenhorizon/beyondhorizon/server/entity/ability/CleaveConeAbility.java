@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,7 +17,7 @@ public class CleaveConeAbility extends AbstractConeAbility {
         this.setRadius(2.5F);
     }
 
-    public static void spawn(Level level, LivingEntity target, LivingEntity owner, float damage, boolean startWithTarget) {
+    public static void spawn(Level level, LivingEntity target, LivingEntity owner, float damage, boolean startWithTarget, DamageType damageType) {
         CleaveConeAbility ability = new CleaveConeAbility(BHEntity.CLEAVE_CONE_ABILITY.get(), level);
         ability.setBaseDamage(damage);
         if (startWithTarget) {
@@ -27,6 +28,7 @@ public class CleaveConeAbility extends AbstractConeAbility {
         ability.setConeAtTarget(startWithTarget);
         ability.setTarget(target);
         ability.setCaster(owner);
+        ability.setDamageType(damageType);
         level.addFreshEntity(ability);
     }
 

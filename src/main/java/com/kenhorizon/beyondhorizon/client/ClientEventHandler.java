@@ -188,25 +188,6 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public void addTootipOnItems(ItemTooltipEvent event) {
-        final List<Component> additions = new ArrayList<>();
-        Player player = event.getEntity();
-        List<Component> tooltip = event.getToolTip();
-        TooltipFlag flag = event.getFlags();
-        boolean isAdvanced = event.getFlags().isAdvanced();
-        ItemStack itemStack = event.getItemStack();
-        AttributeTooltips attributeTooltips = new AttributeTooltips();
-        attributeTooltips.addTooltips(itemStack, player, flag, tooltip);
-
-
-        if(!FMLLoader.isProduction() && itemStack.hasTag() && event.getFlags().isAdvanced()) {
-            // Format NBT debug string
-            String nbtStr = itemStack.getTag().toString();
-            event.getToolTip().add(Component.literal("NBT: " + ChatFormatting.DARK_GRAY + nbtStr).withStyle(ChatFormatting.DARK_PURPLE));
-        }
-    }
-
-        @SubscribeEvent
     public void postRenderStage(RenderLevelStageEvent event) {
         Entity entity = Minecraft.getInstance().getCameraEntity();
         boolean firstPerson = Minecraft.getInstance().options.getCameraType().isFirstPerson();

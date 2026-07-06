@@ -1,6 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static final float STELLAR_AXE_SLASH_DAMAGE = 0.30F;
+    public static final float ALWAYS_CRIT_MODIFIER = 1.50F;
+    public static final float STELLAR_AXE_CRIT_DAMAGE = 0.30F;
     public static final float HEAVY_HITTER_DAMAGE_PER_SCALE = 0.25F;
     public static final float HEAVY_HITTER_DAMAGE = 0.05F;
     public static final float INFERNAL_AD = 0.15F;
@@ -103,6 +106,7 @@ public class Constant {
     public static float[] RADIANT_SWORD = {6.0F, 1.7F, 4.0F};
     public static float[] HARVESTER = {4.0F, 1.7F};
     public static float[] SOLARFLARE = {12.0F, 1.7F, 4.0F};
+    public static float[] STELLAR_AXE = {12.0F, 1.12F, 4.0F};
     //
     public static double SHEEN_AD = 3.0;
     public static double TS_AD = 3.0;

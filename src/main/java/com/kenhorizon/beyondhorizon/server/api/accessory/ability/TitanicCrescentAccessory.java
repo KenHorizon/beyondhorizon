@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveConeAbility;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
@@ -32,6 +33,6 @@ public class TitanicCrescentAccessory extends CleaveEffectAccessory {
 
     @Override
     public void attackCleave(ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
-        CleaveConeAbility.spawn(attacker.level(), target , attacker, this.dealDamage(target, attacker, damageDealt, itemStack), this.coneAtTarget());
+        CleaveConeAbility.spawn(attacker.level(), target , attacker, this.dealDamage(target, attacker, damageDealt, itemStack), this.coneAtTarget(), DamageType.PHYSICAL_DAMAGE);
     }
 }

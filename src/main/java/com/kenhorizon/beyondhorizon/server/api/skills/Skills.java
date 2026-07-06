@@ -29,6 +29,12 @@ public class Skills {
     public static final RegistryObject<Skill> HEAVY_HITTER = registerSkill("heavy_hitter", () -> new HeavyHitterSkill(Constant.HEAVY_HITTER_DAMAGE_PER_SCALE, Constant.HEAVY_HITTER_DAMAGE)
             .melee());
 
+    public static final RegistryObject<Skill> PERFECT_STRIKE = registerSkill("perfect_strike", () -> new AlwaysCrtiAttackSkill(Constant.ALWAYS_CRIT_MODIFIER)
+            .melee());
+
+    public static final RegistryObject<Skill> CELESTIAL_STRIKE = registerSkill("celestial_strike", () -> new CelestialStrikeSkill(Constant.STELLAR_AXE_SLASH_DAMAGE)
+            .melee().addAttributes(BHAttributes.CRITICAL_DAMAGE.get(), Constant.STELLAR_AXE_CRIT_DAMAGE, AttributeModifier.Operation.ADDITION).innate(Skills.PERFECT_STRIKE));
+
     public static final RegistryObject<Skill> RUINED_BLADE = registerSkill("ruined_blade", () -> new ExtraDamageSkill(Constant.RUINED_BLADE, ExtraDamageSkill.CURRENT_HEALTH)
             .melee());
 
@@ -59,7 +65,7 @@ public class Skills {
             .universal());
 
     public static final RegistryObject<Skill> DARK_BLADE = registerSkill("dark_blade", () -> new WeaponPassiveSkills()
-            .addAttributes(BHAttributes.ARMOR_PENETRATION.get(), "f8d72f64-418b-4b18-977a-e136661e1439", Constant.DARK_BLADE_PEN, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.ARMOR_PENETRATION.get(), Constant.DARK_BLADE_PEN, AttributeModifier.Operation.ADDITION)
             .universal()
             .disableTooltipName()
             .innate(Skills.PERFECTION));

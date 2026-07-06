@@ -1,7 +1,9 @@
 {
+	"format_version": "1.21.11",
+	"credit": "Made with Blockbench",
 	"parent": "minecraft:item/handheld",
 	"textures": {
-		"layer0": "beyondhorizon:item/yamato"
+		"layer0": "beyondhorizon:item/stellar_axe"
 	},
 	"display": {
 		"thirdperson_righthand": {
@@ -15,12 +17,12 @@
 			"scale": [2.4, 2.4, 1]
 		},
 		"firstperson_righthand": {
-			"rotation": [0, 90, 58],
+			"rotation": [0, -90, 58],
 			"translation": [5, 6.25, -4.5],
 			"scale": [1.9, 1.9, 0.68]
 		},
 		"firstperson_lefthand": {
-			"rotation": [0, -90, -58],
+			"rotation": [0, 90, -58],
 			"translation": [5, 6.25, -4.5],
 			"scale": [1.9, 1.9, 0.68]
 		},

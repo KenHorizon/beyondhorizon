@@ -1,23 +1,18 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.google.common.collect.HashMultimap;
-import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -96,21 +91,25 @@ public final class AccessoryHelper {
         return List.of();
     }
 
-    public static boolean checkAccessoryIsPresentInSlot(ItemStack outsideStack, IAccessoryStackHandler handler) {
+    public static boolean isValid(ItemStack outsideStack, IAccessoryStackHandler handler) {
         List<ItemStack> list = AccessoryHelper.getAccessoryItems(handler);
         boolean isValid = list.isEmpty();
         if (!list.isEmpty()) {
             for (ItemStack inSlotItemStack : list) {
                 if (!inSlotItemStack.isEmpty() && inSlotItemStack.getItem() instanceof IAccessoryItem inSlotContainer) {
-                    if (!(!ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack))) {
-                        return false;
+                    if (inSlotContainer.noGroupItem()) {
+                        return true;
+                    } else {
+                        if (!(!ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack))) {
+                            return false;
+                        }
+                        if (ItemStack.isSameItem(inSlotItemStack, outsideStack)) {
+                            isValid = false;
+                            break;
+                        }
+//                    isValid = inSlotContainer.isCompatible(inSlotItemStack, outsideStack);
+                        isValid = !ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack);
                     }
-                    if (ItemStack.isSameItem(inSlotItemStack, outsideStack)) {
-                        isValid = false;
-                        break;
-                    }
-                    isValid = inSlotContainer.isCompatible(inSlotItemStack, outsideStack);
-//                    isValid = !ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack);
                 }
             }
         }

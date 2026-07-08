@@ -14,7 +14,7 @@ import javax.security.auth.callback.Callback;
 public abstract class FoodDataMixins {
     @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;heal(F)V"))
     private void bhHeal(Player player, float v) {
-        float healMultipler = player.getMaxHealth() * 0.10F;
+        float healMultipler = player.getMaxHealth() * 0.01F;
         player.heal(v * healMultipler);
     }
 }

@@ -1,7 +1,6 @@
-package com.kenhorizon.beyondhorizon.server.level;
+package com.kenhorizon.beyondhorizon.server.api.level;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public interface ICombatCore extends INBTSerializable<CompoundTag> {

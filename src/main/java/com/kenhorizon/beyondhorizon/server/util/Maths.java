@@ -111,7 +111,9 @@ public class Maths {
     public static double perValue(double number, double perValue, double increment) {
         return (number / perValue) * increment;
     }
-
+    public static double getMinToMax(double min, double max, double increment) {
+        return min + (max - min) * increment;
+    }
     public static float sampleNoise2D(int x, int z, float simplexSampleRate) {
         return (float) ((BHSimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
     }

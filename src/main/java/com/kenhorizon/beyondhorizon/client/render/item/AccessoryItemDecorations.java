@@ -36,7 +36,7 @@ public class AccessoryItemDecorations implements IItemDecorator {
             }
         }
         AccessoryHelper.getInventory(player).ifPresent(handler -> {
-            if (!AccessoryHelper.checkAccessoryIsPresentInSlot(stack, handler)) {
+            if (!AccessoryHelper.isValid(stack, handler)) {
                 guiGraphics.blit(TEXTURE_LOCKED, xOffset, yOffset, 0, 0, 18, 18, 18, 18);
             }
         });

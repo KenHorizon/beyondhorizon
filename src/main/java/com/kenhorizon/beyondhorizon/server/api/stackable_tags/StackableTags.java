@@ -111,17 +111,6 @@ public class StackableTags {
     }
 
     public void tick(LivingEntity entity) {
-        if (this == StackableTagInstance.ENERGIZE) {
-            if (!entity.level().isClientSide()) {
-                float steps = entity.moveDist / entity.nextStep;
-                if (entity.moveDist > entity.nextStep) {
-                    this.add(1);
-                }
-                if (steps % 0.24F == 0) {
-                    this.add(1);
-                }
-            }
-        }
         if (this.getDuration() > 0) {
             if (entity.tickCount % this.getDurationPerTick() == 0) {
                 this.setDuration(this.getDuration() - 1);

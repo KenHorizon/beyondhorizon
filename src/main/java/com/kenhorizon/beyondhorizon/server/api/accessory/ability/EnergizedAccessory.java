@@ -11,6 +11,24 @@ import net.minecraft.world.item.ItemStack;
 public class EnergizedAccessory extends AccessoryPassiveSkill implements IStackIconOverlay {
 
     @Override
+    public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
+        var stackTags = Capabilities.stackable(entity);
+        if (stackTags != null) {
+            var sTag = stackTags.getInstance(StackableTagInstance.ENERGIZE);
+            if (!entity.level().isClientSide()) {
+                float steps = entity.moveDist / entity.nextStep;
+                if (entity.moveDist > entity.nextStep) {
+                    sTag.add(1);
+                }
+                if (steps % 0.24F == 0) {
+                    sTag.add(1);
+                }
+            }
+        }
+
+    }
+
+    @Override
     public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         var stackTags = Capabilities.stackable(attacker);
         if (stackTags != null) {

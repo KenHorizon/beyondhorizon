@@ -23,7 +23,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder SUNGLASSES = new AccessoryBuilder(List.of(Accessories.LIGHTNESS));
     public static final AccessoryBuilder DREAM_CATCHER = new AccessoryBuilder(List.of(Accessories.SWEET_DREAM));
     public static final AccessoryBuilder CURSE_TORMENT = new AccessoryBuilder(List.of(Accessories.UNCURSED));
-    public static final AccessoryBuilder ANCIENT_CLOCK = new AccessoryBuilder(List.of(Accessories.UNCURSED));
+    public static final AccessoryBuilder ANCIENT_CLOCK = new AccessoryBuilder(List.of(Accessories.PACE));
 
     public static final AccessoryBuilder BLIGHT_SKULL = new AccessoryBuilder(List.of(Accessories.SWEET_DREAM, Accessories.UNCURSED));
     public static final AccessoryBuilder PROTECTED_SHADES = new AccessoryBuilder(List.of(Accessories.LIGHTNESS, Accessories.OWL_SIGHT));

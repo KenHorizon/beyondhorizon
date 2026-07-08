@@ -1,12 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
-import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
-import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.IDamageInfo;
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

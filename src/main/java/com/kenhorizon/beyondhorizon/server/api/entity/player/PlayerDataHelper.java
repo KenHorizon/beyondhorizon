@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.api.entity.player;
 
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.util.LazyOptional;

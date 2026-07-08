@@ -1,9 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.level;
 
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraftforge.common.util.NonNullSupplier;
-import org.jetbrains.annotations.NotNull;
 
 public class CombatCore implements ICombatCore {
     public int duration;

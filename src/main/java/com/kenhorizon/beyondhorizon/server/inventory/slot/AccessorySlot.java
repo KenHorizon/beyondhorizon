@@ -25,7 +25,7 @@ public class AccessorySlot extends SlotItemHandler {
 
     @Override
     public boolean mayPlace(ItemStack itemStack) {
-        return itemStack.is(BHItemTags.ONLY_ACCESSORY) && AccessoryHelper.checkAccessoryIsPresentInSlot(itemStack, handler);
+        return itemStack.is(BHItemTags.ONLY_ACCESSORY) && AccessoryHelper.isValid(itemStack, handler);
     }
 
     @Override

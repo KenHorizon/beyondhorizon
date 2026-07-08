@@ -7,7 +7,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
-import com.kenhorizon.beyondhorizon.server.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.RaycastUtil;
 import net.minecraft.core.particles.ParticleTypes;

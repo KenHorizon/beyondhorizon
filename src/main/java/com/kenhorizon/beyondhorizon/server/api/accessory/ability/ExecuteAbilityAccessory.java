@@ -25,6 +25,7 @@ public class ExecuteAbilityAccessory extends AccessoryPassiveSkill {
         return this.healthThereshold;
     }
 
+
     @Override
     public float postMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (attacker == null || target == null) return damageDealt;

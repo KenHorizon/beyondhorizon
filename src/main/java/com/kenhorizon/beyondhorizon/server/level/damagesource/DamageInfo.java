@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
+import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;

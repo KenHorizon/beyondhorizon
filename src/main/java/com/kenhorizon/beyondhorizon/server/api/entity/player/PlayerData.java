@@ -21,7 +21,8 @@ public class PlayerData {
     public static double MANA_DEDUCTION = 0.5D;
     public static String NBT_MANA = "mana";
     public static String NBT_CRIT = "crit";
-    public static String NBT_DO_CRIT = "do_crit";
+    public static String NBT_DO_CRIT = "do_crit"; // Force player to perform critical strike
+    public static String NBT_CANT_CRIT = "cant_crit"; // Ability to disable player critical strike
 //
     public static final String NBT_ENTRY = "ability_cooldown";
     public static final String NBT_SLOT = "slot";
@@ -33,6 +34,7 @@ public class PlayerData {
     public static final String NBT_ITEM_TEMP_ID = "temp_id";
     private final Map<String, CooldownInstance> skillManager;
 
+    protected boolean cantCrit;
     protected boolean doCrit;
     protected boolean crit;
     protected boolean doDecut;
@@ -83,6 +85,13 @@ public class PlayerData {
     }
     public void setDoCrit(boolean crit) {
         this.doCrit = crit;
+    }
+
+    public void setCantCrit(boolean cantCrit) {
+        this.cantCrit = cantCrit;
+    }
+    public boolean isCantCrit() {
+        return this.cantCrit;
     }
 
     public boolean isDoCrit() {
@@ -194,6 +203,7 @@ public class PlayerData {
         nbt.putDouble(NBT_MANA, this.getMana());
         nbt.putBoolean(NBT_CRIT, this.isCrit());
         nbt.putBoolean(NBT_DO_CRIT, this.isDoCrit());
+        nbt.putBoolean(NBT_CANT_CRIT, this.isCantCrit());
         nbt.put(NBT_ENTRY, this.cooldownListTags());
         return nbt;
     }
@@ -202,6 +212,7 @@ public class PlayerData {
         this.setMana(nbt.getDouble(NBT_MANA));
         this.setCrit(nbt.getBoolean(NBT_CRIT));
         this.setDoCrit(nbt.getBoolean(NBT_DO_CRIT));
+        this.setCantCrit(nbt.getBoolean(NBT_CANT_CRIT));
         ListTag listTag = nbt.getList(NBT_ENTRY, 10);
         for (int k = 0; k < nbt.size(); ++k) {
             CompoundTag nbtData = listTag.getCompound(k);
@@ -232,4 +243,5 @@ public class PlayerData {
     public static PlayerData getInstance(Player player) {
         return Capabilities.data(player);
     }
+
 }

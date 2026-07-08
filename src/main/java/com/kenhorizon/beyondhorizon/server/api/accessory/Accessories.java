@@ -24,7 +24,7 @@ public class Accessories {
 
     public static final RegistryObject<Accessory> STEEL_SIGILS = registerSkill("steel_sigils", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_DAMAGE, Constant.ATTACKDAMAGE_0, AttributeModifier.Operation.ADDITION)
-            .addAttributes(Attributes.ARMOR, Constant.ARMOR_0, AttributeModifier.Operation.ADDITION));
+            .addAttributes(Attributes.ARMOR, Constant.ARMOR_1, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> KNOCKBACK_RESISTANCE = registerSkill("knockback_resistance", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.KNOCKBACK_RESISTANCE, 1.0D, AttributeModifier.Operation.ADDITION));

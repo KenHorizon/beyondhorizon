@@ -734,7 +734,11 @@ public class ServerEventHandler {
                         for (Accessory trait : accessoryItems.getAccessories()) {
                             Optional<IAttack> weaponCallback = trait.IAttackCallback();
                             if (weaponCallback.isPresent()) {
-                                damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
+                                if (trait.getTags().isUnique()) {
+                                    damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
+                                } else {
+                                    damageDealt += weaponCallback.get().damageTaken(damageDealt, source, target);
+                                }
                             }
                         }
                     }
@@ -838,11 +842,6 @@ public class ServerEventHandler {
             ICombatCore attackerCombatCore = Capabilities.combat(attacker);
             ItemStack attackerStack = attacker.getMainHandItem();
             if (attacker instanceof Player player) {
-                LevelSystem levelSystem = Capabilities.levelSystem(player);
-                Optional<IAttack> attack = levelSystem.IAttack();
-                if (attack.isPresent()) {
-                    damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
-                }
                 if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
                     IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
                     var stacks = handler.getStacks();
@@ -852,7 +851,11 @@ public class ServerEventHandler {
                             for (Accessory trait : container.getAccessories()) {
                                 Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
                                 if (meleeWeaponCallback.isPresent()) {
-                                    damageDealt += meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                    if (trait.getTags().isUnique()) {
+                                        damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                    } else {
+                                        damageDealt += meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                    }
                                 }
                             }
                         }
@@ -891,7 +894,7 @@ public class ServerEventHandler {
 
     private static void damageIndicator(ServerLevel level, DamageSource source,  boolean healing, float value, LivingEntity entity) {
         boolean isCrit = false;
-        if (source.getEntity() instanceof Player player) {
+        if (source != null && source.getEntity() instanceof Player player) {
             PlayerData playerData = Capabilities.data(player);
             if (playerData != null) {
                 isCrit = playerData.isCrit();
@@ -1077,14 +1080,6 @@ public class ServerEventHandler {
             if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
                 var handler = AccessoryHelper.getInventory(player).resolve().get();
                 var stacks = handler.getStacks();
-                if (!player.level().getGameRules().getRule(GameRules.RULE_KEEPINVENTORY).get()) {
-                    SimpleContainer accessory = new SimpleContainer(handler.getSlots());
-                    for (int i = 0; i < handler.getSlots(); i++) {
-                        accessory.setItem(i, stacks.getStackInSlot(i));
-                    }
-                    Containers.dropContents(player.level(), player, accessory);
-                    accessory.clearContent();
-                }
                 for (int i = 0; i < stacks.getSlots(); i++) {
                     final ItemStack itemStack = stacks.getStackInSlot(i);
                     if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem accessoryItem) {
@@ -1147,7 +1142,7 @@ public class ServerEventHandler {
     @SubscribeEvent
     public void onMiningSpeedUpdate(PlayerEvent.BreakSpeed event) {
         Player player = event.getEntity();
-        AtomicReference<Float> originalSpeed = new AtomicReference<>(event.getOriginalSpeed());
+        float originalSpeed = event.getOriginalSpeed();
         if (player != null) {
             Level level = player.level();
             BlockPos blockPos = player.getOnPos();
@@ -1159,24 +1154,31 @@ public class ServerEventHandler {
             } else {
                 miningEfficiency = 1.0D;
             }
-            float bonusMiningSpeed = (float) (originalSpeed.get() * miningSpeed * miningEfficiency);
-            AccessoryHelper.getInventory(player).ifPresent(handler -> {
+            float bonusMiningSpeed = (float) (originalSpeed * miningSpeed * miningEfficiency);
+            if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+                var handler = AccessoryHelper.getInventory(player).resolve().get();
                 var stacks = handler.getStacks();
                 for (int i = 0; i < stacks.getSlots(); i++) {
                     final ItemStack itemStack = stacks.getStackInSlot(i);
                     if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem accessoryItems) {
-                        for (Accessory trait : accessoryItems.getAccessories()) {
-                            Optional<IEntityProperties> optional = trait.IEntityProperties();
+                        for (Accessory accessory : accessoryItems.getAccessories()) {
+                            Optional<IEntityProperties> optional = accessory.IEntityProperties();
                             if (optional.isPresent()) {
-                                originalSpeed.set((float) optional.get().onModifyMiningSpeed(player, blockState, blockPos, originalSpeed.get()));
+                                if (accessory.getTags().isUnique()) {
+                                    originalSpeed = (float) optional.get().onModifyMiningSpeed(player, blockState, blockPos, originalSpeed);
+                                } else {
+
+                                    originalSpeed += (float) optional.get().onModifyMiningSpeed(player, blockState, blockPos, originalSpeed);
+                                }
                             }
                         }
                     }
                 }
-            });
-            originalSpeed.updateAndGet(v -> (v + bonusMiningSpeed));
+            }
+
+            originalSpeed *= bonusMiningSpeed;
         }
-        event.setNewSpeed((float) originalSpeed.get());
+        event.setNewSpeed(originalSpeed);
     }
     @SubscribeEvent
     public void onPlayerInteract(PlayerInteractEvent.LeftClickEmpty event) {

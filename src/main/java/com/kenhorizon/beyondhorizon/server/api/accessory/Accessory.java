@@ -32,7 +32,11 @@ import java.util.*;
 public abstract class Accessory {
     public enum Tags {
         NONE, // Bonuses can stack each others
-        UNIQUE // Bonuses do not stack each others
+        UNIQUE; // Bonuses do not stack each others
+
+        public boolean isUnique() {
+            return this != NONE;
+        }
     }
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final String ACCESSORY_ATTRIBUTES_TAGS = "accessory_attribute_modifiers";
@@ -84,6 +88,10 @@ public abstract class Accessory {
             this.descriptionId = String.format("accessory.%s.%s", this.getId(), this.getName());
         }
         return this.descriptionId;
+    }
+
+    public Tags getTags() {
+        return tags;
     }
 
     public String getId() {

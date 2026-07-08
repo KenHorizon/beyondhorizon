@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -91,29 +92,31 @@ public final class AccessoryHelper {
         return List.of();
     }
 
+
+
     public static boolean isValid(ItemStack outsideStack, IAccessoryStackHandler handler) {
-        List<ItemStack> list = AccessoryHelper.getAccessoryItems(handler);
-        boolean isValid = list.isEmpty();
-        if (!list.isEmpty()) {
-            for (ItemStack inSlotItemStack : list) {
-                if (!inSlotItemStack.isEmpty() && inSlotItemStack.getItem() instanceof IAccessoryItem inSlotContainer) {
-                    if (inSlotContainer.noGroupItem()) {
-                        return true;
-                    } else {
-                        if (!(!ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack))) {
-                            return false;
-                        }
-                        if (ItemStack.isSameItem(inSlotItemStack, outsideStack)) {
-                            isValid = false;
-                            break;
-                        }
-//                    isValid = inSlotContainer.isCompatible(inSlotItemStack, outsideStack);
-                        isValid = !ItemStack.isSameItem(inSlotItemStack, outsideStack) && inSlotContainer.isCompatible(inSlotItemStack, outsideStack);
-                    }
+        var stacks = handler.getStacks();
+        for (int i = 0; i < stacks.getSlots(); ++i) {
+            ItemStack inSlotItemStack = stacks.getStackInSlot(i);
+            if (inSlotItemStack.isEmpty()) continue;
+
+            if (inSlotItemStack.getItem() instanceof IAccessoryItem accessoryItem) {
+                boolean flag = ItemStack.isSameItem(inSlotItemStack, outsideStack);
+                boolean itemGroupLimitation = accessoryItem.checkIfSharingGroupTogether(inSlotItemStack, outsideStack);
+                boolean isBasic = accessoryItem.isBasic();
+                boolean singleEffectLimitation = accessoryItem.checkIfNameLimitation(inSlotItemStack, outsideStack);
+                if (isBasic) {
+                    continue;
+                }
+                if (!flag && singleEffectLimitation) {
+                    continue;
+                }
+                if (itemGroupLimitation) {
+                    return false;
                 }
             }
         }
-        return isValid;
+        return true;
     }
 
     private static String getItemName(ItemStack itemStack) {

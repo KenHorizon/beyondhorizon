@@ -101,9 +101,7 @@ Active - Blazing Ray - Charge upto 2 seconds, when fully charged, release a blaz
 Acension - Increase base attack damge, ability power, armor, magic resistance and max health by 200%
 
 Hololive:
-Stellar Axe
-Passive: Flattened Strike
- -> Guranteed crit on-hit
+Stellar Axe (Weapon)
 
 Sharkie
 Passive: Forever

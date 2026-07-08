@@ -1,35 +1,39 @@
-package com.kenhorizon.beyondhorizon.server.recipe;
+package com.kenhorizon.beyondhorizon.server.item.recipe;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
-import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
+import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.crafting.IRecipeContainer;
+import net.minecraftforge.common.util.RecipeMatcher;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkbenchRecipe implements CraftingRecipe {
+public class WorkbenchRecipe implements Recipe<Container> {
     protected final List<Ingredient> ingredient;
     protected final ItemStack result;
     protected final ResourceLocation recipeId;
     protected final List<Integer> counts;
+    private final boolean isSimple;
     public WorkbenchRecipe(ResourceLocation recipeId, List<Ingredient> ingredient, ItemStack result, List<Integer> counts) {
         this.recipeId = recipeId;
         this.result = result;
         this.ingredient = ingredient;
         this.counts = counts;
+        this.isSimple = ingredient.stream().allMatch(Ingredient::isSimple);
     }
 
     public ItemStack getResultItem(RegistryAccess access) {
@@ -49,18 +53,33 @@ public class WorkbenchRecipe implements CraftingRecipe {
     }
 
     @Override
-    public boolean matches(CraftingContainer pContainer, Level pLevel) {
-        return true;
+    public boolean matches(Container container, Level pLevel) {
+        StackedContents stackedContents = new StackedContents();
+        List<ItemStack> inputs = new ArrayList<>();
+        int index = 0;
+        for (int i = 0; i < container.getContainerSize(); ++i) {
+            ItemStack stack = container.getItem(i);
+            if (!stack.isEmpty()) {
+                ++index;
+                if (isSimple) {
+                    stackedContents.accountStack(stack, 1);
+                } else {
+                    inputs.add(stack);
+                }
+            }
+        }
+        return index == this.ingredient.size() && (isSimple ? stackedContents.canCraft(this, null) :
+                RecipeMatcher.findMatches(inputs, this.ingredient) != null);
     }
 
     @Override
-    public ItemStack assemble(CraftingContainer pContainer, RegistryAccess pRegistryAccess) {
+    public ItemStack assemble(Container container, RegistryAccess access) {
         return this.result.copy();
     }
 
     @Override
     public boolean canCraftInDimensions(int width, int height) {
-        return true;
+        return width * height >= this.ingredient.size();
     }
 
     @Override
@@ -83,10 +102,6 @@ public class WorkbenchRecipe implements CraftingRecipe {
         return Type.getInstance();
     }
 
-    @Override
-    public CraftingBookCategory category() {
-        return CraftingBookCategory.MISC;
-    }
 
     public static class Type implements RecipeType<WorkbenchRecipe> {
         private Type() {}

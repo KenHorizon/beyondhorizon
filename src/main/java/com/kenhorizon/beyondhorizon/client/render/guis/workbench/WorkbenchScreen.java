@@ -2,32 +2,44 @@ package com.kenhorizon.beyondhorizon.client.render.guis.workbench;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.render.guis.IRecipeUpdateListener;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
-import com.kenhorizon.beyondhorizon.server.recipe.WorkbenchRecipe;
+import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
+import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundExtendedPlaceRecipePacket;
+import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.recipebook.RecipeButton;
-import net.minecraft.client.gui.screens.recipebook.RecipeCollection;
+import net.minecraft.client.gui.screens.recipebook.GhostRecipe;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.recipebook.PlaceRecipe;
+import net.minecraft.recipebook.ServerPlaceRecipe;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 
 import javax.annotation.Nullable;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
-public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
+public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> implements PlaceRecipe<Ingredient>, IRecipeUpdateListener {
     public record Indexes(int x, int y) {}
     private static final boolean DEBUG = true;
     public static final ResourceLocation RESOURCE_GUI = BeyondHorizon.resourceGui("workbench/workbench.png");
@@ -39,18 +51,22 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     public float yMouse;
     private int xOffset;
     private boolean widthTooNarrow;
-    private boolean panelVisible;
+    private boolean isVisible;
     private WorkbenchPageButton prevPage;
     private WorkbenchPageButton nextPage;
     private Indexes recipesIndexes;
     private List<WorkbenchRecipe> recipes = ImmutableList.of();
     @Nullable
     private WorkbenchRecipeButton hoveredButton;
-    private WorkbenchRecipe selectedRecipes;
+    private final StackedContents stackedContents = new StackedContents();
     private List<WorkbenchRecipeButton> buttons = Lists.newArrayListWithCapacity(20);
+    private final GhostRecipe ghostRecipe = new GhostRecipe();
     private int currentPage = 0;
     private int totalPages = 0;
     private int buttonpadding = 50;
+    private int timesInventoryChanged = 0;
+    private final Set<Recipe<?>> craftable = Sets.newHashSet();
+    private final Set<Recipe<?>> fitsDimensions = Sets.newHashSet();
 
     public WorkbenchScreen(WorkbenchMenu menu, Inventory inventory, Component component) {
         super(menu, inventory, component);
@@ -62,50 +78,69 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         this.recipes = menu.recipes;
     }
 
-    public void setPanelVisible(boolean visible) {
-        this.panelVisible = visible;
+    public void setVisible(boolean visible) {
+        this.isVisible = visible;
         if (visible) {
             this.initVisual();
         }
     }
 
-    public boolean isPanelVisible() {
-        return this.panelVisible;
+    public boolean isVisible() {
+        return this.isVisible;
     }
 
-    public void togglePanelVisibility() {
-        this.setPanelVisible(!this.isPanelVisible());
-        if (DEBUG) {
-            BeyondHorizon.LOGGER.debug("[DEbug] Toggling Panel Visibility...");
-        }
+    public void toggleVisibility() {
+        this.setVisible(!this.isVisible());
     }
-
 
     @Override
     protected void init() {
         super.init();
         this.widthTooNarrow = this.width < 378;
         this.xOffset = this.widthTooNarrow ? 0 : 86;
+        this.timesInventoryChanged = this.minecraft.player.getInventory().getTimesChanged();
         this.titleLabelX = 29;
         int x = (this.width - 206) / 2 - this.xOffset;
         int y = (this.height - 166) / 2;
         this.leftPos = this.updateScreenPosition();
         this.recipesIndexes = new Indexes(x, y);
         this.addRenderableWidget(new ImageButton(this.leftPos + 129, this.height / 2 - 32, 20, 18, 0, 0, 19, RECIPE_BUTTON_LOCATION, (button) -> {
-            this.togglePanelVisibility();
+            this.toggleVisibility();
             this.leftPos = this.updateScreenPosition();
             button.setPosition(this.leftPos + 129, this.height / 2 - 32);
             this.buttonClicked = true;
         }));
         int btnX = (176 - (buttonpadding * 2)) / 2;
-        this.prevPage = new WorkbenchPageButton((this.width - btnX) / 2 - this.xOffset - (buttonpadding / 2),  y + 137, false, 0, (onPress) -> {});
+        this.prevPage = new WorkbenchPageButton((this.width - btnX) / 2 - this.xOffset - buttonpadding,  y + 137, false, 0, (onPress) -> {});
         this.nextPage = new WorkbenchPageButton((this.width - btnX) / 2 - this.xOffset + buttonpadding, y + 137, true, 0, (onPress) -> {});
         this.addRenderableWidget(this.prevPage);
         this.addRenderableWidget(this.nextPage);
         this.prevPage.visible = false;
         this.nextPage.visible = false;
-        if (this.isPanelVisible()) {
+        if (this.isVisible()) {
             this.initVisual();
+        }
+    }
+
+    @Override
+    public void setupGhostRecipe(Recipe<?> recipe, List<Slot> slots) {
+        if (DEBUG) {
+            BeyondHorizon.LOGGER.debug("Setting up the ghost recipe!");
+        }
+        ItemStack stacks = recipe.getResultItem(this.minecraft.level.registryAccess());
+        this.ghostRecipe.setRecipe(recipe);
+        this.ghostRecipe.addIngredient(Ingredient.of(stacks), (slots.get(0)).x, (slots.get(0)).y);
+        this.placeRecipe(this.menu.getGridWidth(), this.menu.getGridHeight(), this.menu.getResultSlotIndex(), recipe, recipe.getIngredients().iterator(), 0);
+
+    }
+
+
+    @Override
+    public void addItemToSlot(Iterator<Ingredient> ing, int slots, int max, int y, int x) {
+        Ingredient ingredient = ing.next();
+        if (!ingredient.isEmpty()) {
+            Slot slot = this.menu.slots.get(slots);
+            this.ghostRecipe.addIngredient(ingredient, slot.x, slot.y);
         }
     }
 
@@ -117,10 +152,15 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             int y = this.recipesIndexes.y + 20 + var001 * 26;
             btn.setPosition(x, y);
         }
+        this.stackedContents.clear();
+        this.minecraft.player.getInventory().fillStackedContents(this.stackedContents);
+        this.menu.fillCraftSlotsStackedContents(this.stackedContents);
+        BeyondHorizon.LOGGER.debug("Stacked Content= {} : {}", this.stackedContents, this.stackedContents.contents);
         this.updateCollections(false);
     }
 
     private void updateCollections(boolean resetPageNumber) {
+        this.canCraft(this.stackedContents, this.menu.getGridWidth(), this.menu.getGridHeight());
         this.totalPages = (int)Math.ceil((double)this.recipes.size() / 20.0D);
         if (this.totalPages <= this.currentPage || resetPageNumber) {
             this.currentPage = 0;
@@ -151,7 +191,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
 
     public int updateScreenPosition() {
         int i;
-        if (this.isPanelVisible() && !this.widthTooNarrow) {
+        if (this.isVisible() && !this.widthTooNarrow) {
             int offset = 196;
             i = 176 + (this.width - this.imageWidth - offset) / 2;
         } else {
@@ -163,9 +203,13 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     @Override
     protected void containerTick() {
         super.containerTick();
+        if (this.isVisible()) {
+            if (this.timesInventoryChanged != this.minecraft.player.getInventory().getTimesChanged()) {
+                this.updateStackedContents();
+                this.timesInventoryChanged = this.minecraft.player.getInventory().getTimesChanged();
+            }
+        }
     }
-
-
 
     @Override
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
@@ -200,7 +244,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     }
 
     protected void renderPanels(GuiGraphics gui, float partialTick, int mouseX, int mouseY, int x, int y) {
-        if (this.isPanelVisible()) {
+        if (this.isVisible()) {
             this.hoveredButton = null;
             for (WorkbenchRecipeButton recipebutton : this.buttons) {
                 recipebutton.render(gui, mouseX, mouseY, partialTick);
@@ -214,7 +258,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     @Override
     protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         guiGraphics.blit(RESOURCE_GUI, this.leftPos, (this.height - this.imageHeight) / 2, 0, 0, this.imageWidth, this.imageHeight);
-        if (this.isPanelVisible()) {
+        if (this.isVisible()) {
             guiGraphics.pose().pushPose();
             this.renderPanels(guiGraphics, this.recipesIndexes.x, this.recipesIndexes.y);
             this.createLabel(guiGraphics, DISPLAY_RECIPES_ITEMS, this.recipesIndexes.x, this.recipesIndexes.y - 16, 64, 24);
@@ -222,15 +266,14 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
             int i = this.minecraft.font.width(s);
             int btnX = (176 - (buttonpadding * 2)) / 2;
             guiGraphics.drawString(this.font, s, this.recipesIndexes.x + (i / 2) + btnX + (buttonpadding / 2), this.recipesIndexes.y + 144, Colors.WHITE);
-            if (this.selectedRecipes != null) {
-                guiGraphics.renderFakeItem(this.selectedRecipes.getResultItem(this.minecraft.level.registryAccess()), this.leftPos + 139, this.topPos + 23);
-            }
+            this.ghostRecipe.render(guiGraphics, minecraft, this.leftPos, this.topPos, false, partialTick);
             guiGraphics.pose().popPose();
         }
     }
+
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (this.isPanelVisible() && !this.minecraft.player.isSpectator()) {
+        if (this.isVisible() && !this.minecraft.player.isSpectator()) {
             if (this.nextPage.mouseClicked(mouseX, mouseY, button)) {
                 ++this.currentPage;
                 Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
@@ -242,30 +285,77 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
                 this.updateButtonsForPage();
                 return true;
             } else if (this.hoveredButton != null && this.hoveredButton.mouseClicked(mouseX, mouseY, button)) {
-                this.selectedRecipes = this.hoveredButton.getRecipeItem();
+                Recipe<?> recipe = this.hoveredButton.getRecipeItem();
+                if (recipe != null) {
+                    if (recipe == this.ghostRecipe.getRecipe() && !this.isCraftable(recipe)) {
+                        return false;
+                    }
+                    this.ghostRecipe.clear();
+                    NetworkHandler.sendToServer(new ServerboundExtendedPlaceRecipePacket(this.minecraft.player.containerMenu.containerId, recipe, Screen.hasShiftDown()));
+                    if (!this.isOffsetNextToMainGUI()) {
+                        this.setVisible(false);
+                    }
+                }
                 return true;
             }
-            this.updateCollections(true);
             return super.mouseClicked(mouseX, mouseY, button);
         }
-        return (!this.widthTooNarrow || !this.isPanelVisible()) && super.mouseClicked(mouseX, mouseY, button);
+        return (!this.widthTooNarrow || !this.isVisible()) && super.mouseClicked(mouseX, mouseY, button);
+    }
+
+    public void canCraft(StackedContents stackedContents, int w, int h) {
+        for(Recipe<?> recipe : this.recipes) {
+            boolean flag = recipe.canCraftInDimensions(w, h);
+            if (flag) {
+                this.fitsDimensions.add(recipe);
+            } else {
+                this.fitsDimensions.remove(recipe);
+            }
+
+            if (flag && stackedContents.canCraft(recipe, (IntList)null)) {
+                this.craftable.add(recipe);
+            } else {
+                this.craftable.remove(recipe);
+            }
+        }
+
+    }
+
+    public boolean isCraftable(Recipe<?> recipe) {
+        return this.craftable.contains(recipe);
     }
 
     @Override
     public boolean keyPressed(int keycode, int scanCode, int modifiers) {
-        if (this.isPanelVisible() && this.widthTooNarrow) {
-            this.togglePanelVisibility();
+        if (this.isVisible() && this.widthTooNarrow) {
+            if (!this.minecraft.player.isSpectator()) {
+                if (keycode == 256 && !this.isOffsetNextToMainGUI()) {
+                    this.setVisible(false);
+                    return true;
+                }
+            }
+
+            this.toggleVisibility();
             this.updateScreenPosition();
             return true;
         } else {
             this.updateScreenPosition();
             return super.keyPressed(keycode, scanCode, modifiers);
         }
-    }
 
+    }
+    private boolean isOffsetNextToMainGUI() {
+        return this.xOffset == 86;
+    }
 
     @Override
     protected void slotClicked(Slot slot, int id, int mouseButton, ClickType clickType) {
+        if (slot != null && slot.index < this.menu.getSize()) {
+            this.ghostRecipe.clear();
+            if (this.isVisible()) {
+                this.updateStackedContents();
+            }
+        }
         super.slotClicked(slot, id, mouseButton, clickType);
     }
 
@@ -289,7 +379,6 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
     @Override
     public void onClose() {
         super.onClose();
-        this.selectedRecipes = null;
     }
 
     @Override
@@ -297,10 +386,36 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> {
         if (this.minecraft.screen != null && this.hoveredButton != null) {
             guiGraphics.renderComponentTooltip(this.minecraft.font, this.hoveredButton.getTooltipText(), x, y);
         }
+        this.renderGhostRecipeTooltip(guiGraphics, this.leftPos + 9, this.topPos + 9, x, y);
         super.renderTooltip(guiGraphics, x, y);
     }
+    private void renderGhostRecipeTooltip(GuiGraphics graphics, int pX, int pY, int mX, int mY) {
+        ItemStack itemstack = null;
 
+        for(int i = 0; i < this.ghostRecipe.size(); ++i) {
+            GhostRecipe.GhostIngredient ghostrecipe$ghostingredient = this.ghostRecipe.get(i);
+            int j = ghostrecipe$ghostingredient.getX() + pX;
+            int k = ghostrecipe$ghostingredient.getY() + pY;
+            if (mX >= j && mY >= k && mX < j + 16 && mY < k + 16) {
+                itemstack = ghostrecipe$ghostingredient.getItem();
+            }
+        }
+
+        if (itemstack != null && this.minecraft.screen != null) {
+            graphics.renderComponentTooltip(this.minecraft.font, Screen.getTooltipFromItem(this.minecraft, itemstack), mX, mY, itemstack);
+        }
+
+    }
     private boolean onHoveredSlot(int x, int y, int w, int h, int mouseX, int mouseY) {
         return mouseX >= x && mouseX <= x + w && mouseY >= y && mouseY <= y + h;
     }
+
+    private void updateStackedContents() {
+        this.stackedContents.clear();
+        this.minecraft.player.getInventory().fillStackedContents(this.stackedContents);
+        this.menu.fillCraftSlotsStackedContents(this.stackedContents);
+        this.updateCollections(false);
+    }
+
+
 }

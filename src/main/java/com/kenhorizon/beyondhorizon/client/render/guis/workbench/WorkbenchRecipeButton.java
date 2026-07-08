@@ -3,25 +3,30 @@ package com.kenhorizon.beyondhorizon.client.render.guis.workbench;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.recipe.WorkbenchRecipe;
+import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.recipebook.OverlayRecipeComponent;
 import net.minecraft.network.chat.Component;
+import net.minecraft.recipebook.PlaceRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class WorkbenchRecipeButton extends AbstractWidget {
     private static final ResourceLocation RECIPE_BOOK_LOCATION = BeyondHorizon.resourceGui("panels.png");
     private static final float ANIMATION_TIME = 15.0F;
     private static final int BACKGROUND_SIZE = 25;
-    public static final int TICKS_TO_SWAP = 30;
-    private static final Component MORE_RECIPES_TOOLTIP = Component.translatable("gui.recipebook.moreRecipes");
     private float time;
     private float animationTime;
     private int currentIndex;
@@ -77,12 +82,15 @@ public class WorkbenchRecipeButton extends AbstractWidget {
     }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput pNarrationElementOutput) {
+    protected void updateWidgetNarration(NarrationElementOutput output) {
+        this.defaultButtonNarrationText(output);
+    }
 
+    @Override
+    protected boolean isValidClickButton(int btn) {
+        return btn == 0 || btn == 1;
     }
-    public ItemStack getItemStack() {
-        return this.stacks;
-    }
+
     public WorkbenchRecipe getRecipeItem() {
         return this.selectedRecipes;
     }

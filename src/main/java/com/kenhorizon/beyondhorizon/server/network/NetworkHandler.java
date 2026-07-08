@@ -3,10 +3,8 @@ package com.kenhorizon.beyondhorizon.server.network;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.*;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.*;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -38,7 +36,9 @@ public class NetworkHandler {
         net.registerMessage(id(), ClientboundPlayerDataSyncPacket.class, ClientboundPlayerDataSyncPacket::toBytes, ClientboundPlayerDataSyncPacket::new, ClientboundPlayerDataSyncPacket::handle);
         net.registerMessage(id(), ClientboundSetEntityChainedLinkPacket.class, ClientboundSetEntityChainedLinkPacket::toBytes, ClientboundSetEntityChainedLinkPacket::new, ClientboundSetEntityChainedLinkPacket::handle);
         net.registerMessage(id(), ClientboundAbilityCooldownPacket.class, ClientboundAbilityCooldownPacket::toBytes, ClientboundAbilityCooldownPacket::new, ClientboundAbilityCooldownPacket::handle);
+        net.registerMessage(id(), ClientboundExtendedPlaceGhostRecipePacket.class, ClientboundExtendedPlaceGhostRecipePacket::toBytes, ClientboundExtendedPlaceGhostRecipePacket::new, ClientboundExtendedPlaceGhostRecipePacket::handle);
 
+        net.registerMessage(id(), ServerboundExtendedPlaceRecipePacket.class, ServerboundExtendedPlaceRecipePacket::toBytes, ServerboundExtendedPlaceRecipePacket::new, ServerboundExtendedPlaceRecipePacket::handle);
         net.registerMessage(id(), ServerboundWorkbenchCraftPacket.class, ServerboundWorkbenchCraftPacket::toBytes, ServerboundWorkbenchCraftPacket::new, ServerboundWorkbenchCraftPacket::handle);
         net.registerMessage(id(), ServerboundAccessoryInventoryPacket.class, ServerboundAccessoryInventoryPacket::toBytes, ServerboundAccessoryInventoryPacket::new, ServerboundAccessoryInventoryPacket::handle);
         net.registerMessage(id(), ServerboundGrabbedItemPacket.class, ServerboundGrabbedItemPacket::toBytes, ServerboundGrabbedItemPacket::new, ServerboundGrabbedItemPacket::handle);

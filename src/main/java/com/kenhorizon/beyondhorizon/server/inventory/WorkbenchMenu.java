@@ -1,13 +1,17 @@
 package com.kenhorizon.beyondhorizon.server.inventory;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.*;
-import com.kenhorizon.beyondhorizon.server.recipe.WorkbenchRecipe;
+import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;
+import net.minecraft.recipebook.ServerPlaceRecipe;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -16,7 +20,7 @@ import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
@@ -25,7 +29,7 @@ import org.apache.commons.compress.utils.Lists;
 import java.util.List;
 import java.util.Optional;
 
-public class WorkbenchMenu extends RecipeBookMenu<CraftingContainer> {
+public class WorkbenchMenu extends ExtendedRecipeBookMenu<CraftingContainer> {
     private static final int CRAFTING_WIDTH = 5;
     private static final int CRAFTING_HEIGHT = 3;
     private final ContainerLevelAccess access;
@@ -68,6 +72,19 @@ public class WorkbenchMenu extends RecipeBookMenu<CraftingContainer> {
             }
         }
     }
+
+    @Override
+    public void removed(Player player) {
+        super.removed(player);
+        this.access.execute((level, blockPos) -> {
+            this.clearContainer(player, this.craftSlots);
+        });
+    }
+
+//    @Override
+//    public void handlePlacement(boolean pPlaceAll, Recipe<?> recipe, ServerPlayer serverPlayer) {
+//        new ModifiedServerPlaceRecipe<>(this).recipeClicked(serverPlayer, (Recipe<CraftingContainer>) recipe, pPlaceAll);
+//    }
 
     @Override
     public ItemStack quickMoveStack(Player player, int index) {
@@ -140,8 +157,8 @@ public class WorkbenchMenu extends RecipeBookMenu<CraftingContainer> {
 
     @Override
     public void slotsChanged(Container inv) {
-        this.access.execute((p_39386_, p_39387_) -> {
-            slotChangedCraftingGrid(this, p_39386_, this.player, this.craftSlots, this.resultSlots);
+        this.access.execute((level, blockPos) -> {
+            slotChangedCraftingGrid(this, level, this.player, this.craftSlots, this.resultSlots);
         });
     }
 
@@ -192,12 +209,7 @@ public class WorkbenchMenu extends RecipeBookMenu<CraftingContainer> {
     }
 
     @Override
-    public RecipeBookType getRecipeBookType() {
-        return BHRecipeBookType.WORKBENCH;
-    }
-
-    @Override
-    public boolean shouldMoveToInventory(int slot) {
-        return slot != this.getResultSlotIndex();
+    public boolean shouldMoveToInventory(int slotIndex) {
+        return slotIndex != this.getResultSlotIndex();
     }
 }

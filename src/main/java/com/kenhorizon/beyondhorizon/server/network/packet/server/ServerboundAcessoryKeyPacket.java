@@ -18,6 +18,7 @@ public class ServerboundAcessoryKeyPacket {
     private final int slots;
     private final int id;
     public ServerboundAcessoryKeyPacket(int id, ItemStack itemStack, int slots) {
+        BeyondHorizon.LOGGER.debug("Sending key packets!!");
         this.id = id;
         this.slots = slots;
         this.itemStack = itemStack;

@@ -32,11 +32,12 @@ public class NetworkHandler {
         // BUILDER
         net.registerMessage(id(), ClientboundInventoryPacket.class, ClientboundInventoryPacket::toBytes, ClientboundInventoryPacket::new, ClientboundInventoryPacket::handle);
         net.registerMessage(id(), ClientboundAccessoryInventoryPacket.class, ClientboundAccessoryInventoryPacket::toBytes, ClientboundAccessoryInventoryPacket::new, ClientboundAccessoryInventoryPacket::handle);
-        net.registerMessage(id(), ClientboundRoleClassSyncPacket.class, ClientboundRoleClassSyncPacket::toBytes, ClientboundRoleClassSyncPacket::new, ClientboundRoleClassSyncPacket::handle);
+        net.registerMessage(id(), ClientboundAccessoryDataSyncPacket.class, ClientboundAccessoryDataSyncPacket::toBytes, ClientboundAccessoryDataSyncPacket::new, ClientboundAccessoryDataSyncPacket::handle);
         net.registerMessage(id(), ClientboundPlayerDataSyncPacket.class, ClientboundPlayerDataSyncPacket::toBytes, ClientboundPlayerDataSyncPacket::new, ClientboundPlayerDataSyncPacket::handle);
         net.registerMessage(id(), ClientboundSetEntityChainedLinkPacket.class, ClientboundSetEntityChainedLinkPacket::toBytes, ClientboundSetEntityChainedLinkPacket::new, ClientboundSetEntityChainedLinkPacket::handle);
         net.registerMessage(id(), ClientboundAbilityCooldownPacket.class, ClientboundAbilityCooldownPacket::toBytes, ClientboundAbilityCooldownPacket::new, ClientboundAbilityCooldownPacket::handle);
         net.registerMessage(id(), ClientboundExtendedPlaceGhostRecipePacket.class, ClientboundExtendedPlaceGhostRecipePacket::toBytes, ClientboundExtendedPlaceGhostRecipePacket::new, ClientboundExtendedPlaceGhostRecipePacket::handle);
+        net.registerMessage(id(), ClientboundRoleClassSyncPacket.class, ClientboundRoleClassSyncPacket::toBytes, ClientboundRoleClassSyncPacket::new, ClientboundRoleClassSyncPacket::handle);
 
         net.registerMessage(id(), ServerboundExtendedPlaceRecipePacket.class, ServerboundExtendedPlaceRecipePacket::toBytes, ServerboundExtendedPlaceRecipePacket::new, ServerboundExtendedPlaceRecipePacket::handle);
         net.registerMessage(id(), ServerboundWorkbenchCraftPacket.class, ServerboundWorkbenchCraftPacket::toBytes, ServerboundWorkbenchCraftPacket::new, ServerboundWorkbenchCraftPacket::handle);

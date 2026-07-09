@@ -53,11 +53,6 @@ public class PlayerData {
         this.mana += amount;
     }
 
-    public void syncPlayerData(Player player) {
-        if (player instanceof ServerPlayer sPlayer) {
-            NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(this.saveNbt()), sPlayer);
-        }
-    }
 
     public void removeMana(int amount) {
         this.removeMana(amount, false);
@@ -195,9 +190,14 @@ public class PlayerData {
                 this.regenMana(serverPlayer);
             }
         }
-        this.syncPlayerData(player);
+//        this.syncPlayerData(player);
     }
 
+    public void syncPlayerData(Player player) {
+        if (player instanceof ServerPlayer sPlayer) {
+            NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(this.saveNbt()), sPlayer);
+        }
+    }
     public CompoundTag saveNbt() {
         CompoundTag nbt = new CompoundTag();
         nbt.putDouble(NBT_MANA, this.getMana());

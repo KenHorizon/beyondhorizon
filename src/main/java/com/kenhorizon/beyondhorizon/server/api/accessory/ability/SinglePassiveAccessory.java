@@ -118,7 +118,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
 
 
     @Override
-    public void onUnequip(Player player, ItemStack itemStack) {
+    public void onUnequip(Player player, ItemStack itemStack, int slot) {
         if (this == Accessories.EXCORIATE.get()) {
             player.getAttribute(BHAttributes.CRITICAL_DAMAGE.get()).removeModifier(BONUS_CRIT_DAMAGE);
         }
@@ -136,9 +136,9 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
 
 
     @Override
-    public void onEquip(Player player, ItemStack itemStack) {
-        BeyondHorizon.LOGGER.debug("Item has been put? {}", itemStack.getItem());
+    public void onEquip(Player player, ItemStack itemStack, int slot) {
     }
+
     @Override
     public int onItemUseItem(ItemStack itemStack, int duration) {
         if (this == Accessories.GHOUL.get()) {

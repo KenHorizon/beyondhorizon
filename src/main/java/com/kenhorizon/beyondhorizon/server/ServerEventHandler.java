@@ -29,6 +29,7 @@ import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryDataSyncPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataSyncPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
@@ -156,6 +157,9 @@ public class ServerEventHandler {
             if (event.getEntity() instanceof Player player) {
                 LevelSystem role = Capabilities.levelSystem(player);
                 PlayerData data = Capabilities.data(player);
+                AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                    NetworkHandler.sendToPlayer(new ClientboundAccessoryDataSyncPacket(handler.serializeNBT()), (ServerPlayer) player);
+                });
                 NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) player);
                 NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) player);
                 PlayerData playerData = Capabilities.data(player);
@@ -355,7 +359,9 @@ public class ServerEventHandler {
                                 for (Accessory accessory : item.getAccessories()) {
                                     accessory.removeAttributeModifiers(player, map);
                                     Optional<IAccessoryEvent> optional = accessory.IAccessory();
-                                    optional.ifPresent(callback -> callback.onUnequip(player, prevItemStack));
+                                    if (optional.isPresent()) {
+                                        optional.get().onUnequip(player, prevItemStack, i);
+                                    }
                                 }
                             }
                         }
@@ -366,7 +372,9 @@ public class ServerEventHandler {
                             if (itemStacks.getItem() instanceof IAccessoryItem item) {
                                 for (Accessory accessory : item.getAccessories()) {
                                     Optional<IAccessoryEvent> optional = accessory.IAccessory();
-                                    optional.ifPresent(callback -> callback.onEquip(player, itemStacks));
+                                    if (optional.isPresent()) {
+                                        optional.get().onEquip(player, itemStacks, i);
+                                    }
                                 }
                             }
                         }

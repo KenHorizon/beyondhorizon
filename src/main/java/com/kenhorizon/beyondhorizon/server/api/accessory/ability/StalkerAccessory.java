@@ -27,18 +27,15 @@ public class StalkerAccessory extends AccessoryActiveSkill {
     }
 
     @Override
-    public void onUnequip(Player player, ItemStack itemStack) {
-        CompoundTag nbt = EntityData.getOrCreateTag(player);
-        BeyondHorizon.LOGGER.debug("Item has been taken? {}", itemStack.getItem());
-        nbt.remove("stalker_ability");
-        player.getAttribute(BHAttributes.STEALTH.get()).removeModifier(STEALTH_UUID);
-    }
-
-    @Override
     public void onDurationAbility(Player player, ItemStack itemStack, boolean active) {
         if (this.manaNotEnough(player)) {
             player.setInvisible(false);
-            player.getAttribute(BHAttributes.STEALTH.get()).removeModifier(STEALTH_UUID);
+            var attr = player.getAttribute(BHAttributes.STEALTH.get());
+            if (attr != null) {
+                if (attr.getModifier(STEALTH_UUID) != null) {
+                    attr.removeModifier(STEALTH_UUID);
+                }
+            }
         } else {
             player.setInvisible(active);
         }
@@ -54,7 +51,12 @@ public class StalkerAccessory extends AccessoryActiveSkill {
             }
             sLevel.playSound(null, BlockPos.containing(player.position()), SoundEvents.WARDEN_HEARTBEAT, SoundSource.PLAYERS);
         }
-        player.getAttribute(BHAttributes.STEALTH.get()).addTransientModifier(STEALTH);
+        var attr = player.getAttribute(BHAttributes.STEALTH.get());
+        if (attr != null) {
+            if (attr.getModifier(STEALTH_UUID) == null) {
+                attr.addTransientModifier(STEALTH);
+            }
+        }
     }
 
     @Override

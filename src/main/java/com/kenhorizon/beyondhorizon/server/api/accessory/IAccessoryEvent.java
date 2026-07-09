@@ -16,8 +16,8 @@ public interface IAccessoryEvent {
         return false;
     }
 
-    default void onUnequip(Player player, ItemStack itemStack) {}
+    default void onUnequip(Player player, ItemStack itemStack, int slot) {}
 
-    default void onEquip(Player player, ItemStack itemStack) {}
+    default void onEquip(Player player, ItemStack itemStack, int slot) {}
 
 }

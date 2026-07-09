@@ -16,10 +16,9 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public abstract class AccessoryActiveSkill extends Accessory implements IEntityProperties, IAttack, IAccessoryEvent {
     public enum ManaCostType {
@@ -29,6 +28,7 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
     }
     protected ManaCostType manaCostType;
     protected boolean active;
+    protected Map<Integer, Boolean> activeSlots = new HashMap<>();
 
     public AccessoryActiveSkill(ManaCostType manaCostType, float magnitude, int level) {
         super(ItemAbilityType.ACTIVE, magnitude, level);
@@ -89,18 +89,34 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
         return list;
     }
 
+    public void setActive(boolean active, int slot) {
+        this.active = active;
+        this.activeSlots.put(slot, active);
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void toggleActive(int slot) {
+        this.setActive(!this.isActive(), slot);
+    }
+
     protected int getManaCost() {
         return  0;
     }
-
 
     protected int getCooldown() {
         return 0;
     }
 
+    protected int getCastTime() {
+        return 0;
+    }
+
     @Override
-    public void onUnequip(Player player, ItemStack itemStack) {
-        this.active = false;
+    public void onUnequip(Player player, ItemStack itemStack, int slot) {
+        this.activeSlots.remove(slot);
     }
 
 
@@ -109,18 +125,16 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
         PlayerData playerData = Capabilities.data(player);
         try {
             boolean canUse = playerData.isOnCooldown(this.getId());
-            boolean flag = playerData.getMana() <= this.manaCost;
-            CompoundTag nbt = EntityData.getOrCreateTag(player);
+            boolean flag = playerData.getMana() <= this.getManaCost();
             if (!flag) {
                 this.playerManaCost(playerData, player);
                 this.onActiveAbility(player, itemStack);
-                this.active = !this.active;
+                this.toggleActive(slot);
             } else {
                 player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_NOT_ENOUGH_MANA).withStyle(ChatFormatting.RED), true);
             }
         } catch (Exception e) {
-            BeyondHorizon.LOGGER.warn("Player Data is null");
-//            throw new RuntimeException(e);
+            BeyondHorizon.LOGGER.warn("" + e);
         }
         return false;
     }
@@ -131,27 +145,25 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
 
     @Override
     public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
-        if (entity instanceof Player player) {
-            PlayerData data = Capabilities.data(player);
-            if (data != null && this.active && this.getManaCostType() == ManaCostType.PER_SECOND) {
-                if (player.tickCount % 10 == 0) {
-                    data.removeMana(this.manaCost, true);
+        this.activeSlots.forEach((slots, active) -> {
+            if (entity instanceof Player player) {
+                PlayerData data = Capabilities.data(player);
+                if (data != null && active && this.getManaCostType() == ManaCostType.PER_SECOND) {
+                    if (player.tickCount % 10 == 0) {
+                        data.removeMana(this.getManaCost(), true);
+                    }
                 }
+                this.onDurationAbility(player, itemStack, active);
             }
+        });
 
-            this.onDurationAbility(player, itemStack, this.active);
-        }
     }
 
     protected void playerManaCost(PlayerData data, Player player) {
         if (this.getManaCostType() == ManaCostType.PERCENTAGE) {
-            data.removeMana((int) (data.getMaxMana() / (Math.min(1.0F, this.manaCost / 100.0F))));
-        } else if (this.getManaCostType() == ManaCostType.PER_SECOND) {
-            if (player.tickCount % 20 == 0) {
-                data.removeMana(this.manaCost);
-            }
+            data.removeMana((int) (data.getMaxMana() / (Math.min(1.0F, this.getManaCost() / 100.0F))));
         } else {
-            data.removeMana(this.manaCost);
+            data.removeMana(this.getManaCost());
         }
     }
 
@@ -165,6 +177,7 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
         }
         return false;
     }
+
     public void onActiveAbility(Player player, ItemStack itemStack) {
 
     }

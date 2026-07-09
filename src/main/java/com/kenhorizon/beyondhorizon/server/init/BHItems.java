@@ -153,9 +153,10 @@ public class BHItems {
     public static final RegistryObject<Item> BLACK_IRON_SHOVEL = toolItem("black_iron_shovel", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.SHOVEL);
     public static final RegistryObject<Item> BLACK_IRON_HOE = toolItem("black_iron_hoe", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.HOE);
     //
+
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = accessoryHandheldItem("broken_hero_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.BROKEN_HERO_SWORD);
-    public static final RegistryObject<Item> SHEEN = accessoryHandheldItemX32("sheen", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.SHEEN);
-    public static final RegistryObject<Item> TWILIGHT_SWORD = accessoryHandheldItemX32("twilight_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.TWILIGHT_SWORD);
+    public static final RegistryObject<Item> SHEEN = accessoryHandheldItemX32("sheen", AccessoryItemGroup.SPELL_BLADE, AccessoryBuilder.SHEEN);
+    public static final RegistryObject<Item> TWILIGHT_SWORD = accessoryHandheldItemX32("twilight_sword", AccessoryItemGroup.SPELL_BLADE, AccessoryBuilder.TWILIGHT_SWORD);
 
     public static final RegistryObject<Item> SPEAR_OF_CHAOS = accessoryHandheldItemX32("spear_of_chaos", AccessoryItemGroup.FATALITY, AccessoryBuilder.SPEAR_OF_CHAOS);
     public static final RegistryObject<Item> HARPOON_HEAD = accessoryItem("harpoon_head", AccessoryItemGroup.FATALITY, AccessoryBuilder.HARPOON_HEAD);
@@ -171,11 +172,12 @@ public class BHItems {
     public static final RegistryObject<Item> RUMINATIVE_BEADS = accessoryBasicItem("ruminative_beads", AccessoryBuilder.RUMINATIVE_BEADS);
     public static final RegistryObject<Item> SPECTRAL_CLOAK = accessoryBasicItem("spectral_cloak", AccessoryBuilder.SPECTRAL_CLOAK);
      //
-     public static final RegistryObject<Item> DORAN_BLADE = accessoryItem("doran_blade", AccessoryBuilder.DORAN_BLADE);
-    public static final RegistryObject<Item> DORAN_BOW = accessoryItem("doran_bow", AccessoryBuilder.DORAN_BOW);
-    public static final RegistryObject<Item> DORAN_HELM = accessoryItem("doran_helm", AccessoryBuilder.DORAN_HELM);
-    public static final RegistryObject<Item> DORAN_RING = accessoryItem("doran_ring", AccessoryBuilder.DORAN_RING);
-    public static final RegistryObject<Item> DORAN_SHIELD = accessoryItem("doran_shield", AccessoryBuilder.DORAN_SHIELD);
+
+    public static final RegistryObject<Item> DORAN_BLADE = accessoryItem("doran_blade", AccessoryItemGroup.STARTER, AccessoryBuilder.DORAN_BLADE);
+    public static final RegistryObject<Item> DORAN_BOW = accessoryItem("doran_bow", AccessoryItemGroup.STARTER, AccessoryBuilder.DORAN_BOW);
+    public static final RegistryObject<Item> DORAN_HELM = accessoryItem("doran_helm", AccessoryItemGroup.STARTER, AccessoryBuilder.DORAN_HELM);
+    public static final RegistryObject<Item> DORAN_RING = accessoryItem("doran_ring", AccessoryItemGroup.STARTER, AccessoryBuilder.DORAN_RING);
+    public static final RegistryObject<Item> DORAN_SHIELD = accessoryItem("doran_shield", AccessoryItemGroup.STARTER, AccessoryBuilder.DORAN_SHIELD);
     public static final RegistryObject<Item> LIGHT_STRING_BOW = accessoryItem("light_string_bow", AccessoryBuilder.LIGHT_STRING_BOW);
     public static final RegistryObject<Item> HEAVY_STRING_BOW = accessoryItem("heavy_string_bow", AccessoryBuilder.HEAVY_STRING_BOW);
     public static final RegistryObject<Item> KRAKEN_SLAYER = accessoryItem("kraken_slayer", AccessoryBuilder.KRAKEN_SLAYER);

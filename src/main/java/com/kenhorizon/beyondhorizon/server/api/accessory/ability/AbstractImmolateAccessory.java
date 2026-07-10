@@ -5,6 +5,8 @@ import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.level.CombatCore;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,10 +32,9 @@ public abstract class AbstractImmolateAccessory extends AccessoryPassiveSkill {
                         sLevel.sendParticles(new RingParticleOptions(0, (float) -Math.PI / 2, 10, r, g, b, 1.0F, 32.0F, false, RingParticles.Behavior.GROW), entity.getX(), entity.getY(), entity.getZ(), 2, 0,0 ,0 ,0);
                     }
                     for (LivingEntity affected : entity.level().getEntitiesOfClass(LivingEntity.class, entity.getBoundingBox().inflate(6.0D, 2.0F, 6.0D))) {
-                        if (affected.isDamageSourceBlocked(this.getSource(affected))) continue;
                         if (affected != entity && !(affected.isInvulnerable() || affected.isAlliedTo(entity))) {
-                            affected.hurtTime = 0;
-                            affected.hurt(this.getSource(affected), this.getImmolateDamage(affected, entity));
+                            affected.invulnerableTime = 0;
+                            this.doDealDamage(this.damageType(), affected, entity, this.getImmolateDamage(affected, entity));
                         }
                     }
                 }
@@ -48,8 +49,16 @@ public abstract class AbstractImmolateAccessory extends AccessoryPassiveSkill {
         return 20L;
     }
 
-    public DamageSource getSource(LivingEntity affected) {
-        return BHDamageTypes.magicDamage(affected, true);
+    public DamageType damageType() {
+        return DamageType.MAGIC_DAMAGE;
+    }
+
+    public void doDealDamage(DamageType damageType, LivingEntity target, LivingEntity attacker, float damage) {
+        var combatCore = Capabilities.combat(attacker);
+        if (combatCore != null) {
+            combatCore.activated();
+        }
+        damageType.dealDamage(target, attacker, damage);
     }
 
     public abstract float getImmolateDamage(LivingEntity affected, LivingEntity source);

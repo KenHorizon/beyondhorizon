@@ -6,6 +6,8 @@ import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.api.level.IAbilityInfo;
+import com.kenhorizon.beyondhorizon.server.init.BHChatformatting;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -21,13 +23,17 @@ import net.minecraft.world.level.Level;
 
 import java.util.*;
 
-public abstract class WeaponActiveSkills extends Skill implements IAttack, IEntityProperties, IItemProperties {
+public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbilityInfo, IEntityProperties, IItemProperties {
     public enum ManaCostType {
         DEFAULT,
         PERCENTAGE
     }
     private float magnitude;
     private float level;
+    private int manaCost;
+    private int castTime;
+    private int maxCastTime;
+    private int cooldown;
     protected WeaponActiveSkills.ManaCostType manaCostType = ManaCostType.DEFAULT;
 
     public WeaponActiveSkills() {
@@ -36,7 +42,50 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
     }
 
     public WeaponActiveSkills.ManaCostType getManaCostType() {
-        return manaCostType;
+        return this.manaCostType;
+    }
+
+    @Override
+    public void setManaCost(int manaCost) {
+        this.manaCost = manaCost;
+    }
+
+    @Override
+    public void setCastTime(int castTime) {
+        if (castTime >= this.getMaxCastTime()) {
+            castTime = this.getMaxCastTime();
+        }
+        this.castTime = castTime;
+    }
+
+    @Override
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
+    }
+
+    @Override
+    public int getCastTime() {
+        return this.castTime;
+    }
+
+    @Override
+    public int getCooldown() {
+        return this.cooldown;
+    }
+
+    @Override
+    public int getManaCost() {
+        return this.manaCost;
+    }
+
+    @Override
+    public int getMaxCastTime() {
+        return this.maxCastTime;
+    }
+
+    @Override
+    public void setMaxCastTime(int maxCastTime) {
+        this.maxCastTime = maxCastTime;
     }
 
     @Override
@@ -48,10 +97,11 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
         } else {
             tooltips = Tooltips.TOOLTIP_MANA_COST;
         }
-        list.add(Component.translatable(tooltips, this.getManaCost()).withStyle(ChatFormatting.UNDERLINE));
+        list.add(this.spacing().append(Component.translatable(tooltips, this.getManaCost()).withStyle(BHChatformatting.MANA)));
         if (this.getCooldown() > 0) {
-            list.add(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, Maths.tickToSeconds(this.getCooldown())).withStyle(ChatFormatting.UNDERLINE));
+            list.add(this.spacing().append(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (this.getCooldown() / 20.0F)).withStyle(BHChatformatting.COOLDOWN)));
         }
+        list.add(Component.empty());
         if (this.appendTooltips(itemStack).isEmpty()) {
             list.add(Component.translatable(createId(), Maths.format(this.getMagnitude())));
         } else {
@@ -93,6 +143,7 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
             if (!player.isCreative()) {
                 playerData.removeMana(this.getManaCost());
             }
+            this.setCastTime(0);
         } catch (Exception e) {
             BeyondHorizon.LOGGER.warn("Player data is null! returning!!");
         }
@@ -137,10 +188,6 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IEnti
     public void setLevel(float level) {
         this.level = level;
     }
-
-    public abstract int getCooldown();
-
-    public abstract int getManaCost();
 
     public void abilityUse(ItemStack itemStack, Level level, Player user, InteractionHand hand) {
 

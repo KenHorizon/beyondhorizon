@@ -14,4 +14,8 @@ public class HudSprites {
     public static final ResourceLocation MANA = BeyondHorizon.resourceGui("sprites/icon/mana.png");
     public static final ResourceLocation BOSS_BAR_HUD_CONTAINER = BeyondHorizon.resourceGui("sprites/bossbar/container.png");
     public static final ResourceLocation BOSS_BAR_HUD = BeyondHorizon.resourceGui("sprites/bossbar/bossbar.png");
+
+    public static final ResourceLocation CAST_TIME = BeyondHorizon.resourceGui("sprites/hud/cast_time.png");
+    public static final ResourceLocation CAST_TIME_BACKGROUND = BeyondHorizon.resourceGui("sprites/hud/cast_time_background.png");
+    public static final ResourceLocation CAST_TIME_OVERLAY = BeyondHorizon.resourceGui("sprites/hud/cast_time_overlay.png");
 }

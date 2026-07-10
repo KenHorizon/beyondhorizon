@@ -20,9 +20,10 @@ import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-public class MagicWeaponBaseItem extends TieredItem implements ISkillItems<MagicWeaponBaseItem>, IReloadable {
+public class MagicWeaponBaseItem extends TieredItem implements ISkillItems, IReloadable {
     private final float attackDamage;
     private final float attackSpeed;
     private final float attackRange;
@@ -44,7 +45,6 @@ public class MagicWeaponBaseItem extends TieredItem implements ISkillItems<Magic
     @Override
     public void reload() {
         this.skills = this.registerSkills();
-        BeyondHorizon.LOGGER.debug("Setting up the skills {}", this.skills);
         this.setupDefault();
     }
 
@@ -106,11 +106,6 @@ public class MagicWeaponBaseItem extends TieredItem implements ISkillItems<Magic
     }
 
     @Override
-    public MagicWeaponBaseItem getItem() {
-        return this;
-    }
-
-    @Override
     public boolean hasSkill(Skill skill) {
         return this.skills.contains(skill);
     }
@@ -131,6 +126,12 @@ public class MagicWeaponBaseItem extends TieredItem implements ISkillItems<Magic
         return this.skills.stream().filter((_skill) ->
                 _skill == skill
         ).toList();
+    }
+
+    @Override
+    public Skill getActionSkils() {
+        Optional<Skill> actionTrait = this.skillBuilder.getActionTrait();
+        return actionTrait.orElse(null);
     }
 
     @Override

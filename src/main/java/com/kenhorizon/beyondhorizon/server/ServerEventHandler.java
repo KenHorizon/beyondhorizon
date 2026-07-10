@@ -27,6 +27,7 @@ import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
 import com.kenhorizon.beyondhorizon.server.item.QuiverItem;
 import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
+import com.kenhorizon.beyondhorizon.server.item.base.tools.DiggerItemUtils;
 import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryDataSyncPacket;
@@ -44,6 +45,7 @@ import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -208,6 +210,9 @@ public class ServerEventHandler {
     public void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         LevelSystem role = Capabilities.levelSystem(event.getEntity());
         PlayerData data = Capabilities.data(event.getEntity());
+        AccessoryHelper.getInventory((ServerPlayer) event.getEntity()).ifPresent(handler -> {
+            NetworkHandler.sendToPlayer(new ClientboundAccessoryDataSyncPacket(handler.serializeNBT()), (ServerPlayer) event.getEntity());
+        });
         NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
         NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) event.getEntity());
     }
@@ -217,15 +222,16 @@ public class ServerEventHandler {
         float heal = event.getAmount();
         LivingEntity entity = event.getEntity();
         float bonus = (float) (heal * event.getEntity().getAttributeValue(BHAttributes.HEALING.get()));
+        float finalHeal = heal + bonus;
         if (entity.level() instanceof ServerLevel level) {
-            if (entity.getHealth() < entity.getMaxHealth()) {
+            if (entity.getHealth() < entity.getMaxHealth() && finalHeal > 10.0F) {
                 if (BHConfigs.DAMAGE_INDICATOR) {
-                    damageIndicator(level, entity.getLastDamageSource(), true, heal, entity);
+                    damageIndicator(level, entity.getLastDamageSource(), true, finalHeal, entity);
                 }
 
             }
         }
-        event.setAmount(heal + bonus);
+        event.setAmount(finalHeal);
     }
 
     @SubscribeEvent
@@ -254,35 +260,16 @@ public class ServerEventHandler {
     public void onAttachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
         ItemStack stack = event.getObject();
         Item item = stack.getItem();
-        IAccessoryItem accessoryItem = null;
-        if (item instanceof  IAccessoryItem itemCurio) {
-            accessoryItem = itemCurio;
-        }
-        if (accessoryItem != null && accessoryItem.hasCapability(stack)) {
+        if (item instanceof IAccessoryItem accessoryItem && accessoryItem.hasCapability(stack)) {
             ItemizedAccessoryCap itemizedCapability = new ItemizedAccessoryCap(accessoryItem, stack);
             event.addCapability(BHCapabilties.ID_ITEM, AccessoryItemCap.createProvider(itemizedCapability));
         }
-    }
-
-    @SubscribeEvent
-    public void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(IAccessoryStackHandler.class);
-        event.register(ICombatCore.class);
-        event.register(IDamageInfo.class);
-        event.register(LevelSystem.class);
-        event.register(PlayerData.class);
-        event.register(IAccessory.class);
-        event.register(IStackHandler.class);
-        event.register(StackableTags.class);
-    }
-
-
-    @SubscribeEvent
-    public void onPlayerDeath(LivingDeathEvent event) {
-        if (event.getEntity() instanceof Player player) {
-//            AccessoryStackHandler.dropContent(player);
+        if (item instanceof ISkillItems skillItems && skillItems.hasCapability(stack)) {
+            ItemizedSkillsCap itemizedCapability = new ItemizedSkillsCap(skillItems, stack);
+            event.addCapability(BHCapabilties.ID_ITEM, SkillItemCap.createProvider(itemizedCapability));
         }
     }
+
     @SubscribeEvent
     public void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         Player player = event.getEntity();
@@ -588,7 +575,7 @@ public class ServerEventHandler {
         if (entity.hasEffect(BHEffects.LETHAL_PROTECTION_COOLDOWN.get())) {
             entity.removeEffect(BHEffects.LETHAL_PROTECTION.get());
         }
-        if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems<?> items) {
+        if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems items) {
             for (Skill skill : items.getSkills()) {
                 Optional<IEntityProperties> optional = skill.entityProperties();
                 optional.ifPresent(callback -> callback.onEntityUpdate(entity, itemStack));
@@ -609,7 +596,7 @@ public class ServerEventHandler {
                 ItemStack prevItemStacks = player.getInventory().getItem(i);
                 if (!ItemStack.matches(itemStack, prevItemStacks)) {
                     if (!prevItemStacks.isEmpty()) {
-                        if (prevItemStacks.getItem() instanceof ISkillItems<?> skillItems) {
+                        if (prevItemStacks.getItem() instanceof ISkillItems skillItems) {
                             for (Skill skill : skillItems.getSkills()) {
                                 Optional<IEntityProperties> optional = skill.entityProperties();
                                 skill.removeAttributeModifiers(player, player.getAttributes(), prevItemStacks);
@@ -618,7 +605,7 @@ public class ServerEventHandler {
                         }
                     }
                     if (!itemStack.isEmpty()) {
-                        if (itemStack.getItem() instanceof ISkillItems<?> skillItems) {
+                        if (itemStack.getItem() instanceof ISkillItems skillItems) {
                             for (Skill skill : skillItems.getSkills()) {
                                 Optional<IEntityProperties> optional = skill.entityProperties();
                                 skill.addAttributeModifiers(player, player.getAttributes(), itemStack);
@@ -711,7 +698,7 @@ public class ServerEventHandler {
         ItemStack targetMainHandItem = target.getMainHandItem();
         ICombatCore targetCombatCore = Capabilities.combat(target);
         if (event.isCanceled() || source.is(DamageTypes.GENERIC_KILL) || !(target.level() instanceof ServerLevel level)) return;
-        if (!targetMainHandItem.isEmpty() && target.getMainHandItem().getItem() instanceof ISkillItems<?> container) {
+        if (!targetMainHandItem.isEmpty() && target.getMainHandItem().getItem() instanceof ISkillItems container) {
             for (Skill trait : container.getSkills()) {
                 Optional<IAttack> weaponCallback = trait.attack();
                 if (weaponCallback.isPresent()) {
@@ -770,7 +757,7 @@ public class ServerEventHandler {
             }
             this.enchantmentOnHitEffect(attacker, damageDealt, source, target);
             damageDealt = this.enchantmentPostMitigationDamage(attacker, damageDealt, source, target);
-            if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
+            if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems container) {
                 for (Skill trait : container.getSkills()) {
                     Optional<IAttack> meleeWeaponCallback = trait.attack();
                     if (meleeWeaponCallback.isPresent()) {
@@ -870,7 +857,7 @@ public class ServerEventHandler {
                     }
                 }
             }
-            if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> container) {
+            if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems container) {
                 for (Skill trait : container.getSkills()) {
                     Optional<IAttack> meleeWeaponCallback = trait.attack();
                     if (meleeWeaponCallback.isPresent()) {
@@ -912,20 +899,25 @@ public class ServerEventHandler {
         int intAmount = (int) roundedAmount;
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
         Vec3 pos = entity.getEyePosition();
-        ChatFormatting damageIndColor;
+        Style damageIndColor;
         if (healing) {
-            damageIndColor = ChatFormatting.GREEN;
+            damageIndColor = BHChatformatting.HEAL;
         } else {
             if (BHConfigs.DAMAGE_INDICATOR_COLOR_FORMAT) {
-                damageIndColor = source.is(BHDamageTypeTags.PHYSICAL_DAMAGE) ? ChatFormatting.GOLD :
-                        source.is(BHDamageTypeTags.MAGIC_DAMAGE) ? ChatFormatting.BLUE :  source.is(BHDamageTypeTags.TRUE_DAMAGE) ? ChatFormatting.WHITE : ChatFormatting.RED;
-
-
+                if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
+                    damageIndColor = BHChatformatting.PHYSICAL_DAMAGE;
+                } else if (source.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
+                    damageIndColor = BHChatformatting.MAGIC_DAMAGE;
+                } else if (source.is(BHDamageTypeTags.TRUE_DAMAGE)) {
+                    damageIndColor = BHChatformatting.TRUE_DAMAGE;
+                } else {
+                    damageIndColor = BHChatformatting.RAW_DAMAGE;
+                }
             } else {
-                damageIndColor = ChatFormatting.GOLD;
+                damageIndColor = BHChatformatting.PHYSICAL_DAMAGE;
             }
             if (isCrit) {
-                damageIndColor = ChatFormatting.DARK_RED;
+                damageIndColor = BHChatformatting.CRITICAL_DAMAGE;
             }
         }
         MutableComponent component = Component.literal(text).withStyle(damageIndColor);
@@ -1053,7 +1045,7 @@ public class ServerEventHandler {
         int modifiyDropExperience = 0;
         ItemStack itemStack = player.getMainHandItem();
         modifiyDropExperience = this.enchantmentModifiyExpDrop(player, droppedExperience, target);
-        if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems<?> skillItems) {
+        if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems skillItems) {
             for (Skill skill : skillItems.getSkills()) {
                 Optional<IEntityProperties> callback = skill.entityProperties();
                 if (callback.isPresent()) {
@@ -1131,7 +1123,7 @@ public class ServerEventHandler {
                 });
                 ServerLevel level = (ServerLevel) player.level();
             }
-            if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems<?> skillItems) {
+            if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems skillItems) {
                 for (Skill trait : skillItems.getSkills()) {
                     Optional<IAttack> meleeWeaponCallback = trait.attack();
                     meleeWeaponCallback.ifPresent(callback -> callback.onEntityKilled(source, attacker, target));

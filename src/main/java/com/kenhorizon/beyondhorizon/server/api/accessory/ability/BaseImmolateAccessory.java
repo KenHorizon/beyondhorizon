@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -26,6 +27,7 @@ public class BaseImmolateAccessory extends AbstractImmolateAccessory {
             return (float) (source.getMaxHealth() * this.getMagnitude());
         }
     }
+
     public static class ImmolateVoid extends AbstractImmolateAccessory {
 
         public ImmolateVoid(float magnitude) {
@@ -33,8 +35,8 @@ public class BaseImmolateAccessory extends AbstractImmolateAccessory {
         }
 
         @Override
-        public DamageSource getSource(LivingEntity affected) {
-            return BHDamageTypes.trueDamage(affected, true);
+        public DamageType damageType() {
+            return DamageType.TRUE_DAMAGE;
         }
 
         @Override

@@ -15,7 +15,7 @@ public class SkillHelper {
         List<Skill> result = new ArrayList<>();
         if (!player.isAlive()) return result;
         ItemStack itemStack = player.getMainHandItem();
-        if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems<?> caller) {
+        if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems caller) {
             result.addAll(caller.getSkills());
         }
         return result;

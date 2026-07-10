@@ -35,6 +35,7 @@ public interface IAccessoryItem {
     default boolean checkIfNameLimitation(ItemStack inSlot, ItemStack outside) {
         return ((AccessoryItem) inSlot.getItem()).isNameLimitation() == ((AccessoryItem) outside.getItem()).isNameLimitation();
     }
+
     AccessoryItemGroup getItemGroup();
 
     default boolean isBasic() {
@@ -58,6 +59,6 @@ public interface IAccessoryItem {
     }
 
     default boolean makePiglinsNeutral() {
-        return false;
+        return defaultInstance.makePiglinsNeutral();
     }
 }

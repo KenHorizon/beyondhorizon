@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.particle.world;
 
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
 import com.mojang.brigadier.StringReader;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -70,6 +71,9 @@ public class RingParticleOptions implements ParticleOptions {
     private final boolean facesCamera;
     private final RingParticles.Behavior behavior;
 
+    public RingParticleOptions(float yaw, float pitch, int duration, int colors, float scale, boolean facesCamera, RingParticles.Behavior behavior) {
+        this(yaw, pitch, duration, Colors.getFARGB(colors)[0], Colors.getFARGB(colors)[1], Colors.getFARGB(colors)[2], Colors.getFARGB(colors)[3], scale, facesCamera, behavior);
+    }
     public RingParticleOptions(float yaw, float pitch, int duration, float r, float g, float b, float a, float scale, boolean facesCamera, RingParticles.Behavior behavior) {
         this.yaw = yaw;
         this.pitch = pitch;

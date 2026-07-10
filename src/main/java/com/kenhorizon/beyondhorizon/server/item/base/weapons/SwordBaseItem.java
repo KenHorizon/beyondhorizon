@@ -47,7 +47,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseItem>, IReloadable, ILeftClick, ICustomSweepParticle, ICustomHitSound, IArmPose {
+public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable, ILeftClick, ICustomSweepParticle, ICustomHitSound, IArmPose {
     private final float attackDamage;
     private final float attackSpeed;
     private final float attackRange;
@@ -127,9 +127,6 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     @Override
     public void reload() {
         this.skills = this.registerAllSkills();
-        if (!this.skills.isEmpty()) {
-            BeyondHorizon.LOGGER.debug("Setting up the skills {}", this.skills);
-        }
         this.setupDefault();
     }
 
@@ -231,11 +228,6 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     }
 
     @Override
-    public SwordBaseItem getItem() {
-        return this;
-    }
-
-    @Override
     public boolean hasSkill(Skill skill) {
         return this.skills.contains(skill);
     }
@@ -314,6 +306,12 @@ public class SwordBaseItem extends SwordItem implements ISkillItems<SwordBaseIte
     @Override
     public boolean sweepParticles(Player player) {
         return false;
+    }
+
+    @Override
+    public Skill getActionSkils() {
+        Optional<Skill> actionTrait = this.skillBuilder.getActionTrait();
+        return actionTrait.orElse(null);
     }
 
     @Override

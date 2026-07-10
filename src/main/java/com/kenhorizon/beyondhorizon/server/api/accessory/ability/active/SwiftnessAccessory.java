@@ -1,7 +1,10 @@
-package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
+package com.kenhorizon.beyondhorizon.server.api.accessory.ability.active;
 
+import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryActiveSkill;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
@@ -19,10 +22,12 @@ public class SwiftnessAccessory extends AccessoryActiveSkill {
     @Override
     public void onActiveAbility(Player player, ItemStack itemStack) {
         if (player.level() instanceof ServerLevel sLevel) {
-            sLevel.sendParticles(new TrailParticleOptions(20, 0, 186, 255, 255, 1.0F,
-                    TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(player.getX(), player.getY() + player.getBbHeight() / 2, player.getZ())
-            ),player.getX(), player.getY() + player.getBbHeight() / 2, player.getZ(),10,0,0, 0, 0);
-            sLevel.playSound(null, BlockPos.containing(player.position()), SoundEvents.PLAYER_LEVELUP, SoundSource.PLAYERS);
+            for (int i = 0; i < 12; i++) {
+                sLevel.sendParticles(new TrailParticleOptions(20, 0, 186, 255, 255, 1.0F,
+                        TrailParticles.Behavior.FADE, new Vec3(player.getRandomX(0.50D), player.getY() + player.getBbHeight() / 2, player.getRandomZ(0.50D))
+                ),player.getX(), player.getY() + player.getBbHeight() / 2, player.getZ(),1,0,0, 0, 0);
+            }
+            sLevel.sendParticles(new RingParticleOptions(0, (float) Math.PI / 2, 20, Colors.GREEN, 32.0F, false, RingParticles.Behavior.GROW), player.getX(), player.getY() + player.getBbHeight() / 2, player.getZ(),1, 0,0,0, 0);
         }
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, Maths.sec(5), 1, true, true));
     }

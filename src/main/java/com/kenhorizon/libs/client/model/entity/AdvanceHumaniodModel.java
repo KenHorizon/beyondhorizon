@@ -4,51 +4,78 @@ import com.kenhorizon.libs.client.animation.AdvanceKeyframeAnimation;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.animation.AnimationDefinition;
-import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.ArmedModel;
+import net.minecraft.client.model.HeadedModel;
+import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Vector3f;
 
 import java.util.Optional;
 import java.util.function.Function;
 
-public abstract class AdvanceEntityModel<T extends Entity> extends EntityModel<T> implements IAnimatedModelEntity {
+@OnlyIn(Dist.CLIENT)
+public abstract class AdvanceHumaniodModel<T extends LivingEntity> extends HumanoidModel<T> implements IAnimatedModelEntity, ArmedModel, HeadedModel {
     private static final Vector3f ANIMATION_VECTOR_CACHE = new Vector3f();
-
-    public AdvanceEntityModel() {
-        this(RenderType::entityCutoutNoCull);
+    public static final CubeDeformation OUTER_ARMOR_DEFORMATION = new CubeDeformation(1.0F);
+    public static final CubeDeformation INNER_ARMOR_DEFORMATION = new CubeDeformation(0.5F);
+    public AdvanceHumaniodModel(ModelPart modelPart, Function<ResourceLocation, RenderType> renderType) {
+        super(modelPart, renderType);
     }
 
-    public AdvanceEntityModel(Function<ResourceLocation, RenderType> typeFunction) {
-        super(typeFunction);
+    public AdvanceHumaniodModel(ModelPart modelPart) {
+        this(modelPart, RenderType::entityTranslucent);
     }
 
     public abstract ModelPart root();
+    public abstract ModelPart head();
 
-    public ModelPart head() {
-        return null;
+    @Override
+    public Optional<ModelPart> getAnyDescendantWithName(String name) {
+        return name.equals("root") ? Optional.of(this.root()) : this.root().getAllParts().filter((hasChild) -> {
+            return hasChild.hasChild(name);
+        }).findFirst().map((child) -> {
+            return child.getChild(name);
+        });
+    }
+
+    @Override
+    public void translateToHand(HumanoidArm humanoidArm, PoseStack poseStack) {
+        this.getArm(humanoidArm).translateAndRotate(poseStack);
     }
 
     public void resetModelDefault() {
         this.root().getAllParts().forEach(ModelPart::resetPose);
     }
 
-    @Override
-    public Optional<ModelPart> getAnyDescendantWithName(String name) {
-        return name.equals("root") ? Optional.of(this.root()) : this.root().getAllParts().filter((modelPart) -> {
-            return modelPart.hasChild(name);
-        }).findFirst().map((modelPart) -> {
-            return modelPart.getChild(name);
-        });
+    protected ModelPart getArm(HumanoidArm humanoidArm) {
+        return humanoidArm == HumanoidArm.LEFT ? this.leftArm : this.rightArm;
     }
 
 
+    public static LayerDefinition createInnerArmorLayer() {
+        return LayerDefinition.create(createMesh(INNER_ARMOR_DEFORMATION, 0.0F), 64, 32);
+    }
+    public static LayerDefinition createOuterArmorLayer() {
+        return LayerDefinition.create(createMesh(OUTER_ARMOR_DEFORMATION, 0.0F), 64, 32);
+    }
+
     @Override
-    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch) {
-        this.animations(entity,limbSwing,limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+    public void setupAnim(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch) {
+        this.resetModelDefault();
+        if (this.head() != null) {
+            this.headLook(this.head(), yaw, pitch);
+        }
+        this.animations(entity,limbSwing,limbSwingAmount, ageInTicks, pitch, pitch);
     }
 
     public abstract void animations(T entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch);

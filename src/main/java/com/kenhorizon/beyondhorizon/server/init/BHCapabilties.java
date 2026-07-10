@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
+import com.kenhorizon.beyondhorizon.server.api.skills.ISkill;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance;
 import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
@@ -14,6 +15,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 
 public class BHCapabilties {
+    public static final Capability<ISkill> SKILL_ITEM = CapabilityManager.get(new CapabilityToken<>() {});
     public static final Capability<IAccessory> ACCESSORY_ITEM = CapabilityManager.get(new CapabilityToken<>() {});
     public static final Capability<IStackableInstance> STACK_TAGS = CapabilityManager.get(new CapabilityToken<>() {});
     public static final Capability<IAccessoryStackHandler> ACCESSORY = CapabilityManager.get(new CapabilityToken<>() {});

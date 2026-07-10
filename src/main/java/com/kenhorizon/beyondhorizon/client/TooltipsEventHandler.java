@@ -58,7 +58,7 @@ public class TooltipsEventHandler {
     @SubscribeEvent
     public void onRegisterTooltipGatherComponents(RenderTooltipEvent.GatherComponents event) {
         ItemStack stack = event.getItemStack();
-        if (stack.getItem() instanceof ISkillItems<?> || stack.getItem() instanceof IAccessoryItem) {
+        if (stack.getItem() instanceof ISkillItems || stack.getItem() instanceof IAccessoryItem) {
             event.setMaxWidth(580);
         }
     }

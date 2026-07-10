@@ -1,5 +1,7 @@
-package com.kenhorizon.beyondhorizon.client.render.guis.hud;
+package com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay;
 
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.HudInfo;
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.HudSprites;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import net.minecraft.client.gui.GuiGraphics;
@@ -7,8 +9,7 @@ import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 public class ManaHud implements IGuiOverlay {
-    private final HudInfo hud = new HudInfo();
-
+    protected final HudInfo hud = new HudInfo();
     @Override
     public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         if (gui.getMinecraft().options.hideGui || !gui.shouldDrawSurvivalElements()) return;

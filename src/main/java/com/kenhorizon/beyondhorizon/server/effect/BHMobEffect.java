@@ -117,7 +117,7 @@ public class BHMobEffect extends MobEffect {
             if (!cancelHeal && entity.getHealth() < entity.getMaxHealth()) {
                 if (entity.tickCount % this.rapidHealingRate == 0) {
                     //BeyondHorizon.LOGGER.debug("Rapid Healing Debug: Rate:{} Limit:{} Minus:{}", this.rapidHealingRate, this.rapidHealingLimitRate, this.rapidHealingMinusRate);
-                    entity.heal(0.5F);
+                    entity.heal(0.1F);
                     if (this.rapidHealingRate > this.rapidHealingLimitRate) {
                         this.rapidHealingRate -= this.rapidHealingMinusRate;
                     } else {
@@ -147,9 +147,8 @@ public class BHMobEffect extends MobEffect {
             entity.setDeltaMovement(0, vec3.y() > 0 ? 0 : vec3.y(), 0);
         }
         if (this == BHEffects.LETHAL_POISON.get()) {
-            int level = amplifier / 2;
             if (entity.getHealth() > 0.0F) {
-                entity.hurt(entity.damageSources().magic(), 0.5F + level);
+                entity.hurt(entity.damageSources().magic(), 1.0F + amplifier);
             }
             if (entity.level() instanceof ServerLevel sLevel) {
                 sLevel.sendParticles(BHParticle.RED_SKULL.get(), entity.getRandomX(0.5D), entity.getRandomY(), entity.getRandomZ(0.5D), 2, 0,0,0, 0.005D);
@@ -162,8 +161,8 @@ public class BHMobEffect extends MobEffect {
         if (user instanceof ServerPlayer player) {
             AABB range = player.getBoundingBox().inflate(rangeLevel);
             for (LivingEntity targetZombies : user.level().getEntitiesOfClass(LivingEntity.class, range)) {
-                if (targetZombies instanceof Zombie zombie) {
-                    zombie.getMoveControl().setWantedPosition(player.getX(), player.getY(), player.getZ(), 1.0D);
+                if (targetZombies instanceof Zombie zombie && zombie.getTarget() == null) {
+                    zombie.getNavigation().moveTo(player.getX(), player.getY(), player.getZ(), 1.0D);
                 }
             }
         }

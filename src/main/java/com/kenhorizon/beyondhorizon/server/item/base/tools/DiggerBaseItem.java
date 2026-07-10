@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
+import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.item.ICustomHitSound;
 import com.kenhorizon.beyondhorizon.server.item.ICustomSweepParticle;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
@@ -18,6 +19,7 @@ import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -43,7 +45,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
 
-public class DiggerBaseItem extends DiggerItem implements ISkillItems<DiggerBaseItem>, IReloadable, ILeftClick, ICustomSweepParticle, ICustomHitSound {
+public class DiggerBaseItem extends DiggerItem implements ISkillItems, IReloadable, ILeftClick, ICustomSweepParticle, ICustomHitSound {
     private final TagKey<Block> blockTagKey;
     protected final float miningSpeed;
     private final float attackDamage;
@@ -170,16 +172,6 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems<DiggerBase
     }
 
     @Override
-    public boolean mineBlock(ItemStack itemStack, Level level, BlockState blockState, BlockPos blockPos, LivingEntity entity) {
-        return super.mineBlock(itemStack, level, blockState, blockPos, entity);
-    }
-
-    @Override
-    public DiggerBaseItem getItem() {
-        return this;
-    }
-
-    @Override
     public boolean hasSkill(Skill skill) {
         return this.skills.contains(skill);
     }
@@ -253,6 +245,14 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems<DiggerBase
     public boolean sweepParticles(Player player) {
         return false;
     }
+
+
+    @Override
+    public Skill getActionSkils() {
+        Optional<Skill> actionTrait = this.skillBuilder.getActionTrait();
+        return actionTrait.orElse(null);
+    }
+
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {

@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.item.base;
 
 import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
 import com.kenhorizon.libs.client.WeaponAnimations;
@@ -22,15 +21,7 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 import java.util.Optional;
 
-public class SkillBaseItems {
-    private final Item item;
-    public SkillBaseItems(Item item) {
-        this.item = item;
-    }
-
-    public Item getItem() {
-        return item;
-    }
+public record SkillBaseItems(Item item) {
 
     public void appendHoverText(ItemStack itemStack, List<Component> tooltip, List<Skill> skills) {
         int size = skills.size();
@@ -69,15 +60,9 @@ public class SkillBaseItems {
         }
         return false;
     }
+
     public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration, SkillBuilder builder) {
         if (entity instanceof Player player) {
-//            if (skills != null) {
-//                skills.forEach((skill) -> {
-//                    skill.itemProperties().ifPresent(callback -> {
-//                        callback.onUsingTick(level, player, itemStack, remainingUseDuration);
-//                    });
-//                });
-//            }
             Optional<Skill> actionTrait = builder.getActionTrait();
             if (actionTrait.isPresent()) {
                 Skill trait = actionTrait.get();
@@ -104,7 +89,7 @@ public class SkillBaseItems {
         Optional<Skill> actionTrait = builder.getActionTrait();
         if (actionTrait.isPresent()) {
             Skill trait = actionTrait.get();
-            if(trait.itemProperties().isPresent())
+            if (trait.itemProperties().isPresent())
                 return trait.itemProperties().get().getUseDuration(itemStack);
         }
         return original;
@@ -114,7 +99,7 @@ public class SkillBaseItems {
         Optional<Skill> actionTrait = builder.getActionTrait();
         if (actionTrait.isPresent()) {
             Skill trait = actionTrait.get();
-            if(trait.itemProperties().isPresent())
+            if (trait.itemProperties().isPresent())
                 return trait.itemProperties().get().use(itemStack, level, player, hand);
         }
         return null;
@@ -124,7 +109,7 @@ public class SkillBaseItems {
         Optional<Skill> actionTrait = builder.getActionTrait();
         if (actionTrait.isPresent()) {
             Skill trait = actionTrait.get();
-            if(trait.itemProperties().isPresent())
+            if (trait.itemProperties().isPresent())
                 trait.itemProperties().get().finishedUsingItem(itemStack, level, player);
         }
     }
@@ -133,7 +118,7 @@ public class SkillBaseItems {
         Optional<Skill> actionTrait = builder.getActionTrait();
         if (actionTrait.isPresent()) {
             Skill trait = actionTrait.get();
-            if(trait.itemProperties().isPresent())
+            if (trait.itemProperties().isPresent())
                 return trait.itemProperties().get().getWeaponAnimations();
         }
         return WeaponAnimations.EMPTY;
@@ -143,7 +128,7 @@ public class SkillBaseItems {
         Optional<Skill> actionTrait = builder.getActionTrait();
         if (actionTrait.isPresent()) {
             Skill trait = actionTrait.get();
-            if(trait.itemProperties().isPresent())
+            if (trait.itemProperties().isPresent())
                 return trait.itemProperties().get().getWeaponArmPose();
         }
         return WeaponArmPose.EMPTY;

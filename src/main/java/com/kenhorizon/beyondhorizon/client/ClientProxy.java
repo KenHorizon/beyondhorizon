@@ -8,10 +8,11 @@ import com.kenhorizon.beyondhorizon.client.render.entity.ability.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.projectiles.*;
 import com.kenhorizon.beyondhorizon.client.render.guis.QuiverScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.VoidBagScreen;
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay.AbilityHud;
 import com.kenhorizon.beyondhorizon.client.render.guis.workbench.WorkbenchScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
-import com.kenhorizon.beyondhorizon.client.render.guis.hud.ManaHud;
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay.ManaHud;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ClientQuiverTooltip;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ClientVoidBagTooltip;
 import com.kenhorizon.beyondhorizon.client.render.item.AccessoryItemDecorations;
@@ -23,7 +24,15 @@ import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRen
 import com.kenhorizon.beyondhorizon.client.render.shaders.BakedModelShadeLayerFullbright;
 import com.kenhorizon.beyondhorizon.client.util.EmissiveBlocks;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
+import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
+import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
@@ -63,6 +72,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
@@ -93,9 +103,23 @@ public class ClientProxy extends ServerProxy {
         bus.addListener(this::registerGuiOverlays);
         bus.addListener(this::registerNewRegsitry);
         bus.addListener(this::onRegisterItemDecorations);
+        bus.addListener(this::onRegisterCapabilities);
         ClientQuiverTooltip.registerFactory();
         ClientVoidBagTooltip.registerFactory();
     }
+
+
+    private void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        event.register(IAccessoryStackHandler.class);
+        event.register(ICombatCore.class);
+        event.register(IDamageInfo.class);
+        event.register(LevelSystem.class);
+        event.register(PlayerData.class);
+        event.register(IAccessory.class);
+        event.register(IStackHandler.class);
+        event.register(StackableTags.class);
+    }
+
 
     private void onRegisterItemDecorations(final RegisterItemDecorationsEvent event) {
         for (Item item : ForgeRegistries.ITEMS) {
@@ -111,8 +135,9 @@ public class ClientProxy extends ServerProxy {
         event.dataPackRegistry(BHRegistries.Keys.SPAWNER_BUILDER, SpawnerConfig.MAP_CODEC.codec());
     }
 
-    public void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+    private void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
         event.registerBelow(VanillaGuiOverlay.ARMOR_LEVEL.id(), "mana_hud", new ManaHud());
+        event.registerBelow(VanillaGuiOverlay.ITEM_NAME.id(), "ability_hud", new AbilityHud());
     }
 
     private void addResourcesBuiltin(AddPackFindersEvent event) {

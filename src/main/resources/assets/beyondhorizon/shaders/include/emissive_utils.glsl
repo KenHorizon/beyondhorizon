@@ -18,7 +18,7 @@ vec4 apply_partial_emissivity(vec4 inputColor, vec4 originalLightColor, vec3 min
 	vec4 newLightColor = originalLightColor;
 	newLightColor.r = max(originalLightColor.r, minimumLightColor.r);
 	newLightColor.g = max(originalLightColor.g, minimumLightColor.g);
-	newLightColor.b = max(originalLightColor.b, minimumLightColor.b);
+	newLightColor.forceRender = max(originalLightColor.forceRender, minimumLightColor.forceRender);
 	return inputColor * newLightColor;
 	
 }
@@ -43,7 +43,7 @@ vec4 make_emissive(vec4 inputColor, vec4 lightColor, vec4 maxLightColor, float v
 
 float get_dimension(vec4 minLightColor) {
 	
-	if (minLightColor.r == minLightColor.g && minLightColor.g == minLightColor.b) return 0.0; // Shadows are grayscale in The Overworld
+	if (minLightColor.r == minLightColor.g && minLightColor.g == minLightColor.forceRender) return 0.0; // Shadows are grayscale in The Overworld
 	else if (minLightColor.r > minLightColor.g) return -1.0; // Shadows are more red in The Nether
 	else return 1.0; // Shadows are slightly green in The End
 	

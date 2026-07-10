@@ -1,6 +1,7 @@
 package com.kenhorizon.libs.client.animation;
 
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
+import com.kenhorizon.libs.client.model.entity.IAnimatedModelEntity;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
@@ -17,11 +18,10 @@ import java.util.Optional;
 
 @OnlyIn(Dist.CLIENT)
 public class AdvanceKeyframeAnimation {
-    public static void animate(AdvanceEntityModel<?> model, AnimationDefinition definition, long accumulatedTime, float scale, Vector3f animationVecCache) {
+    public static void animate(IAnimatedModelEntity modelEntity, AnimationDefinition definition, long accumulatedTime, float scale, Vector3f animationVecCache) {
         float elapsedSeconds = getElapsedSeconds(definition, accumulatedTime);
-
         for(Map.Entry<String, List<AnimationChannel>> entry : definition.boneAnimations().entrySet()) {
-            Optional<ModelPart> optional = model.getAnyDescendantWithName(entry.getKey());
+            Optional<ModelPart> optional = modelEntity.getAnyDescendantWithName(entry.getKey());
             List<AnimationChannel> list = entry.getValue();
             optional.ifPresent((modelPart) -> {
                 list.forEach((channel) -> {

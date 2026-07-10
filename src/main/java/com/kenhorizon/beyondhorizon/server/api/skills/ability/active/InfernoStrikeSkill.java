@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.api.skills.ability;
+package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
@@ -39,6 +39,9 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
     public InfernoStrikeSkill(float maxSlow, float scaleDamage) {
         this.maxSlow = maxSlow;
         this.scaleDamage = scaleDamage;
+        this.setCooldown(Maths.sec(6));
+        this.setMaxCastTime(Maths.sec(3));
+        this.setManaCost(20);
     }
 
     @Override
@@ -58,9 +61,7 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
     @Override
     public void releaseUsing(ItemStack itemStack, Level level, LivingEntity entity, int chargedDuration) {
         if (entity instanceof Player player) {
-            int durations = this.getUseDuration(itemStack) - chargedDuration;
-            if (durations <= 0) return;
-            float durationFactor = (float) Mth.lerp((float) durations / Maths.sec(3), 0.0D, 1.0D);
+            float durationFactor = (float) Mth.lerp((float) this.getCastTime() / this.getMaxCastTime(), 0.0D, 1.0D);
             if (!((double) durationFactor < 0.1D)) {
                 if (!level.isClientSide()) {
                     this.addCooldownManaCost(player);
@@ -107,9 +108,8 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
     @Override
     public void onUsingTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration) {
         if (level.isClientSide()) {
-            int durations = this.getUseDuration(itemStack) - remainingUseDuration;
-            if (durations <= 0) return;
-            float durationFactor = (float) Mth.lerp((float) durations / Maths.sec(3), 0.0D, 1.0D);
+            this.setCastTime(this.getCastTime() + 1);
+            float durationFactor = (float) Mth.lerp((float) this.getCastTime() / this.getMaxCastTime(), 0.0D, 1.0D);
             if (!((double) durationFactor < 0.1D)) {
                 var color = Colors.lerpG(durationFactor, Colors.RED, Colors.YELLOW);
                 if (entity.tickCount % 8L == 0) {
@@ -147,20 +147,6 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
         if (player.isUsingItem()) {
             attributeInstance.addTransientModifier(SPEED_MODIFIER_SPRINTING);
         }
-    }
-    @Override
-    public int getUseDuration(ItemStack itemStack) {
-        return super.getUseDuration(itemStack);
-    }
-
-    @Override
-    public int getCooldown() {
-        return Maths.sec(6);
-    }
-
-    @Override
-    public int getManaCost() {
-        return 20;
     }
 
 }

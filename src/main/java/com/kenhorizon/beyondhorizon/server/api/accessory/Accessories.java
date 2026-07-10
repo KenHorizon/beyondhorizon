@@ -2,6 +2,8 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.datagen.BHLangProvider;
 import com.kenhorizon.beyondhorizon.server.api.accessory.ability.*;
+import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.StalkerAccessory;
+import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.SwiftnessAccessory;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;

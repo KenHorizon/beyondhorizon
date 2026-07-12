@@ -8,18 +8,17 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-public class ManaHud implements IGuiOverlay {
-    protected final HudInfo hud = new HudInfo();
+public class ManaHud extends HudOverlay{
     @Override
     public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
+        this.hud.update();
         if (gui.getMinecraft().options.hideGui || !gui.shouldDrawSurvivalElements()) return;
         gui.setupOverlayRenderState(true, false);
         gui.getMinecraft().getProfiler().push("player_mana");
-        this.hud.update();
         int x = screenWidth / 2 - 91;
         int y = screenHeight - (gui.leftHeight + 21);
         String value = String.format("%.0f/%.0f", this.hud.mana, this.hud.maxMana);
-        BlitHelper.drawBlit(guiGraphics, HudSprites.MANA, x, y - 1, 0,0,9, 9, 9, 9);
+        BlitHelper.drawIcons(guiGraphics, HudSprites.MANA, x, y - 1);
         BlitHelper.drawBorderedStrings(gui.getMinecraft().font, guiGraphics, value,x + (5 + 9), y, Colors.combineRGB(0, 148, 255));
         gui.getMinecraft().getProfiler().pop();
     }

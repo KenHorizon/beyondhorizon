@@ -5,11 +5,12 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
-import com.kenhorizon.beyondhorizon.server.item.IArmPose;
-import com.kenhorizon.beyondhorizon.server.item.ICustomHitSound;
-import com.kenhorizon.beyondhorizon.server.item.ICustomSweepParticle;
-import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
+import com.kenhorizon.beyondhorizon.server.api.ISkillSlots;
+import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
+import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
+import com.kenhorizon.beyondhorizon.server.item.*;
 import com.kenhorizon.beyondhorizon.server.item.base.SkillBaseItems;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
@@ -20,6 +21,7 @@ import com.kenhorizon.libs.client.WeaponArmPose;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -41,6 +43,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -51,21 +54,23 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
     private final float attackDamage;
     private final float attackSpeed;
     private final float attackRange;
-    protected List<Skill> skills = ImmutableList.of();
     public final MeleeWeaponMaterials materials;
     protected final SkillBuilder skillBuilder;
+    public List<Skill> skills = ImmutableList.of();
+    public List<Optional<Skill>> activeSkills = ImmutableList.of();
     protected Multimap<Attribute, AttributeModifier> attributeModifiers;
     protected final Multimap<Attribute, AttributeModifier> otherAttributeModifiers = HashMultimap.create();
     protected final SkillBaseItems skillBaseItems;
+    private int skillSlots = 0;
 
     public SwordBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, float attackRange, Properties properties, SkillBuilder skillbuilder) {
         super(materials, 0, attackSpeed, materials.fireImmune() ? properties.fireResistant() : properties);
-        this.skillBaseItems = new SkillBaseItems(this);
         this.materials = materials;
         this.skillBuilder = skillbuilder;
         this.attackDamage = materials.getAttackDamageBonus() + attackDamage - 1.0f;
         this.attackSpeed = attackSpeed - 4.0F;
         this.attackRange = (float) (attackRange - 3.0F);
+        this.skillBaseItems = new SkillBaseItems(this);
         ReloadableHandler.addToReloadList(this);
     }
 
@@ -87,6 +92,25 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
 
     public SwordBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, Properties properties) {
         this(materials, attackDamage, attackSpeed, 0, properties, SkillBuilder.NONE);
+    }
+
+    public SwordBaseItem addAttribues(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
+        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
+        this.otherAttributeModifiers.put(attribute, attributemodifier);
+        return this;
+    }
+
+    @Override
+    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
+        return equipmentSlot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getDefaultAttributeModifiers(equipmentSlot);
+    }
+
+    @Override
+    public void reload() {
+        this.skills = this.registerAllSkills();
+        this.activeSkills = this.registerAllActiveSkills();
+        this.setupDefault();
+        this.skillBaseItems.setSkills(this.skills, this.activeSkills);
     }
 
     private void setupDefault() {
@@ -113,27 +137,15 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
         this.attributeModifiers = mapBuilder.build();
     }
 
-    public SwordBaseItem addAttribues(Attribute attribute, String uuid, double amount, AttributeModifier.Operation operation) {
-        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(uuid), "Attribute Modifier", amount, operation);
-        this.otherAttributeModifiers.put(attribute, attributemodifier);
-        return this;
-    }
-
-    @Override
-    public @NotNull Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot equipmentSlot) {
-        return equipmentSlot == EquipmentSlot.MAINHAND ? this.attributeModifiers : super.getDefaultAttributeModifiers(equipmentSlot);
-    }
-
-    @Override
-    public void reload() {
-        this.skills = this.registerAllSkills();
-        this.setupDefault();
-    }
-
     private ImmutableList<Skill> registerAllSkills() {
         ImmutableList.Builder<Skill> builder = ImmutableList.builder();
         builder.addAll(this.skillBuilder.getSkills());
         builder.addAll(this.materials.getSkills());
+        return builder.build();
+    }
+    private ImmutableList<Optional<Skill>> registerAllActiveSkills() {
+        ImmutableList.Builder<Optional<Skill>> builder = ImmutableList.builder();
+        builder.addAll(this.skillBuilder.getActionSkills());
         return builder.build();
     }
 
@@ -149,7 +161,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
 
     @Override
     public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration) {
-        this.skillBaseItems.onUseTick(level, entity, itemStack, remainingUseDuration, this.skillBuilder);
+        this.skillBaseItems.onUseTick(level, entity, itemStack, remainingUseDuration);
     }
 
     @Override
@@ -159,19 +171,19 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
 
     @Override
     public int getUseDuration(ItemStack itemStack) {
-        int original = super.getUseDuration(itemStack);
-        return this.skillBaseItems.getUseDuration(itemStack, original, this.skillBuilder);
+        int value = this.skillBaseItems.getUseDuration(itemStack);
+        return value > 0 ? value : super.getUseDuration(itemStack);
     }
 
     @Override
     public void releaseUsing(ItemStack itemStack, Level level, LivingEntity entity, int timeCharged) {
-        this.skillBaseItems.releaseUsing(level, entity, itemStack, timeCharged, this.skillBuilder);
+        this.skillBaseItems.releaseUsing(level, entity, itemStack, timeCharged);
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity entity) {
         if (entity instanceof Player player) {
-            this.skillBaseItems.finishUsingItem(level, player, itemStack, this.skillBuilder);
+            return this.skillBaseItems.finishUsingItem(level, player, itemStack);
         }
         return super.finishUsingItem(itemStack, level, entity);
     }
@@ -179,28 +191,31 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        return this.skillBaseItems.use(level, player, itemStack, hand, this.skillBuilder) == null ? super.use(level, player, hand) : this.skillBaseItems.use(level, player, itemStack, hand, this.skillBuilder);
+        if (this.skillBaseItems.use(level, player, itemStack, hand) == null) {
+            return super.use(level, player, hand);
+        } else {
+            return this.skillBaseItems.use(level, player, itemStack, hand);
+        }
     }
 
     @Override
     public WeaponAnimations getWeaponAnimations(Player player, ItemStack itemStack) {
-
-        return this.skillBaseItems.getWeaponAnimations(this.skillBuilder);
+        return this.skillBaseItems.getWeaponAnimations(player, itemStack);
     }
 
     @Override
     public WeaponArmPose getWeaponArmPose(Player player, InteractionHand hand) {
-
-        return this.skillBaseItems.getWeaponPose(this.skillBuilder);
+        ItemStack itemStack = player.getItemInHand(hand);
+        return this.skillBaseItems.getWeaponPose(player, itemStack);
     }
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
-        this.skillBaseItems.inventoryTick(itemStack, level, entity, slot, isSelected, this.skills);
+        this.skillBaseItems.inventoryTick(itemStack, level, entity, slot, isSelected);
     }
 
     @Override
     public void appendHoverText(ItemStack itemStack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-        this.skillBaseItems.appendHoverText(itemStack, tooltip, this.skills);
+        this.skillBaseItems.appendHoverText(itemStack, tooltip);
     }
 
     @Override
@@ -213,8 +228,8 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
 
     @Override
     public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment) {
-        this.skillBaseItems.canApplyAtEnchantingTable(stack, enchantment, this.skills, this.materials);
-        return super.canApplyAtEnchantingTable(stack, enchantment);
+        boolean value = this.skillBaseItems.canApplyAtEnchantingTable(stack, enchantment, this.materials);
+        return !value ? super.canApplyAtEnchantingTable(stack, enchantment) : value;
     }
 
     @Override
@@ -251,15 +266,15 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
     }
 
     @Override
-    public int skillPresent() {
-        return this.skills.size();
-    }
-
-    @Override
     public List<Skill> getSkills() {
         return this.skills;
     }
-    
+
+    @Override
+    public List<Optional<Skill>> getActiveSkills() {
+        return activeSkills;
+    }
+
     @Override
     public boolean onLeftClickEntity(ItemStack itemStack, Player player, Entity entity) {
         for (Skill skill : this.skills) {
@@ -306,12 +321,6 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
     @Override
     public boolean sweepParticles(Player player) {
         return false;
-    }
-
-    @Override
-    public Skill getActionSkils() {
-        Optional<Skill> actionTrait = this.skillBuilder.getActionTrait();
-        return actionTrait.orElse(null);
     }
 
     @Override

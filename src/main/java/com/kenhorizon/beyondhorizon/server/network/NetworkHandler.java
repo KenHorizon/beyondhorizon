@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.server.network.packet.client.*;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -32,12 +33,13 @@ public class NetworkHandler {
         // BUILDER
         net.registerMessage(id(), ClientboundInventoryPacket.class, ClientboundInventoryPacket::toBytes, ClientboundInventoryPacket::new, ClientboundInventoryPacket::handle);
         net.registerMessage(id(), ClientboundAccessoryInventoryPacket.class, ClientboundAccessoryInventoryPacket::toBytes, ClientboundAccessoryInventoryPacket::new, ClientboundAccessoryInventoryPacket::handle);
-        net.registerMessage(id(), ClientboundAccessoryDataSyncPacket.class, ClientboundAccessoryDataSyncPacket::toBytes, ClientboundAccessoryDataSyncPacket::new, ClientboundAccessoryDataSyncPacket::handle);
-        net.registerMessage(id(), ClientboundPlayerDataSyncPacket.class, ClientboundPlayerDataSyncPacket::toBytes, ClientboundPlayerDataSyncPacket::new, ClientboundPlayerDataSyncPacket::handle);
+        net.registerMessage(id(), ClientboundAccessoryPacket.class, ClientboundAccessoryPacket::toBytes, ClientboundAccessoryPacket::new, ClientboundAccessoryPacket::handle);
+        net.registerMessage(id(), ClientboundManaSyncPacket.class, ClientboundManaSyncPacket::toBytes, ClientboundManaSyncPacket::new, ClientboundManaSyncPacket::handle);
         net.registerMessage(id(), ClientboundSetEntityChainedLinkPacket.class, ClientboundSetEntityChainedLinkPacket::toBytes, ClientboundSetEntityChainedLinkPacket::new, ClientboundSetEntityChainedLinkPacket::handle);
         net.registerMessage(id(), ClientboundAbilityCooldownPacket.class, ClientboundAbilityCooldownPacket::toBytes, ClientboundAbilityCooldownPacket::new, ClientboundAbilityCooldownPacket::handle);
-        net.registerMessage(id(), ClientboundExtendedPlaceGhostRecipePacket.class, ClientboundExtendedPlaceGhostRecipePacket::toBytes, ClientboundExtendedPlaceGhostRecipePacket::new, ClientboundExtendedPlaceGhostRecipePacket::handle);
-        net.registerMessage(id(), ClientboundRoleClassSyncPacket.class, ClientboundRoleClassSyncPacket::toBytes, ClientboundRoleClassSyncPacket::new, ClientboundRoleClassSyncPacket::handle);
+        net.registerMessage(id(), ClientboundExtendedPlacedRecipePacket.class, ClientboundExtendedPlacedRecipePacket::toBytes, ClientboundExtendedPlacedRecipePacket::new, ClientboundExtendedPlacedRecipePacket::handle);
+        net.registerMessage(id(), ClientboundLevelSystemPacket.class, ClientboundLevelSystemPacket::toBytes, ClientboundLevelSystemPacket::new, ClientboundLevelSystemPacket::handle);
+        net.registerMessage(id(), ClientboundPlayerDataPacket.class, ClientboundPlayerDataPacket::toBytes, ClientboundPlayerDataPacket::new, ClientboundPlayerDataPacket::handle);
 
         net.registerMessage(id(), ServerboundExtendedPlaceRecipePacket.class, ServerboundExtendedPlaceRecipePacket::toBytes, ServerboundExtendedPlaceRecipePacket::new, ServerboundExtendedPlaceRecipePacket::handle);
         net.registerMessage(id(), ServerboundWorkbenchCraftPacket.class, ServerboundWorkbenchCraftPacket::toBytes, ServerboundWorkbenchCraftPacket::new, ServerboundWorkbenchCraftPacket::handle);
@@ -51,6 +53,7 @@ public class NetworkHandler {
         net.registerMessage(id(), ServerboundPlayerSwingArmPacket.class, ServerboundPlayerSwingArmPacket::toBytes, ServerboundPlayerSwingArmPacket::new, ServerboundPlayerSwingArmPacket::handle);
         net.registerMessage(id(), ServerboundAcessoryKeyPacket.class, ServerboundAcessoryKeyPacket::toBytes, ServerboundAcessoryKeyPacket::new, ServerboundAcessoryKeyPacket::handle);
         net.registerMessage(id(), ServerboundQuiverSelectedArrowPacket.class, ServerboundQuiverSelectedArrowPacket::toBytes, ServerboundQuiverSelectedArrowPacket::new, ServerboundQuiverSelectedArrowPacket::handle);
+        net.registerMessage(id(), ServerboundAbilitySlotSelectionPacket.class, ServerboundAbilitySlotSelectionPacket::toBytes, ServerboundAbilitySlotSelectionPacket::new, ServerboundAbilitySlotSelectionPacket::handle);
 
     }
 

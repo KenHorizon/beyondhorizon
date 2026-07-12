@@ -49,7 +49,7 @@ public abstract class CleaveEffectAccessory extends AccessoryPassiveSkill {
             this.attackCleave(itemStack, target, attacker, damageDealt);
         } else {
             this.attackCleave(itemStack, target, attacker, damageDealt);
-//            CleaveAbility.spawn(attacker.level(), target , attacker, this.dealDamage(target, attacker, damageDealt, itemStack), this.getCleaveRange());
+//            CleaveAbility.spawn(attacker.level(), target , attacker, this.dealDamage(target, attacker, damageDealt, getStacks), this.getCleaveRange());
         }
     }
 

@@ -5,10 +5,12 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class ItemizedSkillsCap implements ISkill {

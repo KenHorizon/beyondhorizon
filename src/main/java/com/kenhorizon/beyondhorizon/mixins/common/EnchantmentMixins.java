@@ -43,6 +43,7 @@ public abstract class EnchantmentMixins implements IAttributeEnchantment, IAddit
             if (attributeInstance != null) {
                 UUID id = AdvancedEnchantment.ARMOR_MODIFIER_UUID_PER_TYPE.get(slot);
                 AttributeModifier modifier = attributeInstance.getModifier(id);
+                if (modifier == null) return;
                 attributeInstance.removeModifier(modifier);
                 double amount = this.getAttributeModifierValue(level, modifier);
                 attributeInstance.addPermanentModifier(new AttributeModifier(id, "Enchantment Attribute Modifiers", amount, modifier.getOperation()));

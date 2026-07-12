@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.client;
 
 import com.kenhorizon.beyondhorizon.server.api.block.INodeBlock;
+import com.kenhorizon.beyondhorizon.server.network.ClientPacketHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -29,13 +30,17 @@ public class ClientboundSetEntityChainedLinkPacket {
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            ServerPlayer sender = context.getSender();
-            Level level = sender.level();
-            Entity entity = level.getEntity(this.sourceId);
-            if (entity instanceof INodeBlock node) {
-                node.setLink(this.destId);
-            }
+
+            ClientPacketHandler.handleEntityChainedLink(this, supplier);
         });
         context.setPacketHandled(true);
+    }
+
+    public int getSourceId() {
+        return sourceId;
+    }
+
+    public int getDestId() {
+        return destId;
     }
 }

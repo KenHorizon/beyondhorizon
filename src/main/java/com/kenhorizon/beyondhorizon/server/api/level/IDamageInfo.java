@@ -1,10 +1,21 @@
 package com.kenhorizon.beyondhorizon.server.api.level;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.INBTSerializable;
 
 public interface IDamageInfo extends INBTSerializable<CompoundTag> {
+
+    void reset();
+
+    void setDamageSource(DamageSource damageSource);
+
+    DamageSource getDamageSource();
+
+    void setReceivedCritDamage(boolean receivedCritDamage);
+
+    boolean isReceivedCritDamage();
 
     void setPreDamage(float damage);
 

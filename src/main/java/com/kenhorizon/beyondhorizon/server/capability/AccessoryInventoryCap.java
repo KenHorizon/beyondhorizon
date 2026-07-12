@@ -26,7 +26,6 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class AccessoryInventoryCap implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static ResourceLocation NAME = BeyondHorizon.resource("accessory");
     final Player wearer;
     private final LazyOptional<AccessoryStackHandler> optional;
 

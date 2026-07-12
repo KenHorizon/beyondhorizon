@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.api.bonus_set;
+package com.kenhorizon.beyondhorizon.server.api.block.bonus_set;
 
 public class DefaultArmorBonus {
     public static final float WILDFIRE_SHOCKWAVE_DAMAGE = 4.0F;

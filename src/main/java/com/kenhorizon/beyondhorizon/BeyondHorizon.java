@@ -12,11 +12,20 @@ import com.kenhorizon.beyondhorizon.configs.common.ModCommonConfig;
 import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
+import com.kenhorizon.beyondhorizon.server.api.ISkillSlots;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
-import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSets;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessory;
+import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
+import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorBonusSets;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.handler.anvil_patch.AnvilPatchHandler;
+import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
+import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
+import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
-import com.kenhorizon.beyondhorizon.server.command.RoleClassCommand;
+import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
+import com.kenhorizon.beyondhorizon.server.command.LevelSystemCommand;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
@@ -33,6 +42,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -71,6 +81,7 @@ public class BeyondHorizon
         eventBus.addListener(this::registerLayerDefinitions);
         eventBus.addListener(this::completeSetup);
         eventBus.addListener(this::onConfigLoad);
+        eventBus.addListener(this::onRegisterCapabilities);
         BHAttributes.register(eventBus);
         BHCreativeTabs.register(eventBus);
         BHBlocks.register(eventBus);
@@ -79,7 +90,7 @@ public class BeyondHorizon
         BHMenu.register(eventBus);
         BHParticle.register(eventBus);
         BHEntityDataSerializer.register(eventBus);
-        //  BHPotions.register(eventBus);
+        BHPotions.register(eventBus);
         BHEnchantments.register(eventBus);
         BHSounds.register(eventBus);
         BHEntity.register(eventBus);
@@ -100,6 +111,18 @@ public class BeyondHorizon
                 }
             }
         }
+    }
+    private void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+        BeyondHorizon.LOGGER.info("Capability is registered!");
+        event.register(IAccessoryStackHandler.class);
+        event.register(ICombatData.class);
+        event.register(IDamageInfo.class);
+        event.register(LevelSystem.class);
+        event.register(PlayerData.class);
+        event.register(IAccessory.class);
+        event.register(IStackHandler.class);
+        event.register(StackableTags.class);
+        event.register(ISkillSlots.class);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -172,7 +195,7 @@ public class BeyondHorizon
     @SubscribeEvent
     public void onCommandsRegister(RegisterCommandsEvent event) {
         BeyondHorizon.LOGGER.info("Registering commands...");
-        RoleClassCommand.register(event.getDispatcher());
+        LevelSystemCommand.register(event.getDispatcher());
     }
 
     private void clientSetup(FMLClientSetupEvent event) {

@@ -14,11 +14,14 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
+import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilitySlotSelectionPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAcessoryKeyPacket;
 import com.kenhorizon.libs.client.ModelAnimationHandler;
 import com.kenhorizon.libs.client.ModelAnimations;
@@ -227,31 +230,31 @@ public class ClientEventHandler {
     public void onMouseButtonClient(InputEvent.MouseButton event) {
 
     }
-//    @SubscribeEvent
-//    public  void onClientTick(TickEvent.ClientTickEvent event) {
-//        Minecraft minecraft = Minecraft.getInstance();
-//        Options options = minecraft.options;
-//        Player player = minecraft.player;
-//        for (int i = 0; i < 9; ++i) {
-//            boolean flag = BeyondHorizon.PROXY.isKeyDown(Keybinds.ACCESSORY_SLOTS);
-//            if (options.keyHotbarSlots[i].consumeClick()) {
-//                if (player.isSpectator()) {
-//                    minecraft.gui.getSpectatorGui().onHotbarSelected(i);
-//                } else if (minecraft.screen != null || !flag) {
-//                    player.getInventory().selected = i;
-//                } else {
-//                    if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
-//                        var handler = AccessoryHelper.getInventory(player).resolve().get();
-//                        var stacks = handler.getStacks();
-//                        ItemStack itemStack = stacks.getStackInSlot(i);
-//                        if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem) {
-//                            NetworkHandler.sendToServer(new ServerboundAcessoryKeyPacket(player.getId(), itemStack, i));
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
+
+    @SubscribeEvent
+    public void onMouseButtonScrolling(InputEvent.MouseScrollingEvent event) {
+        double x = event.getMouseX();
+        double y = event.getMouseY();
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.screen == null) {
+            if (BeyondHorizon.PROXY.isKeyPressed(Keybinds.SKILL_SELECT)) {
+                Player player = BeyondHorizon.PROXY.clientPlayer();
+                ItemStack itemStack = PlayerData.getHeldingItem(player);
+                itemStack.getCapability(BHCapabilties.SKILL_SLOTS).ifPresent(handler -> {
+                    if (handler.getTotal() > 0) {
+                        int direction = Mth.clamp((int) event.getScrollDelta(), -1, 1);
+                        int count = handler.getTotal();
+                        int scrollIndex = (Mth.clamp(handler.getSelectedSlot(), 0, count) - direction);
+                        int selectedIndex = (Mth.clamp(scrollIndex, -1, count + 1) + count) % count;
+                        handler.select(selectedIndex);
+                        NetworkHandler.sendToServer(new ServerboundAbilitySlotSelectionPacket(itemStack, selectedIndex));
+                        event.setCanceled(true);
+                    }
+                });
+            }
+        }
+    }
+
     @SubscribeEvent
     public void onKeyPressClient(InputEvent.Key event) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -269,15 +272,11 @@ public class ClientEventHandler {
                 } else if (minecraft.screen != null || !flag) {
                     player.getInventory().selected = i;
                 } else {
-                    BeyondHorizon.LOGGER.debug("is present {}", AccessoryHelper.getInventory(player).resolve().isPresent());
                     if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
-                        BeyondHorizon.LOGGER.debug("13");
                         var handler = AccessoryHelper.getInventory(player).resolve().get();
                         var stacks = handler.getStacks();
                         ItemStack itemStack = stacks.getStackInSlot(i);
-                        BeyondHorizon.LOGGER.debug("3 is {}", itemStack.isEmpty());
                         if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem) {
-                            BeyondHorizon.LOGGER.debug("4");
                             NetworkHandler.sendToServer(new ServerboundAcessoryKeyPacket(player.getId(), itemStack, i));
                         }
                     }

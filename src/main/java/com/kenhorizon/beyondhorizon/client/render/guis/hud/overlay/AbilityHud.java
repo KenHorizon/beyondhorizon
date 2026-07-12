@@ -11,15 +11,13 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-public class AbilityHud implements IGuiOverlay {
-    protected final HudInfo hud = new HudInfo();
-
+public class AbilityHud extends HudOverlay {
     @Override
     public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         Minecraft mc = gui.getMinecraft();
         Font font = mc.font;
         this.hud.update();
-        if (!this.hud.isHeldingSkillItems && (gui.getMinecraft().options.hideGui || !gui.shouldDrawSurvivalElements())) return;
+        if (gui.getMinecraft().options.hideGui) return;
         gui.setupOverlayRenderState(true, false);
         mc.getProfiler().push("ability_hud");
         int x = screenWidth / 2;

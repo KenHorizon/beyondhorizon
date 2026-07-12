@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.api.level.IAbilityInfo;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHChatformatting;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
@@ -30,7 +31,7 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
     }
     private float magnitude;
     private float level;
-    private int manaCost;
+    private double manaCost;
     private int castTime;
     private int maxCastTime;
     private int cooldown;
@@ -46,7 +47,7 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
     }
 
     @Override
-    public void setManaCost(int manaCost) {
+    public void setManaCost(double manaCost) {
         this.manaCost = manaCost;
     }
 
@@ -74,7 +75,7 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
     }
 
     @Override
-    public int getManaCost() {
+    public double getManaCost() {
         return this.manaCost;
     }
 
@@ -116,7 +117,7 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
 
     @Override
     public InteractionResultHolder<ItemStack> use(ItemStack itemStack, Level level, Player player, InteractionHand hand) {
-        PlayerData playerData = PlayerData.getInstance(player);
+        PlayerData playerData = Capabilities.data(player);
         if (!level.isClientSide()) {
             if (playerData.isOnCooldown(this.getId())) {
                 player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_ON_COOLDOWN).withStyle(ChatFormatting.RED), true);
@@ -137,7 +138,7 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
     }
 
     protected void addCooldownManaCost(Player player) {
-        PlayerData playerData = PlayerData.getInstance(player);
+        PlayerData playerData = Capabilities.data(player);
         try {
             playerData.addCooldown(this.getId(), this.getCooldown());
             if (!player.isCreative()) {
@@ -192,7 +193,6 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
     public void abilityUse(ItemStack itemStack, Level level, Player user, InteractionHand hand) {
 
     }
-
 
     protected float additionalDamage(Player player, ItemStack itemStack) {
         return 0;

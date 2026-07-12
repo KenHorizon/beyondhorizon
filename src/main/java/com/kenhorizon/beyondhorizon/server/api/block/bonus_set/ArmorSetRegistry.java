@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.api.bonus_set;
+package com.kenhorizon.beyondhorizon.server.api.block.bonus_set;
 
 import java.util.ArrayList;
 import java.util.List;

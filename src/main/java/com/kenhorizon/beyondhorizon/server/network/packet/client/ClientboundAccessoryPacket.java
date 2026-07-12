@@ -1,17 +1,15 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.client;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
+import com.kenhorizon.beyondhorizon.server.network.ClientPacketHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public record ClientboundPlayerDataSyncPacket(CompoundTag nbt) {
+public record ClientboundAccessoryPacket(CompoundTag nbt) {
 
-    public ClientboundPlayerDataSyncPacket(FriendlyByteBuf buf) {
+    public ClientboundAccessoryPacket(FriendlyByteBuf buf) {
         this(buf.readNbt());
     }
 
@@ -22,13 +20,13 @@ public record ClientboundPlayerDataSyncPacket(CompoundTag nbt) {
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            Player player = BeyondHorizon.PROXY.clientPlayer();
-            if (player != null) {
-                player.getCapability(BHCapabilties.PLAYER_DATA).ifPresent(cap -> {
-                    cap.loadNbt(this.nbt);
-                });
-            }
+            ClientPacketHandler.handleAccessoryData(this, supplier);
         });
         context.setPacketHandled(true);
+    }
+
+    @Override
+    public CompoundTag nbt() {
+        return nbt;
     }
 }

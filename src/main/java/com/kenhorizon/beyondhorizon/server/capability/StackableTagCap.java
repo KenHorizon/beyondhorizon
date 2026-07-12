@@ -23,7 +23,6 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class StackableTagCap implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    public static ResourceLocation NAME = BeyondHorizon.resource("stackable_tags");
     private final LazyOptional<StackableTagHandler> handler = LazyOptional.of(StackableTagHandler::new);
 
     @Override

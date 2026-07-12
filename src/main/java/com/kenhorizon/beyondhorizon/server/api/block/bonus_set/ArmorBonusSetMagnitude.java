@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.api.bonus_set;
+package com.kenhorizon.beyondhorizon.server.api.block.bonus_set;
 
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;

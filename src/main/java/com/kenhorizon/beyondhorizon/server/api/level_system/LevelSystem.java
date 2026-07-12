@@ -7,7 +7,7 @@ import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundLevelSystemPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -335,7 +335,7 @@ public class LevelSystem implements IAttack, IEntityProperties {
             this.addModifiers(entity,0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, healthRegen, AttributeModifier.Operation.MULTIPLY_BASE);
             this.addModifiers(entity,0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, manaRegen, AttributeModifier.Operation.MULTIPLY_BASE);
             if (player instanceof ServerPlayer) {
-                NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(this.saveNbt()), (ServerPlayer) player);
+                NetworkHandler.sendToPlayer(new ClientboundLevelSystemPacket(this.saveNbt()), (ServerPlayer) player);
             }
         }
     }

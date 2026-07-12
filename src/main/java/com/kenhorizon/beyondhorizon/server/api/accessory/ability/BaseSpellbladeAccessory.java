@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -48,7 +48,7 @@ public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
         CompoundTag tag = EntityData.getOrCreateTag(entity);
         int cooldown = 0;
         boolean flag = false;
-        ICombatCore combat = Capabilities.combat(entity);
+        ICombatData combat = Capabilities.combat(entity);
         if (!entity.level().isClientSide()) {
             cooldown = tag.getInt(this.spellBladeTag());
             this.timer = cooldown;

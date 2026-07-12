@@ -12,17 +12,9 @@ import net.minecraftforge.registries.RegistryObject;
 
 
 public class BHEffects {
-
-    public static final RegistryObject<MobEffect> ENRAGED =
-            RegistryHelper.registerEffects("enraged", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL)
-                    .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "9cf36f6f-ac2e-4db8-b49d-58e7d6fd5a60", 1.25F, AttributeModifier.Operation.MULTIPLY_BASE)
-                    .addAttributeModifier(BHAttributes.DAMAGE_TAKEN.get(), "6fb06f36-770f-464c-847b-c7187b124ec3", 1.25F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> RAGED =
             RegistryHelper.registerEffects("raged", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL)
                     .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "6430bc86-adf6-4e0c-bef5-2321c0cdcdf3", 1.35F, AttributeModifier.Operation.MULTIPLY_BASE));
-    public static final RegistryObject<MobEffect> ADRENALINE =
-            RegistryHelper.registerEffects("adrenaline", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL)
-                    .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "514b12e1-fce8-4a6a-83ac-42f977cdf1cb", 2.10F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> GHOUL_WILL =
             RegistryHelper.registerEffects("ghoul_will", () -> new BHMobEffect(MobEffectCategory.NEUTRAL)
                     .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "dbd4c61c-8c18-41cb-be67-668ac9249c69", 0.15F, AttributeModifier.Operation.MULTIPLY_BASE));

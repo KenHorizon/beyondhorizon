@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.client;
 
+import com.kenhorizon.beyondhorizon.server.network.ClientPacketHandler;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundGrabbedItemPacket;
 import net.minecraft.network.FriendlyByteBuf;
@@ -9,32 +10,28 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public record ClientboundInventoryPacket(ItemStack itemStack) {
-
+public class ClientboundInventoryPacket {
+    private final ItemStack stacks;
+    public ClientboundInventoryPacket(ItemStack itemStack) {
+        this.stacks = itemStack;
+    }
     public ClientboundInventoryPacket(FriendlyByteBuf buf) {
-        this(buf.readItem());
+        this.stacks = buf.readItem();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeItem(this.itemStack);
+        buf.writeItem(this.stacks);
     }
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            ServerPlayer sender = context.getSender();
-            if (sender != null) {
-                ItemStack itemStack = sender.isCreative() ? this.itemStack : sender.containerMenu.getCarried();
-                sender.containerMenu.setCarried(ItemStack.EMPTY);
-                sender.doCloseContainer();
-                if (!itemStack.isEmpty()) {
-                    if (!sender.isCreative()) {
-                        sender.containerMenu.setCarried(itemStack);
-                    }
-                    NetworkHandler.sendToPlayer(new ServerboundGrabbedItemPacket(this.itemStack), sender);
-                }
-            }
+            ClientPacketHandler.handleMinecraftInventory(this, supplier);
         });
         context.setPacketHandled(true);
+    }
+
+    public ItemStack getStacks() {
+        return stacks;
     }
 }

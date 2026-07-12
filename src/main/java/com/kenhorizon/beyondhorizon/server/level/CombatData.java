@@ -1,9 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.level;
 
-import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
 import net.minecraft.nbt.CompoundTag;
 
-public class CombatCore implements ICombatCore {
+public class CombatData implements ICombatData {
     public int duration;
     public boolean inCombat;
     private final int COMBAT_DURATION_TIMEOUT = 5;

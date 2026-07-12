@@ -6,10 +6,11 @@ import com.kenhorizon.beyondhorizon.client.Fonts;
 import com.kenhorizon.beyondhorizon.client.api.event.PotionEffectParticleEvent;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.api.ISkillSlots;
 import com.kenhorizon.beyondhorizon.server.api.accessory.*;
-import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorBonusSet;
-import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSet;
-import com.kenhorizon.beyondhorizon.server.api.bonus_set.ArmorSetRegistry;
+import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorBonusSet;
+import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorSet;
+import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorSetRegistry;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerDataHelper;
 import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
@@ -25,17 +26,17 @@ import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
 import com.kenhorizon.beyondhorizon.server.item.QuiverItem;
-import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
-import com.kenhorizon.beyondhorizon.server.item.base.tools.DiggerItemUtils;
 import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryDataSyncPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataSyncPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundRoleClassSyncPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundManaSyncPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundLevelSystemPacket;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundPlayerSwingArmPacket;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -53,9 +54,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -86,6 +85,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -98,17 +98,17 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class ServerEventHandler {
     @SubscribeEvent
     public void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(new SpawnerBuilderListener(event.getConditionContext()));
     }
-    //TODO: Harvest
+
     @SubscribeEvent
     public void onHarvestBlockBreak(HarvestBlockEvent event) {
         Player player = event.getPlayer();
@@ -140,35 +140,8 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
-    public void onFarmLandTrample(BlockEvent.FarmlandTrampleEvent event) {
-        LivingEntity entity = (LivingEntity) event.getEntity();
-        if (entity != null) {
-            if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FALL_PROTECTION, entity) > 0) {
-                event.setCanceled(true);
-            }
-            if (entity instanceof Player player) {
-                if (AccessoryHelper.getAccessory(player, Accessories.FEATHER_FEET.get())) {
-                    event.setCanceled(true);
-                }
-            }
-        }
-    }
-    @SubscribeEvent
     public void onEntityJoin(EntityJoinLevelEvent event) {
         if (!event.getLevel().isClientSide()) {
-            if (event.getEntity() instanceof Player player) {
-                LevelSystem role = Capabilities.levelSystem(player);
-                PlayerData data = Capabilities.data(player);
-                AccessoryHelper.getInventory(player).ifPresent(handler -> {
-                    NetworkHandler.sendToPlayer(new ClientboundAccessoryDataSyncPacket(handler.serializeNBT()), (ServerPlayer) player);
-                });
-                NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) player);
-                NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) player);
-                PlayerData playerData = Capabilities.data(player);
-                if (playerData != null) {
-                    playerData.syncPlayerData(player);
-                }
-            }
             if (event.getEntity() instanceof LivingEntity entity) {
                 IStackableInstance stackableTags = Capabilities.stackable(entity);
                 if (stackableTags != null) {
@@ -199,24 +172,76 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
+    public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        Player player = event.getEntity();
+        if (player instanceof ServerPlayer serverPlayer) {
+            LevelSystem role = Capabilities.levelSystem(serverPlayer);
+            PlayerData playerData = Capabilities.data(serverPlayer);
+            AccessoryHelper.getInventory(player).ifPresent(handler -> {
+                NetworkHandler.sendToPlayer(new ClientboundAccessoryPacket(handler.serializeNBT()), serverPlayer);
+            });
+            NetworkHandler.sendToPlayer(new ClientboundLevelSystemPacket(role.saveNbt()), serverPlayer);
+            NetworkHandler.sendToPlayer(new ClientboundPlayerDataPacket(playerData.saveNbt()), serverPlayer);
+//            NetworkHandler.sendToPlayer(new ClientboundManaSyncPacket(playerData.getMana()), serverPlayer);
+        }
+    }
+    @SubscribeEvent
+    public void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+        Player player = event.getEntity();
+        if (player instanceof ServerPlayer serverPlayer) {
+            LevelSystem role = Capabilities.levelSystem(player);
+            PlayerData playerData = Capabilities.data(player);
+            AccessoryHelper.getInventory(serverPlayer).ifPresent(handler -> {
+                NetworkHandler.sendToPlayer(new ClientboundAccessoryPacket(handler.serializeNBT()), serverPlayer);
+            });
+            NetworkHandler.sendToPlayer(new ClientboundLevelSystemPacket(role.saveNbt()), serverPlayer);
+            NetworkHandler.sendToPlayer(new ClientboundPlayerDataPacket(playerData.saveNbt()), serverPlayer);
+//            NetworkHandler.sendToPlayer(new ClientboundManaSyncPacket(playerData.getMana()), serverPlayer);
+        }
+    }
+
+
+    @SubscribeEvent
     public void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        LevelSystem role = Capabilities.levelSystem(event.getEntity());
-        PlayerData data = Capabilities.data(event.getEntity());
-        NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
-        NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) event.getEntity());
+        Player player = event.getEntity();
+        if (player instanceof ServerPlayer serverPlayer) {
+            LevelSystem role = Capabilities.levelSystem(player);
+            PlayerData data = Capabilities.data(player);
+            NetworkHandler.sendToPlayer(new ClientboundLevelSystemPacket(role.saveNbt()), serverPlayer);
+            data.setMana(data.getMaxMana());
+        }
     }
 
     @SubscribeEvent
-    public void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
-        LevelSystem role = Capabilities.levelSystem(event.getEntity());
-        PlayerData data = Capabilities.data(event.getEntity());
-        AccessoryHelper.getInventory((ServerPlayer) event.getEntity()).ifPresent(handler -> {
-            NetworkHandler.sendToPlayer(new ClientboundAccessoryDataSyncPacket(handler.serializeNBT()), (ServerPlayer) event.getEntity());
-        });
-        NetworkHandler.sendToPlayer(new ClientboundRoleClassSyncPacket(role.saveNbt()), (ServerPlayer) event.getEntity());
-        NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(data.saveNbt()), (ServerPlayer) event.getEntity());
+    public void onPlayerCloned(PlayerEvent.Clone event) {
+        Player player = event.getEntity();
+        Player oldPlayer = event.getOriginal();
+        oldPlayer.revive();
+        LazyOptional<IAccessoryStackHandler> oldAccHandler = AccessoryHelper.getInventory(oldPlayer);
+        LazyOptional<IAccessoryStackHandler> newAccHandler = AccessoryHelper.getInventory(player);
+        oldAccHandler.ifPresent(oldAcc -> newAccHandler.ifPresent(newAcc -> newAcc.deserializeNBT(oldAcc.serializeNBT())));
+
+        LazyOptional<PlayerData> oldPlayerDataHandler = PlayerDataHelper.getPlayerData(oldPlayer);
+        LazyOptional<PlayerData> newPlayerDataHandler = PlayerDataHelper.getPlayerData(player);
+        oldPlayerDataHandler.ifPresent(oldAcc -> newPlayerDataHandler.ifPresent(newAcc -> newAcc.loadNbt(oldAcc.saveNbt())));
     }
 
+
+
+    @SubscribeEvent
+    public void onLevelTick(TickEvent.LevelTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) return;
+        if (event.level instanceof ServerLevel level) {
+            level.players().stream().toList().forEach(player -> {
+                if (player instanceof ServerPlayer) {
+                    PlayerData playerData = Capabilities.data(player);
+                    playerData.tick(level);
+                }
+            });
+        }
+    }
+
+    //TODO
     @SubscribeEvent
     public void onLivingHealEvent(LivingHealEvent event) {
         float heal = event.getAmount();
@@ -234,28 +259,45 @@ public class ServerEventHandler {
         event.setAmount(finalHeal);
     }
 
+
+    @SubscribeEvent
+    public void onFarmLandTrample(BlockEvent.FarmlandTrampleEvent event) {
+        LivingEntity entity = (LivingEntity) event.getEntity();
+        if (entity != null) {
+            if (EnchantmentHelper.getEnchantmentLevel(Enchantments.FALL_PROTECTION, entity) > 0) {
+                event.setCanceled(true);
+            }
+            if (entity instanceof Player player) {
+                if (AccessoryHelper.getAccessory(player, Accessories.FEATHER_FEET.get())) {
+                    event.setCanceled(true);
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public void onAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
         Entity entity = event.getObject();
-        if (AccessoryInventoryCap.canAttachTo(entity)) {
-            event.addCapability(AccessoryInventoryCap.NAME, new AccessoryInventoryCap((Player) entity));
+        if (AccessoryInventoryCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_ACCESSORY)) {
+            event.addCapability(BHCapabilties.ID_ACCESSORY, new AccessoryInventoryCap((Player) entity));
         }
-        if (DamageInfoCap.canAttachTo(entity)) {
-            event.addCapability(DamageInfoCap.NAME, new DamageInfoCap());
+        if (DamageInfoCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_DAMAGE_INFO)) {
+            event.addCapability(BHCapabilties.ID_DAMAGE_INFO, new DamageInfoCap());
         }
-        if (CombatCoreCap.canAttachTo(entity)) {
-            event.addCapability(CombatCoreCap.NAME, new CombatCoreCap());
+        if (CombatDataCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_COMBAT_INFO)) {
+            event.addCapability(BHCapabilties.ID_COMBAT_INFO, new CombatDataCap());
         }
-        if (LevelSystemsCap.canAttachTo(entity)) {
-            event.addCapability(LevelSystemsCap.NAME, new LevelSystemsCap());
+        if (LevelSystemsCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_LEVEL_SYSTEM)) {
+            event.addCapability(BHCapabilties.ID_LEVEL_SYSTEM, new LevelSystemsCap());
         }
-        if (PlayerDataCap.canAttachTo(entity)) {
-            event.addCapability(PlayerDataCap.NAME, new PlayerDataCap((Player) entity));
+        if (PlayerDataCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_PLAYER_DATA)) {
+            event.addCapability(BHCapabilties.ID_PLAYER_DATA, new PlayerDataCap((Player) entity));
         }
-        if (StackableTagCap.canAttachTo(entity)) {
-            event.addCapability(StackableTagCap.NAME, new StackableTagCap());
+        if (StackableTagCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_STACKABLE_TAGS)) {
+            event.addCapability(BHCapabilties.ID_STACKABLE_TAGS, new StackableTagCap());
         }
     }
+
     @SubscribeEvent
     public void onAttachItemCapabilities(AttachCapabilitiesEvent<ItemStack> event) {
         ItemStack stack = event.getObject();
@@ -263,22 +305,15 @@ public class ServerEventHandler {
         if (item instanceof IAccessoryItem accessoryItem && accessoryItem.hasCapability(stack)) {
             ItemizedAccessoryCap itemizedCapability = new ItemizedAccessoryCap(accessoryItem, stack);
             event.addCapability(BHCapabilties.ID_ITEM, AccessoryItemCap.createProvider(itemizedCapability));
+            BeyondHorizon.LOGGER.debug("All accessory items is registered!");
         }
         if (item instanceof ISkillItems skillItems && skillItems.hasCapability(stack)) {
             ItemizedSkillsCap itemizedCapability = new ItemizedSkillsCap(skillItems, stack);
+            event.addCapability(BHCapabilties.ID_SKILL_SLOTS, new SkillSlotsCap(skillItems));
             event.addCapability(BHCapabilties.ID_ITEM, SkillItemCap.createProvider(itemizedCapability));
+            BeyondHorizon.LOGGER.debug("All skill items is registered!");
         }
     }
-
-    @SubscribeEvent
-    public void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        Player player = event.getEntity();
-        PlayerData playerData = Capabilities.data(player);
-        if (!event.isEndConquered()) {
-            playerData.setDefaults();
-        }
-    }
-
     @SubscribeEvent
     public void playerStartTracking(PlayerEvent.StartTracking event) {
         Entity target = event.getTarget();
@@ -296,21 +331,6 @@ public class ServerEventHandler {
             }
         });
     }
-    @SubscribeEvent
-    public void onPlayerCloned(PlayerEvent.Clone event) {
-        Player player = event.getEntity();
-        Player oldPlayer = event.getOriginal();
-        oldPlayer.revive();
-        LazyOptional<IAccessoryStackHandler> oldAccHandler = AccessoryHelper.getInventory(oldPlayer);
-        LazyOptional<IAccessoryStackHandler> newAccHandler = AccessoryHelper.getInventory(player);
-        oldAccHandler.ifPresent(oldAcc -> newAccHandler.ifPresent(newAcc -> newAcc.deserializeNBT(oldAcc.serializeNBT())));
-
-
-        LazyOptional<PlayerData> oldPlayerDataHandler = PlayerDataHelper.getPlayerData(oldPlayer);
-        LazyOptional<PlayerData> newPlayerDataHandler = PlayerDataHelper.getPlayerData(player);
-        oldPlayerDataHandler.ifPresent(oldAcc -> newPlayerDataHandler.ifPresent(newAcc -> newAcc.loadNbt(oldAcc.saveNbt())));
-    }
-
 
     // TODO: ACCESSORY LOGICS
     private void accessoryLogics(Player player) {
@@ -510,19 +530,6 @@ public class ServerEventHandler {
     private ItemEntity createItemDrops(LivingEntity entity, ItemStack itemStack) {
         return new ItemEntity(entity.level(), entity.getX(), entity.getY(), entity.getZ(), itemStack);
     }
-
-    @SubscribeEvent
-    public void onLevelTick(TickEvent.LevelTickEvent event) {
-        if (event.level instanceof ServerLevel level) {
-            level.players().stream().toList().forEach(player -> {
-                if (player instanceof ServerPlayer) {
-                    PlayerData playerData = Capabilities.data(player);
-                    playerData.tick(level);
-                }
-            });
-        }
-    }
-
     @SubscribeEvent
     public void onLivingJump(LivingEvent.LivingJumpEvent event) {
         LivingEntity entity = event.getEntity();
@@ -557,7 +564,7 @@ public class ServerEventHandler {
     public void onLivingTick(LivingEvent.LivingTickEvent event) {
         LivingEntity entity = event.getEntity();
         ItemStack itemStack = entity.getMainHandItem();
-        ICombatCore combatCore = Capabilities.combat(entity);
+        ICombatData combatCore = Capabilities.combat(entity);
         IStackableInstance stackableTags = Capabilities.stackable(entity);
         if (stackableTags != null) {
             stackableTags.tick(entity);
@@ -566,10 +573,7 @@ public class ServerEventHandler {
             combatCore.tick();
             IDamageInfo damageInfo = Capabilities.damageInfo(entity);
             if (damageInfo != null && !combatCore.OnCombat()) {
-                damageInfo.setPostDamage(0.0F);
-                damageInfo.setPreDamage(0.0F);
-                damageInfo.setPreStoredDamage(0.0F);
-                damageInfo.setPostStoredDamage(0.0F);
+                damageInfo.reset();
             }
         }
         if (entity.hasEffect(BHEffects.LETHAL_PROTECTION_COOLDOWN.get())) {
@@ -583,11 +587,19 @@ public class ServerEventHandler {
         }
         if (entity instanceof Player player) {
             this.accessoryLogics(player);
+            PlayerData playerData = Capabilities.data(player);
+            LevelSystem levelSystem = Capabilities.levelSystem(player);
             float healthRegen = (float) player.getAttributeValue(BHAttributes.HEALTH_REGENERATION.get());
             if (player.tickCount % 10 == 0) {
                 player.heal(healthRegen);
             }
-            LevelSystem levelSystem = Capabilities.levelSystem(player);
+//            if (playerData != null) {
+//                if (player.level().isClientSide()) {
+//                    BeyondHorizon.LOGGER.debug("Client Test={}", playerData.getMana());
+//                } else {
+//                    BeyondHorizon.LOGGER.debug("Server Test={}", playerData.getMana());
+//                }
+//            }
             if (levelSystem != null) {
                 Optional<IEntityProperties> optional = levelSystem.IEntityProperties();
                 optional.ifPresent(callback -> callback.onEntityUpdate(entity, itemStack));
@@ -696,7 +708,7 @@ public class ServerEventHandler {
         DamageSource source = event.getSource();
         LivingEntity target = event.getEntity();
         ItemStack targetMainHandItem = target.getMainHandItem();
-        ICombatCore targetCombatCore = Capabilities.combat(target);
+        ICombatData targetCombatCore = Capabilities.combat(target);
         if (event.isCanceled() || source.is(DamageTypes.GENERIC_KILL) || !(target.level() instanceof ServerLevel level)) return;
         if (!targetMainHandItem.isEmpty() && target.getMainHandItem().getItem() instanceof ISkillItems container) {
             for (Skill trait : container.getSkills()) {
@@ -834,7 +846,7 @@ public class ServerEventHandler {
                 player.getAttackStrengthScale((float) getAttackSpeed);
                 target.invulnerableTime = target.invulnerableDuration - (int) getAttackSpeed;
             }
-            ICombatCore attackerCombatCore = Capabilities.combat(attacker);
+            ICombatData attackerCombatData = Capabilities.combat(attacker);
             ItemStack attackerStack = attacker.getMainHandItem();
             if (attacker instanceof Player player) {
                 if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
@@ -866,14 +878,19 @@ public class ServerEventHandler {
                 }
             }
             damageDealt *= (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
-            attackerCombatCore.activated();
+            attackerCombatData.activated();
         }
         if (target != null) {
             IDamageInfo damageInfo = Capabilities.damageInfo(target);
             if (target instanceof Player player) {
-                Capabilities.data(player).setCrit(isCrit);
+                boolean validateIsCrit = isCrit;
+                PlayerDataHelper.getPlayerData(player).ifPresent(handler -> {
+                    handler.setCrit(validateIsCrit);
+                });
             }
             if (damageInfo != null) {
+                damageInfo.setDamageSource(source);
+                damageInfo.setReceivedCritDamage(isCrit);
                 damageInfo.setPreDamage(damageDealt);
                 if (!source.is(BHDamageTypeTags.CANT_STORE_DAMAGE)) {
                     damageInfo.setPreStoredDamage(damageInfo.preDamage() + damageDealt);
@@ -895,7 +912,7 @@ public class ServerEventHandler {
                 isCrit = playerData.isCrit();
             }
         }
-        float roundedAmount = Math.round(value * 10) / 10f;
+        float roundedAmount = Math.round(value * 10) / 10.0F;
         int intAmount = (int) roundedAmount;
         String text = roundedAmount % 1 == 0 ? String.valueOf(intAmount) : String.valueOf(roundedAmount);
         Vec3 pos = entity.getEyePosition();
@@ -904,14 +921,18 @@ public class ServerEventHandler {
             damageIndColor = BHChatformatting.HEAL;
         } else {
             if (BHConfigs.DAMAGE_INDICATOR_COLOR_FORMAT) {
-                if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
+                if (source == null) {
                     damageIndColor = BHChatformatting.PHYSICAL_DAMAGE;
-                } else if (source.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
-                    damageIndColor = BHChatformatting.MAGIC_DAMAGE;
-                } else if (source.is(BHDamageTypeTags.TRUE_DAMAGE)) {
-                    damageIndColor = BHChatformatting.TRUE_DAMAGE;
                 } else {
-                    damageIndColor = BHChatformatting.RAW_DAMAGE;
+                    if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
+                        damageIndColor = BHChatformatting.PHYSICAL_DAMAGE;
+                    } else if (source.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
+                        damageIndColor = BHChatformatting.MAGIC_DAMAGE;
+                    } else if (source.is(BHDamageTypeTags.TRUE_DAMAGE)) {
+                        damageIndColor = BHChatformatting.TRUE_DAMAGE;
+                    } else {
+                        damageIndColor = BHChatformatting.RAW_DAMAGE;
+                    }
                 }
             } else {
                 damageIndColor = BHChatformatting.PHYSICAL_DAMAGE;
@@ -1101,7 +1122,7 @@ public class ServerEventHandler {
             event.setCanceled(true);
         }
         if (source.getEntity() instanceof LivingEntity attacker) {
-            ICombatCore attackerCombatCore = Capabilities.combat(attacker);
+            ICombatData attackerCombatCore = Capabilities.combat(attacker);
             ItemStack attackerStack = attacker.getMainHandItem();
             if (attacker instanceof Player player) {
                 LevelSystem levelSystem = Capabilities.levelSystem(player);

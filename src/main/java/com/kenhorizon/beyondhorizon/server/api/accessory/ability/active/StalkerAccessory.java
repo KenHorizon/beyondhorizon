@@ -62,7 +62,7 @@ public class StalkerAccessory extends AccessoryActiveSkill {
     }
 
     @Override
-    protected int getManaCost() {
+    protected double getManaCost() {
         return 2;
     }
 }

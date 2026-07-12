@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
-import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import net.minecraft.world.entity.Entity;
@@ -28,8 +28,8 @@ public class Capabilities {
         return getCapability(entity, BHCapabilties.DAMAGE_INFOS);
     }
 
-    public static ICombatCore combat(LivingEntity entity) {
-        return getCapability(entity, BHCapabilties.COMBAT_CORE);
+    public static ICombatData combat(LivingEntity entity) {
+        return getCapability(entity, BHCapabilties.COMBAT_DATA);
     }
 
     public static LevelSystem levelSystem(Player player) {

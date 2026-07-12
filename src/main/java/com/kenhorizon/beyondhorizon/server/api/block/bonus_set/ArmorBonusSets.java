@@ -1,8 +1,6 @@
-package com.kenhorizon.beyondhorizon.server.api.bonus_set;
+package com.kenhorizon.beyondhorizon.server.api.block.bonus_set;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
-import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.item.ItemStack;
 
 public class ArmorBonusSets {

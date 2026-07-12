@@ -22,16 +22,13 @@ public class EntityUtils {
             }
         }
     }
-
     public static double getAttackDamage(LivingEntity entity) {
+        return getAttackDamage(entity, 1.0F);
+    }
+    public static double getAttackDamage(LivingEntity entity, float effectiveness) {
         double attackDamage = entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
-        double effectivness = entity.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
-        if (entity instanceof Player player) {
-            float cooldownFactor = player.getAttackStrengthScale(0.0F);
-            return (attackDamage * effectivness) * cooldownFactor;
-        } else {
-            return attackDamage * effectivness;
-        }
+        double damageAmp = entity.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
+        return (attackDamage * damageAmp) * effectiveness;
     }
 
     public static void groundSlamParticles(Level level, float yBodyRot, double x, double y, double z, float radius, float vec, float math) {

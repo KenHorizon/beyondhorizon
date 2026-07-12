@@ -45,7 +45,7 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
     }
 
     @Override
-    public WeaponAnimations getWeaponAnimations() {
+    public WeaponAnimations getWeaponAnimations(Player player, ItemStack itemStack) {
         return WeaponAnimations.GUARDIAN_SWORD;
     }
 

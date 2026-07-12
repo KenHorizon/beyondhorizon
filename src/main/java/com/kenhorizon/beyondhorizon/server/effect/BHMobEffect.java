@@ -7,7 +7,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHParticle;
-import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.RaycastUtil;
 import net.minecraft.core.particles.ParticleTypes;
@@ -20,6 +20,7 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Zombie;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -34,11 +35,12 @@ public class BHMobEffect extends MobEffect {
     private int rapidHealingRate = 20;
     private int rapidHealingMinusRate = 1;
     private final int rapidHealingDefaultRate = 20;
-    private final int rapidHealingLimitRate = 5;
+    private final int rapidHealingLimitRate = 1;
 
     public BHMobEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
+
     public BHMobEffect(MobEffectCategory category) {
         this(category, 0x00000000);
     }
@@ -112,12 +114,16 @@ public class BHMobEffect extends MobEffect {
             }
         }
         if (this == BHEffects.RAPID_HEALING.get()) {
-            ICombatCore combatCore = Capabilities.combat(entity);
+            ICombatData combatCore = Capabilities.combat(entity);
+            if (combatCore == null) return;
             boolean cancelHeal = combatCore.OnCombat();
             if (!cancelHeal && entity.getHealth() < entity.getMaxHealth()) {
                 if (entity.tickCount % this.rapidHealingRate == 0) {
                     //BeyondHorizon.LOGGER.debug("Rapid Healing Debug: Rate:{} Limit:{} Minus:{}", this.rapidHealingRate, this.rapidHealingLimitRate, this.rapidHealingMinusRate);
                     entity.heal(0.1F);
+                    if (entity.level() instanceof ServerLevel sLevel) {
+                        sLevel.sendParticles(ParticleTypes.HEART, entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 2, 0,0,0, 0.10D);
+                    }
                     if (this.rapidHealingRate > this.rapidHealingLimitRate) {
                         this.rapidHealingRate -= this.rapidHealingMinusRate;
                     } else {
@@ -128,10 +134,8 @@ public class BHMobEffect extends MobEffect {
             if (cancelHeal) {
                 this.rapidHealingRate = this.rapidHealingDefaultRate;
             }
-            if (entity.level() instanceof ServerLevel sLevel) {
-                sLevel.sendParticles(ParticleTypes.HEART, entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 2, 0,0,0, 0.10D);
-            }
         }
+
         if (this == BHEffects.BLEED.get()) {
             if (!entity.level().isClientSide()) {
                 if (!entity.isInvulnerable()) {
@@ -139,7 +143,6 @@ public class BHMobEffect extends MobEffect {
                         entity.hurt(BHDamageTypes.bleed(), 1.0F);
                     }
                 }
-                this.bleedSpecialEffect(entity, amplifier);
             }
         }
         if (this == BHEffects.PARALYZE.get()) {
@@ -155,29 +158,6 @@ public class BHMobEffect extends MobEffect {
             }
         }
         super.applyEffectTick(entity, amplifier);
-    }
-    private void bleedSpecialEffect(LivingEntity user, int level) {
-        double rangeLevel = 32.0D * level;
-        if (user instanceof ServerPlayer player) {
-            AABB range = player.getBoundingBox().inflate(rangeLevel);
-            for (LivingEntity targetZombies : user.level().getEntitiesOfClass(LivingEntity.class, range)) {
-                if (targetZombies instanceof Zombie zombie && zombie.getTarget() == null) {
-                    zombie.getNavigation().moveTo(player.getX(), player.getY(), player.getZ(), 1.0D);
-                }
-            }
-        }
-    }
-    private void hungerBoostRange(LivingEntity user, int level) {
-        AABB range = user.getBoundingBox().inflate(16.0D);
-        for (LivingEntity target : user.level().getEntitiesOfClass(LivingEntity.class, range)) {
-            if (target.isAlive() && !target.isInvulnerable() && target != user) {
-                if (target.getHealth() < user.getHealth()) {
-                    target.addEffect(new MobEffectInstance(BHEffects.VULNERABLE.get(), 20, level, true, false, true));
-                } else {
-                    target.addEffect(new MobEffectInstance(MobEffects.GLOWING, 20, level, true, false, false));
-                }
-            }
-        }
     }
     @Override
     public List<ItemStack> getCurativeItems() {

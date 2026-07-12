@@ -1,12 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.level.CombatCore;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
+import com.kenhorizon.beyondhorizon.server.level.CombatData;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
@@ -15,13 +12,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class CombatCoreCap implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
-    public static ResourceLocation NAME = BeyondHorizon.resource("combat_core");
-    protected final LazyOptional<CombatCore> handler = LazyOptional.of(CombatCore::new);
+public class CombatDataCap implements ICapabilityProvider, ICapabilitySerializable<CompoundTag> {
+    protected final LazyOptional<CombatData> handler = LazyOptional.of(CombatData::new);
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return BHCapabilties.COMBAT_CORE.orEmpty(cap, handler.cast());
+        return BHCapabilties.COMBAT_DATA.orEmpty(cap, handler.cast());
     }
 
     @Override

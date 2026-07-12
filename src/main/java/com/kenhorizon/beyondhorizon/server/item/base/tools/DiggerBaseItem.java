@@ -40,6 +40,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -53,6 +54,7 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems, IReloadab
     private final float attackRange;
     public final MeleeWeaponMaterials materials;
     public List<Skill> skills = ImmutableList.of();
+    public List<Optional<Skill>> activeSkills = ImmutableList.of();
     protected SkillBuilder skillBuilder;
     protected Multimap<Attribute, AttributeModifier> attributeModifiers;
     protected final Multimap<Attribute, AttributeModifier> otherAttributeModifiers = HashMultimap.create();
@@ -141,11 +143,11 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems, IReloadab
 
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
-        this.skillBaseItems.inventoryTick(itemStack, level, entity, slot, isSelected, this.skills);
+        this.skillBaseItems.inventoryTick(itemStack, level, entity, slot, isSelected);
     }
     @Override
     public void appendHoverText(ItemStack itemStack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-        this.skillBaseItems.appendHoverText(itemStack, tooltip, this.skills);
+        this.skillBaseItems.appendHoverText(itemStack, tooltip);
     }
 
     @Override
@@ -195,13 +197,13 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems, IReloadab
     }
 
     @Override
-    public int skillPresent() {
-        return this.skills.size();
+    public List<Skill> getSkills() {
+        return this.skills;
     }
 
     @Override
-    public List<Skill> getSkills() {
-        return this.skills;
+    public Collection<Optional<Skill>> getActiveSkills() {
+        return List.of();
     }
 
     @Override
@@ -245,14 +247,6 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems, IReloadab
     public boolean sweepParticles(Player player) {
         return false;
     }
-
-
-    @Override
-    public Skill getActionSkils() {
-        Optional<Skill> actionTrait = this.skillBuilder.getActionTrait();
-        return actionTrait.orElse(null);
-    }
-
 
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {

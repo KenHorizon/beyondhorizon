@@ -56,7 +56,7 @@ public class InfernalRaySkill extends AbstractDeathRaySkill {
     }
 
     @Override
-    public int getManaCost() {
+    public double getManaCost() {
         return 10;
     }
 }

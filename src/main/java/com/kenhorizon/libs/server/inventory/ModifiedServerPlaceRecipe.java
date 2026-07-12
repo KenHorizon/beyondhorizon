@@ -1,18 +1,16 @@
-package com.kenhorizon.beyondhorizon.server.inventory;
+package com.kenhorizon.libs.server.inventory;
 
 import com.google.common.collect.Lists;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundExtendedPlaceGhostRecipePacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundExtendedPlacedRecipePacket;
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.minecraft.network.protocol.game.ClientboundPlaceGhostRecipePacket;
 import net.minecraft.recipebook.PlaceRecipe;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.StackedContents;
-import net.minecraft.world.inventory.RecipeBookMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
@@ -23,13 +21,12 @@ import java.util.Iterator;
 import java.util.List;
 
 public class ModifiedServerPlaceRecipe <C extends Container> implements PlaceRecipe<Integer> {
-    private static final Logger LOGGER = LogUtils.getLogger();
     protected final StackedContents stackedContents = new StackedContents();
     protected Inventory inventory;
     protected ExtendedRecipeBookMenu<C> menu;
 
-    public ModifiedServerPlaceRecipe(ExtendedRecipeBookMenu<C> pMenu) {
-        this.menu = pMenu;
+    public ModifiedServerPlaceRecipe(ExtendedRecipeBookMenu<C> bookMenu) {
+        this.menu = bookMenu;
     }
 
     public void recipeClicked(ServerPlayer player, @Nullable Recipe<C> recipe, boolean placeAll) {
@@ -43,7 +40,7 @@ public class ModifiedServerPlaceRecipe <C extends Container> implements PlaceRec
                     this.handleRecipeClicked(recipe, placeAll);
                 } else {
                     this.clearGrid();
-                    NetworkHandler.sendToClient(new ClientboundExtendedPlaceGhostRecipePacket(player.containerMenu.containerId, recipe));
+                    NetworkHandler.sendToClient(new ClientboundExtendedPlacedRecipePacket(player.containerMenu.containerId, recipe));
                 }
 
                 player.getInventory().setChanged();

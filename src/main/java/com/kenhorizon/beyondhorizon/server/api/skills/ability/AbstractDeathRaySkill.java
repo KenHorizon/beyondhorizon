@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
@@ -45,7 +46,7 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
     }
 
     @Override
-    public WeaponAnimations getWeaponAnimations() {
+    public WeaponAnimations getWeaponAnimations(Player player, ItemStack itemStack) {
         return WeaponAnimations.HOLDING;
     }
 
@@ -71,7 +72,7 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
     @Override
     public void onUsingTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration) {
         if (entity instanceof Player player) {
-            PlayerData playerData = PlayerData.getInstance(player);
+            PlayerData playerData = Capabilities.data(player);
             if (playerData.getMana() <= 0) {
                 List<AbstractDeathRayAbility> list = player.level().getEntitiesOfClass(AbstractDeathRayAbility.class, player.getBoundingBox().inflate(2.0D));
                 if (!list.isEmpty()) {
@@ -134,7 +135,7 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
         if (attributeInstance.getModifier(SPEED_MODIFIER_SPRINTING_UUID) != null) {
             attributeInstance.removeModifier(SPEED_MODIFIER_SPRINTING);
         }
-//        itemStack.finishUsingItem(level, player);
+//        getStacks.finishUsingItem(level, player);
     }
 
     @Override

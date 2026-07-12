@@ -24,12 +24,13 @@ import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRen
 import com.kenhorizon.beyondhorizon.client.render.shaders.BakedModelShadeLayerFullbright;
 import com.kenhorizon.beyondhorizon.client.util.EmissiveBlocks;
 import com.kenhorizon.beyondhorizon.server.ServerProxy;
+import com.kenhorizon.beyondhorizon.server.api.ISkillSlots;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
-import com.kenhorizon.beyondhorizon.server.api.level.ICombatCore;
+import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
@@ -103,21 +104,8 @@ public class ClientProxy extends ServerProxy {
         bus.addListener(this::registerGuiOverlays);
         bus.addListener(this::registerNewRegsitry);
         bus.addListener(this::onRegisterItemDecorations);
-        bus.addListener(this::onRegisterCapabilities);
         ClientQuiverTooltip.registerFactory();
         ClientVoidBagTooltip.registerFactory();
-    }
-
-
-    private void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
-        event.register(IAccessoryStackHandler.class);
-        event.register(ICombatCore.class);
-        event.register(IDamageInfo.class);
-        event.register(LevelSystem.class);
-        event.register(PlayerData.class);
-        event.register(IAccessory.class);
-        event.register(IStackHandler.class);
-        event.register(StackableTags.class);
     }
 
 
@@ -131,7 +119,7 @@ public class ClientProxy extends ServerProxy {
 
 
     public void registerNewRegsitry(DataPackRegistryEvent.NewRegistry event) {
-        BeyondHorizon.LOGGER.debug("Custom Registry is registered and created!");
+        BeyondHorizon.LOGGER.info("Custom Registry is registered and created!");
         event.dataPackRegistry(BHRegistries.Keys.SPAWNER_BUILDER, SpawnerConfig.MAP_CODEC.codec());
     }
 
@@ -310,6 +298,7 @@ public class ClientProxy extends ServerProxy {
         event.register(Keybinds.LEVEL_SYSTEM);
         event.register(Keybinds.QUIVER_INVENTORY);
         event.register(Keybinds.ACCESSORY_SLOTS);
+        event.register(Keybinds.SKILL_SELECT);
     }
 
     @Override
@@ -338,7 +327,8 @@ public class ClientProxy extends ServerProxy {
 
     @Override
     public Player clientPlayer() {
-        return Minecraft.getInstance().player;
+        Minecraft mc = Minecraft.getInstance();
+        return mc.player;
     }
 
     @Override

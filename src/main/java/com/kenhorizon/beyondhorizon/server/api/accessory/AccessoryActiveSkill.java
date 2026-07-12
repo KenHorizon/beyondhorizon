@@ -11,6 +11,7 @@ import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
@@ -63,6 +64,7 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         Player player = BeyondHorizon.PROXY.clientPlayer();
+        PlayerData playerData = Capabilities.data(player);
         if (player != null) {
             IAccessoryStackHandler handler = Capabilities.accessory(player);
             if (handler != null) {
@@ -102,7 +104,7 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
         this.setActive(!this.isActive(), slot);
     }
 
-    protected int getManaCost() {
+    protected double getManaCost() {
         return  0;
     }
 
@@ -126,10 +128,14 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
         try {
             boolean canUse = playerData.isOnCooldown(this.getId());
             boolean flag = playerData.getMana() <= this.getManaCost();
-            if (!flag) {
-                this.playerManaCost(playerData, player);
+            if (!flag && !playerData.isOnCooldown(this.getId())) {
+                this.addCooldownManaCost(player);
                 this.onActiveAbility(player, itemStack);
                 this.toggleActive(slot);
+            } else if (playerData.isOnCooldown(this.getId())) {
+                player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_ON_COOLDOWN)
+                        .append(CommonComponents.space())
+                        .append(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (int)((this.getCooldown() / 20) * playerData.getCooldownPercent(this.getId())))).withStyle(ChatFormatting.RED), true);
             } else {
                 player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_NOT_ENOUGH_MANA).withStyle(ChatFormatting.RED), true);
             }
@@ -138,6 +144,28 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
         }
         return false;
     }
+
+    protected void playerManaCost(PlayerData data, Player player) {
+        if (this.getManaCostType() == ManaCostType.PERCENTAGE) {
+            data.removeMana((int) (data.getMaxMana() / (Math.min(1.0F, this.getManaCost() / 100.0F))));
+        } else {
+            data.removeMana(this.getManaCost());
+        }
+    }
+
+
+    protected void addCooldownManaCost(Player player) {
+        PlayerData playerData = Capabilities.data(player);
+        try {
+            playerData.addCooldown(this.getId(), this.getCooldown());
+            if (!player.isCreative()) {
+                this.playerManaCost(playerData, player);
+            }
+        } catch (Exception e) {
+            BeyondHorizon.LOGGER.warn("Player data is null! returning!!");
+        }
+    }
+
 
     public ManaCostType getManaCostType() {
         return manaCostType;
@@ -156,15 +184,6 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
                 this.onDurationAbility(player, itemStack, active);
             }
         });
-
-    }
-
-    protected void playerManaCost(PlayerData data, Player player) {
-        if (this.getManaCostType() == ManaCostType.PERCENTAGE) {
-            data.removeMana((int) (data.getMaxMana() / (Math.min(1.0F, this.getManaCost() / 100.0F))));
-        } else {
-            data.removeMana(this.getManaCost());
-        }
     }
 
     public boolean manaNotEnough(Player player) {

@@ -1,39 +1,41 @@
 package com.kenhorizon.beyondhorizon.server.api.entity.player;
 
 import com.google.common.collect.Maps;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAbilityCooldownPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataSyncPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAbilityCooldownsPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundManaSyncPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataPacket;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.libs.server.world.CooldownInstance;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
 public class PlayerData {
-    public static double MANA_DEDUCTION = 0.5D;
-    public static String NBT_MANA = "mana";
-    public static String NBT_CRIT = "crit";
-    public static String NBT_DO_CRIT = "do_crit"; // Force player to perform critical strike
-    public static String NBT_CANT_CRIT = "cant_crit"; // Ability to disable player critical strike
-//
+    public static final double MANA_DEDUCTION = 0.5D;
+    public static final String NBT_MANA = "mana";
+    public static final String NBT_CRIT = "crit";
+    public static final String NBT_DO_CRIT = "do_crit"; // Force player to perform critical strike
+    public static final String NBT_CANT_CRIT = "cant_crit"; // Ability to disable player critical strike
     public static final String NBT_ENTRY = "ability_cooldown";
     public static final String NBT_SLOT = "slot";
     public static final String NBT_ID = "id";
     public static final String NBT_COOLDOWN = "cooldown";
     public static final String NBT_CDR = "cdr";
-    //
-    public static final String NBT_ABILITIES = "ability_skill";
-    public static final String NBT_ITEM_TEMP_ID = "temp_id";
     private final Map<String, CooldownInstance> skillManager;
-
     protected boolean cantCrit;
     protected boolean doCrit;
     protected boolean crit;
@@ -49,21 +51,27 @@ public class PlayerData {
         this.skillManager = Maps.newHashMap();
     }
 
-    public void addMana(int amount) {
-        this.mana += amount;
+    public void addMana(double amount) {
+        this.setMana(this.getMana() + amount);
     }
 
-
-    public void removeMana(int amount) {
+    public void removeMana(double amount) {
         this.removeMana(amount, false);
     }
 
-    public void removeMana(int amount, boolean doDecut) {
+    public void removeMana(double amount, boolean doDecut) {
         this.doDecut = doDecut;
-        this.mana = Math.max(0, this.mana - amount);
+        this.setMana(Math.max(0, this.getMana() - amount));
     }
 
     public void setMana(double mana) {
+        this.mana = Mth.clamp(mana, 0, this.getMaxMana());
+        if (this.player instanceof ServerPlayer splayer) {
+            NetworkHandler.sendToPlayer(new ClientboundManaSyncPacket(this.getMana()), splayer);
+        }
+    }
+
+    public void setSyncMana(double mana) {
         this.mana = mana;
     }
 
@@ -78,6 +86,7 @@ public class PlayerData {
     public boolean isCrit() {
         return this.crit;
     }
+
     public void setDoCrit(boolean crit) {
         this.doCrit = crit;
     }
@@ -85,15 +94,13 @@ public class PlayerData {
     public void setCantCrit(boolean cantCrit) {
         this.cantCrit = cantCrit;
     }
+
     public boolean isCantCrit() {
         return this.cantCrit;
     }
 
     public boolean isDoCrit() {
         return this.doCrit;
-    }
-    public void setDefaults() {
-        this.mana = this.player.getAttributeBaseValue(BHAttributes.MAX_MANA.get());
     }
 
     public double getMaxMana() {
@@ -104,7 +111,7 @@ public class PlayerData {
         if (this.getMana() < this.getMaxMana()) {
             float value = (float) player.getAttributeValue(BHAttributes.MANA_REGENERATION.get());
             value *= (float) (this.doDecut ? this.manaDeduction : 1.0D);
-            this.addMana((int) value);
+            this.addMana(value);
         } else {
             this.setMana(this.getMaxMana());
         }
@@ -112,6 +119,27 @@ public class PlayerData {
 
     public boolean doRegenMana(Level level) {
         return level.getServer().getTickCount() % 10 == 0;
+    }
+
+    public void tick(Level level) {
+        var spells = this.skillManager.entrySet().stream()
+                .filter(x -> decrementCooldown(x.getValue(), 1)).toList();
+        spells.forEach(spell -> {
+            this.skillManager.remove(spell.getKey());
+            this.onCooldownEnded(spell.getKey());
+        });
+        if (this.doDecut) {
+            this.tickManaDeduct++;
+            if (this.tickManaDeduct >= Maths.sec(3)) {
+                this.doDecut = false;
+                this.tickManaDeduct = 0;
+            }
+        }
+        if (this.player instanceof ServerPlayer serverPlayer) {
+            if (this.doRegenMana(level)) {
+                this.regenMana(serverPlayer);
+            }
+        }
     }
 
     // Cooldown Mechanics
@@ -128,6 +156,7 @@ public class PlayerData {
     public void addCooldown(String id, int cooldown, int cooldownReamining) {
         int newCooldown = (int) (cooldown - (cooldown * this.player.getAttributeValue(BHAttributes.COOLDOWN.get())));
         this.skillManager.put(id, new CooldownInstance(newCooldown, cooldownReamining));
+        this.onCooldownStarted(id);
     }
 
     public float getCooldownPercent(String id) {
@@ -135,7 +164,7 @@ public class PlayerData {
     }
 
     public int getCooldown(String id) {
-        return this.skillManager.getOrDefault(id, new CooldownInstance(0)).getCooldownRemaining();
+        return this.skillManager.getOrDefault(id, new CooldownInstance(0)).getCooldown();
     }
 
     public void removeCooldown(String id) {
@@ -145,6 +174,7 @@ public class PlayerData {
 
     public boolean decrementCooldown(CooldownInstance instance, int amount) {
         instance.decrementBy(amount);
+        this.syncCooldown();
         return instance.getCooldownRemaining() <= 0;
     }
 
@@ -170,34 +200,12 @@ public class PlayerData {
             NetworkHandler.sendToPlayer(new ClientboundAbilityCooldownPacket(this.skillManager), sPlayer);
         }
     }
-
-    public void tick(Level level) {
-        var spells = this.skillManager.entrySet().stream()
-                .filter(x -> decrementCooldown(x.getValue(), 1)).toList();
-        spells.forEach(spell -> {
-            this.skillManager.remove(spell.getKey());
-            this.onCooldownEnded(spell.getKey());
-        });
-        if (this.doDecut) {
-            this.tickManaDeduct++;
-            if (this.tickManaDeduct >= Maths.sec(3)) {
-                this.doDecut = false;
-                this.tickManaDeduct = 0;
-            }
-        }
-        if (this.player instanceof ServerPlayer serverPlayer) {
-            if (this.doRegenMana(level)) {
-                this.regenMana(serverPlayer);
-            }
-        }
-//        this.syncPlayerData(player);
-    }
-
-    public void syncPlayerData(Player player) {
-        if (player instanceof ServerPlayer sPlayer) {
-            NetworkHandler.sendToPlayer(new ClientboundPlayerDataSyncPacket(this.saveNbt()), sPlayer);
+    public void syncData(Player player) {
+        if (player instanceof ServerPlayer splayer) {
+            NetworkHandler.sendToPlayer(new ClientboundPlayerDataPacket(this.saveNbt()), splayer);
         }
     }
+
     public CompoundTag saveNbt() {
         CompoundTag nbt = new CompoundTag();
         nbt.putDouble(NBT_MANA, this.getMana());
@@ -209,7 +217,8 @@ public class PlayerData {
     }
 
     public void loadNbt(CompoundTag nbt) {
-        this.setMana(nbt.getDouble(NBT_MANA));
+        this.setSyncMana(nbt.getDouble(NBT_MANA));
+        System.out.println("[MANA] deserialized to " + this.getMana());
         this.setCrit(nbt.getBoolean(NBT_CRIT));
         this.setDoCrit(nbt.getBoolean(NBT_DO_CRIT));
         this.setCantCrit(nbt.getBoolean(NBT_CANT_CRIT));
@@ -240,8 +249,24 @@ public class PlayerData {
         }
         return listTag;
     }
-    public static PlayerData getInstance(Player player) {
-        return Capabilities.data(player);
-    }
 
+    /**
+     * Check if player holding item in mainhand or offhand
+     * it the mainhand if empty will go in offhand, vice versa in offhand
+     * if both hand are empty the return is empty
+     * */
+    public static ItemStack getHeldingItem(Player player) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack heldStacks;
+            if (slot == EquipmentSlot.MAINHAND && player.getOffhandItem().isEmpty()) {
+                heldStacks = player.getItemBySlot(slot);
+                return heldStacks;
+            }
+            if (slot == EquipmentSlot.OFFHAND && player.getMainHandItem().isEmpty()) {
+                heldStacks = player.getItemBySlot(slot);
+                return heldStacks;
+            }
+        }
+        return ItemStack.EMPTY;
+    }
 }

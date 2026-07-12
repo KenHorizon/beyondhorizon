@@ -38,7 +38,7 @@ public class SwiftnessAccessory extends AccessoryActiveSkill {
     }
 
     @Override
-    protected int getManaCost() {
-        return 10;
+    protected double getManaCost() {
+        return 20;
     }
 }

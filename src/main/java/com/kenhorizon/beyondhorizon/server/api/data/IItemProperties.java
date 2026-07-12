@@ -21,11 +21,11 @@ public interface IItemProperties {
         return UseAnim.NONE;
     }
 
-    default WeaponArmPose getWeaponArmPose() {
+    default WeaponArmPose getWeaponArmPose(Player player, ItemStack itemStack) {
         return WeaponArmPose.EMPTY;
     }
 
-    default WeaponAnimations getWeaponAnimations() {
+    default WeaponAnimations getWeaponAnimations(Player player, ItemStack itemStack) {
         return WeaponAnimations.EMPTY;
     }
 

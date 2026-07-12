@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.item.base;
 
 import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
 import com.kenhorizon.libs.client.WeaponAnimations;
@@ -18,15 +19,29 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.MendingEnchantment;
 import net.minecraft.world.level.Level;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public record SkillBaseItems(Item item) {
+public class SkillBaseItems {
+    private final ISkillItems skillItem;
+    private List<Skill> skills = new ArrayList<>();
+    private List<Optional<Skill>> activeSkills = new ArrayList<>();
+    public SkillBaseItems(ISkillItems skillItems) {
+        this.skillItem = skillItems;
+        this.skills.addAll(skillItems.getSkills());
+        this.activeSkills.addAll(skillItem.getActiveSkills());
+    }
 
-    public void appendHoverText(ItemStack itemStack, List<Component> tooltip, List<Skill> skills) {
-        int size = skills.size();
-        for (int i = 0; i < skills.size(); i++) {
-            Skill skill = skills.get(i);
+    public void setSkills(List<Skill> skills, List<Optional<Skill>> activeSkills) {
+        this.skills = skills;
+        this.activeSkills = activeSkills;
+    }
+
+    public void appendHoverText(ItemStack itemStack, List<Component> tooltip) {
+        int size = this.skills.size();
+        for (int i = 0; i < this.skills.size(); i++) {
+            Skill skill = this.skills.get(i);
             if (!skill.getAttributeModifiers().isEmpty()) {
                 size--;
                 skill.addTooltipAttributes(itemStack, tooltip);
@@ -35,20 +50,18 @@ public record SkillBaseItems(Item item) {
         }
     }
 
-    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected, List<Skill> skills) {
+    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
         if (entity instanceof LivingEntity living) {
-            if (skills != null) {
-                skills.forEach((skill) -> {
-                    skill.entityProperties().ifPresent(callback -> {
-                        callback.onItemUpdate(itemStack, level, living, slot, isSelected);
-                    });
+            this.skills.forEach((skill) -> {
+                skill.entityProperties().ifPresent(callback -> {
+                    callback.onItemUpdate(itemStack, level, living, slot, isSelected);
                 });
-            }
+            });
         }
     }
 
-    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment, List<Skill> skills, Tier tier) {
-        for (Skill skill : skills) {
+    public boolean canApplyAtEnchantingTable(ItemStack stack, Enchantment enchantment, Tier tier) {
+        for (Skill skill : this.skills) {
             if (skill.isEnchantmentCompatible(enchantment)) {
                 return true;
             } else if (skill.isEnchantmentIncompatible(enchantment)) {
@@ -61,9 +74,9 @@ public record SkillBaseItems(Item item) {
         return false;
     }
 
-    public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration, SkillBuilder builder) {
+    public void onUseTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration) {
         if (entity instanceof Player player) {
-            Optional<Skill> actionTrait = builder.getActionTrait();
+            Optional<Skill> actionTrait = this.skillItem.getActiveSkill(itemStack);
             if (actionTrait.isPresent()) {
                 Skill trait = actionTrait.get();
                 if (trait.itemProperties().isPresent()) {
@@ -73,9 +86,9 @@ public record SkillBaseItems(Item item) {
         }
     }
 
-    public void releaseUsing(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration, SkillBuilder builder) {
+    public void releaseUsing(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration) {
         if (entity instanceof Player player) {
-            Optional<Skill> actionTrait = builder.getActionTrait();
+            Optional<Skill> actionTrait = this.skillItem.getActiveSkill(itemStack);
             if (actionTrait.isPresent()) {
                 Skill trait = actionTrait.get();
                 if (trait.itemProperties().isPresent()) {
@@ -85,18 +98,18 @@ public record SkillBaseItems(Item item) {
         }
     }
 
-    public int getUseDuration(ItemStack itemStack, int original, SkillBuilder builder) {
-        Optional<Skill> actionTrait = builder.getActionTrait();
+    public int getUseDuration(ItemStack itemStack) {
+        Optional<Skill> actionTrait = this.skillItem.getActiveSkill(itemStack);
         if (actionTrait.isPresent()) {
             Skill trait = actionTrait.get();
             if (trait.itemProperties().isPresent())
                 return trait.itemProperties().get().getUseDuration(itemStack);
         }
-        return original;
+        return 0;
     }
 
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, ItemStack itemStack, InteractionHand hand, SkillBuilder builder) {
-        Optional<Skill> actionTrait = builder.getActionTrait();
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, ItemStack itemStack, InteractionHand hand) {
+        Optional<Skill> actionTrait = this.skillItem.getActiveSkill(itemStack);
         if (actionTrait.isPresent()) {
             Skill trait = actionTrait.get();
             if (trait.itemProperties().isPresent())
@@ -105,31 +118,32 @@ public record SkillBaseItems(Item item) {
         return null;
     }
 
-    public void finishUsingItem(Level level, Player player, ItemStack itemStack, SkillBuilder builder) {
-        Optional<Skill> actionTrait = builder.getActionTrait();
+    public ItemStack finishUsingItem(Level level, Player player, ItemStack itemStack) {
+        Optional<Skill> actionTrait = this.skillItem.getActiveSkill(itemStack);
         if (actionTrait.isPresent()) {
             Skill trait = actionTrait.get();
             if (trait.itemProperties().isPresent())
                 trait.itemProperties().get().finishedUsingItem(itemStack, level, player);
         }
+        return itemStack;
     }
 
-    public WeaponAnimations getWeaponAnimations(SkillBuilder builder) {
-        Optional<Skill> actionTrait = builder.getActionTrait();
+    public WeaponAnimations getWeaponAnimations(Player player, ItemStack itemStack) {
+        Optional<Skill> actionTrait = this.skillItem.getActiveSkill(itemStack);
         if (actionTrait.isPresent()) {
             Skill trait = actionTrait.get();
             if (trait.itemProperties().isPresent())
-                return trait.itemProperties().get().getWeaponAnimations();
+                return trait.itemProperties().get().getWeaponAnimations(player, itemStack);
         }
         return WeaponAnimations.EMPTY;
     }
 
-    public WeaponArmPose getWeaponPose(SkillBuilder builder) {
-        Optional<Skill> actionTrait = builder.getActionTrait();
+    public WeaponArmPose getWeaponPose(Player player, ItemStack itemStack) {
+        Optional<Skill> actionTrait = this.skillItem.getActiveSkill(itemStack);
         if (actionTrait.isPresent()) {
             Skill trait = actionTrait.get();
             if (trait.itemProperties().isPresent())
-                return trait.itemProperties().get().getWeaponArmPose();
+                return trait.itemProperties().get().getWeaponArmPose(player, itemStack);
         }
         return WeaponArmPose.EMPTY;
     }

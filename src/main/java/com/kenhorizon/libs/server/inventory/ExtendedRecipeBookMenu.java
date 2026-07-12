@@ -1,12 +1,10 @@
-package com.kenhorizon.beyondhorizon.server.inventory;
+package com.kenhorizon.libs.server.inventory;
 
-import net.minecraft.recipebook.ServerPlaceRecipe;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.inventory.RecipeBookType;
 import net.minecraft.world.item.crafting.Recipe;
 
 public abstract class ExtendedRecipeBookMenu<C extends Container> extends AbstractContainerMenu {

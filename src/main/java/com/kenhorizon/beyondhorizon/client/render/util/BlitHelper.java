@@ -13,6 +13,11 @@ import org.joml.Matrix4f;
 
 @OnlyIn(Dist.CLIENT)
 public class BlitHelper {
+
+    public static void drawIcons(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y) {
+        drawBlit(guiGraphics, textures, x, y, 0, 0, 9, 9, 9, 9, 0xFFFFFFFF);
+    }
+
     public static void drawBlit(GuiGraphics guiGraphics, ResourceLocation textures, int x, int y, int uo, int vo, int width, int height) {
         drawBlit(guiGraphics, textures, x, y, uo, vo, width, height, 256, 256, 0xFFFFFFFF);
     }

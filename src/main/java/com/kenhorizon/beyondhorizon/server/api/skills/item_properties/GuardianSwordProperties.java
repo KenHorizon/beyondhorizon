@@ -30,7 +30,7 @@ public class GuardianSwordProperties extends ItemPropertiesSkill {
         Level level = player.level();
         if (!level.isClientSide()) {
             BlazingRod projectile = new BlazingRod(level, player);
-            projectile.setBaseDamage((float) EntityUtils.getAttackDamage(player));
+            projectile.setBaseDamage((float) EntityUtils.getAttackDamage(player, 0.75F));
             Vec3 vector3d = player.getViewVector(1.0F);
             Vec3 vec3 = player.getHandHoldingItemAngle(itemStack.getItem());
             double d0 = player.getX() + vec3.x();

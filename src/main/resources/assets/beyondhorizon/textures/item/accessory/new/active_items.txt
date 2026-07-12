@@ -1,0 +1,17 @@
+
+
+Dragon Eye
+	All Seeing -> Allow to see all entity within 24 ranges but damage the holder by 1 per second
+
+Warden's Ears
+	Echo Location -> Send signal to holder when any vibration is detecting within a 24 ranges
+
+Warden's Heart
+	All Seeing -> Lower visibility to 50% and allow to see all entity within 24 ranges and gain of stacks vibration for each vibration is heard, reaching max stack gain bonus movement speed toward to targets
+
+Equalizer
+	Compact Mana -> For 10 seconds, your are empowered, while empowered your next ability cost 100% more mana, and gain 20%(+0.05% per 100 bonus mana) increased damage
+
+Static Gems
+	Lightning Bolt -> Shock the target with of bolt of lightning, dealing 1-30(based on level)(+10% AP) magic damage
+

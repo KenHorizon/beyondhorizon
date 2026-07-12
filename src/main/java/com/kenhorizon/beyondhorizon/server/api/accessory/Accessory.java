@@ -175,9 +175,13 @@ public abstract class Accessory {
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
         Minecraft mc = Minecraft.getInstance();
         Player player = BeyondHorizon.PROXY.clientPlayer();
+        this.addTooltipDescriptionHeader(itemStack, player, tooltip);
         for (var createTooltips : this.makeTooltips(itemStack)) {
             tooltip.add(createTooltips.withStyle(Tooltips.TOOLTIP[0]));
         }
+    }
+    protected void addTooltipDescriptionHeader(ItemStack itemStack, Player player, List<Component> tooltip) {
+
     }
 
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {

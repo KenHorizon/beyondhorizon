@@ -34,7 +34,9 @@ public class GameRendererMixins {
     @Inject(at = @At("HEAD"), method = "bobHurt", cancellable = true)
     private void modifiedbobHurt(PoseStack poseStack, float partialTicks, CallbackInfo ci) {
         if (this.minecraft.getCameraEntity() instanceof LivingEntity entity) {
-            ci.cancel();
+            if (entity.hurtTime <= 0 || entity.invulnerableTime <= 0 || entity.hurtDuration <= 0) {
+                ci.cancel();
+            }
         }
     }
 }

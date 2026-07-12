@@ -8,10 +8,10 @@ import net.minecraftforge.network.NetworkEvent;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class ClientboundAbilityCooldownPacket {
+public class ClientboundAbilityCooldownsPacket {
     private final Map<String, CooldownInstance> map;
 
-    public ClientboundAbilityCooldownPacket(Map<String, CooldownInstance> map) {
+    public ClientboundAbilityCooldownsPacket(Map<String, CooldownInstance> map) {
         this.map = map;
     }
 
@@ -34,18 +34,18 @@ public class ClientboundAbilityCooldownPacket {
         buf.writeInt(cooldownInstance.getCooldownRemaining());
     }
 
-    public ClientboundAbilityCooldownPacket(FriendlyByteBuf buf) {
-        this.map = buf.readMap(ClientboundAbilityCooldownPacket::readID, ClientboundAbilityCooldownPacket::readCoolDownInstance);
+    public ClientboundAbilityCooldownsPacket(FriendlyByteBuf buf) {
+        this.map = buf.readMap(ClientboundAbilityCooldownsPacket::readID, ClientboundAbilityCooldownsPacket::readCoolDownInstance);
     }
 
     public void toBytes(FriendlyByteBuf buf) {
-        buf.writeMap(this.map, ClientboundAbilityCooldownPacket::writeId, ClientboundAbilityCooldownPacket::writeCoolDownInstance);
+        buf.writeMap(this.map, ClientboundAbilityCooldownsPacket::writeId, ClientboundAbilityCooldownsPacket::writeCoolDownInstance);
     }
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            ClientPacketHandler.handleAbilityCooldown(this, supplier);
+            ClientPacketHandler.handleAbilityCooldowns(this, supplier);
         });
         context.setPacketHandled(true);
     }

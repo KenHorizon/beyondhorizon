@@ -16,9 +16,9 @@ public interface IAbilityInfo {
 
     void setCooldown(int cd);
 
-    int getManaCost();
+    double getManaCost();
 
-    void setManaCost(int manaCost);
+    void setManaCost(double manaCost);
 
     default float getCastTimeFactor() {
         return Mth.clamp((1.0F - ((float) this.getCastTime() / this.getMaxCastTime())), 0.0F, 1.0F);

@@ -29,8 +29,6 @@ public class SkillBaseItems {
     private List<Optional<Skill>> activeSkills = new ArrayList<>();
     public SkillBaseItems(ISkillItems skillItems) {
         this.skillItem = skillItems;
-        this.skills.addAll(skillItems.getSkills());
-        this.activeSkills.addAll(skillItem.getActiveSkills());
     }
 
     public void setSkills(List<Skill> skills, List<Optional<Skill>> activeSkills) {
@@ -115,7 +113,7 @@ public class SkillBaseItems {
             if (trait.itemProperties().isPresent())
                 return trait.itemProperties().get().use(itemStack, level, player, hand);
         }
-        return null;
+        return InteractionResultHolder.pass(itemStack);
     }
 
     public ItemStack finishUsingItem(Level level, Player player, ItemStack itemStack) {

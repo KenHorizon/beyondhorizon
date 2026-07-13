@@ -50,7 +50,7 @@ public class SkillSlots implements ISkillSlots {
     @Override
     public CompoundTag writeNbt() {
         CompoundTag nbt = new CompoundTag();
-        nbt.putInt(NBT_SLOTS, this.getTotal());
+        nbt.putInt(NBT_SLOTS, this.getSelectedSlot());
         nbt.putInt(NBT_SIZE, this.getTotal());
         return nbt;
     }

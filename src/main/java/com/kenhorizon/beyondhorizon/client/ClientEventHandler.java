@@ -237,7 +237,7 @@ public class ClientEventHandler {
         double y = event.getMouseY();
         Minecraft mc = Minecraft.getInstance();
         if (mc.screen == null) {
-            if (BeyondHorizon.PROXY.isKeyPressed(Keybinds.SKILL_SELECT)) {
+            if (BeyondHorizon.PROXY.isKeyDown(Keybinds.SKILL_SELECT)) {
                 Player player = BeyondHorizon.PROXY.clientPlayer();
                 ItemStack itemStack = PlayerData.getHeldingItem(player);
                 itemStack.getCapability(BHCapabilties.SKILL_SLOTS).ifPresent(handler -> {
@@ -247,11 +247,11 @@ public class ClientEventHandler {
                         int scrollIndex = (Mth.clamp(handler.getSelectedSlot(), 0, count) - direction);
                         int selectedIndex = (Mth.clamp(scrollIndex, -1, count + 1) + count) % count;
                         handler.select(selectedIndex);
-                        NetworkHandler.sendToServer(new ServerboundAbilitySlotSelectionPacket(itemStack, selectedIndex));
-                        event.setCanceled(true);
+                        NetworkHandler.sendToServer(new ServerboundAbilitySlotSelectionPacket(selectedIndex));
                     }
                 });
             }
+            event.setCanceled(BeyondHorizon.PROXY.isKeyDown(Keybinds.SKILL_SELECT));
         }
     }
 

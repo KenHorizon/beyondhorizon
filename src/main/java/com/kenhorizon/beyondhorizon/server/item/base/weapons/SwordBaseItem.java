@@ -191,11 +191,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
-        if (this.skillBaseItems.use(level, player, itemStack, hand) == null) {
-            return super.use(level, player, hand);
-        } else {
-            return this.skillBaseItems.use(level, player, itemStack, hand);
-        }
+        return this.skillBaseItems.use(level, player, itemStack, hand);
     }
 
     @Override
@@ -210,6 +206,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
     }
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
+        BeyondHorizon.LOGGER.info("{}", this.getActiveSkill(itemStack).get().getName());
         this.skillBaseItems.inventoryTick(itemStack, level, entity, slot, isSelected);
     }
 

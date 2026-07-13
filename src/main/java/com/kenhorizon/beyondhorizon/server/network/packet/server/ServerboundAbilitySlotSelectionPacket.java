@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Player;
@@ -12,21 +14,17 @@ import java.util.function.Supplier;
 
 public class ServerboundAbilitySlotSelectionPacket {
     private final int selectedSlots;
-    private final ItemStack stack;
 
-    public ServerboundAbilitySlotSelectionPacket(ItemStack itemStack, int selectedSlots) {
-        this.selectedSlots =selectedSlots;
-        this.stack = itemStack;
+    public ServerboundAbilitySlotSelectionPacket(int selectedSlots) {
+        this.selectedSlots = selectedSlots;
     }
 
     public ServerboundAbilitySlotSelectionPacket(FriendlyByteBuf buf) {
         this.selectedSlots = buf.readInt();
-        this.stack = buf.readItem();
     }
 
     public void toBytes(FriendlyByteBuf buf) {
         buf.writeInt(this.selectedSlots);
-        buf.writeItem(this.stack);
     }
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
@@ -36,11 +34,11 @@ public class ServerboundAbilitySlotSelectionPacket {
                 playerSided = BeyondHorizon.PROXY.clientPlayer();
             }
             if (playerSided != null) {
-                this.stack.getCapability(BHCapabilties.SKILL_SLOTS).ifPresent(handler -> {
+                ItemStack stack = PlayerData.getHeldingItem(playerSided);
+                stack.getCapability(BHCapabilties.SKILL_SLOTS).ifPresent(handler -> {
                     handler.select(this.selectedSlots);
                 });
             }
-
         });
         context.setPacketHandled(true);
     }

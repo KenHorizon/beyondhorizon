@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
@@ -61,8 +62,7 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
     }
 
     @Override
-    protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
-        List<MutableComponent> list = new ArrayList<>();
+    protected void addTooltipDescriptionHeader(ItemStack itemStack, List<Component> tooltip) {
         Player player = BeyondHorizon.PROXY.clientPlayer();
         PlayerData playerData = Capabilities.data(player);
         if (player != null) {
@@ -70,7 +70,7 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
             if (handler != null) {
                 var stacks = handler.getStacks();
                 if (stacks.contains(itemStack)) {
-                    list.add(this.addKeyBinds(stacks.whatSlots(itemStack)));
+                    tooltip.add(this.addKeyBinds(stacks.whatSlots(itemStack)));
                 }
             }
         }
@@ -83,12 +83,10 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
         } else {
             tooltips = Tooltips.TOOLTIP_MANA_COST;
         }
-        list.add(Component.translatable(tooltips, this.getManaCost()).withStyle(ChatFormatting.UNDERLINE));
+        tooltip.add(Component.translatable(tooltips, this.getManaCost()).withStyle(ChatFormatting.UNDERLINE).withStyle(style -> style.withColor(Colors.AZURE)));
         if (this.getCooldown() > 0) {
-            list.add(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (int) (this.getCooldown() / 20)).withStyle(ChatFormatting.UNDERLINE));
+            tooltip.add(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (int) (this.getCooldown() / 20)).withStyle(ChatFormatting.UNDERLINE).withStyle(style -> style.withColor(Colors.GRAY)));
         }
-        list.add(Component.translatable(this.createId(0), Maths.format0(this.getMagnitude())));
-        return list;
     }
 
     public void setActive(boolean active, int slot) {

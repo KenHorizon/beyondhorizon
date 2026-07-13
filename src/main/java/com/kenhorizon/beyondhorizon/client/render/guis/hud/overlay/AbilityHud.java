@@ -20,20 +20,20 @@ public class AbilityHud extends HudOverlay {
         if (gui.getMinecraft().options.hideGui) return;
         gui.setupOverlayRenderState(true, false);
         mc.getProfiler().push("ability_hud");
-        int x = screenWidth / 2;
-        int y = screenHeight - (gui.leftHeight + 21);
         float casttimeFactor = ((float) this.hud.casttime / this.hud.maxcasttime);
         String casttime = String.format("%.0f%%", 100.0F * ((float) this.hud.casttime / this.hud.maxcasttime));
         int castTimeW = font.width(casttime);
         if (casttimeFactor > 0.0F) {
-            BlitHelper.drawBlit(guiGraphics, HudSprites.CAST_TIME_BACKGROUND, x, y, 0,0, 79, 4,79, 4);
-            BlitHelper.drawBlit(guiGraphics, HudSprites.CAST_TIME, x, y, 0,0, (int) (79 * casttimeFactor), 4,79, 4);
-            BlitHelper.drawBlit(guiGraphics, HudSprites.CAST_TIME_OVERLAY, x - 22, y - 6, 0,0,124, 16,124, 16);
-            BlitHelper.drawBorderedStrings(font, guiGraphics, casttime,x + (14 + castTimeW / 2), y - (font.lineHeight + 3), Colors.combineRGB(0, 148, 255));
+            int castTimeX = (screenWidth - 79) / 2;
+            int castTimeY = screenHeight - (gui.leftHeight - 12);
+            BlitHelper.drawBlit(guiGraphics, HudSprites.CAST_TIME_BACKGROUND, castTimeX, castTimeY, 0,0, 79, 4,79, 4);
+            BlitHelper.drawBlit(guiGraphics, HudSprites.CAST_TIME, castTimeX, castTimeY, 0,0, (int) (79 * casttimeFactor), 4,79, 4);
+            BlitHelper.drawBlit(guiGraphics, HudSprites.CAST_TIME_OVERLAY, castTimeX - 22, castTimeY - 6, 0,0,124, 16,124, 16);
+            BlitHelper.drawBorderedStrings(font, guiGraphics, casttime,castTimeX + (16 + castTimeW / 2), castTimeY - (font.lineHeight + 3), Colors.combineRGB(0, 148, 255));
         }
         if (!this.hud.selectedAbility.isEmpty()) {
             String skills = String.format("%s", this.hud.selectedAbility);
-            BlitHelper.drawBorderedStrings(font, guiGraphics, skills,20, (this.hud.scaledWindowHeight - 20));
+            BlitHelper.drawBorderedStrings(font, guiGraphics, skills,20, (this.hud.scaledWindowHeight - 20), Colors.GOLD);
         }
         mc.getProfiler().pop();
     }

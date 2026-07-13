@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
+import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.InfernalSpear;
@@ -28,6 +29,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class InfernoStrikeSkill extends WeaponActiveSkills {
@@ -50,7 +52,7 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
     }
 
     @Override
-    protected List<MutableComponent> appendTooltips(ItemStack itemStack) {
+    protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         Player player = BeyondHorizon.PROXY.clientPlayer();
         list.add(Component.translatable(createId(0), Maths.format0(this.maxSlow)));
@@ -61,28 +63,19 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
     @Override
     public void releaseUsing(ItemStack itemStack, Level level, LivingEntity entity, int chargedDuration) {
         if (entity instanceof Player player) {
-            float durationFactor = (float) Mth.lerp((float) this.getCastTime() / this.getMaxCastTime(), 0.0D, 1.0D);
-            if (!((double) durationFactor < 0.1D)) {
+            if (!((double) this.getCastTimeFactor(player) < 0.01D)) {
                 if (!level.isClientSide()) {
                     this.addCooldownManaCost(player);
-                    double damage = Mth.lerp(durationFactor, this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, 0.05F), this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, this.scaleDamage) * durationFactor);
-                    var color = Colors.RED;
+                    double damage = Mth.lerp(this.getCastTimeFactor(player), this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, 0.05F), this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, this.scaleDamage) * this.getCastTimeFactor(player));
                     if (level instanceof ServerLevel sLevel) {
-                        float r = Colors.getFARGB(color)[0];
-                        float g = Colors.getFARGB(color)[1];
-                        float b = Colors.getFARGB(color)[2];
-                        sLevel.sendParticles(new RingParticleOptions(0, (float) Math.PI / 2f, 33,
-                                        r, g, b, 1.0F, 110F,
-                                        false, RingParticles.Behavior.GROW),
-                                entity.getX(), entity.getY(), entity.getZ(), 1, 0,0, 0, 0);
+                        sLevel.sendParticles(new RingParticleOptions(0, (float) Math.PI / 2f, 33, Colors.RED, 110F, false, RingParticles.Behavior.GROW), entity.getX(), entity.getY(), entity.getZ(), 1, 0,0, 0, 0);
                     }
                     CameraShake.spawn(level, player.position(), 8.0F, 0.02F, 20, 20);
-
                     Vec3 rotation = player.getLookAngle().normalize();
                     var pos = player.position().add(rotation.scale(1.6));
                     double dx = pos.x - player.getX();
                     double dz = pos.z - player.getZ();
-                    InfernalSpear.spawn(level, player, (float) damage, DamageType.PHYSICAL_DAMAGE, dx, 0, dz, durationFactor >= 1.0D);
+                    InfernalSpear.spawn(level, player, (float) damage, DamageType.PHYSICAL_DAMAGE, dx, 0, dz, this.getCastTimeFactor(player) >= 1.0D);
                     AttributeInstance attributeInstance = player.getAttribute(Attributes.MOVEMENT_SPEED);
                     if (attributeInstance.getModifier(SPEED_MODIFIER_SPRINTING_UUID) != null) {
                         attributeInstance.removeModifier(SPEED_MODIFIER_SPRINTING);
@@ -108,7 +101,6 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
     @Override
     public void onUsingTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration) {
         if (level.isClientSide()) {
-            this.setCastTime(this.getCastTime() + 1);
             float durationFactor = (float) Mth.lerp((float) this.getCastTime() / this.getMaxCastTime(), 0.0D, 1.0D);
             if (!((double) durationFactor < 0.1D)) {
                 var color = Colors.lerpG(durationFactor, Colors.RED, Colors.YELLOW);

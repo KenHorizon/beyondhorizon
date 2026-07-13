@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.*;
+import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.InfernalRaySkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.InfernoStrikeSkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.item_properties.GuardianSwordProperties;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;

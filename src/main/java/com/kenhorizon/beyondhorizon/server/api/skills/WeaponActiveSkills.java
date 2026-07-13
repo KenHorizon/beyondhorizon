@@ -90,30 +90,20 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
     }
 
     @Override
-    protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
-        List<MutableComponent> list = new ArrayList<>();
+    protected void addTooltipDescriptionHeader(ItemStack itemStack, List<Component> tooltip) {
         String tooltips;
         if (this.getManaCostType() == WeaponActiveSkills.ManaCostType.PERCENTAGE) {
             tooltips = Tooltips.TOOLTIP_MANA_COST_PERCENTAGES;
         } else {
             tooltips = Tooltips.TOOLTIP_MANA_COST;
         }
-        list.add(this.spacing().append(Component.translatable(tooltips, this.getManaCost()).withStyle(BHChatformatting.MANA)));
+        tooltip.add(this.spacing().append(Component.translatable(tooltips, this.getManaCost()).withStyle(BHChatformatting.MANA)));
         if (this.getCooldown() > 0) {
-            list.add(this.spacing().append(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (this.getCooldown() / 20.0F)).withStyle(BHChatformatting.COOLDOWN)));
+            tooltip.add(this.spacing().append(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (this.getCooldown() / 20.0F)).withStyle(BHChatformatting.COOLDOWN)));
         }
-        list.add(Component.empty());
-        if (this.appendTooltips(itemStack).isEmpty()) {
-            list.add(Component.translatable(createId(), Maths.format(this.getMagnitude())));
-        } else {
-            list.addAll(this.appendTooltips(itemStack));
-        }
-        return list;
+        tooltip.add(Component.empty());
     }
 
-    protected List<MutableComponent> appendTooltips(ItemStack itemStack) {
-        return List.of();
-    }
 
     @Override
     public InteractionResultHolder<ItemStack> use(ItemStack itemStack, Level level, Player player, InteractionHand hand) {
@@ -127,9 +117,13 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
                 player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_NOT_ENOUGH_MANA).withStyle(ChatFormatting.RED), true);
                 return InteractionResultHolder.fail(itemStack);
             } else if (playerData.getMana() >= this.getManaCost()) {
+                if (this.getMaxCastTime() > 0) {
+                    this.setCastTime(this.getCastTime() + 1);
+                }
                 this.abilityUse(itemStack, level, player, hand);
                 return InteractionResultHolder.consume(itemStack);
             } else {
+                this.setCastTime(0);
                 player.stopUsingItem();
                 return InteractionResultHolder.fail(itemStack);
             }

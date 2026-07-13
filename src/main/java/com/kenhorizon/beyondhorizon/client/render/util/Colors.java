@@ -5,16 +5,41 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 public class Colors {
 
-    public static int LIGHT_GRAY = combineRGB(192, 192, 192);
-    public static int ORANGE = combineRGB(255, 106, 0);
-    public static int BLACK = combineRGB(0, 0 ,0);
-    public static int WHITE = combineRGB(255, 255, 255);
-    public static int GRAY = combineRGB(64, 64, 64);
     public static int RED = combineRGB(255, 0, 0);
     public static int GREEN = combineRGB(0, 255, 0);
-    public static int GOLD = combineRGB(255, 194, 0);
     public static int BLUE = combineRGB(0, 0, 255);
-    public static int YELLOW = combineRGB(255, 216, 0);
+    public static int YELLOW = combineRGB(254, 239, 24);
+
+    public static int BLACK = combineRGB(0, 0 ,0);
+    public static int WHITE = combineRGB(255, 255, 255);
+
+    public static int LIGHT_GRAY = combineRGB(192, 192, 192);
+    public static int ORANGE = combineRGB(255, 106, 0);
+    public static int GRAY = combineRGB(64, 64, 64);
+    public static int GOLD = combineRGB(255, 194, 0);
+    public static int BROWN = combineRGB(132, 64, 32);
+    public static int OLIVE = combineRGB(133, 130, 1);
+    public static int MAROON = combineRGB(173, 1, 1);
+    public static int VIOLET = combineRGB(255, 94, 254);
+    public static int CHARCOAL = combineRGB(57, 69, 81);
+
+    public static int MAGENTA = combineRGB(255, 0, 254);
+    public static int BROZNE = combineRGB(207, 125, 49);
+    public static int CREAM = combineRGB(255, 251, 180);
+    public static int TAN = combineRGB(213, 178, 140);
+    public static int TEAL = combineRGB(0, 130, 132);
+    public static int MUSTARD = combineRGB(254, 219, 89);
+    public static int NAVY_BLUE = combineRGB(0, 74, 173);
+    public static int AZURE = combineRGB(0, 179, 244);
+    public static int CORAL = combineRGB(254, 125, 83);
+    public static int BURGUNDY = combineRGB(131, 0, 32);
+    public static int LAVENDER = combineRGB(230, 232, 247);
+    public static int MAUVE = combineRGB(181, 134, 166);
+    public static int PEACH = combineRGB(254, 219, 181);
+    public static int RUST = combineRGB(181, 65, 16);
+    public static int SILVER = combineRGB(190, 190, 190);
+    public static int PINK = combineRGB(255, 101, 197);
+    public static int CYAN = combineRGB(0, 255, 255);
 
     private static int round(float value) {
         return (int) (value * 255.0F + 0.5F);

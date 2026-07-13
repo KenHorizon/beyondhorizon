@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
@@ -270,15 +271,16 @@ public abstract class Skill {
             this.addTooltipDescription(itemStack, tooltip);
         }
     }
+    protected void addTooltipDescriptionHeader(ItemStack itemStack, List<Component> tooltip) {
+
+    }
+
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
         Minecraft mc = Minecraft.getInstance();
         Player player = BeyondHorizon.PROXY.clientPlayer();
+        this.addTooltipDescriptionHeader(itemStack, tooltip);
         for (var createTooltips : this.makeTooltips(itemStack)) {
-            if (createTooltips.getStyle().getColor() == null) {
-                tooltip.add(createTooltips.withStyle(Tooltips.TOOLTIP[0]).setStyle(createTooltips.getStyle()));
-            } else {
-                tooltip.add(createTooltips.setStyle(createTooltips.getStyle()));
-            }
+            tooltip.add(ColorCodedText.applyFormat(createTooltips, Tooltips.TOOLTIP[0].getColor()));
         }
     }
 

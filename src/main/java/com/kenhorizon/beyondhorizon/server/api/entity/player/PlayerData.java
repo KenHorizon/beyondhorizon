@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAbilityCooldownPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAbilityCooldownsPacket;
@@ -61,6 +62,7 @@ public class PlayerData {
 
     public void removeMana(double amount, boolean doDecut) {
         this.doDecut = doDecut;
+        amount *= this.getManaCostReduction();
         this.setMana(Math.max(0, this.getMana() - amount));
     }
 
@@ -69,6 +71,10 @@ public class PlayerData {
         if (this.player instanceof ServerPlayer splayer) {
             NetworkHandler.sendToPlayer(new ClientboundManaSyncPacket(this.getMana()), splayer);
         }
+    }
+
+    public float getManaCostReduction() {
+        return (float) (1.0F - AttributeUtils.getTotal(this.player, BHAttributes.MANA_COST.get()));
     }
 
     public void setSyncMana(double mana) {

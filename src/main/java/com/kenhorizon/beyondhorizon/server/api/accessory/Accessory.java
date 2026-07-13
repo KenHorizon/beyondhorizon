@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.Utils;
@@ -172,16 +173,17 @@ public abstract class Accessory {
         }
     }
 
+    protected void addTooltipDescriptionHeader(ItemStack itemStack, List<Component> tooltip) {
+
+    }
+
     protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
         Minecraft mc = Minecraft.getInstance();
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        this.addTooltipDescriptionHeader(itemStack, player, tooltip);
+        this.addTooltipDescriptionHeader(itemStack, tooltip);
         for (var createTooltips : this.makeTooltips(itemStack)) {
-            tooltip.add(createTooltips.withStyle(Tooltips.TOOLTIP[0]));
+            tooltip.add(ColorCodedText.applyFormat(createTooltips, Tooltips.TOOLTIP[0].getColor()));
         }
-    }
-    protected void addTooltipDescriptionHeader(ItemStack itemStack, Player player, List<Component> tooltip) {
-
     }
 
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {

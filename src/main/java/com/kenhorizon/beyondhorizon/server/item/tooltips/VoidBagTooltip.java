@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items;
+package com.kenhorizon.beyondhorizon.server.item.tooltips;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;

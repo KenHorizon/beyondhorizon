@@ -161,7 +161,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.DARK_SUN.get(), "Dark Sun", "Convert 25% damage dealt into addtional bonus true damage on-hit");
         this.addAccessory(Accessories.NIGHTSTALKER.get(), "Nightstalker", "Increased all damage by 0-%s%% based on target Missing HP");
         this.addAccessory(Accessories.PENALTY_0.get(), "Penalty", "Reduce the attack effectiveness by %s%%");
-        this.addAccessory(Accessories.EXCORIATE.get(), "Excoriate", "Gain random bonus critidal damage upto 0-%s%%, with the value of this changing of every 0.25 seconds");
+        this.addAccessory(Accessories.EXCORIATE.get(), "Excoriate", "Gain random bonus critical damage upto 0-%s%%, with the value of this changing of every 0.25 seconds");
         this.addAccessory(Accessories.GHOUL.get(), "Ghoul", "Hunger exhaustion increased by 150%, On-kill restore 5 hunger points and gain buff of Ghoul Will, and prevent user eat edible item");
         this.addAccessory(Accessories.FADED_MOON.get(), "Faded Moon", "Convert 25% Max Mana into additional bonus magic damage on-hit");
         this.addAccessory(Accessories.TWO_WORLD.get(), "Two World", "Gain Dark Sun and Faded Moon, If you have more than bonus attack damage to ability power enter Dark Sun and if you have more than ability power to attack damage enter Faded Moon ");

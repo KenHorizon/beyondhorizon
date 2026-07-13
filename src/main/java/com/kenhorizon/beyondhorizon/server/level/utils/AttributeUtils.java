@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.level.utils;
 
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -16,5 +17,9 @@ public class AttributeUtils {
     }
     public static double getTotal(LivingEntity entity, Attribute attribute) {
         return entity.getAttributeValue(attribute);
+    }
+
+    public static double getCriticalModifier(LivingEntity entity) {
+        return AttributeUtils.getBonus(entity, BHAttributes.CRITICAL_DAMAGE.get());
     }
 }

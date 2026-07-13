@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.item;
 
-import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.VoidBagTooltip;
+import com.kenhorizon.beyondhorizon.server.item.tooltips.VoidBagTooltip;
 import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
 import com.kenhorizon.beyondhorizon.server.capability.VoidBagCap;
 import com.kenhorizon.beyondhorizon.server.inventory.VoidBagMenu;
@@ -21,7 +21,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 

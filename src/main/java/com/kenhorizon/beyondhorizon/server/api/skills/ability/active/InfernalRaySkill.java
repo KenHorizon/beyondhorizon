@@ -1,7 +1,8 @@
-package com.kenhorizon.beyondhorizon.server.api.skills.ability;
+package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.api.skills.ability.AbstractDeathRaySkill;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.InfernalRayAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -25,7 +26,7 @@ public class InfernalRaySkill extends AbstractDeathRaySkill {
     }
 
     @Override
-    protected List<MutableComponent> appendTooltips(ItemStack itemStack) {
+    protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         Player player = BeyondHorizon.PROXY.clientPlayer();
         list.add(Component.translatable(createId(0), Maths.format(this.ADScale) + Maths.format(this.APScale), Utils.capitalize(Utils.builderName(this.types.name().toLowerCase(Locale.ROOT)))));

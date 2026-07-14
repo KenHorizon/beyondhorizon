@@ -1,11 +1,11 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
-import com.kenhorizon.beyondhorizon.client.api.event.PotionEffectParticleEvent;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.libs.server.event.MobEffectModificationEvent;
 import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.core.Holder;
-import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -22,6 +22,7 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -29,11 +30,11 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
@@ -61,14 +62,6 @@ public abstract class LivingEntityMixins extends EntityMixins implements IBHData
         if (data != null) {
             compoundNBT.put("BeyondHorizonData", data);
         }
-    }
-
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"), method = "tickEffects")
-    private void onEffectParticleInit(Level instance, ParticleOptions particle, double x, double y, double z, double dx, double dy, double dz) {
-        PotionEffectParticleEvent event = new PotionEffectParticleEvent(_this(), particle, x, y, z, dx, dy, dz);
-        MinecraftForge.EVENT_BUS.post(event);
-        if (event.isCanceled()) return;
-        instance.addParticle(event.getParticle(), event.getX(), event.getY(), event.getZ(), event.getDx(), event.getDy(), event.getDz());
     }
 
     @Inject(at = @At("TAIL"), method = "readAdditionalSaveData(Lnet/minecraft/nbt/CompoundTag;)V")
@@ -115,6 +108,16 @@ public abstract class LivingEntityMixins extends EntityMixins implements IBHData
         int air = bonusOxygen > 0 && _this().getRandom().nextDouble() >= (double) 1.0F / (bonusOxygen + (double) 1.0F) ? currentAir : currentAir - 1;
         cir.setReturnValue(air);
     }
+
+    @ModifyVariable(at = @At(value = "HEAD"), method = "addEffect(Lnet/minecraft/world/effect/MobEffectInstance;Lnet/minecraft/world/entity/Entity;)Z",
+            argsOnly = true, ordinal = 0)
+    private MobEffectInstance beyondhorizonaddEffect(MobEffectInstance instance) {
+        MobEffectModificationEvent event = new MobEffectModificationEvent(_this(), instance);
+        MinecraftForge.EVENT_BUS.post(event);
+        return event.getEffectInstance();
+    }
+
+
     @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z", ordinal = 7), method = "hurt")
     private boolean modifiedHurt(DamageSource instance, TagKey<DamageType> tag) {
         return instance.is(BHDamageTypeTags.NO_KNOCKBACK_DAMAGE) || instance.is(DamageTypeTags.IS_EXPLOSION);

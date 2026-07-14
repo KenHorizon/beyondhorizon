@@ -15,7 +15,7 @@ public class ServerboundOpenLevelSystemPacket {
     public ServerboundOpenLevelSystemPacket(FriendlyByteBuf buf) {
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
     }
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {

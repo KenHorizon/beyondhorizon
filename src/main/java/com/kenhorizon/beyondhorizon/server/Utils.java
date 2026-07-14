@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraftforge.registries.RegistryObject;
 import org.lwjgl.glfw.GLFW;
 
+import java.util.Locale;
 import java.util.function.Supplier;
 
 public class Utils {
@@ -76,13 +77,8 @@ public class Utils {
         return Utils.capitalize(builderName.toString());
     }
 
-    public static String formatName(String name) {
-        String[] array = name.split("[_.]");
-        StringBuilder splitName = new StringBuilder();
-        for (int i = 0; i < array.length; ++i) {
-            splitName.append(i == 0 ? array[i] : " " + array[i]);
-        }
-        return splitName.toString();
+    public static String formattedWords(String text) {
+        return builderName(text.toLowerCase(Locale.ROOT));
     }
 
     private static boolean isEmpty(final CharSequence cs) {

@@ -2,7 +2,6 @@ package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.*;
-import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -31,7 +30,7 @@ public class ServerboundAcessoryKeyPacket {
 
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeInt(this.id);
         buf.writeInt(this.slots);
         buf.writeItem(this.itemStack);

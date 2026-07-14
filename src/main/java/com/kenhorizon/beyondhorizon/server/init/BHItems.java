@@ -152,6 +152,10 @@ public class BHItems {
     public static final RegistryObject<Item> BLACK_IRON_PICKAXE = toolItem("black_iron_pickaxe", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.PICKAXE);
     public static final RegistryObject<Item> BLACK_IRON_SHOVEL = toolItem("black_iron_shovel", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.SHOVEL);
     public static final RegistryObject<Item> BLACK_IRON_HOE = toolItem("black_iron_hoe", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.HOE);
+
+    public static final RegistryObject<Item> HOGLIN_TUSK_SWORD = swordItem("hoglin_tusk_sword", MeleeWeaponMaterials.HOGLIN_TUSK, ItemBuilder.SWORD);
+    public static final RegistryObject<Item> HOGLIN_TUSK_MACHETE = swordItem("hoglin_tusk_machete", MeleeWeaponMaterials.HOGLIN_TUSK, ItemBuilder.LIGHT_SWORD);
+    public static final RegistryObject<Item> HOGLIN_TUSK_SPEAR = swordItem("hoglin_tusk_spear", MeleeWeaponMaterials.HOGLIN_TUSK, ItemBuilder.SPEAR);
     //
 
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = accessoryHandheldItem("broken_hero_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.BROKEN_HERO_SWORD);
@@ -161,6 +165,7 @@ public class BHItems {
     public static final RegistryObject<Item> SPEAR_OF_CHAOS = accessoryHandheldItemX32("spear_of_chaos", AccessoryItemGroup.FATALITY, AccessoryBuilder.SPEAR_OF_CHAOS);
     public static final RegistryObject<Item> HARPOON_HEAD = accessoryItem("harpoon_head", AccessoryItemGroup.FATALITY, AccessoryBuilder.HARPOON_HEAD);
 
+    public static final RegistryObject<Item> CRYSTALLIZED_PLATE = accessoryItem("crystallized_plate", AccessoryItemGroup.BLIGHT, AccessoryBuilder.CRYSTALLIZED_PLATE);
     public static final RegistryObject<Item> VOID_STAFF = accessoryHandheldItem("void_staff", AccessoryItemGroup.BLIGHT, AccessoryBuilder.VOID_STAFF);
     //
 
@@ -171,6 +176,7 @@ public class BHItems {
     public static final RegistryObject<Item> CHAIN_VEST = accessoryBasicItem("chain_vest", AccessoryBuilder.CHAIN_VEST);
     public static final RegistryObject<Item> RUMINATIVE_BEADS = accessoryBasicItem("ruminative_beads", AccessoryBuilder.RUMINATIVE_BEADS);
     public static final RegistryObject<Item> SPECTRAL_CLOAK = accessoryBasicItem("spectral_cloak", AccessoryBuilder.SPECTRAL_CLOAK);
+    public static final RegistryObject<Item> MAGE_WAND = accessoryBasicItem("mage_wand", AccessoryBuilder.MAGE_WAND);
      //
 
     public static final RegistryObject<Item> DORAN_BLADE = accessoryItem("doran_blade", AccessoryItemGroup.STARTER, AccessoryBuilder.DORAN_BLADE);
@@ -265,10 +271,10 @@ public class BHItems {
     public static final RegistryObject<Item> VITALITY_STONE = accessoryItem("vitality_stone", AccessoryBuilder.VITALITY_STONE);
     public static final RegistryObject<Item> CINDER_STONE = accessoryItem("cinder_stone", AccessoryItemGroup.IMMOLATE, AccessoryBuilder.CINDER_STONE);
     public static final RegistryObject<Item> INFERNO_HEART_STONE = accessoryItem("inferno_heart_stone", AccessoryItemGroup.IMMOLATE, AccessoryBuilder.INFERNO_HEART_STONE);
-    public static final RegistryObject<Item> CRYSTALLIZED_PLATE = accessoryItem("crystallized_plate", AccessoryBuilder.CRYSTALLIZED_PLATE);
     public static final RegistryObject<Item> STEALTH_CLOAK = accessoryItem("stealth_cloak", AccessoryBuilder.STEALTH_CLOAK);
     public static final RegistryObject<Item> SAINT_DEMON_CROWN = accessoryItem("saint_demon_crown", Rarity.EPIC, AccessoryBuilder.SAINT_DEMON_CROWN);
     public static final RegistryObject<Item> ROYAL_CROWN = accessoryItem("royal_crown", Rarity.EPIC, AccessoryBuilder.ROYAL_CROWN);
+    public static final RegistryObject<Item> DRAGON_EYE = accessoryItem("dragon_eye", Rarity.EPIC, AccessoryBuilder.DRAGON_EYE);
 
 
     //

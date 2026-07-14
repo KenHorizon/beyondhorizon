@@ -47,7 +47,9 @@ Cursed Skull
 + 10 Armor
 Being Cursed - the holder is now cursed!
 	- 25% miss attack
-	- Taking damage gain random bad effects for 3 seconds
+	- Walking sometimes trip the user, and take 0.1 damage and stop all movements
+	- Chance to break a item when being used (trigger the randomzied each time 1 item's durability is used)
+	- For every 20 seconds chance to become inverted all movements
 	- While moving there's 1% to take 0.1 true damage
 	- Fire deal more 50% damage
 	- For every 30 seconds Animals 25% chance to run away
@@ -59,7 +61,7 @@ Life cycle - Cycle mode of damnation ability, will consume 30% of the stacks and
 Damnation - If soul harvest is present, every soul collect gain stacks of souls
 	- for each stacks, holder gain 0.1 bonus armor and ability power
 
-Cinder Stone
+Cinder Stone /////////////////////
 + 4 max health
 + 5% cooldown
 Burn
@@ -77,14 +79,7 @@ Golden Boots
 Feather Feet
 Double Jump
 
-Crystallized Plate
-+8 max health
-+5 armor
-
-Crystal armor - Reduce physical damage by 10% but increase magic damage by 10%
-Plot armor - Taking lethal damage will gain lethal protection that block holder of dying
-
-Cleanse - Reduce all bad effect duration by 25%
+Cleanse - Reduce all bad effect duration by 25% ///////////
 
 Blazing Guardian Swords
 Properties: Blazing Sweep Blade: Attacking will release a Blazing Slash that deal 70% weapon damage

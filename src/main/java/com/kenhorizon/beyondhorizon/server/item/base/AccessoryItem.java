@@ -16,8 +16,10 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -113,7 +115,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
                 MutableComponent comp = Component.translatable(itemStack.getDescriptionId());
                 tooltip.add(Component.translatable(Tooltips.ACCESSORY_LIMITED_TO, comp).withStyle(Tooltips.TOOLTIP[1]).withStyle(ChatFormatting.UNDERLINE));
             } else {
-                tooltip.add(Component.translatable(Tooltips.ACCESSORY_LIMITED_TO, Utils.capitalize(Utils.formatName(this.getItemGroup().name().toLowerCase()))).withStyle(Tooltips.TOOLTIP[1]).withStyle(ChatFormatting.UNDERLINE));
+                tooltip.add(Component.translatable(Tooltips.ACCESSORY_LIMITED_TO, Utils.formattedWords(this.getItemGroup().name())).withStyle(Tooltips.TOOLTIP[1]).withStyle(ChatFormatting.UNDERLINE));
 
             }
         }
@@ -137,6 +139,30 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean isEnderMask(ItemStack stack, Player player, EnderMan endermanEntity) {
+        boolean flag = false;
+        for (Accessory accessory : this.accessories) {
+            Optional<IEntityProperties> callback = accessory.IEntityProperties();
+            if (callback.isPresent()) {
+                flag = callback.get().isEnderMask();
+            }
+        }
+        return flag;
+    }
+
+    @Override
+    public boolean canWalkOnPoweredSnow() {
+        boolean flag = false;
+        for (Accessory accessory : this.accessories) {
+            Optional<IEntityProperties> callback = accessory.IEntityProperties();
+            if (callback.isPresent()) {
+                flag = callback.get().canWalkOnPoweredSnow();
+            }
+        }
+        return flag;
     }
 
     @Override

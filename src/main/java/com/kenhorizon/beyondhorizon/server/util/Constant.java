@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static final float CLEANSE_EFFECT_REDUCE = 0.25F;
     public static final float STELLAR_AXE_SLASH_DAMAGE = 0.30F;
     public static final float ALWAYS_CRIT_MODIFIER = 1.50F;
     public static final float STELLAR_AXE_CRIT_DAMAGE = 0.30F;
@@ -91,6 +92,8 @@ public class Constant {
     public static float[] PICKAXE = {1.0F, 1.6F};
     public static float[] SHOVEL = {2.5F, 1.0F};
     public static float[] SWORD = {6.0F, 1.6F};
+    public static float[] LIGHT_SWORD = {4.0F, 1.8F};
+    public static float[] HEAVY_SWORD = {8.0F, 1.15F};
     public static float[] CLAYMORE = {7.0F, 1.0F};
     public static float[] REFINED_SWORD = {7.0F, 1.6F};
     public static float[] SPEAR = {5.0F, 1.45F, 5.0F};
@@ -109,8 +112,9 @@ public class Constant {
     public static float[] STELLAR_AXE = {12.0F, 1.12F, 4.0F};
     //
     public static double SHEEN_AD = 3.0;
-    public static double TS_AD = 3.0;
-    public static double TS_AP = 5.0;
+    public static double TS_AD = 5;
+    public static double TS_AP = 10;
+    public static double TS_CD = 0.5D;
     //
     public static double MANA_REGEN_0 = 1.0;
     public static double MANA_REGEN_1 = 1.25;
@@ -132,11 +136,11 @@ public class Constant {
     public static double ATTACKSPEED_2 = 0.20D;
     public static double ATTACKSPEED_3 = 0.25D;
     public static double ATTACKSPEED_4 = 0.30D;
-    public static double ABILITY_POWER_0 = 5;
-    public static double ABILITY_POWER_1 = 10;
-    public static double ABILITY_POWER_2 = 15;
-    public static double ABILITY_POWER_3 = 20;
-    public static double ABILITY_POWER_4 = 25;
+    public static double ABILITY_POWER_0 = 2;
+    public static double ABILITY_POWER_1 = 4;
+    public static double ABILITY_POWER_2 = 8;
+    public static double ABILITY_POWER_3 = 12;
+    public static double ABILITY_POWER_4 = 15;
     public static double MAGIC_RESISTANCE_0 = 2;
     public static double MAGIC_RESISTANCE_1 = 4;
     public static double MAGIC_RESISTANCE_2 = 6;

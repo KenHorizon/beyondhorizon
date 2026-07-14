@@ -3,10 +3,9 @@ package com.kenhorizon.beyondhorizon.server;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.Fonts;
-import com.kenhorizon.beyondhorizon.client.api.event.PotionEffectParticleEvent;
+import com.kenhorizon.libs.server.event.MobEffectModificationEvent;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.api.ISkillSlots;
 import com.kenhorizon.beyondhorizon.server.api.accessory.*;
 import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorBonusSet;
 import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorSet;
@@ -16,7 +15,6 @@ import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.api.event.HarvestBlockEvent;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance;
-import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.*;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
@@ -31,7 +29,6 @@ import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundManaSyncPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundLevelSystemPacket;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
@@ -57,6 +54,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -85,8 +83,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -97,8 +93,8 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -130,7 +126,7 @@ public class ServerEventHandler {
     }
 
     @SubscribeEvent
-    public void onParticleEffect(PotionEffectParticleEvent event) {
+    public void onParticleEffect(MobEffectModificationEvent event) {
         LivingEntity entity = event.getEntity();
         if (entity instanceof Player player) {
             if (player.isInvisible() && AccessoryHelper.getAccessory(player, Accessories.STALKER.get())) {
@@ -305,13 +301,11 @@ public class ServerEventHandler {
         if (item instanceof IAccessoryItem accessoryItem && accessoryItem.hasCapability(stack)) {
             ItemizedAccessoryCap itemizedCapability = new ItemizedAccessoryCap(accessoryItem, stack);
             event.addCapability(BHCapabilties.ID_ITEM, AccessoryItemCap.createProvider(itemizedCapability));
-            BeyondHorizon.LOGGER.debug("All accessory items is registered!");
         }
         if (item instanceof ISkillItems skillItems && skillItems.hasCapability(stack)) {
             ItemizedSkillsCap itemizedCapability = new ItemizedSkillsCap(skillItems, stack);
             event.addCapability(BHCapabilties.ID_SKILL_SLOTS, new SkillSlotsCap(skillItems));
             event.addCapability(BHCapabilties.ID_ITEM, SkillItemCap.createProvider(itemizedCapability));
-            BeyondHorizon.LOGGER.debug("All skill items is registered!");
         }
     }
     @SubscribeEvent
@@ -360,7 +354,6 @@ public class ServerEventHandler {
                         UUID uuid = AccessoryHelper.getSlotUuid(slotContext);
                         if (!prevItemStack.isEmpty()) {
                             Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, prevItemStack);
-                            BeyondHorizon.LOGGER.debug("[Debug: Accessory] [Prev] Attribute Modifiers : {}", map);
                             player.getAttributes().removeAttributeModifiers(map);
                             if (prevItemStack.getItem() instanceof IAccessoryItem item) {
                                 for (Accessory accessory : item.getAccessories()) {
@@ -374,7 +367,6 @@ public class ServerEventHandler {
                         }
                         if (!itemStacks.isEmpty()) {
                             Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, itemStacks);
-//                            BeyondHorizon.LOGGER.debug("[Debug: Accessory] [Current] Attribute Modifiers : {}", map);
                             player.getAttributes().addTransientAttributeModifiers(map);
                             if (itemStacks.getItem() instanceof IAccessoryItem item) {
                                 for (Accessory accessory : item.getAccessories()) {
@@ -549,14 +541,44 @@ public class ServerEventHandler {
             });
         }
     }
-    //TODO: Put entity tags that spawn on spawner to prevent gain points from stacking abilities in the future!
-    @SubscribeEvent
-    public void onLivingSpawn(MobSpawnEvent.FinalizeSpawn event) {
-        LivingEntity entity = event.getEntity();
-        var levelAcecssor = event.getLevel();
-        if (event.getSpawnType() == MobSpawnType.SPAWNER) {
 
+    @SubscribeEvent
+    public void onPotionSystemEvent(PotionColorCalculationEvent event) {
+        LivingEntity entity = event.getEntity();
+        if (entity instanceof Player player) {
+            if (player.isInvisible() && AccessoryHelper.getAccessory(player, Accessories.STALKER.get())) {
+                event.shouldHideParticles(true);
+            }
         }
+    }
+    @SubscribeEvent
+    public void onPotionAdded(MobEffectModificationEvent event) {
+        LivingEntity entity = event.getEntity();
+        var instance = event.getEffectInstance();
+        MobEffectInstance newInstance = null;
+        if (entity instanceof Player player) {
+            if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+                IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
+                var stacks = handler.getStacks();
+                for (int i = 0; i < stacks.getSlots(); i++) {
+                    ItemStack itemStacks = stacks.getStackInSlot(i);
+                    if (itemStacks.getItem() instanceof IAccessoryItem items) {
+                        for (Accessory accessory : items.getAccessories()) {
+                            Optional<IEntityProperties> optional = accessory.IEntityProperties();
+                            if (optional.isPresent()) {
+                                newInstance = optional.get().onMobEffectApplied(entity, instance);
+                                if (newInstance != null) {
+                                    instance = newInstance;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (newInstance == null) return;
+//        BeyondHorizon.LOGGER.info("Event Debug | NEW={} | OLD={}", newInstance, instance);
+        event.setEffectInstance(instance);
     }
 
     //TODO: Living Tick Update
@@ -739,12 +761,14 @@ public class ServerEventHandler {
                     final ItemStack itemStack = stacks.getStackInSlot(i);
                     if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem accessoryItems) {
                         for (Accessory trait : accessoryItems.getAccessories()) {
-                            Optional<IAttack> weaponCallback = trait.IAttackCallback();
-                            if (weaponCallback.isPresent()) {
+                            Optional<IAttack> attack = trait.IAttackCallback();
+                            if (attack.isPresent()) {
                                 if (trait.getTags().isUnique()) {
-                                    damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
+                                    damageDealt = attack.get().damageTaken(damageDealt, source, target);
                                 } else {
-                                    damageDealt += weaponCallback.get().damageTaken(damageDealt, source, target);
+                                    if (attack.get().damageTaken(damageDealt, source, target) != damageDealt) {
+                                        damageDealt += attack.get().damageTaken(damageDealt, source, target);
+                                    }
                                 }
                             }
                         }
@@ -856,12 +880,14 @@ public class ServerEventHandler {
                         final ItemStack itemStack = stacks.getStackInSlot(i);
                         if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem container) {
                             for (Accessory trait : container.getAccessories()) {
-                                Optional<IAttack> meleeWeaponCallback = trait.IAttackCallback();
-                                if (meleeWeaponCallback.isPresent()) {
+                                Optional<IAttack> attack = trait.IAttackCallback();
+                                if (attack.isPresent()) {
                                     if (trait.getTags().isUnique()) {
-                                        damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                        damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
                                     } else {
-                                        damageDealt += meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                        if (attack.get().preMigitationDamage(damageDealt, source, attacker, target) != damageDealt) {
+                                            damageDealt += attack.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                        }
                                     }
                                 }
                             }

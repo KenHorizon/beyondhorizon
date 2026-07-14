@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "black_iron_sword": {
+    "has_black_iron_ingot": {
       "conditions": {
         "items": [
           {
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "black_iron_sword",
+      "has_black_iron_ingot",
       "has_the_recipe"
     ]
   ],

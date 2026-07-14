@@ -1,11 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.client;
 
-import com.kenhorizon.beyondhorizon.server.api.block.INodeBlock;
 import com.kenhorizon.beyondhorizon.server.network.ClientPacketHandler;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -23,7 +19,7 @@ public class ClientboundSetEntityChainedLinkPacket {
         this.destId = buf.readInt();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeInt(this.sourceId);
         buf.writeInt(this.destId);
     }

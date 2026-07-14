@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "beyondhorizon:hoglin_tusk"
+    },
+    "H": {
+      "item": "beyondhorizon:handle"
+    }
+  },
+  "pattern": [
+    "#",
+    "#",
+    "H"
+  ],
+  "result": {
+    "item": "beyondhorizon:hoglin_tusk_machete"
+  },
+  "show_notification": true
+}

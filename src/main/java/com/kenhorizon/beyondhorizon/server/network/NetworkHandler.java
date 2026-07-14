@@ -5,7 +5,6 @@ import com.kenhorizon.beyondhorizon.server.network.packet.client.*;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.*;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -31,29 +30,30 @@ public class NetworkHandler {
 
         INSTANCE = net;
         // BUILDER
-        net.registerMessage(id(), ClientboundInventoryPacket.class, ClientboundInventoryPacket::toBytes, ClientboundInventoryPacket::new, ClientboundInventoryPacket::handle);
-        net.registerMessage(id(), ClientboundAccessoryInventoryPacket.class, ClientboundAccessoryInventoryPacket::toBytes, ClientboundAccessoryInventoryPacket::new, ClientboundAccessoryInventoryPacket::handle);
-        net.registerMessage(id(), ClientboundAccessoryPacket.class, ClientboundAccessoryPacket::toBytes, ClientboundAccessoryPacket::new, ClientboundAccessoryPacket::handle);
-        net.registerMessage(id(), ClientboundManaSyncPacket.class, ClientboundManaSyncPacket::toBytes, ClientboundManaSyncPacket::new, ClientboundManaSyncPacket::handle);
-        net.registerMessage(id(), ClientboundSetEntityChainedLinkPacket.class, ClientboundSetEntityChainedLinkPacket::toBytes, ClientboundSetEntityChainedLinkPacket::new, ClientboundSetEntityChainedLinkPacket::handle);
-        net.registerMessage(id(), ClientboundAbilityCooldownPacket.class, ClientboundAbilityCooldownPacket::toBytes, ClientboundAbilityCooldownPacket::new, ClientboundAbilityCooldownPacket::handle);
-        net.registerMessage(id(), ClientboundExtendedPlacedRecipePacket.class, ClientboundExtendedPlacedRecipePacket::toBytes, ClientboundExtendedPlacedRecipePacket::new, ClientboundExtendedPlacedRecipePacket::handle);
-        net.registerMessage(id(), ClientboundLevelSystemPacket.class, ClientboundLevelSystemPacket::toBytes, ClientboundLevelSystemPacket::new, ClientboundLevelSystemPacket::handle);
-        net.registerMessage(id(), ClientboundPlayerDataPacket.class, ClientboundPlayerDataPacket::toBytes, ClientboundPlayerDataPacket::new, ClientboundPlayerDataPacket::handle);
+        net.registerMessage(id(), ClientboundInventoryPacket.class, ClientboundInventoryPacket::write, ClientboundInventoryPacket::new, ClientboundInventoryPacket::handle);
+        net.registerMessage(id(), ClientboundAccessoryInventoryPacket.class, ClientboundAccessoryInventoryPacket::write, ClientboundAccessoryInventoryPacket::new, ClientboundAccessoryInventoryPacket::handle);
+        net.registerMessage(id(), ClientboundAccessoryPacket.class, ClientboundAccessoryPacket::write, ClientboundAccessoryPacket::new, ClientboundAccessoryPacket::handle);
+        net.registerMessage(id(), ClientboundManaSyncPacket.class, ClientboundManaSyncPacket::write, ClientboundManaSyncPacket::new, ClientboundManaSyncPacket::handle);
+        net.registerMessage(id(), ClientboundSetEntityChainedLinkPacket.class, ClientboundSetEntityChainedLinkPacket::write, ClientboundSetEntityChainedLinkPacket::new, ClientboundSetEntityChainedLinkPacket::handle);
+        net.registerMessage(id(), ClientboundAbilityCooldownPacket.class, ClientboundAbilityCooldownPacket::write, ClientboundAbilityCooldownPacket::new, ClientboundAbilityCooldownPacket::handle);
+        net.registerMessage(id(), ClientboundExtendedPlacedRecipePacket.class, ClientboundExtendedPlacedRecipePacket::write, ClientboundExtendedPlacedRecipePacket::new, ClientboundExtendedPlacedRecipePacket::handle);
+        net.registerMessage(id(), ClientboundLevelSystemPacket.class, ClientboundLevelSystemPacket::write, ClientboundLevelSystemPacket::new, ClientboundLevelSystemPacket::handle);
+        net.registerMessage(id(), ClientboundPlayerDataPacket.class, ClientboundPlayerDataPacket::write, ClientboundPlayerDataPacket::new, ClientboundPlayerDataPacket::handle);
+        net.registerMessage(id(), ClientboundAddHealingOrbPacket.class, ClientboundAddHealingOrbPacket::write, ClientboundAddHealingOrbPacket::new, ClientboundAddHealingOrbPacket::handle);
 
-        net.registerMessage(id(), ServerboundExtendedPlaceRecipePacket.class, ServerboundExtendedPlaceRecipePacket::toBytes, ServerboundExtendedPlaceRecipePacket::new, ServerboundExtendedPlaceRecipePacket::handle);
-        net.registerMessage(id(), ServerboundWorkbenchCraftPacket.class, ServerboundWorkbenchCraftPacket::toBytes, ServerboundWorkbenchCraftPacket::new, ServerboundWorkbenchCraftPacket::handle);
-        net.registerMessage(id(), ServerboundAccessoryInventoryPacket.class, ServerboundAccessoryInventoryPacket::toBytes, ServerboundAccessoryInventoryPacket::new, ServerboundAccessoryInventoryPacket::handle);
-        net.registerMessage(id(), ServerboundGrabbedItemPacket.class, ServerboundGrabbedItemPacket::toBytes, ServerboundGrabbedItemPacket::new, ServerboundGrabbedItemPacket::handle);
-        net.registerMessage(id(), ServerboundOpenLevelSystemPacket.class, ServerboundOpenLevelSystemPacket::toBytes, ServerboundOpenLevelSystemPacket::new, ServerboundOpenLevelSystemPacket::handle);
-        net.registerMessage(id(), ServerboundConsumePointsPacket.class, ServerboundConsumePointsPacket::toBytes, ServerboundConsumePointsPacket::new, ServerboundConsumePointsPacket::handle);
-        net.registerMessage(id(), ServerboundSkillPointsPacket.class, ServerboundSkillPointsPacket::toBytes, ServerboundSkillPointsPacket::new, ServerboundSkillPointsPacket::handle);
-        net.registerMessage(id(), ServerboundBossbarPacket.class, ServerboundBossbarPacket::toBytes, ServerboundBossbarPacket::new, ServerboundBossbarPacket::handle);
-        net.registerMessage(id(), ServerboundAbilityEffectPacket.class, ServerboundAbilityEffectPacket::toBytes, ServerboundAbilityEffectPacket::new, ServerboundAbilityEffectPacket::handle);
-        net.registerMessage(id(), ServerboundPlayerSwingArmPacket.class, ServerboundPlayerSwingArmPacket::toBytes, ServerboundPlayerSwingArmPacket::new, ServerboundPlayerSwingArmPacket::handle);
-        net.registerMessage(id(), ServerboundAcessoryKeyPacket.class, ServerboundAcessoryKeyPacket::toBytes, ServerboundAcessoryKeyPacket::new, ServerboundAcessoryKeyPacket::handle);
-        net.registerMessage(id(), ServerboundQuiverSelectedArrowPacket.class, ServerboundQuiverSelectedArrowPacket::toBytes, ServerboundQuiverSelectedArrowPacket::new, ServerboundQuiverSelectedArrowPacket::handle);
-        net.registerMessage(id(), ServerboundAbilitySlotSelectionPacket.class, ServerboundAbilitySlotSelectionPacket::toBytes, ServerboundAbilitySlotSelectionPacket::new, ServerboundAbilitySlotSelectionPacket::handle);
+        net.registerMessage(id(), ServerboundExtendedPlaceRecipePacket.class, ServerboundExtendedPlaceRecipePacket::write, ServerboundExtendedPlaceRecipePacket::new, ServerboundExtendedPlaceRecipePacket::handle);
+        net.registerMessage(id(), ServerboundWorkbenchCraftPacket.class, ServerboundWorkbenchCraftPacket::write, ServerboundWorkbenchCraftPacket::new, ServerboundWorkbenchCraftPacket::handle);
+        net.registerMessage(id(), ServerboundAccessoryInventoryPacket.class, ServerboundAccessoryInventoryPacket::write, ServerboundAccessoryInventoryPacket::new, ServerboundAccessoryInventoryPacket::handle);
+        net.registerMessage(id(), ServerboundGrabbedItemPacket.class, ServerboundGrabbedItemPacket::write, ServerboundGrabbedItemPacket::new, ServerboundGrabbedItemPacket::handle);
+        net.registerMessage(id(), ServerboundOpenLevelSystemPacket.class, ServerboundOpenLevelSystemPacket::write, ServerboundOpenLevelSystemPacket::new, ServerboundOpenLevelSystemPacket::handle);
+        net.registerMessage(id(), ServerboundConsumePointsPacket.class, ServerboundConsumePointsPacket::write, ServerboundConsumePointsPacket::new, ServerboundConsumePointsPacket::handle);
+        net.registerMessage(id(), ServerboundSkillPointsPacket.class, ServerboundSkillPointsPacket::write, ServerboundSkillPointsPacket::new, ServerboundSkillPointsPacket::handle);
+        net.registerMessage(id(), ServerboundBossbarPacket.class, ServerboundBossbarPacket::write, ServerboundBossbarPacket::new, ServerboundBossbarPacket::handle);
+        net.registerMessage(id(), ServerboundAbilityEffectPacket.class, ServerboundAbilityEffectPacket::write, ServerboundAbilityEffectPacket::new, ServerboundAbilityEffectPacket::handle);
+        net.registerMessage(id(), ServerboundPlayerSwingArmPacket.class, ServerboundPlayerSwingArmPacket::write, ServerboundPlayerSwingArmPacket::new, ServerboundPlayerSwingArmPacket::handle);
+        net.registerMessage(id(), ServerboundAcessoryKeyPacket.class, ServerboundAcessoryKeyPacket::write, ServerboundAcessoryKeyPacket::new, ServerboundAcessoryKeyPacket::handle);
+        net.registerMessage(id(), ServerboundQuiverSelectedArrowPacket.class, ServerboundQuiverSelectedArrowPacket::write, ServerboundQuiverSelectedArrowPacket::new, ServerboundQuiverSelectedArrowPacket::handle);
+        net.registerMessage(id(), ServerboundAbilitySlotSelectionPacket.class, ServerboundAbilitySlotSelectionPacket::write, ServerboundAbilitySlotSelectionPacket::new, ServerboundAbilitySlotSelectionPacket::handle);
 
     }
 

@@ -19,7 +19,7 @@ public class ServerboundGrabbedItemPacket {
         this.itemStack = buf.readItem();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeItem(this.itemStack);
     }
 

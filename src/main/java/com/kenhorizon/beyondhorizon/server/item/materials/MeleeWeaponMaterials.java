@@ -16,6 +16,14 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWeaponMaterials> {
+    HOGLIN_TUSK("hoglin_tusk",
+            2,
+            195,
+            6.0F,
+            2.0F,
+            13, () -> {
+        return Ingredient.of(BHItems.HOGLIN_TUSK.get());
+    }),
     BLACK_IRON("black_iron",
             2,
             250,

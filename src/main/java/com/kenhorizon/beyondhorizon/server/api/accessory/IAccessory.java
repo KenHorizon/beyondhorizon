@@ -25,6 +25,10 @@ public interface IAccessory {
         return UUID.randomUUID();
     }
 
+    default boolean canWalkOnPoweredSnow() {
+        return false;
+    }
+
     default boolean makePiglinsNeutral() {
         return false;
     }

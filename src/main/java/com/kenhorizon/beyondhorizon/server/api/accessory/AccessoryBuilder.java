@@ -45,6 +45,8 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder OBSIDIAN_SHIELD = new AccessoryBuilder(List.of(Accessories.FIRE_IMMUNITY, Accessories.KNOCKBACK_RESISTANCE, Accessories.SHIELD));
     public static final AccessoryBuilder OBSIDIAN_SIGIL = new AccessoryBuilder(List.of(Accessories.FIRE_IMMUNITY, Accessories.STEEL_SIGILS, Accessories.KNOCKBACK_RESISTANCE));
 
+    public static final AccessoryBuilder DRAGON_EYE = new AccessoryBuilder(List.of(Accessories.VOID_EYE));
+    public static final AccessoryBuilder MAGE_WAND = new AccessoryBuilder(List.of(Accessories.MAGE_WAND_STATS));
     public static final AccessoryBuilder DORAN_BLADE = new AccessoryBuilder(List.of(Accessories.DORAN_BLADE_STATS));
     public static final AccessoryBuilder DORAN_RING = new AccessoryBuilder(List.of(Accessories.DORAN_RING_STATS));
     public static final AccessoryBuilder DORAN_BOW = new AccessoryBuilder(List.of(Accessories.DORAN_BOW_STATS));
@@ -64,7 +66,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder KRAKEN_SLAYER = new AccessoryBuilder(List.of(Accessories.BRING_IT_DOWN));
     public static final AccessoryBuilder TITAN_GLOVES = new AccessoryBuilder(List.of(Accessories.SPELL_BLADE_2));
     public static final AccessoryBuilder GLOVE_OF_AFTERSHOCK = new AccessoryBuilder(List.of(Accessories.TITANIC_CRESCENT));
-    public static final AccessoryBuilder FLAME_OF_TORMENT = new AccessoryBuilder(List.of(Accessories.TORMENT));
+    public static final AccessoryBuilder FLAME_OF_TORMENT = new AccessoryBuilder(List.of(Accessories.TORMENT_STAT, Accessories.TORMENT));
     public static final AccessoryBuilder ETERNAL_LIFE = new AccessoryBuilder(List.of(Accessories.ETERNAL_LIFE));
     public static final AccessoryBuilder NULL_SWORD = new AccessoryBuilder(List.of(Accessories.NULLIFY));
     public static final AccessoryBuilder INFINITY_SWORD = new AccessoryBuilder(List.of(Accessories.LETHAL_BURST));
@@ -120,7 +122,7 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder FORTUNE_SHIKIGAMI = new AccessoryBuilder(List.of(Accessories.FORTUNE_SHIKIGAMI));
     public static final AccessoryBuilder DESPAIR_AND_DEFY = new AccessoryBuilder(List.of(Accessories.DESPAIR_AND_DEFY));
     //
-    public static final AccessoryBuilder GOLDEN_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_3, Accessories.MINING_BOOTS, Accessories.BERSERKER_BOOTS, Accessories.IRON_PLATED_BOOTS, Accessories.FIRE_IMMUNITY));
+    public static final AccessoryBuilder GOLDEN_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_3, Accessories.MINING_BOOTS, Accessories.BERSERKER_BOOTS, Accessories.IRON_PLATED_BOOTS, Accessories.FIRE_IMMUNITY, Accessories.CRAMPONS, Accessories.FEATHER_FEET, Accessories.JUMP_BOOST, Accessories.DOUBLE_JUMP));
     public static final AccessoryBuilder BASIC_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_1));
     public static final AccessoryBuilder IRON_PLATED_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_2, Accessories.IRON_PLATED_BOOTS));
     public static final AccessoryBuilder MINER_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_2, Accessories.MINING_BOOTS));

@@ -1,7 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.render.guis.LevelSystemScreen;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
@@ -18,7 +16,7 @@ public class ServerboundPlayerSwingArmPacket {
     public ServerboundPlayerSwingArmPacket(FriendlyByteBuf buf) {
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
     }
 
     public void handle(Supplier<NetworkEvent.Context> supplier) {

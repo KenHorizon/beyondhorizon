@@ -1,7 +1,10 @@
-package com.kenhorizon.beyondhorizon.client;
+package com.kenhorizon.beyondhorizon;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.ClientEventHandler;
+import com.kenhorizon.beyondhorizon.client.ModResouces;
+import com.kenhorizon.beyondhorizon.client.TooltipsEventHandler;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
+import com.kenhorizon.beyondhorizon.client.render.entity.misc.HealingOrbRenderer;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
 import com.kenhorizon.beyondhorizon.client.render.entity.ability.*;
@@ -23,17 +26,7 @@ import com.kenhorizon.beyondhorizon.client.render.entity.*;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRenderer;
 import com.kenhorizon.beyondhorizon.client.render.shaders.BakedModelShadeLayerFullbright;
 import com.kenhorizon.beyondhorizon.client.util.EmissiveBlocks;
-import com.kenhorizon.beyondhorizon.server.ServerProxy;
-import com.kenhorizon.beyondhorizon.server.api.ISkillSlots;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
-import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
-import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
-import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
-import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
-import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
@@ -73,7 +66,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
@@ -171,6 +163,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.INFERNAL_RAY.get(), InfernalRayRenderer::new);
         EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
         EntityRenderers.register(BHEntity.DRAGON_HORNET.get(), DragonHornetRenderer::new);
+        EntityRenderers.register(BHEntity.HEALING_ORB.get(), HealingOrbRenderer::new);
         //
         BlockEntityRenderers.register(BHBlockEntity.BASE_SPAWNER.get(), BaseSpawnerRenderer::new);
         BlockEntityRenderers.register(BHBlockEntity.GATE.get(), GateDoorRenderer::new);
@@ -180,12 +173,16 @@ public class ClientProxy extends ServerProxy {
         MenuScreens.register(BHMenu.WORKBENCH_MENU.get(), WorkbenchScreen::new);
         MenuScreens.register(BHMenu.VOID_BAG_MENU.get(), VoidBagScreen::new);
 
-        Raid.RaiderType.create("ILLUSIONER", EntityType.ILLUSIONER, new int[]{0, 0, 1, 2, 2, 3, 4, 5});
+        registerRaidMobs();
 
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.IRON_LATTICE.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.BLACK_IRON_LATTICE.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_IRON_LATTICE.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_BLACK_IRON_LATTICE.get(), RenderType.cutout());
+    }
+
+    private static void registerRaidMobs() {
+        Raid.RaiderType.create("ILLUSIONER", EntityType.ILLUSIONER, new int[]{0, 0, 1, 2, 2, 3, 4, 5});
     }
 
     private void bakeModels(final ModelEvent.ModifyBakingResult e) {

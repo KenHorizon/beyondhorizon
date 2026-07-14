@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
-import com.kenhorizon.beyondhorizon.client.ClientProxy;
+import com.kenhorizon.beyondhorizon.ClientProxy;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.network.FriendlyByteBuf;
@@ -35,7 +35,7 @@ public class ServerboundBossbarPacket {
         if (!this.remove) this.registryName = buf.readResourceLocation();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeInt(this.renderType);
         buf.writeUUID(this.bossID);
         buf.writeBoolean(this.remove);

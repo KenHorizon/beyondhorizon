@@ -28,7 +28,7 @@ public class ServerboundSkillPointsPacket {
         this.attributePoints = buf.readEnum(LevelSystem.AttributePoints.class);
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeInt(this.index);
         buf.writeInt(this.amount);
         buf.writeEnum(this.attributePoints);

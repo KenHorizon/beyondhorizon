@@ -33,4 +33,8 @@ public class ItemizedAccessoryCap implements IAccessory {
     public boolean makePiglinsNeutral() {
         return this.accessoryItem.makePiglinsNeutral();
     }
+    @Override
+    public boolean canWalkOnPoweredSnow() {
+        return this.accessoryItem.canWalkOnPoweredSnow();
+    }
 }

@@ -26,7 +26,7 @@ public class ServerboundWorkbenchCraftPacket {
         this.recipedId = buf.readResourceLocation();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeResourceLocation(this.recipedId);
     }
 

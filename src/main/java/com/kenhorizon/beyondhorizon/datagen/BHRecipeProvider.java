@@ -28,7 +28,7 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
     }
 
     private void woolFurToWoolBlock(RecipeFacory recipeFactory, ItemLike builder, ItemLike output, int count) {
-        recipeFactory.buildGrid(builder, output, count, "has_white_wool_fur").save(recipeFactory.getConsumer(), this.getConversionRecipeNameTwoByTwo(output, builder));
+        recipeFactory.buildGrid(builder, output, count).save(recipeFactory.getConsumer(), this.getConversionRecipeNameTwoByTwo(output, builder));
     }
     private void woolFurToWoolBlock(RecipeFacory recipeFactory, ItemLike builder, ItemLike output) {
         this.woolFurToWoolBlock(recipeFactory, builder, output, 1);
@@ -41,7 +41,7 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         RecipeFacory recipeFactory = new RecipeFacory(consumer);
-        recipeFactory.createGrid(Items.IRON_NUGGET, BHItems.CHAIN_PLATE.get(), 1, "has_iron_nuggets");
+        recipeFactory.createGrid(Items.IRON_NUGGET, BHItems.CHAIN_PLATE.get(), 1);
 
         this.woolFurToWoolBlock(recipeFactory, BHItems.WHITE_WOOL_FUR.get(), Blocks.WHITE_WOOL);
         this.woolFurToWoolBlock(recipeFactory, BHItems.ORANGE_WOOL_FUR.get(), Blocks.ORANGE_WOOL);
@@ -60,24 +60,28 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         this.woolFurToWoolBlock(recipeFactory, BHItems.RED_WOOL_FUR.get(), Blocks.RED_WOOL);
         this.woolFurToWoolBlock(recipeFactory, BHItems.BLACK_WOOL_FUR.get(), Blocks.BLACK_WOOL);
         //
-        recipeFactory.createSword(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_SWORD.get(), "hellstone_sword");
-        recipeFactory.createPickaxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_PICKAXE.get(), "hellstone_pickaxe");
-        recipeFactory.createAxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_AXE.get(), "hellstone_axe");
-        recipeFactory.createShovel(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_SHOVEL.get(), "hellstone_shovel");
-        recipeFactory.createHoe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_HOE.get(), "hellstone_hoe");
+        recipeFactory.createSword(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_SWORD.get());
+        recipeFactory.createPickaxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_PICKAXE.get());
+        recipeFactory.createAxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_AXE.get());
+        recipeFactory.createShovel(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_SHOVEL.get());
+        recipeFactory.createHoe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_HOE.get());
 
-        recipeFactory.createSword(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_SWORD.get(), "starite_sword");
-        recipeFactory.createPickaxe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_PICKAXE.get(), "starite_pickaxe");
-        recipeFactory.createAxe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_AXE.get(), "starite_axe");
-        recipeFactory.createShovel(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_SHOVEL.get(), "starite_shovel");
-        recipeFactory.createHoe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_HOE.get(), "starite_hoe");
+        recipeFactory.createSword(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_SWORD.get());
+        recipeFactory.createPickaxe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_PICKAXE.get());
+        recipeFactory.createAxe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_AXE.get());
+        recipeFactory.createShovel(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_SHOVEL.get());
+        recipeFactory.createHoe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_HOE.get());
 
-        recipeFactory.createSword(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_SWORD.get(), "black_iron_sword");
-        recipeFactory.createPickaxe(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_PICKAXE.get(), "black_iron_pickaxe");
-        recipeFactory.createAxe(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_AXE.get(), "black_iron_axe");
-        recipeFactory.createShovel(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_SHOVEL.get(), "black_iron_shovel");
-        recipeFactory.createHoe(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_HOE.get(), "black_iron_hoe");
+        recipeFactory.createSword(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_SWORD.get());
+        recipeFactory.createPickaxe(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_PICKAXE.get());
+        recipeFactory.createAxe(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_AXE.get());
+        recipeFactory.createShovel(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_SHOVEL.get());
+        recipeFactory.createHoe(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_HOE.get());
         //
+        recipeFactory.createSword(BHItems.HOGLIN_TUSK.get(), Items.STICK, BHItems.HOGLIN_TUSK_SWORD.get());
+        recipeFactory.createSword(BHItems.HOGLIN_TUSK.get(), BHItems.HANDLE.get(), BHItems.HOGLIN_TUSK_MACHETE.get());
+        recipeFactory.createSpear(BHItems.HOGLIN_TUSK.get(), Items.STICK, BHItems.HOGLIN_TUSK_SPEAR.get());
+
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_BRICKS.get(), BHBlocks.END_GREY_STONE.get());
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_PILLAR.get(), BHBlocks.END_GREY_STONE.get());
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_GREY_BRICK_SLAB.get(), BHBlocks.END_GREY_STONE.get());
@@ -112,14 +116,7 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                         inventoryTrigger(ItemPredicate.Builder.item().of(BHBlocks.BLACK_IRON_LATTICE.get()).build()))
                 .save(consumer, getItemName(BHBlocks.TATTERED_BLACK_IRON_LATTICE.get()) + "_from_" + getItemName(BHBlocks.BLACK_IRON_LATTICE.get()));
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHBlocks.BLACK_IRON_BLOCK.get())
-                .pattern("###")
-                .pattern("###")
-                .pattern("###")
-                .define('#', BHItems.BLACK_IRON_INGOT.get())
-                .unlockedBy("has_black_iron_ingot",
-                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.BLACK_IRON_INGOT.get()).build()))
-                .save(consumer);
+        recipeFactory.createBlock(BHItems.BLACK_IRON_INGOT.get(), BHBlocks.BLACK_IRON_BLOCK.get());
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHItems.VOID_BAG.get())
                 .pattern("SNS")
@@ -280,6 +277,7 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .save(consumer);
         WorkbenchRecipeProvider.create(BHItems.TWILIGHT_SWORD.get(), 1)
                 .required(BHItems.SHEEN.get())
+                .required(BHItems.MAGE_WAND.get())
                 .required(BHItems.AMPLIFLYING_TOME.get())
                 .required(BHItems.AETHER_WISP.get())
                 .save(consumer);
@@ -351,6 +349,10 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         WorkbenchRecipeProvider.create(BHItems.ANKH_SHIELD.get(), 1)
                 .required(BHItems.ANKH_CHARM.get())
                 .required(BHItems.OBSIDIAN_SHIELD.get())
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.VOID_STAFF.get(), 1)
+                .required(BHItems.CRYSTALLIZED_PLATE.get())
+                .required(BHItems.MAGE_WAND.get())
                 .save(consumer);
 
         oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, Maths.sec(10));

@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_iron_nuggets": {
+    "has_iron_nugget": {
       "conditions": {
         "items": [
           {
@@ -22,7 +22,7 @@
   },
   "requirements": [
     [
-      "has_iron_nuggets",
+      "has_iron_nugget",
       "has_the_recipe"
     ]
   ],

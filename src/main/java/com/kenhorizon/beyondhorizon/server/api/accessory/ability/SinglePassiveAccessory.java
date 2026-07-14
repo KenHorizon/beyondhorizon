@@ -59,19 +59,22 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
         if (this == Accessories.NULLIFY.get()) {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F), Maths.format(this.getMagnitude() * 100.0F));
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), Maths.format0(this.getMagnitude()));
         }
         if (this == Accessories.STING.get()) {
             return Component.translatable(this.createId(), (int) this.getMagnitude());
         }
         if (this == Accessories.BRING_IT_DOWN.get()) {
-            return Component.translatable(this.createId(), (int) this.getMagnitude(), Maths.format(Constant.BRING_IT_DOWN_INCREASED_DAMAGE * 100.0F));
+            return Component.translatable(this.createId(), (int) this.getMagnitude(), Maths.format0(Constant.BRING_IT_DOWN_INCREASED_DAMAGE ));
         }
         if (this == Accessories.EXCORIATE.get()) {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F));
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
         }
         if (this == Accessories.NIGHTSTALKER.get()) {
-            return Component.translatable(this.createId(), Maths.format(this.getMagnitude() * 100.0F));
+            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
+        }
+        if (this == Accessories.BURN_EFFECT.get()) {
+            return Component.translatable(this.createId(), Maths.format(this.getMagnitude()));
         }
         return super.makeTooltip(itemStack);
     }
@@ -309,5 +312,21 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
             return source.is(DamageTypes.HOT_FLOOR);
         }
         return false;
+    }
+
+    @Override
+    public boolean isEnderMask() {
+        if (this == Accessories.VOID_EYE.get()) {
+            return true;
+        }
+        return super.isEnderMask();
+    }
+
+    @Override
+    public boolean canWalkOnPoweredSnow() {
+        if (this == Accessories.CRAMPONS.get()) {
+            return true;
+        }
+        return super.canWalkOnPoweredSnow();
     }
 }

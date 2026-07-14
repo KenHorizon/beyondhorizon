@@ -1,0 +1,19 @@
+{
+  "type": "beyondhorizon:workbench",
+  "counts": [
+    0,
+    0
+  ],
+  "ingredients": [
+    {
+      "item": "beyondhorizon:crystallized_plate"
+    },
+    {
+      "item": "beyondhorizon:mage_wand"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:void_staff"
+  }
+}

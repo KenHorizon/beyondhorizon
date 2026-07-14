@@ -22,6 +22,10 @@ public class AccessoryPassiveSkill extends Accessory implements IEntityPropertie
         super(ItemAbilityType.PASSIVE, 0, 1);
     }
 
+    public AccessoryPassiveSkill(float magnitude) {
+        super(ItemAbilityType.PASSIVE, magnitude, 1);
+    }
+
     @Override
     public Optional<IEntityProperties> IEntityProperties() {
         return Optional.of(this);

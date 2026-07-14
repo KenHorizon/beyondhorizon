@@ -38,7 +38,7 @@ public class ClientboundAbilityCooldownPacket {
         this.map = buf.readMap(ClientboundAbilityCooldownPacket::readID, ClientboundAbilityCooldownPacket::readCoolDownInstance);
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeMap(this.map, ClientboundAbilityCooldownPacket::writeId, ClientboundAbilityCooldownPacket::writeCoolDownInstance);
     }
 

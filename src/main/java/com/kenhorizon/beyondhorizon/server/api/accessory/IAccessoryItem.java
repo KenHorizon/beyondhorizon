@@ -61,4 +61,9 @@ public interface IAccessoryItem {
     default boolean makePiglinsNeutral() {
         return defaultInstance.makePiglinsNeutral();
     }
+
+    default boolean canWalkOnPoweredSnow() {
+        return defaultInstance.canWalkOnPoweredSnow();
+    }
+
 }

@@ -3,11 +3,15 @@
   "counts": [
     0,
     0,
+    0,
     0
   ],
   "ingredients": [
     {
       "item": "beyondhorizon:sheen"
+    },
+    {
+      "item": "beyondhorizon:mage_wand"
     },
     {
       "item": "beyondhorizon:ampliflying_tome"

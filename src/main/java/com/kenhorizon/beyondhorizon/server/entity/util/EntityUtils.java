@@ -22,9 +22,15 @@ public class EntityUtils {
             }
         }
     }
+
+    public static double getMissingHealth(LivingEntity entity, float percent) {
+        return (entity.getMaxHealth() - entity.getHealth()) * percent;
+    }
+
     public static double getAttackDamage(LivingEntity entity) {
         return getAttackDamage(entity, 1.0F);
     }
+
     public static double getAttackDamage(LivingEntity entity, float effectiveness) {
         double attackDamage = entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
         double damageAmp = entity.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());

@@ -386,9 +386,10 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> impl
         if (this.minecraft.screen != null && this.hoveredButton != null) {
             guiGraphics.renderComponentTooltip(this.minecraft.font, this.hoveredButton.getTooltipText(), x, y);
         }
-        this.renderGhostRecipeTooltip(guiGraphics, this.leftPos + 9, this.topPos + 9, x, y);
+        this.renderGhostRecipeTooltip(guiGraphics, this.leftPos, this.topPos, x, y);
         super.renderTooltip(guiGraphics, x, y);
     }
+
     private void renderGhostRecipeTooltip(GuiGraphics graphics, int pX, int pY, int mX, int mY) {
         ItemStack itemstack = null;
 

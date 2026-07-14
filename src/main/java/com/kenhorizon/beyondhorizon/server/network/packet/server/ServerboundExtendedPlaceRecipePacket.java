@@ -27,7 +27,7 @@ public class ServerboundExtendedPlaceRecipePacket {
         this.shiftDown = buf.readBoolean();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeByte(this.containerId);
         buf.writeResourceLocation(this.recipe);
         buf.writeBoolean(this.shiftDown);

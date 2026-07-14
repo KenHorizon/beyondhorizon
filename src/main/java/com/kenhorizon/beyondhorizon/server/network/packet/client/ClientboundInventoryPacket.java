@@ -1,10 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.client;
 
 import com.kenhorizon.beyondhorizon.server.network.ClientPacketHandler;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundGrabbedItemPacket;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent;
 
@@ -19,7 +16,7 @@ public class ClientboundInventoryPacket {
         this.stacks = buf.readItem();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeItem(this.stacks);
     }
 

@@ -141,10 +141,11 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.KNOWLEDGE_2.get(), "Ultima Knowledge", "Increase drop experience by %s%%");
         this.addAccessory(Accessories.VENOM.get(), "Venom", "Attacks have %.2f%% chance inflict either Poison or Lethal Poison for %s seconds");
         this.addAccessory(Accessories.JUMP_BOOST.get(), "Jump Boost", "Increase the jump height by %s%%");
+        this.addAccessory(Accessories.DOUBLE_JUMP.get(), "Double Jump", "Gain additional jump within seconds after jumping");
         this.addAccessory(Accessories.ETERNAL_LIFE.get(), "Eternal Life", "Revive on death and consume Undying Totem in the inventory");
         this.addAccessory(Accessories.NULLIFY.get(), "Nullify", "Ignore enchantment protection by %s%% at same time your attack effectivness reduced by %s%%");
-        this.addAccessory(Accessories.LIFE_SIPHON.get(), "Life Siphon", "Deal additional %s%% target's Current HP");
-        this.addAccessory(Accessories.CLEANSE.get(), "Cleanse", "Healing and Shielding are increased by 200%");
+        this.addAccessory(Accessories.LIFE_SIPHON.get(), "Life Siphon", " Killing enemy will drop soul orb that heal based on 5% missing health, orb stayed for duration of 6 seconds within 3.5 radius the soul automatically collect");
+        this.addAccessory(Accessories.CLEANSE.get(), "Cleanse", "Reduce all %s effect by %s%%");
         this.addAccessory(Accessories.ROCK_SOLID.get(), "Rock Solid", "Reduce basic attack pre-mitigation damage by %s%%");
         this.addAccessory(Accessories.INFLAME.get(), "Inflame", "Attacks inflict Inflame that burn target for 0.5 magic damage per 0.5 seconds");
         this.addAccessory(Accessories.SPELL_BLADE_0.get(), "Spell Blade", "If damage not taken for %s seconds deal additional %s%% base AD physical damage on-hit");
@@ -168,6 +169,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.TITANIC_CRESCENT.get(), "Titanic Crescent", "Basic attack on-hit deal bonus %s%% Max HP to the target and %s%% Max HP to others entity in a cone in the direction of the primary target");
         this.addAccessory(Accessories.SWIFTNESS.get(), "Swiftness", "Inflict Speed boost effect for 5 seconds");
         this.addAccessory(Accessories.STALKER.get(), "Stalker", "Gain 100% Stealth and becoming invisible");
+        this.addAccessory(Accessories.CRAMPONS.get(), "Crampons", "Ability to walk on Powder Snow");
+        this.addAccessory(Accessories.VOID_EYE.get(), "Void Eye", "Enderman will not be provoked");
         this.addAccessory(Accessories.SUPREMACY.get(), "Supremacy", "Stacks: %s",
                 "On-kill grant stacks %s",
                 "Each stacks increase all damage dealt by %s%%",

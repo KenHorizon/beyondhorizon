@@ -1,13 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_the_recipe": {
-      "conditions": {
-        "recipe": "beyondhorizon:hellstone_shovel"
-      },
-      "trigger": "minecraft:recipe_unlocked"
-    },
-    "hellstone_shovel": {
+    "has_hellstone_ingot": {
       "conditions": {
         "items": [
           {
@@ -18,11 +12,17 @@
         ]
       },
       "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:hellstone_shovel"
+      },
+      "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "hellstone_shovel",
+      "has_hellstone_ingot",
       "has_the_recipe"
     ]
   ],

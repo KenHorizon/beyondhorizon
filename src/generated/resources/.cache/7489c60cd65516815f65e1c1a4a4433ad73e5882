@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-07T07:39:11.0480315	Item Models: beyondhorizon
+// 1.20.1	2026-07-14T23:32:59.196756	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -60,6 +60,7 @@ c6d227757f2ec16ec6661a8a43c1a4beaa3f69df assets/beyondhorizon/models/item/debug6
 2c2cd687b88822c3c508bbd3c97a003987bfef12 assets/beyondhorizon/models/item/doran_helm.json
 176e7a4d859689e347c89f2d87f3d7f9dfca5a1f assets/beyondhorizon/models/item/doran_ring.json
 2cea2c9ef19e779b469ef6ab127d2c04831ce791 assets/beyondhorizon/models/item/doran_shield.json
+7f36c7dca3f8271e700758ac72003c66f0af91e0 assets/beyondhorizon/models/item/dragon_eye.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/beyondhorizon/models/item/dragon_hornet_spawn_egg.json
 8268568fdd9157233c2f7dafe06e6fe8943ec791 assets/beyondhorizon/models/item/dream_catcher.json
 0ad0afa79066bdf0785e138f93c32736e2e7b074 assets/beyondhorizon/models/item/duskblade.json
@@ -95,6 +96,9 @@ d7e626d382998b6a7f36cb0950d591375ab862d0 assets/beyondhorizon/models/item/hellst
 761cb8ed2b8c1eb3de7893e5e117c62d9f948708 assets/beyondhorizon/models/item/hellstone_shovel.json
 371735e3272f3256b1289bff9d8988b8cf71a633 assets/beyondhorizon/models/item/hellstone_sword.json
 de10e118101e898d012161c7b3e58048b63d6369 assets/beyondhorizon/models/item/hoglin_tusk.json
+8d19cba91fd8280a5f99ff88165ede4910afe61e assets/beyondhorizon/models/item/hoglin_tusk_machete.json
+85fc938aff44af58e5ce4ef0d31f72e6745df9be assets/beyondhorizon/models/item/hoglin_tusk_spear.json
+d4fb31726b490d0411e12756c4c6c0716f1c884a assets/beyondhorizon/models/item/hoglin_tusk_sword.json
 1e88040a163af9aa9659cc324ff424cada251e65 assets/beyondhorizon/models/item/inferno_heart_stone.json
 33ab8b1213915d33ded37edc9ffb60deba049ab7 assets/beyondhorizon/models/item/infinity_gem.json
 4982b6ebb0e0cc0b2755b177dea0e167737993a7 assets/beyondhorizon/models/item/iron_plated_boots.json
@@ -108,6 +112,7 @@ ef6df66a5cb952d0d98ab72620417044bac21f4b assets/beyondhorizon/models/item/light_
 29998f18418efdb64dd0ae7985a6318e3c9ce3af assets/beyondhorizon/models/item/lucky_horse_shoe.json
 5c1465778f8df57bbb766d3937a7020e7f22ff61 assets/beyondhorizon/models/item/luminite_ingot.json
 8fb217c40292c38368d67141a94a6d4306e750c0 assets/beyondhorizon/models/item/magenta_wool_fur.json
+5b93ef23cfe7500ebb045ba48567c6f89e2459d4 assets/beyondhorizon/models/item/mage_wand.json
 f6ca3709d68e38f21a87b2cad5be9b5348c1e860 assets/beyondhorizon/models/item/mask_of_agony.json
 b2f43174d163177bf6e76674a3a457ee16329a1d assets/beyondhorizon/models/item/mask_of_bewildered.json
 ad7deea38ea7f781b1e24c5223f796ffb35a9719 assets/beyondhorizon/models/item/miner_boots.json

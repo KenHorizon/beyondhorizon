@@ -1,13 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.api.entity.player;
 
 import com.google.common.collect.Maps;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAbilityCooldownPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAbilityCooldownsPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundManaSyncPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataPacket;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -20,7 +17,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.util.INBTSerializable;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -224,7 +220,6 @@ public class PlayerData {
 
     public void loadNbt(CompoundTag nbt) {
         this.setSyncMana(nbt.getDouble(NBT_MANA));
-        System.out.println("[MANA] deserialized to " + this.getMana());
         this.setCrit(nbt.getBoolean(NBT_CRIT));
         this.setDoCrit(nbt.getBoolean(NBT_DO_CRIT));
         this.setCantCrit(nbt.getBoolean(NBT_CANT_CRIT));

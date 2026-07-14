@@ -7,11 +7,14 @@ import com.kenhorizon.beyondhorizon.server.api.block.INodeBlock;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerDataHelper;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.entity.misc.HealingOrb;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.inventory.provider.AccessoryContainerProvider;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.*;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundGrabbedItemPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -78,13 +81,6 @@ public class ClientPacketHandler {
         });
     }
 
-    public static void handleAbilityCooldowns(ClientboundAbilityCooldownsPacket packet, Supplier<NetworkEvent.Context> context) {
-        Player player = BeyondHorizon.PROXY.clientPlayer();
-        var skillCooldown = Capabilities.data(player);
-        packet.getMap().forEach((s, instance) -> {
-            skillCooldown.addCooldown(s, instance.getCooldown(), instance.getCooldownRemaining());
-        });
-    }
     public static void handleLevelSystem(ClientboundLevelSystemPacket packet, Supplier<NetworkEvent.Context> context) {
         Player player = BeyondHorizon.PROXY.clientPlayer();
         if (player != null) {
@@ -117,5 +113,19 @@ public class ClientPacketHandler {
                 });
             }
         }
+    }
+
+    public static void handleAddHealingOrb(ClientboundAddHealingOrbPacket packet, Supplier<NetworkEvent.Context> supplier) {
+//        Player player = BeyondHorizon.PROXY.clientPlayer();
+//        ClientLevel level = (ClientLevel) player.level();
+//        double x = packet.getX();
+//        double y = packet.getY();
+//        double z = packet.getZ();
+//        Entity entity = new HealingOrb(level, x, y, z, packet.getValue());
+//        entity.syncPacketPositionCodec(x, y, z);
+//        entity.setYRot(0.0F);
+//        entity.setXRot(0.0F);
+//        entity.setId(packet.getId());
+//        level.putNonPlayerEntity(packet.getId(), entity);
     }
 }

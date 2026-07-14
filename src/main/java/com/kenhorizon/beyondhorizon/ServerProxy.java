@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server;
+package com.kenhorizon.beyondhorizon;
 
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.gui.screens.Screen;

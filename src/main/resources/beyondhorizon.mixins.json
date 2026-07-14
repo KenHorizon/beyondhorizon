@@ -16,6 +16,7 @@
     "common.MobMixins",
     "common.PiglinAIMixins",
     "common.PlayerMixins",
+    "common.PowderSnowBlockMixins",
     "common.ProjectileMixins",
     "common.accessor.AttributeAccessor",
     "common.accessor.AttributeRangeAccessor"

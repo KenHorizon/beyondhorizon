@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.ability.*;
 import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.server.entity.misc.HealingOrb;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.DragonHornet;
 import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.*;
@@ -104,6 +105,14 @@ public class BHEntity {
             .lang("Pyrobolt")
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
+    public static final RegistryObject<EntityType<HealingOrb>> HEALING_ORB = RegistryEntity
+            .<HealingOrb>register("healing_orb", HealingOrb::new)
+            .lang("Healing Orb")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.85F, 1.85F))
+            .properties(EntityType.Builder::fireImmune)
             .register();
 
     public static final RegistryObject<EntityType<InfernoShield>> INFERNO_SHIELD = RegistryEntity

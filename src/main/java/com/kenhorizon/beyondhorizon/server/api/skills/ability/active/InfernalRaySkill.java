@@ -29,7 +29,7 @@ public class InfernalRaySkill extends AbstractDeathRaySkill {
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        list.add(Component.translatable(createId(0), Maths.format(this.ADScale) + Maths.format(this.APScale), Utils.capitalize(Utils.builderName(this.types.name().toLowerCase(Locale.ROOT)))));
+        list.add(Component.translatable(createId(0), Maths.format(this.ADScale) + Maths.format(this.APScale), Utils.formattedWords(this.types.name())));
         return list;
     }
 

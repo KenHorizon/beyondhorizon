@@ -206,7 +206,6 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
     }
     @Override
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
-        BeyondHorizon.LOGGER.info("{}", this.getActiveSkill(itemStack).get().getName());
         this.skillBaseItems.inventoryTick(itemStack, level, entity, slot, isSelected);
     }
 

@@ -26,7 +26,7 @@ public class ServerboundConsumePointsPacket {
         this.amount = buf.readInt();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeInt(this.index);
         buf.writeInt(this.amount);
     }

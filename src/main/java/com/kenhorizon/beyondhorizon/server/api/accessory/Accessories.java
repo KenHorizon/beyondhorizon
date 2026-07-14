@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.tags.BHEffectTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -23,6 +24,9 @@ import java.util.function.Supplier;
  * */
 public class Accessories {
     public static final RegistryObject<Accessory> NONE = registerSkill("none", AccessoryPassiveSkill::new);
+
+    public static final RegistryObject<Accessory> MAGE_WAND_STATS = registerSkill("mage_wand_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.ABILITY_POWER_2, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> STEEL_SIGILS = registerSkill("steel_sigils", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_DAMAGE, Constant.ATTACKDAMAGE_0, AttributeModifier.Operation.ADDITION)
@@ -64,6 +68,7 @@ public class Accessories {
 
     public static final RegistryObject<Accessory> TWILIGHT_SWORD = registerSkill("twilight_sword", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_DAMAGE,  Constant.TS_AD, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.COOLDOWN.get(), Constant.TS_CD, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.TS_AP, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> SPECTRAL_CLOAK = registerSkill("spectral_cloak", () -> new AttributeOnlyAccessory()
@@ -74,10 +79,11 @@ public class Accessories {
     public static final RegistryObject<Accessory> UNSTABLE_RUNIC_TOME = registerSkill("unstable_runic_tome", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.ABILITY_POWER.get(),  Constant.ABILITY_POWER_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(BHAttributes.MAX_MANA.get(),  Constant.MAX_MANA_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.COOLDOWN.get(),  Constant.COOLDOWN_0, AttributeModifier.Operation.ADDITION)
             .addAttributes(Attributes.MOVEMENT_SPEED,  Constant.BOOTS_TIER_1, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> CRYSTALLIZED_PLATE = registerSkill("crystallized_plate", () -> new AttributeOnlyAccessory()
-            .addAttributes(Attributes.MAX_HEALTH,  Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
+            .addAttributes(BHAttributes.ARMOR_PENETRATION.get(), Constant.STANDARD_MAGIC_PEN_PERCENT_0, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> VITALITY_STONE = registerSkill("vitality_stone", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MAX_HEALTH,  Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
@@ -207,6 +213,8 @@ public class Accessories {
             .addAttributes(BHAttributes.DAMAGE_DEALT.get(), Constant.UlTIMA_DAMAGE_AMP, AttributeModifier.Operation.MULTIPLY_TOTAL)
             .addAttributes(BHAttributes.DAMAGE_TAKEN.get(), Constant.UlTIMA_DAMAGE_TAKEN, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
+    public static final RegistryObject<Accessory> TORMENT_STAT = registerSkill("torment_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.MAX_HEALTH, Constant.MAX_HEALTH_1, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Accessory> KNOWLEDGE_1 = registerSkill("knowledge", () -> new ExperienceAccessory(Constant.KNOWLEDGE_XP_MODIFIER));
 
@@ -241,13 +249,13 @@ public class Accessories {
 
     public static final RegistryObject<Accessory> FLUOROCARBON = registerSkill("fluorocarbon", () -> new StringBowAccessory(StringBowAccessory.StringBowType.LIGHT));
     public static final RegistryObject<Accessory> POLYETHYLENE = registerSkill("polyethylene", () -> new StringBowAccessory(StringBowAccessory.StringBowType.HEAVY));
-    public static final RegistryObject<Accessory> LIFE_SIPHON = registerSkill("life_siphon", () -> new SinglePassiveAccessory(Constant.SOUL_SIPHON_CURRENT_HEALTH_DAMAGE));
+    public static final RegistryObject<Accessory> LIFE_SIPHON = registerSkill("life_siphon", HealingOrbAccessory::new);
     public static final RegistryObject<Accessory> CORRUPTED_BITE = registerSkill("corrupted_bite", () -> new SinglePassiveAccessory(Constant.CORRUPTED_BITE_DAMAGE_SCALE));
 
     public static final RegistryObject<Accessory> SPELL_BLADE_0 = registerSkill("spell_blade_0", () -> new SpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.SPELLBLADE_BASE));
     public static final RegistryObject<Accessory> SPELL_BLADE_1 = registerSkill("spell_blade_1", () -> new TwilightSpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.TWILIGHT_SPELLBLADE));
     public static final RegistryObject<Accessory> SPELL_BLADE_2 = registerSkill("spell_blade_2", () -> new ForceImpactSpellBladeAccessory(Constant.SPELLBLADE_INTERVAL, Constant.FORCE_IMPACT_SPELLBLADE));
-    public static final RegistryObject<Accessory> CLEANSE = registerSkill("cleanse", SinglePassiveAccessory::new);
+    public static final RegistryObject<Accessory> CLEANSE = registerSkill("cleanse", () -> new EffectInstanceAccessory(Constant.CLEANSE_EFFECT_REDUCE, MobEffectCategory.HARMFUL));
     public static final RegistryObject<Accessory> ROCK_SOLID = registerSkill("rock_solid", () -> new DamageReductionAccessory(Constant.ROCK_SOLID_REDUCE, DamageReductionAccessory.DamageReductionType.BASIC_ATTACK));
     public static final RegistryObject<Accessory> INFLAME = registerSkill("inflame", () -> new ApplyEffectAccessory(3, 0, BHEffects.INFLAME.get()).showIcon(true).ambient(true));
     public static final RegistryObject<Accessory> STING = registerSkill("sting", () -> new SinglePassiveAccessory(Constant.STING_DAMAGE));
@@ -269,9 +277,12 @@ public class Accessories {
     public static final RegistryObject<Accessory> SWIFTNESS = registerSkill("swiftness", SwiftnessAccessory::new);
     public static final RegistryObject<Accessory> STALKER = registerSkill("stalker", StalkerAccessory::new);
     public static final RegistryObject<Accessory> TITANIC_CRESCENT = registerSkill("titanic_crescent", TitanicCrescentAccessory::new);
+    public static final RegistryObject<Accessory> VOID_EYE = registerSkill("void_eye", SinglePassiveAccessory::new);
+    public static final RegistryObject<Accessory> CRAMPONS = registerSkill("crampons", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> MIDAS_AURA = registerSkill("midas_aura", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> ELECTROSHOCK = registerSkill("electroshock", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> ENERGIZED = registerSkill("energized", EnergizedAccessory::new);
+    public static final RegistryObject<Accessory> DOUBLE_JUMP = registerSkill("double_jump", DoubleJumpAccessory::new);
     public static final RegistryObject<Accessory> KNOWLEDGE_2 = registerSkill("ultima_knowledge", () -> new ExperienceAccessory(Constant.ULTIMA_KNOWLEDGE_XP_MODIFIER));
 
     public static RegistryObject<Accessory> registerSkill(String name, Supplier<Accessory> properties) {

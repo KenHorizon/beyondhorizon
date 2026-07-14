@@ -21,7 +21,7 @@ public class ClientboundExtendedPlacedRecipePacket {
         this.recipe = buf.readResourceLocation();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    public void write(FriendlyByteBuf buf) {
         buf.writeByte(this.containerId);
         buf.writeResourceLocation(this.recipe);
     }

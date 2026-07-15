@@ -1,14 +1,12 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    0
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:ankh_charm"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:obsidian_shield"
     }
   ],

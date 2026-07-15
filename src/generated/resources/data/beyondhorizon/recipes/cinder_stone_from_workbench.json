@@ -1,18 +1,16 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    0,
-    0
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:vitality_stone"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:vitality_stone"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:firefly_faye"
     }
   ],

@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.guis.IRecipeUpdateListener;
+import com.kenhorizon.beyondhorizon.client.render.guis.PanelGhostRecipe;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
@@ -60,7 +61,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> impl
     private WorkbenchRecipeButton hoveredButton;
     private final StackedContents stackedContents = new StackedContents();
     private List<WorkbenchRecipeButton> buttons = Lists.newArrayListWithCapacity(20);
-    private final GhostRecipe ghostRecipe = new GhostRecipe();
+    private final PanelGhostRecipe ghostRecipe = new PanelGhostRecipe();
     private int currentPage = 0;
     private int totalPages = 0;
     private int buttonpadding = 50;
@@ -266,7 +267,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> impl
             int i = this.minecraft.font.width(s);
             int btnX = (176 - (buttonpadding * 2)) / 2;
             guiGraphics.drawString(this.font, s, this.recipesIndexes.x + (i / 2) + btnX + (buttonpadding / 2), this.recipesIndexes.y + 144, Colors.WHITE);
-            this.ghostRecipe.render(guiGraphics, minecraft, this.leftPos, this.topPos, false, partialTick);
+            this.ghostRecipe.render(guiGraphics, minecraft, this.leftPos, this.topPos, partialTick);
             guiGraphics.pose().popPose();
         }
     }
@@ -394,11 +395,11 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> impl
         ItemStack itemstack = null;
 
         for(int i = 0; i < this.ghostRecipe.size(); ++i) {
-            GhostRecipe.GhostIngredient ghostrecipe$ghostingredient = this.ghostRecipe.get(i);
-            int j = ghostrecipe$ghostingredient.getX() + pX;
-            int k = ghostrecipe$ghostingredient.getY() + pY;
+            PanelGhostRecipe.GhostIngredient ghostIngredient = this.ghostRecipe.get(i);
+            int j = ghostIngredient.getX() + pX;
+            int k = ghostIngredient.getY() + pY;
             if (mX >= j && mY >= k && mX < j + 16 && mY < k + 16) {
-                itemstack = ghostrecipe$ghostingredient.getItem();
+                itemstack = ghostIngredient.getItem();
             }
         }
 

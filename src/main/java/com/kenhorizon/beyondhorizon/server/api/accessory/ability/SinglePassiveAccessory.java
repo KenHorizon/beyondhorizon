@@ -329,4 +329,12 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
         }
         return super.canWalkOnPoweredSnow();
     }
+
+    @Override
+    public boolean isFreezeImmune() {
+        if (this == Accessories.CRAMPONS.get()) {
+            return true;
+        }
+        return super.isFreezeImmune();
+    }
 }

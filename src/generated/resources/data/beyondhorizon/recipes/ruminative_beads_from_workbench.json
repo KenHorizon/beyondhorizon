@@ -1,14 +1,12 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    20,
-    6
-  ],
   "ingredients": [
     {
+      "count": 20,
       "item": "minecraft:emerald"
     },
     {
+      "count": 6,
       "item": "minecraft:lead"
     }
   ],

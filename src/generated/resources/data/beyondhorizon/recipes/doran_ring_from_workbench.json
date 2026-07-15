@@ -1,18 +1,16 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    10,
-    0
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:ruby"
     },
     {
+      "count": 10,
       "item": "minecraft:gold_ingot"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:gold_ring"
     }
   ],

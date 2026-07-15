@@ -90,10 +90,10 @@ public class Skills {
     public static final RegistryObject<Skill> GUARDIAN_SWORD_TRAIT = registerSkill("guardian_sword_trait", GuardianSwordProperties::new);
 
     public static RegistryObject<Skill> registerSkill(String name, Supplier<Skill> properties) {
-        return BHRegistries.DEFERRED_SKILL.register(name, properties);
+        return BHRegistries.DEF_SKILL.register(name, properties);
     }
 
     public static void register(IEventBus eventBus) {
-        BHRegistries.DEFERRED_SKILL.register(eventBus);
+        BHRegistries.DEF_SKILL.register(eventBus);
     }
 }

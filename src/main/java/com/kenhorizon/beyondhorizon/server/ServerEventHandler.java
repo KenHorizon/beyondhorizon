@@ -3,13 +3,14 @@ package com.kenhorizon.beyondhorizon.server;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.Fonts;
+import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbilityRegistries;
+import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.libs.server.event.MobEffectModificationEvent;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.*;
-import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorBonusSet;
-import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorSet;
-import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorSetRegistry;
+import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
+import com.kenhorizon.beyondhorizon.server.api.armor_ability.IArmorAbility;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerDataHelper;
 import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
@@ -54,7 +55,6 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -93,8 +93,8 @@ import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -152,19 +152,7 @@ public class ServerEventHandler {
         if (event.phase != TickEvent.Phase.END) return;
         Player player = event.player;
         if (player.level().isClientSide()) return;
-        Set<ResourceLocation> active = ArmorBonusSet.ACTIVE_SETS.computeIfAbsent(player.getUUID(), id -> new HashSet<>());
-        for (ArmorSet set : ArmorSetRegistry.getAll()) {
-            boolean matches = set.matches(player);
-            boolean applied = active.contains(set.getId());
-            if (matches && !applied) {
-                set.applyBonus(player);
-                active.add(set.getId());
-            }
-            if (!matches && applied) {
-                set.removeBonus(player);
-                active.remove(set.getId());
-            }
-        }
+
     }
 
     @SubscribeEvent
@@ -551,6 +539,29 @@ public class ServerEventHandler {
             }
         }
     }
+
+    @SubscribeEvent
+    public void onEndermanAnger(EnderManAngerEvent event) {
+        Player player = event.getPlayer();
+        boolean flag = false;
+        if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+            IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
+            var stacks = handler.getStacks();
+
+            all:
+            for (int i = 0; i < stacks.getSlots(); i++) {
+                ItemStack itemStacks = stacks.getStackInSlot(i);
+                if (itemStacks.getItem() instanceof IAccessoryItem items) {
+                    flag = items.isEndermanMask(player, event.getEntity());
+                    if (flag) {
+                        event.setCanceled(true);
+                        break all;
+                    }
+                }
+            }
+        }
+    }
+
     @SubscribeEvent
     public void onPotionAdded(MobEffectModificationEvent event) {
         LivingEntity entity = event.getEntity();
@@ -607,6 +618,21 @@ public class ServerEventHandler {
                 optional.ifPresent(callback -> callback.onEntityUpdate(entity, itemStack));
             }
         }
+
+        Set<ResourceLocation> active = ArmorAbility.ACTIVE_SETS.computeIfAbsent(entity.getUUID(), id -> new HashSet<>());
+        for (ArmorAbility set : BHRegistries.ARMOR_ABILITY_KEY.get()) {
+            boolean matches = set.matches(entity);
+            boolean applied = active.contains(set.getResourceId());
+            if (matches && !applied) {
+                set.applyBonus(entity);
+                active.add(set.getResourceId());
+            }
+            if (!matches && applied) {
+                set.removeBonus(entity);
+                active.remove(set.getResourceId());
+            }
+        }
+
         if (entity instanceof Player player) {
             this.accessoryLogics(player);
             PlayerData playerData = Capabilities.data(player);
@@ -740,19 +766,18 @@ public class ServerEventHandler {
                 }
             }
         }
+        for (ArmorAbility set : BHRegistries.ARMOR_ABILITY_KEY.get()) {
+            boolean matches = set.matches(target);
+            if (matches) {
+                var weaponCallback = set.attack();
+                if (weaponCallback.isPresent()) {
+                    damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
+                }
+            }
+        }
         if (target instanceof Player player) {
             if (source.getEntity() instanceof LivingEntity lEntity && lEntity instanceof EnderDragon) {
                 player.addEffect(new MobEffectInstance(BHEffects.DRAGONIC_FLAME.get(), Maths.sec(3), 1));
-            }
-            for (ArmorSet set : ArmorSetRegistry.getAll()) {
-                ArmorBonusSet armorBonusSet = set.getInstance();
-                boolean matches = set.matches(player);
-                if (matches) {
-                    var weaponCallback = armorBonusSet.attack();
-                    if (weaponCallback.isPresent()) {
-                        damageDealt = weaponCallback.get().damageTaken(damageDealt, source, player);
-                    }
-                }
             }
             if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
                 IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
@@ -778,16 +803,13 @@ public class ServerEventHandler {
         }
         if (source.getEntity() instanceof LivingEntity attacker) {
             ItemStack attackerStack = attacker.getMainHandItem();
-            if (attacker instanceof Player player) {
-                for (ArmorSet set : ArmorSetRegistry.getAll()) {
-                    ArmorBonusSet armorBonusSet = set.getInstance();
-                    boolean matches = set.matches(player);
-                    if (matches) {
-                        var meleeWeaponCallback = armorBonusSet.attack();
-                        if (meleeWeaponCallback.isPresent()) {
-                            damageDealt = meleeWeaponCallback.get().postMigitationDamage(damageDealt, source, attacker, target);
-                            meleeWeaponCallback.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
-                        }
+            for (ArmorAbility set : BHRegistries.ARMOR_ABILITY_KEY.get()) {
+                boolean matches = set.matches(attacker);
+                if (matches) {
+                    var attack = set.attack();
+                    if (attack.isPresent()) {
+                        damageDealt = attack.get().postMigitationDamage(damageDealt, source, attacker, target);
+                        attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
                     }
                 }
             }

@@ -4,6 +4,8 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,11 +27,19 @@ public interface IAccessory {
         return UUID.randomUUID();
     }
 
-    default boolean canWalkOnPoweredSnow() {
+    default boolean canWalkOnPoweredSnow(Player player) {
         return false;
     }
 
-    default boolean makePiglinsNeutral() {
+    default boolean makePiglinsNeutral(Player player) {
+        return false;
+    }
+
+    default boolean isEndermanMask(Player player, EnderMan man) {
+        return false;
+    }
+
+    default boolean isFreezeImmune(Player player) {
         return false;
     }
 }

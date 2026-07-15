@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.datagen.BHLangProvider;
 import com.kenhorizon.beyondhorizon.server.api.accessory.ability.*;
+import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.GainRandomPotionAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.StalkerAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.SwiftnessAccessory;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -83,7 +84,7 @@ public class Accessories {
             .addAttributes(Attributes.MOVEMENT_SPEED,  Constant.BOOTS_TIER_1, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> CRYSTALLIZED_PLATE = registerSkill("crystallized_plate", () -> new AttributeOnlyAccessory()
-            .addAttributes(BHAttributes.ARMOR_PENETRATION.get(), Constant.STANDARD_MAGIC_PEN_PERCENT_0, AttributeModifier.Operation.ADDITION));
+            .addAttributes(BHAttributes.PERCENTAGE_MAGIC_PENETRATION.get(), Constant.STANDARD_MAGIC_PEN_PERCENT_0, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> VITALITY_STONE = registerSkill("vitality_stone", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.MAX_HEALTH,  Constant.MAX_HEALTH_0, AttributeModifier.Operation.ADDITION));
@@ -283,13 +284,17 @@ public class Accessories {
     public static final RegistryObject<Accessory> ELECTROSHOCK = registerSkill("electroshock", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> ENERGIZED = registerSkill("energized", EnergizedAccessory::new);
     public static final RegistryObject<Accessory> DOUBLE_JUMP = registerSkill("double_jump", DoubleJumpAccessory::new);
+    public static final RegistryObject<Accessory> ELIXIR_GRAB_0 = registerSkill("elixir_grab_0", () -> new GainRandomPotionAccessory(0));
+    public static final RegistryObject<Accessory> ELIXIR_GRAB_1 = registerSkill("elixir_grab_1", () -> new GainRandomPotionAccessory(1));
+    public static final RegistryObject<Accessory> ELIXIR_GRAB_2 = registerSkill("elixir_grab_2", () -> new GainRandomPotionAccessory(2));
+    public static final RegistryObject<Accessory> ELIXIR_GRAB_3 = registerSkill("elixir_grab_3", () -> new GainRandomPotionAccessory(3));
     public static final RegistryObject<Accessory> KNOWLEDGE_2 = registerSkill("ultima_knowledge", () -> new ExperienceAccessory(Constant.ULTIMA_KNOWLEDGE_XP_MODIFIER));
 
     public static RegistryObject<Accessory> registerSkill(String name, Supplier<Accessory> properties) {
-        return BHRegistries.DEFERRED_ACCESSORY.register(name, properties);
+        return BHRegistries.DEF_ACCESSORY.register(name, properties);
     }
 
     public static void register(IEventBus eventBus) {
-        BHRegistries.DEFERRED_ACCESSORY.register(eventBus);
+        BHRegistries.DEF_ACCESSORY.register(eventBus);
     }
 }

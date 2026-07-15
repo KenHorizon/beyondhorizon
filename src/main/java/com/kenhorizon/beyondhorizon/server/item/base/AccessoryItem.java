@@ -131,7 +131,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
     }
 
     @Override
-    public boolean makePiglinsNeutral() {
+    public boolean makePiglinsNeutral(Player player) {
         for (Accessory accessory : this.accessories) {
             Optional<IEntityProperties> callback = accessory.IEntityProperties();
             if (callback.isPresent()) {
@@ -142,24 +142,24 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
     }
 
     @Override
-    public boolean isEnderMask(ItemStack stack, Player player, EnderMan endermanEntity) {
+    public boolean canWalkOnPoweredSnow(Player player) {
         boolean flag = false;
         for (Accessory accessory : this.accessories) {
             Optional<IEntityProperties> callback = accessory.IEntityProperties();
             if (callback.isPresent()) {
-                flag = callback.get().isEnderMask();
+                flag = callback.get().canWalkOnPoweredSnow();
             }
         }
         return flag;
     }
 
     @Override
-    public boolean canWalkOnPoweredSnow() {
+    public boolean isFreezeImmune(Player player) {
         boolean flag = false;
         for (Accessory accessory : this.accessories) {
             Optional<IEntityProperties> callback = accessory.IEntityProperties();
             if (callback.isPresent()) {
-                flag = callback.get().canWalkOnPoweredSnow();
+                flag = callback.get().isFreezeImmune();
             }
         }
         return flag;

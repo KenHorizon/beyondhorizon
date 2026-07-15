@@ -42,7 +42,6 @@ public class NetworkHandler {
         net.registerMessage(id(), ClientboundAddHealingOrbPacket.class, ClientboundAddHealingOrbPacket::write, ClientboundAddHealingOrbPacket::new, ClientboundAddHealingOrbPacket::handle);
 
         net.registerMessage(id(), ServerboundExtendedPlaceRecipePacket.class, ServerboundExtendedPlaceRecipePacket::write, ServerboundExtendedPlaceRecipePacket::new, ServerboundExtendedPlaceRecipePacket::handle);
-        net.registerMessage(id(), ServerboundWorkbenchCraftPacket.class, ServerboundWorkbenchCraftPacket::write, ServerboundWorkbenchCraftPacket::new, ServerboundWorkbenchCraftPacket::handle);
         net.registerMessage(id(), ServerboundAccessoryInventoryPacket.class, ServerboundAccessoryInventoryPacket::write, ServerboundAccessoryInventoryPacket::new, ServerboundAccessoryInventoryPacket::handle);
         net.registerMessage(id(), ServerboundGrabbedItemPacket.class, ServerboundGrabbedItemPacket::write, ServerboundGrabbedItemPacket::new, ServerboundGrabbedItemPacket::handle);
         net.registerMessage(id(), ServerboundOpenLevelSystemPacket.class, ServerboundOpenLevelSystemPacket::write, ServerboundOpenLevelSystemPacket::new, ServerboundOpenLevelSystemPacket::handle);

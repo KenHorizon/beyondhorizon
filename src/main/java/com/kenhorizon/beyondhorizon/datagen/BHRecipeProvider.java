@@ -354,6 +354,30 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .required(BHItems.CRYSTALLIZED_PLATE.get())
                 .required(BHItems.MAGE_WAND.get())
                 .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.LESS_SATCTEL_OF_ELIXIR.get(), 1)
+                .required(BHItems.RUBY.get(), 5)
+                .required(Items.STRING, 5)
+                .required(Items.LEATHER, 25)
+                .required(Blocks.BREWING_STAND)
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.SATCTEL_OF_ELIXIR.get(), 1)
+                .required(BHItems.LESS_SATCTEL_OF_ELIXIR.get())
+                .required(Items.DIAMOND, 32)
+                .required(Items.GOLD_INGOT, 24)
+                .save(consumer);
+        WorkbenchRecipeProvider.create(BHItems.GREATER_SATCTEL_OF_ELIXIR.get(), 1)
+                .required(BHItems.SATCTEL_OF_ELIXIR.get())
+                .required(Items.NETHER_STAR, 2)
+                .required(Items.NETHERITE_BLOCK)
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.OMEGA_SATCTEL_OF_ELIXIR.get(), 1)
+                .required(BHItems.GREATER_SATCTEL_OF_ELIXIR.get())
+                .required(Items.NETHER_STAR, 2)
+                .required(BHItems.STARITE_INGOT.get(), 15)
+                .required(BHItems.LUMINITE_INGOT.get(), 15)
+                .required(BHItems.SHADOWCRUST.get(), 5)
+                .save(consumer);
 
         oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, Maths.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_STARITE.get()), RecipeCategory.MISC, BHItems.STARITE_INGOT.get(), 0.7F, Maths.sec(10));

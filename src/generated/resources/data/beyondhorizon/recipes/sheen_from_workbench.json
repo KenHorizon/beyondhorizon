@@ -1,18 +1,16 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    0,
-    0
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:broken_hero_sword"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:sapphire_crystal"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:sapphire_crystal"
     }
   ],

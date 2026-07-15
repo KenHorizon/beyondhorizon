@@ -1,19 +1,18 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    0,
-    0
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:tough_cloth"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:tough_cloth"
     },
     {
-      "item": "minecraft:iron_sword"
+      "count": 1,
+      "item": "minecraft:iron_sword",
+      "nbt": "{Damage:0}"
     }
   ],
   "result": {

@@ -1,10 +1,8 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    3
-  ],
   "ingredients": [
     {
+      "count": 3,
       "item": "beyondhorizon:ampliflying_tome"
     }
   ],

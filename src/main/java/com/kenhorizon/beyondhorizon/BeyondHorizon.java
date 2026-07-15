@@ -14,7 +14,7 @@ import com.kenhorizon.beyondhorizon.server.api.ISkillSlots;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
-import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorBonusSets;
+import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbilityRegistries;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.handler.anvil_patch.AnvilPatchHandler;
 import com.kenhorizon.beyondhorizon.server.api.inventory.IStackHandler;
@@ -97,6 +97,7 @@ public class BeyondHorizon
         BHStructureTypes.register(eventBus);
         Skills.register(eventBus);
         Accessories.register(eventBus);
+        ArmorAbilityRegistries.register(eventBus);
         PROXY.serverHandler();
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new AnvilPatchHandler());
@@ -128,7 +129,6 @@ public class BeyondHorizon
         AttributePercentage.init();
         EmissiveBlocks.init();
         NetworkHandler.register();
-        ArmorBonusSets.register();
         StackableTagInstance.registerAll();
         event.enqueueWork(() -> {
             BHPotions.setup();

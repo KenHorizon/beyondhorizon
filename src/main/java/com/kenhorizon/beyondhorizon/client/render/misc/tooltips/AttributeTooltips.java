@@ -5,9 +5,9 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.util.AttributePercentage;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorBonusSet;
-import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorSetRegistry;
+import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
+import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -159,7 +159,7 @@ public class AttributeTooltips {
         }
         this.makeEnchantmentAttributeTooltip(player, tooltip, itemStack);
 
-        for (ArmorBonusSet set : ArmorSetRegistry.getAll()) {
+        for (ArmorAbility set : BHRegistries.ARMOR_ABILITY_KEY.get()) {
             if (set.contains(itemStack)) {
                 set.addTooltips(tooltip, itemStack, player);
             }

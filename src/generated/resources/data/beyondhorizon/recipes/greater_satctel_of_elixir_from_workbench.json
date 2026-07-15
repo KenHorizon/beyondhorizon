@@ -1,0 +1,21 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 1,
+      "item": "beyondhorizon:satctel_of_elixir"
+    },
+    {
+      "count": 2,
+      "item": "minecraft:nether_star"
+    },
+    {
+      "count": 1,
+      "item": "minecraft:netherite_block"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:greater_satctel_of_elixir"
+  }
+}

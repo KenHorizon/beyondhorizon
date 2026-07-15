@@ -46,4 +46,8 @@ public interface IEntityProperties {
     default boolean isEnderMask() {
         return false;
     }
+
+    default boolean isFreezeImmune() {
+        return false;
+    }
 }

@@ -14,7 +14,7 @@ Shattered Sheath
 Give 50% weapon damage bonus physical damage
 Consume less 50% durability
 
-Kinetic Sheath
+Kinetic Armguard
 Innate Passive: Energize
 Passive: Spear and Bolt -> When fully charged your next basic damage summon lightning spear that deal 70% weapon damage + 10% ability power Adaptive Damage
 

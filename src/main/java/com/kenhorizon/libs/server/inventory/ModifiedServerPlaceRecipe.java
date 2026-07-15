@@ -74,26 +74,27 @@ public class ModifiedServerPlaceRecipe <C extends Container> implements PlaceRec
             }
         }
 
-        int j1 = this.getStackSize(placeAll, i, flag);
+        int stackSize = this.getStackSize(placeAll, i, flag);
         IntList intlist = new IntArrayList();
-        if (this.stackedContents.canCraft(recipe, intlist, j1)) {
-            int k = j1;
+        if (this.stackedContents.canCraft(recipe, intlist, stackSize)) {
+            int stackSize1 = stackSize;
 
             for(int l : intlist) {
-                int i1 = StackedContents.fromStackingIndex(l).getMaxStackSize();
-                if (i1 < k) {
-                    k = i1;
+                int fromStackingIndex = StackedContents.fromStackingIndex(l).getMaxStackSize();
+                if (fromStackingIndex < stackSize1) {
+                    stackSize1 = fromStackingIndex;
                 }
             }
 
-            if (this.stackedContents.canCraft(recipe, intlist, k)) {
+            if (this.stackedContents.canCraft(recipe, intlist, stackSize1)) {
                 this.clearGrid();
-                this.placeRecipe(this.menu.getGridWidth(), this.menu.getGridHeight(), this.menu.getResultSlotIndex(), recipe, intlist.iterator(), k);
+                this.placeRecipe(this.menu.getGridWidth(), this.menu.getGridHeight(), this.menu.getResultSlotIndex(), recipe, intlist.iterator(), stackSize1);
             }
         }
 
     }
 
+    @Override
     public void addItemToSlot(Iterator<Integer> ingredients, int menuSlots, int max, int y, int x) {
         Slot slot = this.menu.getSlot(menuSlots);
         ItemStack itemstack = StackedContents.fromStackingIndex(ingredients.next());

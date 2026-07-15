@@ -5,6 +5,8 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
@@ -30,11 +32,22 @@ public class ItemizedAccessoryCap implements IAccessory {
     }
 
     @Override
-    public boolean makePiglinsNeutral() {
-        return this.accessoryItem.makePiglinsNeutral();
+    public boolean makePiglinsNeutral(Player player) {
+        return this.accessoryItem.makePiglinsNeutral(player);
     }
+
     @Override
-    public boolean canWalkOnPoweredSnow() {
-        return this.accessoryItem.canWalkOnPoweredSnow();
+    public boolean canWalkOnPoweredSnow(Player player) {
+        return this.accessoryItem.canWalkOnPoweredSnow(player);
+    }
+
+    @Override
+    public boolean isEndermanMask(Player player, EnderMan enderMan) {
+        return this.accessoryItem.isEndermanMask(player, enderMan);
+    }
+
+    @Override
+    public boolean isFreezeImmune(Player player) {
+        return this.accessoryItem.isFreezeImmune(player);
     }
 }

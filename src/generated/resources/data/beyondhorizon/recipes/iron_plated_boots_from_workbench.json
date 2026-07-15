@@ -1,14 +1,12 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    3
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:boots"
     },
     {
+      "count": 3,
       "item": "beyondhorizon:chain_plate"
     }
   ],

@@ -7,8 +7,8 @@ import com.kenhorizon.beyondhorizon.configs.Configs;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
-import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorBonusSet;
-import com.kenhorizon.beyondhorizon.server.api.block.bonus_set.ArmorBonusSets;
+import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
+import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbilityRegistries;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
@@ -101,8 +101,9 @@ public class BHLangProvider extends LanguageProvider {
         this.addEnchantmentDesc(BHEnchantments.STUNNING, "Chance to stun the target");
         this.addEnchantmentDesc(BHEnchantments.SMELTER, "Chance to auto smelt the item");
          //
-        this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 0, "Chance to release a shockwave dealing %s + %s%% total of attack damage");
-        this.addArmorBonusSet(ArmorBonusSets.WILDFIRE_ARMOR_SET, 1, "Attacks inflict burning and increased %s%% damage dealt");
+        this.addArmorBonusSet(ArmorAbilityRegistries.WILDFIRE.get(), "Wildfire",
+                "Chance to release a shockwave dealing %s + %s%% total of attack damage",
+                "Attacks inflict burning and increased %s%% damage dealt");
          //
         this.add(Tooltips.SKILL_TYPE, "%s");
         this.add(Tooltips.TOOLTIP_BONUS_ARMOR_SET, "Bonus set:");
@@ -139,6 +140,10 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.THORNS.get(), "Thorns", "When struck by basic attack on-hit, deal %s (+%s%% bonus Armor) magic damage to the attacker and inflict Wounded for 3 seconds");
         this.addAccessory(Accessories.KNOWLEDGE_1.get(), "Knowledge", "Increase drop experience by %s%%");
         this.addAccessory(Accessories.KNOWLEDGE_2.get(), "Ultima Knowledge", "Increase drop experience by %s%%");
+        this.addAccessory(Accessories.ELIXIR_GRAB_0.get(), "Elixir Grab I", "Gain random buffs I for 30 seconds");
+        this.addAccessory(Accessories.ELIXIR_GRAB_1.get(), "Elixir Grab II", "Gain random buffs II for 30 seconds");
+        this.addAccessory(Accessories.ELIXIR_GRAB_2.get(), "Elixir Grab III", "Gain random buffs III for 30 seconds");
+        this.addAccessory(Accessories.ELIXIR_GRAB_3.get(), "Elixir Grab IV", "Gain random buffs IV for 30 seconds");
         this.addAccessory(Accessories.VENOM.get(), "Venom", "Attacks have %.2f%% chance inflict either Poison or Lethal Poison for %s seconds");
         this.addAccessory(Accessories.JUMP_BOOST.get(), "Jump Boost", "Increase the jump height by %s%%");
         this.addAccessory(Accessories.DOUBLE_JUMP.get(), "Double Jump", "Gain additional jump within seconds after jumping");
@@ -169,7 +174,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.TITANIC_CRESCENT.get(), "Titanic Crescent", "Basic attack on-hit deal bonus %s%% Max HP to the target and %s%% Max HP to others entity in a cone in the direction of the primary target");
         this.addAccessory(Accessories.SWIFTNESS.get(), "Swiftness", "Inflict Speed boost effect for 5 seconds");
         this.addAccessory(Accessories.STALKER.get(), "Stalker", "Gain 100% Stealth and becoming invisible");
-        this.addAccessory(Accessories.CRAMPONS.get(), "Crampons", "Ability to walk on Powder Snow");
+        this.addAccessory(Accessories.CRAMPONS.get(), "Crampons", "Ability to walk on Powder Snow and Immune to Freezing");
         this.addAccessory(Accessories.VOID_EYE.get(), "Void Eye", "Enderman will not be provoked");
         this.addAccessory(Accessories.SUPREMACY.get(), "Supremacy", "Stacks: %s",
                 "On-kill grant stacks %s",
@@ -177,8 +182,8 @@ public class BHLangProvider extends LanguageProvider {
                 "Increased damage: %s%%",
                 "§4Lose %s%% stacks on death");
         this.addAccessory(Accessories.IMMOLATE_0.get(), "Immolate", "Taking or dealing damage activates this passive for 3 seconds, Deal %s%% magic damage every second to enemies within 6 radius");
-        this.addAccessory(Accessories.IMMOLATE_1.get(), "Immolate", "Taking or dealing damage activates this passive for 3 seconds, Deal (%s%% bonus Max HP) magic damage every second to enemies within 6 radius");
-        this.addAccessory(Accessories.IMMOLATE_2.get(), "Immolate", "Taking or dealing damage activates this passive for 3 seconds, Deal (%s%% bonus Max HP) true damage every second to enemies within 6 radius");
+        this.addAccessory(Accessories.IMMOLATE_1.get(), "Immolate", "Taking or dealing damage activates this passive for 3 seconds, Deal (%s%% Max HP) magic damage every second to enemies within 6 radius");
+        this.addAccessory(Accessories.IMMOLATE_2.get(), "Immolate", "Taking or dealing damage activates this passive for 3 seconds, Deal (%s%% Max HP) true damage every second to enemies within 6 radius");
         //
 
         creativeTabs(BHCreativeTabs.BH_INGREDIENTS, "Beyond Horizon | Ingredients");
@@ -246,9 +251,16 @@ public class BHLangProvider extends LanguageProvider {
     private void addEnchantmentDesc(Supplier<? extends Enchantment> enchantments, String description) {
         this.add(enchantments.get().getDescriptionId() + ".desc", description);
     }
-    private void addArmorBonusSet(ArmorBonusSet registry, int lines, String description) {
-        String name = String.format("%s.%s.%s.desc.%s", ArmorBonusSet.PREFIX,registry.getId().getNamespace(), registry.getId().getPath(), lines);
-        this.add(name, description);
+    private void addArmorBonusSet(ArmorAbility registry, String name,String... descriptions) {
+        this.add(registry.getDescriptionId(), name);
+        for (int i = 0; i < descriptions.length; i++) {
+            if (i == 0) {
+                this.add(registry.getDescriptionId() + ".desc", descriptions[i]);
+            } else {
+                this.add(registry.getDescriptionId() + ".desc." + i, descriptions[i]);
+            }
+
+        }
     }
     private void addAccessory(Accessory accessory, String name) {
         this.add(accessory.getDescriptionId(), name);

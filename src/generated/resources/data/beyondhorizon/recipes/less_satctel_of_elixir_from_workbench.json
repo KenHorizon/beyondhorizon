@@ -1,0 +1,25 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 5,
+      "item": "beyondhorizon:ruby"
+    },
+    {
+      "count": 5,
+      "item": "minecraft:string"
+    },
+    {
+      "count": 25,
+      "item": "minecraft:leather"
+    },
+    {
+      "count": 1,
+      "item": "minecraft:brewing_stand"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:less_satctel_of_elixir"
+  }
+}

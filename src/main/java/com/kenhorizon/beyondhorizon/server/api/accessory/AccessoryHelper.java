@@ -43,8 +43,47 @@ public final class AccessoryHelper {
             var stacks = handler.getStacks();
             for (int i = 0; i < stacks.getSlots(); i++) {
                 ItemStack stack = stacks.getStackInSlot(i);
-                boolean canNeutralize = AccessoryHelper.getAccessory(stack).map(accessory ->
-                    accessory.makePiglinsNeutral()).orElse(false);
+                boolean flag = AccessoryHelper.getAccessory(stack).map(accessory ->
+                    accessory.makePiglinsNeutral(player)).orElse(false);
+                return true;
+            }
+            return false;
+        }).orElse(false);
+    }
+
+    public static boolean canWalkOnPowderSnow(Player player) {
+        return AccessoryHelper.getInventory(player).map(handler -> {
+            var stacks = handler.getStacks();
+            for (int i = 0; i < stacks.getSlots(); i++) {
+                ItemStack stack = stacks.getStackInSlot(i);
+                boolean flag = AccessoryHelper.getAccessory(stack).map(accessory ->
+                        accessory.canWalkOnPoweredSnow(player)).orElse(false);
+                return true;
+            }
+            return false;
+        }).orElse(false);
+    }
+
+    public static boolean isFreezeImmune(Player player) {
+        return AccessoryHelper.getInventory(player).map(handler -> {
+            var stacks = handler.getStacks();
+            for (int i = 0; i < stacks.getSlots(); i++) {
+                ItemStack stack = stacks.getStackInSlot(i);
+                boolean flag = AccessoryHelper.getAccessory(stack).map(accessory ->
+                        accessory.isFreezeImmune(player)).orElse(false);
+                return true;
+            }
+            return false;
+        }).orElse(false);
+    }
+
+    public static boolean isEndermanMask(Player player) {
+        return AccessoryHelper.getInventory(player).map(handler -> {
+            var stacks = handler.getStacks();
+            for (int i = 0; i < stacks.getSlots(); i++) {
+                ItemStack stack = stacks.getStackInSlot(i);
+                boolean flag = AccessoryHelper.getAccessory(stack).map(accessory ->
+                        accessory.canWalkOnPoweredSnow(player)).orElse(false);
                 return true;
             }
             return false;

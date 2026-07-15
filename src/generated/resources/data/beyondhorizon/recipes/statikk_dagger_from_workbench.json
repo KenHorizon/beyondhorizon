@@ -1,14 +1,12 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    0
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:swift_dagger"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:leather_agility"
     }
   ],

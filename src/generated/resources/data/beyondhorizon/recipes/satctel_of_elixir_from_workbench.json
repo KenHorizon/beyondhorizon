@@ -1,0 +1,21 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 1,
+      "item": "beyondhorizon:less_satctel_of_elixir"
+    },
+    {
+      "count": 32,
+      "item": "minecraft:diamond"
+    },
+    {
+      "count": 24,
+      "item": "minecraft:gold_ingot"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:satctel_of_elixir"
+  }
+}

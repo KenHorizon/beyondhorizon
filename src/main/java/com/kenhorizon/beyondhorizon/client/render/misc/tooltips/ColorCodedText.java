@@ -13,7 +13,11 @@ import java.util.regex.Pattern;
 public class ColorCodedText {
     public static final Map<String, Integer> TEXT_COLORED = new HashMap<>();
     static {
+        TEXT_COLORED.put("bonus ap", Colors.GOLD);
+        TEXT_COLORED.put("bonus ad", Colors.AZURE);
         TEXT_COLORED.put("on-hit", Colors.CORAL);
+        TEXT_COLORED.put("basic attack", Colors.CORAL);
+        TEXT_COLORED.put("ability damage", Colors.CORAL);
         TEXT_COLORED.put("hp", Colors.GREEN);
         TEXT_COLORED.put("current hp", Colors.GREEN);
         TEXT_COLORED.put("target's current hp", Colors.GREEN);
@@ -24,26 +28,40 @@ public class ColorCodedText {
         TEXT_COLORED.put("target's missing hp", Colors.GREEN);
         TEXT_COLORED.put("target missing hp", Colors.GREEN);
         TEXT_COLORED.put("health", Colors.GREEN);
+        TEXT_COLORED.put("bonus health", Colors.GREEN);
+        TEXT_COLORED.put("bonus hp", Colors.GREEN);
         TEXT_COLORED.put("max health", Colors.GREEN);
+        TEXT_COLORED.put("bonus max health", Colors.GREEN);
         TEXT_COLORED.put("current health", Colors.GREEN);
+        TEXT_COLORED.put("bonus current health", Colors.GREEN);
         TEXT_COLORED.put("missing health", Colors.GREEN);
         TEXT_COLORED.put("physical damage", Colors.GOLD);
         TEXT_COLORED.put("magic damage", Colors.AZURE);
+        TEXT_COLORED.put("bonus magic damage", Colors.AZURE);
         TEXT_COLORED.put("attack damage", Colors.GOLD);
+        TEXT_COLORED.put("bonus attack damage", Colors.GOLD);
+        TEXT_COLORED.put("true damage", Colors.CORAL);
+        TEXT_COLORED.put("bonus true damage", Colors.CORAL);
         TEXT_COLORED.put("ad", Colors.GOLD);
         TEXT_COLORED.put("ap", Colors.AZURE);
-        TEXT_COLORED.put("true damage", Colors.CORAL);
         TEXT_COLORED.put("post-mitigation damage", Colors.GOLD);
         TEXT_COLORED.put("pre-mitigation damage", Colors.GOLD);
         TEXT_COLORED.put("critical strike", Colors.GOLD);
         TEXT_COLORED.put("critical damage", Colors.RED);
+        TEXT_COLORED.put("bonus critical damage", Colors.RED);
         TEXT_COLORED.put("mana", Colors.AZURE);
+        TEXT_COLORED.put("bonus mana", Colors.AZURE);
+        TEXT_COLORED.put("max mana", Colors.AZURE);
         TEXT_COLORED.put("armor", Colors.YELLOW);
+        TEXT_COLORED.put("total armor", Colors.YELLOW);
+        TEXT_COLORED.put("bonus armor", Colors.YELLOW);
         TEXT_COLORED.put("magic resistance", Colors.MAGENTA);
+        TEXT_COLORED.put("total magic resistance", Colors.MAGENTA);
+        TEXT_COLORED.put("bonus magic resistance", Colors.MAGENTA);
         TEXT_COLORED.put("magic penetration", Colors.VIOLET);
         TEXT_COLORED.put("armor penetration", Colors.RED);
         TEXT_COLORED.put("movement speed", Colors.GREEN);
-        TEXT_COLORED.put("increased damage", Colors.GREEN);
+        TEXT_COLORED.put("increased damage", Colors.CORAL);
     }
     private static final Pattern KEYWORD_PATTERN = buildPattern(TEXT_COLORED.keySet());
 

@@ -1,14 +1,12 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    0
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:dream_catcher"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:cursed_torment"
     }
   ],

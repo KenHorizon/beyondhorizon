@@ -3,6 +3,8 @@ package com.kenhorizon.beyondhorizon.datagen.recipes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.init.BHRecipe;
+import com.kenhorizon.beyondhorizon.server.item.recipe.AmountIngredient;
 import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
@@ -41,37 +43,23 @@ public class WorkbenchRecipeProvider implements RecipeBuilder {
     }
 
     public static WorkbenchRecipeProvider create(ItemLike result, int count) {
-        return new WorkbenchRecipeProvider(WorkbenchRecipe.Serializer.getInstance(), result, count) ;
+        return new WorkbenchRecipeProvider(BHRecipe.WORKBENCH_RECIPES.get(), result, count) ;
     }
 
     public static WorkbenchRecipeProvider create(ItemLike result) {
         return create(result, 1);
     }
 
-    public WorkbenchRecipeProvider required(TagKey<Item> item, int count) {
-        this.recipes.add(new WorkbenchRecipe.Recipes(Ingredient.of(item), count));
+    public WorkbenchRecipeProvider required(ItemLike item, int count) {
+        this.recipes.add(new WorkbenchRecipe.Recipes(AmountIngredient.of(new ItemStack(item.asItem(), count))));
         return this;
     }
 
     public WorkbenchRecipeProvider required(ItemLike item) {
-        this.recipes.add(new WorkbenchRecipe.Recipes(Ingredient.of(item.asItem()), 0));
+        this.recipes.add(new WorkbenchRecipe.Recipes(AmountIngredient.of(new ItemStack(item.asItem(), 1))));
         return this;
     }
 
-    public WorkbenchRecipeProvider required(ItemStack item) {
-        this.recipes.add(new WorkbenchRecipe.Recipes(Ingredient.of(item.getItem()), 0));
-        return this;
-    }
-
-    public WorkbenchRecipeProvider required(ItemLike item, int count) {
-        this.recipes.add(new WorkbenchRecipe.Recipes(Ingredient.of(item.asItem()), count));
-        return this;
-    }
-
-    public WorkbenchRecipeProvider required(ItemStack item, int count) {
-        this.recipes.add(new WorkbenchRecipe.Recipes(Ingredient.of(item.getItem()), count));
-        return this;
-    }
 
     @Override
     public RecipeBuilder unlockedBy(String criterionName, CriterionTriggerInstance criterionTrigger) {
@@ -118,15 +106,11 @@ public class WorkbenchRecipeProvider implements RecipeBuilder {
 
         public void serializeRecipeData(JsonObject json) {
             JsonArray ingredientList = new JsonArray();
-            JsonArray countList = new JsonArray();
-
             for(WorkbenchRecipe.Recipes recipes : this.recipes) {
                 ingredientList.add(recipes.ingredient().toJson());
-                countList.add(recipes.count());
             }
 
             json.add("ingredients", ingredientList);
-            json.add("counts", countList);
             JsonObject result = new JsonObject();
             result.addProperty("item", BuiltInRegistries.ITEM.getKey(this.result).toString());
             result.addProperty("count", this.count);

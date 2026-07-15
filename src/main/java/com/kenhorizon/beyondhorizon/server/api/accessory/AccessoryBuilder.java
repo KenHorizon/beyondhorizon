@@ -34,11 +34,16 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder ANKH_CHARM = new AccessoryBuilder(List.of(
             Accessories.PRESERVED, Accessories.UNBOTHERED, Accessories.BAD_APPLE, Accessories.HEMORRHAGE_CONTROL, Accessories.WEIGHTS, Accessories.INVULNERABLE,
             Accessories.SWEET_DREAM, Accessories.UNCURSED, Accessories.VITAMINS, Accessories.LIGHTNESS, Accessories.OWL_SIGHT));
+
     public static final AccessoryBuilder ANKH_SHIELD = new AccessoryBuilder(List.of(
             Accessories.FIRE_IMMUNITY,
             Accessories.KNOCKBACK_RESISTANCE, Accessories.SHIELD, Accessories.PRESERVED, Accessories.UNBOTHERED, Accessories.BAD_APPLE, Accessories.HEMORRHAGE_CONTROL, Accessories.WEIGHTS, Accessories.INVULNERABLE,
             Accessories.SWEET_DREAM, Accessories.UNCURSED, Accessories.VITAMINS, Accessories.LIGHTNESS, Accessories.OWL_SIGHT));
 
+    public static final AccessoryBuilder SATCTEL_OF_ELIXIR_0 = new AccessoryBuilder(List.of(Accessories.ELIXIR_GRAB_0));
+    public static final AccessoryBuilder SATCTEL_OF_ELIXIR_1 = new AccessoryBuilder(List.of(Accessories.ELIXIR_GRAB_1));
+    public static final AccessoryBuilder SATCTEL_OF_ELIXIR_2 = new AccessoryBuilder(List.of(Accessories.ELIXIR_GRAB_2));
+    public static final AccessoryBuilder SATCTEL_OF_ELIXIR_3 = new AccessoryBuilder(List.of(Accessories.ELIXIR_GRAB_3));
     public static final AccessoryBuilder COBALT_SHIELD = new AccessoryBuilder(List.of(Accessories.KNOCKBACK_RESISTANCE));
     public static final AccessoryBuilder STEEL_SIGIL = new AccessoryBuilder(List.of(Accessories.STEEL_SIGILS));
     public static final AccessoryBuilder OBSIDIAN_PLATE = new AccessoryBuilder(List.of(Accessories.FIRE_IMMUNITY));

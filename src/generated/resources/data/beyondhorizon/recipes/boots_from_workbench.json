@@ -1,14 +1,12 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    5,
-    3
-  ],
   "ingredients": [
     {
+      "count": 5,
       "item": "minecraft:leather"
     },
     {
+      "count": 3,
       "item": "minecraft:iron_nugget"
     }
   ],

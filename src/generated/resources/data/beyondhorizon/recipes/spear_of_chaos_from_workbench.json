@@ -1,14 +1,12 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    0
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:harpoon_head"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:broken_hero_sword"
     }
   ],

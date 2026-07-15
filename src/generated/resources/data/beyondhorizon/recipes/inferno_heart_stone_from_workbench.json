@@ -1,14 +1,12 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    0
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:cinder_stone"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:ashes_of_flame"
     }
   ],

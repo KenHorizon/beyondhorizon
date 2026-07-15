@@ -15,6 +15,7 @@ public enum AccessoryItemGroup implements IExtensibleEnum {
     STRING_BOW,
     FATALITY,
     VITALITY,
+    ELIXIR,
     BOOTS;
 
     public static AccessoryItemGroup create(String name) {

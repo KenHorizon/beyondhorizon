@@ -1,0 +1,29 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 1,
+      "item": "beyondhorizon:greater_satctel_of_elixir"
+    },
+    {
+      "count": 2,
+      "item": "minecraft:nether_star"
+    },
+    {
+      "count": 15,
+      "item": "beyondhorizon:starite_ingot"
+    },
+    {
+      "count": 15,
+      "item": "beyondhorizon:luminite_ingot"
+    },
+    {
+      "count": 5,
+      "item": "beyondhorizon:shadowcrust"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:omega_satctel_of_elixir"
+  }
+}

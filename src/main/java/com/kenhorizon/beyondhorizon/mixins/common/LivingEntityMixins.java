@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.libs.server.event.MobEffectModificationEvent;
 import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -28,6 +29,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.MinecraftForge;
@@ -137,6 +139,16 @@ public abstract class LivingEntityMixins extends EntityMixins implements IBHData
 
         }
     }
+
+
+    @SuppressWarnings("ConstantConditions")
+    @Inject(at = @At("TAIL"), method = "canFreeze()Z", cancellable = true)
+    public void curio$canFreeze(CallbackInfoReturnable<Boolean> cir) {
+        if (_this() instanceof Player player && AccessoryHelper.isFreezeImmune(player)) {
+            cir.setReturnValue(false);
+        }
+    }
+
     @Inject(method = "getBlockSpeedFactor", at = @At("RETURN"), cancellable = true)
     private void modifiedgetBlockSpeedFactor(CallbackInfoReturnable<Float> cir) {
         float newSpeedFactor = (float) Mth.lerp(_this().getAttributeValue(BHAttributes.MOVEMENT_EFFICIENCY.get()), cir.getReturnValue(), 1.0F);

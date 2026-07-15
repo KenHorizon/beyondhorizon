@@ -1,18 +1,16 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    0,
-    0,
-    20
-  ],
   "ingredients": [
     {
+      "count": 1,
       "item": "beyondhorizon:tough_cloth"
     },
     {
+      "count": 1,
       "item": "beyondhorizon:tough_cloth"
     },
     {
+      "count": 20,
       "item": "beyondhorizon:chain_plate"
     }
   ],

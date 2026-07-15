@@ -275,6 +275,10 @@ public class BHItems {
     public static final RegistryObject<Item> SAINT_DEMON_CROWN = accessoryItem("saint_demon_crown", Rarity.EPIC, AccessoryBuilder.SAINT_DEMON_CROWN);
     public static final RegistryObject<Item> ROYAL_CROWN = accessoryItem("royal_crown", Rarity.EPIC, AccessoryBuilder.ROYAL_CROWN);
     public static final RegistryObject<Item> DRAGON_EYE = accessoryItem("dragon_eye", Rarity.EPIC, AccessoryBuilder.DRAGON_EYE);
+    public static final RegistryObject<Item> LESS_SATCTEL_OF_ELIXIR = accessoryItem("less_satctel_of_elixir", AccessoryItemGroup.ELIXIR, Rarity.EPIC, AccessoryBuilder.SATCTEL_OF_ELIXIR_0);
+    public static final RegistryObject<Item> SATCTEL_OF_ELIXIR = accessoryItem("satctel_of_elixir", AccessoryItemGroup.ELIXIR, Rarity.EPIC, AccessoryBuilder.SATCTEL_OF_ELIXIR_1);
+    public static final RegistryObject<Item> GREATER_SATCTEL_OF_ELIXIR = accessoryItem("greater_satctel_of_elixir", AccessoryItemGroup.ELIXIR, Rarity.EPIC, AccessoryBuilder.SATCTEL_OF_ELIXIR_2);
+    public static final RegistryObject<Item> OMEGA_SATCTEL_OF_ELIXIR = accessoryItem("omega_satctel_of_elixir", AccessoryItemGroup.ELIXIR, Rarity.EPIC, AccessoryBuilder.SATCTEL_OF_ELIXIR_3);
 
 
     //

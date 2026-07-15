@@ -1,22 +1,20 @@
 {
   "type": "beyondhorizon:workbench",
-  "counts": [
-    20,
-    20,
-    10,
-    10
-  ],
   "ingredients": [
     {
+      "count": 20,
       "item": "minecraft:ender_eye"
     },
     {
+      "count": 20,
       "item": "minecraft:gold_ingot"
     },
     {
+      "count": 10,
       "item": "beyondhorizon:ruby"
     },
     {
+      "count": 10,
       "item": "minecraft:obsidian"
     }
   ],

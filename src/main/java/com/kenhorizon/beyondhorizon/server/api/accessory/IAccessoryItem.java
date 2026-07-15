@@ -4,6 +4,8 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -58,12 +60,19 @@ public interface IAccessoryItem {
         return defaultInstance.getAttributeModifiers(stack);
     }
 
-    default boolean makePiglinsNeutral() {
-        return defaultInstance.makePiglinsNeutral();
+    default boolean makePiglinsNeutral(Player player) {
+        return defaultInstance.makePiglinsNeutral(player);
     }
 
-    default boolean canWalkOnPoweredSnow() {
-        return defaultInstance.canWalkOnPoweredSnow();
+    default boolean canWalkOnPoweredSnow(Player player) {
+        return defaultInstance.canWalkOnPoweredSnow(player);
     }
 
+    default boolean isFreezeImmune(Player player) {
+        return defaultInstance.isFreezeImmune(player);
+    }
+
+    default boolean isEndermanMask(Player player, EnderMan enderMan) {
+        return defaultInstance.isEndermanMask(player, enderMan);
+    }
 }

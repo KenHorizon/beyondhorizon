@@ -25,6 +25,7 @@ import java.util.Optional;
 public class WorkbenchMenu extends ExtendedRecipeBookMenu<CraftingContainer> {
     private static final int CRAFTING_WIDTH = 5;
     private static final int CRAFTING_HEIGHT = 3;
+    public static final int CRAFTING_SIZE = CRAFTING_WIDTH * CRAFTING_HEIGHT;
     private final ContainerLevelAccess access;
     private final ResultContainer resultSlots = new ResultContainer();
     private final CraftingContainer craftSlots = new TransientCraftingContainer(this, CRAFTING_WIDTH, CRAFTING_HEIGHT);
@@ -41,7 +42,7 @@ public class WorkbenchMenu extends ExtendedRecipeBookMenu<CraftingContainer> {
         this.access = access;
         this.level = inventory.player.level();
         this.player = inventory.player;
-        this.recipes = level.getRecipeManager().getAllRecipesFor(WorkbenchRecipe.Type.getInstance());
+        this.recipes = level.getRecipeManager().getAllRecipesFor(BHRecipe.WORKBENCH_RECIPE_TYPES.get());
         this.addSlot(new ResultSlot(this.player, this.craftSlots, this.resultSlots, 0, 139, 23));
         this.drawCrafingSlots(9, 9);
 
@@ -131,7 +132,7 @@ public class WorkbenchMenu extends ExtendedRecipeBookMenu<CraftingContainer> {
         if (!pLevel.isClientSide()) {
             ServerPlayer serverplayer = (ServerPlayer)player;
             ItemStack stack = ItemStack.EMPTY;
-            Optional<WorkbenchRecipe> optional = pLevel.getServer().getRecipeManager().getRecipeFor(WorkbenchRecipe.Type.getInstance(), container, pLevel);
+            Optional<WorkbenchRecipe> optional = pLevel.getServer().getRecipeManager().getRecipeFor(BHRecipe.WORKBENCH_RECIPE_TYPES.get(), container, pLevel);
             if (optional.isPresent()) {
                 WorkbenchRecipe craftingrecipe = optional.get();
                 if (result.setRecipeUsed(pLevel, serverplayer, craftingrecipe)) {

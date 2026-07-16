@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.inventory;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.*;
+import com.kenhorizon.beyondhorizon.server.item.recipe.AbstractAmountRecipe;
 import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
 import com.kenhorizon.libs.server.inventory.ExtendedRecipeBookMenu;
 import net.minecraft.network.FriendlyByteBuf;
@@ -127,18 +129,18 @@ public class WorkbenchMenu extends ExtendedRecipeBookMenu<CraftingContainer> {
         return itemstack;
     }
 
-    protected static void slotChangedCraftingGrid(AbstractContainerMenu menu, Level pLevel,
+    protected static void slotChangedCraftingGrid(AbstractContainerMenu menu, Level level,
                                                   Player player, CraftingContainer container, ResultContainer result) {
-        if (!pLevel.isClientSide()) {
+        if (!level.isClientSide()) {
             ServerPlayer serverplayer = (ServerPlayer)player;
             ItemStack stack = ItemStack.EMPTY;
-            Optional<WorkbenchRecipe> optional = pLevel.getServer().getRecipeManager().getRecipeFor(BHRecipe.WORKBENCH_RECIPE_TYPES.get(), container, pLevel);
+            Optional<WorkbenchRecipe> optional = level.getServer().getRecipeManager().getRecipeFor(BHRecipe.WORKBENCH_RECIPE_TYPES.get(), container, level);
             if (optional.isPresent()) {
                 WorkbenchRecipe craftingrecipe = optional.get();
-                if (result.setRecipeUsed(pLevel, serverplayer, craftingrecipe)) {
-                    ItemStack itemstack1 = craftingrecipe.assemble(container, pLevel.registryAccess());
-                    if (itemstack1.isItemEnabled(pLevel.enabledFeatures())) {
-                        stack = itemstack1;
+                if (result.setRecipeUsed(level, serverplayer, craftingrecipe)) {
+                    ItemStack craftItems = craftingrecipe.assemble(container, level.registryAccess());
+                    if (craftItems.isItemEnabled(level.enabledFeatures())) {
+                        stack = craftItems;
                     }
                 }
             }
@@ -179,7 +181,11 @@ public class WorkbenchMenu extends ExtendedRecipeBookMenu<CraftingContainer> {
 
     @Override
     public boolean recipeMatches(Recipe<? super CraftingContainer> recipe) {
-        return recipe.matches(this.craftSlots, this.player.level());
+        boolean matches = false;
+        if (recipe instanceof AbstractAmountRecipe aRecipes) {
+            matches = aRecipes.matches(this.craftSlots, this.player.level());
+        }
+        return matches;
     }
 
     @Override

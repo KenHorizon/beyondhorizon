@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.client.render.guis.PanelGhostRecipe;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
+import com.kenhorizon.beyondhorizon.server.item.recipe.AmountIngredient;
 import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundExtendedPlaceRecipePacket;
@@ -130,9 +131,8 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> impl
         }
         ItemStack stacks = recipe.getResultItem(this.minecraft.level.registryAccess());
         this.ghostRecipe.setRecipe(recipe);
-        this.ghostRecipe.addIngredient(Ingredient.of(stacks), (slots.get(0)).x, (slots.get(0)).y);
+        this.ghostRecipe.addIngredient(AmountIngredient.of(stacks), (slots.get(0)).x, (slots.get(0)).y);
         this.placeRecipe(this.menu.getGridWidth(), this.menu.getGridHeight(), this.menu.getResultSlotIndex(), recipe, recipe.getIngredients().iterator(), 0);
-
     }
 
 
@@ -156,7 +156,6 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> impl
         this.stackedContents.clear();
         this.minecraft.player.getInventory().fillStackedContents(this.stackedContents);
         this.menu.fillCraftSlotsStackedContents(this.stackedContents);
-        BeyondHorizon.LOGGER.debug("Stacked Content= {} : {}", this.stackedContents, this.stackedContents.contents);
         this.updateCollections(false);
     }
 

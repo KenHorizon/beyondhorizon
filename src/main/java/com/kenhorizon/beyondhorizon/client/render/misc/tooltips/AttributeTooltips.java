@@ -75,12 +75,12 @@ public class AttributeTooltips {
         }
     }
 
-    public void makePotionTooltip(List<Component> tooltip, List<Pair<Attribute, AttributeModifier>> list) {
+    public void makePotionTooltip(List<Component> tooltip, List<Pair<Attribute, AttributeModifier>> list, int startLine) {
         for (Pair<Attribute, AttributeModifier> pair : list) {
             Attribute attribute = pair.getFirst();
             AttributeModifier attributeModifier = pair.getSecond();
             double attributeAmount = attributeModifier.getAmount();
-            this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount);
+            this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, startLine);
         }
     }
 
@@ -106,6 +106,7 @@ public class AttributeTooltips {
     public void makeAttributeTooltip(ItemStack stack, List<Component> tooltip, Multimap<Attribute, AttributeModifier> modifierMap) {
         makeAttributeTooltip(stack, tooltip, modifierMap, null);
     }
+
     private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount, ChatFormatting colors, int startLine) {
         try {
             double amount = formatAttributeValues(attribute, attributeModifier, attributeAmount);
@@ -120,7 +121,7 @@ public class AttributeTooltips {
                 tooltip.set(startLine, CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
             }
         } catch (Exception e) {
-            BeyondHorizon.LOGGER.debug("Out of bounds: {} : {}", startLine, tooltip.size());
+            BeyondHorizon.LOGGER.debug("Out of bounds: startline={} size={}", startLine, tooltip.size());
         }
     }
 
@@ -140,6 +141,7 @@ public class AttributeTooltips {
     private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount, int startLine) {
          makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, null, startLine);
     }
+
     private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount) {
         makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, null);
     }
@@ -150,10 +152,9 @@ public class AttributeTooltips {
 
         if (BHConfigs.ATTRIBUTE_TOOLTIP_OVERHAUl) {
             for (int i = 0; i < tooltip.size(); i++) {
-                var component = tooltip.get(i);
-//                BeyondHorizon.LOGGER.debug("Tooltip lines: {}", this.removeTooltip(tooltip, prefix));
-                lastAttributeLine = this.removeTooltip(tooltip, prefix);
+                lastAttributeLine = this.getTooltipLine(tooltip, prefix);
             }
+
             this.makeAttributeTooltip(player, tooltip, itemStack, lastAttributeLine);
             this.makePotionTooltip(itemStack, tooltip, lastAttributeLine);
         }
@@ -167,11 +168,7 @@ public class AttributeTooltips {
     }
 
     public void makePotionTooltip(ItemStack itemStack, List<Component> tooltips, int lastAttribueLine) {
-        int remaining = tooltips.size() - lastAttribueLine;
         List<Component> lists = new ArrayList<>();
-        for (int i = 0; i < remaining; i++) {
-            lists.add(tooltips.get(lastAttribueLine + i));
-        }
         if (itemStack.getItem() instanceof PotionItem || itemStack.getItem() instanceof LingeringPotionItem || itemStack.getItem() instanceof TippedArrowItem) {
             List<Pair<Attribute, AttributeModifier>> list = Lists.newArrayList();
             for (MobEffectInstance instance : PotionUtils.getMobEffects(itemStack)) {
@@ -186,13 +183,12 @@ public class AttributeTooltips {
                 }
             }
             if (!list.isEmpty()) {
-                this.makePotionTooltip(tooltips, list);
-                tooltips.addAll(lists);
+                this.makePotionTooltip(tooltips, list, lastAttribueLine);
             }
         }
     }
 
-    private int removeTooltip(List<Component> tooltip, String startWith) {
+    private int getTooltipLine(List<Component> tooltip, String startWith) {
         for (EquipmentSlot slots : EquipmentSlot.values()) {
             for (int i = 0; i < tooltip.size(); i++) {
                 Component component = tooltip.get(i);

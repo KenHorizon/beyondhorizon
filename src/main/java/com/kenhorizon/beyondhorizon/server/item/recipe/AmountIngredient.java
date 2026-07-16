@@ -54,12 +54,12 @@ public class AmountIngredient extends AbstractIngredient {
     }
 
     @Override
-    public boolean test(@Nullable ItemStack pStack) {
-        if (pStack == null) return false;
-        if (pStack == itemStack) {
+    public boolean test(@Nullable ItemStack itemStack) {
+        if (itemStack == null) return false;
+        if (itemStack == this.itemStack) {
             return true;
         } else {
-            return pStack.getCount() >= itemStack.getCount() && (itemStack.hasTag() ? ItemStack.isSameItemSameTags(pStack, itemStack) : ItemStack.isSameItem(pStack, itemStack));
+            return itemStack.getCount() >= this.itemStack.getCount() && (this.itemStack.hasTag() ? ItemStack.isSameItemSameTags(itemStack, this.itemStack) : ItemStack.isSameItem(itemStack, this.itemStack));
         }
     }
 

@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -39,26 +40,12 @@ public abstract class AbstractAmountRecipe implements Recipe<Container> {
 
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
-//        StackedContents contents = new StackedContents();
-//        List<ItemStack> inputs = new ArrayList<>();
-//        int index = 0;
-//
-//        for (int i = 0; i < container.getContainerSize(); ++i) {
-//            ItemStack stack = container.getItem(i);
-//            if (!stack.isEmpty()) {
-//                ++index;
-//                contents.accountStack(stack);
-//                inputs.add(stack);
-//            }
-//        }
-//
-//        boolean flag = index == this.ingredients.size() && RecipeMatcher.findMatches(inputs, this.ingredients) != null;
-
         found:
-        for (Ingredient ingredient : ingredients) {
+        for (Ingredient ingredient : this.ingredients) {
             for (int index = 0; index < container.getContainerSize(); index++) {
                 ItemStack itemStack = container.getItem(index);
                 if (!itemStack.isEmpty() && ingredient.test(itemStack)) {
+                    BeyondHorizon.LOGGER.debug("Items={}", itemStack);
                     continue found;
                 }
             }
@@ -69,24 +56,7 @@ public abstract class AbstractAmountRecipe implements Recipe<Container> {
 
     @Override
     public @NotNull ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess access) {
-//        extractIngredients(container, ingredients);
         return this.getResultItem(access).copy();
-    }
-
-    public static void extractIngredients(Container container, NonNullList<Ingredient> ingredients) {
-        for (Ingredient ingredient : ingredients) {
-            for (int index = 0; index < container.getContainerSize(); index++) {
-                ItemStack itemStack = container.getItem(index);
-                if (!itemStack.isEmpty() && ingredient.test(itemStack)) {
-                    container.removeItem(index, ((AmountIngredient) ingredient).getCount());
-                    break;
-                }
-            }
-        }
-    }
-
-    public ItemStack assemble(Container container, Level level) {
-        return assemble(container, level.registryAccess());
     }
 
     @Override
@@ -101,7 +71,7 @@ public abstract class AbstractAmountRecipe implements Recipe<Container> {
 
     @Override
     public @NotNull ResourceLocation getId() {
-        return id;
+        return this.id;
     }
 
     @Override

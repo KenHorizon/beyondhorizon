@@ -40,20 +40,31 @@ public abstract class AbstractAmountRecipe implements Recipe<Container> {
 
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
-        found:
         for (Ingredient ingredient : this.ingredients) {
+            int required = (ingredient instanceof AmountIngredient amountIngredient) ? amountIngredient.getCount() : 1;
+            int found = 0;
             for (int index = 0; index < container.getContainerSize(); index++) {
                 ItemStack itemStack = container.getItem(index);
-                if (!itemStack.isEmpty() && ingredient.test(itemStack)) {
-                    BeyondHorizon.LOGGER.debug("Items={}", itemStack);
-                    continue found;
+                if (!itemStack.isEmpty() && matchesType(ingredient, itemStack)) {
+                    found += itemStack.getCount();
                 }
             }
-            return false;
+            if (found < required) {
+                return false;
+            }
         }
         return true;
     }
 
+    private static boolean matchesType(Ingredient ingredient, ItemStack stack) {
+        if (ingredient instanceof AmountIngredient amountIngredient) {
+            ItemStack template = amountIngredient.getItemStack();
+            return template.hasTag()
+                    ? ItemStack.isSameItemSameTags(stack, template)
+                    : ItemStack.isSameItem(stack, template);
+        }
+        return ingredient.test(stack);
+    }
     @Override
     public @NotNull ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess access) {
         return this.getResultItem(access).copy();

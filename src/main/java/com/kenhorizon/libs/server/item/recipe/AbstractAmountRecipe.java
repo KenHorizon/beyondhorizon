@@ -1,17 +1,18 @@
-package com.kenhorizon.beyondhorizon.server.item.recipe;
+package com.kenhorizon.libs.server.item.recipe;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
+import it.unimi.dsi.fastutil.objects.Object2IntMap;
+import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -19,13 +20,10 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.util.RecipeMatcher;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 public abstract class AbstractAmountRecipe implements Recipe<Container> {
     protected final ResourceLocation id;
@@ -40,34 +38,57 @@ public abstract class AbstractAmountRecipe implements Recipe<Container> {
 
     @Override
     public boolean matches(@NotNull Container container, @NotNull Level level) {
-        for (Ingredient ingredient : this.ingredients) {
-            int required = (ingredient instanceof AmountIngredient amountIngredient) ? amountIngredient.getCount() : 1;
-            int found = 0;
+        return AbstractAmountRecipe.matches(container.getContainerSize(), container::getItem, this.ingredients);
+//        return matches(container, this.ingredients);
+    }
+
+    public static boolean matches(Container container, NonNullList<Ingredient> ingredients) {
+        found:
+        for (Ingredient ingredient : ingredients) {
             for (int index = 0; index < container.getContainerSize(); index++) {
                 ItemStack itemStack = container.getItem(index);
-                if (!itemStack.isEmpty() && matchesType(ingredient, itemStack)) {
-                    found += itemStack.getCount();
+                if (!itemStack.isEmpty() && ingredient.test(itemStack)) {
+                    continue found;
                 }
             }
-            if (found < required) {
+            return false;
+        }
+        return true;
+    }
+
+    public static boolean matches(int size, Int2ObjectFunction<ItemStack> getItemStackCallback, NonNullList<Ingredient> ingredients) {
+        HashSet<Ingredient> matches = new HashSet<>();
+        Object2IntOpenHashMap<Integer> requires2Count = new Object2IntOpenHashMap<>();
+        outer:
+        for (int j = 0; j < ingredients.size(); j++) {
+            Ingredient ingredient = ingredients.get(j);
+            for (int i = 0; i < size; i++) {
+                ItemStack itemStack = getItemStackCallback.apply(i);
+                if (itemStack.isEmpty()) continue;
+                if (ingredient instanceof AmountIngredient amountIngredient) {
+                    if (amountIngredient.test(itemStack)) {
+                        requires2Count.addTo(j, itemStack.getCount());
+                        matches.add(ingredient);
+                    }
+                } else if (ingredient.test(itemStack)) {
+                    matches.add(ingredient);
+                    continue outer; // break;
+                }
+            }
+        }
+        if (matches.size() != ingredients.size()) return false;
+        for (Object2IntMap.Entry<Integer> entry : requires2Count.object2IntEntrySet()) {
+            var customIngredient = ingredients.get(entry.getKey());
+            if (((AmountIngredient) customIngredient).getCount() > entry.getIntValue()) {
                 return false;
             }
         }
         return true;
     }
 
-    private static boolean matchesType(Ingredient ingredient, ItemStack stack) {
-        if (ingredient instanceof AmountIngredient amountIngredient) {
-            ItemStack template = amountIngredient.getItemStack();
-            return template.hasTag()
-                    ? ItemStack.isSameItemSameTags(stack, template)
-                    : ItemStack.isSameItem(stack, template);
-        }
-        return ingredient.test(stack);
-    }
     @Override
     public @NotNull ItemStack assemble(@NotNull Container container, @NotNull RegistryAccess access) {
-        return this.getResultItem(access).copy();
+        return this.getResultItem(access);
     }
 
     @Override

@@ -9,24 +9,21 @@ import com.kenhorizon.beyondhorizon.client.render.guis.PanelGhostRecipe;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
-import com.kenhorizon.beyondhorizon.server.item.recipe.AmountIngredient;
+import com.kenhorizon.libs.server.item.recipe.AmountIngredient;
 import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundExtendedPlaceRecipePacket;
+import com.kenhorizon.libs.server.inventory.IModPlaceRecipe;
 import it.unimi.dsi.fastutil.ints.IntList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.recipebook.GhostRecipe;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.recipebook.PlaceRecipe;
-import net.minecraft.recipebook.ServerPlaceRecipe;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.StackedContents;
@@ -41,7 +38,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> implements PlaceRecipe<Ingredient>, IRecipeUpdateListener {
+public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> implements IModPlaceRecipe<Ingredient>, IRecipeUpdateListener {
     public record Indexes(int x, int y) {}
     private static final boolean DEBUG = true;
     public static final ResourceLocation RESOURCE_GUI = BeyondHorizon.resourceGui("workbench/workbench.png");
@@ -137,7 +134,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> impl
 
 
     @Override
-    public void addItemToSlot(Iterator<Ingredient> ing, int slots, int max, int y, int x) {
+    public void addItemToSlot(Recipe<?> recipe, Iterator<Ingredient> ing, int slots, int max, int y, int x) {
         Ingredient ingredient = ing.next();
         if (!ingredient.isEmpty()) {
             Slot slot = this.menu.slots.get(slots);

@@ -1,29 +1,15 @@
 package com.kenhorizon.beyondhorizon.server.item.recipe;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.beyondhorizon.server.init.BHRecipe;
 import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
+import com.kenhorizon.libs.server.item.recipe.AbstractAmountRecipe;
+import com.kenhorizon.libs.server.item.recipe.AmountIngredient;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.RegistryAccess;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.StackedContents;
-import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.common.crafting.IRecipeContainer;
-import net.minecraftforge.common.util.RecipeMatcher;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class WorkbenchRecipe extends AbstractAmountRecipe {
     public WorkbenchRecipe(ResourceLocation recipeId, ItemStack result, NonNullList<Ingredient> ingredient) {

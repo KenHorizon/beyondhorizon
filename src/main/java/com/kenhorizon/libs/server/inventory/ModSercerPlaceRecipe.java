@@ -1,14 +1,9 @@
 package com.kenhorizon.libs.server.inventory;
 
-import com.google.common.collect.Lists;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.item.recipe.AmountIngredient;
+import com.kenhorizon.libs.server.item.recipe.AmountIngredient;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundExtendedPlacedRecipePacket;
 import com.mojang.logging.LogUtils;
-import it.unimi.dsi.fastutil.ints.IntArrayList;
-import it.unimi.dsi.fastutil.ints.IntList;
-import net.minecraft.recipebook.PlaceRecipe;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,7 +15,6 @@ import net.minecraft.world.item.crafting.Recipe;
 import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
-import java.util.Iterator;
 import java.util.List;
 
 public class ModSercerPlaceRecipe<C extends Container> {

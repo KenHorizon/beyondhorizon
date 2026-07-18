@@ -1,9 +1,10 @@
-package com.kenhorizon.beyondhorizon.server.item.recipe;
+package com.kenhorizon.libs.server.item.recipe;
 
 import com.google.gson.JsonObject;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.AbstractIngredient;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IIngredientSerializer;
@@ -14,8 +15,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.stream.Stream;
-
-import net.minecraftforge.common.crafting.AbstractIngredient;
 
 // https://github.com/Magic-team-jvav/confluence/blob/forge/1.20.1/src/main/java/org/confluence/mod/recipe/AmountIngredient.java
 public class AmountIngredient extends AbstractIngredient {
@@ -56,11 +55,35 @@ public class AmountIngredient extends AbstractIngredient {
     @Override
     public boolean test(@Nullable ItemStack itemStack) {
         if (itemStack == null) return false;
-        if (itemStack == this.itemStack) {
-            return true;
+        if (itemStack.getCount() < this.getCount()) {
+            return false;
         } else {
-            return itemStack.getCount() >= this.itemStack.getCount() && (this.itemStack.hasTag() ? ItemStack.isSameItemSameTags(itemStack, this.itemStack) : ItemStack.isSameItem(itemStack, this.itemStack));
+            return this.testValid(itemStack);
         }
+    }
+
+    public boolean testValid(@Nullable ItemStack itemStack) {
+        if (itemStack == null) {
+            return false;
+        } else if (this.isEmpty()) {
+            return itemStack.isEmpty();
+        } else {
+            for(ItemStack itemstack : this.getItems()) {
+                if (itemstack.is(itemStack.getItem())) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    public static int getAmount(Ingredient ingredient) {
+        return (ingredient instanceof AmountIngredient a) ? a.getCount() : 1;
+    }
+
+    public static ItemStack getItemStack(Ingredient ingredient) {
+        return (ingredient instanceof AmountIngredient a) ? a.getItemStack() : ItemStack.EMPTY;
     }
 
     @Override

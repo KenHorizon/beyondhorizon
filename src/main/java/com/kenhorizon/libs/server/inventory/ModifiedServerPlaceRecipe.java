@@ -2,19 +2,18 @@ package com.kenhorizon.libs.server.inventory;
 
 import com.google.common.collect.Lists;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.item.recipe.AbstractAmountRecipe;
-import com.kenhorizon.beyondhorizon.server.item.recipe.AmountIngredient;
+import com.kenhorizon.libs.server.item.recipe.AmountIngredient;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundExtendedPlacedRecipePacket;
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;
-import net.minecraft.recipebook.PlaceRecipe;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
@@ -24,7 +23,7 @@ import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.List;
 
-public class ModifiedServerPlaceRecipe<C extends Container> implements PlaceRecipe<Integer> {
+public class ModifiedServerPlaceRecipe<C extends Container> implements IModPlaceRecipe<Integer> {
     public static final Logger LOGGER = LogUtils.getLogger();
     protected final StackedContents stackedContents = new StackedContents();
     protected Inventory inventory;
@@ -42,7 +41,6 @@ public class ModifiedServerPlaceRecipe<C extends Container> implements PlaceReci
                 this.stackedContents.clear();
                 player.getInventory().fillStackedContents(this.stackedContents);
                 this.menu.fillCraftSlotsStackedContents(this.stackedContents);
-                BeyondHorizon.LOGGER.debug("Recipe Clicked stack content={}", this.stackedContents.contents);
                 if (this.stackedContents.canCraft(recipe, (IntList) null)) {
                     this.handleRecipeClicked(recipe, placeAll);
                 } else {
@@ -68,12 +66,11 @@ public class ModifiedServerPlaceRecipe<C extends Container> implements PlaceReci
 
     protected void handleRecipeClicked(Recipe<C> recipe, boolean placeAll) {
         boolean flag = this.menu.recipeMatches(recipe);
-        LOGGER.debug("[Modified Place Recipe:DEBUG] matches={} | recipe={}", flag, recipe.getId());
-        int invStackCount = this.stackedContents.getBiggestCraftableStack(recipe, (IntList)null);
-        if (flag) {
-            for (int j = 0; j < this.menu.getGridHeight() * this.menu.getGridWidth() + 1; ++j) {
-                if (j != this.menu.getResultSlotIndex()) {
-                    ItemStack itemstack = this.menu.getSlot(j).getItem();
+        int invStackCount = this.stackedContents.getBiggestCraftableStack(recipe, (IntList) null);
+        if (flag) { // If the recipe is matched prevent progress to place
+            for (int slotId = 0; slotId < this.menu.getGridHeight() * this.menu.getGridWidth() + 1; ++slotId) {
+                if (slotId != this.menu.getResultSlotIndex()) {
+                    ItemStack itemstack = this.menu.getSlot(slotId).getItem();
                     if (!itemstack.isEmpty() && Math.min(invStackCount, itemstack.getMaxStackSize()) < itemstack.getCount() + 1) {
                         return;
                     }
@@ -98,41 +95,22 @@ public class ModifiedServerPlaceRecipe<C extends Container> implements PlaceReci
     }
 
     @Override
-    public void addItemToSlot(Iterator<Integer> ingredients, int menuSlots, int max, int y, int x) {
+    public void addItemToSlot(Recipe<?> recipe, Iterator<Integer> ingredients, int menuSlots, int max, int y, int x) {
         Slot slot = this.menu.getSlot(menuSlots);
         ItemStack itemstack = StackedContents.fromStackingIndex(ingredients.next());
-        if (!itemstack.isEmpty()) {
-            for(int i = 0; i < max; ++i) {
-                this.moveItemToGrid(slot, itemstack);
+        for (int i = 0; i < recipe.getIngredients().size(); i++) {
+            Ingredient ingredient = recipe.getIngredients().get(i);
+            ItemStack stackFromIng = ingredient.getItems()[0];
+            if (ItemStack.isSameItem(stackFromIng, itemstack)) {
+                this.moveItemToGrid(slot, itemstack, stackFromIng.getCount());
+//                for (int i2 = 0; i2 < stackFromIng.getCount(); ++i2) {
+//                    this.moveItemToGrid(slot, itemstack, stackFromIng.getCount());
+//                }
             }
         }
-
     }
 
-    protected int getStackSize(boolean placeAll, int maxPossible, boolean matches) {
-        LOGGER.debug("[Modified Place Recipe:DEBUG] placeAll={}, maxPossible={}, matches={}", placeAll, maxPossible, matches);
-        int stackSize = 1;
-        if (placeAll) {
-            stackSize = maxPossible;
-        } else if (matches) {
-            stackSize = 64;
-            for (int j = 0; j < this.menu.getGridWidth() * this.menu.getGridHeight() + 1; ++j) {
-                if (j != this.menu.getResultSlotIndex()) {
-                    ItemStack itemstack = this.menu.getSlot(j).getItem();
-                    if (!itemstack.isEmpty() && stackSize > itemstack.getCount()) {
-                        stackSize = itemstack.getCount();
-                    }
-                }
-            }
-            if (stackSize < 64) {
-                ++stackSize;
-            }
-        }
-        return stackSize;
-    }
-
-    protected void moveItemToGrid(Slot slotToFill, ItemStack stack) {
-        int count = stack.getCount();
+    protected void moveItemToGrid(Slot slotToFill, ItemStack stack, int count) {
         int i = this.inventory.findSlotMatchingUnusedItem(stack);
         if (i != -1) {
             ItemStack itemstack = this.inventory.getItem(i);
@@ -148,9 +126,30 @@ public class ModifiedServerPlaceRecipe<C extends Container> implements PlaceReci
                 } else {
                     slotToFill.getItem().grow(count);
                 }
-
             }
         }
+    }
+
+
+    protected int getStackSize(boolean placeAll, int maxPossible, boolean matches) {
+        int stackSize = 1;
+        if (placeAll) {
+            stackSize = maxPossible;
+        } else if (matches) {
+            stackSize = 64;
+            for (int slotId = 0; slotId < this.menu.getGridWidth() * this.menu.getGridHeight() + 1; ++slotId) {
+                if (slotId != this.menu.getResultSlotIndex()) {
+                    ItemStack itemstack = this.menu.getSlot(slotId).getItem();
+                    if (!itemstack.isEmpty() && stackSize > itemstack.getCount()) {
+                        stackSize = itemstack.getCount();
+                    }
+                }
+            }
+            if (stackSize < 64) {
+                ++stackSize;
+            }
+        }
+        return stackSize;
     }
 
     /**

@@ -56,7 +56,7 @@ public class PanelGhostRecipe {
             this.time += partialTick;
         }
 
-        for(int i = 0; i < this.ingredients.size(); ++i) {
+        for (int i = 0; i < this.ingredients.size(); ++i) {
             PanelGhostRecipe.GhostIngredient ingredient = this.ingredients.get(i);
             int j = ingredient.getX() + x;
             int k = ingredient.getY() + y;

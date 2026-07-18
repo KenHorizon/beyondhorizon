@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-15T08:40:27.8227807	Item Models: beyondhorizon
+// 1.20.1	2026-07-18T17:34:27.8342466	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -72,6 +72,7 @@ d8a9a784861a6827223969d6f6f97bc68497e72e assets/beyondhorizon/models/item/dusk_l
 035b7d601b8460735e57975e945be18c287fd89c assets/beyondhorizon/models/item/firefly_faye.json
 65f0489405fef913ab4bb6a384cf443555dc955b assets/beyondhorizon/models/item/flame_cell.json
 f3f17da522f0e0e1bcacd10c5dd90e305455a4a8 assets/beyondhorizon/models/item/flame_of_torment.json
+376bd6127d4b354ff3a8074370caefca2ff7fc07 assets/beyondhorizon/models/item/flint_knife.json
 78fab8d1eed543a970a9f085ba6c414642437e1f assets/beyondhorizon/models/item/forbidden_eye.json
 c923bee1ccff397cdd4dca23ccc07fc5bce1d830 assets/beyondhorizon/models/item/fortune_shikigami.json
 62b9b00e51fb14818dff56c27375e5f3282eadcf assets/beyondhorizon/models/item/ghoul_heart.json
@@ -115,6 +116,7 @@ ef6df66a5cb952d0d98ab72620417044bac21f4b assets/beyondhorizon/models/item/light_
 5c1465778f8df57bbb766d3937a7020e7f22ff61 assets/beyondhorizon/models/item/luminite_ingot.json
 8fb217c40292c38368d67141a94a6d4306e750c0 assets/beyondhorizon/models/item/magenta_wool_fur.json
 5b93ef23cfe7500ebb045ba48567c6f89e2459d4 assets/beyondhorizon/models/item/mage_wand.json
+607571fe5eb7cc87b8809fa1044d08c3c98aaf69 assets/beyondhorizon/models/item/magic_mirror.json
 f6ca3709d68e38f21a87b2cad5be9b5348c1e860 assets/beyondhorizon/models/item/mask_of_agony.json
 b2f43174d163177bf6e76674a3a457ee16329a1d assets/beyondhorizon/models/item/mask_of_bewildered.json
 ad7deea38ea7f781b1e24c5223f796ffb35a9719 assets/beyondhorizon/models/item/miner_boots.json

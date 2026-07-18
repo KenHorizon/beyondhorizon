@@ -2,22 +2,9 @@ package com.kenhorizon.beyondhorizon.client.render.misc.tooltips;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
-import net.minecraft.locale.Language;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.util.FormattedCharSink;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
-import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-
-import java.util.*;
 
 @SuppressWarnings({"deprecation", "removal"})
 public class Tooltips {
@@ -42,7 +29,8 @@ public class Tooltips {
 
     public static final String BOSS_IS_DEFEATED = String.format("boss.%s.defeated", BeyondHorizon.ID);
     public static final String SKILL_TYPE = String.format("tooltip.%s.skill_type", BeyondHorizon.ID);
-    public static final String TOOLTIP_BONUS_ARMOR_SET = String.format("tooltip.%s.bonus_armor_set", BeyondHorizon.ID);
+    public static final String TOOLTIP_PER_PIECE_BONUS_ARMOR_SET = String.format("tooltip.%s.piece_armor_set.per_piece", BeyondHorizon.ID);
+    public static final String TOOLTIP_FULL_BONUS_ARMOR_SET = String.format("tooltip.%s.bonus_armor_set.full_set", BeyondHorizon.ID);
     public static final String TOOLTIP_MINING_SPEED = String.format("tooltip.%s.mining_speed", BeyondHorizon.ID);
     public static final String TOOLTIP_ACCESSORY = String.format("item.%s.accessory", BeyondHorizon.ID);
     public static final String TOOLTIP_ACCESSORY_TYPE = String.format("item.%s.accessory.type", BeyondHorizon.ID);

@@ -118,6 +118,16 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
 
         recipeFactory.createBlock(BHItems.BLACK_IRON_INGOT.get(), BHBlocks.BLACK_IRON_BLOCK.get());
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BHItems.FLINT_KNIFE.get())
+                .pattern("SF")
+                .pattern("# ")
+                .define('S', Items.STRING)
+                .define('F', Items.FLINT)
+                .define('#', Items.STICK)
+                .unlockedBy("has_flint_knife_materials",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(Items.STICK, Items.FLINT, Items.STRING).build()))
+                .save(consumer);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHItems.VOID_BAG.get())
                 .pattern("SNS")
                 .pattern("BEB")

@@ -18,6 +18,7 @@ public class ItemBuilder {
 
     public static final Factory<SwordBaseItem> CLAYMORE = ((materials, properties) -> new SwordBaseItem(materials, Constant.CLAYMORE, properties, SkillBuilder.CLAYMORE));
     public static final Factory<SwordBaseItem> SWORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.SWORD, properties));
+    public static final Factory<SwordBaseItem> KNIFE = ((materials, properties) -> new SwordBaseItem(materials, Constant.KNIFE, properties));
     public static final Factory<SwordBaseItem> LIGHT_SWORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.SWORD, properties));
     public static final Factory<SwordBaseItem> HEAVY_SWORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.SWORD, properties));
     public static final Factory<SwordBaseItem> SPEAR = ((materials, properties) -> new SwordBaseItem(materials, Constant.SPEAR, properties));

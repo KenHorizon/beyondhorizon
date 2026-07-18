@@ -91,6 +91,7 @@ public class Constant {
     public static float[] PAXEL = {7.0F, 1.80F};
     public static float[] PICKAXE = {1.0F, 1.6F};
     public static float[] SHOVEL = {2.5F, 1.0F};
+    public static float[] KNIFE = {3.0F, 2.0F};
     public static float[] SWORD = {6.0F, 1.6F};
     public static float[] LIGHT_SWORD = {4.0F, 1.8F};
     public static float[] HEAVY_SWORD = {8.0F, 1.15F};

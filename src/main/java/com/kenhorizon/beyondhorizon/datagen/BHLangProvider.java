@@ -106,7 +106,8 @@ public class BHLangProvider extends LanguageProvider {
                 "Attacks inflict burning and increased %s%% damage dealt");
          //
         this.add(Tooltips.SKILL_TYPE, "%s");
-        this.add(Tooltips.TOOLTIP_BONUS_ARMOR_SET, "Bonus set:");
+        this.add(Tooltips.TOOLTIP_PER_PIECE_BONUS_ARMOR_SET, "Per Piece:");
+        this.add(Tooltips.TOOLTIP_FULL_BONUS_ARMOR_SET, "Full Bonus set:");
         this.add(Tooltips.TOOLTIP_MINING_SPEED, "%s Mining Speed");
         this.addSkills(Skills.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100 (6 if attacking, 1 if moving)");
         this.addSkills(Skills.INFERNAL_RAY.get(), "Infernal Ray", "Release a powerful Infernal Ray dealing %s %s within 2.5 radius of attacks");

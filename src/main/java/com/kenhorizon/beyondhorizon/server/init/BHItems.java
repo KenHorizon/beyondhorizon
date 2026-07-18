@@ -87,6 +87,12 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register();
 
+    public static final RegistryObject<Item> MAGIC_MIRROR = RegistryItems
+            .register("magic_mirror", MagicMirrorItem::new)
+            .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
+
     public static final RegistryObject<Item> GOLD_RING = basicItem("gold_ring", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> HANDLE = basicItem("handle", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> STINGER = basicItem("stinger", RegistryTabs.Category.INGREDIENTS);
@@ -132,6 +138,8 @@ public class BHItems {
     public static final RegistryObject<Item> GREEN_WOOL_FUR = woolFurItem("green_wool_fur", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RED_WOOL_FUR = woolFurItem("red_wool_fur", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> BLACK_WOOL_FUR = woolFurItem("black_wool_fur", RegistryTabs.Category.INGREDIENTS);
+
+    public static final RegistryObject<Item> FLINT_KNIFE = swordItem("flint_knife", MeleeWeaponMaterials.FLINT, ItemBuilder.KNIFE);
     //
     public static final RegistryObject<Item> HELLSTONE_SWORD = swordItem("hellstone_sword", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, ItemBuilder.SWORD);
     public static final RegistryObject<Item> HELLSTONE_AXE = toolItem("hellstone_axe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, ItemBuilder.AXE);

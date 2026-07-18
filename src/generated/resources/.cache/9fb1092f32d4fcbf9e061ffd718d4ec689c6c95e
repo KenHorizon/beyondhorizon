@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-15T23:38:45.9549468	Recipes
+// 1.20.1	2026-07-18T17:34:27.8401088	Recipes
 4fe6cdfcfda884afb6de86d887957c5816bab566 data/beyondhorizon/advancements/recipes/aether_wisp.json
 9e39515f42d792fee35d7703e23960d633fbe806 data/beyondhorizon/advancements/recipes/ankh_charm.json
 6b612dcd023005958afa4c607ba3e98987a45043 data/beyondhorizon/advancements/recipes/ankh_shield.json
@@ -17,6 +17,7 @@ e398a3d82f31a2bd0362bf3deb5bab3a0f281563 data/beyondhorizon/advancements/recipes
 c902837388235eac03d8a3aa613d1df45c5483d3 data/beyondhorizon/advancements/recipes/combat/black_iron_pickaxe.json
 146299e104df9640febe8500b0659fbd290527cf data/beyondhorizon/advancements/recipes/combat/black_iron_shovel.json
 104073a936bcf76c98bf01f6c61091906a733c67 data/beyondhorizon/advancements/recipes/combat/black_iron_sword.json
+3a26d3a6030815176e424b9275c7f1d2cdd0b716 data/beyondhorizon/advancements/recipes/combat/flint_knife.json
 e1900766a4731d475741722c67db980a34512564 data/beyondhorizon/advancements/recipes/combat/hellstone_axe.json
 518717387677ae917ba6de42685864e5cfcf6b5c data/beyondhorizon/advancements/recipes/combat/hellstone_hoe.json
 57aae951ac319b32e2f9d7aee91a625f1fca7bae data/beyondhorizon/advancements/recipes/combat/hellstone_pickaxe.json
@@ -102,6 +103,7 @@ b1853c97465730fabb1ddd4a72292931babbae7e data/beyondhorizon/recipes/doran_helm_f
 dc045f1983461bb940c64974ea0e8363360f634b data/beyondhorizon/recipes/doran_ring_from_workbench.json
 414713cf4ea1fed8baa6ff58530efddcaa1ae9e8 data/beyondhorizon/recipes/doran_shield_from_workbench.json
 7fa75de862b5c99e7f48a127d220480f427f5a74 data/beyondhorizon/recipes/flame_of_torment_from_workbench.json
+a5f84d5332d7eaab6324aac7617e7a356e03cc39 data/beyondhorizon/recipes/flint_knife.json
 777767c8eec195881f1a1e8a579b1aad13586847 data/beyondhorizon/recipes/gold_ring.json
 bdb0c502554261635bb801a199433622f2a3d4cf data/beyondhorizon/recipes/greater_satctel_of_elixir_from_workbench.json
 1a25d3fd9f439e1ca230f82bb1c321bc0cd1a0c4 data/beyondhorizon/recipes/haunting_curse_bandage_from_workbench.json

@@ -32,6 +32,7 @@ public class EntityUtils {
     }
 
     public static double getAttackDamage(LivingEntity entity, float effectiveness) {
+        if (entity == null) return 0;
         double attackDamage = entity.getAttributeValue(Attributes.ATTACK_DAMAGE);
         double damageAmp = entity.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
         return (attackDamage * damageAmp) * effectiveness;

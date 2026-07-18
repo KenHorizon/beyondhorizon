@@ -16,6 +16,14 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWeaponMaterials> {
+    FLINT("flint",
+            0,
+            34,
+            3.0F,
+            1.0F,
+            7, () -> {
+        return Ingredient.of(Items.FLINT);
+    }),
     HOGLIN_TUSK("hoglin_tusk",
             2,
             195,

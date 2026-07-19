@@ -13,7 +13,7 @@ public class ItemPropertiesSkill extends WeaponPassiveSkills implements IItemPro
         this.universal();
         this.setLevel(1);
         this.setMagnitude(1);
-        this.type(ItemAbilityType.PASSIVE);
+        this.type(ItemAbilityType.NONE);
     }
 
     @Override

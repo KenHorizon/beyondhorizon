@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.entity.player;
 
 import com.google.common.collect.Maps;
+import com.kenhorizon.beyondhorizon.server.api.event.ManaDataEvent;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
@@ -17,6 +18,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -63,8 +65,11 @@ public class PlayerData {
     }
 
     public void setMana(double mana) {
-        this.mana = Mth.clamp(mana, 0, this.getMaxMana());
         if (this.player instanceof ServerPlayer splayer) {
+            ManaDataEvent event = new ManaDataEvent(this.player, mana);
+            MinecraftForge.EVENT_BUS.post(event);
+            if (event.isCanceled()) return;
+            this.mana = Mth.clamp(event.getAmount(), 0, this.getMaxMana());
             NetworkHandler.sendToPlayer(new ClientboundManaSyncPacket(this.getMana()), splayer);
         }
     }

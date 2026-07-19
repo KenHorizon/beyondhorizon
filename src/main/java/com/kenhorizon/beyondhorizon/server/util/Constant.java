@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static final float PLUNDER_2_CHANCES = 1.0F;
+    public static final float PLUNDER_CHANCES = 0.50F;
     public static final float CLEANSE_EFFECT_REDUCE = 0.25F;
     public static final float STELLAR_AXE_SLASH_DAMAGE = 0.30F;
     public static final float ALWAYS_CRIT_MODIFIER = 1.50F;
@@ -185,7 +187,8 @@ public class Constant {
     public static double TRUE_HERO_SWORD_ATK_KNOCKBACK = 0.20D;
     public static double AETHER_WISP_ABILITY_POWER = 5;
     public static double DESPAIR_AND_DEFY = 0.30D;
-    public static double FORTUNE_SHIKIGAMI = 2;
+    public static double LUCK_0 = 2;
+    public static double LUCK_1 = 5;
     public static double RECTRIX_ATTACK_SPEED = 0.12D;
     public static double ANCIENT_PICK_MINING_EFFECIENCY = 0.12D;
     public static double ANCIENT_PICK_MINING_SPEED = 0.10D;

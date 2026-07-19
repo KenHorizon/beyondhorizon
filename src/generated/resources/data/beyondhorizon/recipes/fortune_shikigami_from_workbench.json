@@ -1,0 +1,25 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 32,
+      "item": "minecraft:paper"
+    },
+    {
+      "count": 32,
+      "item": "minecraft:emerald"
+    },
+    {
+      "count": 24,
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "count": 22,
+      "item": "minecraft:string"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:fortune_shikigami"
+  }
+}

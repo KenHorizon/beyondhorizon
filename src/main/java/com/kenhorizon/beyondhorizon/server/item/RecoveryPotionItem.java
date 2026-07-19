@@ -1,9 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.item;
 
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerDataHelper;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -20,16 +22,30 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class RecoveryPotionItem extends BasicItem {
-    public float healthRecovery;
-    public float manaRecovery;
+    public float health;
+    public float mana;
+    private Consumer<Player> postEffectHealth;
+    private Consumer<Player> postEffectMana;
 
-    public RecoveryPotionItem(float healthRecovery, float manaRecovery, Properties properties) {
+    public RecoveryPotionItem(float heal, float mana, Properties properties) {
         super(properties);
-        this.healthRecovery = healthRecovery;
-        this.manaRecovery = manaRecovery;
+        this.mana = mana;
+        this.health = heal;
     }
+
+    public RecoveryPotionItem afterDrinkingHealth(Consumer<Player> consumer) {
+        this.postEffectHealth = consumer;
+        return this;
+    }
+
+    public RecoveryPotionItem afterDrinkingMana(Consumer<Player> consumer) {
+        this.postEffectMana = consumer;
+        return this;
+    }
+
     @Override
     public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
         Player player = livingEntity instanceof Player ? (Player) livingEntity : null;
@@ -38,9 +54,23 @@ public class RecoveryPotionItem extends BasicItem {
         }
 
         if (!level.isClientSide()) {
-            livingEntity.heal(this.healthRecovery);
-            if (!player.isCreative()) {
-                livingEntity.addEffect(new MobEffectInstance(BHEffects.HEALING_SICKNESS.get(), Maths.mins(1), 0, true, true, true));
+            if (this.health > 0.0F) {
+                livingEntity.heal(this.health);
+                if (!player.isCreative()) {
+                    if (this.postEffectHealth != null) {
+                        this.postEffectHealth.accept(player);
+                    } else {
+                        player.addEffect(new MobEffectInstance(BHEffects.HEALING_SICKNESS.get(), Maths.mins(1), 0, true, true, true));
+                    }
+                }
+            }
+            if (this.mana > 0.0F) {
+                PlayerDataHelper.getPlayerData(player).ifPresent(handler -> {
+                    handler.addMana(this.mana);
+                    if (this.postEffectMana != null) {
+                        this.postEffectMana.accept(player);
+                    }
+                });
             }
         }
 
@@ -76,11 +106,12 @@ public class RecoveryPotionItem extends BasicItem {
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
-        if (this.healthRecovery > 0) {
-            tooltip.add(Component.translatable(Tooltips.TOOLTIP_HEALTH_RECOVERY_POTION, this.healthRecovery).withStyle(Tooltips.TOOLTIP));
+        if (this.health > 0) {
+            tooltip.add(Component.translatable(Tooltips.TOOLTIP_HEALTH_RECOVERY_POTION, (int) this.health).withStyle(Tooltips.TOOLTIP[0]));
         }
-        if (this.manaRecovery > 0) {
-            tooltip.add(Component.translatable(Tooltips.TOOLTIP_MANA_RECOVERY_POTION, this.manaRecovery).withStyle(Tooltips.TOOLTIP));
+        if (this.mana > 0) {
+            tooltip.add(Component.translatable(Tooltips.TOOLTIP_MANA_RECOVERY_POTION, (int) this.mana).withStyle(Tooltips.TOOLTIP[0]));
         }
+        tooltip.add(CommonComponents.EMPTY);
     }
 }

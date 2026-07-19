@@ -12,10 +12,12 @@ import com.kenhorizon.beyondhorizon.server.item.debug_items.*;
 import com.kenhorizon.beyondhorizon.server.item.materials.ArmorBaseMaterials;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.libs.client.model.item.ItemModels;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryItems;
 import com.kenhorizon.libs.registry.RegistryTabs;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
@@ -89,6 +91,49 @@ public class BHItems {
 
     public static final RegistryObject<Item> MAGIC_MIRROR = RegistryItems
             .register("magic_mirror", MagicMirrorItem::new)
+            .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
+
+    public static final RegistryObject<Item> RECOVERY_POTION = RegistryItems
+            .register("recovery_potion", p -> new RecoveryPotionItem(10, 20.0F, p)
+                    .afterDrinkingHealth(player -> {
+                        player.addEffect(new MobEffectInstance(BHEffects.HEALING_SICKNESS.get(), Maths.sec(30), 0, true, true, true));
+                    }))
+            .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
+
+    public static final RegistryObject<Item> LESS_MANA_POTION = RegistryItems
+            .register("less_mana_potion", p -> new RecoveryPotionItem(0, 50.0F, p))
+            .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
+
+    public static final RegistryObject<Item> MANA_POTION = RegistryItems
+            .register("mana_potion", p -> new RecoveryPotionItem(0, 100.0F, p))
+            .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
+    public static final RegistryObject<Item> GREATER_MANA_POTION = RegistryItems
+            .register("greater_mana_potion", p -> new RecoveryPotionItem(0, 200.0F, p))
+            .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
+
+    public static final RegistryObject<Item> LESS_HEALING_POTION = RegistryItems
+            .register("less_healing_potion", p -> new RecoveryPotionItem(5.0F, 0.0F, p))
+            .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
+
+    public static final RegistryObject<Item> HEALING_POTION = RegistryItems
+            .register("healing_potion", p -> new RecoveryPotionItem(10, 0.0F, p))
+            .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .model(ItemModels.GENERATED)
+            .register();
+    public static final RegistryObject<Item> GREATER_HEALING_POTION = RegistryItems
+            .register("greater_healing_potion", p -> new RecoveryPotionItem(50.0F, 0.0F, p))
             .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
             .model(ItemModels.GENERATED)
             .register();
@@ -219,9 +264,9 @@ public class BHItems {
     public static final RegistryObject<Item> BERSERKER_BOOTS = accessoryItem("berserker_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.BERSERKER_BOOTS);
     public static final RegistryObject<Item> IRON_PLATED_BOOTS = accessoryItem("iron_plated_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.IRON_PLATED_BOOTS);
     public static final RegistryObject<Item> MINER_BOOTS = accessoryItem("miner_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.MINER_BOOTS);
-    public static final RegistryObject<Item> BOOTS_OF_SWIFTNESS = accessoryItemModel("boots_of_swiftness", AccessoryBuilder.BOOTS_OF_SWITFNESS);
+    public static final RegistryObject<Item> BOOTS_OF_SWIFTNESS = accessoryItemModel("boots_of_swiftness", AccessoryItemGroup.BOOTS, AccessoryBuilder.BOOTS_OF_SWITFNESS);
 
-    public static final RegistryObject<Item> BOOK_OF_KNOWLEDGE = accessoryItem("book_of_knowledge", AccessoryItemGroup.NONE, AccessoryBuilder.BOOK_OF_KNOWLEDGE);
+    public static final RegistryObject<Item> BOOK_OF_KNOWLEDGE = accessoryBasicItem("book_of_knowledge", AccessoryBuilder.BOOK_OF_KNOWLEDGE);
     public static final RegistryObject<Item> ULTIMA = accessoryItem("ultima", AccessoryBuilder.ULTIMA);
     public static final RegistryObject<Item> ANCIENT_PICKAXE = accessoryItem("ancient_pickaxe", AccessoryBuilder.ANCIENT_PICKAXE);
     public static final RegistryObject<Item> ANCIENT_CHISEL = accessoryItem("ancient_chisel", AccessoryBuilder.ANCIENT_CHISEL);
@@ -271,7 +316,9 @@ public class BHItems {
     public static final RegistryObject<Item> AETHER_WISP = accessoryItem("aether_wisp", AccessoryBuilder.AETHER_WISP);
     public static final RegistryObject<Item> HEART_OF_THE_TREE = accessoryItem("heart_of_the_tree", AccessoryBuilder.HEART_OF_THE_TREE);
     public static final RegistryObject<Item> RECTRIX = accessoryItem("rectrix", AccessoryBuilder.RECTRIX);
-    public static final RegistryObject<Item> FORTUNE_SHIKIGAMI = accessoryItem("fortune_shikigami", AccessoryBuilder.FORTUNE_SHIKIGAMI);
+    public static final RegistryObject<Item> FORTUNE_SHIKIGAMI = accessoryItem("fortune_shikigami", AccessoryItemGroup.FORTUNE, AccessoryBuilder.FORTUNE_SHIKIGAMI);
+    public static final RegistryObject<Item> FORTUNE_FAVOR = accessoryItem("fortune_favor", AccessoryItemGroup.FORTUNE, AccessoryBuilder.FORTUNE_FAVOR);
+    public static final RegistryObject<Item> DAIKICHI = accessoryItem("daikichi", AccessoryItemGroup.FORTUNE, AccessoryBuilder.DAIKICHI);
     public static final RegistryObject<Item> LEATHER_AGILITY = accessoryItem("leather_agility", AccessoryBuilder.LEATHER_AGILITY);
     public static final RegistryObject<Item> SWIFT_DAGGER = accessoryItem("swift_dagger", AccessoryBuilder.SWIFT_DAGGER);
     public static final RegistryObject<Item> STATIKK_DAGGER = accessoryItem("statikk_dagger", AccessoryBuilder.STATIKK_DAGGER);

@@ -72,7 +72,7 @@ public class Skills {
     public static final RegistryObject<Skill> DARK_BLADE = registerSkill("dark_blade", () -> new WeaponPassiveSkills()
             .addAttributes(BHAttributes.ARMOR_PENETRATION.get(), Constant.DARK_BLADE_PEN, AttributeModifier.Operation.ADDITION)
             .universal()
-            .disableTooltipName()
+            .disableTooltip()
             .innate(Skills.PERFECTION));
 
     public static final RegistryObject<Skill> PERFECTION = registerSkill("perfection", () -> new ExtraDamageSkill(Constant.PERFECTION, ExtraDamageSkill.PERFECTION)

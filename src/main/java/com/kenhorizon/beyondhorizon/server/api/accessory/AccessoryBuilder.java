@@ -124,7 +124,9 @@ public class AccessoryBuilder implements IReloadable {
     public static final AccessoryBuilder SPEAR_OF_CHAOS = new AccessoryBuilder(List.of(Accessories.SPEAR_OF_CHAOS));
     public static final AccessoryBuilder VOID_STAFF = new AccessoryBuilder(List.of(Accessories.VOID_STAFF));
     public static final AccessoryBuilder RECTRIX = new AccessoryBuilder(List.of(Accessories.RECTRIX));
-    public static final AccessoryBuilder FORTUNE_SHIKIGAMI = new AccessoryBuilder(List.of(Accessories.FORTUNE_SHIKIGAMI));
+    public static final AccessoryBuilder FORTUNE_SHIKIGAMI = new AccessoryBuilder(List.of(Accessories.LUCK_0));
+    public static final AccessoryBuilder FORTUNE_FAVOR = new AccessoryBuilder(List.of(Accessories.LUCK_0, Accessories.PLUNDER_0));
+    public static final AccessoryBuilder DAIKICHI = new AccessoryBuilder(List.of(Accessories.LUCK_1, Accessories.PLUNDER_1));
     public static final AccessoryBuilder DESPAIR_AND_DEFY = new AccessoryBuilder(List.of(Accessories.DESPAIR_AND_DEFY));
     //
     public static final AccessoryBuilder GOLDEN_BOOTS = new AccessoryBuilder(List.of(Accessories.BOOTS_3, Accessories.MINING_BOOTS, Accessories.BERSERKER_BOOTS, Accessories.IRON_PLATED_BOOTS, Accessories.FIRE_IMMUNITY, Accessories.CRAMPONS, Accessories.FEATHER_FEET, Accessories.JUMP_BOOST, Accessories.DOUBLE_JUMP));

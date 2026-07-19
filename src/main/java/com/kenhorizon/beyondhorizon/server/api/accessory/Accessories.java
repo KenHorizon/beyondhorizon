@@ -157,8 +157,11 @@ public class Accessories {
     public static final RegistryObject<Accessory> RECTRIX = registerSkill("rectrix", () -> new AttributeOnlyAccessory()
             .addAttributes(Attributes.ATTACK_SPEED,  Constant.RECTRIX_ATTACK_SPEED, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-    public static final RegistryObject<Accessory> FORTUNE_SHIKIGAMI = registerSkill("fortune_shikigami", () -> new AttributeOnlyAccessory()
-            .addAttributes(Attributes.LUCK,  Constant.FORTUNE_SHIKIGAMI, AttributeModifier.Operation.ADDITION));
+    public static final RegistryObject<Accessory> LUCK_0 = registerSkill("luck_0", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.LUCK,  Constant.LUCK_0, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> LUCK_1 = registerSkill("luck_1", () -> new AttributeOnlyAccessory()
+            .addAttributes(Attributes.LUCK,  Constant.LUCK_1, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> AETHER_WISP = registerSkill("aether_wisp", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.AETHER_WISP_ABILITY_POWER, AttributeModifier.Operation.ADDITION));
@@ -238,6 +241,8 @@ public class Accessories {
     public static final RegistryObject<Accessory> ETERNAL_LIFE = registerSkill("eternal_life", ImmuneDeathAccessory::new);
     public static final RegistryObject<Accessory> NULLIFY = registerSkill("nullify", () -> new SinglePassiveAccessory(Constant.JUMP_BOOST));
     public static final RegistryObject<Accessory> JUMP_BOOST = registerSkill("jump_boost", () -> new SinglePassiveAccessory(Constant.JUMP_BOOST));
+    public static final RegistryObject<Accessory> PLUNDER_0 = registerSkill("plunder_0", () -> new DoubleLootDropAccessory(Constant.PLUNDER_CHANCES));
+    public static final RegistryObject<Accessory> PLUNDER_1 = registerSkill("plunder_1", () -> new DoubleLootDropAccessory(Constant.PLUNDER_2_CHANCES));
     public static final RegistryObject<Accessory> FIRE_IMMUNITY = registerSkill("fire_immunity", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> BURN_EFFECT = registerSkill("burn_effect", () -> new SinglePassiveAccessory(Constant.FIRE_EFFECT));
     public static final RegistryObject<Accessory> DESPAIR_AND_DEFY = registerSkill("despair_and_defy", () -> new BleedingEffectAccessory(Constant.DESPAIR_AND_DEFY));

@@ -1,0 +1,22 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipes": {
+      "conditions": {
+        "recipe": "beyondhorizon:fortune_favor"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipes"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:fortune_favor"
+    ]
+  },
+  "sends_telemetry_event": true
+}

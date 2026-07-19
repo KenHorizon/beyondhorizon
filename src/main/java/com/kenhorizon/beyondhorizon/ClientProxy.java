@@ -17,6 +17,8 @@ import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotSc
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHudDisplay;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay.ManaHud;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ClientQuiverTooltip;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ClientSkillTooltip;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ClientTooltipRegister;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ClientVoidBagTooltip;
 import com.kenhorizon.beyondhorizon.client.render.item.AccessoryItemDecorations;
 import com.kenhorizon.beyondhorizon.client.render.item.BHArmorRenderProperties;
@@ -96,8 +98,7 @@ public class ClientProxy extends ServerProxy {
         bus.addListener(this::registerGuiOverlays);
         bus.addListener(this::registerNewRegsitry);
         bus.addListener(this::onRegisterItemDecorations);
-        ClientQuiverTooltip.registerFactory();
-        ClientVoidBagTooltip.registerFactory();
+        ClientTooltipRegister.register();
     }
 
 

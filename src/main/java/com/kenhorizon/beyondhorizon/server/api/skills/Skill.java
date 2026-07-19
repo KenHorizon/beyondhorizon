@@ -12,6 +12,7 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.ChatFormatting;
@@ -96,8 +97,8 @@ public abstract class Skill {
         return BHRegistries.SKILL_KEY.get().getKey(this).getNamespace();
     }
 
-    public boolean isSkill() {
-        return this.type != ItemAbilityType.ACTIVE;
+    public boolean isPassive() {
+        return this.type == ItemAbilityType.PASSIVE;
     }
 
     public boolean isActive() {
@@ -250,38 +251,67 @@ public abstract class Skill {
         return String.format("Skill:{Type: %s:%s, Type: %s, Settings:{Tooltip:%s, TooltipName:%s, TooltipDescription:%s}}", this.getId(), this.getName(), this.getType(), this.isTooltipEnable(), this.isTooltipNameEnable(), this.isTooltipDescriptionEnable());
     }
 
-    protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
-        Component text;
-        text = this.spacing().append(Component.literal(Utils.capitalize(this.getType().getName().toLowerCase(Locale.ROOT))).withStyle(Tooltips.TOOLTIP[1]).append(this.spacing()).append(this.spacing().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD))));
-        tooltip.add(text);
+    protected MutableComponent addTooltipTitle(boolean renderType) {
+        if (this.isTooltipNameEnable()) {
+            if (renderType) {
+                return this.spacing().append(Component.literal(Utils.capitalize(this.getType().getName().toLowerCase(Locale.ROOT))).withStyle(Tooltips.TOOLTIP[1]).append(this.spacing()).append(this.spacing().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD))));
+            } else {
+                return this.spacing().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
+            }
+        }
+        return null;
+    }
+
+    protected MutableComponent addTooltipTitle() {
+        return this.addTooltipTitle(false);
     }
 
     public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
         if (!this.isTooltipEnable()) return;
-        if (this.isTooltipNameEnable()) {
-            this.addTooltipTitle(itemStack, tooltip, first);
+        if (this.addTooltipTitle() != null && this.isTooltipNameEnable()) {
+            tooltip.add(this.addTooltipTitle());
         }
         if (!this.isTooltipDescriptionEnable()) return;
         boolean flag = size == 1;
         if (BHConfigs.ADVANCED_TOOLTIP && I18n.exists(this.createId())) {
-            this.addTooltipDescription(itemStack, tooltip);
+            tooltip.addAll(this.addTooltipDescription(itemStack));
         } else if (BHConfigs.ADVANCED_TOOLTIP_SKILL && I18n.exists(this.createId())) {
-            this.addTooltipDescription(itemStack, tooltip);
+            tooltip.addAll(this.addTooltipDescription(itemStack));
         } else if ((flag || isShiftPressed) && I18n.exists(this.createId())) {
-            this.addTooltipDescription(itemStack, tooltip);
+            tooltip.addAll(this.addTooltipDescription(itemStack));
         }
     }
+    public List<Component> addTooltip() {
+        boolean isShiftPressed = Utils.isShiftPressed();
+        Player player = BeyondHorizon.PROXY.clientPlayer();
+        ItemStack itemStack = PlayerData.getHeldingItem(player);
+        List<Component> tooltip = new ArrayList<>();
+        if (this.isTooltipEnable()) {
+            if (this.addTooltipTitle() != null && this.isTooltipNameEnable()) {
+                tooltip.add(this.addTooltipTitle());
+            }
+            if (this.isTooltipDescriptionEnable()) {
+                this.addTooltipDescriptionHeader(itemStack, tooltip);
+                for (var createTooltips : this.makeTooltips(itemStack)) {
+                    tooltip.add(ColorCodedText.applyFormat(createTooltips, Tooltips.TOOLTIP[0].getColor()));
+                }
+            }
+        }
+        return tooltip;
+    }
+
     protected void addTooltipDescriptionHeader(ItemStack itemStack, List<Component> tooltip) {
 
     }
 
-    protected void addTooltipDescription(ItemStack itemStack, List<Component> tooltip) {
-        Minecraft mc = Minecraft.getInstance();
-        Player player = BeyondHorizon.PROXY.clientPlayer();
-        this.addTooltipDescriptionHeader(itemStack, tooltip);
+    public List<Component> addTooltipDescription(ItemStack itemStack) {
+        boolean flag = Utils.isShiftPressed();
+        List<Component> list = new ArrayList<>();
+        this.addTooltipDescriptionHeader(itemStack, list);
         for (var createTooltips : this.makeTooltips(itemStack)) {
-            tooltip.add(ColorCodedText.applyFormat(createTooltips, Tooltips.TOOLTIP[0].getColor()));
+            list.add(ColorCodedText.applyFormat(createTooltips, Tooltips.TOOLTIP[0].getColor()));
         }
+        return list;
     }
 
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {

@@ -1,0 +1,17 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 1,
+      "item": "beyondhorizon:fortune_shikigami"
+    },
+    {
+      "count": 32,
+      "item": "minecraft:emerald"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:fortune_favor"
+  }
+}

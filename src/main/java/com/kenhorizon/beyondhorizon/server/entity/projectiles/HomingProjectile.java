@@ -28,12 +28,7 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public abstract class HomingProjectile extends ExtendedProjectile {
-    @Nullable
-    private Entity finalTarget;
-    @Nullable
-    private UUID targetId;
     protected Vec3 targetPos = Vec3.ZERO;
-    public static final String NBT_TARGET_ID = "TargetUUID";
 
     public HomingProjectile(EntityType<? extends Projectile> entityType, Level level) {
         super(entityType, level);
@@ -72,39 +67,19 @@ public abstract class HomingProjectile extends ExtendedProjectile {
 
     }
 
-    public void setTarget(@Nullable LivingEntity targetId) {
-        this.finalTarget = targetId;
-    }
-
-    @Nullable
-    public Entity getTarget() {
-        return finalTarget;
-    }
-
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        if (this.getTarget() != null) {
-            tag.putUUID(NBT_TARGET_ID, this.getTarget().getUUID());
-        }
 
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        if (tag.hasUUID(NBT_TARGET_ID)) {
-            this.targetId = tag.getUUID(NBT_TARGET_ID);
-        }
     }
 
     @Override
     public void afterGotHit(LivingEntity entity) {
-        var owner = this.getOwner();
-        if (owner instanceof LivingEntity owners && owners instanceof Pyrolliger boss) {
-            boss.addMana(2);
-        }
-        entity.addEffect(new MobEffectInstance(BHEffects.BURNING_HEX.get(), Maths.sec(5)));
         this.discard();
     }
 
@@ -112,10 +87,10 @@ public abstract class HomingProjectile extends ExtendedProjectile {
     public void tick() {
         super.tick();
         if (!this.level().isClientSide()) {
-            if (this.finalTarget == null || !this.finalTarget.isAlive() || (this.finalTarget instanceof Player && this.finalTarget.isSpectator())) {
+            if (this.getTarget() == null || !this.getTarget().isAlive() || (this.getTarget() instanceof Player && this.getTarget().isSpectator())) {
                 this.discard();
             } else {
-                if (this.distanceTo(this.finalTarget) > 1.5F && this.getLifeSpan() > 3 && this.getLifeSpan() < 40) {
+                if (this.distanceTo(this.getTarget()) > 1.5F && this.getLifeSpan() > 3 && this.getLifeSpan() < 40) {
                     Vec3 currentVelocity = this.getDeltaMovement();
                     Vec3 toTarget = this.targetPos.subtract(this.position());
                     Vec3 desiredDirection = toTarget.normalize();
@@ -147,14 +122,14 @@ public abstract class HomingProjectile extends ExtendedProjectile {
     @Override
     public void onStart() {
         if (!this.level().isClientSide()) {
-            if (this.finalTarget == null && this.targetId != null) {
-                this.finalTarget = ((ServerLevel) this.level()).getEntity(this.targetId);
-                if (this.finalTarget == null) {
-                    this.targetId = null;
+            if (this.getTarget() == null && this.getTargetId() != null) {
+                this.setTarget((LivingEntity) ((ServerLevel) this.level()).getEntity(this.getTargetId()));
+                if (this.getTarget() == null) {
+                    this.setTargetId(null);
                 }
             }
-            if (!(this.finalTarget == null || !this.finalTarget.isAlive() || (this.finalTarget instanceof Player && this.finalTarget.isSpectator()))) {
-                this.targetPos = this.finalTarget.position().add(0, this.finalTarget.getBbHeight() * 0.1D, 0);
+            if (!(this.getTarget() == null || !this.getTarget().isAlive() || (this.getTarget() instanceof Player && this.getTarget().isSpectator()))) {
+                this.targetPos = this.getTarget().position().add(0, this.getTarget().getBbHeight() * 0.1D, 0);
             }
         }
     }

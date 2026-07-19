@@ -6,8 +6,8 @@ import net.minecraft.world.item.ItemStack;
 
 public class QuiverTooltip implements TooltipComponent {
     private final NonNullList<ItemStack> items;
-    public QuiverTooltip(NonNullList<ItemStack> pItems) {
-        this.items = pItems;
+    public QuiverTooltip(NonNullList<ItemStack> stacks) {
+        this.items = stacks;
     }
 
     public NonNullList<ItemStack> getItems() {

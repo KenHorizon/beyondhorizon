@@ -1,0 +1,37 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_flint_knife_materials": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:stick",
+              "minecraft:flint",
+              "minecraft:string"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:flint_knife"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_flint_knife_materials",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:flint_knife"
+    ]
+  },
+  "sends_telemetry_event": false
+}

@@ -138,19 +138,15 @@ public final class AccessoryHelper {
         for (int i = 0; i < stacks.getSlots(); ++i) {
             ItemStack inSlotItemStack = stacks.getStackInSlot(i);
             if (inSlotItemStack.isEmpty()) continue;
-
             if (inSlotItemStack.getItem() instanceof IAccessoryItem accessoryItem) {
                 boolean flag = ItemStack.isSameItem(inSlotItemStack, outsideStack);
                 boolean itemGroupLimitation = accessoryItem.checkIfSharingGroupTogether(inSlotItemStack, outsideStack);
                 boolean isBasic = accessoryItem.isBasic();
                 boolean singleEffectLimitation = accessoryItem.checkIfNameLimitation(inSlotItemStack, outsideStack);
-                if (isBasic) {
-                    continue;
-                }
+                if (isBasic) continue;
                 if (!flag && singleEffectLimitation) {
-                    continue;
-                }
-                if (itemGroupLimitation) {
+                    return false;
+                } else if (itemGroupLimitation) {
                     return false;
                 }
             }

@@ -137,6 +137,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.DESPAIR_AND_DEFY.get(), "Despair And Defy", "Reduce %.2f%% post-mitigation damage and stored it and bleed per second of stored damage");
         this.addAccessory(Accessories.BURN_EFFECT.get(), "Burn", "Set target on fire for %s seconds");
         this.addAccessory(Accessories.FIRE_IMMUNITY.get(), "Fire Immunity", "Grant immunity from fire block");
+        this.addAccessory(Accessories.PLUNDER_0.get(), "Plunder I", "Grant %s%% chances to double the mob's drop");
+        this.addAccessory(Accessories.PLUNDER_1.get(), "Plunder II", "Guarantee to double the mob's drop");
         this.addAccessory(Accessories.RAGE.get(), "Rage", "Grant 0-%s%%(based on Missing HP) increased damage");
         this.addAccessory(Accessories.THORNS.get(), "Thorns", "When struck by basic attack on-hit, deal %s (+%s%% bonus Armor) magic damage to the attacker and inflict Wounded for 3 seconds");
         this.addAccessory(Accessories.KNOWLEDGE_1.get(), "Knowledge", "Increase drop experience by %s%%");

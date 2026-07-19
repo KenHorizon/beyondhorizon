@@ -24,7 +24,6 @@ public class GuideBookItem extends BasicItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        ItemStack itemStack = player.getItemInHand(hand);
         if (level.isClientSide()) {
             BeyondHorizon.PROXY.openScreen(new GuideBookScreen());
         }

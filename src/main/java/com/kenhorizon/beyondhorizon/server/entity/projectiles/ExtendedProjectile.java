@@ -28,6 +28,7 @@ import net.minecraftforge.event.ForgeEventFactory;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 /**
@@ -84,6 +85,12 @@ public abstract class ExtendedProjectile extends Projectile {
     protected double zPower;
     protected boolean ricochet = false;
     protected int ricochetBounce = 1;
+    @Nullable
+    private Entity finalTarget;
+    @Nullable
+    private UUID targetId;
+    public static final String NBT_TARGET_ID = "TargetUUID";
+
     private final Vec3[] trailPositions = new Vec3[64];
     private int trailPointer = -1;
     public DamageType damageType = DamageType.PHYSICAL_DAMAGE;
@@ -520,6 +527,38 @@ public abstract class ExtendedProjectile extends Projectile {
     }
 
 
+    public void setTarget(@Nullable LivingEntity targetId) {
+        this.finalTarget = targetId;
+    }
+
+    @Nullable
+    public UUID getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(@Nullable UUID targetId) {
+        this.targetId = targetId;
+    }
+
+    @Nullable
+    public Entity getTarget() {
+        return finalTarget;
+    }
+
+    private LivingEntity onRicochetHit(Entity hitBy, Consumer<ExtendedProjectile> hit) {
+        Entity owner = this.getOwner();
+        AABB searchBox = hitBy.getBoundingBox().inflate(32.0D, 32.0D, 32.0D);
+        Entity ricochetTo = null;
+        for (LivingEntity entity : this.level().getEntitiesOfClass(LivingEntity.class, searchBox)) {
+            if (!this.isAlliedTo(entity) && !entity.is(hitBy) && (owner == null || !entity.is(owner) && !entity.isAlliedTo(owner)) && entity.distanceTo(hitBy) > 3.0D) {
+                if(ricochetTo == null || ricochetTo.distanceTo(hitBy) > entity.distanceTo(hitBy)){
+                    ricochetTo = entity;
+                }
+            }
+        }
+        return (LivingEntity) ricochetTo;
+    }
+
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
@@ -535,7 +574,10 @@ public abstract class ExtendedProjectile extends Projectile {
         tag.put(NBT_POWER, this.newDoubleList(new double[]{this.xPower, this.yPower, this.zPower}));
         tag.putInt(NBT_DAMAGE_TYPE, this.getDamageType().ordinal());
         tag.putInt(NBT_DAMAGE_SCALING, this.getDamageScaling().ordinal());
-    tag.putFloat(NBT_RADIUS, this.getRadius());
+        tag.putFloat(NBT_RADIUS, this.getRadius());
+        if (this.getTarget() != null) {
+            tag.putUUID(NBT_TARGET_ID, this.getTarget().getUUID());
+        }
     }
 
     @Override
@@ -560,6 +602,9 @@ public abstract class ExtendedProjectile extends Projectile {
                 this.yPower = listtag.getDouble(1);
                 this.zPower = listtag.getDouble(2);
             }
+        }
+        if (tag.hasUUID(NBT_TARGET_ID)) {
+            this.targetId = tag.getUUID(NBT_TARGET_ID);
         }
     }
 

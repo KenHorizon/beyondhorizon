@@ -96,6 +96,7 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import javax.swing.text.html.Option;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -371,7 +372,7 @@ public class ServerEventHandler {
             }
         });
     }
-
+    //TODO: DROP
     @SubscribeEvent
     public void onEntityDrops(LivingDropsEvent event) {
         LivingEntity entity = event.getEntity();
@@ -382,6 +383,28 @@ public class ServerEventHandler {
         float dropRateIncrease = 0.01F + (0.01F * lootingLevel);
         Collection<ItemEntity> entityDrops = event.getDrops();
         if (!entity.isSpectator()) {
+            if (damageSource.getEntity() instanceof LivingEntity attacker) {
+                if (attacker instanceof Player player) {
+                    if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
+                        IAccessoryStackHandler handler = AccessoryHelper.getInventory(player).resolve().get();
+                        var stacks = handler.getStacks();
+                        for (int i = 0; i < stacks.getSlots(); i++) {
+                            ItemStack itemStacks = stacks.getStackInSlot(i);
+                            if (itemStacks.getItem() instanceof IAccessoryItem items) {
+                                for (Accessory accessory : items.getAccessories()) {
+                                    Optional<IEntityProperties> properties = accessory.IEntityProperties();
+                                    if (properties.isPresent()) {
+                                        var newDrops = properties.get().modifyLootdrops(entity, player, entityDrops);
+                                        if (!newDrops.isEmpty()) {
+                                            entityDrops.addAll(newDrops);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             if (entity instanceof Sheep sheep) {
                 sheepDrops(sheep, random, entityDrops, entity, lootingLevel);
             }

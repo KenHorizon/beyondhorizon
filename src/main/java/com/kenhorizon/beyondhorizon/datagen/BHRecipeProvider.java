@@ -389,6 +389,23 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .required(BHItems.SHADOWCRUST.get(), 5)
                 .save(consumer);
 
+        WorkbenchRecipeProvider.create(BHItems.FORTUNE_SHIKIGAMI.get(), 1)
+                .required(Items.PAPER, 32)
+                .required(Items.EMERALD, 32)
+                .required(Items.GOLD_INGOT, 24)
+                .required(Items.STRING, 22)
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.FORTUNE_FAVOR.get(), 1)
+                .required(BHItems.FORTUNE_SHIKIGAMI.get())
+                .required(Items.EMERALD, 32)
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.DAIKICHI.get(), 1)
+                .required(BHItems.FORTUNE_FAVOR.get())
+                .required(Items.EMERALD, 64)
+                .save(consumer);
+
         oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, Maths.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_STARITE.get()), RecipeCategory.MISC, BHItems.STARITE_INGOT.get(), 0.7F, Maths.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_BLACK_IRON.get()), RecipeCategory.MISC, BHItems.BLACK_IRON_INGOT.get(), 0.7F, Maths.sec(10));

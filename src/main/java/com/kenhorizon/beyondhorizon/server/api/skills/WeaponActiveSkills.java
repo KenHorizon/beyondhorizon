@@ -11,7 +11,6 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHChatformatting;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -92,14 +91,16 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
     @Override
     protected void addTooltipDescriptionHeader(ItemStack itemStack, List<Component> tooltip) {
         String tooltips;
+        MutableComponent manaText = Component.literal("- ");
+        MutableComponent cdText = Component.literal("- ");
         if (this.getManaCostType() == WeaponActiveSkills.ManaCostType.PERCENTAGE) {
             tooltips = Tooltips.TOOLTIP_MANA_COST_PERCENTAGES;
         } else {
             tooltips = Tooltips.TOOLTIP_MANA_COST;
         }
-        tooltip.add(this.spacing().append(Component.translatable(tooltips, this.getManaCost()).withStyle(BHChatformatting.MANA)));
+        tooltip.add(manaText.append(Component.translatable(tooltips, this.getManaCost()).withStyle(BHChatformatting.MANA)));
         if (this.getCooldown() > 0) {
-            tooltip.add(this.spacing().append(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (this.getCooldown() / 20.0F)).withStyle(BHChatformatting.COOLDOWN)));
+            tooltip.add(cdText.append(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (this.getCooldown() / 20.0F)).withStyle(BHChatformatting.COOLDOWN)));
         }
         tooltip.add(Component.empty());
     }
@@ -192,15 +193,11 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
         return 0;
     }
 
-    protected double getScaleBonusAttribute(Player player, Attribute attribute, float scaleDamage) {
-        return this.getScaleAttribute(player, attribute, scaleDamage, true);
+    protected double getScaleBonus(Player player, Attribute attribute, float scaleDamage) {
+        return AttributeUtils.getBonus(player, attribute) * scaleDamage;
     }
 
-    protected double getScaleTotalAttribute(Player player, Attribute attribute, float scaleDamage) {
-        return this.getScaleAttribute(player, attribute, scaleDamage, false);
-    }
-
-    private double getScaleAttribute(Player player, Attribute attribute, float scaleDamage, boolean getBonus) {
-        return getBonus ? AttributeUtils.getBonus(player, attribute) * scaleDamage : player.getAttributeValue(attribute) * scaleDamage;
+    protected double getScaleTotal(Player player, Attribute attribute, float scaleDamage) {
+        return AttributeUtils.getTotal(player, attribute) * scaleDamage;
     }
 }

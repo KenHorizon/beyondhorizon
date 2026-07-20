@@ -17,7 +17,6 @@ import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class InfernalRaySkill extends AbstractDeathRaySkill {
 
@@ -29,7 +28,7 @@ public class InfernalRaySkill extends AbstractDeathRaySkill {
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        list.add(Component.translatable(createId(0), Maths.format(this.ADScale) + Maths.format(this.APScale), Utils.formattedWords(this.types.name())));
+        list.add(Component.translatable(createId(0), Maths.format(this.ADScale + this.APScale), Utils.formattedWords(this.types.name())));
         return list;
     }
 
@@ -48,7 +47,7 @@ public class InfernalRaySkill extends AbstractDeathRaySkill {
 
     @Override
     protected float additionalDamage(Player player, ItemStack itemStack) {
-        return (float) (this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, this.ADScale) + this.getScaleBonusAttribute(player, BHAttributes.ABILITY_POWER.get(), this.APScale));
+        return (float) (this.getScaleBonus(player, Attributes.ATTACK_DAMAGE, this.ADScale) + this.getScaleBonus(player, BHAttributes.ABILITY_POWER.get(), this.APScale));
     }
 
     @Override

@@ -34,7 +34,7 @@ public class Skills {
     public static final RegistryObject<Skill> PERFECT_STRIKE = registerSkill("perfect_strike", () -> new AlwaysCrtiAttackSkill(Constant.ALWAYS_CRIT_MODIFIER)
             .universal());
 
-    public static final RegistryObject<Skill> WRATH = registerSkill("wrath", () -> new AlwaysCrtiAttackSkill(Constant.ALWAYS_CRIT_MODIFIER)
+    public static final RegistryObject<Skill> WRAITH = registerSkill("wraith", () -> new AlwaysCrtiAttackSkill(Constant.ALWAYS_CRIT_MODIFIER)
             .universal());
 
     public static final RegistryObject<Skill> CELESTIAL_STRIKE = registerSkill("celestial_strike", () -> new CelestialStrikeSkill(Constant.STELLAR_AXE_SLASH_DAMAGE)

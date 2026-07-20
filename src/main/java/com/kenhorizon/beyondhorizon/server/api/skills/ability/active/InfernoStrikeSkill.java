@@ -6,7 +6,6 @@ import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
-import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.InfernalSpear;
@@ -29,7 +28,6 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 public class InfernoStrikeSkill extends WeaponActiveSkills {
@@ -66,7 +64,7 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
             if (!((double) this.getCastTimeFactor(player) < 0.01D)) {
                 if (!level.isClientSide()) {
                     this.addCooldownManaCost(player);
-                    double damage = Mth.lerp(this.getCastTimeFactor(player), this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, 0.05F), this.getScaleBonusAttribute(player, Attributes.ATTACK_DAMAGE, this.scaleDamage) * this.getCastTimeFactor(player));
+                    double damage = Mth.lerp(this.getCastTimeFactor(player), this.getScaleBonus(player, Attributes.ATTACK_DAMAGE, 0.05F), this.getScaleBonus(player, Attributes.ATTACK_DAMAGE, this.scaleDamage) * this.getCastTimeFactor(player));
                     if (level instanceof ServerLevel sLevel) {
                         sLevel.sendParticles(new RingParticleOptions(0, (float) Math.PI / 2f, 33, Colors.RED, 110F, false, RingParticles.Behavior.GROW), entity.getX(), entity.getY(), entity.getZ(), 1, 0,0, 0, 0);
                     }

@@ -315,14 +315,14 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
         return false;
     }
 
-    @Override
-    public Optional<TooltipComponent> getTooltipImage(ItemStack itemStack) {
-        if (this.renderTooltips) {
-            return Optional.of(new SkillTooltip(this));
-        } else {
-            return Optional.empty();
-        }
-    }
+//    @Override
+//    public Optional<TooltipComponent> getTooltipImage(ItemStack itemStack) {
+//        if (this.renderTooltips) {
+//            return Optional.of(new SkillTooltip(this));
+//        } else {
+//            return Optional.empty();
+//        }
+//    }
 
     private boolean isCharged(Player player, ItemStack stack){
         return player.getAttackStrengthScale(0.5F) > 0.9F;

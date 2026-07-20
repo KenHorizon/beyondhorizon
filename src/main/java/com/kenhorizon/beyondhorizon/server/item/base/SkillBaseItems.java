@@ -44,7 +44,7 @@ public class SkillBaseItems {
                 size--;
                 skill.addTooltipAttributes(itemStack, tooltip);
             }
-//            skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+            skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
         }
     }
 

@@ -11,6 +11,6 @@ public class BHChatformatting {
     public static final Style MAGIC_DAMAGE = Style.EMPTY.withColor(Colors.NAVY_BLUE);
     public static final Style HEAL = Style.EMPTY.withColor(Colors.GREEN);
 
-    public static final Style MANA = Style.EMPTY.withColor(Colors.GOLD);
-    public static final Style COOLDOWN = Style.EMPTY.withColor(Colors.GRAY);
+    public static final Style MANA = Style.EMPTY.withColor(Colors.CYAN);
+    public static final Style COOLDOWN = Style.EMPTY.withColor(Colors.LIGHT_GRAY);
 }

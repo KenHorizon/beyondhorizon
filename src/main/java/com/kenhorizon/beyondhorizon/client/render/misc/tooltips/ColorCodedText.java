@@ -13,20 +13,32 @@ import java.util.regex.Pattern;
 public class ColorCodedText {
     public static final Map<String, Integer> TEXT_COLORED = new HashMap<>();
     static {
+        TEXT_COLORED.put("based damage dealt", Colors.GOLD);
+        TEXT_COLORED.put("total damage dealt", Colors.GOLD);
+        TEXT_COLORED.put("damage dealt", Colors.GOLD);
         TEXT_COLORED.put("bonus ap", Colors.GOLD);
-        TEXT_COLORED.put("bonus ad", Colors.AZURE);
+        TEXT_COLORED.put("bonus ad", Colors.GOLD);
         TEXT_COLORED.put("on-hit", Colors.CORAL);
         TEXT_COLORED.put("basic attack", Colors.CORAL);
         TEXT_COLORED.put("ability damage", Colors.CORAL);
         TEXT_COLORED.put("hp", Colors.GREEN);
         TEXT_COLORED.put("current hp", Colors.GREEN);
-        TEXT_COLORED.put("target's current hp", Colors.GREEN);
-        TEXT_COLORED.put("target current hp", Colors.GREEN);
+        TEXT_COLORED.put("of their max hp", Colors.GREEN);
         TEXT_COLORED.put("max hp", Colors.GREEN);
-        TEXT_COLORED.put("target's max hp", Colors.GREEN);
         TEXT_COLORED.put("missing hp", Colors.GREEN);
+        TEXT_COLORED.put("based on current hp", Colors.GREEN);
+        TEXT_COLORED.put("based on max hp", Colors.GREEN);
+        TEXT_COLORED.put("based on missing hp", Colors.GREEN);
+        TEXT_COLORED.put("target's max hp", Colors.GREEN);
         TEXT_COLORED.put("target's missing hp", Colors.GREEN);
         TEXT_COLORED.put("target missing hp", Colors.GREEN);
+        TEXT_COLORED.put("target's current hp", Colors.GREEN);
+        TEXT_COLORED.put("target current hp", Colors.GREEN);
+        TEXT_COLORED.put("based on target's max hp", Colors.GREEN);
+        TEXT_COLORED.put("based on target's missing hp", Colors.GREEN);
+        TEXT_COLORED.put("based on target missing hp", Colors.GREEN);
+        TEXT_COLORED.put("based on target's current hp", Colors.GREEN);
+        TEXT_COLORED.put("based on target current hp", Colors.GREEN);
         TEXT_COLORED.put("health", Colors.GREEN);
         TEXT_COLORED.put("bonus health", Colors.GREEN);
         TEXT_COLORED.put("bonus hp", Colors.GREEN);
@@ -62,8 +74,12 @@ public class ColorCodedText {
         TEXT_COLORED.put("armor penetration", Colors.RED);
         TEXT_COLORED.put("movement speed", Colors.GREEN);
         TEXT_COLORED.put("increased damage", Colors.CORAL);
+        TEXT_COLORED.put("crit", Colors.CORAL);
     }
     private static final Pattern KEYWORD_PATTERN = buildPattern(TEXT_COLORED.keySet());
+    private static final Pattern NUMBER_PATTERN = Pattern.compile(
+            "[+-]?\\d+(?:\\.\\d+)?(?:\\s*-\\s*[+-]?\\d+(?:\\.\\d+)?)?%?"
+    );
 
     private static Pattern buildPattern(Set<String> words) {
         StringBuilder sb = new StringBuilder();
@@ -112,12 +128,45 @@ public class ColorCodedText {
         String combined = combinedBuilder.toString();
         Integer[] colorAt = new Integer[combined.length()];
         Matcher matcher = KEYWORD_PATTERN.matcher(combined);
+
+        List<int[]> keywordSpans = new ArrayList<>();
         while (matcher.find()) {
             String matched = combined.substring(matcher.start(), matcher.end()).toLowerCase(Locale.ROOT);
             Integer color = TEXT_COLORED.get(matched);
             if (color == null) continue;
             for (int i = matcher.start(); i < matcher.end(); i++) {
                 colorAt[i] = color;
+            }
+            keywordSpans.add(new int[]{matcher.start(), matcher.end(), color});
+        }
+
+        List<int[]> numberSpans = new ArrayList<>();
+        Matcher numMatcher = NUMBER_PATTERN.matcher(combined);
+        while (numMatcher.find()) {
+            numberSpans.add(new int[]{numMatcher.start(), numMatcher.end()});
+        }
+        Map<Integer, int[]> spanByEnd = new HashMap<>();
+        Map<Integer, int[]> spanByStart = new HashMap<>();
+        for (int[] span : numberSpans) {
+            spanByEnd.put(span[1], span);
+            spanByStart.put(span[0], span);
+        }
+
+        for (int[] kw : keywordSpans) {
+            int color = kw[2];
+
+            int idx = kw[0] - 1;
+            while (idx >= 0 && Character.isWhitespace(combined.charAt(idx))) idx--;
+            int[] beforeSpan = spanByEnd.get(idx + 1);
+            if (beforeSpan != null) {
+                for (int i = beforeSpan[0]; i < beforeSpan[1]; i++) colorAt[i] = color;
+            }
+
+            int idx2 = kw[1];
+            while (idx2 < combined.length() && Character.isWhitespace(combined.charAt(idx2))) idx2++;
+            int[] afterSpan = spanByStart.get(idx2);
+            if (afterSpan != null) {
+                for (int i = afterSpan[0]; i < afterSpan[1]; i++) colorAt[i] = color;
             }
         }
         List<Component> result = new ArrayList<>(n);
@@ -126,6 +175,44 @@ public class ColorCodedText {
         }
         return result;
     }
+
+    // Backup
+//    public static List<Component> applyFormatLines(List<Component> lines, Integer defaultColor) {
+//        int n = lines.size();
+//        List<List<TextRun>> lineRuns = new ArrayList<>(n);
+//        List<String> lineTexts = new ArrayList<>(n);
+//
+//        for (Component line : lines) {
+//            List<TextRun> runs = visitRuns(line);
+//            lineRuns.add(runs);
+//            StringBuilder sb = new StringBuilder();
+//            for (TextRun r : runs) sb.append(r.text);
+//            lineTexts.add(sb.toString());
+//        }
+//        StringBuilder combinedBuilder = new StringBuilder();
+//        int[] lineStart = new int[n];
+//        for (int i = 0; i < n; i++) {
+//            lineStart[i] = combinedBuilder.length();
+//            combinedBuilder.append(lineTexts.get(i));
+//            if (i < n - 1) combinedBuilder.append(' ');
+//        }
+//        String combined = combinedBuilder.toString();
+//        Integer[] colorAt = new Integer[combined.length()];
+//        Matcher matcher = KEYWORD_PATTERN.matcher(combined);
+//        while (matcher.find()) {
+//            String matched = combined.substring(matcher.start(), matcher.end()).toLowerCase(Locale.ROOT);
+//            Integer color = TEXT_COLORED.get(matched);
+//            if (color == null) continue;
+//            for (int i = matcher.start(); i < matcher.end(); i++) {
+//                colorAt[i] = color;
+//            }
+//        }
+//        List<Component> result = new ArrayList<>(n);
+//        for (int i = 0; i < n; i++) {
+//            result.add(rebuildLine(lineRuns.get(i), lineTexts.get(i), colorAt, lineStart[i], defaultColor));
+//        }
+//        return result;
+//    }
     private static Component rebuildLine(List<TextRun> runs, String lineText, Integer[] colorAt,
                                          int lineOffset, Integer defaultColor) {
         if (lineText.isEmpty()) return Component.empty();

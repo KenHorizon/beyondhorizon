@@ -54,9 +54,11 @@ public class WeaponPassiveSkills extends Skill implements IAttack, IEntityProper
     public float getLevel() {
         return level;
     }
+
     public void setMagnitude(float magnitude) {
         this.magnitude = magnitude;
     }
+
     public void setLevel(float level) {
         this.level = level;
     }

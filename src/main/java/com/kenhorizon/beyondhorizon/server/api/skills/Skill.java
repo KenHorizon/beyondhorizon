@@ -251,24 +251,14 @@ public abstract class Skill {
         return String.format("Skill:{Type: %s:%s, Type: %s, Settings:{Tooltip:%s, TooltipName:%s, TooltipDescription:%s}}", this.getId(), this.getName(), this.getType(), this.isTooltipEnable(), this.isTooltipNameEnable(), this.isTooltipDescriptionEnable());
     }
 
-    protected MutableComponent addTooltipTitle(boolean renderType) {
-        if (this.isTooltipNameEnable()) {
-            if (renderType) {
-                return this.spacing().append(Component.literal(Utils.capitalize(this.getType().getName().toLowerCase(Locale.ROOT))).withStyle(Tooltips.TOOLTIP[1]).append(this.spacing()).append(this.spacing().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD))));
-            } else {
-                return this.spacing().append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
-            }
-        }
-        return null;
-    }
-
     protected MutableComponent addTooltipTitle() {
-        return this.addTooltipTitle(false);
+        MutableComponent titleText = Component.literal("- ");
+        return titleText.append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GOLD));
     }
 
     public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
         if (!this.isTooltipEnable()) return;
-        if (this.addTooltipTitle() != null && this.isTooltipNameEnable()) {
+        if (this.isTooltipNameEnable()) {
             tooltip.add(this.addTooltipTitle());
         }
         if (!this.isTooltipDescriptionEnable()) return;
@@ -280,24 +270,6 @@ public abstract class Skill {
         } else if ((flag || isShiftPressed) && I18n.exists(this.createId())) {
             tooltip.addAll(this.addTooltipDescription(itemStack));
         }
-    }
-    public List<Component> addTooltip() {
-        boolean isShiftPressed = Utils.isShiftPressed();
-        Player player = BeyondHorizon.PROXY.clientPlayer();
-        ItemStack itemStack = PlayerData.getHeldingItem(player);
-        List<Component> tooltip = new ArrayList<>();
-        if (this.isTooltipEnable()) {
-            if (this.addTooltipTitle() != null && this.isTooltipNameEnable()) {
-                tooltip.add(this.addTooltipTitle());
-            }
-            if (this.isTooltipDescriptionEnable()) {
-                this.addTooltipDescriptionHeader(itemStack, tooltip);
-                for (var createTooltips : this.makeTooltips(itemStack)) {
-                    tooltip.add(ColorCodedText.applyFormat(createTooltips, Tooltips.TOOLTIP[0].getColor()));
-                }
-            }
-        }
-        return tooltip;
     }
 
     protected void addTooltipDescriptionHeader(ItemStack itemStack, List<Component> tooltip) {

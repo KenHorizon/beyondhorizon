@@ -2,35 +2,33 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.level.IAbilityInfo;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
-import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
+import com.kenhorizon.beyondhorizon.server.init.BHChatformatting;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
+import com.kenhorizon.beyondhorizon.server.item.ManaCostType;
 import net.minecraft.ChatFormatting;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
 
 import java.util.*;
 
-public abstract class AccessoryActiveSkill extends Accessory implements IEntityProperties, IAttack, IAccessoryEvent {
-    public enum ManaCostType {
-        DEFAULT,
-        PER_SECOND,
-        PERCENTAGE
-    }
+public abstract class AccessoryActiveSkill extends Accessory implements IEntityProperties, IAttack, IAccessoryEvent, IAbilityInfo {
     protected ManaCostType manaCostType;
     protected boolean active;
     protected Map<Integer, Boolean> activeSlots = new HashMap<>();
+    private double manaCost;
+    private int castTime;
+    private int maxCastTime;
+    private int cooldown;
 
     public AccessoryActiveSkill(ManaCostType manaCostType, float magnitude, int level) {
         super(ItemAbilityType.ACTIVE, magnitude, level);
@@ -47,17 +45,33 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
     }
 
     @Override
-    public Optional<IEntityProperties> IEntityProperties() {
+    protected MutableComponent addTooltipTitle() {
+        Minecraft mc = Minecraft.getInstance();
+        PlayerData playerData = Capabilities.data(mc.player);
+        MutableComponent active = this.spacing().append(Component.literal("[A]").withStyle(Tooltips.TOOLTIP[1]).append(this.spacing()));
+        if (playerData != null && !this.isPassive()) {
+            float factor = playerData.getCooldownPercent(this.getId());
+            if (factor > 0.0F) {
+                return active.append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GRAY)
+                        .append(CommonComponents.SPACE)
+                        .append(Component.translatable(Tooltips.COOLDOWN_IN_NAME, (int) ((int) (this.getCooldown() / 20.0F) * factor)).withStyle(ChatFormatting.GOLD)));
+            }
+        }
+        return super.addTooltipTitle();
+    }
+
+    @Override
+    public Optional<IEntityProperties> entityProperties() {
         return Optional.of(this);
     }
 
     @Override
-    public Optional<IAttack> IAttackCallback() {
+    public Optional<IAttack> attack() {
         return Optional.of(this);
     }
 
     @Override
-    public Optional<IAccessoryEvent> IAccessory() {
+    public Optional<IAccessoryEvent> accessory() {
         return Optional.of(this);
     }
 
@@ -76,16 +90,18 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
         }
 
         String tooltips;
-        if (this.getManaCostType() == ManaCostType.PER_SECOND) {
-            tooltips = Tooltips.TOOLTIP_MANA_COST_PER_SECOND;
+        MutableComponent manaText = Component.literal("- ");
+        MutableComponent cdText = Component.literal("- ");
+        if (this.getManaCostType() == ManaCostType.PER_SECONDS) {
+            tooltips = Tooltips.MANA_COST_PER_SECOND;
         } else if (this.getManaCostType() == ManaCostType.PERCENTAGE) {
-            tooltips = Tooltips.TOOLTIP_MANA_COST_PERCENTAGES;
+            tooltips = Tooltips.MANA_COST_PERCENTAGES;
         } else {
-            tooltips = Tooltips.TOOLTIP_MANA_COST;
+            tooltips = Tooltips.MANA_COST;
         }
-        tooltip.add(Component.translatable(tooltips, this.getManaCost()).withStyle(ChatFormatting.UNDERLINE).withStyle(style -> style.withColor(Colors.AZURE)));
+        tooltip.add(manaText.append(Component.translatable(tooltips, this.getManaCost()).withStyle(BHChatformatting.MANA)));
         if (this.getCooldown() > 0) {
-            tooltip.add(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (int) (this.getCooldown() / 20)).withStyle(ChatFormatting.UNDERLINE).withStyle(style -> style.withColor(Colors.GRAY)));
+            tooltip.add(cdText.append(Component.translatable(Tooltips.COOLDOWN, (int) (this.getCooldown() / 20)).withStyle(BHChatformatting.COOLDOWN)));
         }
     }
 
@@ -102,17 +118,49 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
         this.setActive(!this.isActive(), slot);
     }
 
-    protected double getManaCost() {
-        return  0;
+    @Override
+    public void setManaCost(double manaCost) {
+        this.manaCost = manaCost;
     }
 
-    protected int getCooldown() {
-        return 0;
+    @Override
+    public void setCastTime(int castTime) {
+        if (castTime >= this.getMaxCastTime()) {
+            castTime = this.getMaxCastTime();
+        }
+        this.castTime = castTime;
     }
 
-    protected int getCastTime() {
-        return 0;
+    @Override
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
     }
+
+    @Override
+    public int getCastTime() {
+        return this.castTime;
+    }
+
+    @Override
+    public int getCooldown() {
+        return this.cooldown;
+    }
+
+    @Override
+    public double getManaCost() {
+        return this.manaCost;
+    }
+
+    @Override
+    public int getMaxCastTime() {
+        return this.maxCastTime;
+    }
+
+    @Override
+    public void setMaxCastTime(int maxCastTime) {
+        this.maxCastTime = maxCastTime;
+    }
+
 
     @Override
     public void onUnequip(Player player, ItemStack itemStack, int slot) {
@@ -131,11 +179,11 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
                 this.onActiveAbility(player, itemStack);
                 this.toggleActive(slot);
             } else if (playerData.isOnCooldown(this.getId())) {
-                player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_ON_COOLDOWN)
+                player.displayClientMessage(Component.translatable(Tooltips.ON_COOLDOWN)
                         .append(CommonComponents.space())
-                        .append(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (int)((this.getCooldown() / 20) * playerData.getCooldownPercent(this.getId())))).withStyle(ChatFormatting.RED), true);
+                        .append(Component.translatable(Tooltips.COOLDOWN, (int)((this.getCooldown() / 20) * playerData.getCooldownPercent(this.getId())))).withStyle(ChatFormatting.RED), true);
             } else {
-                player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_NOT_ENOUGH_MANA).withStyle(ChatFormatting.RED), true);
+                player.displayClientMessage(Component.translatable(Tooltips.NOT_ENOUGH_MANA).withStyle(ChatFormatting.RED), true);
             }
         } catch (Exception e) {
             BeyondHorizon.LOGGER.warn("" + e);
@@ -174,7 +222,7 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
         this.activeSlots.forEach((slots, active) -> {
             if (entity instanceof Player player) {
                 PlayerData data = Capabilities.data(player);
-                if (data != null && active && this.getManaCostType() == ManaCostType.PER_SECOND) {
+                if (data != null && active && this.getManaCostType() == ManaCostType.PER_SECONDS) {
                     if (player.tickCount % 10 == 0) {
                         data.removeMana(this.getManaCost(), true);
                     }

@@ -16,10 +16,8 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -82,7 +80,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
         if (entity instanceof Player player) {
             this.accessories.forEach((accessory) -> {
-                accessory.IEntityProperties().ifPresent(callback -> {
+                accessory.entityProperties().ifPresent(callback -> {
                     callback.onItemUpdate(itemStack, level, player, slot, isSelected);
                 });
             });
@@ -91,20 +89,19 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
 
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-        int size = this.accessories.size();
+        int size = this.accessories.stream().filter(accessory -> !(accessory instanceof AttributeOnlyAccessory)).toList().size();
         for (int i = 0; i < this.accessories.size(); i++) {
             Accessory accessory = this.accessories.get(i);
             if (i == 0) {
                 if (this.getItemGroup() != AccessoryItemGroup.NONE) {
-                    tooltip.add(Component.translatable(Tooltips.TOOLTIP_ACCESSORY).withStyle(ChatFormatting.GOLD).append(CommonComponents.space()).append(Component.translatable(Tooltips.TOOLTIP_ACCESSORY_TYPE).withStyle(ChatFormatting.GRAY)));
+                    tooltip.add(Component.translatable(Tooltips.ACCESSORY).withStyle(ChatFormatting.GOLD).append(CommonComponents.space()).append(Component.translatable(Tooltips.ACCESSORY_TYPE).withStyle(ChatFormatting.GRAY)));
                 } else {
-                    tooltip.add(Component.translatable(Tooltips.TOOLTIP_ACCESSORY).withStyle(ChatFormatting.GOLD));
+                    tooltip.add(Component.translatable(Tooltips.ACCESSORY).withStyle(ChatFormatting.GOLD));
                 }
             }
             UUID uuid = UUID.nameUUIDFromBytes("accessory".getBytes());
             Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, itemStack);
             if (!map.isEmpty() && i == 0) {
-                size--;
                 accessory.addTooltipAttributes(itemStack, tooltip, map);
             }
             accessory.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
@@ -116,8 +113,8 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
                 tooltip.add(Component.translatable(Tooltips.ACCESSORY_LIMITED_TO, comp).withStyle(Tooltips.TOOLTIP[1]).withStyle(ChatFormatting.UNDERLINE));
             } else {
                 tooltip.add(Component.translatable(Tooltips.ACCESSORY_LIMITED_TO, Utils.formattedWords(this.getItemGroup().name())).withStyle(Tooltips.TOOLTIP[1]).withStyle(ChatFormatting.UNDERLINE));
-
             }
+            tooltip.add(CommonComponents.EMPTY);
         }
     }
     @Override
@@ -133,7 +130,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
     @Override
     public boolean makePiglinsNeutral(Player player) {
         for (Accessory accessory : this.accessories) {
-            Optional<IEntityProperties> callback = accessory.IEntityProperties();
+            Optional<IEntityProperties> callback = accessory.entityProperties();
             if (callback.isPresent()) {
                 return callback.get().makePiglinsNeutral();
             }
@@ -145,7 +142,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
     public boolean canWalkOnPoweredSnow(Player player) {
         boolean flag = false;
         for (Accessory accessory : this.accessories) {
-            Optional<IEntityProperties> callback = accessory.IEntityProperties();
+            Optional<IEntityProperties> callback = accessory.entityProperties();
             if (callback.isPresent()) {
                 flag = callback.get().canWalkOnPoweredSnow();
             }
@@ -157,7 +154,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
     public boolean isFreezeImmune(Player player) {
         boolean flag = false;
         for (Accessory accessory : this.accessories) {
-            Optional<IEntityProperties> callback = accessory.IEntityProperties();
+            Optional<IEntityProperties> callback = accessory.entityProperties();
             if (callback.isPresent()) {
                 flag = callback.get().isFreezeImmune();
             }

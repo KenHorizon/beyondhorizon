@@ -86,7 +86,7 @@ public abstract class ArmorAbility implements IArmorAbility {
 
     public void addTooltips(List<Component> tooltips, ItemStack itemStack, Player player) {
         tooltips.add(CommonComponents.space());
-        tooltips.add(Component.translatable(Tooltips.TOOLTIP_FULL_BONUS_ARMOR_SET).append(CommonComponents.space()).append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.DARK_AQUA)));
+        tooltips.add(Component.translatable(Tooltips.FULL_BONUS_ARMOR_SET).append(CommonComponents.space()).append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.DARK_AQUA)));
         this.addTooltipPerPiece(tooltips, itemStack, player);
         this.addTooltipFullBonusSet(tooltips, itemStack, player);
     }

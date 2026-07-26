@@ -53,7 +53,7 @@ public class ServerboundAcessoryKeyPacket {
                                 ItemStack itemStack = stacks.getStackInSlot(i);
                                 if (!itemStack.isEmpty() && itemStack.getItem() instanceof IAccessoryItem caller) {
                                     for (Accessory accessory : caller.getAccessories()) {
-                                        Optional<IAccessoryEvent> optional = accessory.IAccessory();
+                                        Optional<IAccessoryEvent> optional = accessory.accessory();
                                         optional.ifPresent(callback -> {
                                             callback.onKeybindPressed(player, itemStack, this.slots);
                                         });

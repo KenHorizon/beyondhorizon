@@ -45,7 +45,7 @@ public class CritConvertDamageSkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         if (target == null || attacker == null) return;
         target.invulnerableTime = 0;
         var instance = attacker.getAttributes();

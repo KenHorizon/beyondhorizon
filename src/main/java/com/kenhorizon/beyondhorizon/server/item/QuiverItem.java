@@ -67,7 +67,7 @@ public class QuiverItem extends BasicItem {
                         quiverItemStackHandler.setAmmoCollect(ammoCollect);
                         String collectStatus = ammoCollect ? "enabled" : "disabled";
                         ChatFormatting collectColour = ammoCollect ? ChatFormatting.GREEN : ChatFormatting.RED;
-                        player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_AMMO_COLLECT, Utils.capitalize(collectStatus)).withStyle(collectColour), true);
+                        player.displayClientMessage(Component.translatable(Tooltips.AMMO_COLLECT, Utils.capitalize(collectStatus)).withStyle(collectColour), true);
 
                     }
                 });
@@ -106,7 +106,7 @@ public class QuiverItem extends BasicItem {
                 boolean ammoCollect = quiverItemStackHandler.isAmmoCollect();
                 String collectStatus = ammoCollect ? "enabled" : "disabled";
                 ChatFormatting collectColour = ammoCollect ? ChatFormatting.GREEN : ChatFormatting.RED;
-                tooltip.add(Component.translatable(Tooltips.TOOLTIP_AMMO_COLLECT, Utils.capitalize(collectStatus)).withStyle(collectColour));
+                tooltip.add(Component.translatable(Tooltips.AMMO_COLLECT, Utils.capitalize(collectStatus)).withStyle(collectColour));
 
             }
         });

@@ -5,30 +5,19 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
-import com.kenhorizon.beyondhorizon.server.api.ISkillSlots;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
-import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
-import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
-import com.kenhorizon.beyondhorizon.server.inventory.VoidBagMenu;
 import com.kenhorizon.beyondhorizon.server.item.*;
 import com.kenhorizon.beyondhorizon.server.item.base.SkillBaseItems;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
-import com.kenhorizon.beyondhorizon.server.item.tooltips.SkillTooltip;
-import com.kenhorizon.beyondhorizon.server.item.tooltips.VoidBagTooltip;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -40,7 +29,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
@@ -51,7 +39,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -314,15 +301,6 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
         }
         return false;
     }
-
-//    @Override
-//    public Optional<TooltipComponent> getTooltipImage(ItemStack itemStack) {
-//        if (this.renderTooltips) {
-//            return Optional.of(new SkillTooltip(this));
-//        } else {
-//            return Optional.empty();
-//        }
-//    }
 
     private boolean isCharged(Player player, ItemStack stack){
         return player.getAttackStrengthScale(0.5F) > 0.9F;

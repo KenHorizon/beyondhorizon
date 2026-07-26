@@ -20,14 +20,13 @@ import java.util.UUID;
 public class WildfireArmorAbility extends ArmorAbilityMagnitude {
     private static final UUID WILDFIRE_INCREASED_DAMAGE = UUID.fromString("3a4ae5af-4b46-4c57-9b3b-2ca40be2c89a");
     private float increasedDamage;
-    private float damageScale;
+    private final float damageScale;
     public WildfireArmorAbility(float shockwaveDamage, float damageScale, float increaseDamage) {
         this.increasedDamage = increaseDamage;
         this.damageScale = damageScale;
         this.setMagnitude(shockwaveDamage);
     }
     public void addTooltipFullBonusSet(List<Component> tooltips, ItemStack itemStack, Player player) {
-        float totalDamage = (float) EntityUtils.getAttackDamage(player, this.damageScale);
         tooltips.add(Component.translatable(this.createId(0), Maths.format(this.getMagnitude()), this.damageScale).withStyle(Tooltips.TOOLTIP[0]));
         tooltips.add(Component.translatable(this.createId(1), Maths.format0(this.increasedDamage)).withStyle(Tooltips.TOOLTIP[0]));
     }
@@ -67,7 +66,7 @@ public class WildfireArmorAbility extends ArmorAbilityMagnitude {
 
 
     @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         target.setSecondsOnFire(Constant.FIRE_EFFECT);
     }
 }

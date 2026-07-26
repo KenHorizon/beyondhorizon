@@ -13,9 +13,8 @@ public class BHConfigs {
     public static int ACCESSORY_BUTTON_X = 0;
     public static int ACCESSORY_BUTTON_Y = 0;
     //CLIENT
+    public static boolean ALWAYS_SHOW_SKILL_ABILITY = true;
     public static boolean ATTRIBUTE_TOOLTIP_OVERHAUl = true;
-    public static boolean ADVANCED_TOOLTIP_ACCESSORY = true;
-    public static boolean ADVANCED_TOOLTIP_SKILL = true;
     public static boolean ADVANCED_TOOLTIP = true;
     public static boolean DAMAGE_INDICATOR = true;
     public static boolean DAMAGE_INDICATOR_VANILLA_FONT = true;
@@ -37,10 +36,9 @@ public class BHConfigs {
         try {
             BeyondHorizon.LOGGER.info("Syncing all configs here!");
             //---------------------------------------------------------------------//
+            ALWAYS_SHOW_SKILL_ABILITY = ModClientConfig.ALWAYS_SHOW_SKILL_ABILITY.get();
             ATTRIBUTE_TOOLTIP_OVERHAUl = ModClientConfig.ATTRIBUTE_TOOLTIP_OVERHAUl.get();
             ADVANCED_TOOLTIP = ModClientConfig.ADVANCED_TOOLTIP.get();
-            ADVANCED_TOOLTIP_ACCESSORY = ModClientConfig.ADVANCED_TOOLTIP_ACCESSORY.get();
-            ADVANCED_TOOLTIP_SKILL = ModClientConfig.ADVANCED_TOOLTIP_SKILL.get();
             SCREEN_SHAKE = ModClientConfig.SCREEN_SHAKE.get();
             SCREEN_SHAKE_AMOUNT = ModClientConfig.SCREEN_SHAKE_AMOUNT.get();
             GAME_HUD = ModClientConfig.GAME_HUD.get();

@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -31,9 +32,9 @@ public class StringBowAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         if (attacker == null || target == null) return;
-        if (damageSource.is(DamageTypes.ARROW) && this.stringBowType == StringBowType.HEAVY) {
+        if (source.is(DamageTypes.ARROW) && this.stringBowType == StringBowType.HEAVY) {
             double d0 = attacker.getX() - target.getX();
             double d1;
             for(d1 = attacker.getZ() - target.getZ(); d0 * d0 + d1 * d1 < 1.0E-4D; d1 = (Math.random() - Math.random()) * 0.01D) {

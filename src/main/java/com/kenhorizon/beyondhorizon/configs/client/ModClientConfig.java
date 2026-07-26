@@ -15,10 +15,9 @@ public class ModClientConfig {
     public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR_TEXT_BOLD;
     public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR_COLOR_FORMAT;
     public static ForgeConfigSpec.BooleanValue ATTRIBUTE_TOOLTIP_OVERHAUl;
-    public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_ACCESSORY;
-    public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP_SKILL;
     public static ForgeConfigSpec.BooleanValue ADVANCED_TOOLTIP;
     public static ForgeConfigSpec.BooleanValue SCREEN_SHAKE;
+    public static ForgeConfigSpec.BooleanValue ALWAYS_SHOW_SKILL_ABILITY;
     public static ForgeConfigSpec.IntValue SCREEN_SHAKE_AMOUNT;
     public static ForgeConfigSpec.IntValue ACCESSORY_BUTTON_X;
     public static ForgeConfigSpec.IntValue ACCESSORY_BUTTON_Y;
@@ -35,6 +34,9 @@ public class ModClientConfig {
 
     public ModClientConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Beyond Horizon | Client Configs");
+        ALWAYS_SHOW_SKILL_ABILITY = builder
+                .comment("Always show the skill ability's description")
+                .define("Always Show Skill Ability", true);
         REDUCE_DEBUG = builder
                 .comment("Reduce the Debug infos by removing some of it.")
                 .define("Reduce Debug Infos", true);
@@ -89,14 +91,6 @@ public class ModClientConfig {
         ADVANCED_TOOLTIP = builder
                 .comment(" Extend item's tooltip information")
                 .define("Show Advanced Tooltip", true);
-        ADVANCED_TOOLTIP_ACCESSORY = builder
-                .comment("Extend item's tooltip information only in accessory")
-                .comment("[Disabling Advance Tooltip will automatic disabled this]")
-                .define("Show Advanced Tooltip On Accessory", true);
-        ADVANCED_TOOLTIP_SKILL = builder
-                .comment("Extend item's tooltip information only in accessory")
-                .comment("[Disabling Advance Tooltip will automatic disabled this]")
-                .define("Show Advanced Tooltip On Skill", true);
         builder.pop();
     }
 

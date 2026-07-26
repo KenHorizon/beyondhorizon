@@ -10,6 +10,7 @@ public class StackableTagInstance {
 
     public static final StackableTags ENERGIZE = new StackableTags("energize", 100);
     public static final StackableTags SAINT_DEMON_CROWN_STACKS = new StackableTags("saint_demon_crown_stacks");
+    public static final StackableTags CARVE = new StackableTags("carve");
 
     private static final List<StackableTags> TAGS = new ArrayList<>();
 
@@ -24,5 +25,6 @@ public class StackableTagInstance {
     public static void registerAll() {
         TAGS.add(ENERGIZE);
         TAGS.add(SAINT_DEMON_CROWN_STACKS);
+        TAGS.add(CARVE);
     }
 }

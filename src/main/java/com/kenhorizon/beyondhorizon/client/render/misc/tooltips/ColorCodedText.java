@@ -18,12 +18,14 @@ public class ColorCodedText {
         TEXT_COLORED.put("damage dealt", Colors.GOLD);
         TEXT_COLORED.put("bonus ap", Colors.GOLD);
         TEXT_COLORED.put("bonus ad", Colors.GOLD);
+        TEXT_COLORED.put("on-kill", Colors.CORAL);
         TEXT_COLORED.put("on-hit", Colors.CORAL);
         TEXT_COLORED.put("basic attack", Colors.CORAL);
         TEXT_COLORED.put("ability damage", Colors.CORAL);
         TEXT_COLORED.put("hp", Colors.GREEN);
         TEXT_COLORED.put("current hp", Colors.GREEN);
         TEXT_COLORED.put("of their max hp", Colors.GREEN);
+        TEXT_COLORED.put("bonus max hp", Colors.GREEN);
         TEXT_COLORED.put("max hp", Colors.GREEN);
         TEXT_COLORED.put("missing hp", Colors.GREEN);
         TEXT_COLORED.put("based on current hp", Colors.GREEN);

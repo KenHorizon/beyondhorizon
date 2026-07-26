@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.handler;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -15,13 +16,15 @@ import org.jetbrains.annotations.Nullable;
 
 public class UndyingTotemAbility {
     public static boolean onUse(ServerLevel world, ServerPlayer player) {
+
+        Minecraft mc = Minecraft.getInstance();
         if (player.getMainHandItem().getItem().equals(Items.TOTEM_OF_UNDYING) || player.getOffhandItem().getItem().equals(Items.TOTEM_OF_UNDYING)) return true;
         ItemStack totemstack = getItemStack(player);
 
         if (totemstack == null) {
             return true;
         }
-
+        mc.gameRenderer.displayItemActivation(totemstack);
         player.awardStat(Stats.ITEM_USED.get(Items.TOTEM_OF_UNDYING));
         CriteriaTriggers.USED_TOTEM.trigger(player, totemstack);
         player.setHealth(1.0F);

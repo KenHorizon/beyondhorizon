@@ -4,6 +4,8 @@ import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryActiveSkill;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.item.ManaCostType;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -20,7 +22,8 @@ public class StalkerAccessory extends AccessoryActiveSkill {
     private static final AttributeModifier STEALTH = new AttributeModifier(STEALTH_UUID, "Bonus stealth", 1.0D, AttributeModifier.Operation.ADDITION);
 
     public StalkerAccessory() {
-        super(ManaCostType.PER_SECOND);
+        super(ManaCostType.PER_SECONDS);
+        this.setCooldown(Maths.sec(1));
     }
 
     @Override
@@ -54,15 +57,5 @@ public class StalkerAccessory extends AccessoryActiveSkill {
                 attr.addTransientModifier(STEALTH);
             }
         }
-    }
-
-    @Override
-    protected int getCooldown() {
-        return 1;
-    }
-
-    @Override
-    protected double getManaCost() {
-        return 2;
     }
 }

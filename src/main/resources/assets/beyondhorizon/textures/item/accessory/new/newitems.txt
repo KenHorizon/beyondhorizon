@@ -118,7 +118,8 @@ Passive: Tampering Soul
  -> On-kill has chance 0%-20% (based on critical strike) chance target to explode, dealing 50% weapon base damage
 
 
-
+Faded Moon: Convert 50% Max Mana to (Total Convert to 50% Max Mana)% Increased Damage
+Dark Sun: Convert AP to AD 1 : 0.25 and 25% Damage dealt convert into true damage
 
 
 

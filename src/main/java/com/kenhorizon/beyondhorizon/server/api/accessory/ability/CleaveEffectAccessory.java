@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -41,7 +42,7 @@ public abstract class CleaveEffectAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         target.invulnerableTime = 0;
         target.hurt(BHDamageTypes.physicalDamage(attacker, null), this.dealDamage(target, attacker, damageDealt, itemStack));
         target.invulnerableTime = 0;

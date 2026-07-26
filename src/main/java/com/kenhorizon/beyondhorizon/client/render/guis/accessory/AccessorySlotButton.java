@@ -62,7 +62,7 @@ public class AccessorySlotButton extends Button {
             this.setX(((InventoryScreen) parentGui).getGuiLeft() + 58);
             if (mouseX >= getX() && mouseX <= getX() + 16 && mouseY >= getY() && mouseY <= getY() + 16) {
                 List<Component> text = new ArrayList<>();
-                text.add(Component.translatable(Tooltips.TOOLTIP_ACCESSORY));
+                text.add(Component.translatable(Tooltips.ACCESSORY));
                 graphics.renderComponentTooltip(mc.font, text, mouseX, mouseY);
             }
             graphics.blit(BUTTON, this.getX(), this.getY(), 0, offset, 16, 16, 16, 32);
@@ -70,7 +70,7 @@ public class AccessorySlotButton extends Button {
         if (this.parentGui instanceof AccessorySlotScreen) {
             if (mouseX >= getX() && mouseX <= getX() + 16 && mouseY >= getY() && mouseY <= getY() + 16) {
                 List<Component> text = new ArrayList<>();
-                text.add(Component.translatable(Tooltips.TOOLTIP_INVENTORY));
+                text.add(Component.translatable(Tooltips.INVENTORY));
                 graphics.renderComponentTooltip(mc.font, text, mouseX, mouseY);
             }
             graphics.blit(BUTTON, this.getX(), this.getY(), 0, offset, 16, 16, 16, 32);
@@ -79,7 +79,7 @@ public class AccessorySlotButton extends Button {
         if (this.parentGui instanceof CreativeModeInventoryScreen creativInventory) {
             if (mouseX >= getX() && mouseX <= getX() + 16 && mouseY >= getY() && mouseY <= getY() + 16) {
                 List<Component> text = new ArrayList<>();
-                text.add(Component.translatable(Tooltips.TOOLTIP_ACCESSORY));
+                text.add(Component.translatable(Tooltips.ACCESSORY));
                 graphics.renderComponentTooltip(mc.font, text, mouseX, mouseY);
             }
             boolean isOnInventoryTab = creativInventory.isInventoryOpen();

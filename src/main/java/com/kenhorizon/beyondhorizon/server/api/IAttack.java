@@ -8,49 +8,105 @@ import net.minecraft.world.item.ItemStack;
 
 public interface IAttack {
 
+    /**
+     * Handle customizing the post migitation damage modifications
+     * @param damageDealt Amount of damage taken recevied
+     * @param source The source of damage recevied
+     * @param entity Living Target of Attacker
+     * */
     default float damageTaken(float damageDealt, DamageSource source, LivingEntity entity) {
         return damageDealt;
     }
 
+    /**
+     * Handle customizing the pre migitation damage
+     * {@code Pre-Mitigation the damage after all the modification and reduction applied}
+     * @param damageDealt Amount of damage taken recevied
+     * @param source The source of damage recevied
+     * @param attacker The entity who's causing
+     * @param target Living Target of Attacker
+     * */
     default float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
         return damageDealt;
     }
 
+    /**
+     * Handle customizing the post migitation damage modifications
+     * @param damageDealt Amount of damage taken recevied
+     * @param source The source of damage recevied
+     * @param attacker The entity who's causing
+     * @param target Living Target of Attacker
+     * */
     default float postMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
         return damageDealt;
     }
 
-    default void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {}
+    /**
+     * Handle if target is being hit by any source
+     * @param damageDealt Amount of damage taken recevied
+     * @param source The source of damage recevied
+     * @param attacker The entity who's causing
+     * @param target Living Target of Attacker
+     * */
+    default void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {}
 
+    /**
+     * Handle if player is using attack keys
+     * */
     default boolean onLeftClickProperties(ItemStack itemStack, Player player) {
         return false;
     }
 
+    /**
+     * Handle if player is using attack keys
+     * */
     default void onLeftClick(ItemStack itemStack, Player player) {}
 
+    /**
+     * Handle if player is using attack keys and a success hit is landed
+     * */
     default boolean onLeftClickEntity(ItemStack itemStack, Player player, Entity entity) {
         return false;
     }
 
-    default void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {}
+    /**
+     * Handle if target is killed on the action
+     * @param source The source of damage recevied
+     * @param attacker The entity who's causing
+     * @param target Living Target of Attacker
+     * */
+    default void onEntityKilled(DamageSource source, LivingEntity attacker, LivingEntity target) {}
 
-    default boolean onDeathKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {
-        return false;
-    }
-
+    /**
+     * Handle modification of amount of exp drops/values of exp orbs
+     * */
     default int expDrop(int dropExperience, int originalAmount, LivingEntity target, Player player) {
         return dropExperience;
     }
 
+    /**
+     * Check if the player's attack cooldown is ready to use
+     * */
     default boolean attackFullyCharged(Player player, ItemStack itemStack) {
         return player.getAttackStrengthScale(0.5F) > 0.9F;
     }
 
+    /**
+     * Handle if attack is killed on the action
+     * @param source The source of damage recevied
+     * @param player The entity who's causing
+     * @param target Living Target of Attacker
+     * */
     default boolean canEntiyReceiveDamage(Player player, LivingEntity target, DamageSource source) {
         return false;
     }
 
-    default boolean onEntityDeath(Player player, ItemStack itemStack) {
+    /**
+     * Handle if holder is killed on the action
+     * @param itemStack The source of damage recevied
+     * @param entity The entity who's causing
+     * */
+    default boolean onEntityDeath(LivingEntity entity, ItemStack itemStack) {
         return false;
     }
 

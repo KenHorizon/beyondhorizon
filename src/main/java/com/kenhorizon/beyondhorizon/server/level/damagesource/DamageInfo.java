@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import net.minecraft.nbt.CompoundTag;
@@ -32,10 +33,12 @@ public class DamageInfo implements IDamageInfo {
     }
 
     @Override
-    public void setReceivedCritDamage(boolean receivedCritDamage) {
-        this.isDamageCrit = receivedCritDamage;
+    public void setReceivedCritDamage() {
+        this.isDamageCrit = true;
     }
-
+    public void resetReceivedCritDamage() {
+        this.isDamageCrit = false;
+    }
     @Override
     public boolean isReceivedCritDamage() {
         return this.isDamageCrit;
@@ -96,6 +99,7 @@ public class DamageInfo implements IDamageInfo {
         this.setPostDamage(0);
         this.setPreStoredDamage(0);
         this.setPostStoredDamage(0);
+        this.resetReceivedCritDamage();
         this.setLastAttacker(null);
         this.setDamageSource(null);
     }

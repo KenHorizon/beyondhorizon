@@ -15,7 +15,7 @@ public class AttributeOnlyAccessory extends Accessory implements IAccessoryEvent
         this.setTooltipEnableName(false);
     }
     @Override
-    public Optional<IAccessoryEvent> IAccessory() {
+    public Optional<IAccessoryEvent> accessory() {
         return Optional.of(this);
     }
 }

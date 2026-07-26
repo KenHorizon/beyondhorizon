@@ -30,6 +30,7 @@ public final class AccessoryHelper {
             return LazyOptional.empty();
         }
     }
+
     public static LazyOptional<IAccessory> getAccessory(ItemStack stack) {
         return stack.getCapability(BHCapabilties.ACCESSORY_ITEM);
     }
@@ -138,24 +139,26 @@ public final class AccessoryHelper {
         for (int i = 0; i < stacks.getSlots(); ++i) {
             ItemStack inSlotItemStack = stacks.getStackInSlot(i);
             if (inSlotItemStack.isEmpty()) continue;
-            if (inSlotItemStack.getItem() instanceof IAccessoryItem accessoryItem) {
-                boolean flag = ItemStack.isSameItem(inSlotItemStack, outsideStack);
-                boolean itemGroupLimitation = accessoryItem.checkIfSharingGroupTogether(inSlotItemStack, outsideStack);
-                boolean isBasic = accessoryItem.isBasic();
-                boolean singleEffectLimitation = accessoryItem.checkIfNameLimitation(inSlotItemStack, outsideStack);
-                if (isBasic) continue;
-                if (!flag && singleEffectLimitation) {
-                    return false;
-                } else if (itemGroupLimitation) {
-                    return false;
-                }
+
+            if (!(inSlotItemStack.getItem() instanceof IAccessoryItem accessoryItem)) continue;
+
+            boolean flag = ItemStack.isSameItem(inSlotItemStack, outsideStack);
+            boolean itemGroupLimitation = accessoryItem.checkIfSharingGroupTogether(inSlotItemStack, outsideStack);
+            boolean isBasic = accessoryItem.isBasic();
+            boolean singleEffectLimitation = accessoryItem.checkIfNameLimitation(inSlotItemStack, outsideStack);
+
+
+            if (isBasic) continue;
+
+            if (itemGroupLimitation) {
+                return false;
+            }
+
+            if (flag && singleEffectLimitation) {
+                return false;
             }
         }
         return true;
-    }
-
-    private static String getItemName(ItemStack itemStack) {
-        return itemStack.getItem().getDescription().getString();
     }
 
     public static List<ItemStack> getAccessoryItems(IAccessoryStackHandler handler) {

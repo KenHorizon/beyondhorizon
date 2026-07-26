@@ -18,6 +18,7 @@ public class GainRandomPotionAccessory extends AccessoryActiveSkill {
     public GainRandomPotionAccessory(List<MobEffect> effectList, int potionLevel) {
         this.potionLevel = potionLevel;
         this.effectList = effectList;
+        this.setCooldown(Maths.sec(30));
     }
 
     public GainRandomPotionAccessory(int potionLevel) {
@@ -28,10 +29,5 @@ public class GainRandomPotionAccessory extends AccessoryActiveSkill {
     public void onActiveAbility(Player player, ItemStack itemStack) {
         MobEffect effect = this.effectList.get(player.getRandom().nextInt(this.effectList.size()));
         player.addEffect(new MobEffectInstance(effect, Maths.sec(30), this.potionLevel, true, true, true));
-    }
-
-    @Override
-    protected int getCooldown() {
-        return Maths.sec(30);
     }
 }

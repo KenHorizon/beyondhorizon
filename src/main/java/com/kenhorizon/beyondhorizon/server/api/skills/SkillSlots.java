@@ -1,8 +1,6 @@
-package com.kenhorizon.beyondhorizon.server.api;
+package com.kenhorizon.beyondhorizon.server.api.skills;
 
-import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.ItemStack;
 
 public class SkillSlots implements ISkillSlots {
     public static final String NBT_SLOTS = "slots";

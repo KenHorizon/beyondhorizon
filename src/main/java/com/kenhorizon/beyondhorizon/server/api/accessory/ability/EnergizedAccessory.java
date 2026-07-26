@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
@@ -29,7 +30,7 @@ public class EnergizedAccessory extends AccessoryPassiveSkill implements IStackI
     }
 
     @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         var stackTags = Capabilities.stackable(attacker);
         if (stackTags != null) {
             var sTag = stackTags.getInstance(StackableTagInstance.ENERGIZE);

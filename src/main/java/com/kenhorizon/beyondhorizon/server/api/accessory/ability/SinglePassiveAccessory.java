@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BoltShockAbility;
@@ -190,7 +191,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         if (target == null || attacker == null) return;
         CompoundTag tagA = EntityData.getOrCreateTag(attacker);
         CompoundTag tagT = EntityData.getOrCreateTag(attacker);
@@ -297,7 +298,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {
+    public void onEntityKilled(DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (this == Accessories.GHOUL.get()) {
             if (attacker instanceof Player player) {
                 player.getFoodData().eat(5, 0);

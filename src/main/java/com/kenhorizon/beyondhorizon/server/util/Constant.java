@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static final float AOE_HEALING_EFFECTIVENESS = 0.3333F;
     public static final float PLUNDER_2_CHANCES = 1.0F;
     public static final float PLUNDER_CHANCES = 0.50F;
     public static final float CLEANSE_EFFECT_REDUCE = 0.25F;

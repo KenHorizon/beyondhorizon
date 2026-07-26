@@ -4,17 +4,13 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.guis.IRecipeUpdateListener;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.api.block.INodeBlock;
-import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerDataHelper;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.entity.misc.HealingOrb;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.inventory.provider.AccessoryContainerProvider;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.*;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundGrabbedItemPacket;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -32,7 +28,7 @@ public class ClientPacketHandler {
         Player player = BeyondHorizon.PROXY.clientPlayer();
         if (player != null) {
             AccessoryHelper.getInventory(player).ifPresent(handler -> {
-                handler.deserializeNBT(packet.nbt());
+                handler.deserializeNBT(packet.getNbt());
             });
         }
     }
@@ -73,12 +69,19 @@ public class ClientPacketHandler {
         });
     }
 
+    public static void handleAbilityCooldowns(ClientboundAbilityCooldownsPacket packet, Supplier<NetworkEvent.Context> context) {
+        Player player = BeyondHorizon.PROXY.clientPlayer();
+        var data = Capabilities.data(player);
+        packet.getMap().forEach((s, instance) -> {
+            data.addCooldown(s, instance.getCooldown());
+        });
+    }
     public static void handleAbilityCooldown(ClientboundAbilityCooldownPacket packet, Supplier<NetworkEvent.Context> context) {
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        var skillCooldown = Capabilities.data(player);
-        packet.getMap().forEach((s, instance) -> {
-            skillCooldown.addCooldown(s, instance.getCooldown());
-        });
+        var data = Capabilities.data(player);
+        if (data != null) {
+            data.addCooldown(packet.getId(), packet.getDuration());
+        }
     }
 
     public static void handleLevelSystem(ClientboundLevelSystemPacket packet, Supplier<NetworkEvent.Context> context) {

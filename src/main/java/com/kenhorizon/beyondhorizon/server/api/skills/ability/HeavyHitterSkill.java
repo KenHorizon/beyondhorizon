@@ -2,6 +2,8 @@ package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
@@ -58,9 +60,9 @@ public class HeavyHitterSkill extends WeaponPassiveSkills {
             double atkSpdBonuses = AttributeUtils.getBonus(attacker, Attributes.ATTACK_SPEED) + stackAttributeAmount;
             double damageMultipler = Maths.perValue(atkSpdBonuses, this.attackBonus, this.getMagnitude());
             float outputDamage = (float) (damageDealt + (damageDealt * damageMultipler));
-//            BeyondHorizon.LOGGER.debug("Bonus: {} | Multiplier:{} | Final Damage:{}", atkSpdBonuses, damageMultipler, outputDamage);
             return outputDamage;
         }
         return damageDealt;
     }
+
 }

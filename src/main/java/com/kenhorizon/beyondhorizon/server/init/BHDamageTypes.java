@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.AdvanceDamageSource;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;
@@ -65,17 +67,31 @@ public class BHDamageTypes {
     public static void init(RegistryAccess registryAccess) {
         damageTypes = registryAccess.registryOrThrow(Registries.DAMAGE_TYPE);
     }
+
+    private static DamageSource source(ResourceKey<DamageType> damageType, DamageTags damageTags) {
+        return new AdvanceDamageSource(BHDamageTypes.damageTypes.getHolderOrThrow(damageType), damageTags);
+    }
+
+    private static DamageSource source(ResourceKey<DamageType> damageType, @Nullable Entity entity, DamageTags damageTags) {
+        return new AdvanceDamageSource(BHDamageTypes.damageTypes.getHolderOrThrow(damageType), entity, damageTags);
+    }
+
+    private static DamageSource source(ResourceKey<DamageType> damageType, @Nullable Entity causingEntity, @Nullable Entity directEntity, DamageTags damageTags) {
+        return new AdvanceDamageSource(BHDamageTypes.damageTypes.getHolderOrThrow(damageType), causingEntity, directEntity, damageTags);
+    }
+
     private static DamageSource source(ResourceKey<DamageType> damageType) {
-        return new DamageSource(BHDamageTypes.damageTypes.getHolderOrThrow(damageType));
+        return source(damageType, DamageTags.DEFAULT);
     }
 
     private static DamageSource source(ResourceKey<DamageType> damageType, @Nullable Entity entity) {
-        return new DamageSource(BHDamageTypes.damageTypes.getHolderOrThrow(damageType), entity);
+        return source(damageType, entity, DamageTags.DEFAULT);
     }
 
     private static DamageSource source(ResourceKey<DamageType> damageType, @Nullable Entity causingEntity, @Nullable Entity directEntity) {
-        return new DamageSource(BHDamageTypes.damageTypes.getHolderOrThrow(damageType), causingEntity, directEntity);
+        return source(damageType, causingEntity, directEntity, DamageTags.DEFAULT);
     }
+
     public static DamageSource bleed() {
         return source(BLEED);
     }
@@ -91,6 +107,7 @@ public class BHDamageTypes {
     public static DamageSource burnMagic() {
         return source(MAGIC_BURNING);
     }
+
     public static DamageSource armorPenetration(Entity source) {
         return source(ARMOR_PENETRATION, source);
     }
@@ -114,9 +131,11 @@ public class BHDamageTypes {
     public static DamageSource petDamageTrue(Entity source, Entity cause) {
         return source(PET_DAMAGE_TRUE_DAMAGE, source, cause);
     }
+
     public static DamageSource petDamagePhysical(Entity source, Entity cause) {
         return source(PET_DAMAGE_PHYSICAL, source, cause);
     }
+
     public static DamageSource petDamageMagic(Entity source, Entity cause) {
         return source(PET_DAMAGE_MAGIC, source, cause);
     }
@@ -126,11 +145,19 @@ public class BHDamageTypes {
     }
 
     public static DamageSource magicDamage(Entity source) {
-        return source(MAGIC_DAMAGE, source, null);
+        return source(MAGIC_DAMAGE, source, (Entity) null);
     }
 
     public static DamageSource magicDamage(Entity source, boolean noKnocback) {
-        return physicalDamage(source, null, noKnocback);
+        return magicDamage(source, (Entity) null, noKnocback);
+    }
+
+    public static DamageSource AOEmagicDamage(Entity source, Entity cause) {
+        return source(NO_KNOCKBACK_MAGIC_DAMAGE, source, cause, DamageTags.AOT);
+    }
+
+    public static DamageSource AOEtrueDamage(Entity source, Entity cause) {
+        return source(NO_KNOCKBACK_TRUE_DAMAGE, source, cause, DamageTags.AOT);
     }
 
     public static DamageSource magicDamage(Entity source, Entity cause, boolean noKnocback) {
@@ -142,15 +169,27 @@ public class BHDamageTypes {
     }
 
     public static DamageSource physicalDamage(Entity source) {
-        return source(PHYSICAL_DAMAGE, source, null);
+        return source(PHYSICAL_DAMAGE, source, (Entity) null);
     }
 
     public static DamageSource physicalDamage(Entity source, boolean noKnocback) {
         return physicalDamage(source, null, noKnocback);
     }
 
+
+    public static DamageSource AOEphysicalDamage(Entity source, Entity cause) {
+        return source(NO_KNOCKBACK_PHYSICAL_DAMAGE, source, cause, DamageTags.AOT);
+    }
+
     public static DamageSource physicalDamage(Entity source, Entity cause, boolean noKnocback) {
-        return source(noKnocback ? NO_KNOCKBACK_PHYSICAL_DAMAGE : PHYSICAL_DAMAGE, source, cause);
+        if (noKnocback) {
+            return physicalDamageNoKnockback(source, cause, DamageTags.DEFAULT);
+        }
+        return source(PHYSICAL_DAMAGE, source, cause);
+    }
+
+    public static DamageSource physicalDamageNoKnockback(Entity source, Entity cause, DamageTags damageTags) {
+        return source(NO_KNOCKBACK_PHYSICAL_DAMAGE, source, cause, damageTags);
     }
 
     public static DamageSource trueDamage(Entity source, Entity cause) {
@@ -162,7 +201,11 @@ public class BHDamageTypes {
     }
 
     public static DamageSource trueDamage(Entity source, boolean noKnocback) {
-        return source(noKnocback ? NO_KNOCKBACK_TRUE_DAMAGE : TRUE_DAMAGE, source, null);
+        return source(noKnocback ? NO_KNOCKBACK_TRUE_DAMAGE : TRUE_DAMAGE, source, (Entity) null);
+    }
+
+    public static DamageSource trueDamage(Entity source, boolean noKnocback, DamageTags damageTags) {
+        return source(noKnocback ? NO_KNOCKBACK_TRUE_DAMAGE : TRUE_DAMAGE, source, null, damageTags);
     }
 
     public static DamageSource trueDamage(Entity source) {

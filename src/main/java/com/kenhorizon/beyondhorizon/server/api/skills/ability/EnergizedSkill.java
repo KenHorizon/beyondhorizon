@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 public class EnergizedSkill extends WeaponPassiveSkills {
 
     @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         var stackTags = Capabilities.stackable(attacker);
         if (stackTags != null) {
             var sTag = stackTags.getInstance(StackableTagInstance.ENERGIZE);

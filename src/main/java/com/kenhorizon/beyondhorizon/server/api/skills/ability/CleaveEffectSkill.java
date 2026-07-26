@@ -33,7 +33,7 @@ public abstract class CleaveEffectSkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         DamageType.PHYSICAL_DAMAGE.onHit(target, attacker, this.dealDamage(target, attacker, damageDealt, itemStack));
         this.attackCleave(itemStack, target, attacker, damageDealt);
     }

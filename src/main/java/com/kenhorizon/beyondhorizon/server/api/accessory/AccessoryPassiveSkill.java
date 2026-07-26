@@ -1,7 +1,5 @@
-package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
+package com.kenhorizon.beyondhorizon.server.api.accessory;
 
-import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryEvent;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
@@ -10,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.List;
 import java.util.Optional;
 
 public class AccessoryPassiveSkill extends Accessory implements IEntityProperties, IAttack, IAccessoryEvent {
@@ -27,17 +26,17 @@ public class AccessoryPassiveSkill extends Accessory implements IEntityPropertie
     }
 
     @Override
-    public Optional<IEntityProperties> IEntityProperties() {
+    public Optional<IEntityProperties> entityProperties() {
         return Optional.of(this);
     }
 
     @Override
-    public Optional<IAttack> IAttackCallback() {
+    public Optional<IAttack> attack() {
         return Optional.of(this);
     }
 
     @Override
-    public Optional<IAccessoryEvent> IAccessory() {
+    public Optional<IAccessoryEvent> accessory() {
         return Optional.of(this);
     }
 

@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryActiveSkill;
+import com.kenhorizon.beyondhorizon.server.item.ManaCostType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -19,6 +20,10 @@ import net.minecraft.world.phys.Vec3;
 
 public class SwiftnessAccessory extends AccessoryActiveSkill {
 
+    public SwiftnessAccessory() {
+        this.setCooldown(Maths.sec(10));
+    }
+
     @Override
     public void onActiveAbility(Player player, ItemStack itemStack) {
         if (player.level() instanceof ServerLevel sLevel) {
@@ -30,15 +35,5 @@ public class SwiftnessAccessory extends AccessoryActiveSkill {
             sLevel.sendParticles(new RingParticleOptions(0, (float) Math.PI / 2, 20, Colors.GREEN, 32.0F, false, RingParticles.Behavior.GROW), player.getX(), player.getY() + player.getBbHeight() / 2, player.getZ(),1, 0,0,0, 0);
         }
         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, Maths.sec(5), 1, true, true));
-    }
-
-    @Override
-    protected int getCooldown() {
-        return Maths.sec(5);
-    }
-
-    @Override
-    protected double getManaCost() {
-        return 20;
     }
 }

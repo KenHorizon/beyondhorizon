@@ -7,10 +7,13 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public record ClientboundAccessoryPacket(CompoundTag nbt) {
-
+public class ClientboundAccessoryPacket {
+    private final CompoundTag nbt;
+    public ClientboundAccessoryPacket(CompoundTag nbt) {
+        this.nbt = nbt;
+    }
     public ClientboundAccessoryPacket(FriendlyByteBuf buf) {
-        this(buf.readNbt());
+        this.nbt = buf.readNbt();
     }
 
     public void write(FriendlyByteBuf buf) {
@@ -25,8 +28,7 @@ public record ClientboundAccessoryPacket(CompoundTag nbt) {
         context.setPacketHandled(true);
     }
 
-    @Override
-    public CompoundTag nbt() {
+    public CompoundTag getNbt() {
         return nbt;
     }
 }

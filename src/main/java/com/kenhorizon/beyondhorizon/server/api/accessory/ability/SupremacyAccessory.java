@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
@@ -60,7 +61,7 @@ public class SupremacyAccessory extends AccessoryPassiveSkill implements IStackI
     }
 
     @Override
-    public void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {
+    public void onEntityKilled(DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (target instanceof Animal) return;
         var stackTags = Capabilities.stackable(attacker);
         if (stackTags != null) {
@@ -71,13 +72,13 @@ public class SupremacyAccessory extends AccessoryPassiveSkill implements IStackI
     }
 
     @Override
-    public boolean onEntityDeath(Player player, ItemStack itemStack) {
-        var stackTags = Capabilities.stackable(player);
+    public boolean onEntityDeath(LivingEntity entity, ItemStack itemStack) {
+        var stackTags = Capabilities.stackable(entity);
         if (stackTags != null) {
             var sTag = stackTags.getInstance(StackableTagInstance.SAINT_DEMON_CROWN_STACKS);
             sTag.remove((int) (sTag.getStack() * this.loseOnDeath));
         }
-        return super.onEntityDeath(player, itemStack);
+        return super.onEntityDeath(entity, itemStack);
     }
 
     @Override

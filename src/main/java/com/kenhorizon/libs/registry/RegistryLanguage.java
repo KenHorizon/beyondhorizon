@@ -24,5 +24,6 @@ public class RegistryLanguage {
     public static Map<String, String> ADD_SOUNDS_TRANSLATION = new HashMap<>();
     public static Map<String, String> ADD_ITEM_LORE = new HashMap<>();
     public static Map<RegistryObject<EntityType<?>>, String> ADD_ENTITY_TRANSLATION = new HashMap<>();
+    public static Map<String, String> ADD_POTION_TRANSLATION = new HashMap<>();
 
 }

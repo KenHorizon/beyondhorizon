@@ -12,10 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 
 public class BHEffects {
-    public static final RegistryObject<MobEffect> RAGED =
-            RegistryHelper.registerEffects("raged", () -> new BHMobEffect(MobEffectCategory.BENEFICIAL)
-                    .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "6430bc86-adf6-4e0c-bef5-2321c0cdcdf3", 1.35F, AttributeModifier.Operation.MULTIPLY_BASE));
-    public static final RegistryObject<MobEffect> GHOUL_WILL =
+   public static final RegistryObject<MobEffect> GHOUL_WILL =
             RegistryHelper.registerEffects("ghoul_will", () -> new BHMobEffect(MobEffectCategory.NEUTRAL)
                     .addAttributeModifier(BHAttributes.DAMAGE_DEALT.get(), "dbd4c61c-8c18-41cb-be67-668ac9249c69", 0.15F, AttributeModifier.Operation.MULTIPLY_BASE));
     public static final RegistryObject<MobEffect> BLEED =

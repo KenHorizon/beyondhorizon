@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.google.common.collect.ImmutableList;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.util.EffectUtil;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
@@ -47,16 +48,16 @@ public class ImmunityEffectAccessory extends AccessoryPassiveSkill implements IR
     }
 
     @Override
-    protected void addTooltipTitle(ItemStack itemStack, List<Component> tooltip, boolean firstType) {
+    public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
         if (!this.getMobEffects().isEmpty()) {
             for (MobEffect instance : this.getMobEffects()) {
                 if (EffectUtil.is(instance, this.mobEffectTag)) {
-                    tooltip.add(this.spacing().append(Component.translatable(Tooltips.TOOLTIP_IMMUNE_TO, instance.getDisplayName().getString()).withStyle(ChatFormatting.GRAY)));
+                    tooltip.add(this.spacing().append(Component.translatable(Tooltips.IMMUNE_TO, instance.getDisplayName().getString()).withStyle(ChatFormatting.GRAY)));
                 }
             }
         }
     }
-
+    
     public ImmunityEffectAccessory removeOnTick() {
         this.removeEffectOnTick = true;
         return this;

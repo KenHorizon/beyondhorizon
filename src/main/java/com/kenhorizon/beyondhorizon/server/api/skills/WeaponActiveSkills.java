@@ -10,8 +10,11 @@ import com.kenhorizon.beyondhorizon.server.api.level.IAbilityInfo;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHChatformatting;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
+import com.kenhorizon.beyondhorizon.server.item.ManaCostType;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionHand;
@@ -24,24 +27,20 @@ import net.minecraft.world.level.Level;
 import java.util.*;
 
 public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbilityInfo, IEntityProperties, IItemProperties {
-    public enum ManaCostType {
-        DEFAULT,
-        PERCENTAGE
-    }
     private float magnitude;
     private float level;
     private double manaCost;
     private int castTime;
     private int maxCastTime;
     private int cooldown;
-    protected WeaponActiveSkills.ManaCostType manaCostType = ManaCostType.DEFAULT;
+    protected ManaCostType manaCostType = ManaCostType.DEFAULT;
 
     public WeaponActiveSkills() {
         super(ItemAbilityType.ACTIVE);
         this.isSkill = true;
     }
 
-    public WeaponActiveSkills.ManaCostType getManaCostType() {
+    public ManaCostType getManaCostType() {
         return this.manaCostType;
     }
 
@@ -91,31 +90,47 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
     @Override
     protected void addTooltipDescriptionHeader(ItemStack itemStack, List<Component> tooltip) {
         String tooltips;
+        Minecraft mc = Minecraft.getInstance();
+        PlayerData playerData = Capabilities.data(mc.player);
         MutableComponent manaText = Component.literal("- ");
         MutableComponent cdText = Component.literal("- ");
-        if (this.getManaCostType() == WeaponActiveSkills.ManaCostType.PERCENTAGE) {
-            tooltips = Tooltips.TOOLTIP_MANA_COST_PERCENTAGES;
+        if (this.getManaCostType() == ManaCostType.PERCENTAGE) {
+            tooltips = Tooltips.MANA_COST_PERCENTAGES;
         } else {
-            tooltips = Tooltips.TOOLTIP_MANA_COST;
+            tooltips = Tooltips.MANA_COST;
         }
         tooltip.add(manaText.append(Component.translatable(tooltips, this.getManaCost()).withStyle(BHChatformatting.MANA)));
         if (this.getCooldown() > 0) {
-            tooltip.add(cdText.append(Component.translatable(Tooltips.TOOLTIP_COOLDOWN, (this.getCooldown() / 20.0F)).withStyle(BHChatformatting.COOLDOWN)));
+            tooltip.add(cdText.append(Component.translatable(Tooltips.COOLDOWN, (int) (this.getCooldown() / 20.0F)).withStyle(BHChatformatting.COOLDOWN)));
         }
-        tooltip.add(Component.empty());
     }
 
+    @Override
+    protected MutableComponent addTooltipTitle() {
+        Minecraft mc = Minecraft.getInstance();
+        PlayerData playerData = Capabilities.data(mc.player);
+        MutableComponent active = this.spacing().append(Component.literal("[A]").withStyle(Tooltips.TOOLTIP[1]).append(this.spacing()));
+        if (playerData != null && !this.isPassive()) {
+            float factor = playerData.getCooldownPercent(this.getId());
+            if (factor > 0.0F) {
+                return active.append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.GRAY)
+                        .append(CommonComponents.SPACE)
+                                .append(Component.translatable(Tooltips.COOLDOWN_IN_NAME, (int) ((int) (this.getCooldown() / 20.0F) * factor)).withStyle(ChatFormatting.GOLD)));
+            }
+        }
+        return super.addTooltipTitle();
+    }
 
     @Override
     public InteractionResultHolder<ItemStack> use(ItemStack itemStack, Level level, Player player, InteractionHand hand) {
         PlayerData playerData = Capabilities.data(player);
         if (!level.isClientSide()) {
             if (playerData.isOnCooldown(this.getId())) {
-                player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_ON_COOLDOWN).withStyle(ChatFormatting.RED), true);
+                player.displayClientMessage(Component.translatable(Tooltips.ON_COOLDOWN).withStyle(ChatFormatting.RED), true);
                 return InteractionResultHolder.fail(itemStack);
             }
             if (playerData.getMana() <= this.getManaCost()) {
-                player.displayClientMessage(Component.translatable(Tooltips.TOOLTIP_NOT_ENOUGH_MANA).withStyle(ChatFormatting.RED), true);
+                player.displayClientMessage(Component.translatable(Tooltips.NOT_ENOUGH_MANA).withStyle(ChatFormatting.RED), true);
                 return InteractionResultHolder.fail(itemStack);
             } else if (playerData.getMana() >= this.getManaCost()) {
                 if (this.getMaxCastTime() > 0) {

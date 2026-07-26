@@ -10,7 +10,7 @@ public class InflictFireAttackOnHitSkill extends WeaponPassiveSkills {
         this.setMagnitude(magnitude);
     }
     @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         target.setSecondsOnFire((int) this.getMagnitude());
     }
 }

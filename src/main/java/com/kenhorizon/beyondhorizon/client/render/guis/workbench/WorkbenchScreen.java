@@ -44,7 +44,7 @@ public class WorkbenchScreen extends AbstractContainerScreen<WorkbenchMenu> impl
     public static final ResourceLocation RESOURCE_GUI = BeyondHorizon.resourceGui("workbench/workbench.png");
     public static final ResourceLocation RESOURCE_PANEL = BeyondHorizon.resourceGui("panels.png");
     private static final ResourceLocation RECIPE_BUTTON_LOCATION = ResourceLocation.parse("textures/gui/recipe_button.png");
-    private static final MutableComponent DISPLAY_RECIPES_ITEMS = Component.translatable(Tooltips.TOOLTIP_WORKBENCH_ITEMS);
+    private static final MutableComponent DISPLAY_RECIPES_ITEMS = Component.translatable(Tooltips.WORKBENCH_ITEMS);
     private boolean buttonClicked;
     public float xMouse;
     public float yMouse;

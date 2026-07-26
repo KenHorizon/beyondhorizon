@@ -18,16 +18,16 @@ public abstract class StackingAbilitySkill extends WeaponPassiveSkills {
 
 
     @Override
-    public void onHitAttack(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         if (this.stackType == StackType.HIT) {
 
         }
 
-        this.onHitAttacks(damageSource, itemStack, target, attacker, damageDealt);
+        this.onHitAttacks(source, itemStack, target, attacker, damageDealt);
     }
 
     @Override
-    public void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {
+    public void onEntityKilled(DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (this.stackType == StackType.KILL) {
 
         }

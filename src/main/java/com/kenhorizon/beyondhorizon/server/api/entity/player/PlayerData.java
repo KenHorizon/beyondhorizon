@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAbilityCooldownPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAbilityCooldownsPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundManaSyncPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataPacket;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -35,12 +36,13 @@ public class PlayerData {
     public static final String NBT_COOLDOWN = "cooldown";
     public static final String NBT_CDR = "cdr";
     private final Map<String, CooldownInstance> skillManager;
-    protected boolean cantCrit;
-    protected boolean doCrit;
+    protected boolean cantCrit = false;
+    protected boolean doCrit = true;
     protected boolean crit;
     protected boolean doDecut;
     protected double mana;
     public int tickManaDeduct = 0;
+    private int tickBuffer = 0;
     protected final double manaDeduction = MANA_DEDUCTION;
     public Player player;
     public int tick;
@@ -48,6 +50,10 @@ public class PlayerData {
     public PlayerData(Player player) {
         this.player = player;
         this.skillManager = Maps.newHashMap();
+    }
+
+    public void setTickBuffer(int tickBuffer) {
+        this.tickBuffer = tickBuffer;
     }
 
     public void addMana(double amount) {
@@ -157,13 +163,13 @@ public class PlayerData {
     public void addCooldown(String id, int cooldown) {
         int newCooldown = (int) (cooldown - (cooldown * this.player.getAttributeValue(BHAttributes.COOLDOWN.get())));
         this.skillManager.put(id, new CooldownInstance(newCooldown));
-        this.onCooldownStarted(id);
+        this.onCooldownStarted(id, newCooldown);
     }
 
     public void addCooldown(String id, int cooldown, int cooldownReamining) {
         int newCooldown = (int) (cooldown - (cooldown * this.player.getAttributeValue(BHAttributes.COOLDOWN.get())));
         this.skillManager.put(id, new CooldownInstance(newCooldown, cooldownReamining));
-        this.onCooldownStarted(id);
+        this.onCooldownStarted(id, newCooldown);
     }
 
     public float getCooldownPercent(String id) {
@@ -176,13 +182,12 @@ public class PlayerData {
 
     public void removeCooldown(String id) {
         this.skillManager.remove(id);
-        this.syncCooldown();
+        this.syncCooldowns();
     }
 
     public boolean decrementCooldown(CooldownInstance instance, int amount) {
         instance.decrementBy(amount);
-        this.syncCooldown();
-        return instance.getCooldownRemaining() <= 0;
+        return instance.getCooldownRemaining() <= this.tickBuffer;
     }
 
     public Map<String, CooldownInstance> getAllCooldowns() {
@@ -191,23 +196,30 @@ public class PlayerData {
 
     public void clearCooldowns() {
         this.skillManager.clear();
-        this.syncCooldown();
+        this.syncCooldowns();
     }
 
-    protected void onCooldownStarted(String id) {
-        this.syncCooldown();
+    protected void onCooldownStarted(String id, int amount) {
+        this.syncCooldown(id, amount);
     }
 
     protected void onCooldownEnded(String id) {
-        this.syncCooldown();
+        this.syncCooldowns();
     }
 
-    public void syncCooldown() {
+    public void syncCooldown(String id, int duration) {
         if (this.player instanceof ServerPlayer sPlayer) {
-            NetworkHandler.sendToPlayer(new ClientboundAbilityCooldownPacket(this.skillManager), sPlayer);
+            NetworkHandler.sendToPlayer(new ClientboundAbilityCooldownPacket(id, duration), sPlayer);
         }
     }
-    public void syncData(Player player) {
+
+    public void syncCooldowns() {
+        if (this.player instanceof ServerPlayer sPlayer) {
+            NetworkHandler.sendToPlayer(new ClientboundAbilityCooldownsPacket(this.skillManager), sPlayer);
+        }
+    }
+
+    public void syncData() {
         if (player instanceof ServerPlayer splayer) {
             NetworkHandler.sendToPlayer(new ClientboundPlayerDataPacket(this.saveNbt()), splayer);
         }

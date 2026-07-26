@@ -1,10 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
-import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
-import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -41,6 +39,39 @@ public enum DamageType {
                     return target.hurt(BHDamageTypes.physicalDamage(attacker, noKnockback), damage);
                 } else {
                     return target.hurt(BHDamageTypes.magicDamage(attacker, noKnockback), damage);
+                }
+            }
+            default -> {
+                return false;
+            }
+        }
+    }
+    public boolean dealAOEDamage(LivingEntity target, LivingEntity attacker, float damage) {
+        switch (this) {
+            case PHYSICAL_DAMAGE -> {
+                return target.hurt(BHDamageTypes.AOEphysicalDamage(attacker, null), damage);
+            }
+            case MAGIC_DAMAGE -> {
+                return target.hurt(BHDamageTypes.AOEmagicDamage(attacker, null), damage);
+            }
+            case TRUE_DAMAGE -> {
+                return target.hurt(BHDamageTypes.AOEtrueDamage(attacker, null), damage);
+            }
+            case ADAPTIVE_DAMAGE -> {
+                double AD = AttributeUtils.getBonus(attacker, Attributes.ATTACK_DAMAGE);
+                double AP = attacker.getAttributeValue(BHAttributes.ABILITY_POWER.get());
+                if (AD == AP) {
+                    double BAD = attacker.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
+                    double BAP = attacker.getAttributeBaseValue(BHAttributes.ABILITY_POWER.get());
+                    if (BAD > BAP) {
+                        return target.hurt(BHDamageTypes.AOEphysicalDamage(attacker, null), damage);
+                    } else {
+                        return target.hurt(BHDamageTypes.AOEmagicDamage(attacker, null), damage);
+                    }
+                } else if (AD > AP) {
+                    return target.hurt(BHDamageTypes.AOEphysicalDamage(attacker, null), damage);
+                } else {
+                    return target.hurt(BHDamageTypes.AOEmagicDamage(attacker, null), damage);
                 }
             }
             default -> {

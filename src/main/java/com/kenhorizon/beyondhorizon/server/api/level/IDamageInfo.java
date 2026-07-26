@@ -13,7 +13,7 @@ public interface IDamageInfo extends INBTSerializable<CompoundTag> {
 
     DamageSource getDamageSource();
 
-    void setReceivedCritDamage(boolean receivedCritDamage);
+    void setReceivedCritDamage();
 
     boolean isReceivedCritDamage();
 

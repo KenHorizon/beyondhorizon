@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
@@ -38,7 +39,7 @@ public class BleedingEffectAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public void onEntityKilled(DamageSource damageSource, LivingEntity attacker, LivingEntity target) {
+    public void onEntityKilled(DamageSource source, LivingEntity attacker, LivingEntity target) {
         IDamageInfo damageInfo = Capabilities.damageInfo(attacker);
         attacker.heal(damageInfo.getPostStoredDamage());
     }

@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.item;
 
+import com.kenhorizon.beyondhorizon.server.item.util.ItemStackUtils;
 import com.kenhorizon.beyondhorizon.server.item.util.TeleportHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
@@ -39,11 +40,12 @@ public class MagicMirrorItem extends BasicItem {
     public int getUseDuration(@NotNull ItemStack itemStack) {
         return 30;
     }
+
+
     @Override
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack itemStack, @NotNull Level level, @NotNull LivingEntity entity) {
-        Minecraft mc = Minecraft.getInstance();
         if (level.isClientSide()) {
-            mc.gameRenderer.displayItemActivation(itemStack);
+            ItemStackUtils.displayItemActivation(itemStack);
         } else if (entity instanceof ServerPlayer serverPlayer) {
             BlockPos respawnPosition = serverPlayer.getRespawnPosition();
             if (respawnPosition != null) {

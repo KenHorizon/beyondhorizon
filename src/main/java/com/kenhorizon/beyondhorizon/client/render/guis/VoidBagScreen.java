@@ -87,4 +87,10 @@ public class VoidBagScreen extends AbstractContainerScreen<VoidBagMenu> {
         int y = (height - imageHeight) / 2;
         guiGraphics.blit(LOCATION, x, y, 0, 0, this.imageWidth, this.imageHeight);
     }
+    static class Stars {
+        private int tickCount;
+        private int x;
+        private int y;
+        private float opacity;
+    }
 }

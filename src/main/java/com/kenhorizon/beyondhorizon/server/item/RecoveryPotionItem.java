@@ -107,10 +107,10 @@ public class RecoveryPotionItem extends BasicItem {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
         if (this.health > 0) {
-            tooltip.add(Component.translatable(Tooltips.TOOLTIP_HEALTH_RECOVERY_POTION, (int) this.health).withStyle(Tooltips.TOOLTIP[0]));
+            tooltip.add(Component.translatable(Tooltips.HEALTH_RECOVERY_POTION, (int) this.health).withStyle(Tooltips.TOOLTIP[0]));
         }
         if (this.mana > 0) {
-            tooltip.add(Component.translatable(Tooltips.TOOLTIP_MANA_RECOVERY_POTION, (int) this.mana).withStyle(Tooltips.TOOLTIP[0]));
+            tooltip.add(Component.translatable(Tooltips.MANA_RECOVERY_POTION, (int) this.mana).withStyle(Tooltips.TOOLTIP[0]));
         }
         tooltip.add(CommonComponents.EMPTY);
     }

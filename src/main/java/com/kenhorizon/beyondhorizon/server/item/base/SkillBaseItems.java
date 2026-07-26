@@ -1,18 +1,18 @@
 package com.kenhorizon.beyondhorizon.server.item.base;
 
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
-import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -38,14 +38,26 @@ public class SkillBaseItems {
 
     public void appendHoverText(ItemStack itemStack, List<Component> tooltip) {
         int size = this.skills.size();
+        int activePresent = this.activeSkills.size();
+        if (activePresent > 1) {
+            tooltip.add(Tooltips.numberMax(skillItem.getSkillSlot(itemStack) + 1, activePresent));
+        }
         for (int i = 0; i < this.skills.size(); i++) {
             Skill skill = this.skills.get(i);
             if (!skill.getAttributeModifiers().isEmpty()) {
                 size--;
                 skill.addTooltipAttributes(itemStack, tooltip);
             }
-            skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+            if (skill.isPassive()) {
+                skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+            }
+            if (this.skillItem.getActiveSkill(itemStack).isPresent()) {
+                if (skill.isActive() && skill == this.skillItem.getActiveSkill(itemStack).get()) {
+                    skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+                }
+            }
         }
+        tooltip.add(CommonComponents.EMPTY);
     }
 
     public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {

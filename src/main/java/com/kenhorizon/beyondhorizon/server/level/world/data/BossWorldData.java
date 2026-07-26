@@ -2,38 +2,39 @@ package com.kenhorizon.beyondhorizon.server.level.world.data;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.storage.DimensionDataStorage;
 
-public class WorldData extends SavedData {
-    private static final String IDENTIFIER = "BeyondHorizonWoldData";
-    private static final String NBT_ENDER_DRAGON_IS_DEFEATED = "EnderDragon";
-    private static final String NBT_WITHER_BOSS_IS_DEFEATED = "WitherBoss";
-    private static final String NBT_BLAZING_INFERNO_IS_DEFEATED = "BlazingInferno";
+public class BossWorldData extends SavedData {
+    private static final String IDENTIFIER = "beyondhorizon_boss_wold_data";
+    private static final String NBT_ENDER_DRAGON_IS_DEFEATED = "ender_dragon";
+    private static final String NBT_WITHER_BOSS_IS_DEFEATED = "wither_boss";
+    private static final String NBT_BLAZING_INFERNO_IS_DEFEATED = "blazing_inferno";
     private boolean witherBossDefeated = false;
     private boolean blazingInfernoDefeated = false;
     private boolean enderDragonDefeated = false;
 
-    public WorldData() {
+    public BossWorldData() {
         super();
     }
 
-    public static WorldData get(Level level, ResourceKey<Level> dim) {
+    public static BossWorldData get(Level level, ResourceKey<Level> dim) {
         if (level instanceof ServerLevel) {
             ServerLevel serverLevel = level.getServer().getLevel(dim);
             if (serverLevel != null) {
                 DimensionDataStorage storage = serverLevel.getDataStorage();
-                WorldData data = storage.computeIfAbsent(WorldData::load, WorldData::new, IDENTIFIER);
+                BossWorldData data = storage.computeIfAbsent(BossWorldData::load, BossWorldData::new, IDENTIFIER);
                 data.setDirty();
                 return data;
             }
         }
         return null;
     }
-    public static WorldData load(CompoundTag nbt) {
-        WorldData data = new WorldData();
+    public static BossWorldData load(CompoundTag nbt) {
+        BossWorldData data = new BossWorldData();
         data.setEnderDragonIsDefeated(nbt.getBoolean(NBT_BLAZING_INFERNO_IS_DEFEATED));
         data.setBlazingInfernoIsDefeated(nbt.getBoolean(NBT_BLAZING_INFERNO_IS_DEFEATED));
         data.setWitherBossIsDefeated(nbt.getBoolean(NBT_WITHER_BOSS_IS_DEFEATED));

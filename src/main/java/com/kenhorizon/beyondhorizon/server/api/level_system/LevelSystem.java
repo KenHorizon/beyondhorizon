@@ -8,6 +8,7 @@ import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundLevelSystemPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -397,5 +398,12 @@ public class LevelSystem implements IAttack, IEntityProperties {
         this.alreadyReachedRequiredLevel = nbt.getBoolean(REQUIRED_LEVEL_TAGS);
         this.expProgress = nbt.getFloat(EXP_TAGS);
         this.expRequired = nbt.getFloat(EXP_REQUIRED_TAGS);
+    }
+
+
+    public void syncData(Player player) {
+        if (player instanceof ServerPlayer splayer) {
+            NetworkHandler.sendToPlayer(new ClientboundPlayerDataPacket(this.saveNbt()), splayer);
+        }
     }
 }

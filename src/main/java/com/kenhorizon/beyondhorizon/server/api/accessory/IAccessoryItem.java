@@ -28,17 +28,18 @@ public interface IAccessoryItem {
         return ((AccessoryItem) inSlot.getItem()).isBasic() == ((AccessoryItem) outside.getItem()).isBasic();
     }
 
+    AccessoryItemGroup getItemGroup();
+
     /**
      * Check if the itemstack inside accessory slot and outisde are sharing tags
      * */
     default boolean checkIfSharingGroupTogether(ItemStack inSlot, ItemStack outside) {
-        return ((AccessoryItem) inSlot.getItem()).getItemGroup().equals(((AccessoryItem) outside.getItem()).getItemGroup());
+        return ((AccessoryItem) inSlot.getItem()).getItemGroup() == ((AccessoryItem) outside.getItem()).getItemGroup();
     }
+
     default boolean checkIfNameLimitation(ItemStack inSlot, ItemStack outside) {
         return ((AccessoryItem) inSlot.getItem()).isNameLimitation() == ((AccessoryItem) outside.getItem()).isNameLimitation();
     }
-
-    AccessoryItemGroup getItemGroup();
 
     default boolean isBasic() {
         return this.getItemGroup() == AccessoryItemGroup.NONE;

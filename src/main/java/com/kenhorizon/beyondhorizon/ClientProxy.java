@@ -49,6 +49,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -98,7 +99,6 @@ public class ClientProxy extends ServerProxy {
         ClientTooltipRegister.register();
     }
 
-
     private void onRegisterItemDecorations(final RegisterItemDecorationsEvent event) {
         for (Item item : ForgeRegistries.ITEMS) {
             if (item instanceof IAccessoryItem accessoryItem) {
@@ -106,7 +106,6 @@ public class ClientProxy extends ServerProxy {
             }
         }
     }
-
 
     public void registerNewRegsitry(DataPackRegistryEvent.NewRegistry event) {
         BeyondHorizon.LOGGER.info("Custom Registry is registered and created!");
@@ -123,7 +122,7 @@ public class ClientProxy extends ServerProxy {
             IModFileInfo info = ModList.get().getModFileById(BeyondHorizon.ID);
             IModFile file = info.getFile();
             event.addRepositorySource(res -> {
-                Pack pack = Pack.readMetaAndCreate("beyondhorizon:game_art", Component.translatable(Tooltips.TOOLTIP_BUILTIN_RESOURCE)
+                Pack pack = Pack.readMetaAndCreate("beyondhorizon:game_art", Component.translatable(Tooltips.BUILTIN_RESOURCE)
                 ,false, id -> new ModResouces(id, file, "resourcepacks/game_art"), PackType.CLIENT_RESOURCES, Pack.Position.TOP, PackSource.BUILT_IN);
                 if (pack != null) res.accept(pack);
             });
@@ -340,6 +339,8 @@ public class ClientProxy extends ServerProxy {
     public void syncAccessoryToPlayer(int slot, ItemStack itemStack, ServerPlayer player) {
         NetworkHandler.sendToPlayer(new ServerboundAccessoryInventoryPacket(slot, player.getId(), itemStack), player);
     }
+
+
     @OnlyIn(Dist.CLIENT)
     @Override
     public Object getFontRenderer() {

@@ -45,29 +45,28 @@ public class BHLangProvider extends LanguageProvider {
         RegistryLanguage.ADD_PAINTING_TRANSLATION_AUTHOR.forEach(this::addPaintingAuthor);
         RegistryLanguage.ADD_PAINTING_TRANSLATION_TITLE.forEach(this::addPaintingTitle);
         RegistryLanguage.ADD_ITEM_LORE.forEach(this::add);
+        RegistryLanguage.ADD_POTION_TRANSLATION.forEach(this::addPotions);
         Keybinds.KEYBINDING.forEach(this::add);
 
         this.add(Configs.CHANGE_DAMAGE_CALCULATION, "Change Damage Calculation");
 
         this.add(Tooltips.ACCESSORY_LIMITED_TO, "Limited to 1 %s");
-        this.add(Tooltips.TOOLTIP_AMMO_COLLECT, "Ammo Collect: %s!");
-        this.add(Tooltips.TOOLTIP_KEYBIND, "Button: %s + %s");
-        this.add(Tooltips.TOOLTIP_ON_COOLDOWN, "On Cooldown!");
-        this.add(Tooltips.TOOLTIP_COOLDOWN, "Cooldown: %s");
-        this.add(Tooltips.TOOLTIP_MANA_COST, "Mana: %s");
-        this.add(Tooltips.TOOLTIP_MANA_COST_PERCENTAGES, "Mana: %s%%");
-        this.add(Tooltips.TOOLTIP_MANA_COST_PER_SECOND, "Mana: %s per second");
-        this.add(Tooltips.TOOLTIP_NOT_ENOUGH_MANA, "Not enough Mana!");
+        this.add(Tooltips.AMMO_COLLECT, "Ammo Collect: %s!");
+        this.add(Tooltips.KEYBINDS, "Button: %s + %s");
+        this.add(Tooltips.ON_COOLDOWN, "On Cooldown!");
+        this.add(Tooltips.COOLDOWN, "Cooldown: %s");
+        this.add(Tooltips.MANA_COST, "Mana: %s");
+        this.add(Tooltips.MANA_COST_PERCENTAGES, "Mana: %s%%");
+        this.add(Tooltips.MANA_COST_PER_SECOND, "Mana: %s per second");
+        this.add(Tooltips.NOT_ENOUGH_MANA, "Not enough Mana!");
 
-        this.add(Tooltips.TOOLTIP_WORKBENCH, "Workbench");
-        this.add(Tooltips.TOOLTIP_WORKBENCH_ITEMS, "Items");
-        this.add(Tooltips.TOOLTIP_WORKBENCH_INGREDIENTS, "Ingredients");
-        this.add(Tooltips.TOOLTIP_WORKBENCH_FORGE, "Forge");
-        this.add(Tooltips.TOOLTIP_WORKBENCH_HELP_0, "Accessory/Artifacts will not shown on the Items Category");
-        this.add(Tooltips.TOOLTIP_WORKBENCH_HELP_1, "unless you have one of them ingredients/recipes");
+        this.add(Tooltips.WORKBENCH, "Workbench");
+        this.add(Tooltips.WORKBENCH_ITEMS, "Items");
+        this.add(Tooltips.WORKBENCH_HELP_0, "Accessory/Artifacts will not shown on the Items Category");
+        this.add(Tooltips.WORKBENCH_HELP_1, "unless you have one of them ingredients/recipes");
 
-        this.add(Tooltips.TOOLTIP_IMMUNE_TO, "Gain Immunity to %s");
-        this.add(Tooltips.TOOLTIP_BUILTIN_RESOURCE, "Beyond Horizon: Builtin Resources");
+        this.add(Tooltips.IMMUNE_TO, "Gain Immunity to %s");
+        this.add(Tooltips.BUILTIN_RESOURCE, "Beyond Horizon: Builtin Resources");
 
         this.add(Tooltips.COMMAND_POINTS_FAILED, "Failed to change the role to %s");
         this.add(Tooltips.COMMAND_POINTS_SUCCESS, "Successfully changed the role to %s");
@@ -106,9 +105,9 @@ public class BHLangProvider extends LanguageProvider {
                 "Attacks inflict burning and increased %s%% damage dealt");
          //
         this.add(Tooltips.SKILL_TYPE, "%s");
-        this.add(Tooltips.TOOLTIP_PER_PIECE_BONUS_ARMOR_SET, "Per Piece:");
-        this.add(Tooltips.TOOLTIP_FULL_BONUS_ARMOR_SET, "Full Bonus set:");
-        this.add(Tooltips.TOOLTIP_MINING_SPEED, "%s Mining Speed");
+        this.add(Tooltips.PER_PIECE_BONUS_ARMOR_SET, "Per Piece:");
+        this.add(Tooltips.FULL_BONUS_ARMOR_SET, "Full Bonus set:");
+        this.add(Tooltips.MINING_SPEED, "%s Mining Speed");
         this.addSkills(Skills.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100 (6 if attacking, 1 if moving)");
         this.addSkills(Skills.INFERNAL_RAY.get(), "Infernal Ray", "Release a powerful Infernal Ray dealing %s %s within 2.5 radius of attacks");
         this.addSkills(Skills.INFERNO_STRIKE.get(), "Inferno Strike", "Charges while being slowed by %s%% upto 3 seconds",
@@ -167,14 +166,14 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.BRING_IT_DOWN.get(), "Bring It Down", "Basic attack grant a stack for 3 seconds, up to 2 stacks, at 2 stacks, the next attack consumes all stacks to deal (+%s per level) physical damage on-hit increased by %s%% based on target's Missing HP");
         this.addAccessory(Accessories.POLYETHYLENE.get(), "Polyethylene", "Increase ranged damage by %s%% and knockback by %s%%");
         this.addAccessory(Accessories.FLUOROCARBON.get(), "Fluorocarbon", "Reduce the draw time of Item");
-        this.addAccessory(Accessories.DARK_SUN.get(), "Dark Sun", "Convert 25% Total Damage Dealt into addtional bonus true damage on-hit");
-        this.addAccessory(Accessories.NIGHTSTALKER.get(), "Nightstalker", "Increased all damage by 0-%s%% based on target Missing HP");
+        this.addAccessory(Accessories.NIGHTSTALKER.get(), "Nightstalker", "Increased all damage by 0-%s%% based on Target Missing HP");
         this.addAccessory(Accessories.PENALTY_0.get(), "Penalty", "Reduce the attack effectiveness by %s%%");
         this.addAccessory(Accessories.EXCORIATE.get(), "Excoriate", "Gain random bonus critical damage upto 0-%s%%, with the value of this changing of every 0.25 seconds");
         this.addAccessory(Accessories.GHOUL.get(), "Ghoul", "Hunger exhaustion increased by 150%, On-kill restore 5 hunger points and gain buff of Ghoul Will, and prevent user eat edible item");
+        this.addAccessory(Accessories.DARK_SUN.get(), "Dark Sun", "Convert 25% Total Damage Dealt into addtional bonus true damage on-hit");
         this.addAccessory(Accessories.FADED_MOON.get(), "Faded Moon", "Convert 25% Max Mana into additional bonus magic damage on-hit");
-        this.addAccessory(Accessories.TWO_WORLD.get(), "Two World", "Gain Dark Sun and Faded Moon, If you have more than bonus attack damage to ability power enter Dark Sun and if you have more than ability power to attack damage enter Faded Moon ");
-        this.addAccessory(Accessories.TITANIC_CRESCENT.get(), "Titanic Crescent", "Basic attack on-hit deal bonus %s%% Max HP to the target and %s%% Max HP to others entity in a cone in the direction of the primary target");
+        this.addAccessory(Accessories.TWO_WORLD.get(), "Two World", "Gain Dark Sun and Faded Moon, If you have more than bonus attack damage to ability power enter Dark Sun and if you have more than ability power to attack damage enter Faded Moon");
+        this.addAccessory(Accessories.TITANIC_CRESCENT.get(), "Titanic Crescent", "Basic attack on-hit deal bonus %s%% Max HP to the Target and %s%% Max HP to others entity in a cone in the direction of the primary Target");
         this.addAccessory(Accessories.SWIFTNESS.get(), "Swiftness", "Inflict Speed boost effect for 5 seconds");
         this.addAccessory(Accessories.STALKER.get(), "Stalker", "Gain 100% Stealth and becoming invisible");
         this.addAccessory(Accessories.CRAMPONS.get(), "Crampons", "Ability to walk on Powder Snow and Immune to Freezing");
@@ -197,12 +196,14 @@ public class BHLangProvider extends LanguageProvider {
         creativeTabs(BHCreativeTabs.BH_SPAWN_EGG, "Beyond Horizon | Spawn Egg");
         creativeTabs(BHCreativeTabs.BH_DEBUG_ITEMS, "Beyond Horizon | Debug Items");
         //
-        this.add(Tooltips.TOOLTIP_ACCESSORY, "Accessory");
-        this.add(Tooltips.TOOLTIP_ACCESSORY_TYPE, "Unique");
-        this.add(Tooltips.TOOLTIP_ACCESSORY_SKILL_TYPE, "%s");
-        this.add(Tooltips.TOOLTIP_INVENTORY, "Inventory");
-        this.add(Tooltips.TOOLTIP_HEALTH_RECOVERY_POTION, "Restore %s Health");
-        this.add(Tooltips.TOOLTIP_MANA_RECOVERY_POTION, "Restore %s Mana");
+        this.add(Tooltips.ACCESSORY, "Accessory");
+        this.add(Tooltips.ACCESSORY_TYPE, "Unique");
+        this.add(Tooltips.VALUE_WITH_MAX, "%s / %s");
+        this.add(Tooltips.COOLDOWN_IN_NAME, "(CD: %s)");
+        this.add(Tooltips.ACCESSORY_SKILL_TYPE, "%s");
+        this.add(Tooltips.INVENTORY, "Inventory");
+        this.add(Tooltips.HEALTH_RECOVERY_POTION, "Restore %s Health");
+        this.add(Tooltips.MANA_RECOVERY_POTION, "Restore %s Mana");
 
         this.add(PlayerTrackerItem.NBT_PLAYER_HEALTH, "Health:");
         this.add(PlayerTrackerItem.NBT_PLAYER_MANA, "Mana:");
@@ -250,7 +251,13 @@ public class BHLangProvider extends LanguageProvider {
         this.addGuideBookIndexes(GuideBookPages.LEVEL_SYSTEM, "Level System");
         this.addGuideBookIndexes(GuideBookPages.DIFFICULTY, "Difficulty");
         this.addGuideBookIndexes(GuideBookPages.EFFECT_TYPES, "Effect Types");
+
+        //
+
     }
+
+
+    //
     private void addEnchantmentDesc(Supplier<? extends Enchantment> enchantments, String description) {
         this.add(enchantments.get().getDescriptionId() + ".desc", description);
     }
@@ -344,5 +351,12 @@ public class BHLangProvider extends LanguageProvider {
             }
 
         }
+    }
+    private void addPotions(String effect, String name) {
+        this.add("item.minecraft.potion.effect." + effect, "Potion of " + name);
+        this.add("item.minecraft.lingering_potion.effect." + effect, "Lingering Potion of " + name);
+        this.add("item.minecraft.splash_potion.effect." + effect, "Splash Potion of " + name);
+        // Tipped Arrow
+        this.add("item.minecraft.tipped_arrow.effect." + effect, "Arrow of " + name);
     }
 }

@@ -36,6 +36,7 @@ public class NetworkHandler {
         net.registerMessage(id(), ClientboundManaSyncPacket.class, ClientboundManaSyncPacket::write, ClientboundManaSyncPacket::new, ClientboundManaSyncPacket::handle);
         net.registerMessage(id(), ClientboundSetEntityChainedLinkPacket.class, ClientboundSetEntityChainedLinkPacket::write, ClientboundSetEntityChainedLinkPacket::new, ClientboundSetEntityChainedLinkPacket::handle);
         net.registerMessage(id(), ClientboundAbilityCooldownPacket.class, ClientboundAbilityCooldownPacket::write, ClientboundAbilityCooldownPacket::new, ClientboundAbilityCooldownPacket::handle);
+        net.registerMessage(id(), ClientboundAbilityCooldownsPacket.class, ClientboundAbilityCooldownsPacket::write, ClientboundAbilityCooldownsPacket::new, ClientboundAbilityCooldownsPacket::handle);
         net.registerMessage(id(), ClientboundExtendedPlacedRecipePacket.class, ClientboundExtendedPlacedRecipePacket::write, ClientboundExtendedPlacedRecipePacket::new, ClientboundExtendedPlacedRecipePacket::handle);
         net.registerMessage(id(), ClientboundLevelSystemPacket.class, ClientboundLevelSystemPacket::write, ClientboundLevelSystemPacket::new, ClientboundLevelSystemPacket::handle);
         net.registerMessage(id(), ClientboundPlayerDataPacket.class, ClientboundPlayerDataPacket::write, ClientboundPlayerDataPacket::new, ClientboundPlayerDataPacket::handle);
@@ -53,7 +54,6 @@ public class NetworkHandler {
         net.registerMessage(id(), ServerboundAcessoryKeyPacket.class, ServerboundAcessoryKeyPacket::write, ServerboundAcessoryKeyPacket::new, ServerboundAcessoryKeyPacket::handle);
         net.registerMessage(id(), ServerboundQuiverSelectedArrowPacket.class, ServerboundQuiverSelectedArrowPacket::write, ServerboundQuiverSelectedArrowPacket::new, ServerboundQuiverSelectedArrowPacket::handle);
         net.registerMessage(id(), ServerboundAbilitySlotSelectionPacket.class, ServerboundAbilitySlotSelectionPacket::write, ServerboundAbilitySlotSelectionPacket::new, ServerboundAbilitySlotSelectionPacket::handle);
-
     }
 
 

@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
@@ -10,8 +9,6 @@ import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -19,7 +16,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
@@ -39,9 +35,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import java.util.UUID;
 
 public class SinglePassiveAccessory extends AccessoryPassiveSkill {
-    public static String NBT_BRING_IT_DOWN = "bring_it_down";
-    protected int bringItDownStacks = 0;
-    protected boolean bringItDownSFX = false;
 
     private static final UUID BONUS_CRIT_DAMAGE = UUID.fromString("20c13c52-4226-4724-bf7a-b0ce3dbcf00a");
 
@@ -64,9 +57,6 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
         }
         if (this == Accessories.STING.get()) {
             return Component.translatable(this.createId(), (int) this.getMagnitude());
-        }
-        if (this == Accessories.BRING_IT_DOWN.get()) {
-            return Component.translatable(this.createId(), (int) this.getMagnitude(), Maths.format0(Constant.BRING_IT_DOWN_INCREASED_DAMAGE ));
         }
         if (this == Accessories.EXCORIATE.get()) {
             return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
@@ -198,10 +188,10 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
         var stackableTags = Capabilities.stackable(attacker);
         if (this == Accessories.ELECTROSHOCK.get()) {
             if (stackableTags != null) {
-                var sTag = stackableTags.getInstance(StackableTagInstance.ENERGIZE);
+                var sTag = stackableTags.makeInstance(StackableTagInstance.ENERGIZE);
                 if (!attacker.level().isClientSide()) {
                     if (sTag.isFullyStacked()) {
-                        BeyondHorizon.LOGGER.debug("[Energize] Electroshock activated!");
+//                        BeyondHorizon.LOGGER.debug("[Energize] Electroshock activated!");
                         target.invulnerableTime = 0;
                         BoltShockAbility.spawn(attacker.level(), target.getX(), target.getY(0.05D), target.getZ(), damageDealt * 0.40F, attacker);
                         sTag.setStack(0);
@@ -244,27 +234,6 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
                 double mana = attacker.getAttributeValue(BHAttributes.MAX_MANA.get());
                 float outputDamage = (float) (mana * this.getMagnitude());
                 target.hurt(BHDamageTypes.magicDamage(attacker, null), outputDamage);
-            }
-        }
-        if (this == Accessories.BRING_IT_DOWN.get()) {
-            if (attacker instanceof Player player) {
-                var roleClass = Capabilities.levelSystem(player);
-                int xpLevel = roleClass != null ? roleClass.getLevel() : 1;
-                float baseDamage = (this.getMagnitude() * (xpLevel + 1));
-                this.bringItDownStacks++;
-//                BeyondHorizon.LOGGER.debug("Bring it down stacks: {} damage {}", this.bringItDownStacks, baseDamage);
-                tagA.putInt(NBT_BRING_IT_DOWN, this.bringItDownStacks);
-                if (this.bringItDownStacks == 2) {
-                    this.bringItDownSFX = true;
-                    attacker.level().playSound(null, target.getX(), target.getY(), target.getZ(), BHSounds.HEAVY_ATTACK.get(), SoundSource.MASTER, 1.0F, 1.0F);
-                }
-                if (this.bringItDownStacks >= 3) {
-                    this.bringItDownSFX = false;
-                    target.invulnerableTime = 0;
-                    target.hurt(BHDamageTypes.physicalDamage(attacker, null), DamageHandler.missingHealth(target, baseDamage, Constant.BRING_IT_DOWN_INCREASED_DAMAGE));
-                    tagA.putInt(NBT_BRING_IT_DOWN, 0);
-                    this.bringItDownStacks = 0;
-                }
             }
         }
     }

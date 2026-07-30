@@ -146,27 +146,6 @@ public class AttributeTooltips {
         makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, null);
     }
 
-    public void addTooltips(ItemStack itemStack, Player player, TooltipFlag context, List<Component> tooltip) {
-        int lastAttributeLine = 0;
-        String prefix = "attribute.modifier";
-
-        if (BHConfigs.ATTRIBUTE_TOOLTIP_OVERHAUl) {
-            for (int i = 0; i < tooltip.size(); i++) {
-                lastAttributeLine = this.getTooltipLine(tooltip, prefix);
-            }
-
-            this.makeAttributeTooltip(player, tooltip, itemStack, lastAttributeLine);
-            this.makePotionTooltip(itemStack, tooltip, lastAttributeLine);
-        }
-        this.makeEnchantmentAttributeTooltip(player, tooltip, itemStack);
-
-        for (ArmorAbility set : BHRegistries.ARMOR_ABILITY_KEY.get()) {
-            if (set.contains(itemStack)) {
-                set.addTooltips(tooltip, itemStack, player);
-            }
-        }
-    }
-
     public void makePotionTooltip(ItemStack itemStack, List<Component> tooltips, int lastAttribueLine) {
         List<Component> lists = new ArrayList<>();
         if (itemStack.getItem() instanceof PotionItem || itemStack.getItem() instanceof LingeringPotionItem || itemStack.getItem() instanceof TippedArrowItem) {
@@ -188,7 +167,7 @@ public class AttributeTooltips {
         }
     }
 
-    private int getTooltipLine(List<Component> tooltip, String startWith) {
+    public int getTooltipLine(List<Component> tooltip, String startWith) {
         for (EquipmentSlot slots : EquipmentSlot.values()) {
             for (int i = 0; i < tooltip.size(); i++) {
                 Component component = tooltip.get(i);

@@ -13,7 +13,7 @@ public class EnergizedSkill extends WeaponPassiveSkills {
     public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         var stackTags = Capabilities.stackable(attacker);
         if (stackTags != null) {
-            var sTag = stackTags.getInstance(StackableTagInstance.ENERGIZE);
+            var sTag = stackTags.makeInstance(StackableTagInstance.ENERGIZE);
             sTag.add(6);
         }
     }

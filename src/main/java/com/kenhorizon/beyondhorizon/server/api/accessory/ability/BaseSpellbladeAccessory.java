@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -18,16 +19,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
-    public enum DamageType {
-        PHYSICAL,
-        MAGIC,
-        TRUE_DAMAGE
-    }
     protected float attackScale;
     protected int timer;
     protected int attackInterval;
     protected boolean isActive;
-    protected BaseSpellbladeAccessory.DamageType damageType;
+    protected DamageType damageType;
     public BaseSpellbladeAccessory(int attackInterval, float attackScale, DamageType damageType) {
         this.attackScale = attackScale;
         this.attackInterval = Maths.sec(attackInterval);
@@ -77,20 +73,7 @@ public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
             this.isActive = false;
             target.invulnerableTime = 0;
             float outputDamage = this.spellBladeDamage(attacker, damageDealt, this.attackScale);
-            switch (this.damageType) {
-                case MAGIC -> {
-                    target.hurt(BHDamageTypes.magicDamage(target, attacker), outputDamage);
-                }
-                case TRUE_DAMAGE -> {
-
-                    target.hurt(BHDamageTypes.trueDamage(target, attacker), outputDamage);
-                }
-                default -> {
-
-                    target.hurt(BHDamageTypes.physicalDamage(target, attacker), outputDamage);
-                }
-            }
-
+            this.damageType.dealDamage(target, attacker, outputDamage);
         }
     }
 

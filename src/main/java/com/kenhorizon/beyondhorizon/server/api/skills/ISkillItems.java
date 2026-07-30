@@ -1,6 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
@@ -28,6 +33,30 @@ public interface ISkillItems {
         int index = itemStack.getCapability(BHCapabilties.SKILL_SLOTS).resolve().orElseThrow(NullPointerException::new).getSelectedSlot();
         index = Mth.clamp(index, 0, this.getActiveSkills().size() - 1);
         return index;
+    }
+
+    default void addAbilityTooltip(ItemStack itemStack, List<Component> tooltip) {
+        int size = this.getSkills().size();
+        int activePresent = this.getActiveSkills().size();
+        if (activePresent > 1) {
+            tooltip.add(Tooltips.numberMax(this.getSkillSlot(itemStack) + 1, activePresent));
+        }
+        for (int i = 0; i < this.getSkills().size(); i++) {
+            Skill skill = this.getSkills().stream().toList().get(i);
+            if (!skill.getAttributeModifiers().isEmpty()) {
+                size--;
+                skill.addTooltipAttributes(itemStack, tooltip);
+            }
+            if (skill.isPassive()) {
+                skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+            }
+            if (this.getActiveSkill(itemStack).isPresent()) {
+                if (skill.isActive() && skill == this.getActiveSkill(itemStack).get()) {
+                    skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+                }
+            }
+        }
+        tooltip.add(CommonComponents.EMPTY);
     }
 
     default boolean hasCapability(ItemStack stack) {

@@ -15,8 +15,8 @@ public class EnergizedAccessory extends AccessoryPassiveSkill implements IStackI
     public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
         var stackTags = Capabilities.stackable(entity);
         if (stackTags != null) {
-            var sTag = stackTags.getInstance(StackableTagInstance.ENERGIZE);
-            if (!entity.level().isClientSide()) {
+            var sTag = stackTags.makeInstance(StackableTagInstance.ENERGIZE);
+            if (!entity.level().isClientSide() && sTag != null) {
                 float steps = entity.moveDist / entity.nextStep;
                 if (entity.moveDist > entity.nextStep) {
                     sTag.add(1);
@@ -33,7 +33,7 @@ public class EnergizedAccessory extends AccessoryPassiveSkill implements IStackI
     public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
         var stackTags = Capabilities.stackable(attacker);
         if (stackTags != null) {
-            var sTag = stackTags.getInstance(StackableTagInstance.ENERGIZE);
+            var sTag = stackTags.makeInstance(StackableTagInstance.ENERGIZE);
             sTag.add(6);
         }
     }

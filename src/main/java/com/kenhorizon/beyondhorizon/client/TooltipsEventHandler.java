@@ -1,6 +1,9 @@
 package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
+import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.*;
 import net.minecraft.world.entity.player.Player;
@@ -24,8 +27,23 @@ public class TooltipsEventHandler {
         boolean isAdvanced = event.getFlags().isAdvanced();
         ItemStack itemStack = event.getItemStack();
         AttributeTooltips attributeTooltips = new AttributeTooltips();
-        attributeTooltips.addTooltips(itemStack, player, flag, tooltip);
+        int lastAttributeLine = 0;
+        String prefix = "attribute.modifier";
 
+        if (BHConfigs.ATTRIBUTE_TOOLTIP_OVERHAUl) {
+            for (int i = 0; i < tooltip.size(); i++) {
+                lastAttributeLine = attributeTooltips.getTooltipLine(tooltip, prefix);
+            }
+
+            attributeTooltips.makeAttributeTooltip(player, tooltip, itemStack, lastAttributeLine);
+            attributeTooltips.makePotionTooltip(itemStack, tooltip, lastAttributeLine);
+        }
+        attributeTooltips.makeEnchantmentAttributeTooltip(player, tooltip, itemStack);
+        for (ArmorAbility set : BHRegistries.ARMOR_ABILITY_KEY.get()) {
+            if (set.contains(itemStack)) {
+                set.addTooltips(tooltip, itemStack, player);
+            }
+        }
 
         if (!FMLLoader.isProduction() && itemStack.hasTag() && event.getFlags().isAdvanced()) {
             // Format NBT debug string

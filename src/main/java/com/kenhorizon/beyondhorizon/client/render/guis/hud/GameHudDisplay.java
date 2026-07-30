@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
+import com.kenhorizon.beyondhorizon.client.enums.GameHuds;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
@@ -56,36 +57,36 @@ public class GameHudDisplay extends Gui {
         var player = minecraft.player;
         RenderSystem.enableBlend();
         this.hud.update();
-        var stackableTags = Capabilities.stackable(player);
         int xPos = 0;
+        List<StackableTags> list = new ArrayList<>();
         IAccessoryStackHandler handler = Capabilities.accessory(player);
-        if (stackableTags != null) {
-            if (handler != null) {
-                var stacks = handler.getStacks();
-                for (int i = 0; i < stacks.getSlots(); i++) {
-                    ItemStack stack = stacks.getStackInSlot(i);
-                    if (!stack.isEmpty() && stack.getItem() instanceof IAccessoryItem accessoryItems) {
-                        for (var accessory : accessoryItems.getAccessories()) {
-                            if (accessory instanceof IStackIconOverlay overlay) {
-                                List<StackableTags> list = new ArrayList<>();
-                                list.add(overlay.getStacks());
-                                for (var allTags : list) {
-                                    ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + allTags.getName() + ".png");
-                                    if (allTags.hasStacks()) {
-                                        int x = this.hud.scaledWindowWidth / 2 - 91 + (26 * xPos);
-                                        int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
-                                        String value = String.format("%s", allTags.getStack());
-                                        BlitHelper.drawBlit(guiGraphics, ICON_BACKGROUND, x, y -1, 0, 0, 24, 24, 24, 24);
-                                        BlitHelper.drawBlit(guiGraphics, getAllIcons, x, y - 1, 0, 0, 24, 24, 24, 24);
-                                        int valueLenght = value.length();
-                                        BlitHelper.drawStrings(minecraft.font, guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, Colors.WHITE, true);
-                                        RenderSystem.disableBlend();
-                                        xPos++;
-                                    }
-                                }
-                            }
+        if (handler != null) {
+            var stacks = handler.getStacks();
+            for (int i = 0; i < stacks.getSlots(); i++) {
+                ItemStack stack = stacks.getStackInSlot(i);
+                if (!stack.isEmpty() && stack.getItem() instanceof IAccessoryItem accessoryItems) {
+                    for (var accessory : accessoryItems.getAccessories()) {
+                        if (accessory instanceof IStackIconOverlay overlay) {
+                            var stackable = Capabilities.stackable(player);
+                            list.add(stackable.makeInstance(overlay.getStacks()));
                         }
                     }
+                }
+            }
+        }
+        if (!list.isEmpty()) {
+            for (var allTags : list) {
+                ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + allTags.getName() + ".png");
+                if (allTags.hasStacks()) {
+                    int x = this.hud.scaledWindowWidth / 2 - 91 + (26 * xPos);
+                    int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
+                    String value = String.format("%s", allTags.getStack());
+                    BlitHelper.drawBlit(guiGraphics, ICON_BACKGROUND, x, y -1, 0, 0, 24, 24, 24, 24);
+                    BlitHelper.drawBlit(guiGraphics, getAllIcons, x, y - 1, 0, 0, 24, 24, 24, 24);
+                    int valueLenght = value.length();
+                    BlitHelper.drawBorderedStrings(minecraft.font, guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, Colors.WHITE);
+                    RenderSystem.disableBlend();
+                    xPos++;
                 }
             }
         }

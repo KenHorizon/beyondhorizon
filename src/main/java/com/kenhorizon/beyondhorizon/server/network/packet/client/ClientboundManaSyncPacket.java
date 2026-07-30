@@ -12,13 +12,11 @@ public class ClientboundManaSyncPacket {
     private final double mana;
 
     public ClientboundManaSyncPacket(double mana) {
-//        BeyondHorizon.LOGGER.info("Network message: Receive Mana: {}",mana);
         this.mana = mana;
         //
     }
     public ClientboundManaSyncPacket(FriendlyByteBuf buf) {
         this.mana = buf.readDouble();
-//        BeyondHorizon.LOGGER.info("Network message: Encode Receive Mana: {}", this.mana);
         //
     }
 

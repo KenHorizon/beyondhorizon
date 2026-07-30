@@ -23,7 +23,14 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public class StackableTagCap implements ICapabilityProvider, INBTSerializable<CompoundTag> {
-    private final LazyOptional<StackableTagHandler> handler = LazyOptional.of(StackableTagHandler::new);
+    private final LazyOptional<StackableTagHandler> handler;
+
+    private final LivingEntity entity;
+
+    public StackableTagCap(LivingEntity entity) {
+        this.entity = entity;
+        this.handler = LazyOptional.of(StackableTagHandler::new);
+    }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {

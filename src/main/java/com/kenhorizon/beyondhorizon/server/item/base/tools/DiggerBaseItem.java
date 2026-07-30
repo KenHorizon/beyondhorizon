@@ -92,6 +92,7 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems, IReloadab
     public void reload() {
         this.skills = this.registerAllSkills();
         this.setupDefault();
+        this.skillBaseItems.setSkills(this.skills, this.activeSkills);
     }
 
     @Override
@@ -147,7 +148,7 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems, IReloadab
     }
     @Override
     public void appendHoverText(ItemStack itemStack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-        this.skillBaseItems.appendHoverText(itemStack, tooltip);
+        this.addAbilityTooltip(itemStack, tooltip);
     }
 
     @Override

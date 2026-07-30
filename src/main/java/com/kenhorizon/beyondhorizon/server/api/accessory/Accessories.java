@@ -266,8 +266,10 @@ public class Accessories {
     public static final RegistryObject<Accessory> INFLAME = registerSkill("inflame", () -> new ApplyEffectAccessory(3, 0, BHEffects.INFLAME.get()).showIcon(true).ambient(true));
     public static final RegistryObject<Accessory> STING = registerSkill("sting", () -> new SinglePassiveAccessory(Constant.STING_DAMAGE));
     public static final RegistryObject<Accessory> TORMENT = registerSkill("torment", () -> new ApplyEffectAccessory(3, 0, BHEffects.TORMENT.get()).showIcon(true).ambient(true));
-    public static final RegistryObject<Accessory> BRING_IT_DOWN = registerSkill("bring_it_down", () -> new SinglePassiveAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE));
-    public static final RegistryObject<Accessory> GHOUL = registerSkill("ghoul", () -> new SinglePassiveAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE));
+    public static final RegistryObject<Accessory> BRING_IT_DOWN = registerSkill("bring_it_down", () -> new BringItDownAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE, Constant.BRING_IT_DOWN_INCREASED_DAMAGE));
+    public static final RegistryObject<Accessory> SEETHING_STRIKE = registerSkill("seething_strike", SeethingStrikeAccessory::new);
+    public static final RegistryObject<Accessory> CARVE = registerSkill("carve", CarveAccessory::new);
+    public static final RegistryObject<Accessory> GHOUL = registerSkill("ghoul", SinglePassiveAccessory::new);
     public static final RegistryObject<Accessory> PENALTY_0 = registerSkill("penalty", () -> new DamageEffectivenessAccessory(Constant.EXCORIATE_DAMAGE_PENALTY));
     public static final RegistryObject<Accessory> EXCORIATE = registerSkill("excoriate", () -> new SinglePassiveAccessory(Constant.EXCORIATE_DAMAGE));
     public static final RegistryObject<Accessory> NIGHTSTALKER = registerSkill("nightstalker", () -> new ExtraDamageAccessory(Constant.EXCORIATE_DAMAGE, Constant.EXCORIATE_PER_MISSING_HP, ExtraDamageAccessory.TARGET_MISSING_HEALTH));

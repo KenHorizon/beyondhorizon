@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 public class Constant {
+    public static final float SEETHING_STRIKE_ATK_SPD = 0.02F;
+    public static final float CARVE_ARMOR_REMOVE = -0.06F;
     public static final float AOE_HEALING_EFFECTIVENESS = 0.3333F;
     public static final float PLUNDER_2_CHANCES = 1.0F;
     public static final float PLUNDER_CHANCES = 0.50F;

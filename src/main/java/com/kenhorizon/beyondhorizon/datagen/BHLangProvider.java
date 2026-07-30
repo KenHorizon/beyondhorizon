@@ -164,6 +164,8 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.STING.get(), "Sting", "Basic Attack deal additional %s physical damage");
         this.addAccessory(Accessories.TORMENT.get(), "Torment", "Dealing damage burn dealing 1% target's Max HP magic damage every 0.5 seconds for 3 seconds");
         this.addAccessory(Accessories.BRING_IT_DOWN.get(), "Bring It Down", "Basic attack grant a stack for 3 seconds, up to 2 stacks, at 2 stacks, the next attack consumes all stacks to deal (+%s per level) physical damage on-hit increased by %s%% based on target's Missing HP");
+        this.addAccessory(Accessories.CARVE.get(), "Carve", "Dealing physical damage to target, applies stack of %s for %s seconds, stacking upto %s times, each stack inflict %s%% armor reduction, upto %s%% at %s stacks");
+        this.addAccessory(Accessories.SEETHING_STRIKE.get(), "Seething Strike", "Basic attack grant stack of %s for %s seconds, stacking upto %s times, each stack grant %s%% attack speed, upto %s%% at %s stacks, at max stacks basic attack also grant %s stacks for %s seconds, at %s %s stack, the next basic attack, consumes all of those stacks to trigger a %s Hit, that applies on-hit effects to the target");
         this.addAccessory(Accessories.POLYETHYLENE.get(), "Polyethylene", "Increase ranged damage by %s%% and knockback by %s%%");
         this.addAccessory(Accessories.FLUOROCARBON.get(), "Fluorocarbon", "Reduce the draw time of Item");
         this.addAccessory(Accessories.NIGHTSTALKER.get(), "Nightstalker", "Increased all damage by 0-%s%% based on Target Missing HP");

@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.client.render.guis.hud;
+package com.kenhorizon.beyondhorizon.client.enums;
 
 import net.minecraft.util.ByIdMap;
 import net.minecraft.util.OptionEnum;

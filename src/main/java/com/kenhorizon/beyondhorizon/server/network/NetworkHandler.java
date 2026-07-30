@@ -41,6 +41,7 @@ public class NetworkHandler {
         net.registerMessage(id(), ClientboundLevelSystemPacket.class, ClientboundLevelSystemPacket::write, ClientboundLevelSystemPacket::new, ClientboundLevelSystemPacket::handle);
         net.registerMessage(id(), ClientboundPlayerDataPacket.class, ClientboundPlayerDataPacket::write, ClientboundPlayerDataPacket::new, ClientboundPlayerDataPacket::handle);
         net.registerMessage(id(), ClientboundAddHealingOrbPacket.class, ClientboundAddHealingOrbPacket::write, ClientboundAddHealingOrbPacket::new, ClientboundAddHealingOrbPacket::handle);
+        net.registerMessage(id(), ClientboundStackableTagsPacket.class, ClientboundStackableTagsPacket::write, ClientboundStackableTagsPacket::new, ClientboundStackableTagsPacket::handle);
 
         net.registerMessage(id(), ServerboundExtendedPlaceRecipePacket.class, ServerboundExtendedPlaceRecipePacket::write, ServerboundExtendedPlaceRecipePacket::new, ServerboundExtendedPlaceRecipePacket::handle);
         net.registerMessage(id(), ServerboundAccessoryInventoryPacket.class, ServerboundAccessoryInventoryPacket::write, ServerboundAccessoryInventoryPacket::new, ServerboundAccessoryInventoryPacket::handle);
@@ -54,6 +55,7 @@ public class NetworkHandler {
         net.registerMessage(id(), ServerboundAcessoryKeyPacket.class, ServerboundAcessoryKeyPacket::write, ServerboundAcessoryKeyPacket::new, ServerboundAcessoryKeyPacket::handle);
         net.registerMessage(id(), ServerboundQuiverSelectedArrowPacket.class, ServerboundQuiverSelectedArrowPacket::write, ServerboundQuiverSelectedArrowPacket::new, ServerboundQuiverSelectedArrowPacket::handle);
         net.registerMessage(id(), ServerboundAbilitySlotSelectionPacket.class, ServerboundAbilitySlotSelectionPacket::write, ServerboundAbilitySlotSelectionPacket::new, ServerboundAbilitySlotSelectionPacket::handle);
+
     }
 
 

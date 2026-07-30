@@ -15,21 +15,21 @@ public class ClientboundAbilityCooldownsPacket {
         this.map = map;
     }
 
-    public static String readID(FriendlyByteBuf buffer) {
+    private static String readID(FriendlyByteBuf buffer) {
         return buffer.readUtf();
     }
 
-    public static CooldownInstance readCoolDownInstance(FriendlyByteBuf buffer) {
+    private static CooldownInstance readCoolDownInstance(FriendlyByteBuf buffer) {
         int cooldown = buffer.readInt();
         int cooldownRemaining = buffer.readInt();
         return new CooldownInstance(cooldown, cooldownRemaining);
     }
 
-    public static void writeId(FriendlyByteBuf buf, String id) {
+    private static void writeId(FriendlyByteBuf buf, String id) {
         buf.writeUtf(id);
     }
 
-    public static void writeCoolDownInstance(FriendlyByteBuf buf, CooldownInstance cooldownInstance) {
+    private static void writeCoolDownInstance(FriendlyByteBuf buf, CooldownInstance cooldownInstance) {
         buf.writeInt(cooldownInstance.getCooldown());
         buf.writeInt(cooldownInstance.getCooldownRemaining());
     }

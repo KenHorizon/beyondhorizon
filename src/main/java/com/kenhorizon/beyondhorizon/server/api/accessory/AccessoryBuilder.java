@@ -40,6 +40,8 @@ public class AccessoryBuilder implements IReloadable {
             Accessories.KNOCKBACK_RESISTANCE, Accessories.SHIELD, Accessories.PRESERVED, Accessories.UNBOTHERED, Accessories.BAD_APPLE, Accessories.HEMORRHAGE_CONTROL, Accessories.WEIGHTS, Accessories.INVULNERABLE,
             Accessories.SWEET_DREAM, Accessories.UNCURSED, Accessories.VITAMINS, Accessories.LIGHTNESS, Accessories.OWL_SIGHT));
 
+    public static final AccessoryBuilder FINE_EDGE = new AccessoryBuilder(List.of(Accessories.CARVE));
+    public static final AccessoryBuilder PHANTOM_MIRROR = new AccessoryBuilder(List.of(Accessories.SEETHING_STRIKE));
     public static final AccessoryBuilder SATCTEL_OF_ELIXIR_0 = new AccessoryBuilder(List.of(Accessories.ELIXIR_GRAB_0));
     public static final AccessoryBuilder SATCTEL_OF_ELIXIR_1 = new AccessoryBuilder(List.of(Accessories.ELIXIR_GRAB_1));
     public static final AccessoryBuilder SATCTEL_OF_ELIXIR_2 = new AccessoryBuilder(List.of(Accessories.ELIXIR_GRAB_2));

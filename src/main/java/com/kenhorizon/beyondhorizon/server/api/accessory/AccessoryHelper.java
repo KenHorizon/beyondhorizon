@@ -145,16 +145,16 @@ public final class AccessoryHelper {
             boolean flag = ItemStack.isSameItem(inSlotItemStack, outsideStack);
             boolean itemGroupLimitation = accessoryItem.checkIfSharingGroupTogether(inSlotItemStack, outsideStack);
             boolean isBasic = accessoryItem.isBasic();
-            boolean singleEffectLimitation = accessoryItem.checkIfNameLimitation(inSlotItemStack, outsideStack);
+            boolean singleEffectLimitation = accessoryItem.isNameLimitation();
 
 
             if (isBasic) continue;
 
-            if (itemGroupLimitation) {
-                return false;
-            }
 
             if (flag && singleEffectLimitation) {
+                return false;
+            }
+            if (itemGroupLimitation) {
                 return false;
             }
         }

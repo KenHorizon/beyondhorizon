@@ -3,10 +3,12 @@ package com.kenhorizon.beyondhorizon.server;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.Fonts;
+import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.AdvanceDamageSource;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.GlobalTags;
 import com.kenhorizon.libs.server.event.MobEffectModificationEvent;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
@@ -139,22 +141,14 @@ public class ServerEventHandler {
 
     @SubscribeEvent
     public void onEntityJoin(EntityJoinLevelEvent event) {
-        if (!event.getLevel().isClientSide()) {
-            if (event.getEntity() instanceof LivingEntity entity) {
-                IStackableInstance stackableTags = Capabilities.stackable(entity);
-                if (stackableTags != null) {
-                    stackableTags.instance(entity);
-                }
-            }
+        Entity getEntity = event.getEntity();
+        var level = event.getLevel();
+        if (getEntity instanceof LivingEntity entity) {
+//            IStackableInstance stackableTags = Capabilities.stackable(entity);
+//            if (stackableTags != null) {
+//                stackableTags.instance(entity);
+//            }
         }
-    }
-
-    @SubscribeEvent
-    public void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
-        Player player = event.player;
-        if (player.level().isClientSide()) return;
-
     }
 
     @SubscribeEvent
@@ -234,6 +228,7 @@ public class ServerEventHandler {
             Player player = event.player;
             Level level = player.level();
             PlayerData playerData = Capabilities.data(player);
+            if (playerData == null) return;
             playerData.tick(level);
         }
     }
@@ -273,24 +268,26 @@ public class ServerEventHandler {
 
     @SubscribeEvent
     public void onAttachEntityCapabilities(AttachCapabilitiesEvent<Entity> event) {
-        Entity entity = event.getObject();
-        if (AccessoryInventoryCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_ACCESSORY)) {
-            event.addCapability(BHCapabilties.ID_ACCESSORY, new AccessoryInventoryCap((Player) entity));
-        }
-        if (DamageInfoCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_DAMAGE_INFO)) {
-            event.addCapability(BHCapabilties.ID_DAMAGE_INFO, new DamageInfoCap());
-        }
-        if (CombatDataCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_COMBAT_INFO)) {
-            event.addCapability(BHCapabilties.ID_COMBAT_INFO, new CombatDataCap());
-        }
-        if (LevelSystemsCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_LEVEL_SYSTEM)) {
-            event.addCapability(BHCapabilties.ID_LEVEL_SYSTEM, new LevelSystemsCap());
-        }
-        if (PlayerDataCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_PLAYER_DATA)) {
-            event.addCapability(BHCapabilties.ID_PLAYER_DATA, new PlayerDataCap((Player) entity));
-        }
-        if (StackableTagCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_STACKABLE_TAGS)) {
-            event.addCapability(BHCapabilties.ID_STACKABLE_TAGS, new StackableTagCap());
+        Entity getEntity = event.getObject();
+        if (getEntity instanceof LivingEntity entity) {
+            if (AccessoryInventoryCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_ACCESSORY)) {
+                event.addCapability(BHCapabilties.ID_ACCESSORY, new AccessoryInventoryCap((Player) entity));
+            }
+            if (DamageInfoCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_DAMAGE_INFO)) {
+                event.addCapability(BHCapabilties.ID_DAMAGE_INFO, new DamageInfoCap());
+            }
+            if (CombatDataCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_COMBAT_INFO)) {
+                event.addCapability(BHCapabilties.ID_COMBAT_INFO, new CombatDataCap());
+            }
+            if (LevelSystemsCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_LEVEL_SYSTEM)) {
+                event.addCapability(BHCapabilties.ID_LEVEL_SYSTEM, new LevelSystemsCap());
+            }
+            if (PlayerDataCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_PLAYER_DATA)) {
+                event.addCapability(BHCapabilties.ID_PLAYER_DATA, new PlayerDataCap((Player) entity));
+            }
+            if (StackableTagCap.canAttachTo(entity) && !event.getCapabilities().containsKey(BHCapabilties.ID_STACKABLE_TAGS)) {
+                event.addCapability(BHCapabilties.ID_STACKABLE_TAGS, new StackableTagCap((LivingEntity) entity));
+            }
         }
     }
 
@@ -624,6 +621,15 @@ public class ServerEventHandler {
         if (newInstance == null) return;
 //        BeyondHorizon.LOGGER.info("Event Debug | NEW={} | OLD={}", newInstance, instance);
         event.setEffectInstance(instance);
+    }
+
+    @SubscribeEvent
+    public void onLivingEntitySpawn(MobSpawnEvent.FinalizeSpawn event) {
+        Mob mobs = event.getEntity();
+        var spawnType = event.getSpawnType();
+        if (spawnType == MobSpawnType.SPAWNER) {
+            GlobalTags.setSpawner(mobs, true);
+        }
     }
 
     //TODO: Living Tick Update

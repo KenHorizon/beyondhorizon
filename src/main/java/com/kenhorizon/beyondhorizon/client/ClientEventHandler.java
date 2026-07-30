@@ -21,6 +21,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilitySlotSelectionPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAcessoryKeyPacket;
+import com.kenhorizon.beyondhorizon.server.util.RaycastUtil;
 import com.kenhorizon.libs.client.ModelAnimationHandler;
 import com.kenhorizon.libs.client.ModelAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;
@@ -43,7 +44,12 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -112,10 +118,18 @@ public class ClientEventHandler {
         }
         ChunkPos chunkpos = new ChunkPos(blockpos);
         Level level = entity.level();
+        Entity lookedEntity = RaycastUtil.getEntityLookedAt(entity);
         list.add(String.format(Locale.ROOT, "FPS: %s", minecraft.getFps()));
         list.add(String.format(Locale.ROOT, "XYZ: %.2f / Y: %.2f /Z: %.2f", entity.getX(), entity.getY(), entity.getZ()));
         list.add(String.format(Locale.ROOT, "Facing: %s (%s) (%.1f / %.1f)", direction, directionText, Mth.wrapDegrees(entity.getYRot()), Mth.wrapDegrees(entity.getXRot())));
-
+//        if (lookedEntity instanceof LivingEntity livingEntity) {
+//            CompoundTag nbts = livingEntity.serializeNBT();
+//            list.add("");
+//            for (String key : nbts.getAllKeys()) {
+//                String text = String.format(Locale.ROOT, "%s= %s", key, nbts.get(key));
+//                list.addAll(wrapText(text, font, 250));
+//            }
+//        }
         int top = 2;
         for (String msg : list) {
             if (msg != null && !msg.isEmpty())
@@ -125,6 +139,33 @@ public class ClientEventHandler {
             }
             top += font.lineHeight;
         }
+    }
+    private static List<String> wrapText(String text, Font font, int maxWidth) {
+        List<String> lines = new ArrayList<>();
+
+        StringBuilder currentLine = new StringBuilder();
+
+        for (String word : text.split(" ")) {
+            String testLine = currentLine.isEmpty()
+                    ? word
+                    : currentLine + " " + word;
+
+            if (font.width(testLine) <= maxWidth) {
+                currentLine = new StringBuilder(testLine);
+            } else {
+                if (!currentLine.isEmpty()) {
+                    lines.add(currentLine.toString());
+                }
+
+                currentLine = new StringBuilder(word);
+            }
+        }
+
+        if (!currentLine.isEmpty()) {
+            lines.add(currentLine.toString());
+        }
+
+        return lines;
     }
 
     @SubscribeEvent

@@ -129,7 +129,7 @@ public class BeyondHorizon
         AttributePercentage.init();
         EmissiveBlocks.init();
         NetworkHandler.register();
-        StackableTagInstance.registerAll();
+//        StackableTagInstance.registerAll();
         event.enqueueWork(() -> {
             BHPotions.setup();
             this.modCompatible();

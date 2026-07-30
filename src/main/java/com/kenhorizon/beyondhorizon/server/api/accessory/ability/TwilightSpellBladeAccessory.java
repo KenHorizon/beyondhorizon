@@ -1,12 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
 
 public class TwilightSpellBladeAccessory extends BaseSpellbladeAccessory {
 
     public TwilightSpellBladeAccessory(int attackInterval, float attackScale) {
-        super(attackInterval, attackScale, DamageType.MAGIC);
+        super(attackInterval, attackScale, DamageType.MAGIC_DAMAGE);
     }
 
     @Override

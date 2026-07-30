@@ -5,6 +5,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.item.*;
@@ -56,8 +57,6 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
     protected Multimap<Attribute, AttributeModifier> attributeModifiers;
     protected final Multimap<Attribute, AttributeModifier> otherAttributeModifiers = HashMultimap.create();
     protected final SkillBaseItems skillBaseItems;
-    protected boolean renderTooltips = true;
-    private int skillSlots = 0;
 
     public SwordBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, float attackRange, Properties properties, SkillBuilder skillbuilder) {
         super(materials, 0, attackSpeed, materials.fireImmune() ? properties.fireResistant() : properties);
@@ -107,7 +106,6 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
         this.activeSkills = this.registerAllActiveSkills();
         this.setupDefault();
         this.skillBaseItems.setSkills(this.skills, this.activeSkills);
-        this.renderTooltips = !(this.hasSkill(Skills.NONE.get()) || this.skillBuilder == SkillBuilder.NONE);
     }
 
     private void setupDefault() {
@@ -208,7 +206,7 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
 
     @Override
     public void appendHoverText(ItemStack itemStack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-        this.skillBaseItems.appendHoverText(itemStack, tooltip);
+        this.addAbilityTooltip(itemStack, tooltip);
     }
 
     @Override
@@ -225,15 +223,6 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
         return !value ? super.canApplyAtEnchantingTable(stack, enchantment) : value;
     }
 
-    @Override
-    public boolean canAttackBlock(BlockState blockState, Level level, BlockPos blockPos, Player player) {
-        return false;
-    }
-
-    @Override
-    public boolean mineBlock(ItemStack itemStack, Level level, BlockState blockState, BlockPos blockPos, LivingEntity entity) {
-        return false;
-    }
 
     @Override
     public boolean hasSkill(Skill skill) {

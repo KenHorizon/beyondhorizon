@@ -1,12 +1,10 @@
 package com.kenhorizon.beyondhorizon.configs;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHuds;
+import com.kenhorizon.beyondhorizon.client.enums.GameHuds;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.configs.common.ModCommonConfig;
-import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.api.handler.anvil_patch.AnvilCostSettings;
-import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraftforge.fml.config.ModConfig;
 
 public class BHConfigs {
@@ -36,7 +34,6 @@ public class BHConfigs {
         try {
             BeyondHorizon.LOGGER.info("Syncing all configs here!");
             //---------------------------------------------------------------------//
-            ALWAYS_SHOW_SKILL_ABILITY = ModClientConfig.ALWAYS_SHOW_SKILL_ABILITY.get();
             ATTRIBUTE_TOOLTIP_OVERHAUl = ModClientConfig.ATTRIBUTE_TOOLTIP_OVERHAUl.get();
             ADVANCED_TOOLTIP = ModClientConfig.ADVANCED_TOOLTIP.get();
             SCREEN_SHAKE = ModClientConfig.SCREEN_SHAKE.get();

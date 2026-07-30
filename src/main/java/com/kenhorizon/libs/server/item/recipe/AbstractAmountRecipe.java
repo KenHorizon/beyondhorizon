@@ -121,17 +121,18 @@ public abstract class AbstractAmountRecipe implements Recipe<Container> {
             ItemStack result = CraftingHelper.getItemStack(GsonHelper.getAsJsonObject(jsonObject, "result"), true, true);
             JsonArray ingredients = GsonHelper.getAsJsonArray(jsonObject, "ingredients");
             NonNullList<Ingredient> nonNullList = NonNullList.withSize(ingredients.size(), AmountIngredient.EMPTY);
-            HashSet<Item> items = new HashSet<>();
+//            HashSet<Item> items = new HashSet<>();
             for (int i = 0; i < ingredients.size(); ++i) {
                 JsonElement jsonElement = ingredients.get(i);
                 JsonObject json = GsonHelper.convertToJsonObject(jsonElement.getAsJsonObject(), "amount");
                 AmountIngredient ingredient = AmountIngredient.Serializer.INSTANCE.parse(json);
-                Item item = ingredient.getItem();
-                if (items.add(item)) {
-                    nonNullList.set(i, ingredient);
-                } else {
-                    throw new IllegalArgumentException("Duplicate ingredient " + item);
-                }
+//                Item item = ingredient.getItem();
+                nonNullList.set(i, ingredient);
+//                if (items.add(item)) {
+//                    nonNullList.set(i, ingredient);
+//                } else {
+//                    throw new IllegalArgumentException("Duplicate ingredient " + item);
+//                }
             }
             if (nonNullList.isEmpty()) throw new JsonParseException("No ingredients for " + recipeId);
             R recipe = newInstance(recipeId, result, nonNullList);

@@ -4,7 +4,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.INBTSerializable;
 
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
+import java.util.SortedMap;
 
 public interface IStackableInstance extends INBTSerializable<CompoundTag> {
 
@@ -12,8 +14,12 @@ public interface IStackableInstance extends INBTSerializable<CompoundTag> {
 
     void instance(LivingEntity entity);
 
+    Map<String, StackableTags> getAllRegistry();
 
-    List<StackableTags> getInstance();
+    StackableTags[] getAllRegistryOnEntity(LivingEntity entity);
 
-    StackableTags getInstance(StackableTags instance);
+    StackableTags makeInstance(StackableTags instance);
+
+    Collection<StackableTags> getStackableTags();
+
 }

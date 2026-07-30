@@ -306,6 +306,8 @@ public class BHItems {
     public static final RegistryObject<Item> HAUNTING_CURSE_BANDAGES = accessoryItem("haunting_curse_bandage", AccessoryBuilder.HAUNTING_CURSE_BANDAGES);
     public static final RegistryObject<Item> REFINED_SHULKER_SHELL = accessoryItem("refined_shulker_shell", AccessoryBuilder.REFINED_SHULKER_SHELL);
 
+    public static final RegistryObject<Item> FINE_EDGE = accessoryItem("fine_edge", AccessoryBuilder.FINE_EDGE);
+    public static final RegistryObject<Item> PHANTOM_MIRROR = accessoryItem("phantom_mirror", AccessoryBuilder.PHANTOM_MIRROR);
     public static final RegistryObject<Item> COBALT_SHIELD = accessoryItem("cobalt_shield", AccessoryBuilder.COBALT_SHIELD);
     public static final RegistryObject<Item> STEEL_SIGIL = accessoryItem("steel_sigil", AccessoryBuilder.STEEL_SIGIL);
     public static final RegistryObject<Item> OBSIDIAN_PLATE = accessoryItem("obsidian_plate", AccessoryBuilder.OBSIDIAN_PLATE);

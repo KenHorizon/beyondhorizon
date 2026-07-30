@@ -35,8 +35,10 @@ public class SupremacyAccessory extends AccessoryPassiveSkill implements IStackI
         var stackTags = Capabilities.stackable(player);
         int stacks = 0;
         if (stackTags != null) {
-            var sTag = stackTags.getInstance(StackableTagInstance.SAINT_DEMON_CROWN_STACKS);
-            stacks = sTag.getStack();
+            var sTag = stackTags.makeInstance(StackableTagInstance.SAINT_DEMON_CROWN_STACKS);
+            if (sTag != null) {
+                stacks = sTag.getStack();
+            }
         }
         List<MutableComponent> list = new ArrayList<>();
         list.add(Component.translatable(this.createId(0), stacks));
@@ -53,7 +55,7 @@ public class SupremacyAccessory extends AccessoryPassiveSkill implements IStackI
         if (attacker instanceof Player player) {
             var stackTags = Capabilities.stackable(player);
             if (stackTags != null) {
-                var sTag = stackTags.getInstance(StackableTagInstance.SAINT_DEMON_CROWN_STACKS);
+                var sTag = stackTags.makeInstance(StackableTagInstance.SAINT_DEMON_CROWN_STACKS);
                 return damageDealt + (damageDealt * (this.damageIncreasePerStacks * sTag.getStack()));
             }
         }
@@ -65,7 +67,7 @@ public class SupremacyAccessory extends AccessoryPassiveSkill implements IStackI
         if (target instanceof Animal) return;
         var stackTags = Capabilities.stackable(attacker);
         if (stackTags != null) {
-            var sTag = stackTags.getInstance(StackableTagInstance.SAINT_DEMON_CROWN_STACKS);
+            var sTag = stackTags.makeInstance(StackableTagInstance.SAINT_DEMON_CROWN_STACKS);
             sTag.add(1);
             BeyondHorizon.LOGGER.debug("{}", sTag);
         }
@@ -75,7 +77,7 @@ public class SupremacyAccessory extends AccessoryPassiveSkill implements IStackI
     public boolean onEntityDeath(LivingEntity entity, ItemStack itemStack) {
         var stackTags = Capabilities.stackable(entity);
         if (stackTags != null) {
-            var sTag = stackTags.getInstance(StackableTagInstance.SAINT_DEMON_CROWN_STACKS);
+            var sTag = stackTags.makeInstance(StackableTagInstance.SAINT_DEMON_CROWN_STACKS);
             sTag.remove((int) (sTag.getStack() * this.loseOnDeath));
         }
         return super.onEntityDeath(entity, itemStack);

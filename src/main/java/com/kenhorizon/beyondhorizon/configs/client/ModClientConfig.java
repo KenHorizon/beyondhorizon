@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.configs.client;
 
-import com.kenhorizon.beyondhorizon.client.render.guis.hud.GameHuds;
+import com.kenhorizon.beyondhorizon.client.enums.GameHuds;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -34,9 +34,6 @@ public class ModClientConfig {
 
     public ModClientConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Beyond Horizon | Client Configs");
-        ALWAYS_SHOW_SKILL_ABILITY = builder
-                .comment("Always show the skill ability's description")
-                .define("Always Show Skill Ability", true);
         REDUCE_DEBUG = builder
                 .comment("Reduce the Debug infos by removing some of it.")
                 .define("Reduce Debug Infos", true);
@@ -82,6 +79,9 @@ public class ModClientConfig {
                 .defineInRange("Accessory Button Position Y", 8, -Integer.MAX_VALUE, Integer.MAX_VALUE);
         builder.pop();
         builder.push("Beyond Horizon | Tooltip Configs");
+        ALWAYS_SHOW_SKILL_ABILITY = builder
+                .comment("Always show the skill ability's description")
+                .define("Always Show Skill Ability", true);
         ATTRIBUTE_TOOLTIP_OVERHAUl = builder
                 .comment("Replace all tooltips with new re-visual")
                 .comment("Changes:")

@@ -26,6 +26,7 @@ public class AccessoryItemDecorations implements IItemDecorator {
     private final IAccessoryItem accessoryItem;
     private static final ResourceLocation TEXTURE_ACTIVE = BeyondHorizon.resourceGui("sprites/accessory_active_slot.png");
     private static final ResourceLocation TEXTURE_LOCKED = BeyondHorizon.resourceGui("sprites/item_locked.png");
+
     public AccessoryItemDecorations(Item items, IAccessoryItem accessoryItem) {
         this.items = items;
         this.accessoryItem = accessoryItem;
@@ -51,16 +52,14 @@ public class AccessoryItemDecorations implements IItemDecorator {
         PlayerData data = Capabilities.data(player);
         if (data != null) {
             for (Accessory accessory : this.accessoryItem.getAccessories()) {
-                if (accessory instanceof IAbilityInfo) {
+                if (accessory instanceof IAbilityInfo info) {
                     boolean flag = data.getAllCooldowns().containsKey(accessory.getId());
-                    if (flag) {
-                        float factor = data.getCooldownPercent(accessory.getId());
-                        BeyondHorizon.LOGGER.debug("{} | {}", factor, 16.0F * (1.0F - factor));
-                        if (factor > 0.0F) {
-                            int y1 = yOffset + Mth.floor(16.0F * (1.0F - factor));
-                            int y2 = y1 + Mth.floor(16.0F * factor);
-                            guiGraphics.fill(RenderType.guiOverlay(), xOffset, y1, xOffset + 16, y2, Integer.MAX_VALUE);
-                        }
+                    if (!flag) continue;
+                    float factor = data.getCooldownPercent(accessory.getId());
+                    if (factor > 0.0F) {
+                        int y1 = yOffset + Mth.floor(16.0F * (1.0F - factor));
+                        int y2 = y1 + Mth.floor(16.0F * factor);
+                        guiGraphics.fill(RenderType.guiOverlay(), xOffset, y1, xOffset + 16, y2, Integer.MAX_VALUE);
                     }
                 }
             }

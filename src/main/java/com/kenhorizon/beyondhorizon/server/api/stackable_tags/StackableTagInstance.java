@@ -24,10 +24,10 @@ public class StackableTagInstance {
     public static final StackableTags SEETHING_STRIKE = StackableTags.build("seething_strike", 6, Maths.sec(6))
             .addModifiers(Attributes.ATTACK_SPEED, Constant.SEETHING_STRIKE_ATK_SPD, AttributeModifier.Operation.MULTIPLY_TOTAL);
 
-    public static final StackableTags PHANTOM = StackableTags.build("phantom", 2);
+    public static final StackableTags PHANTOM = StackableTags.build("phantom", 3);
     public static final StackableTags BRING_IT_DOWN = StackableTags.build("bring_it_down", 3, Maths.sec(6));
 
-    public static void sendPacket(LivingEntity entity, StackableTags stackableTags) {
+    public static void sendPacket(LivingEntity entity) {
         if (entity.level().isClientSide()) return;
         IStackableInstance stackable = Capabilities.stackable(entity);
         if (stackable != null) {

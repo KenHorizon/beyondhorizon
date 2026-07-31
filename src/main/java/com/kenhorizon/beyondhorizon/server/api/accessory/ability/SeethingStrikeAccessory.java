@@ -3,6 +3,8 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableInfo;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
@@ -45,9 +47,9 @@ public class SeethingStrikeAccessory extends StackingSkillAccessory {
                     phantomStacks.add(1);
                     if (phantomStacks.isFullyStacked()) {
                         for (int i = 0; i < phantomStacks.getStack(); i++) {
-                            target.invulnerableTime = 0;
-                            target.hurt(source, 0.01F);
+                            target.hurt(source, damageDealt / 6);
                         }
+                        phantomStacks.reset();
                     }
                 }
             }

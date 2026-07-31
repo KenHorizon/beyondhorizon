@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
 import com.kenhorizon.beyondhorizon.client.enums.GameHuds;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
+import com.kenhorizon.beyondhorizon.client.util.ResourceUtils;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
@@ -58,8 +59,9 @@ public class GameHudDisplay extends Gui {
         RenderSystem.enableBlend();
         this.hud.update();
         int xPos = 0;
-        List<StackableTags> list = new ArrayList<>();
+        List<StackableTags> overlayTags = new ArrayList<>();
         IAccessoryStackHandler handler = Capabilities.accessory(player);
+        var stackable = Capabilities.stackable(player);
         if (handler != null) {
             var stacks = handler.getStacks();
             for (int i = 0; i < stacks.getSlots(); i++) {
@@ -67,32 +69,55 @@ public class GameHudDisplay extends Gui {
                 if (!stack.isEmpty() && stack.getItem() instanceof IAccessoryItem accessoryItems) {
                     for (var accessory : accessoryItems.getAccessories()) {
                         if (accessory instanceof IStackIconOverlay overlay) {
-                            var stackable = Capabilities.stackable(player);
-                            list.add(stackable.makeInstance(overlay.getStacks()));
+                            overlayTags.add(stackable.makeInstance(overlay.getStacks()));
                         }
                     }
                 }
             }
         }
-        if (!list.isEmpty()) {
-            for (var allTags : list) {
-                ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + allTags.getName() + ".png");
-                if (allTags.hasStacks()) {
-                    int x = this.hud.scaledWindowWidth / 2 - 91 + (26 * xPos);
-                    int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
-                    String value = String.format("%s", allTags.getStack());
-                    BlitHelper.drawBlit(guiGraphics, ICON_BACKGROUND, x, y -1, 0, 0, 24, 24, 24, 24);
-                    BlitHelper.drawBlit(guiGraphics, getAllIcons, x, y - 1, 0, 0, 24, 24, 24, 24);
-                    int valueLenght = value.length();
-                    BlitHelper.drawBorderedStrings(minecraft.font, guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, Colors.WHITE);
-                    RenderSystem.disableBlend();
-                    xPos++;
+        if (stackable != null) {
+            for (StackableTags tag : stackable.getStackableTags()) {
+                if (!tag.hasStacks()) continue;
+                if (overlayTags.contains(tag)) {
+                    renderStackableTags(guiGraphics, tag, xPos);
                 }
+                xPos++;
             }
         }
+//        if (!overlayTags.isEmpty()) {
+//            for (var allTags : overlayTags) {
+//                ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + allTags.getName() + ".png");
+//                if (allTags.hasStacks() && ResourceUtils.getImage(getAllIcons)) {
+//                    int x = this.hud.scaledWindowWidth / 2 - 91 + (26 * xPos);
+//                    int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
+//                    String value = String.format("%s", allTags.getStack());
+//                    BlitHelper.drawBlit(guiGraphics, ICON_BACKGROUND, x, y -1, 0, 0, 24, 24, 24, 24);
+//                    BlitHelper.drawBlit(guiGraphics, getAllIcons, x, y - 1, 0, 0, 24, 24, 24, 24);
+//                    int valueLenght = value.length();
+//                    BlitHelper.drawBorderedStrings(minecraft.font, guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, Colors.WHITE);
+//                    RenderSystem.disableBlend();
+//                    xPos++;
+//                }
+//            }
+//        }
         minecraft.getProfiler().pop();
 
     }
+
+    private void renderStackableTags(GuiGraphics guiGraphics, StackableTags tag, int xPos) {
+        ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + tag.getName() + ".png");
+        if (ResourceUtils.getImage(getAllIcons)) {
+            int x = this.hud.scaledWindowWidth / 2 - 91 + (26 * xPos);
+            int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
+            String value = String.format("%s", tag.getStack());
+            BlitHelper.drawBlit(guiGraphics, ICON_BACKGROUND, x, y -1, 0, 0, 24, 24, 24, 24);
+            BlitHelper.drawBlit(guiGraphics, getAllIcons, x, y - 1, 0, 0, 24, 24, 24, 24);
+            int valueLenght = value.length();
+            BlitHelper.drawBorderedStrings(minecraft.font, guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, Colors.WHITE);
+            RenderSystem.disableBlend();
+        }
+    }
+
     public void renderArmor(GuiGraphics guiGraphics, float partialTicks) {
         minecraft.getProfiler().push("armor");
         this.hud.update();

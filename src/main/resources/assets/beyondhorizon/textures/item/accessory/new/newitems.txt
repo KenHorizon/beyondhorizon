@@ -98,25 +98,6 @@ Acension - Increase base attack damge, ability power, armor, magic resistance an
 Hololive:
 Stellar Axe (Weapon)
 
-Sharkie
-Passive: Forever
- -> Gain 30% chance to dodge incoming attack
-
-Forbidden Book
-Passive: Wah!
- -> Summon Ancient One Book to aid, every 5 seconds shoot closest target dealing 5 + (20% bonus AD)(10% AP) magic damage
-
-Detective Eye
-+ 20% critical chance
-
-Phoenix Feather
-Passive: Another Life
- -> Prevent taking lethal damage for 5 seconds
-
-Reaper Skull
-Passive: Tampering Soul
- -> On-kill has chance 0%-20% (based on critical strike) chance target to explode, dealing 50% weapon base damage
-
 
 Faded Moon: Convert 50% Max Mana to (Total Convert to 50% Max Mana)% Increased Damage
 Dark Sun: Convert AP to AD 1 : 0.25 and 25% Damage dealt convert into true damage

@@ -28,7 +28,7 @@ public class StackableTagHandler implements IStackableInstance {
 
     @Override
     public void instance(LivingEntity entity) {
-        BeyondHorizon.LOGGER.debug("Instance Level at {}", !entity.level().isClientSide() ? "Server" : "Client");
+//        BeyondHorizon.LOGGER.debug("Instance Level at {}", !entity.level().isClientSide() ? "Server" : "Client");
         for (var tags : this.getAllRegistryOnEntity(entity)) {
             StackableTags makeInstance = tags.copy();
             this.stackableTagsList.put(makeInstance.getName(), makeInstance);

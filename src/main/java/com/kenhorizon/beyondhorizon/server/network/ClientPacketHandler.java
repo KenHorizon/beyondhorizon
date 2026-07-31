@@ -5,6 +5,8 @@ import com.kenhorizon.beyondhorizon.client.render.guis.IRecipeUpdateListener;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.api.block.INodeBlock;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerDataHelper;
+import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance;
+import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.inventory.provider.AccessoryContainerProvider;
@@ -13,6 +15,7 @@ import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundGrab
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
@@ -59,9 +62,21 @@ public class ClientPacketHandler {
             }
         }
     }
-    public static void handleManaData(ClientboundManaSyncPacket packet, Supplier<NetworkEvent.Context> context) {
 
+    public static void handleStackableTags(ClientboundStackableTagsPacket packet, Supplier<NetworkEvent.Context> context) {
+        Minecraft mc = Minecraft.getInstance();
+        Entity levelEntity = mc.level.getEntity(packet.getEntityId());
+        if (levelEntity instanceof LivingEntity entity) {
+            IStackableInstance stackable = Capabilities.stackable(entity);
+            stackable.getAllRegistry().forEach((name, tags) -> {
+                StackableTags getTags = packet.getIndex().get(name);
+                if (getTags != null) {
+                    tags.readNbt(getTags.writeNbt());
+                }
+            });
+        }
     }
+
     public static void handlePlayerData(ClientboundPlayerDataPacket packet, Supplier<NetworkEvent.Context> context) {
         Player player = BeyondHorizon.PROXY.clientPlayer();
         PlayerDataHelper.getPlayerData(player).ifPresent(handler -> {

@@ -203,13 +203,17 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
     protected void addCooldownManaCost(Player player) {
         PlayerData playerData = Capabilities.data(player);
         try {
-            playerData.addCooldown(this.getId(), this.getCooldown());
+            playerData.addCooldown(this.getCustomCooldownId().isEmpty() ? this.getId() : this.getCustomCooldownId(), this.getCooldown());
             if (!player.isCreative()) {
                 this.playerManaCost(playerData, player);
             }
         } catch (Exception e) {
             BeyondHorizon.LOGGER.warn("Player data is null! returning!!");
         }
+    }
+
+    public String getCustomCooldownId() {
+        return "";
     }
 
 

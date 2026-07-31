@@ -213,6 +213,6 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
     }
 
     protected double getScaleTotal(Player player, Attribute attribute, float scaleDamage) {
-        return AttributeUtils.getTotal(player, attribute) * scaleDamage;
+        return AttributeUtils.getValue(player, attribute) * scaleDamage;
     }
 }

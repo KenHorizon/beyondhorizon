@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.api.level;
 
-import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import net.minecraft.util.Mth;
@@ -25,7 +24,7 @@ public interface IAbilityInfo {
     void setManaCost(double manaCost);
 
     default float getCastTimeFactor(Player player) {
-        float castTimeReduction = (float) AttributeUtils.getTotal(player, BHAttributes.CAST_TIME.get());
+        float castTimeReduction = (float) AttributeUtils.getValue(player, BHAttributes.CAST_TIME.get());
         return Mth.clamp((1.0F - ((float) this.getCastTime() / (this.getMaxCastTime() * (1.0F - castTimeReduction)))), 0.0F, 1.0F);
     }
 

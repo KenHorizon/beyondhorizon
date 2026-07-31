@@ -4,6 +4,7 @@ import net.minecraft.world.item.enchantment.DamageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 
 public class ExtendedDamageEnchantment extends AdvancedEnchantment {
+
     public ExtendedDamageEnchantment(Builder builder) {
         super(builder);
     }

@@ -146,15 +146,10 @@ public final class AccessoryHelper {
             boolean itemGroupLimitation = accessoryItem.checkIfSharingGroupTogether(inSlotItemStack, outsideStack);
             boolean isBasic = accessoryItem.isBasic();
             boolean singleEffectLimitation = accessoryItem.isNameLimitation();
-
-
             if (isBasic) continue;
-
-
             if (flag && singleEffectLimitation) {
                 return false;
-            }
-            if (itemGroupLimitation) {
+            } else if (!singleEffectLimitation && itemGroupLimitation) {
                 return false;
             }
         }

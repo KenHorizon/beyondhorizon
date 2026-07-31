@@ -180,9 +180,7 @@ public class StackableTags {
             }
             this.addAttributeModifiers(entity, this.getAttributeModifiers());
             this.setPrevStack(this.getStack());
-            for (var tags : StackableTagInstance.TAGS) {
-                StackableTagInstance.sendPacket(entity, tags);
-            }
+            StackableTagInstance.sendPacket(entity);
         }
     }
 
@@ -192,7 +190,6 @@ public class StackableTags {
             Attribute attribute = entry.getKey();
             AttributeInstance instance = entity.getAttribute(attribute);
             double amount = modifier.getAmount() + (modifier.getAmount() * this.getStack());
-            BeyondHorizon.LOGGER.debug("{}", amount);
             AttributeModifier newModifier = new AttributeModifier(modifier.getId(), modifier.getName(), amount, modifier.getOperation());
             if (instance != null) {
                 instance.removeModifier(modifier);

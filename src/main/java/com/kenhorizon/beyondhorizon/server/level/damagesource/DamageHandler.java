@@ -53,21 +53,12 @@ public class DamageHandler {
     }
 
     public static float maxHealth(LivingEntity target, float damageDealt, float percentHealth) {
-        float damageCap = -1;
-        return maxHealth(target, damageDealt, percentHealth, damageCap);
-    }
-
-    public static float maxHealth(LivingEntity target, float damageDealt, float percentHealth, float damageCap) {
-        return damageCap > 0 ? Math.min(damageCap, additional(damageDealt,target.getMaxHealth() * percentHealth)) : additional(damageDealt,target.getMaxHealth() * percentHealth);
-    }
-
-    public static float currentHealth(LivingEntity target, float damageDealt, float percentHealth, float damageCap) {
-        return damageCap > 0 ? Math.min(damageCap, additional(damageDealt, target.getHealth() * percentHealth)) : additional(damageDealt, target.getHealth() * percentHealth);
+        float maxHealth = target.getMaxHealth() * percentHealth;
+        return additional(damageDealt, maxHealth);
     }
 
     public static float currentHealth(LivingEntity target, float damageDealt, float percentHealth) {
-        float damageCap = -1;
-        return currentHealth(target, damageDealt, percentHealth, damageCap);
+        return additional(damageDealt, target.getHealth() * percentHealth);
     }
 
     public static float damageAtBack(float multiplier, float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {

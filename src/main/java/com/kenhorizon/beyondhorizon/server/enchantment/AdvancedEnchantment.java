@@ -36,13 +36,13 @@ import java.util.function.Predicate;
 
 @SuppressWarnings({"unchecked"})
 public class AdvancedEnchantment extends Enchantment implements IAdditionalEnchantment {
-
     private static final UUID MAINHAND = UUID.fromString("2d6e2d29-3d84-4304-835f-d82afcade70e");
     private static final UUID OFFHAND = UUID.fromString("2d6e2d29-3d84-4304-835f-d82afcade70e");
     private static final UUID HEAD = UUID.fromString("2d6e2d29-3d84-4304-835f-d82afcade70e");
     private static final UUID CHEST = UUID.fromString("83a311be-dbd5-4588-979d-e253b2361e14");
     private static final UUID LEGS = UUID.fromString("7f934657-98e6-4ca0-80d6-30dff0fe95c8");
     private static final UUID FEET = UUID.fromString("9fe730ee-e682-4535-bda9-09185e85f964");
+
     public static final EnumMap<EquipmentSlot, UUID> ARMOR_MODIFIER_UUID_PER_TYPE = (EnumMap) Util.make(new EnumMap(EquipmentSlot.class), (map) -> {
         map.put(EquipmentSlot.MAINHAND, MAINHAND);
         map.put(EquipmentSlot.OFFHAND, OFFHAND);

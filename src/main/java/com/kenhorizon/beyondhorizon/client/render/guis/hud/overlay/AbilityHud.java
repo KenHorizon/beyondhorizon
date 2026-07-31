@@ -20,12 +20,12 @@ public class AbilityHud extends HudOverlay {
         if (gui.getMinecraft().options.hideGui) return;
         gui.setupOverlayRenderState(true, false);
         mc.getProfiler().push("ability_hud");
-        float casttimeFactor = ((float) this.hud.casttime / this.hud.maxcasttime);
-        String casttime = String.format("%.0f%%", 100.0F * ((float) this.hud.casttime / this.hud.maxcasttime));
+        float casttimeFactor = this.hud.casttime;
+        String casttime = String.format("%.0f%%", 100.0F * casttimeFactor);
         int castTimeW = font.width(casttime);
-        if (casttimeFactor > 0.0F) {
+        if (casttimeFactor > 0.0F && !(this.hud.casttimeReduction >= 1.0F)) {
             int castTimeX = (screenWidth - 79) / 2;
-            int castTimeY = screenHeight - (gui.leftHeight - 12);
+            int castTimeY = screenHeight - (gui.leftHeight);
             BlitHelper.drawBlit(guiGraphics, HudSprites.CAST_TIME_BACKGROUND, castTimeX, castTimeY, 0,0, 79, 4,79, 4);
             BlitHelper.drawBlit(guiGraphics, HudSprites.CAST_TIME, castTimeX, castTimeY, 0,0, (int) (79 * casttimeFactor), 4,79, 4);
             BlitHelper.drawBlit(guiGraphics, HudSprites.CAST_TIME_OVERLAY, castTimeX - 22, castTimeY - 6, 0,0,124, 16,124, 16);

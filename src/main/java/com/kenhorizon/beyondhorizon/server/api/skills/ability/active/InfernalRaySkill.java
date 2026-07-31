@@ -36,7 +36,6 @@ public class InfernalRaySkill extends AbstractDeathRaySkill {
     public void summonLaserBeam(Player player, Level level, ItemStack itemStack) {
         InfernalRayAbility deathLaserBeam = new InfernalRayAbility(level, player, player.getX(), player.getY() + 1.2f, player.getZ(), (float) ((player.yHeadRot + 90) * Math.PI / 180), (float) (-player.getXRot() * Math.PI / 180), player.getTicksUsingItem());
         deathLaserBeam.setHasPlayer(true);
-        deathLaserBeam.setDamageType(DamageType.PHYSICAL_DAMAGE);
         deathLaserBeam.setCanBurnTarget(this.canBurnTarget);
         deathLaserBeam.setBaseDamage(this.baseDamage);
         deathLaserBeam.setDamageType(this.types);

@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -25,8 +26,8 @@ public class HudInfo {
     public boolean hasAbsroption;
     public int scaledWindowWidth;
     public int scaledWindowHeight;
-    public int casttime = 0;
-    public int maxcasttime = 0;
+    public float casttime = 0;
+    public float casttimeReduction = 0;
     public String selectedAbility = "";
 
 
@@ -50,8 +51,8 @@ public class HudInfo {
         this.hasAbsroption = this.absorption > 0.0F;
         this.armor = player.getArmorValue();
 
-        this.casttime = this.getCastTime(stacks);
-        this.maxcasttime = this.getMaxCastTime(stacks);
+        this.casttime = this.getCastTime(player, stacks);
+        this.casttimeReduction = (float) AttributeUtils.getValue(player, BHAttributes.COOLDOWN.get());
         this.selectedAbility = this.getAbilityUsing(stacks);
     }
     private boolean isSkillItem(ItemStack itemStack) {
@@ -70,23 +71,12 @@ public class HudInfo {
         }
         return "";
     }
-    private int getCastTime(ItemStack stack) {
+    private float getCastTime(Player player, ItemStack stack) {
         if (stack.getItem() instanceof ISkillItems skillItems) {
             var skills = skillItems.getActiveSkill(stack);
             if (skills.isPresent()) {
                 if (skills.get() instanceof IAbilityInfo info) {
-                    return info.getCastTime();
-                }
-            }
-        }
-        return 0;
-    }
-    private int getMaxCastTime(ItemStack stack) {
-        if (stack.getItem() instanceof ISkillItems skillItems) {
-            var skills = skillItems.getActiveSkill(stack);
-            if (skills.isPresent()) {
-                if (skills.get() instanceof IAbilityInfo info) {
-                    return info.getMaxCastTime();
+                    return info.getCastTimeFactor(player);
                 }
             }
         }

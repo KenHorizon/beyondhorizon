@@ -169,10 +169,10 @@ public abstract class LivingEntityMixins extends EntityMixins implements IBHData
             float armor = this.getArmorValue();
             float reduceArmor = (armor * (1.0F - armorPenetration)) - lethality;
             float resultDamage = CombatRules.getDamageAfterAbsorb(amount, reduceArmor, toughness);
-//            BeyondHorizon.LOGGER.info("Damage Info: Original {} -> {} Armor Pen:{}|{} Armor {} -> {}", amount, resultDamage, armorPenetration, lethality, armor, reduceArmor);
             cir.setReturnValue(resultDamage);
         }
     }
+
     @Inject(at = @At("HEAD"), method = "getDamageAfterMagicAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F", cancellable = true)
     private void beyondHorizon$getDamageAfterMagicAbsorb(DamageSource damageSource, float amount, CallbackInfoReturnable<Float> cir) {
         float flatMagicPen = 0;

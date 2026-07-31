@@ -21,25 +21,17 @@ public interface IAccessoryItem {
 
     Multimap<Attribute, AttributeModifier> getAttributeModifiers();
 
-    /**
-     * Check if the itemstack inside accessory slot and outisde are have basic tags
-     * */
-    default boolean checkIfBasic(ItemStack inSlot, ItemStack outside) {
-        return ((AccessoryItem) inSlot.getItem()).isBasic() == ((AccessoryItem) outside.getItem()).isBasic();
-    }
-
     AccessoryItemGroup getItemGroup();
 
     /**
      * Check if the itemstack inside accessory slot and outisde are sharing tags
      * */
     default boolean checkIfSharingGroupTogether(ItemStack inSlot, ItemStack outside) {
-        return ((AccessoryItem) inSlot.getItem()).getItemGroup() == ((AccessoryItem) outside.getItem()).getItemGroup();
+        if (!(inSlot.getItem() instanceof IAccessoryItem inSlotAccessory)) return false;
+        if (!(outside.getItem() instanceof IAccessoryItem outsideSlotAccessory)) return false;
+        return inSlotAccessory.getItemGroup() == outsideSlotAccessory.getItemGroup();
     }
 
-    default boolean checkIfNameLimitation(ItemStack inSlot, ItemStack outside) {
-        return ((AccessoryItem) inSlot.getItem()).isNameLimitation() == ((AccessoryItem) outside.getItem()).isNameLimitation();
-    }
 
     default boolean isBasic() {
         return this.getItemGroup() == AccessoryItemGroup.NONE;

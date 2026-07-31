@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.network.ClientPacketHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -97,18 +98,27 @@ public class ClientboundStackableTagsPacket {
     public void handle(Supplier<NetworkEvent.Context> supplier) {
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
-            Minecraft mc = Minecraft.getInstance();
-            Entity levelEntity = mc.level.getEntity(this.entityId);
-            if (levelEntity instanceof LivingEntity entity) {
-                IStackableInstance stackable = Capabilities.stackable(entity);
-                stackable.getAllRegistry().forEach((name, tags) -> {
-                    StackableTags getTags = this.index.get(name);
-                    if (getTags != null) {
-                        tags.readNbt(getTags.writeNbt());
-                    }
-                });
-            }
+            ClientPacketHandler.handleStackableTags(this, supplier);
+//            Minecraft mc = Minecraft.getInstance();
+//            Entity levelEntity = mc.level.getEntity(this.entityId);
+//            if (levelEntity instanceof LivingEntity entity) {
+//                IStackableInstance stackable = Capabilities.stackable(entity);
+//                stackable.getAllRegistry().forEach((name, tags) -> {
+//                    StackableTags getTags = this.index.get(name);
+//                    if (getTags != null) {
+//                        tags.readNbt(getTags.writeNbt());
+//                    }
+//                });
+//            }
         });
         context.setPacketHandled(true);
+    }
+
+    public int getEntityId() {
+        return entityId;
+    }
+
+    public Map<String, StackableTags> getIndex() {
+        return index;
     }
 }

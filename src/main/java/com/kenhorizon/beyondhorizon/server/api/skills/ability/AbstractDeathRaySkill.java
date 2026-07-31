@@ -30,7 +30,7 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
     private CameraType cameraType;
     protected float baseDamage = 1.0F;
     protected boolean canIgnoreFrame = false;
-    protected AbstractDeathRayAbility.BeamDamageTags tagTypes;
+    protected AbstractDeathRayAbility.BeamDamageTags tagTypes = AbstractDeathRayAbility.BeamDamageTags.DEFAULT;
     protected DamageType types;
     private static final UUID SPEED_MODIFIER_SPRINTING_UUID = UUID.fromString("1a63ada7-7fcd-4695-b8db-0873ced4be94");
     private static final AttributeModifier SPEED_MODIFIER_SPRINTING = new AttributeModifier(SPEED_MODIFIER_SPRINTING_UUID, "Sprinting speed boost", (double)-0.25F, AttributeModifier.Operation.MULTIPLY_TOTAL);
@@ -39,7 +39,7 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
     public AbstractDeathRaySkill(float ADScale, float APScale, float baseDamage, boolean ignoreFrame, DamageType types, AbstractDeathRayAbility.BeamDamageTags tags) {
         this.baseDamage = baseDamage;
         this.tagTypes = tags;
-        this.canIgnoreFrame =ignoreFrame;
+        this.canIgnoreFrame = ignoreFrame;
         this.types = types;
         this.ADScale = ADScale;
         this.APScale = APScale;
@@ -112,20 +112,7 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
         }
     }
 
-    public void summonLaserBeam(Player player, Level level, ItemStack itemStack) {
-        AbstractDeathRayAbility deathLaserBeam = new AbstractDeathRayAbility(this.summonRayBeam(), level, player, player.getX(), player.getY() + 1.2f, player.getZ(), (float) ((player.yHeadRot + 90) * Math.PI / 180), (float) (-player.getXRot() * Math.PI / 180), player.getTicksUsingItem());
-        deathLaserBeam.setHasPlayer(true);
-        deathLaserBeam.setCanBurnTarget(this.canBurnTarget);
-        deathLaserBeam.setBaseDamage(this.baseDamage);
-        deathLaserBeam.setDamageType(this.types);
-        deathLaserBeam.damageConfig(this.tagTypes, deathLaserBeam.getBaseDamage() + this.additionalDamage(player, itemStack));
-        deathLaserBeam.setImmunityFrameIgnore(this.canIgnoreFrame);
-        player.level().addFreshEntity(deathLaserBeam);
-    }
-
-    public EntityType<? extends AbstractDeathRayAbility> summonRayBeam() {
-        return BHEntity.INFERNAL_RAY.get();
-    }
+    public abstract void summonLaserBeam(Player player, Level level, ItemStack itemStack);
 
     @Override
     public void finishedUsingItem(ItemStack itemStack, Level level, Player player) {

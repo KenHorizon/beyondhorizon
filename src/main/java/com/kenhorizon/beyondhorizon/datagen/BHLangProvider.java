@@ -253,13 +253,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addGuideBookIndexes(GuideBookPages.LEVEL_SYSTEM, "Level System");
         this.addGuideBookIndexes(GuideBookPages.DIFFICULTY, "Difficulty");
         this.addGuideBookIndexes(GuideBookPages.EFFECT_TYPES, "Effect Types");
-
-        //
-
     }
-
-
-    //
     private void addEnchantmentDesc(Supplier<? extends Enchantment> enchantments, String description) {
         this.add(enchantments.get().getDescriptionId() + ".desc", description);
     }

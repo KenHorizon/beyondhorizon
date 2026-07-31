@@ -81,7 +81,7 @@ public class PlayerData {
     }
 
     public float getManaCostReduction() {
-        return (float) (1.0F - AttributeUtils.getTotal(this.player, BHAttributes.MANA_COST.get()));
+        return (float) (1.0F - AttributeUtils.getValue(this.player, BHAttributes.MANA_COST.get()));
     }
 
     public void setSyncMana(double mana) {

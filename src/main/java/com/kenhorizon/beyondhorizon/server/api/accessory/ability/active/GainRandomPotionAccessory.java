@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GainRandomPotionAccessory extends AccessoryActiveSkill {
-
     private List<MobEffect> effectList = new ArrayList<>();
     private int potionLevel = 0;
     public GainRandomPotionAccessory(List<MobEffect> effectList, int potionLevel) {

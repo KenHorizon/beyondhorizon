@@ -253,6 +253,15 @@ public class BHLangProvider extends LanguageProvider {
         this.addGuideBookIndexes(GuideBookPages.LEVEL_SYSTEM, "Level System");
         this.addGuideBookIndexes(GuideBookPages.DIFFICULTY, "Difficulty");
         this.addGuideBookIndexes(GuideBookPages.EFFECT_TYPES, "Effect Types");
+        //
+        this.addAdvancement(Tooltips.ADVANCEMENT_MAIN_ROOT, "To.. you from decade ago!", "Discovery of arcane and lores...");
+        this.addAdvancement(Tooltips.ADVANCEMENT_EQUIPPED_ACCESSORY, "Fancy Equipment", "Discover a accessory");
+        this.addAdvancement(Tooltips.ADVANCEMENT_HEALING_POTION, "Alchooolic Recovery", "Have a healing potion");
+
+    }
+    private void addAdvancement(String advancement, String name, String description) {
+        this.add(advancement, name);
+        this.add(String.format("%s.desc", advancement), description);
     }
     private void addEnchantmentDesc(Supplier<? extends Enchantment> enchantments, String description) {
         this.add(enchantments.get().getDescriptionId() + ".desc", description);

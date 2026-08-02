@@ -1,0 +1,36 @@
+{
+  "parent": "beyondhorizon:beyondhorizon/discover_arcane",
+  "criteria": {
+    "have_healing_potion": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "beyondhorizon:healing_item"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.beyondhorizon.story.healing_potion.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "beyondhorizon:healing_potion"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.beyondhorizon.story.healing_potion"
+    }
+  },
+  "requirements": [
+    [
+      "have_healing_potion"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

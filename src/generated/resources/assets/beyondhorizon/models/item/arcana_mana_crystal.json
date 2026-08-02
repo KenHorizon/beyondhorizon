@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "beyondhorizon:item/arcana_mana_crystal"
+  }
+}

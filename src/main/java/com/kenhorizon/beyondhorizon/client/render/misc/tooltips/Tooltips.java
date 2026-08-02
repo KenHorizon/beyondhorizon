@@ -12,6 +12,10 @@ import net.minecraft.world.entity.EntityType;
 public class Tooltips {
     public static final FormattedCharSequence SPACE = FormattedCharSequence.forward(" ", Style.EMPTY);
     //
+    public static final String ADVANCEMENT_MAIN_ROOT = String.format("advancement.%s.story.root", BeyondHorizon.ID);
+    public static final String ADVANCEMENT_EQUIPPED_ACCESSORY = String.format("advancement.%s.story.equipped_accessory", BeyondHorizon.ID);
+    public static final String ADVANCEMENT_HEALING_POTION = String.format("advancement.%s.story.healing_potion", BeyondHorizon.ID);
+    //
     public static final String COMMAND_POINTS_FAILED = String.format("command.%s.role_class.points.failure", BeyondHorizon.ID);
     public static final String COMMAND_POINTS_SUCCESS = String.format("command.%s.role_class.points.succes", BeyondHorizon.ID);
     public static final String COMMAND_LEVEL_SET_SUCCESS = String.format("command.%s.role_class.level.succes", BeyondHorizon.ID);

@@ -48,7 +48,8 @@ public class DataGenProvider {
         generator.addProvider(event.includeClient(), new BHLangProvider(packOutput));
         generator.addProvider(event.includeClient(), new BHBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new BHItemModelProvider(packOutput, existingFileHelper));
-        generator.addProvider(event.includeClient(), new ForgeAdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of()));
+        generator.addProvider(event.includeClient(), new ForgeAdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of(
+                new BHAdvancementProvider())));
         generator.addProvider(true, new PackMetadataGenerator(packOutput).add(PackMetadataSection.TYPE, new PackMetadataSection(
                 Component.literal("Resources for Beyond Horizon"),
                 DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),

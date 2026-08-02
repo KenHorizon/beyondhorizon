@@ -27,6 +27,10 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class BHItems {
     //
+    public static final RegistryObject<Item> ICON_ITEMS = RegistryItems
+            .register("icon_items", IconItems::new)
+            .register();
+
     public static final RegistryObject<Item> DEBUG0 = RegistryItems
             .register("debug0", DebugHealthCheckerItems::new)
             .itemName("Debug: Health Checker")
@@ -102,6 +106,7 @@ public class BHItems {
                     }))
             .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
             .model(ItemModels.GENERATED)
+            .tag(BHItemTags.HEALING_ITEM)
             .register();
 
     public static final RegistryObject<Item> LESS_MANA_POTION = RegistryItems
@@ -124,20 +129,24 @@ public class BHItems {
     public static final RegistryObject<Item> LESS_HEALING_POTION = RegistryItems
             .register("less_healing_potion", p -> new RecoveryPotionItem(5.0F, 0.0F, p))
             .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .tag(BHItemTags.HEALING_ITEM)
             .model(ItemModels.GENERATED)
             .register();
 
     public static final RegistryObject<Item> HEALING_POTION = RegistryItems
             .register("healing_potion", p -> new RecoveryPotionItem(10, 0.0F, p))
             .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .tag(BHItemTags.HEALING_ITEM)
             .model(ItemModels.GENERATED)
             .register();
     public static final RegistryObject<Item> GREATER_HEALING_POTION = RegistryItems
             .register("greater_healing_potion", p -> new RecoveryPotionItem(50.0F, 0.0F, p))
             .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
+            .tag(BHItemTags.HEALING_ITEM)
             .model(ItemModels.GENERATED)
             .register();
 
+    public static final RegistryObject<Item> ARCANA_MANA_CRYSTAL = basicItem("arcana_mana_crystal", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> GOLD_RING = basicItem("gold_ring", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> HANDLE = basicItem("handle", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> STINGER = basicItem("stinger", RegistryTabs.Category.INGREDIENTS);

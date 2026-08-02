@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-27T16:58:22.8527002	Item Models: beyondhorizon
+// 1.20.1	2026-08-02T23:18:22.0348634	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -9,6 +9,7 @@ cabd63f40b0d87a6db691286dc1e3d50cd1b5f95 assets/beyondhorizon/models/item/ancien
 81d0eb929d70bb4e5a0a1981c72a31d7a8eede74 assets/beyondhorizon/models/item/ankh_charm.json
 578fb92fc22c69116d34027ce7f34fa8650d7bb2 assets/beyondhorizon/models/item/ankh_eternity.json
 d572da6c9312feee6bbbd87a37d6eb06beef960b assets/beyondhorizon/models/item/ankh_shield.json
+a3eebb9d1406d35a3cc626ff0e8049f818bbb203 assets/beyondhorizon/models/item/arcana_mana_crystal.json
 78febe81b88e0da4ea60007990d35aee7011bd44 assets/beyondhorizon/models/item/armor_plate.json
 0f1f8569bf318fc0f988a9301492cd9a01a19625 assets/beyondhorizon/models/item/ashes_of_flame.json
 142c6bc7e213af35d5c2e51239d068ec425b5bb1 assets/beyondhorizon/models/item/berserker_boots.json

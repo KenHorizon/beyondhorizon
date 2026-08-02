@@ -1,0 +1,37 @@
+{
+  "parent": "beyondhorizon:beyondhorizon/discover_arcane",
+  "criteria": {
+    "has_accessory_equipped": {
+      "conditions": {
+        "items": [
+          {
+            "tag": "beyondhorizon:only_accessory"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.beyondhorizon.story.equipped_accessory.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "beyondhorizon:icon_items",
+      "nbt": "{IconLocation:\"beyondhorizon:textures/misc/icons/accessory_equipped.png\"}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.beyondhorizon.story.equipped_accessory"
+    }
+  },
+  "requirements": [
+    [
+      "has_accessory_equipped"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

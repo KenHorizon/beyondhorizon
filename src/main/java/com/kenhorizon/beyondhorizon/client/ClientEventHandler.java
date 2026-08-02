@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.ClientProxy;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.BHBossBar;
+import com.kenhorizon.beyondhorizon.client.render.guis.BHAdvancementTab;
 import com.kenhorizon.beyondhorizon.client.render.guis.LevelSystemScreen;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotButton;
 import com.kenhorizon.beyondhorizon.client.render.guis.accessory.AccessorySlotScreen;
@@ -33,6 +34,7 @@ import net.minecraft.client.Options;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
@@ -184,7 +186,13 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public void onLevelClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.END) return;
+        if (event.phase == TickEvent.Phase.END) {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.screen instanceof AdvancementsScreen advancementsScreen && advancementsScreen.selectedTab != null &&
+                    BHAdvancementTab.isBH(advancementsScreen.selectedTab.getAdvancement())) {
+                BHAdvancementTab.tick();
+            }
+        }
     }
 
     @SubscribeEvent

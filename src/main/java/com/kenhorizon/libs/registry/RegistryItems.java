@@ -62,7 +62,9 @@ public class RegistryItems<T extends Item> {
         if (builder.model != null) {
             RegistryItemModels.register(this.registryObject, builder.model);
         }
-        RegistryTabs.register(this.registryObject, builder.categories);
+        if (builder.categories != null) {
+            RegistryTabs.register(this.registryObject, builder.categories);
+        }
     }
 
     public static class Builder<T extends Item> {

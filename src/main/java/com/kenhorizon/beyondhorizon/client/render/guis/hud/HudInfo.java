@@ -55,9 +55,6 @@ public class HudInfo {
         this.casttimeReduction = (float) AttributeUtils.getValue(player, BHAttributes.COOLDOWN.get());
         this.selectedAbility = this.getAbilityUsing(stacks);
     }
-    private boolean isSkillItem(ItemStack itemStack) {
-        return itemStack.getItem() instanceof ISkillItems;
-    }
 
     private String getAbilityUsing(ItemStack stack) {
         if (stack.getItem() instanceof ISkillItems skillItems) {

@@ -2,7 +2,6 @@ package com.kenhorizon.beyondhorizon.client.render.guis;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;
 import net.minecraft.client.Minecraft;
@@ -10,7 +9,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.advancements.AdvancementWidget;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FastColor;
-import net.minecraft.util.Mth;
 
 import java.util.Locale;
 
@@ -46,37 +44,12 @@ public class BHAdvancementTab {
             int j = (int) Math.round(scrollY);
             for (int parallaxX = -1; parallaxX <= (windowWidth + 128) / 128; parallaxX++) {
                 for (int parallaxY = -1; parallaxY <= (windowWidth + 128) / 128; parallaxY++) {
-                    BlitHelper.blitWithColor(guiGraphics, type.background, parallaxX * 128 + i / 4, parallaxY * 128 + j / 4, 0.0F, 0.0F, 128, 128, 128, 128, 1F, 1F, 1F, alpha);
-                    BlitHelper.blitWithColor(guiGraphics, type.midground, parallaxX * 128 + i / 2 - 1, parallaxY * 128 + j / 2, 0.0F, 0.0F, 128, 128, 128, 128, 1F, 1F, 1F, alpha);
+                    BlitHelper.blitWithColor(guiGraphics, type.background1, parallaxX * 128 + i / 4, parallaxY * 128 + j / 4, 0.0F, 0.0F, 128, 128, 128, 128, 1F, 1F, 1F, alpha);
+                    BlitHelper.blitWithColor(guiGraphics, type.background2, parallaxX * 128 + i / 2 - 1, parallaxY * 128 + j / 2, 0.0F, 0.0F, 128, 128, 128, 128, 1F, 1F, 1F, alpha);
                 }
             }
         }
-        int i = Mth.floor(scrollX);
-        int j = Mth.floor(scrollY);
-        int scrollPixelOffsetX = i % 16;
-        int scrollPixelOffsetY = j % 16;
-        int blockCoordOffsetX = i / 16;
-        int blockCoordOffsetY = j / 16;
-        int screenWidthInBlocks = windowWidth / 16 + 6;
-        int screenHeightInBlocks = windowHeight / 16 + 6;
-        for (int relativeBlockX = -2; relativeBlockX <= screenWidthInBlocks; relativeBlockX++) {
-            for (int relativeBlockY = -2; relativeBlockY <= screenHeightInBlocks; relativeBlockY++) {
-                int blockX = (relativeBlockX - blockCoordOffsetX);
-                int blockY = (relativeBlockY - blockCoordOffsetY);
-                if (type != Type.DEFAULT && isBlockCarvedOut(blockX, blockY, type)) {
-                    continue;
-                }
-                BlitHelper.blitWithColor(guiGraphics, type.baseStone, 16 * relativeBlockX + scrollPixelOffsetX, 16 * relativeBlockY + scrollPixelOffsetY, 0.0F, 0.0F, 16, 16, 16, 16, 1F, 1F, 1F, alpha);
-            }
-        }
-
         guiGraphics.pose().popPose();
-    }
-
-    private static boolean isBlockCarvedOut(int blockX, int blockY, Type type) {
-        int biomeTypeOffset = type.ordinal() * 120;
-        float noise = Maths.sampleNoise2D(blockX + biomeTypeOffset, blockY + biomeTypeOffset, 20);
-        return noise < -0.25F || noise > 0.25F;
     }
 
     public static void tick() {
@@ -111,23 +84,21 @@ public class BHAdvancementTab {
     }
 
     public enum Type {
-        DEFAULT(ResourceLocation.fromNamespaceAndPath(BeyondHorizon.ID,"alexscaves/root"), 0, ResourceLocation.withDefaultNamespace("textures/block/stone.png")),
-        CANDY(ResourceLocation.fromNamespaceAndPath(BeyondHorizon.ID,"alexscaves/discover_candy_cavity"), 0XF795CA, ResourceLocation.fromNamespaceAndPath(BeyondHorizon.ID, "textures/block/block_of_chocolate.png"));
+        DEFAULT(ResourceLocation.fromNamespaceAndPath(BeyondHorizon.ID,String.format("%s/root", BeyondHorizon.ID)), 0),
+        MAIN_STORY(BeyondHorizon.resource(String.format("%s/discover_arcane", BeyondHorizon.ID)), 0XF795CA);
 
         ResourceLocation root;
 
         private final int backgroundColor;
-        private final ResourceLocation baseStone;
-        private final ResourceLocation midground;
-        private final ResourceLocation background;
+        private final ResourceLocation background1;
+        private final ResourceLocation background2;
 
 
-        Type(ResourceLocation root, int backgroundColor, ResourceLocation baseStone) {
+        Type(ResourceLocation root, int backgroundColor) {
             this.root = root;
             this.backgroundColor = backgroundColor;
-            this.baseStone = baseStone;
-            this.midground = generateTexture("midground");
-            this.background = generateTexture("background");
+            this.background1 = generateTexture("background1");
+            this.background2 = generateTexture("background2");
         }
 
         private ResourceLocation generateTexture(String type) {

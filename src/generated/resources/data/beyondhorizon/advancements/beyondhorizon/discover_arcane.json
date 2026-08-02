@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "discovered": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:crafting_table"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "description": {
+      "translate": "advancement.beyondhorizon.story.root.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "beyondhorizon:icon_items",
+      "nbt": "{IconLocation:\"beyondhorizon:textures/misc/icons/discover_arcane.png\"}"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancement.beyondhorizon.story.root"
+    }
+  },
+  "requirements": [
+    [
+      "discovered"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

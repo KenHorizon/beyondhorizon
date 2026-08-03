@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "group": "_from_smelting",
+  "ingredient": {
+    "item": "beyondhorizon:black_iron_pickaxe"
+  },
+  "result": "beyondhorizon:black_iron_nugget"
+}

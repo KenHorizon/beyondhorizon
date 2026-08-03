@@ -1,0 +1,38 @@
+{
+  "parent": "beyondhorizon:beyondhorizon/new_ores",
+  "criteria": {
+    "have_new_ores_hellstone": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:raw_hellstone"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.beyondhorizon.story.new_ores.1.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "beyondhorizon:raw_hellstone"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.beyondhorizon.story.new_ores.1"
+    }
+  },
+  "requirements": [
+    [
+      "have_new_ores_hellstone"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

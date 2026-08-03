@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "beyondhorizon:luminite_geode_features",
+  "step": "local_modifications"
+}

@@ -40,13 +40,21 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
             13, () -> {
         return Ingredient.of(BHItems.BLACK_IRON_INGOT.get());
     }),
-    HELLSTONE("hellstone",
+    CRIMSNITE("crimsnite",
             2,
-            650,
-            6.0F,
+            653,
+            8.0F,
             4.0F,
             14, () -> {
-        return Ingredient.of(BHItems.RAW_EMBED_HELLSTONE.get());
+        return Ingredient.of(BHItems.CRIMSNITE_INGOT.get());
+    }),
+    HELLSTONE("hellstone",
+            2,
+            932,
+            7.0F,
+            4.0F,
+            14, () -> {
+        return Ingredient.of(BHItems.HELLSTONE_INGOT.get());
     }),
     STARITE("starite",
             3,

@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#minecraft:is_overworld",
+  "features": "beyondhorizon:crimsnite_ores_features",
+  "step": "underground_ores"
+}

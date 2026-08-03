@@ -408,7 +408,14 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
 
         oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, Maths.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_STARITE.get()), RecipeCategory.MISC, BHItems.STARITE_INGOT.get(), 0.7F, Maths.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.RAW_LUMINITE.get()), RecipeCategory.MISC, BHItems.LUMINITE_INGOT.get(), 0.7F, Maths.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_BLACK_IRON.get()), RecipeCategory.MISC, BHItems.BLACK_IRON_INGOT.get(), 0.7F, Maths.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.RAW_CRIMSNITE.get()), RecipeCategory.MISC, BHItems.CRIMSNITE_INGOT.get(), 0.7F, Maths.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.BLACK_IRON_SWORD.get()), RecipeCategory.MISC, BHItems.BLACK_IRON_NUGGET.get(), 0.1F, Maths.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.BLACK_IRON_CLAYMORE.get()), RecipeCategory.MISC, BHItems.BLACK_IRON_NUGGET.get(), 0.1F, Maths.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.BLACK_IRON_SHOVEL.get()), RecipeCategory.MISC, BHItems.BLACK_IRON_NUGGET.get(), 0.1F, Maths.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.BLACK_IRON_PICKAXE.get()), RecipeCategory.MISC, BHItems.BLACK_IRON_NUGGET.get(), 0.1F, Maths.sec(10));
+        oreSmeltings(consumer, List.of(BHItems.BLACK_IRON_AXE.get()), RecipeCategory.MISC, BHItems.BLACK_IRON_NUGGET.get(), 0.1F, Maths.sec(10));
         oreSmeltings(consumer, List.of(BHItems.BLACK_IRON_HOE.get()), RecipeCategory.MISC, BHItems.BLACK_IRON_NUGGET.get(), 0.1F, Maths.sec(10));
 
     }

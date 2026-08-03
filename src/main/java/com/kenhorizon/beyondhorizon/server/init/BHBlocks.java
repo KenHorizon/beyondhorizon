@@ -1,7 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
+import com.kenhorizon.beyondhorizon.datagen.BHLootTableProvider;
 import com.kenhorizon.beyondhorizon.server.block.GateBlocks;
 import com.kenhorizon.beyondhorizon.server.block.WorkbenchBlock;
+import com.kenhorizon.beyondhorizon.server.block.arcane.ArcaneBlock;
+import com.kenhorizon.beyondhorizon.server.block.arcane.ArcaneBudding;
 import com.kenhorizon.beyondhorizon.server.block.basin.FireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.WallFireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.fence.LatticeFenceBlock;
@@ -21,6 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -572,11 +576,60 @@ public class BHBlocks {
             .dropSelf()
             .register();
 
+    public static final RegistryObject<Block> ARCANE_ROCKS = RegistryBlocks
+            .register("arcane_rocks", properties -> new ArcaneBlock(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.DIAMOND)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> ARCANE_BUDDING = RegistryBlocks
+            .register("arcane_budding", properties -> new ArcaneBudding(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.DIAMOND)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> ARCANE_BUDDING_FULL = RegistryBlocks
+            .register("arcane_budding_full", properties -> new ArcaneBudding(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.DIAMOND)
+            .oreDrop(BHItems.ARCANA_CRYSTAL, 1, 2)
+            .register();
+
+    public static final RegistryObject<Block> CRIMSNITE_ORE = RegistryBlocks
+            .register("crimsnite_ore", properties -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.DIAMOND)
+            .oreDrop(BHItems.RAW_CRIMSNITE, 1, 2)
+            .register();
+
+    public static final RegistryObject<Block> LUMINITE_ORE = RegistryBlocks
+            .register("luminite_ore", properties -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.DIAMOND)
+            .oreDrop(BHItems.RAW_LUMINITE, 1, 1)
+            .register();
+
+    public static final RegistryObject<Block> LUMINITE_ROCKS = RegistryBlocks
+            .register("luminite_rocks", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.DIAMOND)
+            .dropSelf()
+            .register();
+
     public static final RegistryObject<Block> STARITE_ORE = RegistryBlocks
             .register("starite_ore", properties -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.IRON_ORE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.DIAMOND)
-            .oreDrop(BHItems.RAW_STARITE, 1, 3)
+            .oreDrop(BHItems.RAW_STARITE, 1, 1)
+            .register();
+
+    public static final RegistryObject<Block> STARITE_ROCKS = RegistryBlocks
+            .register("starite_rocks", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.DEEPSLATE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.DIAMOND)
+            .dropSelf()
             .register();
 
     public static final RegistryObject<Block> RAW_STARITE_BLOCK = RegistryBlocks

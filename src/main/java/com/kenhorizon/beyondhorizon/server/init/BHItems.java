@@ -146,7 +146,8 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register();
 
-    public static final RegistryObject<Item> ARCANA_MANA_CRYSTAL = basicItem("arcana_mana_crystal", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> ARCANA_CRYSTAL = basicItem("arcana_crystal", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> REFINED_ARCANA_CRYSTAL = basicItem("refined_arcana_crystal", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> GOLD_RING = basicItem("gold_ring", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> HANDLE = basicItem("handle", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> STINGER = basicItem("stinger", RegistryTabs.Category.INGREDIENTS);
@@ -155,12 +156,14 @@ public class BHItems {
     public static final RegistryObject<Item> FLAME_CELL = basicItem("flame_cell", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> WILDFIRE_FRAGMENT = basicItem("wildfire_fragment", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_BLACK_IRON = basicItem("raw_black_iron", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> RAW_CRIMSNITE = basicItem("raw_crimsnite", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_LUMINITE = basicItem("raw_luminite", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_STARITE = basicItem("raw_starite", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_HELLSTONE = basicItem("raw_hellstone", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_EMBED_HELLSTONE = basicItem("raw_embed_hellstone", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> BLACK_IRON_INGOT = basicItem("black_iron_ingot", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> BLACK_IRON_NUGGET = basicItem("black_iron_nugget", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> CRIMSNITE_INGOT = basicItem("crimsnite_ingot", Rarity.UNCOMMON, RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> HELLSTONE_INGOT = basicItem("hellstone_ingot", Rarity.UNCOMMON, RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> STARITE_INGOT = basicItem("starite_ingot", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> LUMINITE_INGOT = basicItem("luminite_ingot", RegistryTabs.Category.INGREDIENTS);
@@ -195,6 +198,12 @@ public class BHItems {
 
     public static final RegistryObject<Item> FLINT_KNIFE = swordItem("flint_knife", MeleeWeaponMaterials.FLINT, ItemBuilder.KNIFE);
     //
+    public static final RegistryObject<Item> CRIMSNITE_SWORD = swordItem("crimsnite_sword", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, ItemBuilder.SWORD);
+    public static final RegistryObject<Item> CRIMSNITE_AXE = toolItem("crimsnite_axe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, ItemBuilder.AXE);
+    public static final RegistryObject<Item> CRIMSNITE_PICKAXE = toolItem("crimsnite_pickaxe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, ItemBuilder.PICKAXE);
+    public static final RegistryObject<Item> CRIMSNITE_SHOVEL = toolItem("crimsnite_shovel", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, ItemBuilder.SHOVEL);
+    public static final RegistryObject<Item> CRIMSNITE_HOE = toolItem("crimsnite_hoe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, ItemBuilder.HOE);
+
     public static final RegistryObject<Item> HELLSTONE_SWORD = swordItem("hellstone_sword", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, ItemBuilder.SWORD);
     public static final RegistryObject<Item> HELLSTONE_AXE = toolItem("hellstone_axe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, ItemBuilder.AXE);
     public static final RegistryObject<Item> HELLSTONE_PICKAXE = toolItem("hellstone_pickaxe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, ItemBuilder.PICKAXE);

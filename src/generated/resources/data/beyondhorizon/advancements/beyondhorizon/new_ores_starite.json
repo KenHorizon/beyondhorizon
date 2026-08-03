@@ -1,0 +1,38 @@
+{
+  "parent": "beyondhorizon:beyondhorizon/new_ores_hellstone",
+  "criteria": {
+    "have_new_ores_starite": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:raw_starite"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.beyondhorizon.story.new_ores.2.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "beyondhorizon:raw_starite"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.beyondhorizon.story.new_ores.2"
+    }
+  },
+  "requirements": [
+    [
+      "have_new_ores_starite"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

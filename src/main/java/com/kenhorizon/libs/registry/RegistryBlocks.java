@@ -9,11 +9,13 @@ import com.kenhorizon.beyondhorizon.server.item.BasicBlockItem;
 import com.kenhorizon.libs.server.ModifiedNonNullFunction;
 import com.kenhorizon.libs.server.ModifiedNonNullUnaryOperator;
 import net.minecraft.core.Direction;
+import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.registries.RegistryObject;
@@ -197,6 +199,7 @@ public class RegistryBlocks<T extends Block> {
             this.dropSelf = false;
             return this;
         }
+
         public Builder<T> standWall(Supplier<T> block) {
             this.customRegisrty = true;
             this.standWallBlock = block;

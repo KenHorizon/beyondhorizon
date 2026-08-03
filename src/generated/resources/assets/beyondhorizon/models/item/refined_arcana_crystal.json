@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "beyondhorizon:item/refined_arcana_crystal"
+  }
+}

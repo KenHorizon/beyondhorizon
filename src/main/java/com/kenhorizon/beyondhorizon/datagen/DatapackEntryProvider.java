@@ -3,12 +3,16 @@ package com.kenhorizon.beyondhorizon.datagen;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfigs;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.level.world.BHBiomesModifier;
+import com.kenhorizon.beyondhorizon.server.level.world.BHConfiguredFeatures;
+import com.kenhorizon.beyondhorizon.server.level.world.BHPlacedFeatured;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -16,7 +20,10 @@ import java.util.concurrent.CompletableFuture;
 public class DatapackEntryProvider extends DatapackBuiltinEntriesProvider {
     public static final RegistrySetBuilder BUILDER = new RegistrySetBuilder()
             .add(BHRegistries.Keys.SPAWNER_BUILDER, SpawnerConfigs::bootstrap)
-            .add(Registries.DAMAGE_TYPE, BHDamageTypes::bootstrap);
+            .add(Registries.DAMAGE_TYPE, BHDamageTypes::bootstrap)
+            .add(ForgeRegistries.Keys.BIOME_MODIFIERS, BHBiomesModifier::bootstrap)
+            .add(Registries.PLACED_FEATURE, BHPlacedFeatured::bootstrap)
+            .add(Registries.CONFIGURED_FEATURE, BHConfiguredFeatures::bootstrap);
 
     public DatapackEntryProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> registries) {
         super(output, registries, BUILDER, Set.of("minecraft", BeyondHorizon.ID));

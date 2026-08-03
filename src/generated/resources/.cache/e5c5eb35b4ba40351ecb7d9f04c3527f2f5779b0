@@ -1,4 +1,8 @@
-// 1.20.1	2026-08-03T00:34:53.62815	Advancements
+// 1.20.1	2026-08-03T16:04:02.5796477	Advancements
 7da52c9b5142e79d7b5d9441f95ab9d0d08b05d9 data/beyondhorizon/advancements/beyondhorizon/accessory_equipped.json
 9910da71b53d72a310a39a4c59a8522917b901bb data/beyondhorizon/advancements/beyondhorizon/discover_arcane.json
 a2cbbcfa7eabe38e3229a9d23d3c26b5f113f6e3 data/beyondhorizon/advancements/beyondhorizon/healing_potion.json
+9933955841ae1909f66dc070219755ac0591eafe data/beyondhorizon/advancements/beyondhorizon/new_ores.json
+212b673d9780ed489a8c771bbd44f014fe7b62b9 data/beyondhorizon/advancements/beyondhorizon/new_ores_hellstone.json
+6ab3a8aadd089b36e977f135ac7bff0ccf6afe55 data/beyondhorizon/advancements/beyondhorizon/new_ores_luminite.json
+75a59edd0633292541f8cc31e5fa10a1617ea82e data/beyondhorizon/advancements/beyondhorizon/new_ores_starite.json

@@ -257,6 +257,10 @@ public class BHLangProvider extends LanguageProvider {
         this.addAdvancement(Tooltips.ADVANCEMENT_MAIN_ROOT, "To.. you from decade ago!", "Discovery of arcane and lores...");
         this.addAdvancement(Tooltips.ADVANCEMENT_EQUIPPED_ACCESSORY, "Fancy Equipment", "Discover a accessory");
         this.addAdvancement(Tooltips.ADVANCEMENT_HEALING_POTION, "Alchooolic Recovery", "Have a healing potion");
+        this.addAdvancement(Tooltips.ADVANCEMENT_NEW_ORES_0, "Acquired New Materials", "Obtain new ores");
+        this.addAdvancement(Tooltips.ADVANCEMENT_NEW_ORES_1, "Hot hot hot...", "Obtain raw hellstone");
+        this.addAdvancement(Tooltips.ADVANCEMENT_NEW_ORES_2, "Shine like a star!", "Obtain raw starite");
+        this.addAdvancement(Tooltips.ADVANCEMENT_NEW_ORES_3, "Bright as full moon", "Obtain raw luminite");
 
     }
     private void addAdvancement(String advancement, String name, String description) {

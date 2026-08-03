@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-02T23:18:22.0348634	Item Models: beyondhorizon
+// 1.20.1	2026-08-04T00:49:40.7591617	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -9,7 +9,7 @@ cabd63f40b0d87a6db691286dc1e3d50cd1b5f95 assets/beyondhorizon/models/item/ancien
 81d0eb929d70bb4e5a0a1981c72a31d7a8eede74 assets/beyondhorizon/models/item/ankh_charm.json
 578fb92fc22c69116d34027ce7f34fa8650d7bb2 assets/beyondhorizon/models/item/ankh_eternity.json
 d572da6c9312feee6bbbd87a37d6eb06beef960b assets/beyondhorizon/models/item/ankh_shield.json
-a3eebb9d1406d35a3cc626ff0e8049f818bbb203 assets/beyondhorizon/models/item/arcana_mana_crystal.json
+24f8cf89b0bc75ab4a31998afa84b7b1bb582b6c assets/beyondhorizon/models/item/arcana_crystal.json
 78febe81b88e0da4ea60007990d35aee7011bd44 assets/beyondhorizon/models/item/armor_plate.json
 0f1f8569bf318fc0f988a9301492cd9a01a19625 assets/beyondhorizon/models/item/ashes_of_flame.json
 142c6bc7e213af35d5c2e51239d068ec425b5bb1 assets/beyondhorizon/models/item/berserker_boots.json
@@ -39,6 +39,12 @@ f262f6dd5af2d28e9dd0926ab3939c3d9d78dea8 assets/beyondhorizon/models/item/chain_
 0c4edd5204a6f8f688fba2991e9dddd3085e88fd assets/beyondhorizon/models/item/chain_vest.json
 cf2fa7ac02a93f111a965393ce3b2bfcece9f7af assets/beyondhorizon/models/item/cinder_stone.json
 cf2b98271e9b4e2205aa00ddf894691ca3c0fdf2 assets/beyondhorizon/models/item/cobalt_shield.json
+e7c02872b78721a92aec53757346a036aa4c63b6 assets/beyondhorizon/models/item/crimsnite_axe.json
+3addc2e2e9d50af404f9f0cd979a2b647fb6745e assets/beyondhorizon/models/item/crimsnite_hoe.json
+585fc83b9d70972c83c12b7599e92e5fb9f1876a assets/beyondhorizon/models/item/crimsnite_ingot.json
+40a6554ee8ab00ded22b0318f8f9c8ea1437993a assets/beyondhorizon/models/item/crimsnite_pickaxe.json
+a0103b5dfcebbafab0478934ee5a83b05875d36b assets/beyondhorizon/models/item/crimsnite_shovel.json
+a4a27f02fdc7a79051f3fbc9dc821f3bba09abdb assets/beyondhorizon/models/item/crimsnite_sword.json
 08f3f24e998dbe7a32d05f1080008929b8e553c2 assets/beyondhorizon/models/item/crystallized_plate.json
 775cdbc7976d4fbb83576a08caa7162987b7d0ff assets/beyondhorizon/models/item/cursed_apple.json
 b087597c66d43451f6cf518fe969e7a42c47e2b2 assets/beyondhorizon/models/item/cursed_blindfold.json
@@ -150,6 +156,7 @@ b33263830e511f749b734f7555da90fbdfab7fcf assets/beyondhorizon/models/item/purple
 428bd263a294c26ecd02f17e773f4dcc28a4a98b assets/beyondhorizon/models/item/quiver.json
 42c71d52f13ec13493d69a4ebf96119f77c8e18a assets/beyondhorizon/models/item/radiant.json
 44db167b345f0904c37b26083d506f92313227af assets/beyondhorizon/models/item/raw_black_iron.json
+89c8b189d016f4c130f2b952816660d895e0ae31 assets/beyondhorizon/models/item/raw_crimsnite.json
 086fc8638fa6096b640a1ced095f12591820bde3 assets/beyondhorizon/models/item/raw_embed_hellstone.json
 27b0177b6d8dcb0dce790c4fd90b4891a4b006ba assets/beyondhorizon/models/item/raw_hellstone.json
 e0a4998f74cc1d56c1b4d8d341d166863c3c1340 assets/beyondhorizon/models/item/raw_luminite.json
@@ -158,6 +165,7 @@ c03c4f0de7b6939bf37fdc684ab46fbee76a5c44 assets/beyondhorizon/models/item/raw_st
 b536f256d1bb90c9b4f99ed198a63eb31467ecd6 assets/beyondhorizon/models/item/rectrix.json
 4741e181b181c7688216409e8e3bbc485549add7 assets/beyondhorizon/models/item/recurve_arrow.json
 e3f7cf59d038e3a6f17c79df06c355d94ddff921 assets/beyondhorizon/models/item/red_wool_fur.json
+6b2d4e936c18f88d89ba957ee236a124ee006986 assets/beyondhorizon/models/item/refined_arcana_crystal.json
 5d3c0083978fe169ab707b487f30a6ae44858dc7 assets/beyondhorizon/models/item/refined_shulker_shell.json
 38556678085552bf359a05abd884489e0bd4ce85 assets/beyondhorizon/models/item/royal_crown.json
 533ab8d3a3371c5486acb82b5b88c9cf78b5e10d assets/beyondhorizon/models/item/ruby.json

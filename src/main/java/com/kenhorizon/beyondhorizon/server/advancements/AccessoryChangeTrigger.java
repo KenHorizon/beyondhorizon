@@ -30,6 +30,7 @@ public class AccessoryChangeTrigger extends SimpleCriterionTrigger<AccessoryChan
     public AccessoryChangeTrigger.TriggerInstance createInstance(JsonObject json,
                                                                  ContextAwarePredicate predicate,
                                                                  DeserializationContext context) {
+
         JsonObject slots = GsonHelper.getAsJsonObject(json, "slots", new JsonObject());
         MinMaxBounds.Ints occupied = MinMaxBounds.Ints.fromJson(slots.get("occupied"));
         MinMaxBounds.Ints full = MinMaxBounds.Ints.fromJson(slots.get("full"));
@@ -39,28 +40,24 @@ public class AccessoryChangeTrigger extends SimpleCriterionTrigger<AccessoryChan
     }
 
     public void trigger(ServerPlayer player, AccessoryStackHandler inventory, ItemStack itemStack) {
-        int count = 0;
         int empty = 0;
         int occupied = 0;
 
-        for(int i = 0; i < inventory.getStacks().getSlots(); ++i) {
+        for (int i = 0; i < inventory.getStacks().getSlots(); ++i) {
             ItemStack itemstack = inventory.getStacks().getStackInSlot(i);
             if (itemstack.isEmpty()) {
                 ++empty;
             } else {
                 ++occupied;
-                if (itemstack.getCount() >= itemstack.getMaxStackSize()) {
-                    ++count;
-                }
             }
         }
 
-        this.trigger(player, inventory, itemStack, count, empty, occupied);
+        this.trigger(player, inventory, itemStack, empty, occupied);
     }
 
-    private void trigger(ServerPlayer player, AccessoryStackHandler inventory, ItemStack itemStack, int full, int empty, int occupied) {
+    private void trigger(ServerPlayer player, AccessoryStackHandler inventory, ItemStack itemStack, int empty, int occupied) {
         this.trigger(player, (instance) -> {
-            return instance.matches(inventory, itemStack, full, empty, occupied);
+            return instance.matches(inventory, itemStack, empty, occupied);
         });
     }
 
@@ -115,10 +112,8 @@ public class AccessoryChangeTrigger extends SimpleCriterionTrigger<AccessoryChan
             return jsonobject;
         }
 
-        public boolean matches(AccessoryStackHandler inventory, ItemStack stack, int full, int empty, int occupied) {
-            if (!this.slotsFull.matches(full)) {
-                return false;
-            } else if (!this.slotsEmpty.matches(empty)) {
+        public boolean matches(AccessoryStackHandler inventory, ItemStack stack, int empty, int occupied) {
+            if (!this.slotsEmpty.matches(empty)) {
                 return false;
             } else if (!this.slotsOccupied.matches(occupied)) {
                 return false;
@@ -130,7 +125,7 @@ public class AccessoryChangeTrigger extends SimpleCriterionTrigger<AccessoryChan
                     List<ItemPredicate> list = new ObjectArrayList<>(this.predicates);
                     int containerSize = inventory.getStacks().getSlots();
 
-                    for(int k = 0; k < containerSize; ++k) {
+                    for (int k = 0; k < containerSize; ++k) {
                         if (list.isEmpty()) {
                             return true;
                         }

@@ -1,0 +1,38 @@
+{
+  "parent": "beyondhorizon:beyondhorizon/new_ores_starite",
+  "criteria": {
+    "have_new_ores_luminite": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:raw_luminite"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.beyondhorizon.story.new_ores.3.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "beyondhorizon:raw_luminite"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.beyondhorizon.story.new_ores.3"
+    }
+  },
+  "requirements": [
+    [
+      "have_new_ores_luminite"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

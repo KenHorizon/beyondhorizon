@@ -136,6 +136,7 @@ public class BHLootTableProvider {
         public static List<Supplier<? extends Block>> ADD_OAK_LEAVES = new ArrayList<>();
         public static Map<RegistryBlocks.OreDrops, RegistryBlocks.MinMax> ADD_ORE_DROP = new HashMap<>();
         public static Map<RegistryObject<? extends Block>, RegistryBlocks.MinMax> ORE_DROP_VALUE = new HashMap<>();
+        public static Map<RegistryObject<? extends Block>, LootTable.Builder> BLOCK_DROPS = new HashMap<>();
 
         protected static final LootItemCondition.Builder HAS_SILK_TOUCH = MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))));
         protected static final LootItemCondition.Builder HAS_NO_SILK_TOUCH = HAS_SILK_TOUCH.invert();
@@ -153,7 +154,6 @@ public class BHLootTableProvider {
 
         @Override
         protected void generate() {
-            BeyondHorizon.LOGGER.debug("{}", ADD_DROP_SELF);
             ADD_DROPS.forEach(this::dropSelf);
             ADD_DROP.forEach(add -> this.dropSelf(add.get()));
             ADD_DROP_SELF.forEach(add -> this.dropSelf(add.get()));

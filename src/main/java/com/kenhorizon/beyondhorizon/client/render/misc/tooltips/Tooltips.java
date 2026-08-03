@@ -15,6 +15,10 @@ public class Tooltips {
     public static final String ADVANCEMENT_MAIN_ROOT = String.format("advancement.%s.story.root", BeyondHorizon.ID);
     public static final String ADVANCEMENT_EQUIPPED_ACCESSORY = String.format("advancement.%s.story.equipped_accessory", BeyondHorizon.ID);
     public static final String ADVANCEMENT_HEALING_POTION = String.format("advancement.%s.story.healing_potion", BeyondHorizon.ID);
+    public static final String ADVANCEMENT_NEW_ORES_0 = String.format("advancement.%s.story.new_ores.0", BeyondHorizon.ID);
+    public static final String ADVANCEMENT_NEW_ORES_1 = String.format("advancement.%s.story.new_ores.1", BeyondHorizon.ID);
+    public static final String ADVANCEMENT_NEW_ORES_2 = String.format("advancement.%s.story.new_ores.2", BeyondHorizon.ID);
+    public static final String ADVANCEMENT_NEW_ORES_3 = String.format("advancement.%s.story.new_ores.3", BeyondHorizon.ID);
     //
     public static final String COMMAND_POINTS_FAILED = String.format("command.%s.role_class.points.failure", BeyondHorizon.ID);
     public static final String COMMAND_POINTS_SUCCESS = String.format("command.%s.role_class.points.succes", BeyondHorizon.ID);

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:blasting",
+  "category": "misc",
+  "cookingtime": 100,
+  "experience": 0.1,
+  "group": "_from_blasting",
+  "ingredient": {
+    "item": "beyondhorizon:black_iron_claymore"
+  },
+  "result": "beyondhorizon:black_iron_nugget"
+}

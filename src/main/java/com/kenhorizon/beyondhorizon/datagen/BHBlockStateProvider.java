@@ -14,10 +14,18 @@ public class BHBlockStateProvider extends BlockStateBuilder {
     }
     @Override
     protected void registerStatesAndModels() {
+        this.blockWithItem(BHBlocks.ARCANE_BUDDING_FULL);
+        this.blockWithItem(BHBlocks.ARCANE_BUDDING);
+        this.blockWithItem(BHBlocks.ARCANE_ROCKS);
         this.blockWithItem(BHBlocks.VOIDSTONE);
+        this.blockWithItem(BHBlocks.LUMINITE_ORE);
+        this.blockWithItem(BHBlocks.CRIMSNITE_ORE);
+        this.blockWithItem(BHBlocks.BLACK_IRON_ORE);
         this.blockWithItem(BHBlocks.STARITE_ORE);
         this.blockWithItem(BHBlocks.HELLSTONE_ORE);
         this.blockWithItem(BHBlocks.NETHERRACK_HELLSTONE_ORE);
+        this.blockWithItem(BHBlocks.STARITE_ROCKS);
+        this.blockWithItem(BHBlocks.LUMINITE_ROCKS);
         this.fullFaceBlock(BHBlocks.WORKBENCH);
         this.blockWithItem(BHBlocks.STARITE_BLOCK);
         this.blockWithItem(BHBlocks.RAW_STARITE_BLOCK);
@@ -73,7 +81,6 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.NETHER_BRICK_LANTERN);
         this.blockWithItem(BHBlocks.HELLSTONE_BRICKS);
         this.blockWithItem(BHBlocks.HELLSTONE_COBBLESTONE);
-        this.blockWithItem(BHBlocks.BLACK_IRON_ORE);
         this.blockWithItem(BHBlocks.BLACK_IRON_BLOCK);
         this.standBasinBlocks(BHBlocks.FIRE_BASIN);
         this.standWallBasinBlocks(BHBlocks.WALL_FIRE_BASIN);

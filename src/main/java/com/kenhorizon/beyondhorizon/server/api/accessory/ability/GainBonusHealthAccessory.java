@@ -38,7 +38,7 @@ public class GainBonusHealthAccessory extends AccessoryPassiveSkill {
         if (itemStack.hasTag() && itemStack.getTag().contains(tagName)) {
             bonusHp = itemStack.getTag().getDouble(tagName);
         }
-        return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), Mth.ceil(bonusHp));
+        return Component.translatable(this.createId(), Maths.format(100.0F * this.getMagnitude()), Mth.ceil(bonusHp));
     }
 
     @Override

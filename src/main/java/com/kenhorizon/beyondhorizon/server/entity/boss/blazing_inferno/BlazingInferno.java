@@ -1377,66 +1377,61 @@ public class BlazingInferno extends BHBossEntity {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (ANIMATION_STATE.equals(accessor)) {
-            if (this.getAnimation() == ID_ANIMATION_EMPTY) {
+            if (this.getAnimationState(ID_ANIMATION_EMPTY)) {
                 this.stopAnimations();
             }
-            if (this.getAnimation() == ID_INACTIVE) {
+            if (this.getAnimationState(ID_INACTIVE)) {
                 this.stopAnimations();
                 this.animationInactive.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_ACTIVE) {
+            if (this.getAnimationState(ID_ACTIVE)) {
                 this.stopAnimations();
                 this.animationActive.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_ENRAGED_PHASE) {
+            if (this.getAnimationState(ID_ENRAGED_PHASE)) {
                 this.stopAnimations();
                 this.animationEnragedPhase.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_DEATH) {
+            if (this.getAnimationState(ID_DEATH)) {
                 this.stopAnimations();
                 this.animationDeath.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_BLAZING_ROD) {
+            if (this.getAnimationState(ID_BLAZING_ROD)) {
                 this.stopAnimations();
                 this.animationBlazingRod.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_SPEAR) {
+            if (this.getAnimationState(ID_SPEAR)) {
                 this.stopAnimations();
                 this.animationSpear.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_GROUND_SLAM) {
+            if (this.getAnimationState(ID_GROUND_SLAM)) {
                 this.stopAnimations();
                 this.animationGroundSlam.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_PREPARE_DEATH_RAY) {
+            if (this.getAnimationState(ID_PREPARE_DEATH_RAY)) {
                 this.stopAnimations();
                 this.animationPrepareDeathRay.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_DEATH_RAY) {
+            if (this.getAnimationState(ID_DEATH_RAY)) {
                 this.stopAnimations();
                 this.animationDeathRay.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_SHOCKWAVE) {
+            if (this.getAnimationState(ID_SHOCKWAVE)) {
                 this.stopAnimations();
                 this.animationShockwave.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_DASHES) {
+            if (this.getAnimationState(ID_DASHES)) {
                 this.stopAnimations();
                 this.animationDashes.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_IDLE_STATE) {
+            if (this.getAnimationState(ID_IDLE_STATE)) {
                 this.stopAnimations();
                 this.animationIdleState.startIfStopped(this.tickCount);
             }
         }
         super.onSyncedDataUpdated(accessor);
     }
-
-    public void stopAnimations() {
-        List<AnimationState> animationList = Arrays.stream(this.getAnimations()).toList();
-        animationList.forEach(AnimationState::stop);
-    }
-
+ 
     @Override
     public AnimationState[] getAnimations() {
         return new AnimationState[] {

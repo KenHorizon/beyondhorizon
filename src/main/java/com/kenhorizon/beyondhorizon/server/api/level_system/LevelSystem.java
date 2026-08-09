@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundLevelSystemPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataPacket;
+import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerLevelSystemPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -19,13 +20,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
-public class LevelSystem implements IAttack, IEntityProperties {
+public class LevelSystem {
     public enum AttributePoints implements StringRepresentable {
         STRENGHT,
         VITALITY,
@@ -74,31 +76,35 @@ public class LevelSystem implements IAttack, IEntityProperties {
     public float expProgress = 0;
     public float expRequired = 280;
     public final int maxLevel = 100;
+    private boolean makeDirty = false;
     public static final int REQUIRED_LEVEL_ATTRIBUTES = Constant.LEVEL_SYSTEM_UNLOCKED;
     public static final int REQUIRED_LEVEL_CLASS_TRAITS = Constant.CLASS_SYSTEM_UNLOCKED;
     private boolean alreadyReachedRequiredLevel = false;
     private boolean unlockedClassAndTraits = false;
     @Nullable
     protected String descriptionId;
-
-    public LevelSystem() {
-    }
-
-
-    public Optional<IAttack> IAttack() {
-        return Optional.of(this);
-    }
-
-    public Optional<IEntityProperties> IEntityProperties() {
-        return Optional.of(this);
+    private final LivingEntity entity;
+    private final boolean isPlayer;
+    public LevelSystem(LivingEntity entity) {
+        this.entity = entity;
+        this.isPlayer = entity instanceof Player;
     }
 
     public void addLevel(int level) {
-        this.levels += level;
+        this.setLevel(this.getLevel() + level);
+        this.makeDirty = true;
     }
 
     public void setLevel(int level) {
+        int cap = 100;
+        if (this.isPlayer) {
+            cap = 30;
+        }
+        if (level >= cap) {
+            level = cap;
+        }
         this.levels = level;
+        this.makeDirty = true;
     }
 
     public int getLevel() {
@@ -111,50 +117,62 @@ public class LevelSystem implements IAttack, IEntityProperties {
 
     public void addStr(int amount) {
         this.str += amount;
-    }
-
-    public void removeStr(int amount) {
-        this.str -= Math.max(0, amount);
+        this.makeDirty = true;
     }
 
     public void addVit(int amount) {
         this.vit += amount;
-    }
-
-    public void removeVit(int amount) {
-        this.vit -= Math.max(0, amount);
+        this.makeDirty = true;
     }
 
     public void addAgi(int amount) {
         this.agi += amount;
-    }
-
-    public void removeAgi(int amount) {
-        this.agi -= Math.max(0, amount);
+        this.makeDirty = true;
     }
 
     public void addCons(int amount) {
         this.cons += amount;
-    }
-
-    public void removeCons(int amount) {
-        this.cons -= Math.max(0, amount);
+        this.makeDirty = true;
     }
 
     public void addInte(int amount) {
         this.inte += amount;
-    }
-
-    public void removeInte(int amount) {
-        this.inte -= Math.max(0, amount);
+        this.makeDirty = true;
     }
 
     public void addDex(int amount) {
         this.dex += amount;
+        this.makeDirty = true;
+    }
+
+    public void removeStr(int amount) {
+        this.str -= Math.max(0, amount);
+        this.makeDirty = true;
+    }
+
+    public void removeVit(int amount) {
+        this.vit -= Math.max(0, amount);
+        this.makeDirty = true;
+    }
+
+    public void removeAgi(int amount) {
+        this.agi -= Math.max(0, amount);
+        this.makeDirty = true;
+    }
+
+    public void removeCons(int amount) {
+        this.cons -= Math.max(0, amount);
+        this.makeDirty = true;
+    }
+
+    public void removeInte(int amount) {
+        this.inte -= Math.max(0, amount);
+        this.makeDirty = true;
     }
 
     public void removeDex(int amount) {
         this.dex -= Math.max(0, amount);
+        this.makeDirty = true;
     }
 
     public void addExpPoints(int amount) {
@@ -282,6 +300,7 @@ public class LevelSystem implements IAttack, IEntityProperties {
 
     public void setPoints(int points) {
         this.points = points;
+        this.makeDirty = true;
     }
 
     public int getPoints() {
@@ -306,39 +325,61 @@ public class LevelSystem implements IAttack, IEntityProperties {
         this.agi = 0;
         this.dex = 0;
         this.inte = 0;
+        this.sync();
     }
 
-    @Override
-    public void onEntityUpdate(LivingEntity entity, ItemStack itemStack) {
-        if (entity instanceof Player player) {
+    public void sync() {
+        if (this.entity instanceof Player player && this.isPlayer) {
+            if (player instanceof ServerPlayer) {
+                NetworkHandler.sendToPlayer(new ClientboundPlayerLevelSystemPacket(this.saveNbt()), (ServerPlayer) player);
+            }
+        } else {
+            NetworkHandler.sendAll(new ClientboundLevelSystemPacket(this.entity.getId(), this.saveNbt()), this.entity);
+        }
+    }
+
+    public void tick() {
+        if (this.makeDirty) {
+            this.sync();
+            this.makeDirty = false;
+        }
+        if (this.entity instanceof Player player && this.isPlayer) {
             if (player.experienceLevel >= REQUIRED_LEVEL_ATTRIBUTES && !this.alreadyReachedRequiredLevel) {
                 this.alreadyReachedRequiredLevel = true;
             }
             if (this.getLevel() >= REQUIRED_LEVEL_CLASS_TRAITS && !this.unlockedClassAndTraits) {
                 this.unlockedClassAndTraits = true;
             }
-            AttributeInstance maxHealth = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MAX_HEALTH);
-            AttributeInstance attackDamage = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
-            AttributeInstance attackSpeed = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_SPEED);
-            AttributeInstance movement = player.getAttribute(net.minecraft.world.entity.ai.attributes.Attributes.MOVEMENT_SPEED);
-            AttributeInstance falldamage = player.getAttribute(BHAttributes.FALLDAMAGE_MULTIPLIER.get());
-            AttributeInstance maxMana = player.getAttribute(BHAttributes.MAX_MANA.get());
-            AttributeInstance healthRegen = player.getAttribute(BHAttributes.HEALTH_REGENERATION.get());
-            AttributeInstance manaRegen = player.getAttribute(BHAttributes.MANA_REGENERATION.get());
-            AttributeInstance abilityPower = player.getAttribute(BHAttributes.ABILITY_POWER.get());
-            this.addModifiers(entity,2, this.getPointOfSkills(AttributePoints.VITALITY), VITALITY_ID, maxHealth, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(entity,0.5F, this.getPointOfSkills(AttributePoints.STRENGHT), STRENGHT_ID, attackDamage, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(entity,0.01F, this.getPointOfSkills(AttributePoints.AGILITY), AGILITY_ID, attackSpeed, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(entity,0.001F, this.getPointOfSkills(AttributePoints.DEXERITY), DEXERITY_ID, movement, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(entity,0.01F, this.getPointOfSkills(AttributePoints.DEXERITY), DEXERITY_ID, falldamage, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(entity,2, this.getPointOfSkills(AttributePoints.INTELLIGENGE), INTELLIGENCE_ID, maxMana, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(entity,2, this.getPointOfSkills(AttributePoints.INTELLIGENGE), INTELLIGENCE_ID, abilityPower, AttributeModifier.Operation.ADDITION);
-            this.addModifiers(entity,0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, healthRegen, AttributeModifier.Operation.MULTIPLY_BASE);
-            this.addModifiers(entity,0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, manaRegen, AttributeModifier.Operation.MULTIPLY_BASE);
-            if (player instanceof ServerPlayer) {
-                NetworkHandler.sendToPlayer(new ClientboundLevelSystemPacket(this.saveNbt()), (ServerPlayer) player);
-            }
         }
+        this.addAttributes();
+
+    }
+
+    private void addAttributes() {
+        AttributeInstance maxHealth = this.entity.getAttribute(Attributes.MAX_HEALTH);
+        AttributeInstance attackDamage = this.entity.getAttribute(Attributes.ATTACK_DAMAGE);
+        AttributeInstance attackSpeed = this.entity.getAttribute(Attributes.ATTACK_SPEED);
+        AttributeInstance movement = this.entity.getAttribute(Attributes.MOVEMENT_SPEED);
+        AttributeInstance falldamage = this.entity.getAttribute(BHAttributes.FALLDAMAGE_MULTIPLIER.get());
+        AttributeInstance maxMana = this.entity.getAttribute(BHAttributes.MAX_MANA.get());
+        AttributeInstance healthRegen = this.entity.getAttribute(BHAttributes.HEALTH_REGENERATION.get());
+        AttributeInstance manaRegen = this.entity.getAttribute(BHAttributes.MANA_REGENERATION.get());
+        AttributeInstance abilityPower = this.entity.getAttribute(BHAttributes.ABILITY_POWER.get());
+
+        this.addModifiers(entity,2, this.getPointOfSkills(AttributePoints.VITALITY), VITALITY_ID, maxHealth, AttributeModifier.Operation.ADDITION);
+
+        this.addModifiers(entity,0.5F, this.getPointOfSkills(AttributePoints.STRENGHT), STRENGHT_ID, attackDamage, AttributeModifier.Operation.ADDITION);
+
+        this.addModifiers(entity,0.01F, this.getPointOfSkills(AttributePoints.AGILITY), AGILITY_ID, attackSpeed, AttributeModifier.Operation.ADDITION);
+
+        this.addModifiers(entity,0.001F, this.getPointOfSkills(AttributePoints.DEXERITY), DEXERITY_ID, movement, AttributeModifier.Operation.ADDITION);
+        this.addModifiers(entity,0.01F, this.getPointOfSkills(AttributePoints.DEXERITY), DEXERITY_ID, falldamage, AttributeModifier.Operation.ADDITION);
+        this.addModifiers(entity,2, this.getPointOfSkills(AttributePoints.INTELLIGENGE), INTELLIGENCE_ID, maxMana, AttributeModifier.Operation.ADDITION);
+
+        this.addModifiers(entity,2, this.getPointOfSkills(AttributePoints.INTELLIGENGE), INTELLIGENCE_ID, abilityPower, AttributeModifier.Operation.ADDITION);
+
+        this.addModifiers(entity,0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, healthRegen, AttributeModifier.Operation.MULTIPLY_BASE);
+        this.addModifiers(entity,0.10F, this.getPointOfSkills(AttributePoints.CONSTITUION), CONSTITUTION_ID, manaRegen, AttributeModifier.Operation.MULTIPLY_BASE);
     }
 
     private void addModifiers(LivingEntity player, float stats, int pts, UUID uuid, AttributeInstance instance, AttributeModifier.Operation operation) {
@@ -350,13 +391,43 @@ public class LevelSystem implements IAttack, IEntityProperties {
             AttributeModifier modifier = new AttributeModifier(uuid, "Bonus Stats", amount, operation);
             AttributeModifier prevModifier = instance.getModifier(uuid);
             if (prevModifier == null) {
-                instance.addTransientModifier(modifier);
+                instance.addPermanentModifier(modifier);
             } else if (prevModifier.getAmount() != amount) {
                 instance.removeModifier(uuid);
-                instance.addTransientModifier(modifier);
+                instance.addPermanentModifier(modifier);
             }
         }
     }
+    //weighted distribution
+    public void assignRandomPoints() {
+        if (this.getLevel() <= 1) return;
+        int totalPoints = this.getLevel();
+
+        AttributePoints[] attributes = AttributePoints.values();
+
+        double[] weights = new double[attributes.length];
+        double weightSum = 0.0;
+
+        for (int i = 0; i < attributes.length; i++) {
+            weights[i] = entity.getRandom().nextDouble();
+            weightSum += weights[i];
+        }
+
+        int assigned = 0;
+
+        for (int i = 0; i < attributes.length; i++) {
+            int points = (int) Math.floor(weights[i] / weightSum * totalPoints);
+            this.addPointOfAttributes(attributes[i], points);
+            assigned += points;
+        }
+        while (assigned < totalPoints) {
+            AttributePoints randomAttribute = attributes[entity.getRandom().nextInt(attributes.length)];
+            this.addPointOfAttributes(randomAttribute, 1);
+            assigned++;
+        }
+        this.addAttributes();
+    }
+
 
     public CompoundTag saveNbt() {
         CompoundTag nbt = new CompoundTag();
@@ -405,5 +476,13 @@ public class LevelSystem implements IAttack, IEntityProperties {
         if (player instanceof ServerPlayer splayer) {
             NetworkHandler.sendToPlayer(new ClientboundPlayerDataPacket(this.saveNbt()), splayer);
         }
+    }
+
+    public LivingEntity getEntity() {
+        return entity;
+    }
+
+    public boolean isPlayer() {
+        return isPlayer;
     }
 }

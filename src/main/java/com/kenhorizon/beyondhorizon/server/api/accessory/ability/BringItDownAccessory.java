@@ -23,7 +23,7 @@ public class BringItDownAccessory extends StackingSkillAccessory {
     }
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
-        return Component.translatable(this.createId(), (int) this.getMagnitude(), Maths.format0(this.increasedDamage));
+        return Component.translatable(this.createId(), (int) this.getMagnitude(), Maths.format(100.0F * this.increasedDamage));
     }
     @Override
     public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {

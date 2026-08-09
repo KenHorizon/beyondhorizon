@@ -11,6 +11,8 @@ public class ModCommonConfig {
     public static ForgeConfigSpec.BooleanValue ENABLE_MOB_LEVELS;
     public static ForgeConfigSpec.BooleanValue ENCHANTMENT_BREAK_LEVEL;
     public static ForgeConfigSpec.EnumValue<AnvilCostSettings> ANVIL_COSTING;
+    public static ForgeConfigSpec.IntValue MOBS_MIN_LEVEL_CAP;
+    public static ForgeConfigSpec.IntValue MOBS_MAX_LEVEL_CAP;
     public static ForgeConfigSpec.IntValue ANVIL_COST_CAP;
     public static ForgeConfigSpec.DoubleValue ANVIL_BREAK_CHANCES;
 
@@ -27,12 +29,21 @@ public class ModCommonConfig {
 
     public ModCommonConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Beyond Horizon | Gameplay Configs");
-        builder.push("Anvil Patch");
+        builder.push("Mobs");
+        MOBS_MIN_LEVEL_CAP = builder
+                .worldRestart()
+                .comment("Mob that spawn will have certain level ranging from 5-100 levels")
+                .defineInRange("Spawn Mob with levels", 5, 1, 10);
+        MOBS_MAX_LEVEL_CAP = builder
+                .worldRestart()
+                .comment("Mob that spawn will have certain level ranging from 5-100 levels")
+                .defineInRange("Spawn Mob with levels", 100, 1, 100);
         ENABLE_MOB_LEVELS = builder
                 .worldRestart()
-                .comment("Mob that spawn will have certain level ranging from 1-100 levels")
-                .comment("Each level increase their overall stats")
-                .define("Spawn Mob with levels", false);
+                .comment("Enabling this will allow the mobs spawn with random levels that randomly assign each stats")
+                .define("Spawn Mob with levels", true);
+        builder.pop();
+        builder.push("Anvil Patch");
         ANVIL_COSTING = builder
                 .worldRestart()
                 .comment("Change how anvil repair cost work")

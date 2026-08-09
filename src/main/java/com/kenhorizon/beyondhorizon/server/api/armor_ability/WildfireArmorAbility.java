@@ -28,7 +28,7 @@ public class WildfireArmorAbility extends ArmorAbilityMagnitude {
     }
     public void addTooltipFullBonusSet(List<Component> tooltips, ItemStack itemStack, Player player) {
         tooltips.add(Component.translatable(this.createId(0), Maths.format(this.getMagnitude()), this.damageScale).withStyle(Tooltips.TOOLTIP[0]));
-        tooltips.add(Component.translatable(this.createId(1), Maths.format0(this.increasedDamage)).withStyle(Tooltips.TOOLTIP[0]));
+        tooltips.add(Component.translatable(this.createId(1), Maths.format(100.0F * this.increasedDamage)).withStyle(Tooltips.TOOLTIP[0]));
     }
     public void setIncreasedDamage(float increasedDamage) {
         this.increasedDamage = increasedDamage;

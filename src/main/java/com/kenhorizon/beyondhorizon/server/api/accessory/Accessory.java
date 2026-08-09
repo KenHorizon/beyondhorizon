@@ -39,6 +39,7 @@ public abstract class Accessory extends AbstractAbilityComponents {
         }
     }
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final String ACCESSORY_UUID = "accessory";
     public static final String ACCESSORY_ATTRIBUTES_TAGS = "accessory_attribute_modifiers";
     protected int cooldown = 0;
     protected int manaCost = 0;

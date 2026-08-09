@@ -26,8 +26,6 @@ import java.util.function.Predicate;
 public class LevelSystemScreen extends Screen {
     public enum Category {
         ATTRIBUTES(LevelSystem::isAlreadyReachedRequiredLevel);
-//        CLASS(RoleClass::isUnlockedClassAndTraits),
-//        TRAIT(RoleClass::isUnlockedClassAndTraits);
 
         private Predicate<LevelSystem> levelRequired;
         private boolean subCategory;

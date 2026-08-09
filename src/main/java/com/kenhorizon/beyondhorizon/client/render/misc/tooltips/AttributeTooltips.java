@@ -30,8 +30,11 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class AttributeTooltips {
@@ -103,6 +106,7 @@ public class AttributeTooltips {
             this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, chatFormatting);
         }
     }
+
     public void makeAttributeTooltip(ItemStack stack, List<Component> tooltip, Multimap<Attribute, AttributeModifier> modifierMap) {
         makeAttributeTooltip(stack, tooltip, modifierMap, null);
     }
@@ -120,8 +124,7 @@ public class AttributeTooltips {
             } else {
                 tooltip.set(startLine, CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
             }
-        } catch (Exception e) {
-            BeyondHorizon.LOGGER.debug("Out of bounds: startline={} size={}", startLine, tooltip.size());
+        } catch (Exception ignored) {
         }
     }
 

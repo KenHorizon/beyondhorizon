@@ -15,18 +15,20 @@ if pyrolliger are on melee mode, pyrolliger gain 1 mana every 2 seconds instead 
 it will start running towards to player and using all melee abilities, if pyrolliger are close enough to player it will count to 6 seconds and will reposition itself and afterwards it will select
 1 in between of attacks 1,2 or 3, all projectiles deal less 20%
 
+if pyrolliger reached 50% below it move to phase 2 where pyrolliger will summon a pyro gem that stay on the pyrolliger head and some ability
+are empowered
+
 Attacks:
 All attacks of pyrolliger inflict burning hex that burn the and reduce healing received for 5 seconds
 
+Pyro Gem - the pyrollger summon a gem above and shoot pryo lance for every 15 seconds
+
 Ranged:
-Pyrobolt - the pyrolliger summon 20 pyrobolt over the course of 1 second at current position at random directions
-Heat Wave - pyrolliger will idle for 3 seconds and release a 12 heat wave that damage and push back
-Dash - pyrollger charge upto 3 seconds and dash to targeted position
+Pyrobolt - the pyrolliger summon 20 pyrobolt over the course of 1 second at current position at random directions /
 Teleport - pyrollger will teleport away from the player if the player is too close to the pyrolliger within 5 seconds
 Circular Pyro Slash - the pyrolliger 5 summon flaming slash to target interval within 2 seconds per attack
-Hex Trap - the pyrolliger randomly place 10 burning hex trap that last for 5/10 seconds
-Pyro Lance - the pyrolliger summon 20 pyro lance that charge and home to player
-Pyro Gem - the pyrollger summon a gem above providing 10% damage reduce and every 15 seconds shot pyromanic beam
+Hex Trap - the pyrolliger randomly place 10 burning hex trap that last for 5/10 seconds /
+Pyro Lance - the pyrolliger summon 20 pyro lance that charge and home to player /
 
 Utilmate: Dragonic Firelord - the pyrolliger will charge upto 3 seconds, after will release a dragonic head that fire devasting pryomanic death ray
 
@@ -39,10 +41,8 @@ Hail rain - Summon a portal that fire flaming sword for every 1 seconds
 Attack 1 - the pyrolliger use the sword and slashing 3 times, each slash it dash litte 
 Attack 2 - the pyrolliger will do arc damage within 180 degree
 Attack 3 - the pyrolliger will release a Pyrobolt after 2 seconds and after 3 seconds will release Circular Pyro Slash, then later will dash and do arc attack
-Burning Point - the pyrolliger charge upto 5 seconds and later will release a devasting flash point explosion
-Hex Eye - the pryolliger will summon hex eye that boost and see all the target on 24 radius
 
-Ultimate: Heart of the Inferno - pyrolliger will summon 5 times Hex Trap in pattern first is Cross, X, Cage
+Ultimate: Burning Point - the pyrolliger charge upto 5 seconds and later will release a devasting flash point explosion
 
 Loot:
 Draconic Elder Sword (30%)

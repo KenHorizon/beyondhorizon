@@ -99,12 +99,17 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
                     tooltip.add(Component.translatable(Tooltips.ACCESSORY).withStyle(ChatFormatting.GOLD));
                 }
             }
-            UUID uuid = UUID.nameUUIDFromBytes("accessory".getBytes());
+            accessory.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+
+
+            UUID uuid = UUID.nameUUIDFromBytes(Accessory.ACCESSORY_UUID.getBytes());
             Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, itemStack);
-            if (!map.isEmpty() && i == 0) {
+            if (!map.isEmpty() && i == (this.accessories.size() - 1)) {
+                tooltip.add(CommonComponents.EMPTY);
+                tooltip.add(Component.translatable(Tooltips.WHEN_WORN).withStyle(Tooltips.TOOLTIP[0]));
                 accessory.addTooltipAttributes(itemStack, tooltip, map);
             }
-            accessory.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+
         }
         if (!this.isBasic()) {
             tooltip.add(CommonComponents.space());

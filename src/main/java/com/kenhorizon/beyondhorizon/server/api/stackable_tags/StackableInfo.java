@@ -1,9 +1,14 @@
 package com.kenhorizon.beyondhorizon.server.api.stackable_tags;
 
+import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.init.BHChatformatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+
+import java.util.Map;
 
 public class StackableInfo {
     private final StackableTags stackableTags;
@@ -37,5 +42,13 @@ public class StackableInfo {
 
     public int getMaxDuration() {
         return this.stackableTags.getMaxDuration();
+    }
+
+    public Multimap<Attribute, AttributeModifier> getModifier() {
+        return this.stackableTags.getAttributeModifiers();
+    }
+
+    public AttributeModifier getModifier(Attribute attribute) {
+        return (AttributeModifier) this.stackableTags.getAttributeModifiers().get(attribute);
     }
 }

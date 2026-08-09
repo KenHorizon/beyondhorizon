@@ -19,7 +19,7 @@ public class ExecuteAbilityAccessory extends AccessoryPassiveSkill {
 
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
-        return Component.translatable(this.createId(), Maths.format0(this.healthThereshold));
+        return Component.translatable(this.createId(), Maths.format(100.0F * this.healthThereshold));
     }
 
     public float getHealthExecute() {

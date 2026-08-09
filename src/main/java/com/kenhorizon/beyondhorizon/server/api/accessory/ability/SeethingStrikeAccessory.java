@@ -1,9 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.api.skills.ability.on_hit_effects.OnHitEffectSkills;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableInfo;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.OnHitEffectHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -14,6 +17,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.spongepowered.asm.mixin.injection.struct.InjectorGroupInfo;
+
+import java.util.Map;
 
 public class SeethingStrikeAccessory extends StackingSkillAccessory {
     public SeethingStrikeAccessory() {
@@ -21,14 +27,14 @@ public class SeethingStrikeAccessory extends StackingSkillAccessory {
     }
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
-        var def = StackableInfo.get(StackableTagInstance.CARVE);
+        var def = StackableInfo.get(StackableTagInstance.SEETHING_STRIKE);
         var def1 = StackableInfo.get(StackableTagInstance.PHANTOM);
         return Component.translatable(this.createId(),
                 def.getDisplayName(),
                 (int) (Maths.tick(def.getMaxDuration())),
                 def.getMaxStacks(),
-                Maths.format0(Mth.abs(Constant.SEETHING_STRIKE_ATK_SPD)),
-                Maths.format0(Mth.abs(Constant.SEETHING_STRIKE_ATK_SPD * def.getMaxStacks())),
+                Maths.format(100.0F * Mth.abs(Constant.SEETHING_STRIKE_ATK_SPD)),
+                Maths.format(100.0F * Mth.abs(Constant.SEETHING_STRIKE_ATK_SPD * def.getMaxStacks())),
                 def.getMaxStacks(),
                 def1.getDisplayName(),
                 def1.getMaxDuration(), def1.getMaxStacks(), def1.getDisplayName(), def1.getDisplayName());
@@ -47,7 +53,14 @@ public class SeethingStrikeAccessory extends StackingSkillAccessory {
                     phantomStacks.add(1);
                     if (phantomStacks.isFullyStacked()) {
                         for (int i = 0; i < phantomStacks.getStack(); i++) {
-                            target.hurt(source, damageDealt / 6);
+                            if (!OnHitEffectHandler.allOnHitEffects().isEmpty()) {
+                                for (Map.Entry<DamageSource, Float> entry : OnHitEffectHandler.allOnHitEffects().entries()) {
+//                                BeyondHorizon.LOGGER.debug("{} {}", entry.getKey(), entry.getValue());
+                                    target.invulnerableTime = 0;
+                                    target.hurt(entry.getKey(), entry.getValue());
+                                    OnHitEffectHandler.allOnHitEffects().clear();
+                                }
+                            }
                         }
                         phantomStacks.reset();
                     }

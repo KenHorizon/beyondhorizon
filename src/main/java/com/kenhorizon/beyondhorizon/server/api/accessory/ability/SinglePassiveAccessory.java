@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -53,16 +54,16 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
         if (this == Accessories.NULLIFY.get()) {
-            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), Maths.format0(this.getMagnitude()));
+            return Component.translatable(this.createId(), Maths.format(100.0F * this.getMagnitude()), Maths.format(100.0F * this.getMagnitude()));
         }
         if (this == Accessories.STING.get()) {
             return Component.translatable(this.createId(), (int) this.getMagnitude());
         }
         if (this == Accessories.EXCORIATE.get()) {
-            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
+            return Component.translatable(this.createId(), Maths.format(100.0F * this.getMagnitude()));
         }
         if (this == Accessories.NIGHTSTALKER.get()) {
-            return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
+            return Component.translatable(this.createId(), Maths.format(100.0F * this.getMagnitude()));
         }
         if (this == Accessories.BURN_EFFECT.get()) {
             return Component.translatable(this.createId(), Maths.format(this.getMagnitude()));
@@ -203,9 +204,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
             target.setSecondsOnFire(Constant.FIRE_EFFECT);
         }
         if (this == Accessories.CORRUPTED_BITE.get()) {
-            target.invulnerableTime = 0;
-            double AP = attacker.getAttributeValue(BHAttributes.ABILITY_POWER.get());
-            target.hurt(BHDamageTypes.magicDamage(attacker, null), (float) (AP * (this.getMagnitude() * this.getLevel())));
+            DamageType.MAGIC_DAMAGE.onHit(target, attacker, (float) damageDealt * (this.getMagnitude() * this.getLevel()));
         }
         if (this == Accessories.NULLIFY.get()) {
             target.invulnerableTime = 0;

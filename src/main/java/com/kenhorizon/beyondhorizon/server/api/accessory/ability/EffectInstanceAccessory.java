@@ -21,7 +21,7 @@ public class EffectInstanceAccessory extends AccessoryPassiveSkill {
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
         String effectCat = Utils.formattedWords(this.category.name());
-        return Component.translatable(this.createId(), effectCat, Maths.format0(this.getMagnitude()));
+        return Component.translatable(this.createId(), effectCat, Maths.format(100.0F * this.getMagnitude()));
     }
 
     @Override

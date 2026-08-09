@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.client.util.ResourceUtils;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
+import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -53,13 +54,13 @@ public class GameHudDisplay extends Gui {
         event.setCanceled(true);
         this.renderArmor(event.getGuiGraphics(), event.getPartialTick());
     }
+
     public void renderEffectIcons(GuiGraphics guiGraphics, float partialTicks) {
         minecraft.getProfiler().push("effectIcons");
         var player = minecraft.player;
         RenderSystem.enableBlend();
         this.hud.update();
         int xPos = 0;
-        List<StackableTags> overlayTags = new ArrayList<>();
         IAccessoryStackHandler handler = Capabilities.accessory(player);
         var stackable = Capabilities.stackable(player);
         if (handler != null) {
@@ -69,7 +70,10 @@ public class GameHudDisplay extends Gui {
                 if (!stack.isEmpty() && stack.getItem() instanceof IAccessoryItem accessoryItems) {
                     for (var accessory : accessoryItems.getAccessories()) {
                         if (accessory instanceof IStackIconOverlay overlay) {
-                            overlayTags.add(stackable.makeInstance(overlay.getStacks()));
+                            var tag = stackable.makeInstance(overlay.getStacks());
+                            if (tag.hasNoStacks()) continue;
+                            renderStackableTags(guiGraphics, tag, xPos);
+                            xPos++;
                         }
                     }
                 }
@@ -77,29 +81,11 @@ public class GameHudDisplay extends Gui {
         }
         if (stackable != null) {
             for (StackableTags tag : stackable.getStackableTags()) {
-                if (!tag.hasStacks()) continue;
-                if (overlayTags.contains(tag)) {
-                    renderStackableTags(guiGraphics, tag, xPos);
-                }
+                if (tag.hasNoStacks() || !StackableTagInstance.getRenderAlways().contains(tag.getName())) continue;
+                renderStackableTags(guiGraphics, tag, xPos);
                 xPos++;
             }
         }
-//        if (!overlayTags.isEmpty()) {
-//            for (var allTags : overlayTags) {
-//                ResourceLocation getAllIcons = BeyondHorizon.resourceGui("sprites/icon/effects/" + allTags.getName() + ".png");
-//                if (allTags.hasStacks() && ResourceUtils.getImage(getAllIcons)) {
-//                    int x = this.hud.scaledWindowWidth / 2 - 91 + (26 * xPos);
-//                    int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
-//                    String value = String.format("%s", allTags.getStack());
-//                    BlitHelper.drawBlit(guiGraphics, ICON_BACKGROUND, x, y -1, 0, 0, 24, 24, 24, 24);
-//                    BlitHelper.drawBlit(guiGraphics, getAllIcons, x, y - 1, 0, 0, 24, 24, 24, 24);
-//                    int valueLenght = value.length();
-//                    BlitHelper.drawBorderedStrings(minecraft.font, guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, Colors.WHITE);
-//                    RenderSystem.disableBlend();
-//                    xPos++;
-//                }
-//            }
-//        }
         minecraft.getProfiler().pop();
 
     }

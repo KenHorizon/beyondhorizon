@@ -93,10 +93,9 @@
   "accessory.beyondhorizon.sting.desc": "Basic Attack deal additional %s physical damage",
   "accessory.beyondhorizon.supremacy": "Supremacy",
   "accessory.beyondhorizon.supremacy.desc": "Stacks: %s",
-  "accessory.beyondhorizon.supremacy.desc.1": "On-kill grant stacks %s",
-  "accessory.beyondhorizon.supremacy.desc.2": "Each stacks increase all damage dealt by %s%%",
-  "accessory.beyondhorizon.supremacy.desc.3": "Increased damage: %s%%",
-  "accessory.beyondhorizon.supremacy.desc.4": "§4Lose %s%% stacks on death",
+  "accessory.beyondhorizon.supremacy.desc.1": "On-kill grant %s stacks, Each stacks increase all damage dealt by %s%%",
+  "accessory.beyondhorizon.supremacy.desc.2": "Increased damage: %s%%",
+  "accessory.beyondhorizon.supremacy.desc.3": "§4Lose %s%% stacks on death",
   "accessory.beyondhorizon.swiftness": "Swiftness",
   "accessory.beyondhorizon.swiftness.desc": "Inflict Speed boost effect for 5 seconds",
   "accessory.beyondhorizon.taxs": "Taxs",
@@ -114,7 +113,7 @@
   "accessory.beyondhorizon.venom": "Venom",
   "accessory.beyondhorizon.venom.desc": "Attacks have %.2f%% chance inflict either Poison or Lethal Poison for %s seconds",
   "accessory.beyondhorizon.void_eye": "Void Eye",
-  "accessory.beyondhorizon.void_eye.desc": "Enderman will not be provoked",
+  "accessory.beyondhorizon.void_eye.desc": "Enderman will not be provoked when looked at",
   "acessory.beyondhorizon.limited_to": "Limited to 1 %s",
   "advancement.beyondhorizon.story.equipped_accessory": "Fancy Equipment",
   "advancement.beyondhorizon.story.equipped_accessory.desc": "Discover a accessory",
@@ -797,5 +796,6 @@
   "tooltip.beyondhorizon.recovery_potion.mana": "Restore %s Mana",
   "tooltip.beyondhorizon.skill_type": "%s",
   "tooltip.beyondhorizon.value": "(CD: %s)",
-  "tooltip.beyondhorizon.value.max": "%s / %s"
+  "tooltip.beyondhorizon.value.max": "%s / %s",
+  "tooltip.beyondhorizon.when_worn": "When Worn:"
 }

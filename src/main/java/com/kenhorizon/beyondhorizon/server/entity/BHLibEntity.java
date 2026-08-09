@@ -1,12 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -20,12 +15,10 @@ import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class BHLibEntity extends BHBaseEntity {
-    public AnimationState idleAnimation = new AnimationState();
     public static final int ID_ANIMATION_EMPTY = 0;
     private int prevAnimationState;
     private int idleTime;
@@ -68,13 +61,6 @@ public class BHLibEntity extends BHBaseEntity {
     @Override
     public void tick() {
         super.tick();
-        if (this.level().isClientSide()) {
-            this.idleTime++;
-            if (this.idleTime >= this.getIdleTime()) {
-                this.idleAnimation.startIfStopped(this.tickCount);
-                this.idleTime = 0;
-            }
-        }
         if (this.getAnimation() > 0) {
             if (this.getAnimationTick() == 0) {
                 this.onStartAnimation();
@@ -265,11 +251,12 @@ public class BHLibEntity extends BHBaseEntity {
         return false;
     }
 
-    public AnimationState[] getAnimations() {
-        return new AnimationState[0];
+    public void stopAnimations() {
+        List<AnimationState> animationList = Arrays.stream(this.getAnimations()).toList();
+        animationList.forEach(AnimationState::stop);
     }
 
-    protected boolean AnimationChanged() {
-        return this.getAnimation() != this.getPrevAnimationState();
+    public AnimationState[] getAnimations() {
+        return new AnimationState[0];
     }
 }

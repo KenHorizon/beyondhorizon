@@ -13,6 +13,7 @@ import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbilit
 import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BurningHexTrapAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ai.*;
+import com.kenhorizon.beyondhorizon.server.entity.ai.ability.DodgeAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ai.control.SmartBodyControl;
 import com.kenhorizon.beyondhorizon.server.entity.boss.BHBossEntity;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.Pyrobolt;
@@ -54,7 +55,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class Pyrolliger extends BHBossEntity {
@@ -66,6 +66,7 @@ public class Pyrolliger extends BHBossEntity {
     private int mana = 0;
     private int maxMana = 100;
     protected Pyrolliger.Mode mode = Mode.RANGED;
+    private final DodgeAbility dodgeAbility = new DodgeAbility(this);
     public static int animationId = 1;
     public AnimationState animationIdle1 = new AnimationState();
     public AnimationState animationIdle2 = new AnimationState();
@@ -80,6 +81,8 @@ public class Pyrolliger extends BHBossEntity {
     public AnimationState animationAtk1 = new AnimationState();
     public AnimationState animationAtk2 = new AnimationState();
     public AnimationState animationAtk3 = new AnimationState();
+
+    // Animation Id
     public static final int ID_DODGE = createAnimationID();
     public static final int ID_IDLE1 = createAnimationID();
     public static final int ID_IDLE2 = createAnimationID();
@@ -96,13 +99,13 @@ public class Pyrolliger extends BHBossEntity {
     public static final int ID_ATTACK_3 = createAnimationID();
     public static final int ID_CROSS_BLADE = createAnimationID();
     public static final int ID_SLASH_N_DASH = createAnimationID();
-    public static final int ID_BURNING_POINT = createAnimationID();
     public static final int ID_HEX_EYE = createAnimationID();
     public static final int ID_HAIL_RAIN = createAnimationID();
-    public static final int ID_HEART_OF_INFERNO = createAnimationID();
+    public static final int ID_BURNING_POINT = createAnimationID();
     //
     public static final int ID_TRANSITION_STANCE_RANGED = createAnimationID();
     public static final int ID_TRANSITION_STANCE_MELEE = createAnimationID();
+    // Ability Cooldowns
     public AnimationTickers dodgeCooldown = AnimationTickers.create(Maths.sec(7));
     public AnimationTickers pyroboltCooldown = AnimationTickers.create(Maths.sec(3));
     public AnimationTickers pyrolanceCooldown = AnimationTickers.create(Maths.sec(4));
@@ -161,6 +164,7 @@ public class Pyrolliger extends BHBossEntity {
     @Override
     public void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
+        this.dodgeAbility.loadNbt(nbt);
         this.setMana(nbt.getInt(NBT_MANA));
         this.setMaxMana(nbt.getInt(NBT_MAX_MANA));
         this.setVisibleSword(nbt.getBoolean(NBT_SWORD_VISIBLE));
@@ -169,6 +173,7 @@ public class Pyrolliger extends BHBossEntity {
     @Override
     public void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
+        this.dodgeAbility.saveNbt();
         nbt.putInt(NBT_MANA, this.getMana());
         nbt.putInt(NBT_MAX_MANA, this.getMaxMana());
         nbt.putBoolean(NBT_SWORD_VISIBLE, this.isVisibleSword());
@@ -262,10 +267,12 @@ public class Pyrolliger extends BHBossEntity {
         this.entityData.set(MANA, mana);
         this.mana = mana;
     }
+
     public void setMaxMana(int mana) {
         this.entityData.set(MAX_MANA, mana);
         this.maxMana = mana;
     }
+
     public int getMaxMana() {
         return this.level().isClientSide() ? this.entityData.get(MAX_MANA) : this.maxMana;
     }
@@ -310,7 +317,7 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.setMode(Mode.MELEE);
             }
         });
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_HEART_OF_INFERNO, ID_TRANSITION_STANCE_RANGED, 30, Maths.sec(5)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_BURNING_POINT, ID_TRANSITION_STANCE_RANGED, 30, Maths.sec(5)) {
             @Override
             public boolean canUse() {
                 return super.canUse() && this.entity.isUltForMeleeReady();
@@ -428,7 +435,6 @@ public class Pyrolliger extends BHBossEntity {
             }
         });
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
-        this.goalSelector.addGoal(1, new UseAttacksAi<>(this, ID_ANIMATION_EMPTY, ID_PYROBOLT1, ID_PYROLANCE));
         this.goalSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.goalSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractGolem.class, true));
     }
@@ -733,58 +739,58 @@ public class Pyrolliger extends BHBossEntity {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (ANIMATION_STATE.equals(accessor)) {
-            if (this.getAnimation() == ID_ANIMATION_EMPTY) {
+            if (this.getAnimationState(ID_ANIMATION_EMPTY)) {
                 this.stopAnimations();
             }
-            if (this.getAnimation() == ID_PYROBOLT1) {
+            if (this.getAnimationState(ID_PYROBOLT1)) {
                 this.stopAnimations();
                 this.animationPyrobolt1.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_PYROLANCE) {
+            if (this.getAnimationState(ID_PYROLANCE)) {
                 this.stopAnimations();
                 this.animationPyrolance.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_BURNING_HEX_TRAP) {
+            if (this.getAnimationState(ID_BURNING_HEX_TRAP)) {
                 this.stopAnimations();
                 this.animationBurningHexTrap.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_DRACONIC_FIRELORD) {
+            if (this.getAnimationState(ID_DRACONIC_FIRELORD)) {
                 this.stopAnimations();
                 this.animationRangedUlt.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_HEART_OF_INFERNO) {
+            if (this.getAnimationState(ID_BURNING_POINT)) {
                 this.stopAnimations();
                 this.animationMeleeUlt.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_DODGE) {
+            if (this.getAnimationState(ID_DODGE)) {
                 this.stopAnimations();
                 this.animationDodge.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_TRANSITION_STANCE_RANGED) {
+            if (this.getAnimationState(ID_TRANSITION_STANCE_RANGED)) {
                 this.stopAnimations();
                 this.animationStanceRanged.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_TRANSITION_STANCE_MELEE) {
+            if (this.getAnimationState(ID_TRANSITION_STANCE_MELEE)) {
                 this.stopAnimations();
                 this.animationStanceMelee.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_ATTACK_1) {
+            if (this.getAnimationState(ID_ATTACK_1)) {
                 this.stopAnimations();
                 this.animationAtk1.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_ATTACK_2) {
+            if (this.getAnimationState(ID_ATTACK_2)) {
                 this.stopAnimations();
                 this.animationAtk2.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_ATTACK_3) {
+            if (this.getAnimationState(ID_ATTACK_3)) {
                 this.stopAnimations();
                 this.animationAtk3.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_IDLE1) {
+            if (this.getAnimationState(ID_IDLE1)) {
                 this.stopAnimations();
                 this.animationIdle1.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_IDLE2) {
+            if (this.getAnimationState(ID_IDLE2)) {
                 this.stopAnimations();
                 this.animationIdle2.startIfStopped(this.tickCount);
             }
@@ -802,11 +808,6 @@ public class Pyrolliger extends BHBossEntity {
     public void stopSeenByPlayer(ServerPlayer player) {
         super.stopSeenByPlayer(player);
         this.abilityMana.removePlayer(player);
-    }
-
-    public void stopAnimations() {
-        List<AnimationState> animationList = Arrays.stream(this.getAnimations()).toList();
-        animationList.forEach(AnimationState::stop);
     }
 
     @Override

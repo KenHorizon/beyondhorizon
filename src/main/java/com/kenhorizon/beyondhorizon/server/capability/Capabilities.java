@@ -32,8 +32,8 @@ public class Capabilities {
         return getCapability(entity, BHCapabilties.COMBAT_DATA);
     }
 
-    public static LevelSystem levelSystem(Player player) {
-        return getCapability(player, BHCapabilties.ROLE_CLASS);
+    public static LevelSystem levelSystem(LivingEntity entity) {
+        return getCapability(entity, BHCapabilties.LEVEL_SYSTEM);
     }
 
     public static PlayerData data(Player player) {

@@ -46,8 +46,8 @@ public class HeavyHitterSkill extends WeaponPassiveSkills {
             damageMultiplier = Maths.perValue(atkSpdBonuses, this.attackBonus, this.getMagnitude());
         }
         List<MutableComponent> list = new ArrayList<>();
-        list.add(Component.translatable(this.createId(), Maths.format0(this.attackBonus), Maths.format0(this.getMagnitude())));
-        list.add(Component.translatable(this.createId(1), Maths.format0(damageMultiplier)).withStyle(ChatFormatting.GOLD, ChatFormatting.UNDERLINE));
+        list.add(Component.translatable(this.createId(), Maths.format(100.0F * this.attackBonus), Maths.format(100.0F * this.getMagnitude())));
+        list.add(Component.translatable(this.createId(1), Maths.format(100.0F * damageMultiplier)).withStyle(ChatFormatting.GOLD, ChatFormatting.UNDERLINE));
         return list;
     }
 

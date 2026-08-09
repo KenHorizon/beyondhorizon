@@ -42,21 +42,21 @@ public class BHBlockTagsProvider extends BlockTagsProvider {
             this.tag(BlockTags.MINEABLE_WITH_PICKAXE).add(blocks.get());
         });
         ADD_MINEABLE_FOR_AXE.forEach((blocks) -> {
-            this.tag(BlockTags.MINEABLE_WITH_AXE).add(blocks.get())
-                    .addTag(BHBlockTags.WOODEN_TABLES)
-                    .addTag(BHBlockTags.PICKET_FENCE)
-                    .addTag(BHBlockTags.RAILING_FENCE)
-                    .addTag(BHBlockTags.SHELF)
-                    .addTag(BHBlockTags.WOODEN_WALLS);
+            this.tag(BlockTags.MINEABLE_WITH_AXE).add(blocks.get());
         });
         ADD_MINEABLE_FOR_HOE.forEach((blocks) -> {
             this.tag(BlockTags.MINEABLE_WITH_HOE).add(blocks.get());
         });
         ADD_MINEABLE_FOR_SHOVEL.forEach((blocks) -> {
-            this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(blocks.get())
-                    .addTag(BHBlockTags.PILLAR_WALLS);
+            this.tag(BlockTags.MINEABLE_WITH_SHOVEL).add(blocks.get());
         });
-        this.tag(BHBlockTags.MINEABLE_WITH_PAXEL).addTag(BlockTags.MINEABLE_WITH_AXE).addTag(BlockTags.MINEABLE_WITH_PICKAXE).addTag(BlockTags.MINEABLE_WITH_SHOVEL).addTag(BlockTags.MINEABLE_WITH_HOE);
+
+        this.tag(BHBlockTags.MINEABLE_WITH_MULTITOOLS)
+                .addTag(BlockTags.MINEABLE_WITH_AXE)
+                .addTag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .addTag(BlockTags.MINEABLE_WITH_SHOVEL)
+                .addTag(BlockTags.MINEABLE_WITH_HOE);
+
         this.tag(BHBlockTags.UNMOVEABLE).addTag(BlockTags.WITHER_IMMUNE);
         BHBlockTagsProvider.ADD_MINEABLE_FOR_STONE.forEach(blocksTags -> this.tag(BlockTags.NEEDS_STONE_TOOL).add(blocksTags.get()));
         BHBlockTagsProvider.ADD_MINEABLE_FOR_IRON.forEach(blocksTags -> this.tag(BlockTags.NEEDS_IRON_TOOL).add(blocksTags.get()));

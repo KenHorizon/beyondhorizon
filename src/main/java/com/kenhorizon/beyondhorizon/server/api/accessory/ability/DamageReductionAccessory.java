@@ -23,7 +23,7 @@ public class DamageReductionAccessory extends AccessoryPassiveSkill {
     }
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
-        return Component.translatable(this.createId(), Maths.format0(this.damageReduce));
+        return Component.translatable(this.createId(), Maths.format(100.0F * this.damageReduce));
     }
 
     @Override

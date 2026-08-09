@@ -19,14 +19,6 @@ public class Maths {
         return FORMAT.format(value);
     }
 
-    public static String format0(float value) {
-        return FORMAT.format(value * 100.0F);
-    }
-
-    public static String format0(double value) {
-        return FORMAT.format(value * 100.0F);
-    }
-
     public static float percentages(float a) {
         return a / 100.0F;
     }

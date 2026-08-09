@@ -35,6 +35,7 @@ public class ArmorBaseItem extends ArmorItem implements IReloadable {
     public static final UUID FEET = UUID.fromString("3884fe77-dcfd-4b35-9dfe-bcafe8a0aaf2");
 
     public ArmorBaseMaterials materials;
+
     public ArmorBaseItem(ArmorBaseMaterials material, Type armorType, Properties properties) {
         super(material, armorType, properties);
         this.materials = material;

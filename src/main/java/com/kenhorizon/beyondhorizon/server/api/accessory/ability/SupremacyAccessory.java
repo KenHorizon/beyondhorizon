@@ -42,10 +42,9 @@ public class SupremacyAccessory extends AccessoryPassiveSkill implements IStackI
         }
         List<MutableComponent> list = new ArrayList<>();
         list.add(Component.translatable(this.createId(0), stacks));
-        list.add(Component.translatable(this.createId(1), Maths.format(this.getMagnitude())));
-        list.add(Component.translatable(this.createId(2), Maths.format(100 * this.damageIncreasePerStacks), Maths.format(100 * (this.damageIncreasePerStacks * stacks))));
-        list.add(Component.translatable(this.createId(3), Maths.format(100 * (this.damageIncreasePerStacks * stacks))).withStyle(ChatFormatting.GOLD));
-        list.add(Component.translatable(this.createId(4), Maths.format(100 * this.loseOnDeath)));
+        list.add(Component.translatable(this.createId(1), Maths.format(this.getMagnitude()), Maths.format(100 * this.damageIncreasePerStacks)));
+        list.add(Component.translatable(this.createId(2), Maths.format(100 * (this.damageIncreasePerStacks * stacks))).withStyle(ChatFormatting.GOLD));
+        list.add(Component.translatable(this.createId(3), Maths.format(100 * this.loseOnDeath)));
         return list;
     }
 

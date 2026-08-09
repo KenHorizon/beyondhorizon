@@ -39,6 +39,7 @@ public class NetworkHandler {
         net.registerMessage(id(), ClientboundAbilityCooldownsPacket.class, ClientboundAbilityCooldownsPacket::write, ClientboundAbilityCooldownsPacket::new, ClientboundAbilityCooldownsPacket::handle);
         net.registerMessage(id(), ClientboundExtendedPlacedRecipePacket.class, ClientboundExtendedPlacedRecipePacket::write, ClientboundExtendedPlacedRecipePacket::new, ClientboundExtendedPlacedRecipePacket::handle);
         net.registerMessage(id(), ClientboundLevelSystemPacket.class, ClientboundLevelSystemPacket::write, ClientboundLevelSystemPacket::new, ClientboundLevelSystemPacket::handle);
+        net.registerMessage(id(), ClientboundPlayerLevelSystemPacket.class, ClientboundPlayerLevelSystemPacket::write, ClientboundPlayerLevelSystemPacket::new, ClientboundPlayerLevelSystemPacket::handle);
         net.registerMessage(id(), ClientboundPlayerDataPacket.class, ClientboundPlayerDataPacket::write, ClientboundPlayerDataPacket::new, ClientboundPlayerDataPacket::handle);
         net.registerMessage(id(), ClientboundAddHealingOrbPacket.class, ClientboundAddHealingOrbPacket::write, ClientboundAddHealingOrbPacket::new, ClientboundAddHealingOrbPacket::handle);
         net.registerMessage(id(), ClientboundStackableTagsPacket.class, ClientboundStackableTagsPacket::write, ClientboundStackableTagsPacket::new, ClientboundStackableTagsPacket::handle);

@@ -53,8 +53,8 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        list.add(Component.translatable(createId(0), Maths.format0(this.maxSlow)));
-        list.add(Component.translatable(createId(1), Maths.format0(this.scaleDamage)));
+        list.add(Component.translatable(createId(0), Maths.format(100.0F * this.maxSlow)));
+        list.add(Component.translatable(createId(1), Maths.format(100.0F * this.scaleDamage)));
         return list;
     }
 

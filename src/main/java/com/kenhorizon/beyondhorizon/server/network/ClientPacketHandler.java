@@ -100,13 +100,29 @@ public class ClientPacketHandler {
     }
 
     public static void handleLevelSystem(ClientboundLevelSystemPacket packet, Supplier<NetworkEvent.Context> context) {
+//        Player player = BeyondHorizon.PROXY.clientPlayer();
+//        if (player != null) {
+//            player.getCapability(BHCapabilties.ROLE_CLASS).ifPresent(cap -> {
+//                cap.loadNbt(packet.getNbt());
+//            });
+//        }
+        Minecraft mc = Minecraft.getInstance();
+        Entity levelEntity = mc.level.getEntity(packet.getEntityId());
+        if (levelEntity instanceof LivingEntity entity) {
+            var levelSystem = Capabilities.levelSystem(entity);
+            levelSystem.loadNbt(packet.getNbt());
+        }
+    }
+
+    public static void handlePlayerLevelSystem(ClientboundPlayerLevelSystemPacket packet, Supplier<NetworkEvent.Context> context) {
         Player player = BeyondHorizon.PROXY.clientPlayer();
         if (player != null) {
-            player.getCapability(BHCapabilties.ROLE_CLASS).ifPresent(cap -> {
+            player.getCapability(BHCapabilties.LEVEL_SYSTEM).ifPresent(cap -> {
                 cap.loadNbt(packet.getNbt());
             });
         }
     }
+
     public static void handleEntityChainedLink(ClientboundSetEntityChainedLinkPacket packet, Supplier<NetworkEvent.Context> context) {
         ServerPlayer sender = context.get().getSender();
         Level level = sender.level();

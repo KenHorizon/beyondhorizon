@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.level.damagesource;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -39,6 +40,54 @@ public enum DamageType {
                     return target.hurt(BHDamageTypes.physicalDamage(attacker, noKnockback), damage);
                 } else {
                     return target.hurt(BHDamageTypes.magicDamage(attacker, noKnockback), damage);
+                }
+            }
+            default -> {
+                return false;
+            }
+        }
+    }
+
+    private boolean dealOnEffectsDamage(LivingEntity target, LivingEntity attacker, float damage, boolean noKnockback) {
+        switch (this) {
+            case PHYSICAL_DAMAGE -> {
+                DamageSource source = BHDamageTypes.physicalDamage(attacker, noKnockback);
+                OnHitEffectHandler.add(source, damage);
+                return target.hurt(source, damage);
+            }
+            case MAGIC_DAMAGE -> {
+                DamageSource source = BHDamageTypes.magicDamage(attacker, noKnockback);
+                OnHitEffectHandler.add(source, damage);
+                return target.hurt(source, damage);
+            }
+            case TRUE_DAMAGE -> {
+                DamageSource source = BHDamageTypes.trueDamage(attacker, noKnockback);
+                OnHitEffectHandler.add(source, damage);
+                return target.hurt(source, damage);
+            }
+            case ADAPTIVE_DAMAGE -> {
+                double AD = AttributeUtils.getBonus(attacker, Attributes.ATTACK_DAMAGE);
+                double AP = attacker.getAttributeValue(BHAttributes.ABILITY_POWER.get());
+                if (AD == AP) {
+                    double BAD = attacker.getAttributeBaseValue(Attributes.ATTACK_DAMAGE);
+                    double BAP = attacker.getAttributeBaseValue(BHAttributes.ABILITY_POWER.get());
+                    if (BAD > BAP) {
+                        DamageSource source = BHDamageTypes.physicalDamage(attacker, noKnockback);
+                        OnHitEffectHandler.add(source, damage);
+                        return target.hurt(source, damage);
+                    } else {
+                        DamageSource source = BHDamageTypes.magicDamage(attacker, noKnockback);
+                        OnHitEffectHandler.add(source, damage);
+                        return target.hurt(source, damage);
+                    }
+                } else if (AD > AP) {
+                    DamageSource source = BHDamageTypes.physicalDamage(attacker, noKnockback);
+                    OnHitEffectHandler.add(source, damage);
+                    return target.hurt(source, damage);
+                } else {
+                    DamageSource source = BHDamageTypes.magicDamage(attacker, noKnockback);
+                    OnHitEffectHandler.add(source, damage);
+                    return target.hurt(source, damage);
                 }
             }
             default -> {
@@ -119,7 +168,7 @@ public enum DamageType {
     public boolean onHit(LivingEntity target, LivingEntity attacker, float damage, boolean noKnockback) {
         target.invulnerableTime = 0;
         target.hurtTime = 0;
-        return this.dealDamage(target, attacker, damage, noKnockback);
+        return this.dealOnEffectsDamage(target, attacker, damage, noKnockback);
     }
 
     public boolean onHit(LivingEntity target, LivingEntity attacker, float damage) {

@@ -50,6 +50,7 @@ public class BHLangProvider extends LanguageProvider {
 
         this.add(Configs.CHANGE_DAMAGE_CALCULATION, "Change Damage Calculation");
 
+        this.add(Tooltips.WHEN_WORN, "When Worn:");
         this.add(Tooltips.ACCESSORY_LIMITED_TO, "Limited to 1 %s");
         this.add(Tooltips.AMMO_COLLECT, "Ammo Collect: %s!");
         this.add(Tooltips.KEYBINDS, "Button: %s + %s");
@@ -179,10 +180,10 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.SWIFTNESS.get(), "Swiftness", "Inflict Speed boost effect for 5 seconds");
         this.addAccessory(Accessories.STALKER.get(), "Stalker", "Gain 100% Stealth and becoming invisible");
         this.addAccessory(Accessories.CRAMPONS.get(), "Crampons", "Ability to walk on Powder Snow and Immune to Freezing");
-        this.addAccessory(Accessories.VOID_EYE.get(), "Void Eye", "Enderman will not be provoked");
-        this.addAccessory(Accessories.SUPREMACY.get(), "Supremacy", "Stacks: %s",
-                "On-kill grant stacks %s",
-                "Each stacks increase all damage dealt by %s%%",
+        this.addAccessory(Accessories.VOID_EYE.get(), "Void Eye", "Enderman will not be provoked when looked at");
+        this.addAccessory(Accessories.SUPREMACY.get(), "Supremacy",
+                "Stacks: %s",
+                "On-kill grant %s stacks, Each stacks increase all damage dealt by %s%%",
                 "Increased damage: %s%%",
                 "§4Lose %s%% stacks on death");
         this.addAccessory(Accessories.IMMOLATE_0.get(), "Immolate", "Taking or dealing damage activates this passive for 3 seconds, Deal %s%% magic damage every second to enemies within 6 radius");

@@ -22,7 +22,7 @@ public class CelestialStrikeSkill extends WeaponPassiveSkills {
     @Override
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
-        list.add(Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), Maths.format0(this.getMagnitude())));
+        list.add(Component.translatable(this.createId(), Maths.format(100.0F * this.getMagnitude()), Maths.format(100.0F * this.getMagnitude())));
         return list;
     }
 

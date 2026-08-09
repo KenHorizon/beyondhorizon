@@ -52,11 +52,13 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
     public AnimationState animationPrepDeathRay = new AnimationState();
     public AnimationState animationDeathRay = new AnimationState();
     public static int animationId = 1;
+    
+    public AnimationTickers fireballCooldown = AnimationTickers.create(Maths.sec(3));
+    public AnimationTickers deathRayCooldown = AnimationTickers.create(Maths.sec(20));
+
     public static final int ID_BLAZING_ROD = createAnimationID();
     public static final int ID_PREPARE_DEATH_RAY = createAnimationID();
     public static final int ID_DEATH_RAY = createAnimationID();
-    public AnimationTickers fireballCooldown = AnimationTickers.create(Maths.sec(3));
-    public AnimationTickers deathRayCooldown = AnimationTickers.create(Maths.sec(20));
 
     public FayeWildfire(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
@@ -131,7 +133,7 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(1, new MobMoveGoal(this, false, 1.0F));
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_ANIMATION_EMPTY, 30, Maths.sec(3)) {
+                this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_BLAZING_ROD, ID_ANIMATION_EMPTY, 30, Maths.sec(3)) {
             @Override
             public boolean canUse() {
                 return super.canUse() && this.entity.fireballCooldown.isReadyToUse();
@@ -239,18 +241,18 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (ANIMATION_STATE.equals(accessor)) {
-            if (this.getAnimation() == ID_ANIMATION_EMPTY) {
+            if (this.getAnimationState(ID_ANIMATION_EMPTY)) {
                 this.stopAnimations();
             }
-            if (this.getAnimation() == ID_BLAZING_ROD) {
+            if (this.getAnimationState(ID_BLAZING_ROD)) {
                 this.stopAnimations();
                 this.animationBlazingRod.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_PREPARE_DEATH_RAY) {
+            if (this.getAnimationState(ID_PREPARE_DEATH_RAY)) {
                 this.stopAnimations();
                 this.animationPrepDeathRay.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_DEATH_RAY) {
+            if (this.getAnimationState(ID_DEATH_RAY)) {
                 this.stopAnimations();
                 this.animationDeathRay.startIfStopped(this.tickCount);
             }
@@ -354,7 +356,6 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                 }
             }
         } else {
-
             if (this.getAnimationState(ID_BLAZING_ROD)) {
                 if (this.getAnimationTick() <= 60 && target != null) {
                     this.getLookControl().setLookAt(target, 30, 30);
@@ -371,7 +372,6 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
 
                 }
             }
-
         }
     }
 

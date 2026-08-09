@@ -20,7 +20,6 @@ public class MobAttackGoal<T extends BHLibEntity> extends Goal {
     protected final int maxDuration;
 
     public MobAttackGoal(T entity, int animation, int start1, int end, int seeTick, int maxDuration, boolean isLoop, boolean interrupt) {
-        BeyondHorizon.LOGGER.debug("Randomizing Value {}", entity.getRandom().nextBoolean() ? 1 : 2);
         this.entity = entity;
         this.isLoop = isLoop;
         this.animation = animation;

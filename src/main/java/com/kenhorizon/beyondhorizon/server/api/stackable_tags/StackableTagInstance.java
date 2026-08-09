@@ -11,6 +11,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import org.apache.commons.lang3.ArrayUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StackableTagInstance {
 
     public static final StackableTags ENERGIZE = StackableTags.build("energize", 100);
@@ -43,4 +46,35 @@ public class StackableTagInstance {
             SEETHING_STRIKE,
             BRING_IT_DOWN
     };
+
+    static List<String> RENDER_WHEN_EQUIPPED = new ArrayList<>();
+    static List<String> RENDER_ALWAYS = new ArrayList<>();
+
+    public static List<String> getRenderAlways() {
+        return RENDER_ALWAYS;
+    }
+
+    public static List<String> getRenderWhenEquipped() {
+        return RENDER_WHEN_EQUIPPED;
+    }
+
+    public static void registerRenderAlways(StackableTags tags) {
+        RENDER_ALWAYS.add(tags.getName());
+    }
+
+    public static void registerRenderWhenEquipped(StackableTags tags) {
+        RENDER_WHEN_EQUIPPED.add(tags.getName());
+    }
+
+    public static void renderWhenEquipped() {
+        registerRenderWhenEquipped(ENERGIZE);
+        registerRenderWhenEquipped(SAINT_DEMON_CROWN_STACKS);
+        registerRenderWhenEquipped(SEETHING_STRIKE);
+        registerRenderWhenEquipped(BRING_IT_DOWN);
+    }
+
+    public static void renderAlways() {
+        registerRenderAlways(PHANTOM);
+        registerRenderAlways(CARVE);
+    }
 }

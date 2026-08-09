@@ -25,7 +25,7 @@ public class StringBowAccessory extends AccessoryPassiveSkill {
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
         if (this.stringBowType == StringBowType.HEAVY) {
-            return Component.translatable(this.createId(), Maths.format0(Constant.HEAVY_STRING_DAMAGE), Maths.format0(Constant.HEAVY_STRING_KNOCKBACK));
+            return Component.translatable(this.createId(), Maths.format(100.0F * Constant.HEAVY_STRING_DAMAGE), Maths.format(100.0F * Constant.HEAVY_STRING_KNOCKBACK));
         } else {
             return super.makeTooltip(itemStack);
         }

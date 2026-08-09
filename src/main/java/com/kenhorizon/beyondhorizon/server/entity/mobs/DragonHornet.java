@@ -197,24 +197,19 @@ public class DragonHornet extends BHLibEntity implements FlyingAnimal {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (ANIMATION_STATE.equals(accessor)) {
-            if (this.getAnimation() == ID_ANIMATION_EMPTY) {
+            if (this.getAnimationState(ID_ANIMATION_EMPTY)) {
                 this.stopAnimations();
             }
-            if (this.getAnimation() == ID_ATTACK) {
+            if (this.getAnimationState(ID_ATTACK)) {
                 this.stopAnimations();
                 this.animationAttack.startIfStopped(this.tickCount);
             }
-            if (this.getAnimation() == ID_DEATH) {
+            if (this.getAnimationState(ID_DEATH)) {
                 this.stopAnimations();
                 this.animationDeath.startIfStopped(this.tickCount);
             }
         }
         super.onSyncedDataUpdated(accessor);
-    }
-
-    public void stopAnimations() {
-        List<AnimationState> animationList = Arrays.stream(this.getAnimations()).toList();
-        animationList.forEach(AnimationState::stop);
     }
 
     @Override

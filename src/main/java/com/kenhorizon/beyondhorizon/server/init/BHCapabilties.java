@@ -23,7 +23,7 @@ public class BHCapabilties {
     public static final Capability<IAccessoryStackHandler> ACCESSORY = CapabilityManager.get(new CapabilityToken<>() {});
     public static final Capability<IDamageInfo> DAMAGE_INFOS = CapabilityManager.get(new CapabilityToken<>() {});
     public static final Capability<ICombatData> COMBAT_DATA = CapabilityManager.get(new CapabilityToken<>() {});
-    public static final Capability<LevelSystem> ROLE_CLASS = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<LevelSystem> LEVEL_SYSTEM = CapabilityManager.get(new CapabilityToken<>() {});
     public static final Capability<PlayerData> PLAYER_DATA = CapabilityManager.get(new CapabilityToken<>() {});
 
     public static final ResourceLocation ID_ACCESSORY = BeyondHorizon.resource("accessory");

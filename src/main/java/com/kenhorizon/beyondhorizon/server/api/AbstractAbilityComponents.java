@@ -127,9 +127,13 @@ public abstract class AbstractAbilityComponents {
         List<Component> list = new ArrayList<>();
         this.addTooltipDescriptionHeader(itemStack, list);
         for (var createTooltips : this.makeTooltips(itemStack)) {
-            list.add(ColorCodedText.applyFormat(createTooltips, Tooltips.TOOLTIP[0].getColor()));
+            list.add(this.createAppened().append(ColorCodedText.applyFormat(createTooltips, Tooltips.TOOLTIP[0].getColor())));
         }
         return list;
+    }
+
+    private MutableComponent createAppened() {
+        return Component.literal("• ");
     }
 
     /**

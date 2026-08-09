@@ -28,7 +28,7 @@ public class HealthToDamageSkill extends WeaponPassiveSkills {
         if (itemStack.hasTag() && itemStack.getTag().contains(tagName)) {
             bonusAttackDamage = itemStack.getTag().getDouble(tagName);
         }
-        return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()), Mth.ceil(bonusAttackDamage));
+        return Component.translatable(this.createId(), Maths.format(100.0F * this.getMagnitude()), Mth.ceil(bonusAttackDamage));
     }
 
     @Override

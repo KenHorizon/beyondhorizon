@@ -35,7 +35,7 @@ public class Constant {
     public static final float BRING_IT_DOWN_BASE_DAMAGE = 2;
     public static final float BRING_IT_DOWN_INCREASED_DAMAGE = 0.75F;
     public static final float ROCK_SOLID_REDUCE = 0.15F;
-    public static float CORRUPTED_BITE_DAMAGE_SCALE = 0.015F;
+    public static float CORRUPTED_BITE_DAMAGE_SCALE = 0.15F;
     public static float SOUL_SIPHON_CURRENT_HEALTH_DAMAGE = 0.015F;
     public static int LEVEL_SYSTEM_UNLOCKED = 5;
     public static int CLASS_SYSTEM_UNLOCKED = 20;

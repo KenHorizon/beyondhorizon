@@ -8,7 +8,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.EntityType;
 
-@SuppressWarnings({"deprecation", "removal"})
 public class Tooltips {
     public static final FormattedCharSequence SPACE = FormattedCharSequence.forward(" ", Style.EMPTY);
     //
@@ -26,6 +25,8 @@ public class Tooltips {
     public static final String COMMAND_LEVEL_SET_FAILED = String.format("command.%s.role_class.level.failure", BeyondHorizon.ID);
     public static final String COMMAND_RESET_SUCCESS = String.format("command.%s.role_class.reset.succes", BeyondHorizon.ID);
     public static final String COMMAND_RESET_FAILED = String.format("command.%s.role_class.reset.failure", BeyondHorizon.ID);
+    //
+    public static final String WHEN_WORN = String.format("tooltip.%s.when_worn", BeyondHorizon.ID);
     //
     public static final String ACCESSORY_LIMITED_TO = String.format("acessory.%s.limited_to", BeyondHorizon.ID);
     public static final String KEYBINDS = String.format("tooltip.%s.keybind", BeyondHorizon.ID);
@@ -58,7 +59,6 @@ public class Tooltips {
     public static final String VALUE_WITH_MAX = String.format("tooltip.%s.value.max", BeyondHorizon.ID);
 
     public static final ChatFormatting[] ATTRIBUTES = {ChatFormatting.DARK_GREEN, ChatFormatting.RED};
-    public static final ChatFormatting[] ENCHANTMENT = {ChatFormatting.GOLD, ChatFormatting.RED};
     public static final ChatFormatting[] TOOLTIP = {ChatFormatting.GRAY, ChatFormatting.DARK_GRAY};
 
 
@@ -69,10 +69,6 @@ public class Tooltips {
 
     public static ChatFormatting attributeColorFormat(double amount) {
         return amount > 0.0D ? ATTRIBUTES[0] : ATTRIBUTES[1];
-    }
-
-    public static ChatFormatting enchantmentTooltip(boolean isCurseEnchantment) {
-        return isCurseEnchantment ? ENCHANTMENT[1] : ENCHANTMENT[0];
     }
 
     public static String getBossMessage(EntityType<?> entityType) {

@@ -36,6 +36,7 @@ public interface ISkillItems {
     }
 
     default void addAbilityTooltip(ItemStack itemStack, List<Component> tooltip) {
+        if (hasSkill(Skills.NONE.get())) return;
         int size = this.getSkills().size();
         int activePresent = this.getActiveSkills().size();
         if (activePresent > 1) {

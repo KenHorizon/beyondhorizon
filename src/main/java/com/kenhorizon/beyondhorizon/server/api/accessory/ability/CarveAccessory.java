@@ -26,8 +26,8 @@ public class CarveAccessory extends StackingSkillAccessory {
                 def.getDisplayName(),
                 (int) (Maths.tick(def.getMaxDuration())),
                 def.getMaxStacks(),
-                Maths.format0(Mth.abs(Constant.CARVE_ARMOR_REMOVE)),
-                Maths.format0(Mth.abs(Constant.CARVE_ARMOR_REMOVE * def.getMaxStacks())),
+                Maths.format(100.0F * Mth.abs(Constant.CARVE_ARMOR_REMOVE)),
+                Maths.format(100.0F * Mth.abs(Constant.CARVE_ARMOR_REMOVE * def.getMaxStacks())),
                 def.getMaxStacks());
     }
 

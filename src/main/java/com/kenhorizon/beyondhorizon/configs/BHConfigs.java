@@ -8,6 +8,9 @@ import com.kenhorizon.beyondhorizon.server.api.handler.anvil_patch.AnvilCostSett
 import net.minecraftforge.fml.config.ModConfig;
 
 public class BHConfigs {
+    public static int MOBS_MAX_LEVEL_CAP = 100;
+    public static int MOBS_MIN_LEVEL_CAP = 5;
+
     public static int ACCESSORY_BUTTON_X = 0;
     public static int ACCESSORY_BUTTON_Y = 0;
     //CLIENT
@@ -48,6 +51,8 @@ public class BHConfigs {
             ACCESSORY_BUTTON_X = ModClientConfig.ACCESSORY_BUTTON_X.get();
             ACCESSORY_BUTTON_Y = ModClientConfig.ACCESSORY_BUTTON_Y.get();
             //---------------------------------------------------------------------//
+            MOBS_MIN_LEVEL_CAP = ModCommonConfig.MOBS_MAX_LEVEL_CAP.get();
+            MOBS_MAX_LEVEL_CAP = ModCommonConfig.MOBS_MAX_LEVEL_CAP.get();
             ENABLE_MOB_LEVELS = ModCommonConfig.ENABLE_MOB_LEVELS.get();
             ENCHANTMENT_BREAK_LEVEL = ModCommonConfig.ENCHANTMENT_BREAK_LEVEL.get();
             ANVIL_COSTING = ModCommonConfig.ANVIL_COSTING.get();

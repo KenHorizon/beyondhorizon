@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.*;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.InfernalRaySkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.InfernoStrikeSkill;
+import com.kenhorizon.beyondhorizon.server.api.skills.ability.on_hit_effects.OnHitEffectSkills;
 import com.kenhorizon.beyondhorizon.server.api.skills.item_properties.GuardianSwordProperties;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -40,8 +41,7 @@ public class Skills {
     public static final RegistryObject<Skill> CELESTIAL_STRIKE = registerSkill("celestial_strike", () -> new CelestialStrikeSkill(Constant.STELLAR_AXE_SLASH_DAMAGE)
             .melee().addAttributes(BHAttributes.CRITICAL_DAMAGE.get(), Constant.STELLAR_AXE_CRIT_DAMAGE, AttributeModifier.Operation.ADDITION).innate(Skills.PERFECT_STRIKE));
 
-    public static final RegistryObject<Skill> RUINED_BLADE = registerSkill("ruined_blade", () -> new ExtraDamageSkill(Constant.RUINED_BLADE, ExtraDamageSkill.CURRENT_HEALTH)
-            .melee());
+    public static final RegistryObject<Skill> RUINED_BLADE = registerSkill("ruined_blade", () -> new OnHitEffectSkills.RuinedBlade(Constant.RUINED_BLADE).melee());
 
     public static final RegistryObject<Skill> BLADE_EDGE = registerSkill("blade_edge", () -> new ExtraDamageSkill(Constant.BLADE_EDGE, ExtraDamageSkill.MAX_HEALTH)
             .melee());

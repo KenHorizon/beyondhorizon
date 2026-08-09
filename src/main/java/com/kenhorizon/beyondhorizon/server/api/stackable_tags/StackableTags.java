@@ -28,6 +28,7 @@ public class StackableTags {
     protected int maxDuration;
     protected int maxStack;
     protected boolean resetOnExpired = false;
+    private boolean makeDirty = false;
     private final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
 
     protected StackableTags(String name, int maxStack, int maxDuration) {
@@ -89,10 +90,12 @@ public class StackableTags {
         if (this.hasStacks()) {
             this.setDuration(0);
         }
+        this.makeDirty = true;
     }
 
     public void remove(int v) {
         this.stack = Math.max(0, this.getStack() - v);
+        this.makeDirty = true;
     }
 
     public int getStack() {
@@ -102,12 +105,17 @@ public class StackableTags {
     public void reset() {
         this.setStack(0);
         this.setDuration(0);
+        this.makeDirty = true;
     }
 
     public boolean hasStacks() {
-        return this.getStack() > 0;
+        return this.stack > 0;
     }
-    
+
+    public boolean hasNoStacks() {
+        return this.stack <= 0;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -119,10 +127,12 @@ public class StackableTags {
     public void setStack(int value) {
         this.prevStack = this.stack;
         this.stack = Math.max(0, Math.min(value, this.maxStack));
+        this.makeDirty = true;
     }
 
     public void setMaxStack(int value) {
         this.maxStack = value;
+        this.makeDirty = true;
     }
 
     public int getMaxStack() {
@@ -131,6 +141,7 @@ public class StackableTags {
 
     public void setMaxDuration(int value) {
         this.maxDuration = value;
+        this.makeDirty = true;
     }
 
     public int getMaxDuration() {
@@ -155,6 +166,7 @@ public class StackableTags {
 
     public void setDuration(int duration) {
         this.duration = duration;
+        this.makeDirty = true;
     }
 
     public void tick(LivingEntity entity) {
@@ -180,7 +192,11 @@ public class StackableTags {
             }
             this.addAttributeModifiers(entity, this.getAttributeModifiers());
             this.setPrevStack(this.getStack());
+        }
+        if (this.makeDirty) {
+
             StackableTagInstance.sendPacket(entity);
+            this.makeDirty = false;
         }
     }
 
@@ -220,6 +236,7 @@ public class StackableTags {
         this.maxStack = other.maxStack;
         this.resetOnExpired = other.resetOnExpired;
         this.attributeModifiers.putAll(other.attributeModifiers);
+        this.makeDirty = other.makeDirty;
     }
 
     public StackableTags copy() {

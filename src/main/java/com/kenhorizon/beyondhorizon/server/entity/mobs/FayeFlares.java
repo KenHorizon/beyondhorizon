@@ -49,6 +49,7 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     public static final int ID_BLAZING_ROD = createAnimationID();
     public AnimationTickers pyroboltCooldown = AnimationTickers.create(Maths.sec(3));
 
+
     public FayeFlares(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
         this.setExp(10);
@@ -190,20 +191,15 @@ public class FayeFlares extends BHLibEntity implements FlyingAnimal {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (ANIMATION_STATE.equals(accessor)) {
-            if (this.getAnimation() == ID_ANIMATION_EMPTY) {
+            if (this.getAnimationState(ID_ANIMATION_EMPTY)) {
                 this.stopAnimations();
             }
-            if (this.getAnimation() == ID_BLAZING_ROD) {
+            if (this.getAnimationState(ID_BLAZING_ROD)) {
                 this.stopAnimations();
                 this.animationBlazingRod.startIfStopped(this.tickCount);
             }
         }
         super.onSyncedDataUpdated(accessor);
-    }
-
-    public void stopAnimations() {
-        List<AnimationState> animationList = Arrays.stream(this.getAnimations()).toList();
-        animationList.forEach(AnimationState::stop);
     }
 
     @Override

@@ -22,7 +22,7 @@ public class BleedingEffectAccessory extends AccessoryPassiveSkill {
 
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
-        return Component.translatable(this.createId(), Maths.format0(this.getMagnitude()));
+        return Component.translatable(this.createId(), Maths.format(100.0F * this.getMagnitude()));
     }
 
 

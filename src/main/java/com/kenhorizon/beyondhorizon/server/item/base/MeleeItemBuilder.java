@@ -9,7 +9,7 @@ import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 
-public class ItemBuilder {
+public class MeleeItemBuilder {
     @FunctionalInterface
     public interface Factory<T extends Item> {
         public abstract T create(MeleeWeaponMaterials materials, Item.Properties properties);
@@ -36,5 +36,7 @@ public class ItemBuilder {
     public static final Factory<SwordBaseItem> RADIANT = ((materials, properties) -> new SwordBaseItem(materials, Constant.RADIANT_SWORD, properties, SkillBuilder.RADIANT));
     public static final Factory<SwordBaseItem> HARVESTER = ((materials, properties) -> new SwordBaseItem(materials, Constant.HARVESTER, properties, SkillBuilder.HARVESTER));
     public static final Factory<SwordBaseItem> SOLARFLARE = ((materials, properties) -> new SwordBaseItem(materials, Constant.SOLARFLARE, properties, SkillBuilder.SOLARFLARE));
-    public static final Factory<SwordBaseItem> STELLAR_AXE = ((materials, properties) -> new SwordBaseItem(materials, Constant.SOLARFLARE, properties, SkillBuilder.STELLAR_AXE));
+    public static final Factory<SwordBaseItem> STELLAR_AXE = ((materials, properties) -> new SwordBaseItem(materials, Constant.STELLAR_AXE, properties, SkillBuilder.STELLAR_AXE));
+    public static final Factory<SwordBaseItem> HEAVENLY_EDGE_DARK_SWORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.HEAVENLY_EDGE_DARK_SWORD, properties, SkillBuilder.STELLAR_AXE));
+    public static final Factory<SwordBaseItem> HEAVENLY_EDGE_LIGHT_SWORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.HEAVENLY_EDGE_LIGHT_SWORD, properties, SkillBuilder.STELLAR_AXE));
 }

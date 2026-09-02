@@ -15,6 +15,7 @@ public class SkillBuilder implements IReloadable {
     public static final SkillBuilder NONE = new SkillBuilder(SkillTypes.UNIVERSAL, List.of(Skills.NONE));
     public static final SkillBuilder RADIANT_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.RADIANT));
     public static final SkillBuilder GUARDIAN = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.GUARDIAN_SWORD_TRAIT, Skills.BLAZING_CLEAVE, Skills.INFERNO_STRIKE));
+    public static final SkillBuilder BLAZING_BEACON = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.INFERNAL_RAY));
     public static final SkillBuilder SOLARFLARE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.GUARDIAN_SWORD_TRAIT, Skills.BLAZING_CLEAVE, Skills.INFERNO_STRIKE, Skills.INFERNAL_RAY));
     public static final SkillBuilder ELUDICATOR = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.DARK_BLADE));
     public static final SkillBuilder DARK_REPULSOR = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.PIERCING_EDEGE));
@@ -26,6 +27,8 @@ public class SkillBuilder implements IReloadable {
     public static final SkillBuilder GIANT_SLAYER_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.TRANNY));
     public static final SkillBuilder CLAYMORE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.HEAVY_HITTER));
     public static final SkillBuilder STELLAR_AXE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.CELESTIAL_STRIKE));
+    public static final SkillBuilder HEAVENLY_EDGE_DARK_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.CELESTIAL_STRIKE));
+    public static final SkillBuilder HEAVENLY_EDGE_LIGHT_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.CELESTIAL_STRIKE));
 
     protected List<Supplier<? extends Skill>> suppliers = new ArrayList<>();
     protected List<Skill> skills = new ArrayList<>();

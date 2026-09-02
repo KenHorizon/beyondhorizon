@@ -71,6 +71,7 @@ public class GameHudDisplay extends Gui {
                     for (var accessory : accessoryItems.getAccessories()) {
                         if (accessory instanceof IStackIconOverlay overlay) {
                             var tag = stackable.makeInstance(overlay.getStacks());
+                            if (tag == null) continue;
                             if (tag.hasNoStacks()) continue;
                             renderStackableTags(guiGraphics, tag, xPos);
                             xPos++;

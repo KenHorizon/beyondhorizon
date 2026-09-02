@@ -116,6 +116,9 @@ public class Constant {
     public static float[] HARVESTER = {4.0F, 1.7F};
     public static float[] SOLARFLARE = {12.0F, 1.7F, 4.0F};
     public static float[] STELLAR_AXE = {12.0F, 1.12F, 4.0F};
+    public static float[] HEAVENLY_EDGE_DARK_SWORD = {14.0F, 1.22F, 4.0F};
+    public static float[] HEAVENLY_EDGE_LIGHT_SWORD = {14.0F, 1.22F, 4.0F};
+    public static float BLAZING_BEACON = 14.0F;
     //
     public static double SHEEN_AD = 3.0;
     public static double TS_AD = 5;

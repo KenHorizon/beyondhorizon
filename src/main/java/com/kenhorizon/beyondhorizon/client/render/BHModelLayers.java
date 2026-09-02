@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.client.render;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.blockentity.GateDoorModel;
 import com.kenhorizon.beyondhorizon.client.model.entity.*;
+import com.kenhorizon.beyondhorizon.client.model.item.BlazingBeaconModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +22,8 @@ public class BHModelLayers {
     public static final ModelLayerLocation BASE_SPEAR = createLocation("base_spear");
     public static final ModelLayerLocation PYROLLIGER = createLocation("pyrolliger");
     public static final ModelLayerLocation DRAGON_HORNET = createLocation("dragon_hornet");
+    // Items
+    public static final ModelLayerLocation ITEM_BLAZING_BEACON = createLocation("item_blazing_beacon");
 
     public static void register(final EntityRenderersEvent.RegisterLayerDefinitions event) {
         BeyondHorizon.LOGGER.info("Registering Model Layers...");
@@ -33,6 +36,7 @@ public class BHModelLayers {
         event.registerLayerDefinition(BASE_SPEAR, BaseSpearModel::createBodyLayer);
         event.registerLayerDefinition(PYROLLIGER, PyrolligerModel::createBodyLayer);
         event.registerLayerDefinition(DRAGON_HORNET, DragonHornetModel::createBodyLayer);
+        event.registerLayerDefinition(ITEM_BLAZING_BEACON, BlazingBeaconModel::createBodyLayer);
     }
     private static ModelLayerLocation createOuterArmor(String model) {
         return createLocation(model, "outer_armor");

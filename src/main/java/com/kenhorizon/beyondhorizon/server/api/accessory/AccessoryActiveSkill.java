@@ -171,17 +171,18 @@ public abstract class AccessoryActiveSkill extends Accessory implements IEntityP
     @Override
     public boolean onKeybindPressed(Player player, ItemStack itemStack, int slot) {
         PlayerData playerData = Capabilities.data(player);
+        String abilityId = this.getCustomCooldownId().isEmpty() ? this.getId() : this.getCustomCooldownId();
         try {
-            boolean canUse = playerData.isOnCooldown(this.getId());
+            boolean canUse = playerData.isOnCooldown(abilityId);
             boolean flag = playerData.getMana() <= this.getManaCost();
-            if (!flag && !playerData.isOnCooldown(this.getId())) {
+            if (!flag && !playerData.isOnCooldown(abilityId)) {
                 this.addCooldownManaCost(player);
                 this.onActiveAbility(player, itemStack);
                 this.toggleActive(slot);
-            } else if (playerData.isOnCooldown(this.getId())) {
+            } else if (playerData.isOnCooldown(abilityId)) {
                 player.displayClientMessage(Component.translatable(Tooltips.ON_COOLDOWN)
                         .append(CommonComponents.space())
-                        .append(Component.translatable(Tooltips.COOLDOWN, (int)((this.getCooldown() / 20) * playerData.getCooldownPercent(this.getId())))).withStyle(ChatFormatting.RED), true);
+                        .append(Component.translatable(Tooltips.COOLDOWN, (int)((this.getCooldown() / 20) * playerData.getCooldownPercent(abilityId)))).withStyle(ChatFormatting.RED), true);
             } else {
                 player.displayClientMessage(Component.translatable(Tooltips.NOT_ENOUGH_MANA).withStyle(ChatFormatting.RED), true);
             }

@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRaySound;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
@@ -242,11 +243,20 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         if (!level().isClientSide()) {
             for (LivingEntity target : hit) {
                 if (this.caster != null) {
-                    if (caster.isAlliedTo(target)) continue;
+                    if (this.caster.isAlliedTo(target)) continue;
                     if (this.source != null) {
                         if (this.source.isAlliedTo(target)) continue;
                     }
-                    boolean flag = this.getDamageType().dealDamage(target, this, this.source != null ? this.source : this.caster, this.rayDamages(target));
+                    boolean flag;
+                    if (this.getDamageType() == DamageType.PHYSICAL_DAMAGE) {
+                        flag = target.hurt(BHDamageTypes.AOEphysicalDamage(this, null), this.rayDamages(target));
+                    } else if (this.getDamageType() == DamageType.MAGIC_DAMAGE) {
+                        flag = target.hurt(BHDamageTypes.AOEmagicDamage(this, null), this.rayDamages(target));
+                    } else if (this.getDamageType() == DamageType.TRUE_DAMAGE) {
+                        flag = target.hurt(BHDamageTypes.AOEtrueDamage(this, null), this.rayDamages(target));
+                    } else {
+                        flag = false;
+                    }
                     if (flag) {
                         if (this.isImmunityFrameIgnore()) {
                             target.hurtDuration = 0;
@@ -451,22 +461,23 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     }
 
     public DeathLaserBeamHitResult raytraceEntities(Level world, Vec3 from, Vec3 to, boolean stopOnLiquid, boolean ignoreBlockWithoutBoundingBox, boolean returnLastUncollidableBlock) {
-        didRaytrace = true;
+        this.didRaytrace = true;
         DeathLaserBeamHitResult result = new DeathLaserBeamHitResult();
         result.setBlockHit(world.clip(new ClipContext(from, to, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, this)));
         if (result.blockHit != null) {
             Vec3 hitVec = result.blockHit.getLocation();
-            collidePosX = hitVec.x;
-            collidePosY = hitVec.y;
-            collidePosZ = hitVec.z;
-            blockSide = result.blockHit.getDirection();
+            this.collidePosX = hitVec.x;
+            this.collidePosY = hitVec.y;
+            this.collidePosZ = hitVec.z;
+            this.blockSide = result.blockHit.getDirection();
         } else {
-            collidePosX = endPosX;
-            collidePosY = endPosY;
-            collidePosZ = endPosZ;
-            blockSide = null;
+            this.collidePosX = endPosX;
+            this.collidePosY = endPosY;
+            this.collidePosZ = endPosZ;
+            this.blockSide = null;
         }
-        List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class, new AABB(Math.min(getX(), collidePosX), Math.min(getY(), collidePosY), Math.min(getZ(), collidePosZ), Math.max(getX(), collidePosX), Math.max(getY(), collidePosY), Math.max(getZ(), collidePosZ)).inflate(1, 1, 1));
+        List<LivingEntity> entities = world.getEntitiesOfClass(LivingEntity.class,
+                new AABB(Math.min(getX(), this.collidePosX), Math.min(getY(), this.collidePosY), Math.min(getZ(), this.collidePosZ), Math.max(getX(), this.collidePosX), Math.max(getY(), this.collidePosY), Math.max(getZ(), this.collidePosZ)).inflate(1, 1, 1));
         for (LivingEntity entity : entities) {
             if (entity == caster) {
                 continue;
@@ -525,7 +536,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     }
 
     public float getBaseDamage() {
-        return baseDamage;
+        return this.baseDamage;
     }
 
     public void setBaseDamage(float baseDamage) {
@@ -535,23 +546,23 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     private float rayDamages(LivingEntity target) {
         switch (this.beamDamageTags) {
             case MAX_HEALTH -> {
-                return DamageHandler.maxHealth(target, getBaseDamage(), this.getScaleMaxHealthDamage());
+                return DamageHandler.maxHealth(target, this.getBaseDamage(), this.getScaleMaxHealthDamage());
             }
             case MISSING_HEALTH -> {
-                return DamageHandler.missingHealth(target, getBaseDamage(), this.getScaleMissingHealthDamage());
+                return DamageHandler.missingHealth(target, this.getBaseDamage(), this.getScaleMissingHealthDamage());
             }
             case CURRENT_HEALTH -> {
-                return DamageHandler.currentHealth(target, getBaseDamage(), this.getScaleCurrentHealthDamage());
+                return DamageHandler.currentHealth(target, this.getBaseDamage(), this.getScaleCurrentHealthDamage());
             }
             default -> {
-                return getBaseDamage();
+                return this.getBaseDamage();
             }
         }
     }
 
     public void damageConfig(BeamDamageTags types, float deathLaserBaseDamage) {
         this.beamDamageTags = types;
-        this.baseDamage = deathLaserBaseDamage;
+        this.baseDamage = this.baseDamage + deathLaserBaseDamage;
     }
 
     public void scaleCurrentHealthDamage(float scaleCurrentHealth) {

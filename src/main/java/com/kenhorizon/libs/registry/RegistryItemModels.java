@@ -16,6 +16,7 @@ public record RegistryItemModels(ItemModelProvider itemModelProvider) {
         SPAWN_EGG,
         THROWING,
         INHAND,
+        MODEL,
         HANDHELD,
         HOLD,
         CROSSBOW_HOLD,

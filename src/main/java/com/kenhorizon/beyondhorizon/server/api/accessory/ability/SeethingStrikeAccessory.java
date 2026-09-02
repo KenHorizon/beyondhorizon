@@ -55,7 +55,6 @@ public class SeethingStrikeAccessory extends StackingSkillAccessory {
                         for (int i = 0; i < phantomStacks.getStack(); i++) {
                             if (!OnHitEffectHandler.allOnHitEffects().isEmpty()) {
                                 for (Map.Entry<DamageSource, Float> entry : OnHitEffectHandler.allOnHitEffects().entries()) {
-//                                BeyondHorizon.LOGGER.debug("{} {}", entry.getKey(), entry.getValue());
                                     target.invulnerableTime = 0;
                                     target.hurt(entry.getKey(), entry.getValue());
                                     OnHitEffectHandler.allOnHitEffects().clear();

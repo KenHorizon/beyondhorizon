@@ -30,7 +30,7 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
     private CameraType cameraType;
     protected float baseDamage = 1.0F;
     protected boolean canIgnoreFrame = false;
-    protected AbstractDeathRayAbility.BeamDamageTags tagTypes = AbstractDeathRayAbility.BeamDamageTags.DEFAULT;
+    protected AbstractDeathRayAbility.BeamDamageTags tagTypes;
     protected DamageType types;
     private static final UUID SPEED_MODIFIER_SPRINTING_UUID = UUID.fromString("1a63ada7-7fcd-4695-b8db-0873ced4be94");
     private static final AttributeModifier SPEED_MODIFIER_SPRINTING = new AttributeModifier(SPEED_MODIFIER_SPRINTING_UUID, "Sprinting speed boost", (double)-0.25F, AttributeModifier.Operation.MULTIPLY_TOTAL);

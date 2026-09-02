@@ -4,7 +4,7 @@ import com.kenhorizon.libs.client.data.BaseModels;
 import com.kenhorizon.libs.registry.RegistryItemModels;
 
 public class ItemModelType {
-    public static ItemModelDefinition BUILTIN_ENTITY = ItemModelDefinition.Builder.create(BaseModels.BUILTIN_ENTITY)
+    public static ItemModelDefinition BUILTIN_ENTITY = ItemModelDefinition.Builder.create(BaseModels.BUILTIN)
             .itemType(RegistryItemModels.Type.BUILTIN_ENTITY).build();
     public static ItemModelDefinition GENERATED = ItemModelDefinition.Builder.create(BaseModels.GENERATED)
             .itemType(RegistryItemModels.Type.HOLD).build();
@@ -53,4 +53,6 @@ public class ItemModelType {
             .itemType(RegistryItemModels.Type.INHAND).build();
     public static ItemModelDefinition BIG32_INHAND = ItemModelDefinition.Builder.create(BaseModels.X64_HANDHELD)
             .itemType(RegistryItemModels.Type.INHAND).build();
+    public static ItemModelDefinition MODEL = ItemModelDefinition.Builder.create(BaseModels.HANDHELD)
+            .itemType(RegistryItemModels.Type.MODEL).build();
 }

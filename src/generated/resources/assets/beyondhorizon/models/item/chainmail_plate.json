@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "beyondhorizon:item/chain_plate"
+    "layer0": "beyondhorizon:item/chainmail_plate"
   }
 }

@@ -16,9 +16,12 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 public class BasicItem extends Item {
+    protected static final UUID BASE_ABILITY_POWER_UUID = UUID.fromString("6c7d67a6-f873-4555-b720-c2eacc11f96d");
+
     public BasicItem(Properties properties) {
         super(properties);
     }

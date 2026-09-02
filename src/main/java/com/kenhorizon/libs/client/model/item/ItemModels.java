@@ -15,6 +15,7 @@ public enum ItemModels implements IExtensibleEnum {
     SPEAR(ItemModelType.SPEAR),
     KATANA(ItemModelType.KATANA),
     DAGGER(ItemModelType.DAGGER),
+    MODEL(ItemModelType.MODEL),
     BIG_HANDHELD(ItemModelType.BIG_HANDHELD),
     BIG32_HANDHELD(ItemModelType.BIG32_HANDHELD),
     REFINED_SWORD(ItemModelType.REFINED_SWORD),

@@ -10,6 +10,7 @@ import com.kenhorizon.beyondhorizon.server.item.base.tools.DiggerBaseItem;
 import com.kenhorizon.beyondhorizon.server.item.base.weapons.SwordBaseItem;
 import com.kenhorizon.beyondhorizon.server.item.debug_items.*;
 import com.kenhorizon.beyondhorizon.server.item.materials.ArmorBaseMaterials;
+import com.kenhorizon.beyondhorizon.server.item.materials.MagicWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -72,12 +73,6 @@ public class BHItems {
             .itemName("Debug: Mob set to cant despawn")
             .tab(RegistryTabs.Category.DEBUGS)
             .model(ItemModels.HANDHELD)
-            .register();
-
-    public static final RegistryObject<Item> GUIDE_BOOK = RegistryItems
-            .register("guide_book", GuideBookItem::new)
-            .tab(RegistryTabs.Category.MISC)
-            .model(ItemModels.GENERATED)
             .register();
 
     public static final RegistryObject<Item> VOID_BAG = RegistryItems
@@ -170,7 +165,7 @@ public class BHItems {
     public static final RegistryObject<Item> DARK_CRYSTAL = basicItem("dark_crystal", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> SHADOWCRUST = basicItem("shadowcrust", RegistryTabs.Category.INGREDIENTS);
 
-    public static final RegistryObject<Item> CHAIN_PLATE = basicItem("chain_plate", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> CHAINMAIL_PLATE = basicItem("chainmail_plate", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RUBY = basicItem("ruby", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> AMPLIFLYING_TOME = basicItem("ampliflying_tome", RegistryTabs.Category.INGREDIENTS);
 
@@ -196,37 +191,37 @@ public class BHItems {
     public static final RegistryObject<Item> RED_WOOL_FUR = woolFurItem("red_wool_fur", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> BLACK_WOOL_FUR = woolFurItem("black_wool_fur", RegistryTabs.Category.INGREDIENTS);
 
-    public static final RegistryObject<Item> FLINT_KNIFE = swordItem("flint_knife", MeleeWeaponMaterials.FLINT, ItemBuilder.KNIFE);
+    public static final RegistryObject<Item> FLINT_KNIFE = swordItem("flint_knife", MeleeWeaponMaterials.FLINT, MeleeItemBuilder.KNIFE);
     //
-    public static final RegistryObject<Item> CRIMSNITE_SWORD = swordItem("crimsnite_sword", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, ItemBuilder.SWORD);
-    public static final RegistryObject<Item> CRIMSNITE_AXE = toolItem("crimsnite_axe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, ItemBuilder.AXE);
-    public static final RegistryObject<Item> CRIMSNITE_PICKAXE = toolItem("crimsnite_pickaxe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, ItemBuilder.PICKAXE);
-    public static final RegistryObject<Item> CRIMSNITE_SHOVEL = toolItem("crimsnite_shovel", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, ItemBuilder.SHOVEL);
-    public static final RegistryObject<Item> CRIMSNITE_HOE = toolItem("crimsnite_hoe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, ItemBuilder.HOE);
+    public static final RegistryObject<Item> CRIMSNITE_SWORD = swordItem("crimsnite_sword", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, MeleeItemBuilder.SWORD);
+    public static final RegistryObject<Item> CRIMSNITE_AXE = toolItem("crimsnite_axe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, MeleeItemBuilder.AXE);
+    public static final RegistryObject<Item> CRIMSNITE_PICKAXE = toolItem("crimsnite_pickaxe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, MeleeItemBuilder.PICKAXE);
+    public static final RegistryObject<Item> CRIMSNITE_SHOVEL = toolItem("crimsnite_shovel", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, MeleeItemBuilder.SHOVEL);
+    public static final RegistryObject<Item> CRIMSNITE_HOE = toolItem("crimsnite_hoe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, MeleeItemBuilder.HOE);
 
-    public static final RegistryObject<Item> HELLSTONE_SWORD = swordItem("hellstone_sword", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, ItemBuilder.SWORD);
-    public static final RegistryObject<Item> HELLSTONE_AXE = toolItem("hellstone_axe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, ItemBuilder.AXE);
-    public static final RegistryObject<Item> HELLSTONE_PICKAXE = toolItem("hellstone_pickaxe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, ItemBuilder.PICKAXE);
-    public static final RegistryObject<Item> HELLSTONE_SHOVEL = toolItem("hellstone_shovel", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, ItemBuilder.SHOVEL);
-    public static final RegistryObject<Item> HELLSTONE_HOE = toolItem("hellstone_hoe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, ItemBuilder.HOE);
+    public static final RegistryObject<Item> HELLSTONE_SWORD = swordItem("hellstone_sword", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.SWORD);
+    public static final RegistryObject<Item> HELLSTONE_AXE = toolItem("hellstone_axe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.AXE);
+    public static final RegistryObject<Item> HELLSTONE_PICKAXE = toolItem("hellstone_pickaxe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.PICKAXE);
+    public static final RegistryObject<Item> HELLSTONE_SHOVEL = toolItem("hellstone_shovel", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.SHOVEL);
+    public static final RegistryObject<Item> HELLSTONE_HOE = toolItem("hellstone_hoe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.HOE);
 
-    public static final RegistryObject<Item> STARITE_CLAYMORE = swordItem("starite_claymore", MeleeWeaponMaterials.STARITE, ItemBuilder.CLAYMORE, ItemModels.BIG32_HANDHELD);
-    public static final RegistryObject<Item> STARITE_SWORD = swordItem("starite_sword", MeleeWeaponMaterials.STARITE, ItemBuilder.SWORD);
-    public static final RegistryObject<Item> STARITE_AXE = toolItem("starite_axe", MeleeWeaponMaterials.STARITE, ItemBuilder.AXE);
-    public static final RegistryObject<Item> STARITE_PICKAXE = toolItem("starite_pickaxe", MeleeWeaponMaterials.STARITE, ItemBuilder.PICKAXE);
-    public static final RegistryObject<Item> STARITE_SHOVEL = toolItem("starite_shovel", MeleeWeaponMaterials.STARITE, ItemBuilder.SHOVEL);
-    public static final RegistryObject<Item> STARITE_HOE = toolItem("starite_hoe", MeleeWeaponMaterials.STARITE, ItemBuilder.HOE);
+    public static final RegistryObject<Item> STARITE_CLAYMORE = swordItem("starite_claymore", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.CLAYMORE, ItemModels.BIG32_HANDHELD);
+    public static final RegistryObject<Item> STARITE_SWORD = swordItem("starite_sword", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.SWORD);
+    public static final RegistryObject<Item> STARITE_AXE = toolItem("starite_axe", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.AXE);
+    public static final RegistryObject<Item> STARITE_PICKAXE = toolItem("starite_pickaxe", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.PICKAXE);
+    public static final RegistryObject<Item> STARITE_SHOVEL = toolItem("starite_shovel", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.SHOVEL);
+    public static final RegistryObject<Item> STARITE_HOE = toolItem("starite_hoe", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.HOE);
 
-    public static final RegistryObject<Item> BLACK_IRON_CLAYMORE = swordItem("black_iron_claymore", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.CLAYMORE, ItemModels.BIG32_HANDHELD);
-    public static final RegistryObject<Item> BLACK_IRON_SWORD = swordItem("black_iron_sword", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.SWORD);
-    public static final RegistryObject<Item> BLACK_IRON_AXE = toolItem("black_iron_axe", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.AXE);
-    public static final RegistryObject<Item> BLACK_IRON_PICKAXE = toolItem("black_iron_pickaxe", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.PICKAXE);
-    public static final RegistryObject<Item> BLACK_IRON_SHOVEL = toolItem("black_iron_shovel", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.SHOVEL);
-    public static final RegistryObject<Item> BLACK_IRON_HOE = toolItem("black_iron_hoe", MeleeWeaponMaterials.BLACK_IRON, ItemBuilder.HOE);
+    public static final RegistryObject<Item> BLACK_IRON_CLAYMORE = swordItem("black_iron_claymore", MeleeWeaponMaterials.BLACK_IRON, MeleeItemBuilder.CLAYMORE, ItemModels.BIG32_HANDHELD);
+    public static final RegistryObject<Item> BLACK_IRON_SWORD = swordItem("black_iron_sword", MeleeWeaponMaterials.BLACK_IRON, MeleeItemBuilder.SWORD);
+    public static final RegistryObject<Item> BLACK_IRON_AXE = toolItem("black_iron_axe", MeleeWeaponMaterials.BLACK_IRON, MeleeItemBuilder.AXE);
+    public static final RegistryObject<Item> BLACK_IRON_PICKAXE = toolItem("black_iron_pickaxe", MeleeWeaponMaterials.BLACK_IRON, MeleeItemBuilder.PICKAXE);
+    public static final RegistryObject<Item> BLACK_IRON_SHOVEL = toolItem("black_iron_shovel", MeleeWeaponMaterials.BLACK_IRON, MeleeItemBuilder.SHOVEL);
+    public static final RegistryObject<Item> BLACK_IRON_HOE = toolItem("black_iron_hoe", MeleeWeaponMaterials.BLACK_IRON, MeleeItemBuilder.HOE);
 
-    public static final RegistryObject<Item> HOGLIN_TUSK_SWORD = swordItem("hoglin_tusk_sword", MeleeWeaponMaterials.HOGLIN_TUSK, ItemBuilder.SWORD);
-    public static final RegistryObject<Item> HOGLIN_TUSK_MACHETE = swordItem("hoglin_tusk_machete", MeleeWeaponMaterials.HOGLIN_TUSK, ItemBuilder.LIGHT_SWORD);
-    public static final RegistryObject<Item> HOGLIN_TUSK_SPEAR = swordItem("hoglin_tusk_spear", MeleeWeaponMaterials.HOGLIN_TUSK, ItemBuilder.SPEAR);
+    public static final RegistryObject<Item> HOGLIN_TUSK_SWORD = swordItem("hoglin_tusk_sword", MeleeWeaponMaterials.HOGLIN_TUSK, MeleeItemBuilder.SWORD);
+    public static final RegistryObject<Item> HOGLIN_TUSK_MACHETE = swordItem("hoglin_tusk_machete", MeleeWeaponMaterials.HOGLIN_TUSK, MeleeItemBuilder.LIGHT_SWORD);
+    public static final RegistryObject<Item> HOGLIN_TUSK_SPEAR = swordItem("hoglin_tusk_spear", MeleeWeaponMaterials.HOGLIN_TUSK, MeleeItemBuilder.SPEAR);
     //
 
     public static final RegistryObject<Item> BROKEN_HERO_SWORD = accessoryHandheldItem("broken_hero_sword", AccessoryItemGroup.HERO_SWORD, AccessoryBuilder.BROKEN_HERO_SWORD);
@@ -366,74 +361,94 @@ public class BHItems {
             .register();
 
     public static final RegistryObject<Item> BLADE_OF_THE_ENDERLORD = RegistryItems
-            .register("blade_of_the_enderlord", item -> ItemBuilder.BLADE_OF_THE_ENDERLORD.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("blade_of_the_enderlord", item -> MeleeItemBuilder.BLADE_OF_THE_ENDERLORD.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> GIANT_SLAYER_SWORD = RegistryItems
-            .register("giant_slayer_sword", item -> ItemBuilder.GIANT_SLAYER_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("giant_slayer_sword", item -> MeleeItemBuilder.GIANT_SLAYER_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> ZENITH = RegistryItems
-            .register("zenith", item -> ItemBuilder.ZENITH.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("zenith", item -> MeleeItemBuilder.ZENITH.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> ELUCIDATOR = RegistryItems
-            .register("elucidator", item -> ItemBuilder.ELUCIDATOR.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("elucidator", item -> MeleeItemBuilder.ELUCIDATOR.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> DARK_REPULSER = RegistryItems
-            .register("dark_repulser", item -> ItemBuilder.DARK_REPULSER.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("dark_repulser", item -> MeleeItemBuilder.DARK_REPULSER.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> GUARDIAN_SWORD = RegistryItems
-            .register("guardian_sword", item -> ItemBuilder.GUARDIAN_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("guardian_sword", item -> MeleeItemBuilder.GUARDIAN_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG32_HANDHELD)
+            .register();
+
+    public static final RegistryObject<Item> BLAZING_BEACON = RegistryItems
+            .register("blazing_beacon", item -> MagicItemBuilder.BlAZING_BEACON.create(MagicWeaponMaterials.TIER_ONE, item))
+            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+            .tab(RegistryTabs.Category.COMBAT)
+            .register();
+
+    public static final RegistryObject<Item> SOLARFLARE = RegistryItems
+            .register("solarflare", item -> MeleeItemBuilder.SOLARFLARE.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG32_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> RADIANT = RegistryItems
-            .register("radiant", item -> ItemBuilder.RADIANT.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("radiant", item -> MeleeItemBuilder.RADIANT.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG32_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> HARVESTER = RegistryItems
-            .register("harvester", item -> ItemBuilder.HARVESTER.create(MeleeWeaponMaterials.TIER_ONE, item))
-            .properties(p -> p.rarity(BHRarity.MYTHICAL))
-            .tab(RegistryTabs.Category.COMBAT)
-            .model(ItemModels.BIG32_HANDHELD)
-            .register();
-
-    public static final RegistryObject<Item> SOLARFLARE = RegistryItems
-            .register("solarflare", item -> ItemBuilder.SOLARFLARE.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("harvester", item -> MeleeItemBuilder.HARVESTER.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG32_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> STELLAR_AXE = RegistryItems
-            .register("stellar_axe", item -> ItemBuilder.STELLAR_AXE.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .register("stellar_axe", item -> MeleeItemBuilder.STELLAR_AXE.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG32_INHAND)
             .register();
+
+//    public static final RegistryObject<Item> HEAVENLY_EDGE_DARK_SWORD = RegistryItems
+//            .register("heavenly_edge_dark_sword", item -> ItemBuilder.HEAVENLY_EDGE_DARK_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
+//            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+//            .tab(RegistryTabs.Category.COMBAT)
+//            .model(ItemModels.BIG32_INHAND)
+//            .register();
+//
+//    public static final RegistryObject<Item> HEAVENLY_EDGE_LIGHT_SWORD = RegistryItems
+//            .register("heavenly_edge_light_sword", item -> ItemBuilder.HEAVENLY_EDGE_LIGHT_SWORD.create(MeleeWeaponMaterials.TIER_ONE, item))
+//            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+//            .tab(RegistryTabs.Category.COMBAT)
+//            .model(ItemModels.BIG32_INHAND)
+//            .register();
 
     public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, Colors.combineRGB(255, 248, 71), Colors.combineRGB(139, 52, 1));
     public static final RegistryObject<Item> FAYE_FLARES_SPAWN_EGG = spawnEgg("faye_flares", BHEntity.FAYE_FLARES, Colors.combineRGB(255, 248, 71), Colors.combineRGB(182, 31, 0));
@@ -459,31 +474,31 @@ public class BHItems {
     private static RegistryObject<Item> woolFurItem(String name, RegistryTabs.Category category) {
         return RegistryItems.register(name, BasicItem::new).tab(category).tag(BHItemTags.WOOL_FUR).model(ItemModels.GENERATED).register();
     }
-    private static RegistryObject<Item> swordItem(String name, Rarity rarity, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> factory) {
+    private static RegistryObject<Item> swordItem(String name, Rarity rarity, MeleeWeaponMaterials materials, MeleeItemBuilder.Factory<SwordBaseItem> factory) {
         return swordItem(name, rarity, materials, factory, ItemModels.HANDHELD);
     }
-    private static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> factory) {
+    private static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, MeleeItemBuilder.Factory<SwordBaseItem> factory) {
         return swordItem(name, Rarity.COMMON, materials, factory, ItemModels.HANDHELD);
     }
-    private static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> factory, ItemModels itemModels) {
+    private static RegistryObject<Item> swordItem(String name, MeleeWeaponMaterials materials, MeleeItemBuilder.Factory<SwordBaseItem> factory, ItemModels itemModels) {
         return swordItem(name, Rarity.COMMON, materials, factory, itemModels);
     }
-    private static RegistryObject<Item> swordItem(String name, Rarity rarity, MeleeWeaponMaterials materials, ItemBuilder.Factory<SwordBaseItem> factory, ItemModels itemModels) {
+    private static RegistryObject<Item> swordItem(String name, Rarity rarity, MeleeWeaponMaterials materials, MeleeItemBuilder.Factory<SwordBaseItem> factory, ItemModels itemModels) {
         return RegistryItems.register(name, properties -> factory.create(materials, properties.rarity(rarity))).tab(RegistryTabs.Category.COMBAT).model(itemModels).register();
     }
 
-    private static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> factory) {
+    private static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, MeleeItemBuilder.Factory<DiggerBaseItem> factory) {
         return toolItem(name, materials, factory, ItemModels.HANDHELD);
     }
 
-    private static RegistryObject<Item> toolItem(String name, Rarity rarity, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> factory) {
+    private static RegistryObject<Item> toolItem(String name, Rarity rarity, MeleeWeaponMaterials materials, MeleeItemBuilder.Factory<DiggerBaseItem> factory) {
         return toolItem(name, rarity, materials, factory, ItemModels.HANDHELD);
     }
 
-    private static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> builder, ItemModels itemModels) {
+    private static RegistryObject<Item> toolItem(String name, MeleeWeaponMaterials materials, MeleeItemBuilder.Factory<DiggerBaseItem> builder, ItemModels itemModels) {
         return toolItem(name, Rarity.COMMON, materials, builder, itemModels);
     }
-    private static RegistryObject<Item> toolItem(String name, Rarity rarity, MeleeWeaponMaterials materials, ItemBuilder.Factory<DiggerBaseItem> builder, ItemModels itemModels) {
+    private static RegistryObject<Item> toolItem(String name, Rarity rarity, MeleeWeaponMaterials materials, MeleeItemBuilder.Factory<DiggerBaseItem> builder, ItemModels itemModels) {
         return RegistryItems.register(name, properties -> builder.create(materials, properties.rarity(rarity))).tab(RegistryTabs.Category.TOOLS).model(itemModels).register();
     }
     private static RegistryObject<Item> armorItem(String name, ArmorItem.Type type, ArmorBaseMaterials armorMaterial) {

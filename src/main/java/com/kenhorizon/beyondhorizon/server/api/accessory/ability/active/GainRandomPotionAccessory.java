@@ -25,6 +25,11 @@ public class GainRandomPotionAccessory extends AccessoryActiveSkill {
     }
 
     @Override
+    public String getCustomCooldownId() {
+        return "given_effect_ability";
+    }
+
+    @Override
     public void onActiveAbility(Player player, ItemStack itemStack) {
         MobEffect effect = this.effectList.get(player.getRandom().nextInt(this.effectList.size()));
         player.addEffect(new MobEffectInstance(effect, Maths.sec(30), this.potionLevel, true, true, true));

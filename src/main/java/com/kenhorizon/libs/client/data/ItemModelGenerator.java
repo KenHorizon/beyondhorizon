@@ -2,9 +2,7 @@ package com.kenhorizon.libs.client.data;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.libs.client.model.item.ItemModelDefinition;
-import com.kenhorizon.libs.client.model.item.ItemModelType;
 import com.kenhorizon.libs.registry.RegistryItemModels;
-import net.minecraft.client.renderer.block.model.BlockModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.item.Item;
@@ -37,6 +35,8 @@ public class ItemModelGenerator {
             createThrowingWeaponItemModel(item, itemModelDefinition.baseModel(), itemModelDefinition.secondModel());
         } else if (itemModelDefinition.itemType() == RegistryItemModels.Type.INHAND) {
             customItemRenderer(item, itemModelDefinition.suffix(), itemModelDefinition.baseModel());
+        } else if (itemModelDefinition.itemType() == RegistryItemModels.Type.MODEL) {
+            customItemModelRenderer(item, itemModelDefinition.suffix(), itemModelDefinition.baseModel());
         } else if (itemModelDefinition.itemType() == RegistryItemModels.Type.HANDHELD) {
             createWeaponItemModel(item, itemModelDefinition.baseModel(), itemModelDefinition.suffix());
         } else if (itemModelDefinition.itemType() == RegistryItemModels.Type.BOW_HOLD) {
@@ -55,6 +55,24 @@ public class ItemModelGenerator {
         String itemPath = key(item.get()).getPath();
         String texturePath = getItemTexture(suffix, itemPath);
         return createSimpleItem(item, suffix, baseModels);
+    }
+
+    private ResourceLocation createBuiltInEntity(Supplier<? extends Item> item, String suffix) {
+        String itemPath = key(item.get()).getPath();
+        return this.itemModelProvider.getBuilder(key(item.get()).toString())
+                .parent(this.itemModelProvider.getExistingFile(BaseModels.BUILTIN))
+                .getLocation();
+    }
+
+    private ResourceLocation customItemModelRenderer(Supplier<? extends Item> item, String suffix, ResourceLocation model) {
+        String name = key(item.get()).getPath();
+        String items = String.format("item/%s", name);
+        return this.itemModelProvider.withExistingParent(suffix, model)
+                .customLoader(SeparateTransformsModelBuilder::begin).base(this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(String.format("item/%s_model", name)))))
+                .perspective(ItemDisplayContext.GUI, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(items))))
+                .perspective(ItemDisplayContext.FIXED, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(items))))
+                .perspective(ItemDisplayContext.GROUND, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(items))))
+                .end().getLocation();
     }
 
     private ResourceLocation customItemRenderer(Supplier<? extends Item> item, String suffix, ResourceLocation model) {
@@ -108,12 +126,6 @@ public class ItemModelGenerator {
                 .model(new ModelFile.ExistingModelFile(throwing, this.itemModelProvider.existingFileHelper)).end().getLocation();
     }
 
-    private ResourceLocation createBuiltInEntity(Supplier<? extends Item> item, String suffix, ResourceLocation baseModel) {
-        String itemPath = key(item.get()).getPath();
-        return this.itemModelProvider.getBuilder(key(item.get()).toString())
-                .guiLight(BlockModel.GuiLight.FRONT)
-                .getLocation();
-    }
 
     private ResourceLocation createSimpleItem(Supplier<? extends Item> item, String suffix, ResourceLocation baseModel) {
         String itemPath = key(item.get()).getPath();
@@ -178,7 +190,7 @@ public class ItemModelGenerator {
 
     public void createGenerated(Supplier<? extends Item> item, ResourceLocation model, String suffix, boolean builtInEntity) {
         if (builtInEntity) {
-            createBuiltInEntity(item, suffix, model);
+            createBuiltInEntity(item, suffix);
         } else {
             createSimpleItem(item, suffix, model);
         }

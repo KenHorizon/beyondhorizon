@@ -1,8 +1,0 @@
-§lGameplay Changes
-Mobs are now affected by blindness
-and darkness, it lower visibility
-
-Feather Falling prevent crops being
-destoryed
-
-

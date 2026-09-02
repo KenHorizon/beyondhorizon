@@ -10,6 +10,7 @@ import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -28,7 +29,9 @@ public class InfernalRaySkill extends AbstractDeathRaySkill {
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        list.add(Component.translatable(createId(0), Maths.format(this.ADScale + this.APScale), Utils.formattedWords(this.types.name())));
+        double bonusAp = this.getScaleBonus(player, BHAttributes.ABILITY_POWER.get(), this.APScale);
+        double bonusAd = this.getScaleBonus(player, Attributes.ATTACK_DAMAGE, this.ADScale);
+        list.add(Component.translatable(createId(0), Maths.format(bonusAd + bonusAp), Utils.formattedWords(this.types.name())));
         return list;
     }
 
@@ -39,14 +42,21 @@ public class InfernalRaySkill extends AbstractDeathRaySkill {
         deathLaserBeam.setCanBurnTarget(this.canBurnTarget);
         deathLaserBeam.setBaseDamage(this.baseDamage);
         deathLaserBeam.setDamageType(this.types);
-        deathLaserBeam.damageConfig(this.tagTypes, deathLaserBeam.getBaseDamage() + this.additionalDamage(player, itemStack));
+        deathLaserBeam.damageConfig(this.tagTypes, this.additionalDamage(player, itemStack));
         deathLaserBeam.setImmunityFrameIgnore(this.canIgnoreFrame);
         player.level().addFreshEntity(deathLaserBeam);
     }
 
     @Override
+    public void onUsingTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration) {
+        super.onUsingTick(level, entity, itemStack, remainingUseDuration);
+    }
+
+    @Override
     protected float additionalDamage(Player player, ItemStack itemStack) {
-        return (float) (this.getScaleBonus(player, Attributes.ATTACK_DAMAGE, this.ADScale) + this.getScaleBonus(player, BHAttributes.ABILITY_POWER.get(), this.APScale));
+        double bonusAp = this.getScaleBonus(player, BHAttributes.ABILITY_POWER.get(), this.APScale);
+        double bonusAd = this.getScaleBonus(player, Attributes.ATTACK_DAMAGE, this.ADScale);
+        return (float) (bonusAd + bonusAp);
     }
 
     @Override

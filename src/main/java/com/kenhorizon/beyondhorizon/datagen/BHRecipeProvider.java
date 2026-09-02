@@ -41,7 +41,7 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         RecipeFacory recipeFactory = new RecipeFacory(consumer);
-        recipeFactory.createGrid(Items.IRON_NUGGET, BHItems.CHAIN_PLATE.get(), 1);
+        recipeFactory.createGrid(Items.IRON_NUGGET, BHItems.CHAINMAIL_PLATE.get(), 1);
 
         this.woolFurToWoolBlock(recipeFactory, BHItems.WHITE_WOOL_FUR.get(), Blocks.WHITE_WOOL);
         this.woolFurToWoolBlock(recipeFactory, BHItems.ORANGE_WOOL_FUR.get(), Blocks.ORANGE_WOOL);
@@ -240,7 +240,7 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         WorkbenchRecipeProvider.create(BHItems.CHAIN_VEST.get(), 1)
                 .required(BHItems.TOUGH_CLOTH.get())
                 .required(BHItems.TOUGH_CLOTH.get())
-                .required(BHItems.CHAIN_PLATE.get(), 20)
+                .required(BHItems.CHAINMAIL_PLATE.get(), 20)
                 .save(consumer);
         WorkbenchRecipeProvider.create(BHItems.VITALITY_STONE.get(), 1)
                 .required(BHItems.RUBY.get(), 20)
@@ -251,7 +251,7 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .save(consumer);
         WorkbenchRecipeProvider.create(BHItems.IRON_PLATED_BOOTS.get(), 1)
                 .required(BHItems.BOOTS.get())
-                .required(BHItems.CHAIN_PLATE.get(), 3)
+                .required(BHItems.CHAINMAIL_PLATE.get(), 3)
                 .save(consumer);
         WorkbenchRecipeProvider.create(BHItems.BERSERKER_BOOTS.get(), 1)
                 .required(BHItems.BOOTS.get())

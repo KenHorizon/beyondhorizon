@@ -6,8 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 public class BaseModels {
     public static final ResourceLocation CHEST_BASE = BeyondHorizon.resource("block/chest_base");
     public static final ResourceLocation CHEST_MODEL = BeyondHorizon.resource("block/chest_template");
-    public static final ResourceLocation POWER_BAND = BeyondHorizon.resource("item/accessory/empty_power_band");
-    public static final ResourceLocation BUILTIN_ENTITY = ResourceLocation.parse("builtin/entity");
+    public static final ResourceLocation BUILTIN = BeyondHorizon.resource("item/builtin");
     public static final ResourceLocation SPAWN_EGG = ResourceLocation.parse("item/template_spawn_egg");
     public static final ResourceLocation REFINED_SWORD = ResourceLocation.parse("item/handheld");
     public static final ResourceLocation HANDHELD = ResourceLocation.parse("item/handheld");
@@ -17,7 +16,6 @@ public class BaseModels {
     public static final ResourceLocation BOW = BeyondHorizon.resource("item/base/bow");
     public static final ResourceLocation CLAYMORE = BeyondHorizon.resource("item/base/claymore");
     public static final ResourceLocation CROSSBOW = BeyondHorizon.resource("item/base/crossbow");
-    public static final ResourceLocation RUNE = ResourceLocation.parse("item/generated");
     public static final ResourceLocation ACCESSORY = ResourceLocation.parse("item/generated");
     public static final ResourceLocation GENERATED = ResourceLocation.parse("item/generated");
     public static final ResourceLocation GENERATED_OVERLAY = ResourceLocation.parse("item/generated");

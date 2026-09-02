@@ -105,7 +105,27 @@ Dark Sun: Convert AP to AD 1 : 0.25 and 25% Damage dealt convert into true damag
 
 
 
+Heavenly Edge Dark Sword
+Passive: Pure Darkness
+	-> Attack alternate between Chaos and Darkness, attack begin with Chaos and Darkness deal (50% AD) Physical Damage and (50% AD) Magic Daamge and
+	ignore 10% target's armor
 
+
+
+Heavenly Edge Light Sword
+Passive: Pure Light
+	-> Attack grant stack judgement to target for 6 seconds, upto 3 stacks, at max stacks the next attack deal (50% AD) AD True Damage
+
+
+
+Heavenly True Sword
+Passive: True Judgement
+	-> Attack alternate between Light and Darkness, attack begin with Light
+		- Light: Burn target for 3 seconds dealing 1% target's max health per seconds
+		- Dark: Deal (100% AD) True Damage and deal additional 1% target's max health x burn's duration if burn is present
+
+Passive: Smite
+	-> Convert 50% Damage dealt into True Damage
 
 
 

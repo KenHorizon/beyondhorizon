@@ -150,7 +150,9 @@ public class ServerEventHandler {
        if (!world.isClientSide()) {
            if (getEntity instanceof LivingEntity entity) {
                LevelSystem levelSystem = Capabilities.levelSystem(entity);
-               levelSystem.sync();
+               if (levelSystem != null) {
+                   levelSystem.sync();
+               }
            }
        }
     }
@@ -159,16 +161,14 @@ public class ServerEventHandler {
     public void onFinalizeSpawnEvent(MobSpawnEvent.FinalizeSpawn event) {
         Mob mob = event.getEntity();
         MobSpawnType spawnType = event.getSpawnType();
-        var difficulty = event.getDifficulty();
         LevelSystem levelSystem = Capabilities.levelSystem(mob);
-        if (!mob.level().isClientSide()) {
+        if (!mob.level().isClientSide() && levelSystem != null) {
             if (!levelSystem.isPlayer() && BHConfigs.ENABLE_MOB_LEVELS) {
                 int randomLevels = mob.getRandom().nextIntBetweenInclusive(5, BHConfigs.MOBS_MAX_LEVEL_CAP);
                 levelSystem.setLevel(randomLevels);
                 levelSystem.assignRandomPoints();
                 if (spawnType != MobSpawnType.CONVERSION) {
                     mob.setHealth(mob.getMaxHealth());
-
                 }
             }
         }
@@ -186,6 +186,7 @@ public class ServerEventHandler {
             playerData.syncCooldowns();
         }
     }
+
     @SubscribeEvent
     public void onChangeDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         Player player = event.getEntity();
@@ -197,7 +198,6 @@ public class ServerEventHandler {
             });
             NetworkHandler.sendToPlayer(new ClientboundPlayerLevelSystemPacket(role.saveNbt()), serverPlayer);
             NetworkHandler.sendToPlayer(new ClientboundPlayerDataPacket(playerData.saveNbt()), serverPlayer);
-//            NetworkHandler.sendToPlayer(new ClientboundManaSyncPacket(playerData.getMana()), serverPlayer);
         }
     }
 
@@ -243,7 +243,7 @@ public class ServerEventHandler {
     }
     @SubscribeEvent
     public void onLevelTick(TickEvent.PlayerTickEvent event) {
-        if (event.side.isClient() && event.phase == TickEvent.Phase.END && event.player == Minecraft.getInstance().player) {
+        if (event.side.isClient() && event.phase == TickEvent.Phase.END && event.player == BeyondHorizon.PROXY.clientPlayer()) {
             Player player = event.player;
             Level level = player.level();
             PlayerData playerData = Capabilities.data(player);
@@ -263,7 +263,6 @@ public class ServerEventHandler {
                 if (BHConfigs.DAMAGE_INDICATOR) {
                     damageIndicator(level, entity.getLastDamageSource(), true, finalHeal, entity);
                 }
-
             }
         }
         event.setAmount(finalHeal);
@@ -1188,9 +1187,11 @@ public class ServerEventHandler {
         ItemStack itemStack = player.getMainHandItem();
         modifiyDropExperience = this.enchantmentModifiyExpDrop(player, droppedExperience, target);
         LevelSystem levelSystem = Capabilities.levelSystem(target);
-        if (!target.level().isClientSide()) {
-            if (!levelSystem.isPlayer() && BHConfigs.ENABLE_MOB_LEVELS) {
-                modifiyDropExperience += (int) (droppedExperience * (1.0F + levelSystem.getLevel()));
+        if (levelSystem != null) {
+            if (!target.level().isClientSide()) {
+                if (!levelSystem.isPlayer() && BHConfigs.ENABLE_MOB_LEVELS) {
+                    modifiyDropExperience += (int) (droppedExperience * (1.0F + levelSystem.getLevel()));
+                }
             }
         }
         if (!itemStack.isEmpty() && itemStack.getItem() instanceof ISkillItems skillItems) {

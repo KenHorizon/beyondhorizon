@@ -1,11 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.item;
 
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.item.tooltips.QuiverTooltip;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.capability.QuiverCap;
 import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
 import com.kenhorizon.beyondhorizon.server.inventory.QuiverMenu;
+import com.kenhorizon.beyondhorizon.server.item.tooltips.VoidBagTooltip;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -96,7 +98,12 @@ public class QuiverItem extends BasicItem {
             int slot = tag.getInt(NBT_ITEM_SLOT);
             items.set(slot, slotStack);
         }
-        return Optional.of(new QuiverTooltip(items));
+
+        if (BHConfigs.SHOW_TOOLTIP_QUIVER) {
+            return Optional.of(new QuiverTooltip(items));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

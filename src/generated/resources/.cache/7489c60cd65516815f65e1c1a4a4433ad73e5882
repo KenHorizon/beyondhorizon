@@ -1,4 +1,4 @@
-// 1.20.1	2026-09-02T05:22:04.0734945	Item Models: beyondhorizon
+// 1.20.1	2026-09-02T19:53:45.9213096	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -96,7 +96,6 @@ a780377411278289fabcf955656c277815f2b6c0 assets/beyondhorizon/models/item/greate
 135f6a217b313ae594fce1181dfbe6f28b3d3711 assets/beyondhorizon/models/item/greater_satctel_of_elixir.json
 29cf377062fa71bbce4483b3f6aab76c5f60b145 assets/beyondhorizon/models/item/green_wool_fur.json
 4b6d1aa17f7e359d6a63bcc3cf69ca414da718b6 assets/beyondhorizon/models/item/guardian_sword.json
-3afab2118ed35889b16d46891598f259a1b554d8 assets/beyondhorizon/models/item/guide_book.json
 ff20a4da36001e25665d870eeb155498c946cb9c assets/beyondhorizon/models/item/handle.json
 ce9b95c26331f5ed9bef3469bbe232cb0f335144 assets/beyondhorizon/models/item/harpoon_head.json
 fcb915cb476e9efab8be16e836a8bfe56865b090 assets/beyondhorizon/models/item/harvester.json

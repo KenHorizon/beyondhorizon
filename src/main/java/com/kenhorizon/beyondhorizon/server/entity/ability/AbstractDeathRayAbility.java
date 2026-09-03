@@ -203,9 +203,6 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
             this.source = (LivingEntity) level().getEntity(getSourceID());
         }
         if (!this.level().isClientSide()) {
-            if (this.tickCount == 1) {
-                CameraShake.spawn(level(), this.getPosition(1.0F), 1.5F, 0.05F, 5, 10);
-            }
             if (this.getHasPlayer()) {
                 this.updateWithPlayer();
             } else {

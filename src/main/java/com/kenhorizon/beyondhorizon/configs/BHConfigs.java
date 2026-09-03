@@ -23,8 +23,9 @@ public class BHConfigs {
     public static boolean DAMAGE_INDICATOR_TEXT_BOLD = true;
     public static boolean SCREEN_SHAKE = true;
     public static boolean MUSIC_BOSS = true;
-    public static boolean REDUCE_DEBUG = true;
     public static boolean ENABLE_MOB_LEVELS = true;
+    public static boolean SHOW_TOOLTIP_QUIVER = true;
+    public static boolean SHOW_TOOLTIP_VOIDBAG = true;
     public static int SCREEN_SHAKE_AMOUNT = 100;
     public static GameHuds GAME_HUD = GameHuds.MOD;
     //SERVER
@@ -37,6 +38,8 @@ public class BHConfigs {
         try {
             BeyondHorizon.LOGGER.info("Syncing all configs here!");
             //---------------------------------------------------------------------//
+            SHOW_TOOLTIP_QUIVER = ModClientConfig.SHOW_TOOLTIP_QUIVER.get();
+            SHOW_TOOLTIP_VOIDBAG = ModClientConfig.SHOW_TOOLTIP_VOIDBAG.get();
             ATTRIBUTE_TOOLTIP_OVERHAUl = ModClientConfig.ATTRIBUTE_TOOLTIP_OVERHAUl.get();
             ADVANCED_TOOLTIP = ModClientConfig.ADVANCED_TOOLTIP.get();
             SCREEN_SHAKE = ModClientConfig.SCREEN_SHAKE.get();
@@ -47,7 +50,6 @@ public class BHConfigs {
             DAMAGE_INDICATOR_COLOR_FORMAT = ModClientConfig.DAMAGE_INDICATOR_COLOR_FORMAT.get();
             DAMAGE_INDICATOR_TEXT_BOLD = ModClientConfig.DAMAGE_INDICATOR_TEXT_BOLD.get();
             MUSIC_BOSS = ModClientConfig.MUSIC_BOSS.get();
-            REDUCE_DEBUG = ModClientConfig.REDUCE_DEBUG.get();
             ACCESSORY_BUTTON_X = ModClientConfig.ACCESSORY_BUTTON_X.get();
             ACCESSORY_BUTTON_Y = ModClientConfig.ACCESSORY_BUTTON_Y.get();
             //---------------------------------------------------------------------//

@@ -1,7 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
 import net.minecraft.Util;
+import net.minecraft.util.Mth;
 import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -112,5 +114,50 @@ public class Maths {
 
     public static float sampleNoise3D(int x, int y, int z, float simplexSampleRate) {
         return (float) ((BHSimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
+    }
+
+    public static float getTickFactor(float tick, float duration, boolean inversion) {
+        float v = Mth.clamp(tick / duration, 0F, 1F);
+        return inversion ? 1F - v : v;
+    }
+    public static float calculateSpeedMultiplier(float tickFactor, float distanceFactor, float exponent, float speedModifier) {
+        float speedFactor = (float) Math.pow(tickFactor, exponent) * (float) Math.pow(2, -exponent * (1 - tickFactor)) * distanceFactor;
+        return speedModifier * speedFactor;
+    }
+    public static Maths.Axis XN = new Maths.Axis(-1.0F, 0.0F, 0.0F);
+    public static Maths.Axis XP = new Maths.Axis(1.0F, 0.0F, 0.0F);
+    public static Maths.Axis YN = new Maths.Axis(0.0F, -1.0F, 0.0F);
+    public static Maths.Axis YP = new Maths.Axis(0.0F, 1.0F, 0.0F);
+    public static Maths.Axis ZN = new Maths.Axis(0.0F, 0.0F, -1.0F);
+    public static Maths.Axis ZP = new Maths.Axis(0.0F, 0.0F, 1.0F);
+
+    public static Quaternionf rotation(Vector3f axis, float angle, boolean degrees) {
+        if (degrees) {
+            angle *= (float) (Math.PI / 180F);
+        }
+        return new Quaternionf().setAngleAxis(angle, axis.x, axis.y, axis.z);
+    }
+    public static Quaternionf rotationXYZ(float x, float y, float z, boolean degrees) {
+        if (degrees) {
+            x *= ((float) Math.PI / 180F);
+            y *= ((float) Math.PI / 180F);
+            z *= ((float) Math.PI / 180F);
+        }
+        return new Quaternionf().rotationXYZ(x, y, z);
+    }
+    public static class Axis {
+        private final Vector3f axis;
+
+        public Axis(float x, float y, float z) {
+            this.axis = new Vector3f(x, y, z);
+        }
+
+        public Quaternionf rotation(float angle) {
+            return Maths.rotation(axis, angle, false);
+        }
+
+        public Quaternionf rotationDegrees(float degrees) {
+            return Maths.rotation(axis, degrees, true);
+        }
     }
 }

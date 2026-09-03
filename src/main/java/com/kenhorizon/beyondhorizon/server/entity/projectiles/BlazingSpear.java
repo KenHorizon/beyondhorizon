@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 
+import com.kenhorizon.beyondhorizon.server.entity.util.ShockwaveUtils;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -140,7 +141,7 @@ public class BlazingSpear extends ExtendedProjectile {
             }
             if (this.lastState != blockstate && this.shouldFall()) {
                 this.startFalling();
-            } else if (!this.level().isClientSide) {
+            } else if (!this.level().isClientSide()) {
                 this.tickDespawn();
             }
         } else {

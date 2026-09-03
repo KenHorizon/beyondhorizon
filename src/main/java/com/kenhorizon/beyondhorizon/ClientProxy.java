@@ -49,7 +49,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -158,7 +157,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
         EntityRenderers.register(BHEntity.INFERNAL_RAY.get(), InfernalRayRenderer::new);
-        EntityRenderers.register(BHEntity.FALLING_BLOCKS.get(), BHFallingBlocksRenderer::new);
+        EntityRenderers.register(BHEntity.FALLING_BLOCK.get(), BHFallingBlocksRenderer::new);
         EntityRenderers.register(BHEntity.DRAGON_HORNET.get(), DragonHornetRenderer::new);
         EntityRenderers.register(BHEntity.HEALING_ORB.get(), HealingOrbRenderer::new);
         //

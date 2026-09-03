@@ -13,6 +13,7 @@ public enum ItemAbilityType implements StringRepresentable {
     public boolean isPassive() {
         return this != ItemAbilityType.ACTIVE;
     }
+
     @Override
     public String getSerializedName() {
         return this.name().toLowerCase(Locale.ROOT);

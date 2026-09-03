@@ -19,10 +19,10 @@ import com.kenhorizon.beyondhorizon.server.entity.ai.control.SmartBodyControl;
 import com.kenhorizon.beyondhorizon.server.entity.boss.BHBossEntity;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.ai.*;
-import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingSpear;
 import com.kenhorizon.beyondhorizon.server.entity.util.AnimationTickers;
+import com.kenhorizon.beyondhorizon.server.entity.util.ShockwaveUtils;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.util.DefaultDamageCaps;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
@@ -64,18 +64,14 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 /**
@@ -734,8 +730,8 @@ public class BlazingInferno extends BHBossEntity {
             int fireRate = this.isEnraged() ? BLAZING_ROD_IA_ENRAGED : BLAZING_ROD_IA_NORMAL;
             if (target != null) {
                 float velocity = 1.20F;
-                this.setOverheated(true);
                 if (this.isEnraged()) {
+                    this.setOverheated(true);
                     if (this.inBetweenHealth(0.25F, 0.20F)) {
                         this.performRangedAttack(4, target, fireRate, velocity, 1.25F, 60);
                     } else if (this.inBetweenHealth(0.20F, 0.10F)) {
@@ -747,8 +743,7 @@ public class BlazingInferno extends BHBossEntity {
                     } else {
                         this.performRangedAttack(4, target, fireRate, 1.55F, 60);
                     }
-                }
-                if (!this.isEnraged()) {
+                } else {
                     this.performRangedAttack(3, target, fireRate, velocity, 3.50F, 60);
                 }
             }
@@ -992,6 +987,7 @@ public class BlazingInferno extends BHBossEntity {
                 this.level().addParticle(new RoarParticleOptions(40, 255, 255, 255, 1.0F, 1.0F, 0.1F, 128.0F), this.getX(), this.getY(0.5D), this.getZ(), 0, 0, 0);
             }
 
+            ShockwaveUtils.doRingShockwave(this, this.position(), 8, 0.05F, false, 40);
             for (LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(8.0), SHOCKWAVE_EXCEPTION)) {
                 double d0 = livingentity.getX() - this.getX();
                 double d1 = livingentity.getZ() - this.getZ();
@@ -1010,17 +1006,9 @@ public class BlazingInferno extends BHBossEntity {
     }
 
     private void groundSlamAttack(LivingEntity target) {
-        if (this.getAnimationTick() == Maths.sec(3)) {
-            if (this.level().isClientSide()) {
-                for (int i = 0; i < 24; i++) {
-                    if (i % 4 == 0) {
-                        this.doGroundSlamIndicator(0.9F, i, i, 0.9F, 0.0F, 1.4F, Maths.sec(3), 1, 0.10F, 0);
-                    }
-                }
-            }
-        }
+
         if (this.getAnimationTick() > Maths.sec(4) && this.getAnimationTick() <= 85) {
-            this.doJump(0.42255D);
+            this.doJump(0.22255D);
             this.doGroundSmashFX = true;
         }
         if (this.getAnimationTick() > Maths.sec(6) && this.doGroundSmashFX && this.onGround()) {
@@ -1036,24 +1024,8 @@ public class BlazingInferno extends BHBossEntity {
             } else {
                 this.playSound(BHSounds.BLAZING_INFERNO_SHOCKWAVE.get());
                 CameraShake.spawn(this.level(), this.position(), 24.0F, 0.05F, 5, 20);
-                this.setGroundSlamProgress(this.getGroundSlamProgress() + 1);
-//                    for (LivingEntity livingentity : this.level().getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(8.0), SHOCKWAVE_EXCEPTION)) {
-//                        double d0 = livingentity.getX() - this.getX();
-//                        double d1 = livingentity.getZ() - this.getZ();
-//                        double d2 = Math.max(d0 * d0 + d1 * d1, 0.001D);
-//                        if (livingentity.isAlliedTo(this)) continue;
-//                        if (livingentity.isInvulnerable()) continue;
-//                        livingentity.hurt(this.level().damageSources().mobAttack(this), this.getAttackDamage(0.15F) + livingentity.getMaxHealth() * (this.isEnraged() ? 0.020F : 0.010F));
-//                        if (livingentity instanceof Player player) {
-//                            EntityUtils.disableShield(player, MathUtils.sec(5));
-//                        }
-//                        livingentity.push(d0 / d2 * 2.0D, 0.6D, d1 / d2 * 2.0D);
-//                    }
-                for (int i = 0; i < 24; i++) {
-                    if (i % 4 == 0) {
-                        this.doGroundSlam(0.9F, i, i, 0.9F, 0.0F, 1.4F, Maths.sec(3), 1, 0.10F, 0);
-                    }
-                }
+//                this.setGroundSlamProgress(this.getGroundSlamProgress() + 1);
+                ShockwaveUtils.doRingShockwave(this, this.position(), 8, 0.05F, false, 40);
                 if (this.isEnraged()) {
                     this.createEruption(32);
                 }
@@ -1094,168 +1066,7 @@ public class BlazingInferno extends BHBossEntity {
             }
         }
     }
-    private void doGroundSlamIndicator(float spreadarc, int distance, int height, float mxy, float vec, float math, int shieldbreakticks, float damage, float hpdamage, float airborne) {
-        if (this.level().isClientSide()) {
 
-            double bodyRotRad = this.yBodyRot * (Math.PI / 180.0);
-            double cosBodyRot = Math.cos(bodyRotRad);
-            double sinBodyRot = Math.sin(bodyRotRad);
-
-            double facingAngle = bodyRotRad + Math.PI / 2.0;
-
-            double commonOffsetX = vec * -sinBodyRot + cosBodyRot * math;
-            double commonOffsetZ = vec * cosBodyRot + sinBodyRot * math;
-
-            double baseX = this.getX() + commonOffsetX;
-            double baseZ = this.getZ() + commonOffsetZ;
-
-            int hitY = Mth.floor(this.getBoundingBox().minY - 0.5);
-            double spread = Math.PI * spreadarc;
-            int arcLen = Mth.ceil(distance * spread);
-
-
-            float factor = 1.0F - (float) distance / 12.0F;
-
-            for (int i = 0; i < arcLen; i++) {
-                double thetaRatio = (arcLen > 1) ? (double) i / (double) (arcLen - 1) : 0.5;
-                double theta = (thetaRatio - 0.5) * spread + facingAngle;
-
-                double vx = Math.cos(theta);
-                double vz = Math.sin(theta);
-                double px = baseX + vx * distance;
-                double pz = baseZ + vz * distance;
-
-                int hitX = Mth.floor(px);
-                int hitZ = Mth.floor(pz);
-                BlockPos pos = new BlockPos(hitX, hitY + height, hitZ);
-                BlockState block = this.level().getBlockState(pos);
-
-                int maxDepth = 30;
-                for (int depthCount = 0; depthCount < maxDepth; depthCount++) {
-                    if (block.getRenderShape() == RenderShape.MODEL) {
-                        break;
-                    }
-                    pos = pos.below();
-                    block = this.level().getBlockState(pos);
-                }
-
-                if (block.getRenderShape() != RenderShape.MODEL) {
-                    block = Blocks.AIR.defaultBlockState();
-                }
-                float r = Colors.getFARGB(0xFF0000)[0];
-                float g = Colors.getFARGB(0xFF0000)[1];
-                float b = Colors.getFARGB(0xFF0000)[2];
-                this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, (float) Math.PI / 2, Maths.sec(3), r, g, b, 1.0F, 16.0F, false, RingParticles.Behavior.SHRINK), hitX, pos.getY() + 1.5D, hitZ,0, 0, 0);
-                this.level().addAlwaysVisibleParticle(new RingParticleOptions(0, -(float) Math.PI / 2, Maths.sec(3), r, g, b, 1.0F, 16.0F, false, RingParticles.Behavior.SHRINK), hitX, pos.getY() + 1.5D, hitZ,0, 0, 0);
-
-            }
-        }
-    }
-    private void doGroundSlam(float spreadarc, int distance, int height, float mxy, float vec, float math, int shieldbreakticks, float damage, float hpdamage, float airborne) {
-        if (!this.level().isClientSide()) {
-
-            double bodyRotRad = this.yBodyRot * (Math.PI / 180.0);
-            double cosBodyRot = Math.cos(bodyRotRad);
-            double sinBodyRot = Math.sin(bodyRotRad);
-
-            double facingAngle = bodyRotRad + Math.PI / 2.0;
-
-            double commonOffsetX = vec * -sinBodyRot + cosBodyRot * math;
-            double commonOffsetZ = vec * cosBodyRot + sinBodyRot * math;
-
-            double baseX = this.getX() + commonOffsetX;
-            double baseZ = this.getZ() + commonOffsetZ;
-
-            int hitY = Mth.floor(this.getBoundingBox().minY - 0.5);
-            double spread = Math.PI * spreadarc;
-            int arcLen = Mth.ceil(distance * spread);
-
-
-            float factor = 1.0F - (float) distance / 12.0F;
-
-            for (int i = 0; i < arcLen; i++) {
-                double thetaRatio = (arcLen > 1) ? (double) i / (double) (arcLen - 1) : 0.5;
-                double theta = (thetaRatio - 0.5) * spread + facingAngle;
-
-                double vx = Math.cos(theta);
-                double vz = Math.sin(theta);
-                double px = baseX + vx * distance;
-                double pz = baseZ + vz * distance;
-
-                int hitX = Mth.floor(px);
-                int hitZ = Mth.floor(pz);
-                BlockPos pos = new BlockPos(hitX, hitY + height, hitZ);
-                BlockState block = this.level().getBlockState(pos);
-
-                int maxDepth = 30;
-                for (int depthCount = 0; depthCount < maxDepth; depthCount++) {
-                    if (block.getRenderShape() == RenderShape.MODEL) {
-                        break;
-                    }
-                    pos = pos.below();
-                    block = this.level().getBlockState(pos);
-                }
-
-                if (block.getRenderShape() != RenderShape.MODEL) {
-                    block = Blocks.AIR.defaultBlockState();
-                }
-
-                spawnBlocks(hitX, hitY + height, hitZ, (int) (this.getY() - height), block, px, pz, mxy, vx, vz, factor, shieldbreakticks, damage, hpdamage);
-            }
-        }
-    }
-
-    private void spawnBlocks(int hitX, int hitY, int hitZ, int lowestYCheck, BlockState blockState, double px, double pz, float mxy, double vx, double vz, float factor, int shieldbreakticks, float damage, float hpdamage) {
-        BlockPos blockpos = new BlockPos(hitX, hitY, hitZ);
-        double d0 = 0.0D;
-
-        do {
-            BlockPos blockpos1 = blockpos.below();
-            BlockState blockstate = this.level().getBlockState(blockpos1);
-            if (blockstate.isFaceSturdy(this.level(), blockpos1, Direction.UP)) {
-                if (!this.level().isEmptyBlock(blockpos)) {
-                    BlockState blockstate1 = this.level().getBlockState(blockpos);
-                    VoxelShape voxelshape = blockstate1.getCollisionShape(this.level(), blockpos);
-                    if (!voxelshape.isEmpty()) {
-                        d0 = voxelshape.max(Direction.Axis.Y);
-                    }
-                }
-                break;
-            }
-            blockpos = blockpos.below();
-        } while (blockpos.getY() >= Mth.floor(lowestYCheck) - 1);
-
-        BHFallingBlocks fallingBlockEntity = new BHFallingBlocks(this.level(), hitX + 0.5D, (double) blockpos.getY() + d0 + 0.5D, hitZ + 0.5D, blockState, 10);
-        fallingBlockEntity.push(0, 0.2D + this.getRandom().nextGaussian() * 0.04D, 0);
-        this.level().addFreshEntity(fallingBlockEntity);
-
-        AABB selection = new AABB(px - 0.5, (double) blockpos.getY() + d0 - 1, pz - 0.5, px + 0.5, (double) blockpos.getY() + d0 + mxy, pz + 0.5);
-        List<LivingEntity> hitbox = this.level().getEntitiesOfClass(LivingEntity.class, selection);
-
-        if (!hitbox.isEmpty()) {
-            DamageSource damagesource = this.damageSources().mobAttack(this);
-            float baseDamage = (float) (this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damage);
-
-            for (LivingEntity entity : hitbox) {
-                if (!this.isAlliedTo(entity) && !(entity instanceof BlazingInferno) && entity != this) {
-                    float finalDamage = baseDamage + (entity.getMaxHealth() * hpdamage);
-                    boolean flag = entity.hurt(damagesource, finalDamage);
-
-                    if (entity.isDamageSourceBlocked(damagesource) && entity instanceof Player player && shieldbreakticks > 0) {
-                        EntityUtils.disableShield(player, shieldbreakticks);
-                    }
-                    if (flag) {
-                        this.hit = true;
-                        double magnitude = -4;
-                        double x = vx * (1 - factor) * magnitude;
-                        double y = entity.onGround() ? 0.15 : 0.0;
-                        double z = vz * (1 - factor) * magnitude;
-                        entity.setDeltaMovement(entity.getDeltaMovement().add(x, y, z));
-                    }
-                }
-            }
-        }
-    }
     private void summonShield() {
         this.summonShield(this.getShieldCount());
     }

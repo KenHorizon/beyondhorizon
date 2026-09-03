@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.item;
 
+import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.item.tooltips.VoidBagTooltip;
 import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
 import com.kenhorizon.beyondhorizon.server.capability.VoidBagCap;
@@ -72,7 +73,11 @@ public class VoidBagItem extends BasicItem {
             int slot = tag.getInt(NBT_ITEM_SLOT);
             items.set(slot, slotStack);
         }
-        return Optional.of(new VoidBagTooltip(items));
+        if (BHConfigs.SHOW_TOOLTIP_VOIDBAG) {
+            return Optional.of(new VoidBagTooltip(items));
+        } else {
+            return Optional.empty();
+        }
     }
 
     @Override

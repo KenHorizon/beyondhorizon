@@ -158,7 +158,7 @@ public class BHEntity {
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
-    public static final RegistryObject<EntityType<BHFallingBlocks>> FALLING_BLOCKS = RegistryEntity
+    public static final RegistryObject<EntityType<BHFallingBlocks>> FALLING_BLOCK = RegistryEntity
             .<BHFallingBlocks>register("beyondhorizon_falling_block", BHFallingBlocks::new)
             .lang("Falling Block")
             .mobCategory(MobCategory.MISC)

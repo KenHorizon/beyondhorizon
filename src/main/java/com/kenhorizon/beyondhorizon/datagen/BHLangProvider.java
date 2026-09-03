@@ -2,7 +2,6 @@ package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
-import com.kenhorizon.beyondhorizon.client.render.guis.guide_book.GuideBookPages;
 import com.kenhorizon.beyondhorizon.configs.Configs;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
@@ -246,14 +245,6 @@ public class BHLangProvider extends LanguageProvider {
         this.addDeathMessage(BHDamageTypes.LETHALITY, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.MAGIC_PENETRATION, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
         //
-        this.addGuideBookIndexes(GuideBookPages.INTRODUCTION, "Introduction");
-        this.addGuideBookIndexes(GuideBookPages.DAMAGE_TYPES, "Damage Types");
-        this.addGuideBookIndexes(GuideBookPages.STATS, "Stats");
-        this.addGuideBookIndexes(GuideBookPages.GAME_MECHANICS, "Mechanics");
-        this.addGuideBookIndexes(GuideBookPages.ACCESSORY, "Accessory");
-        this.addGuideBookIndexes(GuideBookPages.LEVEL_SYSTEM, "Level System");
-        this.addGuideBookIndexes(GuideBookPages.DIFFICULTY, "Difficulty");
-        this.addGuideBookIndexes(GuideBookPages.EFFECT_TYPES, "Effect Types");
         //
         this.addAdvancement(Tooltips.ADVANCEMENT_MAIN_ROOT, "To.. you from decade ago!", "Discovery of arcane and lores...");
         this.addAdvancement(Tooltips.ADVANCEMENT_EQUIPPED_ACCESSORY, "Fancy Equipment", "Discover a accessory");
@@ -323,9 +314,6 @@ public class BHLangProvider extends LanguageProvider {
             }
 
         }
-    }
-    private void addGuideBookIndexes(GuideBookPages pages, String name) {
-        this.add("guidebooks." + pages.toString().toLowerCase(), name);
     }
     private void addAttributes(Supplier<? extends Attribute> attribute, String name) {
         this.add(attribute.get().getDescriptionId(), name);

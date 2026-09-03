@@ -8,7 +8,8 @@ import org.apache.commons.lang3.tuple.Pair;
 
 @SuppressWarnings({"rawtypes", "ConstantConditions"})
 public class ModClientConfig {
-    public static ForgeConfigSpec.BooleanValue REDUCE_DEBUG;
+    public static ForgeConfigSpec.BooleanValue SHOW_TOOLTIP_QUIVER;
+    public static ForgeConfigSpec.BooleanValue SHOW_TOOLTIP_VOIDBAG;
     public static ForgeConfigSpec.BooleanValue MUSIC_BOSS;
     public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR;
     public static ForgeConfigSpec.BooleanValue DAMAGE_INDICATOR_USE_VANILLA_FONT;
@@ -34,9 +35,6 @@ public class ModClientConfig {
 
     public ModClientConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Beyond Horizon | Client Configs");
-        REDUCE_DEBUG = builder
-                .comment("Reduce the Debug infos by removing some of it.")
-                .define("Reduce Debug Infos", true);
         MUSIC_BOSS = builder
                 .comment("Toggle the boss theme music when the boss spawn or active")
                 .define("Music", true);
@@ -79,6 +77,12 @@ public class ModClientConfig {
                 .defineInRange("Accessory Button Position Y", 8, -Integer.MAX_VALUE, Integer.MAX_VALUE);
         builder.pop();
         builder.push("Beyond Horizon | Tooltip Configs");
+        SHOW_TOOLTIP_QUIVER = builder
+                .comment("Show all the item what Quiver's Content")
+                .define("Show Tooltip Quiver", true);
+        SHOW_TOOLTIP_VOIDBAG = builder
+                .comment("Show all the item what Void Bag's Content")
+                .define("Show Tooltip Voidbag", true);
         ALWAYS_SHOW_SKILL_ABILITY = builder
                 .comment("Always show the skill ability's description")
                 .define("Always Show Skill Ability", true);

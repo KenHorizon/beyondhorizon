@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.data.RecipeFacory;
+import com.kenhorizon.beyondhorizon.server.data.RecipeFactory;
 import com.kenhorizon.beyondhorizon.datagen.recipes.WorkbenchRecipeProvider;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
@@ -27,10 +27,10 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         super(output);
     }
 
-    private void woolFurToWoolBlock(RecipeFacory recipeFactory, ItemLike builder, ItemLike output, int count) {
+    private void woolFurToWoolBlock(RecipeFactory recipeFactory, ItemLike builder, ItemLike output, int count) {
         recipeFactory.buildGrid(builder, output, count).save(recipeFactory.getConsumer(), this.getConversionRecipeNameTwoByTwo(output, builder));
     }
-    private void woolFurToWoolBlock(RecipeFacory recipeFactory, ItemLike builder, ItemLike output) {
+    private void woolFurToWoolBlock(RecipeFactory recipeFactory, ItemLike builder, ItemLike output) {
         this.woolFurToWoolBlock(recipeFactory, builder, output, 1);
     }
 
@@ -40,26 +40,9 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
 
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-        RecipeFacory recipeFactory = new RecipeFacory(consumer);
+        RecipeFactory recipeFactory = new RecipeFactory(consumer);
         recipeFactory.createGrid(Items.IRON_NUGGET, BHItems.CHAINMAIL_PLATE.get(), 1);
 
-        this.woolFurToWoolBlock(recipeFactory, BHItems.WHITE_WOOL_FUR.get(), Blocks.WHITE_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.ORANGE_WOOL_FUR.get(), Blocks.ORANGE_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.MAGENTA_WOOL_FUR.get(), Blocks.MAGENTA_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.LIGHT_BLUE_WOOL_FUR.get(), Blocks.LIGHT_BLUE_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.YELLOW_WOOL_FUR.get(), Blocks.YELLOW_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.LIME_WOOL_FUR.get(), Blocks.LIME_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.PINK_WOOL_FUR.get(), Blocks.PINK_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.GRAY_WOOL_FUR.get(), Blocks.GRAY_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.LIGHT_GRAY_WOOL_FUR.get(), Blocks.LIGHT_GRAY_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.CYAN_WOOL_FUR.get(), Blocks.CYAN_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.PURPLE_WOOL_FUR.get(), Blocks.PURPLE_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.BLUE_WOOL_FUR.get(), Blocks.BLUE_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.BROWN_WOOL_FUR.get(), Blocks.BROWN_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.GREEN_WOOL_FUR.get(), Blocks.GREEN_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.RED_WOOL_FUR.get(), Blocks.RED_WOOL);
-        this.woolFurToWoolBlock(recipeFactory, BHItems.BLACK_WOOL_FUR.get(), Blocks.BLACK_WOOL);
-        //
         recipeFactory.createSword(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_SWORD.get());
         recipeFactory.createPickaxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_PICKAXE.get());
         recipeFactory.createAxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_AXE.get());
@@ -117,6 +100,24 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .save(consumer, getItemName(BHBlocks.TATTERED_BLACK_IRON_LATTICE.get()) + "_from_" + getItemName(BHBlocks.BLACK_IRON_LATTICE.get()));
 
         recipeFactory.createBlock(BHItems.BLACK_IRON_INGOT.get(), BHBlocks.BLACK_IRON_BLOCK.get());
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BHItems.BLAZING_BEACON.get())
+                .pattern("GGG")
+                .pattern("GSG")
+                .pattern("ONO")
+                .define('G', Blocks.ENDER_CHEST)
+                .define('O', Blocks.OBSIDIAN)
+                .define('N', Items.NETHERITE_INGOT)
+                .define('S', BHItems.HEART_OF_THE_INFERNO.get())
+                .unlockedBy("has_blazing_beacon",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.HEART_OF_THE_INFERNO.get()).build()))
+                .save(consumer);
+
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, BHItems.SOLARFLARE.get())
+                .requires(BHItems.GUARDIAN_SWORD.get()).requires(BHItems.BLAZING_BEACON.get())
+                .unlockedBy("has_crafting_materials_solarflare",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.BLAZING_BEACON.get()).build()))
+                .save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BHItems.FLINT_KNIFE.get())
                 .pattern("SF")

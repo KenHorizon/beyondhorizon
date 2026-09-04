@@ -67,4 +67,9 @@ public class EruptionAbility extends AbilityEntity {
             level().addParticle(ParticleTypes.LAVA, getX(), getY() + 0.1, getZ(), 0, 0, 0);
         }
     }
+
+    @Override
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        return true;
+    }
 }

@@ -7,9 +7,7 @@ import net.minecraft.world.item.Rarity;
 import java.awt.*;
 
 public class BHRarity {
-
-    public static final Rarity RARITY_SWEET = Rarity.create("alexscaves:sweet", style -> style.withColor(0XFF8ACD));
-    public static final Rarity LEGENDARY = Rarity.create("beyondhorizon:legendary", ChatFormatting.GOLD);
-    public static final Rarity MYTHICAL = Rarity.create("beyondhorizon:mythical", style -> style.withColor(Colors.combineRGB(255, 81, 81)));
-    public static final Rarity TRANSCENDENT = Rarity.create("beyondhorizon:transcendent", style -> style.withColor(Color.HSBtoRGB((System.currentTimeMillis() % 5000) / 5000F, 1f, 1F)));
+    public static final Rarity LEGENDARY = Rarity.create("beyondhorizon:legendary", style -> style.withColor(0xFFDC16).withBold(true));
+    public static final Rarity MYTHICAL = Rarity.create("beyondhorizon:mythical", style -> style.withColor(0xFF3636).withBold(true));
+    public static final Rarity TRANSCENDENT = Rarity.create("beyondhorizon:transcendent", style -> style.withColor(Color.HSBtoRGB((System.currentTimeMillis() % 5000) / 5000F, 1F, 1F)).withBold(true));
 }

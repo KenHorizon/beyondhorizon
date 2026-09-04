@@ -13,9 +13,9 @@ import net.minecraft.world.level.ItemLike;
 
 import java.util.function.Consumer;
 
-public class RecipeFacory {
+public class RecipeFactory {
     protected Consumer<FinishedRecipe> consumer;
-    public RecipeFacory(Consumer<FinishedRecipe> consumer) {
+    public RecipeFactory(Consumer<FinishedRecipe> consumer) {
         this.consumer = consumer;
     }
 

@@ -431,9 +431,6 @@ public class ServerEventHandler {
                     }
                 }
             }
-            if (entity instanceof Sheep sheep) {
-                sheepDrops(sheep, random, entityDrops, entity, lootingLevel);
-            }
             if (entity instanceof Hoglin) {
                 if (random.nextDouble() <= 0.35F && isPlayerKilled) {
                     entityDrops.add(this.createItemDrops(entity, new ItemStack(BHItems.HOGLIN_TUSK.get())));
@@ -503,57 +500,6 @@ public class ServerEventHandler {
         float f1 = entity.level().random.nextFloat() * ((float) Math.PI * 2F);
         entityitem.setDeltaMovement((-Mth.sin(f1) * f), 0.20000000298023224D, (Mth.cos(f1) * f));
         return entityitem;
-    }
-    private void sheepDrops(Sheep sheep, RandomSource random, Collection<ItemEntity> itemEntities, LivingEntity entity, int lootingLevel) {
-        int count = this.getRandomizedDropCount(random,2,3, lootingLevel);
-        if (sheep.getColor() == DyeColor.WHITE && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.WHITE_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.ORANGE && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.ORANGE_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.MAGENTA && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.MAGENTA_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.LIGHT_BLUE && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.LIGHT_BLUE_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.YELLOW && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.YELLOW_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.LIME && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.LIME_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.PINK && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.PINK_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.GRAY && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.GRAY_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.LIGHT_GRAY && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.LIGHT_GRAY_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.CYAN && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.CYAN_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.PURPLE && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.PURPLE_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.BLUE && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.BLUE_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.BROWN && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.BROWN_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.GREEN && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.GREEN_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.RED && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.RED_WOOL_FUR.get(), count)));
-        }
-        if (sheep.getColor() == DyeColor.BLACK && random.nextDouble() <= 1.0F) {
-            itemEntities.add(this.createItemDrops(entity, new ItemStack(BHItems.BLACK_WOOL_FUR.get(), count)));
-        }
     }
 
     private ItemEntity createItemDrops(LivingEntity entity, ItemStack itemStack) {

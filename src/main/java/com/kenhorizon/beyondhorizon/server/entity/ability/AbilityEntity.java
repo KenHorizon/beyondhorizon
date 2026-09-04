@@ -48,6 +48,8 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     private static final EntityDataAccessor<Optional<UUID>> CASTER = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Optional<UUID>> TARGET = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.OPTIONAL_UUID);
     private static final EntityDataAccessor<Integer> DAMAGE_TYPE = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> LIFESPAN = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Integer> DURATION = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Float> DAMAGE = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> IGNORE_RESISTANCE = SynchedEntityData.defineId(AbilityEntity.class, EntityDataSerializers.BOOLEAN);
@@ -71,6 +73,8 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     protected void defineSynchedData() {
         this.entityData.define(CASTER, Optional.empty());
         this.entityData.define(TARGET, Optional.empty());
+        this.entityData.define(LIFESPAN, 0);
+        this.entityData.define(DURATION, 60);
         this.entityData.define(DAMAGE_TYPE, 0);
         this.entityData.define(RADIUS, 1.0F);
         this.entityData.define(DAMAGE, 5.0F);
@@ -205,19 +209,29 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     }
 
     public void setDuration(int seconds) {
+        this.entityData.set(DURATION, seconds);
         this.duration = seconds;
     }
 
     public int getDuration() {
-        return this.duration;
+        if (this.level().isClientSide()) {
+            return this.entityData.get(DURATION);
+        } else {
+            return this.duration;
+        }
     }
 
     public void setLifeTime(int seconds) {
+        this.entityData.set(LIFESPAN, seconds);
         this.lifespan = seconds;
     }
 
     public int getLifeTime() {
-        return this.lifespan;
+        if (this.level().isClientSide()) {
+            return this.entityData.get(LIFESPAN);
+        } else {
+            return this.lifespan;
+        }
     }
 
     public LivingEntity getCaster() {

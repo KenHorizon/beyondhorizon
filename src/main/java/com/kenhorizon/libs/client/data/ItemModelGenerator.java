@@ -51,23 +51,23 @@ public class ItemModelGenerator {
     }
 
 
-    private ResourceLocation createWeaponItemModel(Supplier<? extends Item> item, String suffix, ResourceLocation baseModels) {
+    private void createWeaponItemModel(Supplier<? extends Item> item, String suffix, ResourceLocation baseModels) {
         String itemPath = key(item.get()).getPath();
         String texturePath = getItemTexture(suffix, itemPath);
-        return createSimpleItem(item, suffix, baseModels);
+        createSimpleItem(item, suffix, baseModels);
     }
 
-    private ResourceLocation createBuiltInEntity(Supplier<? extends Item> item, String suffix) {
+    private void createBuiltInEntity(Supplier<? extends Item> item, String suffix) {
         String itemPath = key(item.get()).getPath();
-        return this.itemModelProvider.getBuilder(key(item.get()).toString())
+        this.itemModelProvider.getBuilder(key(item.get()).toString())
                 .parent(this.itemModelProvider.getExistingFile(BaseModels.BUILTIN))
                 .getLocation();
     }
 
-    private ResourceLocation customItemModelRenderer(Supplier<? extends Item> item, String suffix, ResourceLocation model) {
+    private void customItemModelRenderer(Supplier<? extends Item> item, String suffix, ResourceLocation model) {
         String name = key(item.get()).getPath();
         String items = String.format("item/%s", name);
-        return this.itemModelProvider.withExistingParent(suffix, model)
+        this.itemModelProvider.withExistingParent(suffix, model)
                 .customLoader(SeparateTransformsModelBuilder::begin).base(this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(String.format("item/%s_model", name)))))
                 .perspective(ItemDisplayContext.GUI, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(items))))
                 .perspective(ItemDisplayContext.FIXED, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BeyondHorizon.resource(items))))
@@ -75,14 +75,14 @@ public class ItemModelGenerator {
                 .end().getLocation();
     }
 
-    private ResourceLocation customItemRenderer(Supplier<? extends Item> item, String suffix, ResourceLocation model) {
+    private void customItemRenderer(Supplier<? extends Item> item, String suffix, ResourceLocation model) {
         String itemPath = key(item.get()).getPath();
         var textureHand = BeyondHorizon.resource(String.format("item/%s", itemPath));
         var textureInv = BeyondHorizon.resource(String.format("item/%s_inv", itemPath));
         String itemTextureOverlay = getItemTexture(suffix, itemPath) + "_overlay";
         ResourceLocation overlayLocation = BeyondHorizon.resource(itemTextureOverlay);
         if (this.itemModelProvider.existingFileHelper.exists(overlayLocation, TEXTURE)) {
-            return this.itemModelProvider.withExistingParent(itemPath, model)
+            this.itemModelProvider.withExistingParent(itemPath, model)
                     .customLoader(SeparateTransformsModelBuilder::begin).base(this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(model))
                             .texture("layer0", textureHand) .texture("layer1", overlayLocation))
                     .perspective(ItemDisplayContext.GUI, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BaseModels.GENERATED))
@@ -93,7 +93,7 @@ public class ItemModelGenerator {
                             .texture("layer0", textureInv) .texture("layer1", overlayLocation))
                     .end().getLocation();
         } else {
-            return this.itemModelProvider.withExistingParent(itemPath, model)
+            this.itemModelProvider.withExistingParent(itemPath, model)
                     .customLoader(SeparateTransformsModelBuilder::begin).base(this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(model))
                             .texture("layer0", textureHand))
                     .perspective(ItemDisplayContext.GUI, this.itemModelProvider.nested().parent(this.itemModelProvider.getExistingFile(BaseModels.GENERATED))
@@ -106,20 +106,20 @@ public class ItemModelGenerator {
         }
     }
 
-    private ResourceLocation createWeaponItemModel(Supplier<? extends Item> item, ResourceLocation baseModels, String suffix) {
-        return createWeaponItemModel(item, suffix, baseModels);
+    private void createWeaponItemModel(Supplier<? extends Item> item, ResourceLocation baseModels, String suffix) {
+        this.createWeaponItemModel(item, suffix, baseModels);
     }
 
-    private ResourceLocation createWeaponItemModel(Supplier<? extends Item> item, ResourceLocation baseModels) {
-        return createWeaponItemModel(item, "", baseModels);
+    private void createWeaponItemModel(Supplier<? extends Item> item, ResourceLocation baseModels) {
+        this.createWeaponItemModel(item, "", baseModels);
     }
 
-    public ResourceLocation createThrowingWeaponItemModel(Supplier<? extends Item> item, ResourceLocation baseModels, ResourceLocation throwingModel) {
+    public void createThrowingWeaponItemModel(Supplier<? extends Item> item, ResourceLocation baseModels, ResourceLocation throwingModel) {
         String itemPath = key(item.get()).getPath();
         ResourceLocation throwing = this.itemModelProvider.withExistingParent(itemPath + "_throwing", throwingModel).
                 texture("layer0", "item/" + itemPath).
                 getLocation();
-        return this.itemModelProvider.withExistingParent(itemPath, baseModels).texture("layer0",
+        this.itemModelProvider.withExistingParent(itemPath, baseModels).texture("layer0",
                         BeyondHorizon.resource("item/" + itemPath))
                 .override()
                 .predicate(ModelOverrides.THROWING, 1.0F)
@@ -145,24 +145,33 @@ public class ItemModelGenerator {
                 .getLocation();
     }
 
-    public ResourceLocation spawnEgg(Supplier<? extends Item> item) {
+    public void spawnEgg(Supplier<? extends Item> item) {
         String itemPath = key(item.get()).getPath();
-        return this.itemModelProvider.withExistingParent(itemPath, this.itemModelProvider.mcLoc("item/template_spawn_egg")).getLocation();
+        ResourceLocation rl = ResourceLocation.fromNamespaceAndPath(key(item.get()).getNamespace(), this.getItemTexture(itemPath));
+        boolean flag = this.itemModelProvider.existingFileHelper.exists(rl, TEXTURE);
+        BeyondHorizon.LOGGER.info("Is the custom egg is exist? {} - {}", flag, rl);
+        if (flag) {
+            this.itemModelProvider.getBuilder(itemPath).parent(new ModelFile.UncheckedModelFile("item/generated"))
+                    .texture("layer0", ResourceLocation.fromNamespaceAndPath(key(item.get()).getNamespace(), "item/"+ itemPath));
+        } else {
+            this.itemModelProvider.getBuilder(itemPath).parent(new ModelFile.UncheckedModelFile("item/generated"))
+                    .texture("layer0", BeyondHorizon.resource("item/default_spawn_egg"));
+        }
     }
 
-    public ResourceLocation createBowItem(Supplier<? extends Item> item, ResourceLocation baseModel, String suffix) {
+    public void createBowItem(Supplier<? extends Item> item, ResourceLocation baseModel, String suffix) {
         String itemPath = key(item.get()).getPath();
         String itemTexture = getItemTexture(suffix, itemPath);
         ResourceLocation pull0 = this.itemModelProvider.withExistingParent(itemPath + "_pulling_0", baseModel).texture("layer0", itemTexture + "_pulling_0").getLocation();
         ResourceLocation pull1 = this.itemModelProvider.withExistingParent(itemPath + "_pulling_1", baseModel).texture("layer0", itemTexture + "_pulling_1").getLocation();
         ResourceLocation pull2 = this.itemModelProvider.withExistingParent(itemPath + "_pulling_2", baseModel).texture("layer0", itemTexture + "_pulling_2").getLocation();
-        return this.itemModelProvider.withExistingParent(itemPath, baseModel).texture("layer0", BeyondHorizon.resource(itemTexture)).
+        this.itemModelProvider.withExistingParent(itemPath, baseModel).texture("layer0", BeyondHorizon.resource(itemTexture)).
                 override().predicate(ModelOverrides.PULLING, 1.0F).model(new ModelFile.ExistingModelFile(pull0, this.itemModelProvider.existingFileHelper)).end().
                 override().predicate(ModelOverrides.PULLING, 1.0F).predicate(ModelOverrides.PULL, 0.65F).model(new ModelFile.ExistingModelFile(pull1, this.itemModelProvider.existingFileHelper)).end().
                 override().predicate(ModelOverrides.PULLING, 1.0F).predicate(ModelOverrides.PULL, 0.9F).model(new ModelFile.ExistingModelFile(pull2, this.itemModelProvider.existingFileHelper)).end().getLocation();
     }
 
-    public ResourceLocation createCrossbowItem(Supplier<? extends Item> item, ResourceLocation baseModel, String suffix) {
+    public void createCrossbowItem(Supplier<? extends Item> item, ResourceLocation baseModel, String suffix) {
         String itemPath = key(item.get()).getPath();
         String itemTexture = getItemTexture(suffix, itemPath);
         ResourceLocation pull0 = this.itemModelProvider.withExistingParent(itemPath + "_pulling_0", baseModel).texture("layer0", itemTexture + "_pulling_0").getLocation();
@@ -170,7 +179,7 @@ public class ItemModelGenerator {
         ResourceLocation pull2 = this.itemModelProvider.withExistingParent(itemPath + "_pulling_2", baseModel).texture("layer0", itemTexture + "_pulling_2").getLocation();
         ResourceLocation charged = this.itemModelProvider.withExistingParent(itemPath + "_arrow", baseModel).texture("layer0", itemTexture + "_arrow").getLocation();
         ResourceLocation chargedFireworks = this.itemModelProvider.withExistingParent(itemPath + "_firework", baseModel).texture("layer0", itemTexture + "_firework").getLocation();
-        return this.itemModelProvider.withExistingParent(itemPath, baseModel).texture("layer0", BeyondHorizon.resource(itemTexture)).
+        this.itemModelProvider.withExistingParent(itemPath, baseModel).texture("layer0", BeyondHorizon.resource(itemTexture)).
                 override().predicate(ModelOverrides.PULLING, 1.0F).model(new ModelFile.ExistingModelFile(pull0, this.itemModelProvider.existingFileHelper)).end().
                 override().predicate(ModelOverrides.PULLING, 1.0F).predicate(ModelOverrides.PULL, 0.65F).model(new ModelFile.ExistingModelFile(pull1, this.itemModelProvider.existingFileHelper)).end().
                 override().predicate(ModelOverrides.PULLING, 1.0F).predicate(ModelOverrides.PULL, 0.9F).model(new ModelFile.ExistingModelFile(pull2, this.itemModelProvider.existingFileHelper)).end().
@@ -178,9 +187,12 @@ public class ItemModelGenerator {
                 override().predicate(ModelOverrides.CHARGED, 1.0F).predicate(ModelOverrides.FIREWORK, 1.0F).model(new ModelFile.ExistingModelFile(chargedFireworks, this.itemModelProvider.existingFileHelper))
                 .end().getLocation();
     }
+    private @NotNull String getItemTexture(String itemPath) {
+        return this.getItemTexture("", itemPath);
+    }
     private @NotNull String getItemTexture(String suffix, String itemPath) {
         String itemTexture;
-        if (isEmpty(suffix)) {
+        if (this.isEmpty(suffix)) {
             itemTexture = String.format("item/%s", itemPath);
         } else {
             itemTexture = String.format("item/%s/%s", suffix, itemPath);

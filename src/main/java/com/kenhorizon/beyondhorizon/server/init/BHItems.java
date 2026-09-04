@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
@@ -19,12 +20,17 @@ import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryItems;
 import com.kenhorizon.libs.registry.RegistryTabs;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Supplier;
 
 public class BHItems {
     //
@@ -41,6 +47,7 @@ public class BHItems {
     public static final RegistryObject<Item> DEBUG1 = RegistryItems
             .register("debug1", DebugWeaponItems::new)
             .itemName("Debug: One Tap One Kill")
+            .properties(p -> p.rarity(BHRarity.TRANSCENDENT))
             .tab(RegistryTabs.Category.DEBUGS)
             .model(ItemModels.GENERATED)
             .register();
@@ -168,28 +175,12 @@ public class BHItems {
     public static final RegistryObject<Item> CHAINMAIL_PLATE = basicItem("chainmail_plate", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RUBY = basicItem("ruby", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> AMPLIFLYING_TOME = basicItem("ampliflying_tome", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> HEART_OF_THE_INFERNO = basicItem("heart_of_the_inferno", BHRarity.LEGENDARY, RegistryTabs.Category.INGREDIENTS);
 
-    public static final RegistryObject<Item> WILDFIRE_HELMET = armorItem("wildfire_helmet", ArmorItem.Type.HELMET, ArmorBaseMaterials.WILDFIRE);
-    public static final RegistryObject<Item> WILDFIRE_CHESTPLATE = armorItem("wildfire_chestplate", ArmorItem.Type.CHESTPLATE, ArmorBaseMaterials.WILDFIRE);
-    public static final RegistryObject<Item> WILDFIRE_LEGGINGS = armorItem("wildfire_leggings", ArmorItem.Type.LEGGINGS, ArmorBaseMaterials.WILDFIRE);
-    public static final RegistryObject<Item> WILDFIRE_BOOTS = armorItem("wildfire_boots", ArmorItem.Type.BOOTS, ArmorBaseMaterials.WILDFIRE);
-
-    public static final RegistryObject<Item> WHITE_WOOL_FUR = woolFurItem("white_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> ORANGE_WOOL_FUR = woolFurItem("orange_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> MAGENTA_WOOL_FUR = woolFurItem("magenta_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> LIGHT_BLUE_WOOL_FUR = woolFurItem("light_blue_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> YELLOW_WOOL_FUR = woolFurItem("yellow_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> LIME_WOOL_FUR = woolFurItem("lime_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> PINK_WOOL_FUR = woolFurItem("pink_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> GRAY_WOOL_FUR = woolFurItem("gray_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> LIGHT_GRAY_WOOL_FUR = woolFurItem("light_gray_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> CYAN_WOOL_FUR = woolFurItem("cyan_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> PURPLE_WOOL_FUR = woolFurItem("purple_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> BLUE_WOOL_FUR = woolFurItem("blue_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> BROWN_WOOL_FUR = woolFurItem("brown_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> GREEN_WOOL_FUR = woolFurItem("green_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> RED_WOOL_FUR = woolFurItem("red_wool_fur", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> BLACK_WOOL_FUR = woolFurItem("black_wool_fur", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> WILDFIRE_HELMET = armorItem("wildfire_helmet", ArmorItem.Type.HELMET, BHRarity.LEGENDARY, ArmorBaseMaterials.WILDFIRE);
+    public static final RegistryObject<Item> WILDFIRE_CHESTPLATE = armorItem("wildfire_chestplate", ArmorItem.Type.CHESTPLATE, BHRarity.LEGENDARY, ArmorBaseMaterials.WILDFIRE);
+    public static final RegistryObject<Item> WILDFIRE_LEGGINGS = armorItem("wildfire_leggings", ArmorItem.Type.LEGGINGS, BHRarity.LEGENDARY, ArmorBaseMaterials.WILDFIRE);
+    public static final RegistryObject<Item> WILDFIRE_BOOTS = armorItem("wildfire_boots", ArmorItem.Type.BOOTS, BHRarity.LEGENDARY, ArmorBaseMaterials.WILDFIRE);
 
     public static final RegistryObject<Item> FLINT_KNIFE = swordItem("flint_knife", MeleeWeaponMaterials.FLINT, MeleeItemBuilder.KNIFE);
     //
@@ -450,16 +441,16 @@ public class BHItems {
 //            .model(ItemModels.BIG32_INHAND)
 //            .register();
 
-    public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO, Colors.combineRGB(255, 248, 71), Colors.combineRGB(139, 52, 1));
-    public static final RegistryObject<Item> FAYE_FLARES_SPAWN_EGG = spawnEgg("faye_flares", BHEntity.FAYE_FLARES, Colors.combineRGB(255, 248, 71), Colors.combineRGB(182, 31, 0));
-    public static final RegistryObject<Item> FAYE_WILDFIRE_SPAWN_EGG = spawnEgg("faye_wildfire", BHEntity.FAYE_WILDFIRE, Colors.combineRGB(255, 248, 71), Colors.combineRGB(31, 31, 31));
-    public static final RegistryObject<Item> PYROLLIGER_SPAWN_EGG = spawnEgg("pyrolliger", BHEntity.PYROLLIGER, Colors.RED, Colors.YELLOW);
-    public static final RegistryObject<Item> DRAGON_HORNET_SPAWN_EGG = spawnEgg("dragon_hornet", BHEntity.DRAGON_HORNET, Colors.YELLOW, Colors.ORANGE);
+    public static final RegistryObject<Item> BLAZING_INFERNO_SPAWN_EGG = spawnEgg("blazing_inferno", BHEntity.BLAZING_INFERNO);
+    public static final RegistryObject<Item> FAYE_FLARES_SPAWN_EGG = spawnEgg("faye_flares", BHEntity.FAYE_FLARES);
+    public static final RegistryObject<Item> FAYE_WILDFIRE_SPAWN_EGG = spawnEgg("faye_wildfire", BHEntity.FAYE_WILDFIRE);
+    public static final RegistryObject<Item> PYROLLIGER_SPAWN_EGG = spawnEgg("pyrolliger", BHEntity.PYROLLIGER);
+    public static final RegistryObject<Item> DRAGON_HORNET_SPAWN_EGG = spawnEgg("dragon_hornet", BHEntity.DRAGON_HORNET);
 
 
-    private static RegistryObject<Item> spawnEgg(String entityName, RegistryObject entityType, int backgroundColor, int highlightColor) {
+    private static RegistryObject<Item> spawnEgg(String entityName, RegistryObject entityType) {
         String itemName = entityName + "_spawn_egg";
-        return RegistryItems.register(itemName,item -> new ForgeSpawnEggItem(entityType, backgroundColor, highlightColor, new Item.Properties()))
+        return RegistryItems.register(itemName,item -> new CustomSpawnEggItem(entityType, new Item.Properties()))
                 .tab(RegistryTabs.Category.SPAWN_EGG)
                 .model(ItemModels.SPAWN_EGG)
                 .register();
@@ -502,9 +493,11 @@ public class BHItems {
         return RegistryItems.register(name, properties -> builder.create(materials, properties.rarity(rarity))).tab(RegistryTabs.Category.TOOLS).model(itemModels).register();
     }
     private static RegistryObject<Item> armorItem(String name, ArmorItem.Type type, ArmorBaseMaterials armorMaterial) {
-        return RegistryItems.register(name, properties -> new ArmorBaseItem(armorMaterial, type, properties)).tab(RegistryTabs.Category.COMBAT).model(ItemModels.GENERATED).register();
+        return armorItem(name, type, Rarity.COMMON, armorMaterial);
     }
-
+    private static RegistryObject<Item> armorItem(String name, ArmorItem.Type type, Rarity rarity, ArmorBaseMaterials armorMaterial) {
+        return RegistryItems.register(name, properties -> new ArmorBaseItem(armorMaterial, type, properties)).properties(p->p.rarity(rarity)).tab(RegistryTabs.Category.COMBAT).model(ItemModels.GENERATED).register();
+    }
     private static RegistryObject<Item> accessoryItemModel(String name, AccessoryBuilder accessoryBuilder) {
         return RegistryItems.register(name, item -> new AccessoryItem(AccessoryItemGroup.UNIQUE, item, accessoryBuilder))
                 .tab(RegistryTabs.Category.ACCESSORY).tag(BHItemTags.ONLY_ACCESSORY).register();

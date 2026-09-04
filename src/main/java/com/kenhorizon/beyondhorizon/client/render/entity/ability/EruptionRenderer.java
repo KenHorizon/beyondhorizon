@@ -16,6 +16,11 @@ public class EruptionRenderer extends AnimatedAbilityRenderer<EruptionAbility> {
     }
 
     @Override
+    public int animatedTexture(EruptionAbility entity) {
+        return (int) ((entity.getLifeTime() * this.numberOfFrames() / entity.getDuration() * 2));
+    }
+
+    @Override
     public String getTextureLocation() {
         return "textures/entity/effect/eruption/eruption";
     }

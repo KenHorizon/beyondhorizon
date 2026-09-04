@@ -108,22 +108,7 @@ public class Maths {
     public static double getMinToMax(double min, double max, double increment) {
         return min + (max - min) * increment;
     }
-    public static float sampleNoise2D(int x, int z, float simplexSampleRate) {
-        return (float) ((BHSimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
-    }
 
-    public static float sampleNoise3D(int x, int y, int z, float simplexSampleRate) {
-        return (float) ((BHSimplexNoise.noise((x + simplexSampleRate) / simplexSampleRate, (y + simplexSampleRate) / simplexSampleRate, (z + simplexSampleRate) / simplexSampleRate)));
-    }
-
-    public static float getTickFactor(float tick, float duration, boolean inversion) {
-        float v = Mth.clamp(tick / duration, 0F, 1F);
-        return inversion ? 1F - v : v;
-    }
-    public static float calculateSpeedMultiplier(float tickFactor, float distanceFactor, float exponent, float speedModifier) {
-        float speedFactor = (float) Math.pow(tickFactor, exponent) * (float) Math.pow(2, -exponent * (1 - tickFactor)) * distanceFactor;
-        return speedModifier * speedFactor;
-    }
     public static Maths.Axis XN = new Maths.Axis(-1.0F, 0.0F, 0.0F);
     public static Maths.Axis XP = new Maths.Axis(1.0F, 0.0F, 0.0F);
     public static Maths.Axis YN = new Maths.Axis(0.0F, -1.0F, 0.0F);
@@ -137,6 +122,7 @@ public class Maths {
         }
         return new Quaternionf().setAngleAxis(angle, axis.x, axis.y, axis.z);
     }
+
     public static Quaternionf rotationXYZ(float x, float y, float z, boolean degrees) {
         if (degrees) {
             x *= ((float) Math.PI / 180F);
@@ -145,6 +131,7 @@ public class Maths {
         }
         return new Quaternionf().rotationXYZ(x, y, z);
     }
+
     public static class Axis {
         private final Vector3f axis;
 

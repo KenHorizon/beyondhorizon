@@ -8,11 +8,13 @@ import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
 
 import java.util.HashMap;
@@ -65,11 +67,11 @@ public class BHBossBar {
     private int overlayWidth;
     private int overlayHeight;
     private int verticalIncrement;
-    private int progress;
+    private int bossbarProgress;
     private ChatFormatting textColor;
 
     public BHBossBar(ResourceLocation container, ResourceLocation base, ResourceLocation overlay, int height, int baseX, int baseY,
-                     int baseTextHeight, int overlayX, int overlayY, int overlayWidth, int overlayHeight, int progress, int verticalIncrement, ChatFormatting chatFormatting) {
+                     int baseTextHeight, int overlayX, int overlayY, int overlayWidth, int overlayHeight, int bossbarProgress, int verticalIncrement, ChatFormatting chatFormatting) {
         this.container = container;
         this.verticalIncrement = verticalIncrement;
         this.base = base;
@@ -83,16 +85,16 @@ public class BHBossBar {
         this.overlayY = overlayY;
         this.overlayWidth = overlayWidth;
         this.overlayHeight = overlayHeight;
-        this.progress = progress;
+        this.bossbarProgress = bossbarProgress;
         this.textColor = chatFormatting;
     }
     public BHBossBar(ResourceLocation overlay, int height, int baseX, int baseY,
-                     int baseTextHeight, int overlayX, int overlayY, int progress, int verticalIncrement, ChatFormatting chatFormatting) {
-        this(HudSprites.BOSS_BAR_HUD_CONTAINER, HudSprites.BOSS_BAR_HUD, overlay, height, baseX, baseY, baseTextHeight, overlayX, overlayY, 256, 23, progress, verticalIncrement, chatFormatting);
+                     int baseTextHeight, int overlayX, int overlayY, int bossbarProgress, int verticalIncrement, ChatFormatting chatFormatting) {
+        this(HudSprites.BOSS_BAR_HUD_CONTAINER, HudSprites.BOSS_BAR_HUD, overlay, height, baseX, baseY, baseTextHeight, overlayX, overlayY, 256, 23, bossbarProgress, verticalIncrement, chatFormatting);
     }
     public BHBossBar(ResourceLocation container, ResourceLocation hud, ResourceLocation overlay, int height, int baseX, int baseY,
-                     int baseTextHeight, int overlayX, int overlayY, int progress, int verticalIncrement, ChatFormatting chatFormatting) {
-        this(container, hud ,overlay, height, baseX, baseY, baseTextHeight, overlayX, overlayY, 256, 23, progress, verticalIncrement, chatFormatting);
+                     int baseTextHeight, int overlayX, int overlayY, int bossbarProgress, int verticalIncrement, ChatFormatting chatFormatting) {
+        this(container, hud ,overlay, height, baseX, baseY, baseTextHeight, overlayX, overlayY, 256, 23, bossbarProgress, verticalIncrement, chatFormatting);
     }
     public void renderBossBar(CustomizeGuiOverlayEvent.BossEventProgress event) {
         Minecraft minecraft = Minecraft.getInstance();
@@ -105,7 +107,8 @@ public class BHBossBar {
         int screenH = minecraft.getWindow().getScreenHeight();
         int guiX = screenW / 2 - 91;
         int guiY = y - 9;
-        minecraft.getProfiler().push("customBossbar");
+        float ageInTicks = minecraft.player.tickCount + event.getPartialTick();
+        minecraft.getProfiler().push("beyondhorizon:bossbar");
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, this.base);
         this.drawBossBar(graphics, x + 1 + baseX, y + baseY, event.getBossEvent());
@@ -116,7 +119,7 @@ public class BHBossBar {
         int textY = guiY;
         BlitHelper.drawBorderedStrings(minecraft.font, graphics, bossBarName, textX, textY, this.textColor.getColor().intValue());
         if (this.hasOverlay) {
-            minecraft.getProfiler().push("customBossBarOverlay");
+            minecraft.getProfiler().push("beyondhorizon:bossbar_overlay");
             RenderSystem.setShaderTexture(0, this.overlay);
             graphics.blit(this.overlay, x + 1 + this.overlayX + this.baseX, y + this.overlayY + this.baseY, 0, 0, this.overlayWidth, this.overlayHeight, this.overlayWidth, this.overlayHeight);
             minecraft.getProfiler().pop();
@@ -125,8 +128,8 @@ public class BHBossBar {
     }
 
     private void drawBossBar(GuiGraphics graphics, int x, int y, LerpingBossEvent event) {
-        graphics.blit(this.container, x - 3, y, 0, 0, this.progress, this.height, 256, this.baseTextHeight);
-        int progress = (int)( event.getProgress() * (this.progress + 1));
+        graphics.blit(this.container, x - 3, y, 0, 0, this.bossbarProgress, this.height, 256, this.baseTextHeight);
+        int progress = (int)( event.getProgress() * (this.bossbarProgress + 1));
         if (progress > 0) {
             graphics.blit(this.base, x, y, 0, this.height, progress, this.height, 256, this.baseTextHeight);
         }

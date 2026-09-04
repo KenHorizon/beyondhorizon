@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-04T00:49:40.7713794	Loot Tables
+// 1.20.1	2026-09-04T14:02:58.5000371	Loot Tables
 947255dfed5be2c55821eeee5bc219539c73d16a data/beyondhorizon/loot_tables/blocks/arcane_budding.json
 b1a29c20741f4b197c9e1d83cd94bd08141535be data/beyondhorizon/loot_tables/blocks/arcane_budding_full.json
 2a5a5ac428280705f5e861eaa7eddde9d7e8c63a data/beyondhorizon/loot_tables/blocks/arcane_rocks.json
@@ -84,7 +84,7 @@ fe520fc688496f291f778dc0dfd341bf689d71f5 data/beyondhorizon/loot_tables/blocks/s
 d867defcf4abb6ce131bf1f1f3dc2e7cb7f8b2a0 data/beyondhorizon/loot_tables/blocks/volcanic_mantle.json
 8b972173b1e63fad3771dd6d6010124e223eddc7 data/beyondhorizon/loot_tables/blocks/wall_fire_basin.json
 48d89e7c826d617dd1d08ded3516a74334420742 data/beyondhorizon/loot_tables/blocks/workbench.json
-f7ec18cb555289fe44f325021a763d8cf2719b43 data/beyondhorizon/loot_tables/entities/blazing_inferno.json
+593b5f16e3d6ba4e484506db84bcaca3f0b3ef29 data/beyondhorizon/loot_tables/entities/blazing_inferno.json
 8a184673ef5f94be845dc12508fbdb304160d246 data/beyondhorizon/loot_tables/entities/dragon_hornet.json
 5553cfd9a343588220aa057d019a7529c8dfb384 data/beyondhorizon/loot_tables/entities/faye_flares.json
 666ece14f21e302db4ba646f62c41080c02fde83 data/beyondhorizon/loot_tables/entities/faye_wildfire.json

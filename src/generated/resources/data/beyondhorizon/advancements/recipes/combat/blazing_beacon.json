@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_light_blue_wool_fur": {
+    "has_blazing_beacon": {
       "conditions": {
         "items": [
           {
             "items": [
-              "beyondhorizon:light_blue_wool_fur"
+              "beyondhorizon:heart_of_the_inferno"
             ]
           }
         ]
@@ -15,20 +15,20 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "minecraft:light_blue_wool_from_light_blue_wool_fur"
+        "recipe": "beyondhorizon:blazing_beacon"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
   },
   "requirements": [
     [
-      "has_light_blue_wool_fur",
+      "has_blazing_beacon",
       "has_the_recipe"
     ]
   ],
   "rewards": {
     "recipes": [
-      "minecraft:light_blue_wool_from_light_blue_wool_fur"
+      "beyondhorizon:blazing_beacon"
     ]
   },
   "sends_telemetry_event": false

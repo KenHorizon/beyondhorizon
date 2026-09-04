@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "G": {
+      "item": "minecraft:ender_chest"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    },
+    "O": {
+      "item": "minecraft:obsidian"
+    },
+    "S": {
+      "item": "beyondhorizon:heart_of_the_inferno"
+    }
+  },
+  "pattern": [
+    "GGG",
+    "GSG",
+    "ONO"
+  ],
+  "result": {
+    "item": "beyondhorizon:blazing_beacon"
+  },
+  "show_notification": true
+}

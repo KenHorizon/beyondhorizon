@@ -107,7 +107,6 @@ public class BHBossBar {
         int screenH = minecraft.getWindow().getScreenHeight();
         int guiX = screenW / 2 - 91;
         int guiY = y - 9;
-        float ageInTicks = minecraft.player.tickCount + event.getPartialTick();
         minecraft.getProfiler().push("beyondhorizon:bossbar");
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, this.base);

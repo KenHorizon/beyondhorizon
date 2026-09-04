@@ -101,16 +101,34 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
 
         recipeFactory.createBlock(BHItems.BLACK_IRON_INGOT.get(), BHBlocks.BLACK_IRON_BLOCK.get());
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHItems.WILDFIRE_CORE.get(), 4)
+                .pattern("WMW")
+                .pattern("MMM")
+                .pattern("WMW")
+                .define('W', BHItems.WILDFIRE_FRAGMENT.get())
+                .define('M', BHItems.MOLTEN_CORE_FRAGMENTS.get())
+                .unlockedBy("has_materials_for_wildfire_core",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.WILDFIRE_FRAGMENT.get(), BHItems.MOLTEN_CORE_FRAGMENTS.get()).build()))
+                .save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BHItems.BLAZING_BEACON.get())
                 .pattern("GGG")
                 .pattern("GSG")
-                .pattern("ONO")
-                .define('G', Blocks.ENDER_CHEST)
+                .pattern("OWO")
+                .define('G', Blocks.GLASS)
                 .define('O', Blocks.OBSIDIAN)
-                .define('N', Items.NETHERITE_INGOT)
+                .define('W', BHItems.WILDFIRE_CORE.get())
                 .define('S', BHItems.HEART_OF_THE_INFERNO.get())
                 .unlockedBy("has_blazing_beacon",
                         inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.HEART_OF_THE_INFERNO.get()).build()))
+                .save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BHItems.GUARDIAN_SWORD.get())
+                .pattern("W")
+                .pattern("W")
+                .pattern("C")
+                .define('W', BHItems.WILDFIRE_FRAGMENT.get())
+                .define('C', BHItems.WILDFIRE_CORE.get())
+                .unlockedBy("has_wildfire_fragment",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.WILDFIRE_FRAGMENT.get()).build()))
                 .save(consumer);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.COMBAT, BHItems.SOLARFLARE.get())

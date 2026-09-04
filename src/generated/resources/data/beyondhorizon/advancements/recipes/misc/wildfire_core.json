@@ -1,0 +1,36 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_materials_for_wildfire_core": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:wildfire_fragment",
+              "beyondhorizon:molten_core_fragmets"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:wildfire_core"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_materials_for_wildfire_core",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:wildfire_core"
+    ]
+  },
+  "sends_telemetry_event": false
+}

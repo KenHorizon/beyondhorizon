@@ -19,7 +19,7 @@ public class FayeWildfireLootTable extends EntityLootDropBuilder {
         LootTable.Builder builder = new LootTable.Builder();
         builder
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-                    .add(LootItem.lootTableItem(BHItems.WILDFIRE_FRAGMENT.get())
+                    .add(LootItem.lootTableItem(BHItems.MOLTEN_CORE_FRAGMENTS.get())
                             .when(dropRate(0.35F)).apply(setCount(0, 4)).apply(lootingMultiplier(0.0F, 1.0F)))
                         .add(LootItem.lootTableItem(Items.BLAZE_ROD).when(dropRate(0.25F))
                                 .apply(setCount(0, 4)).apply(lootingMultiplier(0.0F, 1.0F)))

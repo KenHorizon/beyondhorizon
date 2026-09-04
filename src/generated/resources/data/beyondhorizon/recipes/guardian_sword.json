@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "C": {
+      "item": "beyondhorizon:wildfire_core"
+    },
+    "W": {
+      "item": "beyondhorizon:wildfire_fragment"
+    }
+  },
+  "pattern": [
+    "W",
+    "W",
+    "C"
+  ],
+  "result": {
+    "item": "beyondhorizon:guardian_sword"
+  },
+  "show_notification": true
+}

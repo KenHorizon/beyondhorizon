@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "beyondhorizon:guardian_sword"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wildfire_fragment": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:wildfire_fragment"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_wildfire_fragment",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "beyondhorizon:guardian_sword"
+    ]
+  },
+  "sends_telemetry_event": false
+}

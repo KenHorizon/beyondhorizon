@@ -60,17 +60,6 @@
           "type": "minecraft:item",
           "conditions": [
             {
-              "chance": 0.35,
-              "condition": "minecraft:random_chance_with_looting",
-              "looting_multiplier": 1.25
-            }
-          ],
-          "name": "beyondhorizon:guardian_sword"
-        },
-        {
-          "type": "minecraft:item",
-          "conditions": [
-            {
               "chance": 0.15,
               "condition": "minecraft:random_chance_with_looting",
               "looting_multiplier": 1.25

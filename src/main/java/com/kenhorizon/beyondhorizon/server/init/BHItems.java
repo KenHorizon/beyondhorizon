@@ -157,6 +157,7 @@ public class BHItems {
     public static final RegistryObject<Item> DUSK_LEATHER = basicItem("dusk_leather", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> FLAME_CELL = basicItem("flame_cell", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> WILDFIRE_FRAGMENT = basicItem("wildfire_fragment", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> MOLTEN_CORE_FRAGMENTS = basicItem("molten_core_fragmets", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_BLACK_IRON = basicItem("raw_black_iron", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_CRIMSNITE = basicItem("raw_crimsnite", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RAW_LUMINITE = basicItem("raw_luminite", RegistryTabs.Category.INGREDIENTS);
@@ -175,6 +176,7 @@ public class BHItems {
     public static final RegistryObject<Item> CHAINMAIL_PLATE = basicItem("chainmail_plate", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RUBY = basicItem("ruby", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> AMPLIFLYING_TOME = basicItem("ampliflying_tome", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> WILDFIRE_CORE = basicItem("wildfire_core", BHRarity.LEGENDARY, RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> HEART_OF_THE_INFERNO = basicItem("heart_of_the_inferno", BHRarity.LEGENDARY, RegistryTabs.Category.INGREDIENTS);
 
     public static final RegistryObject<Item> WILDFIRE_HELMET = armorItem("wildfire_helmet", ArmorItem.Type.HELMET, BHRarity.LEGENDARY, ArmorBaseMaterials.WILDFIRE);

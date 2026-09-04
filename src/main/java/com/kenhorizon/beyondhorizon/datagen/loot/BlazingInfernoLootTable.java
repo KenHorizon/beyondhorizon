@@ -23,7 +23,6 @@ public class BlazingInfernoLootTable extends EntityLootDropBuilder {
                         .add(LootItem.lootTableItem(BHItems.WILDFIRE_FRAGMENT.get()).apply(setCount(15, 20)).apply(lootingMultiplier(0.0F, 1.0F)))
                 )
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
-                        .add(LootItem.lootTableItem(BHItems.GUARDIAN_SWORD.get()).when(randomChanceAndLootingBoost(0.35F, 1.25F)))
                         .add(LootItem.lootTableItem(BHItems.HEART_OF_THE_INFERNO.get()).when(randomChanceAndLootingBoost(0.15F, 1.25F)))
                 );
         return builder;

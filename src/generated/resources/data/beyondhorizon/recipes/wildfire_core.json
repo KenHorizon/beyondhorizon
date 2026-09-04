@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": {
+      "item": "beyondhorizon:molten_core_fragmets"
+    },
+    "W": {
+      "item": "beyondhorizon:wildfire_fragment"
+    }
+  },
+  "pattern": [
+    "WMW",
+    "MMM",
+    "WMW"
+  ],
+  "result": {
+    "count": 4,
+    "item": "beyondhorizon:wildfire_core"
+  },
+  "show_notification": true
+}

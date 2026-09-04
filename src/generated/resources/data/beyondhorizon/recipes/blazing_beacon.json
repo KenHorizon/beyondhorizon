@@ -3,22 +3,22 @@
   "category": "equipment",
   "key": {
     "G": {
-      "item": "minecraft:ender_chest"
-    },
-    "N": {
-      "item": "minecraft:netherite_ingot"
+      "item": "minecraft:glass"
     },
     "O": {
       "item": "minecraft:obsidian"
     },
     "S": {
       "item": "beyondhorizon:heart_of_the_inferno"
+    },
+    "W": {
+      "item": "beyondhorizon:wildfire_core"
     }
   },
   "pattern": [
     "GGG",
     "GSG",
-    "ONO"
+    "OWO"
   ],
   "result": {
     "item": "beyondhorizon:blazing_beacon"

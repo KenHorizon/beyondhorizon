@@ -1,4 +1,4 @@
-// 1.20.1	2026-09-04T14:02:58.4960356	Item Models: beyondhorizon
+// 1.20.1	2026-09-05T00:52:49.1307407	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -127,6 +127,7 @@ f6ca3709d68e38f21a87b2cad5be9b5348c1e860 assets/beyondhorizon/models/item/mask_o
 b2f43174d163177bf6e76674a3a457ee16329a1d assets/beyondhorizon/models/item/mask_of_bewildered.json
 ad7deea38ea7f781b1e24c5223f796ffb35a9719 assets/beyondhorizon/models/item/miner_boots.json
 ed31ccc37159ce9d10539435aa6dc901a8e2864b assets/beyondhorizon/models/item/miner_gloves.json
+60bac3a34a6069cf1860f4e3a320a36c65eb56c2 assets/beyondhorizon/models/item/molten_core_fragmets.json
 dafdd78759bb14e2aed8610d97dcf799e25a96b3 assets/beyondhorizon/models/item/null_gem.json
 e86bba503b61d6ac12ff1a92db83b9b2b6f4e2dc assets/beyondhorizon/models/item/null_magic_rune.json
 5b4e47d722e69117ce2e75a8099e362d94179025 assets/beyondhorizon/models/item/obsidian_plate.json
@@ -196,6 +197,7 @@ f686f70b3152320e6fc1068bb48927e6476e1cdd assets/beyondhorizon/models/item/vitami
 d9280172e0fbb32be19997085d3deb47cc19b660 assets/beyondhorizon/models/item/ward_cleanse.json
 0e452738a355de7fa630ec2a0b9fc172b9a930d5 assets/beyondhorizon/models/item/wildfire_boots.json
 bde479a110f83a6254f91dd5987b79c91bae7c1c assets/beyondhorizon/models/item/wildfire_chestplate.json
+79ad25c239ef9b579c7554f329bfc303c681f2e3 assets/beyondhorizon/models/item/wildfire_core.json
 68be5e0f825e172f339287815a850bf930b9e049 assets/beyondhorizon/models/item/wildfire_fragment.json
 6bba49806cc268916bc53eddc6a9a6a122689781 assets/beyondhorizon/models/item/wildfire_helmet.json
 fe3562e8b66c7ab405b59e67a2255e707af26dba assets/beyondhorizon/models/item/wildfire_leggings.json

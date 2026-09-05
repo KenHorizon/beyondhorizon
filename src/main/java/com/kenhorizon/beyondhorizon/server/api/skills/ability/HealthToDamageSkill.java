@@ -43,11 +43,9 @@ public class HealthToDamageSkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public void onChangeEquipment(LivingEntity entity, ItemStack itemStack, boolean hasChanged) {
+    public void onUnequipEquipment(LivingEntity entity, ItemStack itemStack) {
         AttributeInstance attribute = entity.getAttribute(Attributes.ATTACK_DAMAGE);
-        if (hasChanged) {
-            attribute.removeModifier(ATTACK_DAMAGE_UUID);
-        }
+        attribute.removeModifier(ATTACK_DAMAGE_UUID);
     }
 
     public static void updateBonusAttackDamage(String name, float magnitude, ServerPlayer player, ItemStack stack) {

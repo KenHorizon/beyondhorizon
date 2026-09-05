@@ -8,9 +8,9 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
 import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbilityRegistries;
-import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
+import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.item.PlayerTrackerItem;
 import com.kenhorizon.libs.registry.RegistryLanguage;
@@ -99,6 +99,9 @@ public class BHLangProvider extends LanguageProvider {
         this.addEnchantmentDesc(BHEnchantments.DRAW_SPEED, "Reduce use time while using bow");
         this.addEnchantmentDesc(BHEnchantments.STUNNING, "Chance to stun the target");
         this.addEnchantmentDesc(BHEnchantments.SMELTER, "Chance to auto smelt the item");
+        this.addEnchantmentDesc(BHEnchantments.SPELL_POWER, "Increase ability power");
+        this.addEnchantmentDesc(BHEnchantments.MANA_COST, "Reduce the mana cost of magic item");
+        this.addEnchantmentDesc(BHEnchantments.MANA_RECOVERY, "Increase mana regeneration");
          //
         this.addArmorBonusSet(ArmorAbilityRegistries.WILDFIRE.get(), "Wildfire",
                 "Chance to release a shockwave dealing %s + %s%% total of attack damage",

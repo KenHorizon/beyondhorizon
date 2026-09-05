@@ -1,9 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.item.materials;
 
-import com.kenhorizon.beyondhorizon.server.init.BHItems;
-import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
-import net.minecraft.tags.ItemTags;
+import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
+import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;

@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
@@ -13,7 +12,6 @@ import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.item.*;
 import com.kenhorizon.beyondhorizon.server.item.base.SkillBaseItems;
 import com.kenhorizon.beyondhorizon.server.item.materials.MagicWeaponMaterials;
-import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;
 import com.kenhorizon.libs.server.IReloadable;
@@ -27,7 +25,6 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -35,15 +32,12 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.ForgeMod;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Consumer;
 
 public class MagicWeaponBaseItem extends BasicItem implements ISkillItems, IReloadable, ILeftClick, ICustomSweepParticle, ICustomHitSound, IArmPose {
     private final float abilityPower;
@@ -56,7 +50,7 @@ public class MagicWeaponBaseItem extends BasicItem implements ISkillItems, IRelo
     protected final SkillBaseItems skillBaseItems;
 
     public MagicWeaponBaseItem(MagicWeaponMaterials materials, float abilityPower, Properties properties, SkillBuilder skillbuilder) {
-        super(materials.fireImmune() ? properties.fireResistant() : properties);
+        super(materials.fireImmune() ? properties.fireResistant().stacksTo(1) : properties.stacksTo(1));
         this.materials = materials;
         this.skillBuilder = skillbuilder;
         this.abilityPower = abilityPower;

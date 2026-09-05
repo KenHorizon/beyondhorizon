@@ -29,7 +29,7 @@ public class BHConfigs {
     public static int SCREEN_SHAKE_AMOUNT = 100;
     public static GameHuds GAME_HUD = GameHuds.MOD;
     //SERVER
-    public static boolean ENCHANTMENT_BREAK_LEVEL = false;
+    public static boolean ENCHANTMENT_BREAK_LEVEL = true;
     public static AnvilCostSettings ANVIL_COSTING = AnvilCostSettings.REMOVE_REPAIR_SCALING;
     public static int ANVIL_COST_CAP = -1;
     public static double ANVIL_BREAK_CHANCES = 12.0D;
@@ -53,7 +53,7 @@ public class BHConfigs {
             ACCESSORY_BUTTON_X = ModClientConfig.ACCESSORY_BUTTON_X.get();
             ACCESSORY_BUTTON_Y = ModClientConfig.ACCESSORY_BUTTON_Y.get();
             //---------------------------------------------------------------------//
-            MOBS_MIN_LEVEL_CAP = ModCommonConfig.MOBS_MAX_LEVEL_CAP.get();
+            MOBS_MIN_LEVEL_CAP = ModCommonConfig.MOBS_MIN_LEVEL_CAP.get();
             MOBS_MAX_LEVEL_CAP = ModCommonConfig.MOBS_MAX_LEVEL_CAP.get();
             ENABLE_MOB_LEVELS = ModCommonConfig.ENABLE_MOB_LEVELS.get();
             ENCHANTMENT_BREAK_LEVEL = ModCommonConfig.ENCHANTMENT_BREAK_LEVEL.get();

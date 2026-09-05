@@ -1,8 +1,7 @@
-package com.kenhorizon.beyondhorizon.server.api.skills.ability.on_hit_effects;
+package com.kenhorizon.beyondhorizon.server.api.skills.ability.onhit_effects;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.OnHitEffectHandler;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;

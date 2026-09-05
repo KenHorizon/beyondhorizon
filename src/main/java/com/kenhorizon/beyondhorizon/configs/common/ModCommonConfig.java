@@ -74,7 +74,7 @@ public class ModCommonConfig {
                 .comment("This setting disables that")
                 .comment("It does not, however, allow creating enchantments beyond the cap")
                 .comment("So, for example, merging two power V books would still result in power V")
-                .define("Enchantment Break Level", false);
+                .define("Enchantment Break Level", true);
         builder.pop();
         builder.pop();
     }

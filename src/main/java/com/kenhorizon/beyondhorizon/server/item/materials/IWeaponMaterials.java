@@ -10,7 +10,7 @@ public interface IWeaponMaterials extends Tier {
 
     boolean hasSkills();
 
-    boolean hasSkills(Skill abilityTrait);
+    boolean hasSkills(Skill skill);
 
     boolean fireImmune();
 

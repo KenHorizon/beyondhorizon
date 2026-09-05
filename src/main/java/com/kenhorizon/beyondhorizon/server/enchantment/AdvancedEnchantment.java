@@ -2,17 +2,25 @@ package com.kenhorizon.beyondhorizon.server.enchantment;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessorySlotContext;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
+import com.kenhorizon.beyondhorizon.server.item.base.weapons.MagicWeaponBaseItem;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -29,28 +37,16 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.EnumMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
 
 @SuppressWarnings({"unchecked"})
-public class AdvancedEnchantment extends Enchantment implements IAdditionalEnchantment {
-    private static final UUID MAINHAND = UUID.fromString("2d6e2d29-3d84-4304-835f-d82afcade70e");
-    private static final UUID OFFHAND = UUID.fromString("2d6e2d29-3d84-4304-835f-d82afcade70e");
-    private static final UUID HEAD = UUID.fromString("2d6e2d29-3d84-4304-835f-d82afcade70e");
-    private static final UUID CHEST = UUID.fromString("83a311be-dbd5-4588-979d-e253b2361e14");
-    private static final UUID LEGS = UUID.fromString("7f934657-98e6-4ca0-80d6-30dff0fe95c8");
-    private static final UUID FEET = UUID.fromString("9fe730ee-e682-4535-bda9-09185e85f964");
-
-    public static final EnumMap<EquipmentSlot, UUID> ARMOR_MODIFIER_UUID_PER_TYPE = (EnumMap) Util.make(new EnumMap(EquipmentSlot.class), (map) -> {
-        map.put(EquipmentSlot.MAINHAND, MAINHAND);
-        map.put(EquipmentSlot.OFFHAND, OFFHAND);
-        map.put(EquipmentSlot.HEAD, HEAD);
-        map.put(EquipmentSlot.CHEST, CHEST);
-        map.put(EquipmentSlot.LEGS, LEGS);
-        map.put(EquipmentSlot.FEET, FEET);
-    });
+public class AdvancedEnchantment extends Enchantment implements IAdditionalEnchantment, IAttributeEnchantment {
+    public static final Map<String, UUID> UUIDS = new HashMap<>();
+    public static final String ENCHANTMENT_TAGS = "enchantment_attributes";
+    public static final String ENCHANTMENT_UUID = "enchantments";
 
     protected final int maxLevel;
     protected final int maxCost;
@@ -60,8 +56,12 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
     public static final EnchantmentCategory CATEGORY_ALL = EnchantmentCategory.create("ALL", item -> {
         return true;
     });
+    public static final EnchantmentCategory MAGIC_WEAPON = EnchantmentCategory.create("MAGIC_WEAPON", item -> {
+        return item instanceof MagicWeaponBaseItem;
+    });
     public static final EquipmentSlot[] SLOT_ALL = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET, EquipmentSlot.MAINHAND};
     public static final EquipmentSlot[] ARMOR_SLOTS = new EquipmentSlot[]{EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+    Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
 
     public AdvancedEnchantment(Builder builder) {
         super(builder.rarity, builder.category, builder.slot);
@@ -70,8 +70,7 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
         this.minCost = builder.minCost;
         this.isCursed = builder.isCursed;
         this.incompatibleEnchantments = builder.incomaptibleEnchantment;
-        ((IAttributeEnchantment) this).perLevel(builder.perLevel);
-        ((IAttributeEnchantment) this).getAttributeModifiers().putAll(builder.attributeModifiers);
+        this.attributeModifiers = builder.attributeModifiers;
     }
 
     @Override
@@ -182,6 +181,7 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
         return damageDealt;
     }
 
+
     @Override
     public int getMaxLevel() {
         return this.maxLevel;
@@ -226,6 +226,11 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
         }
     }
 
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(UUID uuid, ItemStack stack) {
+        return this.attributeModifiers;
+    }
+
     public Predicate<Enchantment> getIncompatibleEnchantments() {
         return incompatibleEnchantments;
     }
@@ -244,7 +249,6 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
         EquipmentSlot[] slot = AdvancedEnchantment.SLOT_ALL;
         Predicate<Enchantment> incomaptibleEnchantment;
         Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
-        double perLevel = 0.0F;
 
         public Builder xpCost(int xpCost) {
             this.xpCost = xpCost;
@@ -299,16 +303,9 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
          * Handle by {@link IAttributeEnchantment} allow to add attributes for assigned enchantments
          * */
         public Builder addAttributeModifier(Attribute attribute, double amount, AttributeModifier.Operation operation) {
-            AttributeModifier attributeModifier = new AttributeModifier("Enchantment Attribute Modifier", amount, operation);
+            AttributeModifier attributeModifier = new AttributeModifier(UUID.randomUUID(),"Enchantment Attribute Modifier", amount, operation);
             this.attributeModifiers.put(attribute, attributeModifier);
             return this;
         }
-        public Builder addAttributeModifier(Attribute attribute, String uuid, double amount, double perLevel, AttributeModifier.Operation operation) {
-            AttributeModifier attributeModifier = new AttributeModifier("Enchantment Attribute Modifier", amount, operation);
-            this.perLevel = perLevel;
-            this.attributeModifiers.put(attribute, attributeModifier);
-            return this;
-        }
-
     }
 }

@@ -4,7 +4,6 @@ import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;

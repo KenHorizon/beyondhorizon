@@ -3,9 +3,7 @@ package com.kenhorizon.beyondhorizon.server.item.base.tools;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.common.ToolActions;
 

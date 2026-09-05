@@ -3,16 +3,12 @@ package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.level.IAbilityInfo;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
-import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
@@ -52,7 +48,7 @@ public class HudInfo {
         this.armor = player.getArmorValue();
 
         this.casttime = this.getCastTime(player, stacks);
-        this.casttimeReduction = (float) AttributeUtils.getValue(player, BHAttributes.COOLDOWN.get());
+        this.casttimeReduction = (float) AttributeUtils.getValue(player, BHAttributes.CAST_TIME.get());
         this.selectedAbility = this.getAbilityUsing(stacks);
     }
 

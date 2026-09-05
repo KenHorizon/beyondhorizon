@@ -1,15 +1,14 @@
-package com.kenhorizon.beyondhorizon.server.api.skills.ability;
+package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
-import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import net.minecraft.client.CameraType;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
@@ -49,6 +48,24 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
     public WeaponAnimations getWeaponAnimations(Player player, ItemStack itemStack) {
         return WeaponAnimations.HOLDING;
     }
+
+
+    @Override
+    public void onUnequipEquipment(LivingEntity entity, ItemStack itemStack) {
+        if (entity instanceof Player player) {
+            List<AbstractDeathRayAbility> list = player.level().getEntitiesOfClass(AbstractDeathRayAbility.class, player.getBoundingBox().inflate(2.0D));
+            if (!list.isEmpty()) {
+                for (AbstractDeathRayAbility laserBeam : list) {
+                    if (laserBeam.caster != null && laserBeam.caster.getUUID() == player.getUUID()) {
+                        itemStack.finishUsingItem(player.level(), player);
+                        laserBeam.setDuration(0);
+                        laserBeam.discard();
+                    }
+                }
+            }
+        }
+    }
+
 
     @Override
     public void releaseUsing(ItemStack itemStack, Level level, LivingEntity entity, int chargedDuration) {

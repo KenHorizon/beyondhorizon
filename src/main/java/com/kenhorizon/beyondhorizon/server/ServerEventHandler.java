@@ -3,9 +3,11 @@ package com.kenhorizon.beyondhorizon.server;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.Fonts;
+import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
+import com.kenhorizon.beyondhorizon.server.enchantment.*;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.AdvanceDamageSource;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.OnHitEffectHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerLevelSystemPacket;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
@@ -23,9 +25,6 @@ import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance
 import com.kenhorizon.beyondhorizon.server.capability.*;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
-import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
-import com.kenhorizon.beyondhorizon.server.enchantment.IAdditionalEnchantment;
-import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
 import com.kenhorizon.beyondhorizon.server.item.QuiverItem;
@@ -35,8 +34,6 @@ import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryPacket;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
-import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundPlayerSwingArmPacket;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
@@ -44,7 +41,6 @@ import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.beyondhorizon.server.util.QuiverHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.LocationPredicate;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -66,17 +62,14 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.animal.Sheep;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.Evoker;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Shulker;
 import net.minecraft.world.entity.monster.hoglin.Hoglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -84,12 +77,9 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AddReloadListenerEvent;
@@ -340,6 +330,55 @@ public class ServerEventHandler {
             }
         });
     }
+
+
+    @SubscribeEvent
+    public void onEquipmentChangeEvent(LivingEquipmentChangeEvent event) {
+        LivingEntity entity = event.getEntity();
+        ItemStack from = event.getFrom();
+        ItemStack to = event.getTo();
+        EquipmentSlot slot = event.getSlot();
+        EnchantmentSlotContext slotContext = new EnchantmentSlotContext(AdvancedEnchantment.ENCHANTMENT_UUID, entity, slot);
+        if (!from.isEmpty()) {
+            if (!from.isEmpty()) {
+                if (from.getItem() instanceof ISkillItems skillItems) {
+                    for (Skill skill : skillItems.getSkills()) {
+                        Optional<IEntityProperties> optional = skill.entityProperties();
+                        skill.removeAttributeModifiers(entity, entity.getAttributes(), to);
+                        optional.ifPresent(iItemGeneric -> iItemGeneric.onUnequipEquipment(entity, to));
+                    }
+                }
+            }
+            var fromStackEnchantment = EnchantmentHelper.getEnchantments(from);
+            UUID uuid = ExtendedEnchantmentHelper.getSlotUuid(slotContext);
+            for (var enchants : fromStackEnchantment.entrySet()) {
+                if (enchants.getKey() instanceof IAttributeEnchantment instance) {
+                    Multimap<Attribute, AttributeModifier> map = ExtendedEnchantmentHelper.getAttributeModifiers(uuid, from);
+                    entity.getAttributes().removeAttributeModifiers(map);
+                }
+            }
+        }
+        if (!to.isEmpty()) {
+            if (!to.isEmpty()) {
+                if (to.getItem() instanceof ISkillItems skillItems) {
+                    for (Skill skill : skillItems.getSkills()) {
+                        Optional<IEntityProperties> optional = skill.entityProperties();
+                        skill.addAttributeModifiers(entity, entity.getAttributes(), to);
+                        optional.ifPresent(iItemGeneric -> iItemGeneric.onEquipEquipment(entity, to));
+                    }
+                }
+            }
+            var toStackEnchantment = EnchantmentHelper.getEnchantments(to);
+            UUID uuid = ExtendedEnchantmentHelper.getSlotUuid(slotContext);
+            for (var enchants : toStackEnchantment.entrySet()) {
+                if (enchants.getKey() instanceof IAttributeEnchantment instance) {
+                    Multimap<Attribute, AttributeModifier> map = ExtendedEnchantmentHelper.getAttributeModifiers(uuid, to);
+                    entity.getAttributes().addTransientAttributeModifiers(map);
+                }
+            }
+        }
+    }
+
 
     // TODO: ACCESSORY LOGICS
     private void accessoryLogics(Player player) {
@@ -643,33 +682,9 @@ public class ServerEventHandler {
 
         if (entity instanceof Player player) {
             this.accessoryLogics(player);
-            PlayerData playerData = Capabilities.data(player);
             float healthRegen = (float) player.getAttributeValue(BHAttributes.HEALTH_REGENERATION.get());
             if (player.tickCount % 10 == 0) {
                 player.heal(healthRegen);
-            }
-            for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
-                ItemStack prevItemStacks = player.getInventory().getItem(i);
-                if (!ItemStack.matches(itemStack, prevItemStacks)) {
-                    if (!prevItemStacks.isEmpty()) {
-                        if (prevItemStacks.getItem() instanceof ISkillItems skillItems) {
-                            for (Skill skill : skillItems.getSkills()) {
-                                Optional<IEntityProperties> optional = skill.entityProperties();
-                                skill.removeAttributeModifiers(player, player.getAttributes(), prevItemStacks);
-                                optional.ifPresent(iItemGeneric -> iItemGeneric.onChangeEquipment(player, itemStack, true));
-                            }
-                        }
-                    }
-                    if (!itemStack.isEmpty()) {
-                        if (itemStack.getItem() instanceof ISkillItems skillItems) {
-                            for (Skill skill : skillItems.getSkills()) {
-                                Optional<IEntityProperties> optional = skill.entityProperties();
-                                skill.addAttributeModifiers(player, player.getAttributes(), itemStack);
-                                optional.ifPresent(iItemGeneric -> iItemGeneric.onChangeEquipment(player, itemStack, false));
-                            }
-                        }
-                    }
-                }
             }
         }
         if (entity instanceof Mob mobs) {
@@ -1092,31 +1107,6 @@ public class ServerEventHandler {
                 if (entry.getKey() instanceof IAdditionalEnchantment additionalEnchantment) {
                     Optional<IAdditionalEnchantment> optional = additionalEnchantment.enchantmentCallback();
                     optional.ifPresent(iAdditionalEnchantment -> iAdditionalEnchantment.onHitAttack(entry.getValue(), source, attacker.getItemBySlot(slot), target, attacker, damageDealt));
-                }
-            }
-        }
-    }
-
-
-    @SubscribeEvent
-    public void onEquipmentChangeEvent(LivingEquipmentChangeEvent event) {
-        LivingEntity entity = event.getEntity();
-        ItemStack from = event.getFrom();
-        ItemStack to = event.getTo();
-        EquipmentSlot slot = event.getSlot();
-        if (!from.isEmpty()) {
-            var fromStackEnchantment = EnchantmentHelper.getEnchantments(from);
-            for (var enchants : fromStackEnchantment.entrySet()) {
-                if (enchants.getKey() instanceof IAttributeEnchantment instance) {
-                    instance.removeAttributeModifiers(entity, slot);
-                }
-            }
-        }
-        if (!to.isEmpty()) {
-            var toStackEnchantment = EnchantmentHelper.getEnchantments(to);
-            for (var enchants : toStackEnchantment.entrySet()) {
-                if (enchants.getKey() instanceof IAttributeEnchantment instance) {
-                    instance.addAttributeModifiers(entity, slot, enchants.getValue());
                 }
             }
         }

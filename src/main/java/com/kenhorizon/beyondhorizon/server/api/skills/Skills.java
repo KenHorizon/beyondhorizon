@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.*;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.InfernalRaySkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.InfernoStrikeSkill;
-import com.kenhorizon.beyondhorizon.server.api.skills.ability.on_hit_effects.OnHitEffectSkills;
+import com.kenhorizon.beyondhorizon.server.api.skills.ability.onhit_effects.OnHitEffectSkills;
 import com.kenhorizon.beyondhorizon.server.api.skills.item_properties.GuardianSwordProperties;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -26,7 +26,7 @@ public class Skills {
     public static final RegistryObject<Skill> INFERNO_STRIKE = registerSkill("inferno_strike", () -> new InfernoStrikeSkill(Constant.INFERNO_STRIKE_SLOW, Constant.INFERNO_STRIKE_SCALE)
             .melee());
 
-    public static final RegistryObject<Skill> INFERNAL_RAY = registerSkill("infernal_ray", () -> new InfernalRaySkill(Constant.INFERNAL_AD, Constant.INFERNAL_AP, Constant.INFERNAL_BASE_DAMAGE, true, DamageType.PHYSICAL_DAMAGE, AbstractDeathRayAbility.BeamDamageTags.DEFAULT)
+    public static final RegistryObject<Skill> INFERNAL_RAY = registerSkill("infernal_ray", () -> new InfernalRaySkill(Constant.INFERNAL_AD, Constant.INFERNAL_AP, Constant.INFERNAL_BASE_DAMAGE, false, DamageType.PHYSICAL_DAMAGE, AbstractDeathRayAbility.BeamDamageTags.DEFAULT)
             .universal());
 
     public static final RegistryObject<Skill> HEAVY_HITTER = registerSkill("heavy_hitter", () -> new HeavyHitterSkill(Constant.HEAVY_HITTER_DAMAGE_PER_SCALE, Constant.HEAVY_HITTER_DAMAGE)
@@ -60,7 +60,7 @@ public class Skills {
     public static final RegistryObject<Skill> KINETIC_STRIKE = registerSkill("kinetic_strike", () -> new ExtraDamageSkill(Constant.KINETIC_STRIKE_DAMAGE_MODIFIER, ExtraDamageSkill.KINETIC_WEAPON)
             .universal());
 
-    public static final RegistryObject<Skill> DEATH = registerSkill("death", () -> new ExecuteDamageSkill(Constant.DEATH_HEALTH_THRESOHOLD)
+    public static final RegistryObject<Skill> DEATH = registerSkill("death", () -> new com.kenhorizon.beyondhorizon.server.api.skills.ability.ExecuteDamageSkill(Constant.DEATH_HEALTH_THRESOHOLD)
             .universal());
 
     public static final RegistryObject<Skill> LETHALITY = registerSkill("lethality", () -> new ExtraDamageSkill(Constant.LETHALITY, ExtraDamageSkill.BONUS_DAMAGE)

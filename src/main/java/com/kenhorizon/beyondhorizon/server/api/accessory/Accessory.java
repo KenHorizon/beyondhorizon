@@ -31,8 +31,8 @@ import java.util.*;
 
 public abstract class Accessory extends AbstractAbilityComponents {
     public enum Tags {
-        NONE, // Bonuses can stack each others
-        UNIQUE; // Bonuses do not stack each others
+        NONE,
+        UNIQUE;
 
         public boolean isUnique() {
             return this != NONE;

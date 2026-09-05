@@ -5,8 +5,11 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.util.AttributePercentage;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
+import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
+import com.kenhorizon.beyondhorizon.server.enchantment.LevelValue;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.datafixers.util.Pair;
@@ -32,10 +35,7 @@ import net.minecraftforge.common.ForgeMod;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class AttributeTooltips {
     public void makeAttributeTooltip(Player player, List<Component> tooltip, ItemStack itemStack) {
@@ -67,10 +67,11 @@ public class AttributeTooltips {
         for (Map.Entry<Enchantment, Integer> enchantmentEntry : map.entrySet()) {
             int level = enchantmentEntry.getValue();
             if (enchantmentEntry.getKey() instanceof IAttributeEnchantment attributeEnchantment) {
-                for (Map.Entry<Attribute, AttributeModifier> entry : attributeEnchantment.getAttributeModifiers().entries()) {
+                UUID uuid = UUID.nameUUIDFromBytes(AdvancedEnchantment.ENCHANTMENT_UUID.getBytes());
+                for (Map.Entry<Attribute, AttributeModifier> entry : attributeEnchantment.getAttributeModifiers(uuid, itemStack).entries()) {
                     AttributeModifier attributeModifier = entry.getValue();
                     Attribute attribute = entry.getKey();
-                    double amount = attributeEnchantment.getAttributeModifierValue(level, attributeModifier);
+                    double amount = attributeEnchantment.getAttributeModifierValue(level, new LevelValue(attributeModifier.getAmount()));
                     double attributeAmount = this.getAttributeAmount(player, itemStack, attribute, amount);
                     this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, ChatFormatting.GOLD);
                 }

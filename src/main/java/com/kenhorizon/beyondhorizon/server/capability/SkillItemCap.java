@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessory;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkill;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import net.minecraft.core.Direction;

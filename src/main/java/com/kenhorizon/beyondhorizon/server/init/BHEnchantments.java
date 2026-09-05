@@ -15,6 +15,37 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
 public class BHEnchantments {
+    public static RegistryObject<Enchantment> SPELL_POWER = RegistryHelper.registerEnchantments("spell_power",
+            () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
+                    .maxLevel(5)
+                    .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
+                    .maxCost(10)
+                    .minCost(10)
+                    .rarity(Enchantment.Rarity.COMMON)
+                    .category(AdvancedEnchantment.MAGIC_WEAPON)
+                    .addAttributeModifier(BHAttributes.ABILITY_POWER.get(), 0.05D, AttributeModifier.Operation.MULTIPLY_TOTAL)
+            ));
+    public static RegistryObject<Enchantment> MANA_RECOVERY = RegistryHelper.registerEnchantments("mana_recovery",
+            () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
+                    .maxLevel(4)
+                    .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
+                    .maxCost(10)
+                    .minCost(10)
+                    .rarity(Enchantment.Rarity.UNCOMMON)
+                    .category(AdvancedEnchantment.MAGIC_WEAPON)
+                    .addAttributeModifier(BHAttributes.MANA_REGENERATION.get(), 0.05D, AttributeModifier.Operation.ADDITION)
+            ));
+    public static RegistryObject<Enchantment> MANA_COST = RegistryHelper.registerEnchantments("mana_cost",
+            () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
+                    .maxLevel(3)
+                    .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
+                    .maxCost(15)
+                    .minCost(5)
+                    .rarity(Enchantment.Rarity.COMMON)
+                    .category(AdvancedEnchantment.MAGIC_WEAPON)
+                    .addAttributeModifier(BHAttributes.MANA_COST.get(), 0.05D, AttributeModifier.Operation.ADDITION)
+            ));
+
     public static RegistryObject<Enchantment> DRAW_SPEED = RegistryHelper.registerEnchantments("draw_speed",
             () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
                     .maxLevel(5)

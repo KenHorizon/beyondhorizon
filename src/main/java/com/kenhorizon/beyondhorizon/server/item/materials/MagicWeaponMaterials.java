@@ -68,8 +68,8 @@ public enum MagicWeaponMaterials implements IWeaponMaterials, Comparable<MagicWe
     }
 
     @Override
-    public boolean hasSkills(Skill abilityTrait) {
-        return this.skillBuilder != null && this.skillBuilder.getSkills().contains(abilityTrait);
+    public boolean hasSkills(Skill skill) {
+        return this.skillBuilder != null && this.skillBuilder.getSkills().contains(skill);
     }
 
     @Override

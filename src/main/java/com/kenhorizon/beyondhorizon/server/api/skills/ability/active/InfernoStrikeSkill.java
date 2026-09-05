@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.InfernalSpear;
+import com.kenhorizon.beyondhorizon.server.entity.util.ShockwaveUtils;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.libs.client.WeaponAnimations;
@@ -69,6 +70,7 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
                         sLevel.sendParticles(new RingParticleOptions(0, (float) Math.PI / 2f, 33, Colors.RED, 110F, false, RingParticles.Behavior.GROW), entity.getX(), entity.getY(), entity.getZ(), 1, 0,0, 0, 0);
                     }
                     CameraShake.spawn(level, player.position(), 8.0F, 0.02F, 20, 20);
+                    ShockwaveUtils.doRingShockwave(player, player.position(), 3.0D, 0.0F, 60);
                     Vec3 rotation = player.getLookAngle().normalize();
                     var pos = player.position().add(rotation.scale(1.6));
                     double dx = pos.x - player.getX();

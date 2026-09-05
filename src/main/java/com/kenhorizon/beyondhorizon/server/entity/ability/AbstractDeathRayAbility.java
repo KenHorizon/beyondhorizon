@@ -245,17 +245,19 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
                         if (this.source.isAlliedTo(target)) continue;
                     }
                     boolean flag;
+                    boolean ignoreFrames = this.isImmunityFrameIgnore();
+                    float damage = ignoreFrames ? this.rayDamages(target) / 2.0F : this.rayDamages(target);
                     if (this.getDamageType() == DamageType.PHYSICAL_DAMAGE) {
-                        flag = target.hurt(BHDamageTypes.AOEphysicalDamage(this, null), this.rayDamages(target));
+                        flag = target.hurt(BHDamageTypes.AOEphysicalDamage(this, null), damage);
                     } else if (this.getDamageType() == DamageType.MAGIC_DAMAGE) {
-                        flag = target.hurt(BHDamageTypes.AOEmagicDamage(this, null), this.rayDamages(target));
+                        flag = target.hurt(BHDamageTypes.AOEmagicDamage(this, null), damage);
                     } else if (this.getDamageType() == DamageType.TRUE_DAMAGE) {
-                        flag = target.hurt(BHDamageTypes.AOEtrueDamage(this, null), this.rayDamages(target));
+                        flag = target.hurt(BHDamageTypes.AOEtrueDamage(this, null), damage);
                     } else {
                         flag = false;
                     }
                     if (flag) {
-                        if (this.isImmunityFrameIgnore()) {
+                        if (ignoreFrames) {
                             target.hurtDuration = 0;
                             target.invulnerableTime = 0;
                         }

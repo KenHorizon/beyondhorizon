@@ -33,78 +33,95 @@ public class AnvilPatchHandler {
     public void anvilUpdateEvent(AnvilUpdateEvent event) {
         Player player = event.getPlayer();
         if (!event.getOutput().isEmpty()) return;
-        ItemStack left = event.getLeft();
-        ItemStack right = event.getRight();
-        ItemStack output = left.copy();
+        ItemStack leftItem = event.getLeft();
+        ItemStack rightItem = event.getRight();
+        ItemStack outputItem = leftItem.copy();
         int addedRepairCost = 0;
-        Map<Enchantment, Integer> outputEnchantmentItem = EnchantmentHelper.getEnchantments(output);
-        boolean isRightEnchantmentItem = right.getItem() == Items.ENCHANTED_BOOK && !EnchantedBookItem.getEnchantments(right).isEmpty();
+        Map<Enchantment, Integer> outputEnchantmentItem = EnchantmentHelper.getEnchantments(outputItem);
+
+        boolean isRightEnchantmentItem = rightItem.getItem() == Items.ENCHANTED_BOOK && !EnchantedBookItem.getEnchantments(rightItem).isEmpty();
+
         boolean shouldIncreaseCost = BHConfigs.ANVIL_COSTING == AnvilCostSettings.KEEP;
-        boolean shouldApplyIncreaseCost = BHConfigs.ANVIL_COSTING != AnvilCostSettings.REMOVE;
-        int cost = 1;
-        if (output.isDamageableItem() && output.getItem().isValidRepairItem(left, right)) {
-            int amountRepairedByMat = Math.min(output.getDamageValue(), output.getMaxDamage() / 4);
+        boolean shouldApplyIncreasedCost = BHConfigs.ANVIL_COSTING != AnvilCostSettings.REMOVE;
+
+        int materialCost = 1;
+
+        if (outputItem.isDamageableItem() && outputItem.getItem().isValidRepairItem(leftItem, rightItem)) {
+            int amountRepairedByMat = Math.min(outputItem.getDamageValue(), outputItem.getMaxDamage() / 4);
+
             if (amountRepairedByMat <= 0) {
                 return;
             }
-            for (cost = 0; amountRepairedByMat > 0 && cost < right.getCount(); ++cost) {
-                int newDamageValue = output.getDamageValue() - amountRepairedByMat;
-                output.setDamageValue(newDamageValue);
+            shouldApplyIncreasedCost = shouldApplyIncreasedCost && BHConfigs.ANVIL_COSTING != AnvilCostSettings.ENCHANTMENT_ONLY;
+
+            for (materialCost = 0; amountRepairedByMat > 0 && materialCost < rightItem.getCount(); ++materialCost) {
+                int newDamageValue = outputItem.getDamageValue() - amountRepairedByMat;
+                outputItem.setDamageValue(newDamageValue);
                 ++addedRepairCost;
-                amountRepairedByMat = Math.min(output.getDamageValue(), output.getMaxDamage() / 4);
+                amountRepairedByMat = Math.min(outputItem.getDamageValue(), outputItem.getMaxDamage() / 4);
             }
+
         } else {
-            if (!isRightEnchantmentItem && (output.getItem() != right.getItem() || !output.isDamageableItem())) {
+            if (!isRightEnchantmentItem && (outputItem.getItem() != rightItem.getItem() || !outputItem.isDamageableItem())) {
                 return;
             }
-            if (output.isDamageableItem() && !isRightEnchantmentItem) {
-                int leftDurability = left.getMaxDamage() - left.getDamageValue();
-                int rightDurability = right.getMaxDamage() - right.getDamageValue();
-                int newDurability = leftDurability + rightDurability + output.getMaxDamage() * 12 / 100;
-                int newDamage = output.getMaxDamage() - newDurability;
+
+            if (outputItem.isDamageableItem() && !isRightEnchantmentItem) {
+                int leftDurability = leftItem.getMaxDamage() - leftItem.getDamageValue();
+                int rightDurability = rightItem.getMaxDamage() - rightItem.getDamageValue();
+                int newDurability = leftDurability + rightDurability + outputItem.getMaxDamage() * 12 / 100;
+                int newDamage = outputItem.getMaxDamage() - newDurability;
+
                 if (newDamage < 0) {
                     newDamage = 0;
                 }
-                if (newDamage < output.getDamageValue()) {
-                    output.setDamageValue(newDamage);
+
+                if (newDamage < outputItem.getDamageValue()) {  // vanilla uses metadata here instead of damage.
+                    outputItem.setDamageValue(newDamage);
                     addedRepairCost += 2;
                 }
             }
-            Map<Enchantment, Integer> enchantmentApply = EnchantmentHelper.getEnchantments(right);
+            Map<Enchantment, Integer> enchantmentApply = EnchantmentHelper.getEnchantments(rightItem);
             boolean rightItemHasCompatibleEnchantments = false;
             boolean rightItemHasIncompatibleEnchantments = false;
 
-            for (Enchantment addEnchantments : enchantmentApply.keySet()) {
-                if (addEnchantments != null) {
-                    int currentEnchantmentLevel = outputEnchantmentItem.getOrDefault(addEnchantments, 0);
-                    int newEnchantmentLevel = enchantmentApply.get(addEnchantments);
-                    if (newEnchantmentLevel == currentEnchantmentLevel && newEnchantmentLevel < addEnchantments.getMaxLevel())
-                        newEnchantmentLevel++;
-                    newEnchantmentLevel = Math.max(newEnchantmentLevel, currentEnchantmentLevel);
-                    boolean canEnchantmentBeAppliedToLeftItem = addEnchantments.canEnchant(left);
-                    if (player.getAbilities().instabuild || left.is(Items.ENCHANTED_BOOK)) {
+            for (Enchantment enchantmentToAdd : enchantmentApply.keySet()) {
+                if (enchantmentToAdd != null) {
+                    int enchLevel = outputEnchantmentItem.getOrDefault(enchantmentToAdd, 0);
+                    int enchNewLevel = enchantmentApply.get(enchantmentToAdd);
+                    if (enchNewLevel == enchLevel && enchNewLevel < enchantmentToAdd.getMaxLevel()) enchNewLevel++;
+                    enchNewLevel = Math.max(enchNewLevel, enchLevel);
+                    boolean canEnchantmentBeAppliedToLeftItem = enchantmentToAdd.canEnchant(leftItem);
+
+                    if (leftItem.is(Items.ENCHANTED_BOOK)) {
                         canEnchantmentBeAppliedToLeftItem = true;
                     }
+
                     for (Enchantment enchantment : outputEnchantmentItem.keySet()) {
-                        newEnchantmentLevel++;
+                        enchNewLevel++;
                         ++addedRepairCost;
                         canEnchantmentBeAppliedToLeftItem = true;
-                        if (enchantment != addEnchantments && !addEnchantments.isCompatibleWith(enchantment)) {
+                        if (enchantment != enchantmentToAdd && !enchantmentToAdd.isCompatibleWith(enchantment)) {
                             canEnchantmentBeAppliedToLeftItem = false;
                             ++addedRepairCost;
                         }
                     }
+
                     if (!canEnchantmentBeAppliedToLeftItem) {
                         rightItemHasIncompatibleEnchantments = true;
                     } else {
                         rightItemHasCompatibleEnchantments = true;
-                        if (newEnchantmentLevel > addEnchantments.getMaxLevel() && BHConfigs.ENCHANTMENT_BREAK_LEVEL) {
-                            newEnchantmentLevel = addEnchantments.getMaxLevel();
+
+                        if (enchNewLevel > enchantmentToAdd.getMaxLevel() && BHConfigs.ENCHANTMENT_BREAK_LEVEL) {
+                            enchNewLevel = enchantmentToAdd.getMaxLevel();
                         }
-                        outputEnchantmentItem.put(addEnchantments, newEnchantmentLevel);
-                        int repairCostAddedByEnchantmentRarity = getRepairCostAddedByEnchantmentRarity(addEnchantments, isRightEnchantmentItem);
-                        addedRepairCost += repairCostAddedByEnchantmentRarity * newEnchantmentLevel;
-                        if (left.getCount() > 1) {
+
+                        outputEnchantmentItem.put(enchantmentToAdd, enchNewLevel);
+                        int repairCostAddedByEnchantmentRarity = getRepairCostAddedByEnchantmentRarity(enchantmentToAdd, isRightEnchantmentItem);
+
+                        addedRepairCost += repairCostAddedByEnchantmentRarity * enchNewLevel;
+
+                        if (leftItem.getCount() > 1) {
                             return;
                         }
                     }
@@ -113,55 +130,64 @@ public class AnvilPatchHandler {
             if (rightItemHasIncompatibleEnchantments && !rightItemHasCompatibleEnchantments) {
                 return;
             }
+
             shouldIncreaseCost = shouldIncreaseCost || rightItemHasCompatibleEnchantments && BHConfigs.ANVIL_COSTING != AnvilCostSettings.REMOVE;
-            shouldApplyIncreaseCost = shouldApplyIncreaseCost && (rightItemHasCompatibleEnchantments || BHConfigs.ANVIL_COSTING != AnvilCostSettings.ENCHANTMENT_ONLY);
+            shouldApplyIncreasedCost = shouldApplyIncreasedCost && (rightItemHasCompatibleEnchantments || BHConfigs.ANVIL_COSTING != AnvilCostSettings.ENCHANTMENT_ONLY);
         }
+
         int renameAddedCost = 0;
+
         String repairedItemName = event.getName();
+
         if (Util.isBlank(repairedItemName)) {
-            if (left.hasCustomHoverName()) {
+            if (leftItem.hasCustomHoverName()) {
                 renameAddedCost = 1;
                 addedRepairCost += renameAddedCost;
-                output.resetHoverName();
+                outputItem.resetHoverName();
             }
-        } else if (!repairedItemName.equals(left.getDisplayName())) {
+        } else if (!repairedItemName.equals(leftItem.getDisplayName())) {
             renameAddedCost = 1;
             addedRepairCost += renameAddedCost;
-            output.setHoverName(Component.literal(repairedItemName));
+            outputItem.setHoverName(Component.literal(repairedItemName));
         }
-        if (isRightEnchantmentItem && !output.getItem().isBookEnchantable(output, right)) {
-            output = ItemStack.EMPTY;
+        if (isRightEnchantmentItem && !outputItem.getItem().isBookEnchantable(outputItem, rightItem)) {
+            outputItem = ItemStack.EMPTY;
         }
-        int totalRepairCost = (shouldApplyIncreaseCost ? event.getCost() : 0) + addedRepairCost;
+
+        int totalRepairCost = (shouldApplyIncreasedCost ? event.getCost() : 0) + addedRepairCost;
+
         if (totalRepairCost <= 0) {
-            output = ItemStack.EMPTY;
+            outputItem = ItemStack.EMPTY;
         }
+
         if (addedRepairCost == renameAddedCost && BHConfigs.ANVIL_COST_CAP >= 0 && totalRepairCost >= BHConfigs.ANVIL_COST_CAP) {
             totalRepairCost = BHConfigs.ANVIL_COST_CAP - 1;
         }
+
         if (BHConfigs.ANVIL_COST_CAP >= 0 && totalRepairCost >= BHConfigs.ANVIL_COST_CAP) {
             if (event.getOutput().isEmpty()) {
                 event.setCanceled(true);
             }
             return;
         }
-        if (!output.isEmpty()) {
+
+        if (!outputItem.isEmpty()) {
             if (shouldIncreaseCost) {
-                int newCost = output.getBaseRepairCost();
-                if (!right.isEmpty() && newCost < right.getBaseRepairCost()) {
-                    newCost = right.getBaseRepairCost();
+                int newCost = outputItem.getBaseRepairCost();
+                if (!rightItem.isEmpty() && newCost < rightItem.getBaseRepairCost()) {
+                    newCost = rightItem.getBaseRepairCost();
                 }
                 if (renameAddedCost != addedRepairCost || renameAddedCost == 0) {
                     newCost = newCost * 2 + 1;
                 }
-                output.setRepairCost(newCost);
+                outputItem.setRepairCost(newCost);
             }
-            EnchantmentHelper.setEnchantments(outputEnchantmentItem, output);
-            if (output.isDamageableItem() && output.getItem().isValidRepairItem(left, right)) {
-                event.setMaterialCost(cost);
+            EnchantmentHelper.setEnchantments(outputEnchantmentItem, outputItem);
+            if (outputItem.isDamageableItem() && outputItem.getItem().isValidRepairItem(leftItem, rightItem)) {
+                event.setMaterialCost(materialCost);
             }
             event.setCost(totalRepairCost);
-            event.setOutput(output);
+            event.setOutput(outputItem);
         }
     }
 

@@ -88,7 +88,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addEnchantmentDesc(BHEnchantments.ILLAGER_BANE, "Increased post-mitigation damage dealt by percentage to illagers");
         this.addEnchantmentDesc(BHEnchantments.VOID_BANE, "Increased post-mitigation damage dealt by percentage to enderman");
         this.addEnchantmentDesc(BHEnchantments.DYNAMO_HIT, "Increased critical damage but reduce attack effectiviness");
-        this.addEnchantmentDesc(BHEnchantments.PIERCE, "Gain armor penetration");
+        this.addEnchantmentDesc(BHEnchantments.ARMOR_PENETRATION, "Gain armor penetration");
         this.addEnchantmentDesc(BHEnchantments.CRITICAL_HIT, "Increased critical chances");
         this.addEnchantmentDesc(BHEnchantments.CRITICAL_DAMAGE, "Increased critical strike damage");
         this.addEnchantmentDesc(BHEnchantments.DRAGON_SLAYER, "Increased damage dealt and Increased damage against to dragons");
@@ -130,6 +130,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.PERFECTION.get(), "Perfection", "When critically striking, convert %s%% critical strike damage to true damage");
         this.addSkills(Skills.PIERCING_EDEGE.get(), "Piercing Edge", "Increase physical damage dealt by %s (+%s%% target's armor)%% to armored target");
         this.addSkills(Skills.BLAZING_CLEAVE.get(), "Blazing Cleave", "On-hit attack release a powerful shockwave that deal %s%% damage within %s range");
+        this.addSkills(Skills.SMASH_ATTACK.get(), "Smash Attack", "After falling 1.5 blocks or more deal extra damage by %s per block fallens");
         //
         this.addAccessory(Accessories.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100 (6 if attacking, 1 if moving)");
         this.addAccessory(Accessories.ELECTROSHOCK.get(), "Electro Shock", "When fully Energized, your next basic attack strike the target with bolt of lightning dealing bonus 40% damage dealt magic damage of 2.5 radius unit");
@@ -249,7 +250,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addDeathMessage(BHDamageTypes.MAGIC_PENETRATION, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
         //
         //
-        this.addAdvancement(Tooltips.ADVANCEMENT_MAIN_ROOT, "To.. you from decade ago!", "Discovery of arcane and lores...");
+        this.addAdvancement(Tooltips.ADVANCEMENT_MAIN_ROOT, "Arcane", "The story of secret of worlds and magics");
         this.addAdvancement(Tooltips.ADVANCEMENT_EQUIPPED_ACCESSORY, "Fancy Equipment", "Discover a accessory");
         this.addAdvancement(Tooltips.ADVANCEMENT_HEALING_POTION, "Alchooolic Recovery", "Have a healing potion");
         this.addAdvancement(Tooltips.ADVANCEMENT_NEW_ORES_0, "Acquired New Materials", "Obtain new ores");

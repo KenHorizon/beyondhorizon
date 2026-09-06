@@ -22,7 +22,6 @@ import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilitySlotSelectionPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAcessoryKeyPacket;
-import com.kenhorizon.beyondhorizon.server.util.RaycastUtil;
 import com.kenhorizon.libs.client.ModelAnimationHandler;
 import com.kenhorizon.libs.client.ModelAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;
@@ -31,8 +30,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -45,13 +42,7 @@ import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
@@ -62,7 +53,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockAndTintGetter;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -73,8 +63,6 @@ import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
-
-import java.util.*;
 
 public class ClientEventHandler {
     private WeaponArmPose weaponRightArmPose = WeaponArmPose.EMPTY;
@@ -101,7 +89,7 @@ public class ClientEventHandler {
         if (event.phase == TickEvent.Phase.END) {
             Minecraft mc = Minecraft.getInstance();
             if (mc.screen instanceof AdvancementsScreen advancementsScreen && advancementsScreen.selectedTab != null &&
-                    BHAdvancementTab.isBH(advancementsScreen.selectedTab.getAdvancement())) {
+                    BHAdvancementTab.isModdedWidgets(advancementsScreen.selectedTab.getAdvancement())) {
                 BHAdvancementTab.tick();
             }
         }

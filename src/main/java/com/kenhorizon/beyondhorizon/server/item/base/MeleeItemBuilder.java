@@ -27,6 +27,7 @@ public class MeleeItemBuilder {
     public static final Factory<DiggerBaseItem> SHOVEL = ((materials, properties) -> new ShovelBaseItem(materials, Constant.SHOVEL, properties));
     public static final Factory<DiggerBaseItem> HOE = ((materials, properties) -> new HoeBaseItem(materials, Constant.HOE, properties));
 
+    public static final Factory<SwordBaseItem> ENERGIZED_MACE = ((materials, properties) -> new SwordBaseItem(materials, Constant.MACE, properties, SkillBuilder.MACE));
     public static final Factory<SwordBaseItem> BLADE_OF_THE_ENDERLORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.BLADE_OF_THE_ENDERLORD, properties, SkillBuilder.RUINED_BLADE));
     public static final Factory<SwordBaseItem> ZENITH = ((materials, properties) -> new SwordBaseItem(materials, Constant.ZENITH, properties, SkillBuilder.BLADE_EDGE));
     public static final Factory<SwordBaseItem> GIANT_SLAYER_SWORD = ((materials, properties) -> new SwordBaseItem(materials, Constant.GIANT_SLAYER, properties, SkillBuilder.GIANT_SLAYER_SWORD));

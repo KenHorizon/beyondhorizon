@@ -35,6 +35,7 @@ public class Constant {
     public static final float BRING_IT_DOWN_BASE_DAMAGE = 2;
     public static final float BRING_IT_DOWN_INCREASED_DAMAGE = 0.75F;
     public static final float ROCK_SOLID_REDUCE = 0.15F;
+    public static final float SMASH_ATTACK = 2.0F;
     public static float CORRUPTED_BITE_DAMAGE_SCALE = 0.15F;
     public static float SOUL_SIPHON_CURRENT_HEALTH_DAMAGE = 0.015F;
     public static int LEVEL_SYSTEM_UNLOCKED = 5;
@@ -107,6 +108,7 @@ public class Constant {
     public static float[] DAGGER = {3.5F, 2.25F};
     public static float[] SICKLE = {4.5F, 1.65F};
     public static float[] ZENITH = {5.0F, 1.7F};
+    public static float[] MACE = {5.0F, 0.99F};
     public static float[] BLADE_OF_THE_ENDERLORD = {8.0F, 1.7F};
     public static float[] GIANT_SLAYER = {8.0F, 1.7F, 4.5F};
     public static float[] ELUCIDATOR = {12.0F, 1.4F, 4F};

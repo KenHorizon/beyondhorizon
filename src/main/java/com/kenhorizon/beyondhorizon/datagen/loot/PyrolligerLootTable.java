@@ -20,9 +20,9 @@ public class PyrolligerLootTable extends EntityLootDropBuilder {
         builder
                 .withPool(LootPool.lootPool().setRolls(ConstantValue.exactly(1.0F))
                     .add(LootItem.lootTableItem(BHItems.ASHES_OF_FLAME.get())
-                            .when(dropRate(0.35F)).apply(setCount(0, 4)).apply(lootingMultiplier(0.0F, 1.0F)))
+                            .when(dropRate(0.35F)).apply(lootingMultiplier(0.0F, 1.0F)))
                         .add(LootItem.lootTableItem(Items.EMERALD).when(dropRate(0.45F))
-                                .apply(setCount(0, 7)).apply(lootingMultiplier(0.0F, 1.0F)))
+                                .apply(setCount(4, 12)).apply(lootingMultiplier(0.0F, 1.0F)))
                 );
         return builder;
     }

@@ -58,7 +58,7 @@ public class AdvancementTabMixins {
             at = @At(value = "HEAD")
     )
     private void bh_drawContents(GuiGraphics guiGraphics, int topX, int topY, CallbackInfo ci) {
-        if (BHAdvancementTab.isBH(root.advancement)) {
+        if (BHAdvancementTab.isModdedWidgets(root.advancement)) {
             ci.cancel();
             guiGraphics.enableScissor(topX, topY, topX + 234, topY + 113);
             guiGraphics.pose().pushPose();
@@ -88,17 +88,23 @@ public class AdvancementTabMixins {
             at = @At(value = "HEAD")
     )
     private void bh_drawTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, int topX, int topY, CallbackInfo ci) {
-        if (BHAdvancementTab.isBH(root.advancement)) {
+        if (BHAdvancementTab.isModdedWidgets(root.advancement)) {
             int i = Mth.floor(this.scrollX);
             int j = Mth.floor(this.scrollY);
             BHAdvancementTab.Type hoverType = null;
-            if (mouseX > 0 && mouseX < 234 && mouseY > 0 && mouseY < 113) {
-                for (AdvancementWidget advancementwidget : this.widgets.values()) {
-                    if (advancementwidget.isMouseOver(i, j, mouseX, mouseY)) {
-                        if (BHAdvancementTab.Type.isTreeNodeUnlocked(advancementwidget)) {
-                            hoverType = BHAdvancementTab.Type.forAdvancement(advancementwidget.advancement);
-                        }
-                    }
+//            if (mouseX > 0 && mouseX < 234 && mouseY > 0 && mouseY < 113) {
+//                for (AdvancementWidget advancementwidget : this.widgets.values()) {
+//                    if (advancementwidget.isMouseOver(i, j, mouseX, mouseY)) {
+//                        if (BHAdvancementTab.Type.isTreeNodeUnlocked(advancementwidget)) {
+//                            hoverType = BHAdvancementTab.Type.forAdvancement(advancementwidget.advancement);
+//                        }
+//                    }
+//                }
+//            }
+
+            for (AdvancementWidget advancementwidget : this.widgets.values()) {
+                if (BHAdvancementTab.Type.isTreeNodeUnlocked(advancementwidget)) {
+                    hoverType = BHAdvancementTab.Type.forAdvancement(advancementwidget.advancement);
                 }
             }
             if (hoverType != null) {

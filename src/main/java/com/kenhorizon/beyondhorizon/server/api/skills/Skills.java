@@ -87,6 +87,8 @@ public class Skills {
     public static final RegistryObject<Skill> FEAST = registerSkill("feast", () -> new BlazingCleaveSkill(Constant.BLAZING_CLEAVE_DAMAGE, Constant.BLAZING_CLEAVE_RANGE)
             .universal());
 
+    public static final RegistryObject<Skill> SMASH_ATTACK = registerSkill("smash_attack", () -> new SmashAttackSkills(Constant.SMASH_ATTACK).melee());
+
     public static final RegistryObject<Skill> GUARDIAN_SWORD_TRAIT = registerSkill("guardian_sword_trait", GuardianSwordProperties::new);
 
     public static RegistryObject<Skill> registerSkill(String name, Supplier<Skill> properties) {

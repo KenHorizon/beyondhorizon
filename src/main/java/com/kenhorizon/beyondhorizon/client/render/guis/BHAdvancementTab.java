@@ -23,7 +23,7 @@ public class BHAdvancementTab {
 
     private static boolean[][] foregroundBlocks;
 
-    public static boolean isBH(Advancement root) {
+    public static boolean isModdedWidgets(Advancement root) {
         return root.getId().getNamespace().equals(BeyondHorizon.ID);
     }
 
@@ -32,9 +32,9 @@ public class BHAdvancementTab {
         float hoverProgress = getHoverChangeAmount(partialTick);
         float priorHoverProgress = 1F - hoverProgress;
         int fastColor = FastColor.ARGB32.lerp(hoverProgress, previousHoverType.backgroundColor, hoverType.backgroundColor);
-        guiGraphics.fill(0, 0, windowWidth + 100, windowHeight, fastColor | -16777216);
-        renderTabBackgroundForType(guiGraphics, topX, topY, partialTick, scrollX, scrollY, previousHoverType, priorHoverProgress);
-        renderTabBackgroundForType(guiGraphics, topX, topY, partialTick, scrollX, scrollY, hoverType, hoverProgress);
+//        guiGraphics.fill(0, 0, windowWidth + 100, windowHeight, fastColor | -16777216);
+//        renderTabBackgroundForType(guiGraphics, topX, topY, partialTick, scrollX, scrollY, previousHoverType, priorHoverProgress);
+        renderTabBackgroundForType(guiGraphics, topX, topY, partialTick, scrollX, scrollY, hoverType, 1.0F);
     }
 
     private static void renderTabBackgroundForType(GuiGraphics guiGraphics, int topX, int topY, float partialTick, double scrollX, double scrollY, Type type, float alpha) {

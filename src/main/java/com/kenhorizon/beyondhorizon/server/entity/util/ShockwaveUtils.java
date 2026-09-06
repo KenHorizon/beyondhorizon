@@ -23,14 +23,14 @@ import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 //https://github.com/EEEAB/EEEABsMobs/blob/master/src/main/java/com/eeeab/eeeabsmobs/server/entity/util/ShockWaveUtils.java#L4
 public class ShockwaveUtils {
 
-    public static List<LivingEntity> doRingShockwave(LivingEntity attacker, Vec3 center, double radius,
+    public static List<LivingEntity> doRingShockwave(Entity entity, Vec3 center, double radius,
                                                      float baseBouncing, int defaultLifeTime) {
-        return doRingShockwave(attacker, center, radius, baseBouncing, false, defaultLifeTime);
+        return doRingShockwave(entity, center, radius, baseBouncing, false, defaultLifeTime);
     }
 
-    public static List<LivingEntity> doRingShockwave(LivingEntity attacker, Vec3 center, double radius,
+    public static List<LivingEntity> doRingShockwave(Entity entity, Vec3 center, double radius,
                                                      float baseBouncing, boolean customLife, int defaultLifeTime) {
-        Level level = attacker.level();
+        Level level = entity.level();
         if (level.isClientSide()) return Collections.emptyList();
         radius = Math.max(0.5F, radius);
         defaultLifeTime = Math.max(1, defaultLifeTime);
@@ -59,35 +59,35 @@ public class ShockwaveUtils {
                 trySpawnFallingBlock((ServerLevel) level, pos, rotator, lifeTime, bouncing, false, 0, 0);
             }
         }
-        return level.getEntitiesOfClass(LivingEntity.class, new AABB(xFrom, center.y - radius, zFrom, xTo, center.y + radius, zTo), e -> e != attacker && !attacker.isAlliedTo(e));
+        return level.getEntitiesOfClass(LivingEntity.class, new AABB(xFrom, center.y - radius, zFrom, xTo, center.y + radius, zTo), e -> e != entity && !entity.isAlliedTo(e));
     }
 
-    public static List<Entity> doAdvShockwave(LivingEntity attacker, int distance, float maxFallingDistance, double spreadArc, double offset, double attackY, boolean randomOffset, boolean continuous, float knockBackStrength) {
-        Level level = attacker.level();
+    public static List<Entity> doAdvShockwave(LivingEntity entity, int distance, float maxFallingDistance, double spreadArc, double offset, double attackY, boolean randomOffset, boolean continuous, float knockBackStrength) {
+        Level level = entity.level();
         if (level.isClientSide) return Collections.emptyList();
         Set<Entity> processedEntities = new HashSet<>();
-        double perpFacing = attacker.yBodyRot * (Math.PI / 180);
+        double perpFacing = entity.yBodyRot * (Math.PI / 180);
         double facingAngle = perpFacing + Math.PI / 2;
         double spread = Math.PI * Mth.clamp(spreadArc, 0, 2);
         int arcLen = Mth.ceil(distance * spread);
-        double minY = attacker.getBoundingBox().minY - attackY;
-        double maxY = attacker.getBoundingBox().maxY + attackY;
-        int hitY = Mth.floor(attacker.getBoundingBox().minY - 0.5);
+        double minY = entity.getBoundingBox().minY - attackY;
+        double maxY = entity.getBoundingBox().maxY + attackY;
+        int hitY = Mth.floor(entity.getBoundingBox().minY - 0.5);
         for (int i = 0; i < arcLen; i++) {
             double theta = (i / (arcLen - 1.0) - 0.5) * spread + facingAngle;
             double vx = Math.cos(theta);
             double vz = Math.sin(theta);
-            double px = attacker.getX() + vx * distance + offset * Math.cos((double) (attacker.yBodyRot + 90.0F) * Math.PI / 180.0D);
-            double pz = attacker.getZ() + vz * distance + offset * Math.sin((double) (attacker.yBodyRot + 90.0F) * Math.PI / 180.0D);
+            double px = entity.getX() + vx * distance + offset * Math.cos((double) (entity.yBodyRot + 90.0F) * Math.PI / 180.0D);
+            double pz = entity.getZ() + vz * distance + offset * Math.sin((double) (entity.yBodyRot + 90.0F) * Math.PI / 180.0D);
             AABB aabb = new AABB(px - 1.5D, minY, pz - 1.5D, px + 1.5D, maxY, pz + 1.5D);
-            processedEntities.addAll(attacker.level().getEntitiesOfClass(Entity.class, aabb, e -> e != attacker && e.isAttackable() && !attacker.isAlliedTo(e)));
+            processedEntities.addAll(entity.level().getEntitiesOfClass(Entity.class, aabb, e -> e != entity && e.isAttackable() && !entity.isAlliedTo(e)));
             float factor = 1F - ((float) distance / 2F - 2F) / maxFallingDistance;
-            if (continuous || attacker.getRandom().nextFloat() < 0.6F) {
+            if (continuous || entity.getRandom().nextFloat() < 0.6F) {
                 int hitX = Mth.floor(px);
                 int hitZ = Mth.floor(pz);
                 BlockPos pos = new BlockPos.MutableBlockPos(hitX, getValidBlockState(level, hitX, hitZ, hitY), hitZ);
-                double d0 = hitX - attacker.getX();
-                double d1 = hitZ - attacker.getZ();
+                double d0 = hitX - entity.getX();
+                double d1 = hitZ - entity.getZ();
                 double d2 = Math.max(d0 * d0 + d1 * d1, 0.001);
                 trySpawnFallingBlock((ServerLevel) level, pos, null, 10, factor, randomOffset, d0 / d2 * knockBackStrength, d1 / d2 * knockBackStrength);
             }

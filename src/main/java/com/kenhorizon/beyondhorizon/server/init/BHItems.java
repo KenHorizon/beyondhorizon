@@ -353,6 +353,13 @@ public class BHItems {
             .model(ItemModels.GENERATED)
             .register();
 
+    public static final RegistryObject<Item> ENERGIZED_MACE = RegistryItems
+            .register("energized_mace", item -> MeleeItemBuilder.ENERGIZED_MACE.create(MeleeWeaponMaterials.TIER_ONE, item))
+            .properties(p -> p.rarity(Rarity.EPIC))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
+            .register();
+
     public static final RegistryObject<Item> BLADE_OF_THE_ENDERLORD = RegistryItems
             .register("blade_of_the_enderlord", item -> MeleeItemBuilder.BLADE_OF_THE_ENDERLORD.create(MeleeWeaponMaterials.TIER_ONE, item))
             .properties(p -> p.rarity(BHRarity.MYTHICAL))

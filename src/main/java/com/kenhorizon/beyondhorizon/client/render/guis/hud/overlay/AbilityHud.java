@@ -23,7 +23,7 @@ public class AbilityHud extends HudOverlay {
         float casttimeFactor = this.hud.casttime;
         String casttime = String.format("%.0f%%", 100.0F * casttimeFactor);
         int castTimeW = font.width(casttime);
-        if (casttimeFactor > 0.0F && !(this.hud.casttimeReduction >= 1.0F)) {
+        if (casttimeFactor > 0.0F && !(this.hud.casttimeReduction >= 0.99F)) {
             int castTimeX = (screenWidth - 79) / 2;
             int castTimeY = screenHeight - (gui.leftHeight);
             BlitHelper.drawBlit(guiGraphics, HudSprites.CAST_TIME_BACKGROUND, castTimeX, castTimeY, 0,0, 79, 4,79, 4);

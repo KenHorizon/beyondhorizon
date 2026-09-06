@@ -1,4 +1,4 @@
-// 1.20.1	2026-09-05T00:52:49.1307407	Item Models: beyondhorizon
+// 1.20.1	2026-09-06T01:13:17.0147326	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -71,6 +71,7 @@ f1dd7e0c1c3dfb8d310a9641aa0b86be622cc1ca assets/beyondhorizon/models/item/dragon
 d8a9a784861a6827223969d6f6f97bc68497e72e assets/beyondhorizon/models/item/dusk_leather.json
 8378e7110a760b6399067781ffe496e0a4064340 assets/beyondhorizon/models/item/dwarf_miner_ring.json
 4936a8fe1baf590f02921d7f68d9ce4e3c50228c assets/beyondhorizon/models/item/elucidator.json
+77e462dd505f1b7b898ad6d3745cac4236e45fee assets/beyondhorizon/models/item/energized_mace.json
 a6506c04d081d099db970d3f43c762d8e2a88027 assets/beyondhorizon/models/item/faye_flares_spawn_egg.json
 08bf1d9ac1fcf468bf6704fab0c1415fb96c653c assets/beyondhorizon/models/item/faye_wildfire_spawn_egg.json
 733159516356c056d85892430a684c6d77e218af assets/beyondhorizon/models/item/fine_edge.json

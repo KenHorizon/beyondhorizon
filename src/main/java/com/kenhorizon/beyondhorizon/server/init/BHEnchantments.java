@@ -8,7 +8,6 @@ import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.enchantment.DamageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -153,7 +152,7 @@ public class BHEnchantments {
                     .category(EnchantmentCategory.WEAPON)
             ));
 
-    public static RegistryObject<Enchantment> PIERCE = RegistryHelper.registerEnchantments("pierce",
+    public static RegistryObject<Enchantment> ARMOR_PENETRATION = RegistryHelper.registerEnchantments("armor_penetration",
             () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
                     .maxLevel(5)
                     .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
@@ -161,6 +160,7 @@ public class BHEnchantments {
                     .minCost(15)
                     .rarity(Enchantment.Rarity.RARE)
                     .category(EnchantmentCategory.WEAPON)
+                    .addAttributeModifier(BHAttributes.ARMOR_PENETRATION.get(), 0.05D, AttributeModifier.Operation.ADDITION)
             ));
 
     public static RegistryObject<Enchantment> DYNAMO_HIT = RegistryHelper.registerEnchantments("dyanmo_hit",

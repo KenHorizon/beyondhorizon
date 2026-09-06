@@ -123,7 +123,7 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
 
         if (this == BHEnchantments.SPELL_PROTECTION.get()) {
             if (source.getDirectEntity() == target && source.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
-                damageDealt *= (0.05F * level);
+                damageDealt *= (0.07F * level);
             }
         }
 
@@ -142,7 +142,6 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
             }
         }
         if (this == BHEnchantments.DRAGON_SLAYER.get()) {
-            damageDealt *= 1.5F;
             if (target instanceof EnderDragon) {
                 damageDealt *= 2.25F;
             }

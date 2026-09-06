@@ -37,8 +37,8 @@ public abstract class OnHitEffectSkills extends WeaponPassiveSkills {
     }
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext damageDealt) {
-        float damage = this.typeFunction.calculate(this.getMagnitude(), this.getLevel(), this.mobType, damageDealt, source, attacker, target);
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
+        float damage = this.typeFunction.calculate(this.getMagnitude(), this.getLevel(), this.mobType, context, source, attacker, target);
         this.damageType().onHit(target, attacker, damage);
     }
 

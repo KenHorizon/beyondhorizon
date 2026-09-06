@@ -11,12 +11,12 @@ public class ExecuteDamageSkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public float postMigitationDamage(DamageContext damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (target == null || attacker == null) return damageDealt;
+    public float postMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (target == null || attacker == null) return context.damage();
         if (this.targetInThereshold(target)) {
-            return damageDealt + target.getMaxHealth();
+            return context.add(target.getMaxHealth());
         }
-        return damageDealt;
+        return context.damage();
     }
     private boolean targetInThereshold(LivingEntity target) {
         return target.getHealth() <= execute(target.getMaxHealth(), (this.getMagnitude() * this.getLevel()));

@@ -34,9 +34,9 @@ public abstract class CleaveEffectSkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext damageDealt) {
-        DamageType.PHYSICAL_DAMAGE.onHit(target, attacker, this.dealDamage(target, attacker, damageDealt, itemStack));
-        this.attackCleave(itemStack, target, attacker, damageDealt);
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
+        DamageType.PHYSICAL_DAMAGE.onHit(target, attacker, this.dealDamage(target, attacker, context.damage(), itemStack));
+        this.attackCleave(itemStack, target, attacker, context.damage());
     }
 
     public abstract boolean coneAtTarget();

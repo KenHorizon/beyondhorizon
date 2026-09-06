@@ -816,6 +816,8 @@ public class ServerEventHandler {
                 }
             }
         }
+
+        this.enchantmentDamageTaken(damageDealt, source, target);
         for (ArmorAbility set : BHRegistries.ARMOR_ABILITY_KEY.get()) {
             boolean matches = set.matches(target);
             if (matches) {
@@ -1089,7 +1091,7 @@ public class ServerEventHandler {
                 if (entry.getKey() instanceof IAdditionalEnchantment additionalEnchantment) {
                     Optional<IAdditionalEnchantment> optional = additionalEnchantment.enchantmentCallback();
                     if (optional.isPresent()) {
-                        damageDealt = optional.get().postMigitationDamage(entry.getValue(), damageDealt, source, attacker, target);
+                        damageDealt = optional.get().postMigitationDamage(entry.getValue(), new DamageContext(damageDealt), source, attacker, target);
                     }
                 }
             }
@@ -1103,10 +1105,25 @@ public class ServerEventHandler {
             for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
                 if (entry.getKey() instanceof IAdditionalEnchantment additionalEnchantment) {
                     Optional<IAdditionalEnchantment> optional = additionalEnchantment.enchantmentCallback();
-                    optional.ifPresent(iAdditionalEnchantment -> iAdditionalEnchantment.onHitAttack(entry.getValue(), source, attacker.getItemBySlot(slot), target, attacker, damageDealt));
+                    optional.ifPresent(callback -> callback.onHitAttack(entry.getValue(), source, attacker.getItemBySlot(slot), target, attacker, new DamageContext(damageDealt)));
                 }
             }
         }
+    }
+    //TODO: Enchantment Damage Taken
+    private float enchantmentDamageTaken(float damageDealt, DamageSource source, LivingEntity target) {
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(target.getItemBySlot(slot));
+            for (Map.Entry<Enchantment, Integer> entry : map.entrySet()) {
+                if (entry.getKey() instanceof IAdditionalEnchantment additionalEnchantment) {
+                    Optional<IAdditionalEnchantment> optional = additionalEnchantment.enchantmentCallback();
+                    if (optional.isPresent()) {
+                        damageDealt = optional.get().damageTaken(entry.getValue(), new DamageContext(damageDealt), source, target);
+                    }
+                }
+            }
+        }
+        return damageDealt;
     }
 
     @SubscribeEvent

@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills.item_properties;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponItemProperties;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
+import com.kenhorizon.beyondhorizon.server.entity.projectiles.Pyrolance;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +17,7 @@ public class GuardianSwordProperties extends WeaponItemProperties {
     public void onLeftClick(ItemStack itemStack, Player player) {
         Level level = player.level();
         if (!level.isClientSide()) {
-            BlazingRod projectile = new BlazingRod(level, player);
+            Pyrolance projectile = new Pyrolance(level, player);
             projectile.setBaseDamage((float) EntityUtils.getAttackDamage(player, 0.75F));
             Vec3 vector3d = player.getViewVector(1.0F);
             Vec3 vec3 = player.getHandHoldingItemAngle(itemStack.getItem());

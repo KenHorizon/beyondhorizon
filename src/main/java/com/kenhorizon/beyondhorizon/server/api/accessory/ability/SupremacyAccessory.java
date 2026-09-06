@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -49,16 +50,16 @@ public class SupremacyAccessory extends AccessoryPassiveSkill implements IStackI
     }
 
     @Override
-    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (target == null || attacker == null) return damageDealt;
+    public float preMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (target == null || attacker == null) return context.damage();
         if (attacker instanceof Player player) {
             var stackTags = Capabilities.stackable(player);
             if (stackTags != null) {
                 var sTag = stackTags.makeInstance(StackableTagInstance.SAINT_DEMON_CROWN_STACKS);
-                return damageDealt + (damageDealt * (this.damageIncreasePerStacks * sTag.getStack()));
+                return context.multiply(this.damageIncreasePerStacks * sTag.getStack());
             }
         }
-        return damageDealt;
+        return context.damage();
     }
 
     @Override

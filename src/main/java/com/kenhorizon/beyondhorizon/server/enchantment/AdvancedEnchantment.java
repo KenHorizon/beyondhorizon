@@ -10,6 +10,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.item.base.weapons.MagicWeaponBaseItem;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -64,11 +65,11 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
     }
 
     @Override
-    public void onHitAttack(int level, DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(int level, DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
 
         var random = attacker.getRandom();
         if (this == BHEnchantments.SPELL_BLADE.get()) {
-            float applyDamage = damageDealt * (0.15F * (level + 1));
+            float applyDamage = context.multiply(0.15F * (level + 1));
             if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
                 target.invulnerableTime = 0;
                 target.hurt(BHDamageTypes.magicDamage(attacker), applyDamage);
@@ -78,7 +79,7 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
             float chances = 10.0F + (5.0F * level);
             if (random.nextFloat() * 100.0F <= chances) {
                 target.invulnerableTime = 0;
-                target.hurt(BHDamageTypes.physicalDamage(attacker), damageDealt / 2);
+                target.hurt(BHDamageTypes.physicalDamage(attacker), context.divide(2) );
             }
 
         }
@@ -99,75 +100,85 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
         return dropExperience;
     }
 
-
     @Override
-    public float postMigitationDamage(int level, float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (attacker == null || target == null) return damageDealt;
-        RandomSource random = attacker.getRandom();
+    public float damageTaken(int level, DamageContext context, DamageSource source, LivingEntity entity) {
+        if (entity == null) return context.damage();
 
         if (this == BHEnchantments.PHYSICAL_PROTECTION.get()) {
             if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
-                damageDealt *= (0.05F * level);
+                return context.multiply(0.09F * level);
             }
         }
 
         if (this == BHEnchantments.SPELL_PROTECTION.get()) {
-            if (source.getDirectEntity() == target && source.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
-                damageDealt *= (0.07F * level);
+            if (source.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
+                return context.multiply(0.09F * level);
             }
         }
 
+        return context.damage();
+    }
+
+    @Override
+    public float postMigitationDamage(int level, DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (attacker == null || target == null) return context.damage();
+        RandomSource random = attacker.getRandom();
+
+
         if (this == BHEnchantments.DYNAMO_HIT.get()) {
+            float outputDamage = 0.0F;
             if (attacker instanceof Player player) {
                 PlayerData playerData = Capabilities.data(player);
                 if (playerData.isCrit()) {
-                    damageDealt *= 2.0F;
+                    outputDamage = context.multiply(2.0F);
                 } else {
-                    damageDealt *= 0.75F;
+                    outputDamage = context.multiply(0.75F);
                 }
             } else {
                 if (attacker.getRandom().nextBoolean()) {
-                    damageDealt *= 1.5F; // Base default of critical damage
+                    outputDamage = context.multiply(1.5F);
                 }
             }
+            return outputDamage;
         }
         if (this == BHEnchantments.DRAGON_SLAYER.get()) {
             if (target instanceof EnderDragon) {
-                damageDealt *= 2.25F;
+                return context.multiply(2.5F);
             }
         }
         if (this == BHEnchantments.LIFESTEAL.get()) {
-            attacker.heal((float) (damageDealt * (0.05F * (level + 1))));
+            attacker.heal(context.multiply(0.05F * (level + 1)));
         }
         if (this == BHEnchantments.ILLAGER_BANE.get()) {
             if (target.getMobType() == MobType.ILLAGER) {
-                damageDealt = DamageHandler.multiplier(damageDealt, 0.10F * (level + 1));
+                return context.multiply(0.10F * (level + 1));
             }
         }
         if (this == BHEnchantments.AQUATIC_BANE.get()) {
             float applyDamage = 0.10F * (level + 1);
             if (target.isEyeInFluidType(ForgeMod.WATER_TYPE.get()) || target.isUnderWater() || target.isInWater()) {
-                damageDealt = DamageHandler.multiplier(damageDealt, applyDamage);
-            } else if (target.level().isThundering() || target.level().isRaining()) {
+                return context.multiply(applyDamage);
+            }
+            if (target.level().isThundering() || target.level().isRaining()) {
                 BlockPos pos = target.blockPosition();
                 if (target.level().canSeeSky(pos)) {
-                    damageDealt = DamageHandler.multiplier(damageDealt, applyDamage);
+                    return context.multiply(applyDamage);
                 }
             }
         }
         if (this == BHEnchantments.VOID_BANE.get()) {
             boolean applyEffect = target.getType().is(BHEntityTypeTags.VOID_BANE_AFFECTED);
             if (applyEffect) {
-                damageDealt = DamageHandler.multiplier(damageDealt, 0.10F * (level + 1));
+                return context.multiply(0.10F * (level + 1));
             }
         }
         if (this == BHEnchantments.BUTCHERING.get()) {
             if (target instanceof Animal) {
-                damageDealt = DamageHandler.additional(damageDealt, 2 * (level + 1));
+                return context.add(2 * (level + 1));
             }
         }
 
-        return damageDealt;
+        return context.damage();
     }
 
 

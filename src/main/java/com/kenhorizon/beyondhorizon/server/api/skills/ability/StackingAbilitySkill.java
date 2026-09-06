@@ -19,12 +19,10 @@ public abstract class StackingAbilitySkill extends WeaponPassiveSkills {
 
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         if (this.stackType == StackType.HIT) {
-
+            this.onHitAttacks(source, itemStack, target, attacker, context);
         }
-
-        this.onHitAttacks(source, itemStack, target, attacker, damageDealt);
     }
 
     @Override
@@ -32,18 +30,17 @@ public abstract class StackingAbilitySkill extends WeaponPassiveSkills {
         if (this.stackType == StackType.KILL) {
 
         }
-
     }
 
     @Override
-    public float postMigitationDamage(DamageContext damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (attacker == null || target == null) return damageDealt;
-        return this.postDamage(source, target, attacker, damageDealt);
+    public float postMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (attacker == null || target == null) return context.damage();
+        return this.postDamage(source, target, attacker, context);
     }
 
     public abstract String tagName();
 
-    public abstract void onHitAttacks(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt);
-    public abstract float preDamage(DamageSource damageSource, LivingEntity target, LivingEntity attacker, float damageDealt);
-    public abstract float postDamage(DamageSource damageSource, LivingEntity target, LivingEntity attacker, float damageDealt);
+    public abstract void onHitAttacks(DamageSource damageSource, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context);
+    public abstract float preDamage(DamageSource damageSource, LivingEntity target, LivingEntity attacker, DamageContext context);
+    public abstract float postDamage(DamageSource damageSource, LivingEntity target, LivingEntity attacker, DamageContext context);
 }

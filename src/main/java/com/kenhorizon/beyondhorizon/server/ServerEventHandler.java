@@ -10,8 +10,7 @@ import com.kenhorizon.beyondhorizon.server.level.damagesource.AdvanceDamageSourc
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerLevelSystemPacket;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
-import com.kenhorizon.beyondhorizon.server.util.Constant;
-import com.kenhorizon.beyondhorizon.server.util.GlobalTags;
+import com.kenhorizon.beyondhorizon.server.util.*;
 import com.kenhorizon.libs.server.event.MobEffectModificationEvent;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
@@ -37,8 +36,6 @@ import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundPlayerSwingArmPacket;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
-import com.kenhorizon.beyondhorizon.server.util.QuiverHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.LocationPredicate;
 import net.minecraft.core.BlockPos;
@@ -776,19 +773,19 @@ public class ServerEventHandler {
                 if (matches) {
                     var attack = set.attack();
                     if (attack.isPresent()) {
-                        damageDealt = attack.get().postMigitationDamage(damageDealt, source, attacker, target);
-                        attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
+                        damageDealt = attack.get().postMigitationDamage(new DamageContext(damageDealt), source, attacker, target);
+                        attack.get().onHitAttack(source, attackerStack, target, attacker, new DamageContext(damageDealt));
                     }
                 }
             }
             this.enchantmentOnHitEffect(attacker, damageDealt, source, target);
             damageDealt = this.enchantmentPostMitigationDamage(attacker, damageDealt, source, target);
             if (!attackerStack.isEmpty() && attackerStack.getItem() instanceof ISkillItems container) {
-                for (Skill trait : container.getSkills()) {
-                    Optional<IAttack> attack = trait.attack();
+                for (Skill skill : container.getSkills()) {
+                    Optional<IAttack> attack = skill.attack();
                     if (attack.isPresent()) {
-                        damageDealt = attack.get().postMigitationDamage(damageDealt, source, attacker, target);
-                        attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
+                        damageDealt = attack.get().postMigitationDamage(new DamageContext(damageDealt), source, attacker, target);
+                        attack.get().onHitAttack(source, attackerStack, target, attacker, new DamageContext(damageDealt));
                     }
                 }
             }
@@ -802,8 +799,8 @@ public class ServerEventHandler {
                             for (Accessory trait : accessoryItems.getAccessories()) {
                                 Optional<IAttack> attack = trait.attack();
                                 if (attack.isPresent()) {
-                                    damageDealt = attack.get().postMigitationDamage(damageDealt, source, attacker, target);
-                                    attack.get().onHitAttack(source, attackerStack, target, attacker, damageDealt);
+                                    damageDealt = attack.get().postMigitationDamage(new DamageContext(damageDealt), source, attacker, target);
+                                    attack.get().onHitAttack(source, attackerStack, target, attacker, new DamageContext(damageDealt));
                                 }
                             }
                         }
@@ -815,7 +812,7 @@ public class ServerEventHandler {
             for (Skill trait : container.getSkills()) {
                 Optional<IAttack> attack = trait.attack();
                 if (attack.isPresent()) {
-                    damageDealt = attack.get().damageTaken(damageDealt, source, target);
+                    damageDealt = attack.get().damageTaken(new DamageContext(damageDealt), source, target);
                 }
             }
         }
@@ -824,7 +821,7 @@ public class ServerEventHandler {
             if (matches) {
                 var weaponCallback = set.attack();
                 if (weaponCallback.isPresent()) {
-                    damageDealt = weaponCallback.get().damageTaken(damageDealt, source, target);
+                    damageDealt = weaponCallback.get().damageTaken(new DamageContext(damageDealt), source, target);
                 }
             }
         }
@@ -842,10 +839,10 @@ public class ServerEventHandler {
                             Optional<IAttack> attack = trait.attack();
                             if (attack.isPresent()) {
                                 if (trait.getTags().isUnique()) {
-                                    damageDealt = attack.get().damageTaken(damageDealt, source, target);
+                                    damageDealt = attack.get().damageTaken(new DamageContext(damageDealt), source, target);
                                 } else {
-                                    if (attack.get().damageTaken(damageDealt, source, target) != damageDealt) {
-                                        damageDealt += attack.get().damageTaken(damageDealt, source, target);
+                                    if (attack.get().damageTaken(new DamageContext(damageDealt), source, target) != damageDealt) {
+                                        damageDealt += attack.get().damageTaken(new DamageContext(damageDealt), source, target);
                                     }
                                 }
                             }
@@ -938,10 +935,10 @@ public class ServerEventHandler {
                                 Optional<IAttack> attack = trait.attack();
                                 if (attack.isPresent()) {
                                     if (trait.getTags().isUnique()) {
-                                        damageDealt = attack.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                        damageDealt = attack.get().preMigitationDamage(new DamageContext(damageDealt), source, attacker, target);
                                     } else {
-                                        if (attack.get().preMigitationDamage(damageDealt, source, attacker, target) != damageDealt) {
-                                            damageDealt += attack.get().preMigitationDamage(damageDealt, source, attacker, target);
+                                        if (attack.get().preMigitationDamage(new DamageContext(damageDealt), source, attacker, target) != damageDealt) {
+                                            damageDealt += attack.get().preMigitationDamage(new DamageContext(damageDealt), source, attacker, target);
                                         }
                                     }
                                 }
@@ -954,7 +951,7 @@ public class ServerEventHandler {
                 for (Skill trait : container.getSkills()) {
                     Optional<IAttack> meleeWeaponCallback = trait.attack();
                     if (meleeWeaponCallback.isPresent()) {
-                        damageDealt = meleeWeaponCallback.get().preMigitationDamage(damageDealt, source, attacker, target);
+                        damageDealt = meleeWeaponCallback.get().preMigitationDamage(new DamageContext(damageDealt), source, attacker, target);
                     }
                 }
             }

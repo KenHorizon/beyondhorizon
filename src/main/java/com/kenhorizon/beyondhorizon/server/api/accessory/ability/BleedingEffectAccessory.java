@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -27,14 +28,14 @@ public class BleedingEffectAccessory extends AccessoryPassiveSkill {
 
 
     @Override
-    public float damageTaken(float damageDealt, DamageSource source, LivingEntity entity) {
-        if (entity == null) return damageDealt;
-        if (damageDealt == 0.0f || source.is(BHDamageTypeTags.PHYSICAL_DAMAGE) || !source.is(DamageTypeTags.IS_PROJECTILE) || !source.is(DamageTypeTags.IS_FIRE) || !source.is(DamageTypeTags.IS_EXPLOSION) || !(!source.getMsgId().equals("player") && !source.getMsgId().equals("mob"))) {
-            float damageReduce = damageDealt * this.getMagnitude();
+    public float damageTaken(DamageContext context, DamageSource source, LivingEntity entity) {
+        if (entity == null) return context.damage();
+        if (context.damage() == 0.0f || source.is(BHDamageTypeTags.PHYSICAL_DAMAGE) || !source.is(DamageTypeTags.IS_PROJECTILE) || !source.is(DamageTypeTags.IS_FIRE) || !source.is(DamageTypeTags.IS_EXPLOSION) || !(!source.getMsgId().equals("player") && !source.getMsgId().equals("mob"))) {
+            float damageReduce = context.multiply(this.getMagnitude());
             this.activatedEffect = true;
-            return damageDealt - damageReduce;
+            return context.sub(damageReduce);
         } else {
-            return damageDealt;
+            return context.damage();
         }
     }
 

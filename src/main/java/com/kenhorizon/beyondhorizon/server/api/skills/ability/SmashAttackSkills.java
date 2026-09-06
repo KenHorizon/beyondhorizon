@@ -2,11 +2,18 @@ package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.util.ShockwaveUtils;
+import com.kenhorizon.beyondhorizon.server.init.BHSounds;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SmashAttackSkills extends WeaponPassiveSkills {
@@ -18,10 +25,15 @@ public class SmashAttackSkills extends WeaponPassiveSkills {
     public boolean canSmashAttack(LivingEntity attacker) {
         return attacker.fallDistance > 1.5F && !attacker.isFallFlying();
     }
+    @Override
+    protected MutableComponent makeTooltip(ItemStack itemStack) {
+        return Component.translatable(this.createId(), Maths.format(this.getMagnitude()));
+    }
+
 
     @Override
-    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (attacker == null || target == null) return damageDealt;
+    public float preMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (attacker == null || target == null) return context.damage();
         if (this.canSmashAttack(attacker)) {
             for (LivingEntity targets : attacker.level().getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(3.0D, 3.0D, 3.0D))) {
                 if (targets.isAlive() && !targets.isInvulnerable() && targets != attacker) {
@@ -43,19 +55,21 @@ public class SmashAttackSkills extends WeaponPassiveSkills {
                         float f = (float) Mth.ceil(attacker.fallDistance - 3.0F);
                         double d4 = Math.min((double)(0.2F + f / 15.0F), 2.5D);
                         int i = (int) (150.0D * d4);
+                        attacker.level().playSound(null, attacker.blockPosition(), BHSounds.HEAVY_ATTACK.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+                        ShockwaveUtils.doRingShockwave(target, target.position(), 4.0F, 0.0F, 20);
                     }
                     targets.setDeltaMovement(targets.getDeltaMovement().with(Direction.Axis.Y, 0.009999999776482582));
                     targets.knockback(0.50F, Mth.sin(attacker.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(attacker.getYRot() * ((float) Math.PI / 180F))));
                 }
             }
-            float damage = damageDealt;
+            float damage = context.damage();
             attacker.resetFallDistance();
             if (attacker.fallDistance > 3) {
-                damage = damageDealt + (attacker.fallDistance * this.getMagnitude());
+                damage = context.add(attacker.fallDistance * this.getMagnitude());
             }
             return damage;
         } else {
-            return damageDealt;
+            return context.damage();
         }
     }
 }

@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -55,18 +56,18 @@ public class WildfireArmorAbility extends ArmorAbilityMagnitude {
     }
 
     @Override
-    public float damageTaken(float damageDealt, DamageSource source, LivingEntity entity) {
-        if (entity == null) return damageDealt;
+    public float damageTaken(DamageContext context, DamageSource source, LivingEntity entity) {
+        if (entity == null) return context.damage();
 
         float totalDamage = (float) EntityUtils.getAttackDamage(entity, this.damageScale);
         CleaveAbility.spawn(entity.level(), entity, entity, totalDamage + this.getMagnitude(), 8.0F);
 
-        return damageDealt;
+        return context.damage();
     }
 
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         target.setSecondsOnFire(Constant.FIRE_EFFECT);
     }
 }

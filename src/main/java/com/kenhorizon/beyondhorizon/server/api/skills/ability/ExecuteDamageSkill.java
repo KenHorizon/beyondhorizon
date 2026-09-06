@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 
@@ -10,7 +11,7 @@ public class ExecuteDamageSkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public float postMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
+    public float postMigitationDamage(DamageContext damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (target == null || attacker == null) return damageDealt;
         if (this.targetInThereshold(target)) {
             return damageDealt + target.getMaxHealth();

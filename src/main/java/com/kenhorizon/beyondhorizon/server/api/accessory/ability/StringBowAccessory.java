@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -32,7 +33,7 @@ public class StringBowAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         if (attacker == null || target == null) return;
         if (source.is(DamageTypes.ARROW) && this.stringBowType == StringBowType.HEAVY) {
             double d0 = attacker.getX() - target.getX();
@@ -43,7 +44,7 @@ public class StringBowAccessory extends AccessoryPassiveSkill {
             target.knockback(0.4D * (1.0D + Constant.HEAVY_STRING_KNOCKBACK), d0, d1);
             float damageMult = Constant.HEAVY_STRING_DAMAGE;
             target.invulnerableTime = 0;
-            target.hurt(BHDamageTypes.physicalDamage(target, attacker), damageDealt * damageMult);
+            target.hurt(BHDamageTypes.physicalDamage(target, attacker), context.multiply(damageMult));
         }
     }
 

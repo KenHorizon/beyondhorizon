@@ -1,8 +1,16 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
+import com.kenhorizon.beyondhorizon.server.api.DamageTypeFunction;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
+import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
+import com.kenhorizon.beyondhorizon.server.api.skills.ability.ExtraDamageSkill;
+import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
+import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -17,77 +25,23 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public class ExtraDamageAccessory extends AccessoryPassiveSkill {
-    @FunctionalInterface
-    public interface DamageTypeFunction {
-        public float calculate(float magnitude, float level, MobType mobType, float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target);
-    }
-    public static final ExtraDamageAccessory.DamageTypeFunction CURRENT_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-
-        float finalDamage = damageDealt + (target.getHealth() * (magnitude * level));
-        if (target instanceof WitherBoss ||  target instanceof Warden) {
-            return Math.min(finalDamage, Constant.PENALTY_DAMAGE);
-        }
-        return finalDamage;
-    });
-    public static final ExtraDamageAccessory.DamageTypeFunction MAX_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        float finalDamage = damageDealt + (target.getMaxHealth() * (magnitude * level));
-        if (target instanceof WitherBoss ||  target instanceof Warden) {
-            return Math.min(finalDamage, Constant.PENALTY_DAMAGE);
-        }
-        return finalDamage;
-    });
-
-    public static final ExtraDamageAccessory.DamageTypeFunction USER_MISSING_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        if (level == 1) {
-            return DamageHandler.missingHealth(attacker, damageDealt, magnitude);
-        } else {
-            return DamageHandler.missingHealth(attacker, damageDealt, (float) (level / 100.0F), magnitude);
-        }
-    });
-    public static final ExtraDamageAccessory.DamageTypeFunction TARGET_MISSING_HEALTH = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        if (level == 1) {
-            return DamageHandler.missingHealth(target, damageDealt, magnitude);
-        } else {
-            return DamageHandler.missingHealth(target, damageDealt, (float) (level / 100.0F), magnitude);
-        }
-    });
-
-    public static final ExtraDamageAccessory.DamageTypeFunction BONUS_DAMAGE = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        if (mobType != null && mobType == target.getMobType()) {
-            return DamageHandler.multiplier(damageDealt, magnitude * level);
-        }
-        return DamageHandler.multiplier(damageDealt, magnitude * level);
-    });
-
-    public static final ExtraDamageAccessory.DamageTypeFunction KINETIC_WEAPON = ((magnitude, level, mobType, damageDealt, source, attacker, target) -> {
-        Entity entity = attacker;
-        if (!(entity instanceof Player) && attacker.isPassenger()) {
-            entity = attacker.getVehicle();
-        }
-        if (entity instanceof LivingEntity) {
-            Vec3 vec3 = entity.getDeltaMovement().scale(20.0F);
-            return DamageHandler.multiplier(damageDealt, (float) Maths.perValue(vec3.length(), (magnitude * level), magnitude));
-        }
-        return damageDealt;
-    });
-
-    private final ExtraDamageAccessory.DamageTypeFunction damageFunction;
+    private final DamageTypeFunction damageFunction;
     private MobType mobType;
 
-    public ExtraDamageAccessory(float magnitude, int level, MobType mobType, ExtraDamageAccessory.DamageTypeFunction damageFunction) {
+    public ExtraDamageAccessory(float magnitude, int level, MobType mobType, DamageTypeFunction damageFunction) {
         super(magnitude, level);
         this.damageFunction = damageFunction;
         this.setMagnitude(magnitude);
         this.setLevel(level);
         this.mobType = mobType;
     }
-    public ExtraDamageAccessory(float magnitude, int level, ExtraDamageAccessory.DamageTypeFunction damageTypeFunction) {
+    public ExtraDamageAccessory(float magnitude, int level, DamageTypeFunction damageTypeFunction) {
         this(magnitude, level, null, damageTypeFunction);
     }
-    public ExtraDamageAccessory(float magnitude, ExtraDamageAccessory.DamageTypeFunction damageTypeFunction) {
+    public ExtraDamageAccessory(float magnitude, DamageTypeFunction damageTypeFunction) {
         this(magnitude, 1, null, damageTypeFunction);
     }
-    public ExtraDamageAccessory(float magnitude, MobType mobType, ExtraDamageAccessory.DamageTypeFunction damageTypeFunction) {
+    public ExtraDamageAccessory(float magnitude, MobType mobType, DamageTypeFunction damageTypeFunction) {
         this(magnitude, 1, mobType, damageTypeFunction);
     }
 
@@ -101,8 +55,8 @@ public class ExtraDamageAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (attacker == null || target == null) return damageDealt;
-        return this.damageFunction.calculate(this.getMagnitude(), this.getLevel(), this.mobType, damageDealt, source, attacker, target);
+    public float preMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (attacker == null || target == null) return context.damage();
+        return this.damageFunction.calculate(this.getMagnitude(), this.getLevel(), this.mobType, context, source, attacker, target);
     }
 }

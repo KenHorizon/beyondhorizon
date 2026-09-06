@@ -3,9 +3,17 @@ package com.kenhorizon.beyondhorizon.server.level.damagesource;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DamageInfo implements IDamageInfo {
     private float preDamage = 0.0F;
@@ -122,5 +130,31 @@ public class DamageInfo implements IDamageInfo {
         this.postDamage = nbt.getFloat(NBT_POST_DAMAGE);
         this.preStoredDamage = nbt.getFloat(NBT_STORED_PRE_DAMAGE);
         this.postStoredDamage = nbt.getFloat(NBT_STORED_POST_DAMAGE);
+    }
+    // ----- Damage Utils ----- //
+
+    public static float getCurrentHealth(LivingEntity target, DamageContext context, float percent) {
+        float scaledDamage = target.getHealth() * percent;
+        return context.add(scaledDamage);
+    }
+
+    public static float getMaxHealth(LivingEntity target, DamageContext context, float percent) {
+        float scaledDamage = target.getMaxHealth() * percent;
+
+        return context.add(scaledDamage);
+    }
+
+    public static float getMissingHealth(LivingEntity target, DamageContext context) {
+        return getMissingHealth(target, context, 1.0F, 1.0F);
+    }
+
+    public static float getMissingHealth(LivingEntity target, DamageContext context, float bonus) {
+        return getMissingHealth(target, context, 1.0F, bonus);
+    }
+
+    public static float getMissingHealth(LivingEntity target, DamageContext context, float percent, float bonus) {
+        float missingHealth = (target.getMaxHealth() - target.getHealth()) / target.getMaxHealth();
+        float outputDamage = (missingHealth / percent) * bonus;
+        return context.multiply(outputDamage);
     }
 }

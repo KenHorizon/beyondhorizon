@@ -3,8 +3,9 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -26,7 +27,7 @@ public class BringItDownAccessory extends StackingSkillAccessory {
         return Component.translatable(this.createId(), (int) this.getMagnitude(), Maths.format(100.0F * this.increasedDamage));
     }
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         if (target == null || attacker == null) return;
         if (attacker instanceof Player player) {
             var stack =  Capabilities.stackable(player);
@@ -40,7 +41,7 @@ public class BringItDownAccessory extends StackingSkillAccessory {
                     attacker.level().playSound(null, target.getX(), target.getY(), target.getZ(), BHSounds.HEAVY_ATTACK.get(), SoundSource.MASTER, 1.0F, 1.0F);
                 }
                 if (instance.isFullyStacked()) {
-                    DamageType.PHYSICAL_DAMAGE.onHit(target, attacker, DamageHandler.missingHealth(target, baseDamage, this.increasedDamage));
+                    DamageType.PHYSICAL_DAMAGE.onHit(target, attacker, DamageInfo.getMissingHealth(target, new DamageContext(baseDamage), this.increasedDamage));
                     instance.reset();
                 }
             }

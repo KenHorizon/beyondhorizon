@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -20,8 +21,8 @@ public class DamageEffectivenessAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public float postMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (attacker == null || target == null) return damageDealt;
-        return damageDealt * this.getMagnitude();
+    public float postMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (attacker == null || target == null) return context.damage();
+        return context.multiply(this.getMagnitude());
     }
 }

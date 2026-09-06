@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstan
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -32,7 +33,7 @@ public class CarveAccessory extends StackingSkillAccessory {
     }
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         if (target == null || attacker == null) return;
         if (attacker instanceof Player player) {
             if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {

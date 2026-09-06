@@ -1,8 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
+import com.kenhorizon.beyondhorizon.server.api.DamageTypeFunction;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.*;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.InfernalRaySkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.InfernoStrikeSkill;
+import com.kenhorizon.beyondhorizon.server.api.skills.ability.ExtraDamageSkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.onhit_effects.OnHitEffectSkills;
 import com.kenhorizon.beyondhorizon.server.api.skills.item_properties.GuardianSwordProperties;
 import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
@@ -43,27 +45,27 @@ public class Skills {
 
     public static final RegistryObject<Skill> RUINED_BLADE = registerSkill("ruined_blade", () -> new OnHitEffectSkills.RuinedBlade(Constant.RUINED_BLADE).melee());
 
-    public static final RegistryObject<Skill> BLADE_EDGE = registerSkill("blade_edge", () -> new ExtraDamageSkill(Constant.BLADE_EDGE, ExtraDamageSkill.MAX_HEALTH)
+    public static final RegistryObject<Skill> BLADE_EDGE = registerSkill("blade_edge", () -> new ExtraDamageSkill(Constant.BLADE_EDGE, DamageTypeFunction.TARGET_MAX_HEALTH)
             .melee());
 
-    public static final RegistryObject<Skill> RADIANT = registerSkill("radiant", () -> new ExtraDamageSkill(Constant.RADIANT, MobType.UNDEAD, ExtraDamageSkill.BONUS_DAMAGE)
+    public static final RegistryObject<Skill> RADIANT = registerSkill("radiant", () -> new ExtraDamageSkill(Constant.RADIANT, MobType.UNDEAD, DamageTypeFunction.BONUS_DAMAGE)
             .melee());
 
     public static final RegistryObject<Skill> TRANNY = registerSkill("tranny", () -> new HealthToDamageSkill(Constant.TRANNY_HEALTH_SCALE)
             .universal()
             .innate(Skills.RETRIBUTION));
 
-    public static final RegistryObject<Skill> RETRIBUTION = registerSkill("retribution", () -> new ExtraDamageSkill(Constant.TRANNY_MISSING_HEALTH_SCALE, ExtraDamageSkill.USER_MISSING_HEALTH)
+    public static final RegistryObject<Skill> RETRIBUTION = registerSkill("retribution", () -> new ExtraDamageSkill(Constant.TRANNY_MISSING_HEALTH_SCALE, DamageTypeFunction.USER_MISSING_HEALTH)
             .universal()
             .isInnate());
 
-    public static final RegistryObject<Skill> KINETIC_STRIKE = registerSkill("kinetic_strike", () -> new ExtraDamageSkill(Constant.KINETIC_STRIKE_DAMAGE_MODIFIER, ExtraDamageSkill.KINETIC_WEAPON)
+    public static final RegistryObject<Skill> KINETIC_STRIKE = registerSkill("kinetic_strike", () -> new ExtraDamageSkill(Constant.KINETIC_STRIKE_DAMAGE_MODIFIER, DamageTypeFunction.KINETIC_WEAPON)
             .universal());
 
     public static final RegistryObject<Skill> DEATH = registerSkill("death", () -> new com.kenhorizon.beyondhorizon.server.api.skills.ability.ExecuteDamageSkill(Constant.DEATH_HEALTH_THRESOHOLD)
             .universal());
 
-    public static final RegistryObject<Skill> LETHALITY = registerSkill("lethality", () -> new ExtraDamageSkill(Constant.LETHALITY, ExtraDamageSkill.BONUS_DAMAGE)
+    public static final RegistryObject<Skill> LETHALITY = registerSkill("lethality", () -> new ExtraDamageSkill(Constant.LETHALITY, DamageTypeFunction.BONUS_DAMAGE)
             .universal());
 
     public static final RegistryObject<Skill> BURN_EFFECT = registerSkill("fire_effect", () -> new InflictFireAttackOnHitSkill(Constant.FIRE_EFFECT)
@@ -75,10 +77,10 @@ public class Skills {
             .disableTooltip()
             .innate(Skills.PERFECTION));
 
-    public static final RegistryObject<Skill> PERFECTION = registerSkill("perfection", () -> new ExtraDamageSkill(Constant.PERFECTION, ExtraDamageSkill.PERFECTION)
+    public static final RegistryObject<Skill> PERFECTION = registerSkill("perfection", () -> new ExtraDamageSkill(Constant.PERFECTION, DamageTypeFunction.PERFECTION)
             .universal());
 
-    public static final RegistryObject<Skill> PIERCING_EDEGE = registerSkill("piercing_edge", () -> new ExtraDamageSkill(Constant.PIERCING_EDGE_DAMAGE, Constant.PIERCING_EDGE_SCALE_DAMAGE, ExtraDamageSkill.ARMORED_DAMAGE)
+    public static final RegistryObject<Skill> PIERCING_EDEGE = registerSkill("piercing_edge", () -> new ExtraDamageSkill(Constant.PIERCING_EDGE_DAMAGE, Constant.PIERCING_EDGE_SCALE_DAMAGE, DamageTypeFunction.ARMORED_DAMAGE)
             .universal());
 
     public static final RegistryObject<Skill> BLAZING_CLEAVE = registerSkill("blazing_cleave", () -> new BlazingCleaveSkill(Constant.BLAZING_CLEAVE_DAMAGE, Constant.BLAZING_CLEAVE_RANGE)

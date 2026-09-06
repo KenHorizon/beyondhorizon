@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -27,16 +28,16 @@ public class AlwaysCrtiAttackSkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (target == null || attacker == null) return damageDealt;
+    public float preMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (target == null || attacker == null) return context.damage();
         if (attacker instanceof Player player) {
             PlayerData playerData = Capabilities.data(player);
             if (playerData != null) {
                 playerData.setDoCrit(true);
             }
         } else {
-            return damageDealt * this.getMagnitude();
+            return context.multiply(this.getMagnitude());
         }
-        return damageDealt;
+        return context.damage();
     }
 }

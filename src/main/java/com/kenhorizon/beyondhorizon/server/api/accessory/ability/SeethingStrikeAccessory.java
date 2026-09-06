@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstan
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.OnHitEffectHandler;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -36,7 +37,7 @@ public class SeethingStrikeAccessory extends StackingSkillAccessory {
     }
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         if (target == null || attacker == null) return;
         if (attacker instanceof Player player) {
             var stack =  Capabilities.stackable(player);

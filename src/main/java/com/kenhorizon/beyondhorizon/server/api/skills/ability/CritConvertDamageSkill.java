@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -45,7 +46,7 @@ public class CritConvertDamageSkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext damageDealt) {
         if (target == null || attacker == null) return;
         target.invulnerableTime = 0;
         var instance = attacker.getAttributes();
@@ -60,16 +61,16 @@ public class CritConvertDamageSkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (target == null || attacker == null) return damageDealt;
+    public float preMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (target == null || attacker == null) return context.damage();
         if (attacker instanceof Player player) {
             PlayerData playerData = Capabilities.data(player);
             if (playerData != null) {
                 playerData.setDoCrit(true);
             }
         } else {
-            return damageDealt * this.getMagnitude();
+            return context.multiply(this.getMagnitude());
         }
-        return damageDealt;
+        return context.damage();
     }
 }

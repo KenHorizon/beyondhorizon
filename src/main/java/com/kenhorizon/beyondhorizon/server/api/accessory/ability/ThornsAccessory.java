@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -25,8 +26,8 @@ public class ThornsAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public float damageTaken(float damageDealt, DamageSource source, LivingEntity entity) {
-        if (entity == null) return damageDealt;
+    public float damageTaken(DamageContext context, DamageSource source, LivingEntity entity) {
+        if (entity == null) return context.damage();
         if (source.getDirectEntity() == source.getEntity() && source.getEntity() instanceof LivingEntity attacker) {
             double bonusArmor = entity.getArmorValue() - entity.getAttributeBaseValue(Attributes.ARMOR);
             double damageInflict = bonusArmor * (this.getMagnitude() * this.getLevel());
@@ -35,6 +36,6 @@ public class ThornsAccessory extends AccessoryPassiveSkill {
                 attacker.addEffect(new MobEffectInstance(BHEffects.WOUNDED.get(), Maths.sec(3)));
             }
         }
-        return damageDealt;
+        return context.damage();
     }
 }

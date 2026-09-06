@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api;
 
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,24 +11,26 @@ public interface IAttack {
 
     /**
      * Handle customizing the post migitation damage modifications
-     * @param damageDealt Amount of damage taken recevied
-     * @param source The source of damage recevied
-     * @param entity Living Target of Attacker
-     * */
-    default float damageTaken(float damageDealt, DamageSource source, LivingEntity entity) {
-        return damageDealt;
+     *
+     * @param context Amount of damage taken recevied
+     * @param source  The source of damage recevied
+     * @param entity  Living Target of Attacker
+     *
+     */
+    default float damageTaken(DamageContext context, DamageSource source, LivingEntity entity) {
+        return context.damage();
     }
 
     /**
      * Handle customizing the pre migitation damage
      * {@code Pre-Mitigation the damage after all the modification and reduction applied}
-     * @param damageDealt Amount of damage taken recevied
+     * @param context Damage value is stored
      * @param source The source of damage recevied
      * @param attacker The entity who's causing
      * @param target Living Target of Attacker
      * */
-    default float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        return damageDealt;
+    default float preMigitationDamage(final DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        return context.damage();
     }
 
     /**
@@ -37,8 +40,8 @@ public interface IAttack {
      * @param attacker The entity who's causing
      * @param target Living Target of Attacker
      * */
-    default float postMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        return damageDealt;
+    default float postMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        return context.damage();
     }
 
     /**
@@ -48,7 +51,7 @@ public interface IAttack {
      * @param attacker The entity who's causing
      * @param target Living Target of Attacker
      * */
-    default void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {}
+    default void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, final DamageContext context) {}
 
     /**
      * Handle if player is using attack keys

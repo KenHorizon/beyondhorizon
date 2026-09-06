@@ -3,9 +3,9 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -65,27 +65,15 @@ public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         if (attacker == null || target == null) return;
         CompoundTag tag = EntityData.getOrCreateTag(attacker);
         if (this.isActive) {
             tag.putInt(this.spellBladeTag(), 0);
             this.isActive = false;
             target.invulnerableTime = 0;
-            float outputDamage = this.spellBladeDamage(attacker, damageDealt, this.attackScale);
+            float outputDamage = this.spellBladeDamage(attacker, context.damage(), this.attackScale);
             this.damageType.dealDamage(target, attacker, outputDamage);
         }
     }
-
-//    @Override
-//    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-//        if (attacker == null || target == null) return damageDealt;
-//        CompoundTag tag = EntityData.getOrCreateTag(attacker);
-//        if (this.isActive) {
-//            tag.putInt(this.spellBladeTag(), 0);
-//            this.isActive = false;
-//            return (float) (damageDealt + this.spellBladeDamage(attacker, damageDealt, this.attackScale));
-//        }
-//        return damageDealt;
-//    }
 }

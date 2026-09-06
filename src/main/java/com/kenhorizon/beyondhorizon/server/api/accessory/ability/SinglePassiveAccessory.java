@@ -12,6 +12,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -182,7 +183,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         if (target == null || attacker == null) return;
         CompoundTag tagA = EntityData.getOrCreateTag(attacker);
         CompoundTag tagT = EntityData.getOrCreateTag(attacker);
@@ -194,7 +195,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
                     if (sTag.isFullyStacked()) {
 //                        BeyondHorizon.LOGGER.debug("[Energize] Electroshock activated!");
                         target.invulnerableTime = 0;
-                        BoltShockAbility.spawn(attacker.level(), target.getX(), target.getY(0.05D), target.getZ(), damageDealt * 0.40F, attacker);
+                        BoltShockAbility.spawn(attacker.level(), target.getX(), target.getY(0.05D), target.getZ(), context.multiply(0.40F), attacker);
                         sTag.setStack(0);
                     }
                 }
@@ -204,13 +205,13 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
             target.setSecondsOnFire(Constant.FIRE_EFFECT);
         }
         if (this == Accessories.CORRUPTED_BITE.get()) {
-            DamageType.MAGIC_DAMAGE.onHit(target, attacker, (float) damageDealt * (this.getMagnitude() * this.getLevel()));
+            DamageType.MAGIC_DAMAGE.onHit(target, attacker, (float) context.multiply((this.getMagnitude() * this.getLevel())));
         }
         if (this == Accessories.NULLIFY.get()) {
             target.invulnerableTime = 0;
             for (ItemStack armor : target.getArmorSlots()) {
                 if (armor.isEnchanted() && armor.getEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION) > 0) {
-                    float damage = damageDealt * (this.getMagnitude() * this.getLevel());
+                    float damage = context.multiply((this.getMagnitude() * this.getLevel()));
                     target.hurt(BHDamageTypes.nullify(attacker, null), damage);
                 }
             }
@@ -221,7 +222,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
             if (bonusAD >= bonusAP) {
 
                 target.invulnerableTime = 0;
-                float outputDamage = (damageDealt * this.getMagnitude());
+                float outputDamage = context.multiply(this.getMagnitude());
                 target.hurt(BHDamageTypes.trueDamage(attacker, null), outputDamage);
             }
         }
@@ -238,23 +239,23 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (attacker == null || target == null) return damageDealt;
+    public float preMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (attacker == null || target == null) return context.damage();
         if (this == Accessories.NULLIFY.get()) {
             for (ItemStack armor : target.getArmorSlots()) {
                 if (armor.isEnchanted() && armor.getEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION) > 0) {
-                    return damageDealt * (this.getMagnitude() * this.getLevel());
+                    return context.multiply((this.getMagnitude() * this.getLevel()));
                 }
             }
         }
 
         if (this == Accessories.STING.get()) {
-            return damageDealt + (this.getMagnitude() * this.getLevel());
+            return context.add((this.getMagnitude() * this.getLevel()));
         }
         if (this == Accessories.LIFE_SIPHON.get()) {
-           return damageDealt + (target.getHealth() * (this.getMagnitude() * this.getLevel()));
+           return context.add((target.getHealth() * this.getLevel()));
         }
-        return damageDealt;
+        return context.damage();
     }
 
     @Override

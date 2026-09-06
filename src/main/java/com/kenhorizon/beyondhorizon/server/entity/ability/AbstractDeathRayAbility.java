@@ -6,11 +6,11 @@ import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRaySound;
-import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageHandler;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -545,13 +545,13 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     private float rayDamages(LivingEntity target) {
         switch (this.beamDamageTags) {
             case MAX_HEALTH -> {
-                return DamageHandler.maxHealth(target, this.getBaseDamage(), this.getScaleMaxHealthDamage());
+                return DamageInfo.getMaxHealth(target, new DamageContext(this.getBaseDamage()), this.getScaleMaxHealthDamage());
             }
             case MISSING_HEALTH -> {
-                return DamageHandler.missingHealth(target, this.getBaseDamage(), this.getScaleMissingHealthDamage());
+                return DamageInfo.getMissingHealth(target, new DamageContext(this.getBaseDamage()), this.getScaleMissingHealthDamage());
             }
             case CURRENT_HEALTH -> {
-                return DamageHandler.currentHealth(target, this.getBaseDamage(), this.getScaleCurrentHealthDamage());
+                return DamageInfo.getCurrentHealth(target, new DamageContext(this.getBaseDamage()), this.getScaleCurrentHealthDamage());
             }
             default -> {
                 return this.getBaseDamage();

@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -45,17 +46,16 @@ public class HeavyHitterSkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (target == null || attacker == null) return damageDealt;
+    public float preMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (target == null || attacker == null) return context.damage();
         var instance = attacker.getAttribute(Attributes.ATTACK_SPEED);
         if (instance != null && instance.getModifier(BASE_ATTACK_SPEED_UUID) != null) {
             double stackAttributeAmount = instance.getModifier(BASE_ATTACK_SPEED_UUID).getAmount();
             double atkSpdBonuses = AttributeUtils.getBonus(attacker, Attributes.ATTACK_SPEED) + stackAttributeAmount;
             double damageMultipler = Maths.perValue(atkSpdBonuses, this.attackBonus, this.getMagnitude());
-            float outputDamage = (float) (damageDealt + (damageDealt * damageMultipler));
-            return outputDamage;
+            return context.multiply(damageMultipler);
         }
-        return damageDealt;
+        return context.damage();
     }
 
 }

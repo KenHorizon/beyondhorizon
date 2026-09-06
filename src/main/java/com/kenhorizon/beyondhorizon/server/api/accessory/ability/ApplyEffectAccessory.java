@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -121,11 +121,11 @@ public class ApplyEffectAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext damageDealt) {
         if (attacker == null || target == null) return;
-        BeyondHorizon.LOGGER.info("List of effects {} and got {}", this.mobEffect, this.getMobEffects().getDescriptionId());
+//        BeyondHorizon.LOGGER.info("List of effects {} and got {}", this.mobEffect, this.getMobEffects().getDescriptionId());
         if (this.isSelf() && !this.isOnKilled()) {
-            BeyondHorizon.LOGGER.info("Apply effect on attacker");
+//            BeyondHorizon.LOGGER.info("Apply effect on attacker");
             if (attacker.level().getRandom().nextDouble() <= getEffectOccured()) {
                 if (this.stacking) {
                     this.stackingEffect(attacker);
@@ -134,7 +134,7 @@ public class ApplyEffectAccessory extends AccessoryPassiveSkill {
                 }
             }
         } else {
-            BeyondHorizon.LOGGER.info("Apply effect on target");
+//            BeyondHorizon.LOGGER.info("Apply effect on target");
 
             if (target.level().getRandom().nextDouble() <= getEffectOccured()) {
                 if (this.stacking) {
@@ -149,7 +149,7 @@ public class ApplyEffectAccessory extends AccessoryPassiveSkill {
     @Override
     public void onEntityKilled(DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (this.isSelf() && !this.isOnKilled()) {
-            BeyondHorizon.LOGGER.info("Apply effect on attacker on killed");
+//            BeyondHorizon.LOGGER.info("Apply effect on attacker on killed");
             if (attacker.level().getRandom().nextDouble() <= this.effectOccured) {
                 if (this.stacking) {
                     this.stackingEffect(attacker);
@@ -158,7 +158,7 @@ public class ApplyEffectAccessory extends AccessoryPassiveSkill {
                 }
             }
         } else {
-            BeyondHorizon.LOGGER.info("Apply effect on target on killed");
+//            BeyondHorizon.LOGGER.info("Apply effect on target on killed");
             if (target.level().getRandom().nextDouble() <= this.effectOccured) {
                 if (this.stacking) {
                     this.stackingEffect(target);

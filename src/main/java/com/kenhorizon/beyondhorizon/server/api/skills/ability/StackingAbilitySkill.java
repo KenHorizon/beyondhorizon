@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -18,7 +19,7 @@ public abstract class StackingAbilitySkill extends WeaponPassiveSkills {
 
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext damageDealt) {
         if (this.stackType == StackType.HIT) {
 
         }
@@ -35,13 +36,7 @@ public abstract class StackingAbilitySkill extends WeaponPassiveSkills {
     }
 
     @Override
-    public float preMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (attacker == null || target == null) return damageDealt;
-        return this.preDamage(source, target, attacker, damageDealt);
-    }
-
-    @Override
-    public float postMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
+    public float postMigitationDamage(DamageContext damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (attacker == null || target == null) return damageDealt;
         return this.postDamage(source, target, attacker, damageDealt);
     }

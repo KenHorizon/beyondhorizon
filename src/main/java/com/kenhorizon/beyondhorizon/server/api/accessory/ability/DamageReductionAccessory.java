@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -14,38 +15,37 @@ public class DamageReductionAccessory extends AccessoryPassiveSkill {
         ALL,
         BASIC_ATTACK
     }
-    private float damageReduce;
     private DamageReductionType damageReductionType;
 
     public DamageReductionAccessory(float damageReduce, DamageReductionType damageReductionType) {
-        this.damageReduce = damageReduce;
+        super(damageReduce);
         this.damageReductionType = damageReductionType;
     }
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
-        return Component.translatable(this.createId(), Maths.format(100.0F * this.damageReduce));
+        return Component.translatable(this.createId(), Maths.format(100.0F * this.getMagnitude()));
     }
 
     @Override
-    public float damageTaken(float damageDealt, DamageSource source, LivingEntity entity) {
-        if (entity == null) return damageDealt;
-        float reducedDamage = damageDealt * this.damageReduce;
+    public float damageTaken(DamageContext context, DamageSource source, LivingEntity entity) {
+        if (entity == null) return context.damage();
+        float reducedDamage = context.multiply(this.getMagnitude());
         switch (this.damageReductionType) {
             case BASIC_ATTACK -> {
                 if (source.is(DamageTypeTags.IS_EXPLOSION) || source.is(DamageTypeTags.IS_FIRE) || source.is(DamageTypeTags.IS_PROJECTILE)) {
-                    return damageDealt;
+                    return context.damage();
                 }
                 if (source.getDirectEntity() == source.getEntity() && source.getEntity() instanceof LivingEntity) {
-                    return damageDealt - reducedDamage;
+                    return context.sub(reducedDamage);
                 }
             }
             case ALL -> {
-                return damageDealt - reducedDamage;
+                return context.sub(reducedDamage);
             }
             default -> {
-                return damageDealt;
+                return context.damage();
             }
         }
-        return damageDealt;
+        return context.damage();
     }
 }

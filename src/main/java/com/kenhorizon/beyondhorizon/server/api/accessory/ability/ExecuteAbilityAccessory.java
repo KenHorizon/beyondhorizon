@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -28,12 +29,12 @@ public class ExecuteAbilityAccessory extends AccessoryPassiveSkill {
 
 
     @Override
-    public float postMigitationDamage(float damageDealt, DamageSource source, LivingEntity attacker, LivingEntity target) {
-        if (attacker == null || target == null) return damageDealt;
+    public float postMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (attacker == null || target == null) return context.damage();
         if (target.getHealth() <= (target.getMaxHealth() * this.getHealthExecute())) {
             attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(), BHSounds.ENTITY_EXECUTED.get(), SoundSource.MASTER, 1.0F, 1.0F);
-            return damageDealt * target.getMaxHealth();
+            return context.multiply(target.getMaxHealth());
         }
-        return damageDealt;
+        return context.damage();
     }
 }

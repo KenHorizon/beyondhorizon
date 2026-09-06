@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -42,16 +43,11 @@ public abstract class CleaveEffectAccessory extends AccessoryPassiveSkill {
     }
 
     @Override
-    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, float damageDealt) {
+    public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         target.invulnerableTime = 0;
-        target.hurt(BHDamageTypes.physicalDamage(attacker, null), this.dealDamage(target, attacker, damageDealt, itemStack));
+        target.hurt(BHDamageTypes.physicalDamage(attacker, null), this.dealDamage(target, attacker, context.damage(), itemStack));
         target.invulnerableTime = 0;
-        if (this.type == CleaveAbility.Type.CONE) {
-            this.attackCleave(itemStack, target, attacker, damageDealt);
-        } else {
-            this.attackCleave(itemStack, target, attacker, damageDealt);
-//            CleaveAbility.spawn(attacker.level(), target , attacker, this.dealDamage(target, attacker, damageDealt, getStacks), this.getCleaveRange());
-        }
+        this.attackCleave(itemStack, target, attacker, context.damage());
     }
 
     public abstract boolean coneAtTarget();

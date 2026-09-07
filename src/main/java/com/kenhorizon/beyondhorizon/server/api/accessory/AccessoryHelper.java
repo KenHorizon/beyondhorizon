@@ -7,7 +7,6 @@ import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -184,7 +183,7 @@ public final class AccessoryHelper {
         return ResourceLocation.tryParse(tag.getString("id"));
     }
 
-    public static UUID getSlotUuid(AccessorySlotContext context) {
+    public static UUID getSlotIds(AccessorySlotContext context) {
         String key = context.identifier() + context.index();
         return UUIDS.computeIfAbsent(key, (k) -> UUID.nameUUIDFromBytes(k.getBytes()));
     }

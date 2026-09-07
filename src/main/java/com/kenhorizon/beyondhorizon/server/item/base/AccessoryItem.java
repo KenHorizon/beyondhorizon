@@ -1,9 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.item.base;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
+import com.google.common.collect.*;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.api.accessory.*;
@@ -91,6 +89,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
         int size = this.accessories.stream().filter(accessory -> !(accessory instanceof AttributeOnlyAccessory)).toList().size();
         for (int i = 0; i < this.accessories.size(); i++) {
+
             Accessory accessory = this.accessories.get(i);
             if (i == 0) {
                 if (this.getItemGroup() != AccessoryItemGroup.NONE) {
@@ -100,7 +99,6 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
                 }
             }
             accessory.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
-
 
             UUID uuid = UUID.nameUUIDFromBytes(Accessory.ACCESSORY_UUID.getBytes());
             Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, itemStack);
@@ -169,11 +167,12 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
 
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(UUID uuid, ItemStack stack) {
-        Multimap<Attribute, AttributeModifier> map = LinkedHashMultimap.create();
+        Multimap<Attribute, AttributeModifier> map = HashMultimap.create();
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
         this.accessories.forEach(accessory -> {
-            map.putAll(accessory.registerAttributes(uuid, stack));
+            builder.putAll(accessory.registerAttributes(uuid, stack));
         });
-//        BeyondHorizon.LOGGER.debug("Item is registered! Attribute Added {}", map);
+        map = builder.build();
         return map;
     }
 }

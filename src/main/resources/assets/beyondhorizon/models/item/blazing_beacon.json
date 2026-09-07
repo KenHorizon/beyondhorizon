@@ -33,6 +33,14 @@
 			"scale": [0.5, 0.5, 0.5]
 		}
 	},
+    "overrides": [
+        {
+            "predicate": {
+                "beyondhorizon:using": 1
+            },
+            "model": "beyondhorizon:item/blazing_beacon_charging"
+        }
+    ],
 	"groups": [
 		{
 			"name": "root",

@@ -39,6 +39,7 @@ import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAccessoryInventoryPacket;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
+import com.kenhorizon.libs.client.data.ModelOverrides;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -48,6 +49,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -170,6 +172,7 @@ public class ClientProxy extends ServerProxy {
         MenuScreens.register(BHMenu.VOID_BAG_MENU.get(), VoidBagScreen::new);
 
         registerRaidMobs();
+        addItemProperties();
 
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.IRON_LATTICE.get(), RenderType.cutout());
         ItemBlockRenderTypes.setRenderLayer(BHBlocks.BLACK_IRON_LATTICE.get(), RenderType.cutout());
@@ -200,7 +203,15 @@ public class ClientProxy extends ServerProxy {
         event.put(BHEntity.INFERNO_SHIELD.get(), InfernoShield.createAttributes());
         event.put(BHEntity.DRAGON_HORNET.get(), DragonHornet.createAttributes());
     }
-
+    public void addItemProperties() {
+        for (Item item : ForgeRegistries.ITEMS) {
+            if (item == BHItems.BLAZING_BEACON.get()) {
+                ItemProperties.register(item, ModelOverrides.USING, (stack, level, entity, duration) -> {
+                    return entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F;
+                });
+            }
+        }
+    }
 //    @OnlyIn(Dist.CLIENT)
 //    public void addRegisteredLayers(final EntityRenderersEvent.AddLayers event) {
 //        List<EntityType<? extends LivingEntity>> entityTypes = ImmutableList.copyOf(ForgeRegistries.ENTITY_TYPES.getValues().stream()

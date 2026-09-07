@@ -183,6 +183,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.SWIFTNESS.get(), "Swiftness", "Inflict Speed boost effect for 5 seconds");
         this.addAccessory(Accessories.STALKER.get(), "Stalker", "Gain 100% Stealth and becoming invisible");
         this.addAccessory(Accessories.CRAMPONS.get(), "Crampons", "Ability to walk on Powder Snow and Immune to Freezing");
+        this.addAccessory(Accessories.MAGICAL_OPS.get(), "Magical Ops", "Increased the ability power by %s%%");
         this.addAccessory(Accessories.VOID_EYE.get(), "Void Eye", "Enderman will not be provoked when looked at");
         this.addAccessory(Accessories.SUPREMACY.get(), "Supremacy",
                 "Stacks: %s",

@@ -75,12 +75,7 @@ public class BHItemStackRenderers extends BlockEntityWithoutLevelRenderer {
             poseStack.translate(0.5F, 1.5F, 0.5F);
             poseStack.pushPose();
             if (heldIn3d) {
-                if (itemDisplayContext.firstPerson()) {
-                    if (minecraft.player != null && minecraft.player.isUsingItem()) {
-                        poseStack.translate(isLeft * 0.05F, 0.0F, isLeft * -1.5F);
-                        poseStack.scale(2.75F, 2.75F, 2.75F);
-                    }
-                } else {
+                if (!itemDisplayContext.firstPerson()) {
                     if (minecraft.player != null && minecraft.player.isUsingItem()) {
                         poseStack.translate(isLeft * 0.05F, 0.0F, isLeft * -0.05F);
                         poseStack.mulPose(Axis.ZP.rotationDegrees(-25));

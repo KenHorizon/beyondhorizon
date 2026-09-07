@@ -9,9 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.function.Supplier;
 
 public class ArmorAbilityRegistries {
-    private static final String WILDFIRE_ARMOR_ABILITY = "wildfire_armor_ability";
-
-    public static final RegistryObject<ArmorAbility> WILDFIRE = registerArmor(WILDFIRE_ARMOR_ABILITY, () ->
+    public static final RegistryObject<ArmorAbility> WILDFIRE = registerArmor("wildfire_armor", () ->
             new WildfireArmorAbility(DefaultArmorBonus.WILDFIRE_SHOCKWAVE_DAMAGE, DefaultArmorBonus.WILDFIRE_SHOCKWAVE_DAMAGE, DefaultArmorBonus.WILDFIRE_INCREASED_DAMAGE)
                     .itemHead(new ItemStack(BHItems.WILDFIRE_HELMET.get()))
                     .itemBody(new ItemStack(BHItems.WILDFIRE_CHESTPLATE.get()))

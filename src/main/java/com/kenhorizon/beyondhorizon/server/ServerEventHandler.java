@@ -402,7 +402,7 @@ public class ServerEventHandler {
                 if (!player.level().isClientSide()) {
                     ItemStack prevItemStack = handler.getStacks().getPreviousItemStack(i);
                     if (!ItemStack.matches(itemStacks, prevItemStack)) {
-                        UUID uuid = AccessoryHelper.getSlotUuid(slotContext);
+                        UUID uuid = AccessoryHelper.getSlotIds(slotContext);
                         if (!prevItemStack.isEmpty()) {
                             Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, prevItemStack);
                             player.getAttributes().removeAttributeModifiers(map);

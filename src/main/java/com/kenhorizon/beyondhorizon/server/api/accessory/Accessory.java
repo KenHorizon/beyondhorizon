@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.google.common.collect.Multimaps;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
@@ -11,6 +12,7 @@ import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.AbstractAbilityComponents;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.mojang.logging.LogUtils;
@@ -28,6 +30,7 @@ import org.slf4j.Logger;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public abstract class Accessory extends AbstractAbilityComponents {
     public enum Tags {
@@ -140,11 +143,11 @@ public abstract class Accessory extends AbstractAbilityComponents {
 
     public Multimap<Attribute, AttributeModifier> registerAttributes(UUID uuid, ItemStack itemStack) {
         Multimap<Attribute, AttributeModifier> map = HashMultimap.create();
-        for (var entryMap : this.getIndetifierModifiers().entries()) {
-            var staticModifier = entryMap.getValue();
-            var attribute = entryMap.getKey();
+        for (var entry : this.getIndetifierModifiers().entries()) {
+            var attribute = entry.getKey();
+            var staticModifier = entry.getValue();
             if (staticModifier != null) {
-                map.put(attribute, new AttributeModifier(uuid, staticModifier.getName(), staticModifier.getAmount(), staticModifier.getOperation()));
+                map.put(attribute, new AttributeModifier(staticModifier.getId(), staticModifier.getName(), staticModifier.getAmount(), staticModifier.getOperation()));
             }
         }
         this.attributeModifiers.putAll(map);
@@ -161,9 +164,7 @@ public abstract class Accessory extends AbstractAbilityComponents {
 
     @Override
     public void addTooltipAttributes(ItemStack itemStack, List<Component> tooltip, Multimap<Attribute, AttributeModifier> map) {
-        if (this.isAttributeTooltipEnable()) {
-            this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, map);
-        }
+        this.attributeTooltip.makeAttributeTooltip(itemStack, tooltip, map);
     }
 
 

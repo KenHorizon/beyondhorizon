@@ -88,9 +88,9 @@ public abstract class AbstractAbilityComponents {
      * <p>Handle adding tooltips to the items
      * <pre>{@code
      *      ///Item's Tooltip Format///
-     *      - Attribute Tooltips
      *      - Passive Ability
      *      - Active Ability
+     *      - Attribute Tooltips
      *      - Item Limitations
      * }</pre>
      * @param itemStack The Item being used

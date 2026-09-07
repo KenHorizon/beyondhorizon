@@ -174,7 +174,10 @@ public class Accessories {
             .addAttributes(Attributes.ATTACK_DAMAGE,  Constant.POWER_GLOVES_ATTACK_DAMAGE, AttributeModifier.Operation.ADDITION)
             .addAttributes(Attributes.ATTACK_KNOCKBACK, Constant.POWER_GLOVES_KNOCBACK, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
-    public static final RegistryObject<Accessory> MAGICAL_OPS = registerSkill("magical_ops", () -> new AttributeOnlyAccessory()
+    public static final RegistryObject<Accessory> MAGICAL_OPS_STATS = registerSkill("magical_ops_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.ABILITY_POWER_2, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> MAGICAL_OPS = registerSkill("magical_ops", () -> new SinglePassiveAccessory((float) Constant.MAGICAL_OPS)
             .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.MAGICAL_OPS, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Accessory> POWER_CLAW = registerSkill("power_claw", () -> new AttributeOnlyAccessory()

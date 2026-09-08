@@ -2,8 +2,10 @@ package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.InfernalRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamDamageTags;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.item.base.weapons.MagicWeaponBaseItem;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
@@ -21,8 +23,8 @@ import java.util.List;
 
 public class InfernalRaySkill extends AbstractDeathRaySkill {
 
-    public InfernalRaySkill(float ADScale, float APScale, float baseDamage, boolean ignoreFrame, DamageType types, AbstractDeathRayAbility.BeamDamageTags tags) {
-        super(ADScale, APScale, baseDamage, ignoreFrame, types, tags);
+    public InfernalRaySkill(float ADScale, float APScale, float baseDamage, boolean ignoreFrame, DamageType types, BeamTypeFunction typeFunction) {
+        super(ADScale, APScale, baseDamage, ignoreFrame, types, typeFunction);
     }
 
     @Override
@@ -44,9 +46,9 @@ public class InfernalRaySkill extends AbstractDeathRaySkill {
         InfernalRayAbility deathLaserBeam = new InfernalRayAbility(level, player, player.getX(), player.getY() + 1.2f, player.getZ(), (float) ((player.yHeadRot + 90) * Math.PI / 180), (float) (-player.getXRot() * Math.PI / 180), player.getTicksUsingItem());
         deathLaserBeam.setHasPlayer(true);
         deathLaserBeam.setCanBurnTarget(this.canBurnTarget);
-        deathLaserBeam.setBaseDamage(this.baseDamage);
+        deathLaserBeam.setBaseDamage(this.additionalDamage(player, itemStack));
         deathLaserBeam.setDamageType(this.types);
-        deathLaserBeam.damageConfig(this.tagTypes, this.additionalDamage(player, itemStack));
+        deathLaserBeam.damageConfig(this.typeFunction);
         deathLaserBeam.setImmunityFrameIgnore(this.canIgnoreFrame);
         player.level().addFreshEntity(deathLaserBeam);
     }

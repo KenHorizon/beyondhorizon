@@ -66,7 +66,7 @@ public class PlayerData {
 
     public void removeMana(double amount, boolean doDecut) {
         this.doDecut = doDecut;
-        amount *= this.getManaCostReduction();
+        amount *= getManaCostReduction(this.player);
         this.setMana(Math.max(0, this.getMana() - amount));
     }
 
@@ -80,8 +80,12 @@ public class PlayerData {
         }
     }
 
-    public float getManaCostReduction() {
-        return (float) (1.0F - AttributeUtils.getValue(this.player, BHAttributes.MANA_COST.get()));
+    public static double getManaCostReduction(Player player) {
+        return 1.0F + AttributeUtils.getValue(player, BHAttributes.MANA_COST.get());
+    }
+
+    public static double getCooldownReduction(Player player) {
+        return 1.0F + AttributeUtils.getValue(player, BHAttributes.COOLDOWN.get());
     }
 
     public void setSyncMana(double mana) {

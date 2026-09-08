@@ -1,0 +1,14 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 1,
+      "item": "minecraft:iron_sword",
+      "nbt": "{Damage:0}"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:infested_sword"
+  }
+}

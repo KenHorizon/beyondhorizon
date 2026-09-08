@@ -1,0 +1,48 @@
+Basic Wand shoot magic missle
+
+Attributes:
+mana cost: 10
++4 (1 + each tier) ability power
+	- Wooden Wand
+	- Refined Wooden Wand
+	- Arcana Wand
+	- Iron Wand
+	- Golden Wand
+	- Diamond Wand
+	- Netherite Wand
+	- Mystic Wand
+- <Magic Missle> Simple projectile a beam of light that deal 50% ability power with lifetime of 10 seconds
+
+Thunder Zapper
+mana cost: 20
+Shoot electric beam that deal 5+ (40% ability power)
++20 ability power
+
+Storm Surge
+mana cost: 90
+Call a thunder strike that deal 3+100% ability power on targeted position
+hitting with water 32 radius within entity on water deal 100% damage
++30 ability power
+
+Glacier
+mana cost: 20
+Shoot 3 glacier shards that deal 2+30% ability power and inflict slowness for 3 seconds
++5 ability power
+
+Gardener
+mana cost: 90
+Release a shard petals that deal 8% ability power each
++20 ability power
+
+Night's Ray
+mana cost: 60
+Charge upto 1.5 seconds and release a beam that deal 4% ability power that ignore I-frames
++10 ability power
+
+Bleaming Eye
+mana cost: 80
+Release a deadly beam ray that deal 1+ 2% current health + 2% ability power that ignore I-frames
+
+Gauntlet of Inferno
+mana cost: 10
+Shoot a blazing rod that deal 1+1% ability power

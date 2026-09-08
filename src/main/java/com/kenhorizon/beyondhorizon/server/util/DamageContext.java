@@ -7,7 +7,7 @@ package com.kenhorizon.beyondhorizon.server.util;
  * */
 public record DamageContext(float damage) {
 
-    public float add(final float magnitude) {
+    public float add(float magnitude) {
         return this.damage() + magnitude;
     }
 
@@ -15,7 +15,7 @@ public record DamageContext(float damage) {
         return (float) (this.damage() + magnitude);
     }
 
-    public float sub(final float magnitude) {
+    public float sub(float magnitude) {
         return this.damage() - magnitude;
     }
 
@@ -23,7 +23,7 @@ public record DamageContext(float damage) {
         return (float) (this.damage() - magnitude);
     }
 
-    public float divide(final float magnitude) {
+    public float divide(float magnitude) {
         return this.damage() / magnitude;
     }
 
@@ -31,7 +31,7 @@ public record DamageContext(float damage) {
         return (float) (this.damage() / magnitude);
     }
 
-    public float multiply(final float magnitude) {
+    public float multiply(float magnitude) {
         return this.damage() + (this.damage() * magnitude);
     }
 

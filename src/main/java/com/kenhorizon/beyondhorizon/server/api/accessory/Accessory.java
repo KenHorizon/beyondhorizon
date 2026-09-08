@@ -2,35 +2,23 @@ package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.google.common.collect.Multimaps;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
-import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.AbstractAbilityComponents;
-import com.kenhorizon.beyondhorizon.server.api.IAttack;
-import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
-import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.*;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
-import javax.annotation.Nullable;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public abstract class Accessory extends AbstractAbilityComponents {
     public enum Tags {
@@ -49,8 +37,7 @@ public abstract class Accessory extends AbstractAbilityComponents {
     protected final AttributeTooltips attributeTooltip = new AttributeTooltips();
     private float magnitude;
     private int level = 1;
-    protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
-    protected final Multimap<Attribute, AttributeModifier> indetifierModifiers = HashMultimap.create();
+    protected final Multimap<Attribute, AttributeModifier> attributeModifier = HashMultimap.create();
     protected boolean isInnate = false;
     protected List<RegistryObject<? extends Accessory>> innateSkills = new ArrayList<>();
     protected Tags tags = Tags.NONE;
@@ -143,14 +130,13 @@ public abstract class Accessory extends AbstractAbilityComponents {
 
     public Multimap<Attribute, AttributeModifier> registerAttributes(UUID uuid, ItemStack itemStack) {
         Multimap<Attribute, AttributeModifier> map = HashMultimap.create();
-        for (var entry : this.getIndetifierModifiers().entries()) {
+        for (var entry : this.getAttributeModifier().entries()) {
             var attribute = entry.getKey();
-            var staticModifier = entry.getValue();
-            if (staticModifier != null) {
-                map.put(attribute, new AttributeModifier(staticModifier.getId(), staticModifier.getName(), staticModifier.getAmount(), staticModifier.getOperation()));
+            var modifier = entry.getValue();
+            if (modifier != null) {
+                map.put(attribute, new AttributeModifier(modifier.getId(), modifier.getName(), modifier.getAmount(), modifier.getOperation()));
             }
         }
-        this.attributeModifiers.putAll(map);
         return map;
     }
 
@@ -170,7 +156,7 @@ public abstract class Accessory extends AbstractAbilityComponents {
 
     public Accessory addAttributes(Attribute attribute, double amount, AttributeModifier.Operation operation) {
         AttributeModifier attributemodifier = new AttributeModifier(UUID.randomUUID(), "Attribute Modifier", amount, operation);
-        this.indetifierModifiers.put(attribute, attributemodifier);
+        this.attributeModifier.put(attribute, attributemodifier);
         return this;
     }
 
@@ -184,12 +170,8 @@ public abstract class Accessory extends AbstractAbilityComponents {
         attributeMap.addTransientAttributeModifiers(modifier);
     }
 
-    public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
-        return this.attributeModifiers;
-    }
-
-    public Multimap<Attribute, AttributeModifier> getIndetifierModifiers() {
-        return indetifierModifiers;
+    public Multimap<Attribute, AttributeModifier> getAttributeModifier() {
+        return attributeModifier;
     }
 
     public Optional<IAccessoryEvent> accessory() {

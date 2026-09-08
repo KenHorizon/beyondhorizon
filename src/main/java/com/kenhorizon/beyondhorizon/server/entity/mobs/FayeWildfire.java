@@ -7,8 +7,10 @@ import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
-import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.InfernalRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamDamageTags;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.entity.ai.HurtByNearestTargetGoal;
 import com.kenhorizon.beyondhorizon.server.entity.ai.MobAttackGoal;
 import com.kenhorizon.beyondhorizon.server.entity.ai.MobMoveGoal;
@@ -171,7 +173,8 @@ public class FayeWildfire extends BHLibEntity implements FlyingAnimal {
                             this.entity.getX() + radius * Math.sin(-this.entity.getYRot() * Math.PI / 180),
                             this.entity.getY() + 1.4, this.entity.getZ() + radius * Math.cos(-this.entity.getYRot() * Math.PI / 180),
                             (float) ((this.entity.yHeadRot + 90) * Math.PI / 180), (float) (-this.entity.getXRot() * Math.PI / 180), duration);
-                    ability.damageConfig(AbstractDeathRayAbility.BeamDamageTags.DEFAULT, 1.0F);
+                    ability.setBaseDamage(1.0F);
+                    ability.damageConfig(new BeamTypeFunction(BeamDamageTags.DEFAULT, 0));
                     ability.setCanBurnTarget(true);
                     ability.setImmunityFrameIgnore(true);
                     this.entity.level().addFreshEntity(ability);

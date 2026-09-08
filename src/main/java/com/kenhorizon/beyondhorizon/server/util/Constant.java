@@ -35,7 +35,7 @@ public class Constant {
     public static final float BRING_IT_DOWN_BASE_DAMAGE = 2;
     public static final float BRING_IT_DOWN_INCREASED_DAMAGE = 0.75F;
     public static final float ROCK_SOLID_REDUCE = 0.15F;
-    public static final float SMASH_ATTACK = 2.0F;
+    public static final float SMASH_ATTACK = 4.0F;
     public static float CORRUPTED_BITE_DAMAGE_SCALE = 0.15F;
     public static float SOUL_SIPHON_CURRENT_HEALTH_DAMAGE = 0.015F;
     public static int LEVEL_SYSTEM_UNLOCKED = 5;
@@ -184,6 +184,9 @@ public class Constant {
     public static double WEAPON_CRITICAL_STRIKE_3 = 0.24D;
     public static double CRITICAL_STRIKE_0 = 0.15D;
     public static double CRITICAL_STRIKE_1 = 0.25D;
+    public static double MANA_REDUCE_0 = -0.06D;
+    public static double MANA_REDUCE_1 = -0.08D;
+    public static double MANA_REDUCE_2 = -0.10D;
     public static double SWIFT_DAGGER_ATTACK_SPEED = 0.05D;
     public static double POWER_GLOVES_ATTACK_DAMAGE = 3;
     public static double POWER_GLOVES_KNOCBACK = 0.10D;
@@ -210,6 +213,7 @@ public class Constant {
     public static double BERSERKER_BOOTS = 0.12D;
     public static double IRON_PLATED_BOOTS = 0.10D;
     public static double OVERGROWTH_BONUS_HEALTH = 0.12D;
+    public static double WOUNDED_DURATION = 3;
     public static double VENOM_DURATION = 5;
     public static double VENOM_POISON_LEVEL = 2;
     public static double VENOM_INFLICT_CHANCE = 0.5D;

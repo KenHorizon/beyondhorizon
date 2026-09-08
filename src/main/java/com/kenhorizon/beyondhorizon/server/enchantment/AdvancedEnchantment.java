@@ -2,7 +2,10 @@ package com.kenhorizon.beyondhorizon.server.enchantment;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
@@ -46,6 +49,13 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
     protected final Predicate<Enchantment> incompatibleEnchantments;
     public static final EnchantmentCategory CATEGORY_ALL = EnchantmentCategory.create("ALL", item -> {
         return true;
+    });
+
+    public static final EnchantmentCategory SMASH_ATTACK_WEAPON = EnchantmentCategory.create("SMASH_ATTACK_WEAPON", item -> {
+        if (item instanceof ISkillItems skillItems) {
+            return skillItems.hasSkill(Skills.SMASH_ATTACK.get());
+        }
+        return false;
     });
     public static final EnchantmentCategory MAGIC_WEAPON = EnchantmentCategory.create("MAGIC_WEAPON", item -> {
         return item instanceof MagicWeaponBaseItem;

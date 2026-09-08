@@ -425,6 +425,43 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
                 .required(Items.EMERALD, 64)
                 .save(consumer);
 
+        WorkbenchRecipeProvider.create(BHItems.INFESTED_SWORD.get(), 1)
+                .required(Items.IRON_SWORD)
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.INFESTED_MAGIC_MOLECULES.get(), 1)
+                .required(BHItems.AMPLIFLYING_TOME.get())
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.MOONLIGHT_RING.get(), 1)
+                .required(BHItems.DORAN_RING.get())
+                .required(BHItems.MOONLIGHT_FLOWER.get())
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.ALCHEMIST_MAGE_BOTTLE.get(), 1)
+                .required(BHItems.GREATER_MANA_POTION.get())
+                .required(BHItems.MOONLIGHT_FLOWER.get())
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.ARCANE_CLOAK.get(), 1)
+                .required(BHItems.LEATHER_AGILITY.get())
+                .required(BHItems.AMPLIFLYING_TOME.get())
+                .required(BHItems.AETHER_WISP.get())
+                .required(BHItems.ALCHEMIST_MAGE_BOTTLE.get())
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.ARCANE_GLOVES.get(), 1)
+                .required(BHItems.POWER_GLOVES.get())
+                .required(BHItems.AMPLIFLYING_TOME.get())
+                .required(BHItems.AETHER_WISP.get())
+                .required(BHItems.ALCHEMIST_MAGE_BOTTLE.get())
+                .save(consumer);
+
+        WorkbenchRecipeProvider.create(BHItems.DAWNCORE.get(), 1)
+                .required(BHItems.ARCANE_GLOVES.get())
+                .required(BHItems.ARCANE_CLOAK.get())
+                .save(consumer);
+
         oreSmeltings(consumer, List.of(BHItems.RAW_EMBED_HELLSTONE.get()), RecipeCategory.MISC, BHItems.HELLSTONE_INGOT.get(), 0.7F, Maths.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_STARITE.get()), RecipeCategory.MISC, BHItems.STARITE_INGOT.get(), 0.7F, Maths.sec(10));
         oreSmeltings(consumer, List.of(BHItems.RAW_LUMINITE.get()), RecipeCategory.MISC, BHItems.LUMINITE_INGOT.get(), 0.7F, Maths.sec(10));

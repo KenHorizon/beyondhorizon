@@ -264,6 +264,15 @@ public class BHItems {
     public static final RegistryObject<Item> NULL_GEM = accessoryItem("null_gem", AccessoryItemGroup.POWER_GEM, AccessoryBuilder.NULL_SWORD);
     public static final RegistryObject<Item> CATALYST_GEM = accessoryItem("catalyst_gem", AccessoryItemGroup.POWER_GEM, AccessoryBuilder.ASCENDED_HERO_SWORD);
     public static final RegistryObject<Item> DARK_ESSESNCE_CRYSTAL = accessoryItem("dark_essence_crystal", AccessoryBuilder.MAGICAL_OPS);
+    public static final RegistryObject<Item> INFESTED_SWORD = accessoryItem("infested_sword", AccessoryBuilder.INFESTED_SWORD);
+    public static final RegistryObject<Item> INFESTED_MAGIC_MOLECULES = accessoryItem("infested_magic_molecules", AccessoryBuilder.INFESTED_MAGIC_MOLECULES);
+
+    public static final RegistryObject<Item> MOONLIGHT_FLOWER = accessoryItem("moonlight_flower", AccessoryBuilder.MOONLIGHT_FLOWER);
+    public static final RegistryObject<Item> MOONLIGHT_RING = accessoryItem("moonlight_ring", AccessoryBuilder.MOONLIGHT_RING);
+    public static final RegistryObject<Item> ARCANE_GLOVES = accessoryItem("arcane_gloves", AccessoryItemGroup.MANA_RECOVERY, AccessoryBuilder.ARCANE_GLOVES);
+    public static final RegistryObject<Item> ARCANE_CLOAK = accessoryItem("arcane_cloak", AccessoryItemGroup.MANA_RECOVERY, AccessoryBuilder.ARCANE_CLOAK);
+    public static final RegistryObject<Item> ALCHEMIST_MAGE_BOTTLE = accessoryItem("alchemist_mage_bottle", AccessoryItemGroup.MANA_RECOVERY, AccessoryBuilder.ALCHEMIST_MAGE_BOTTLE);
+    public static final RegistryObject<Item> DAWNCORE = accessoryItem("dawncore", AccessoryItemGroup.MANA_RECOVERY, AccessoryBuilder.DAWNCORE);
 
     public static final RegistryObject<Item> BOOTS = accessoryItem("boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.BASIC_BOOTS);
     public static final RegistryObject<Item> GOLDEN_BOOTS = accessoryItem("golden_boots", AccessoryItemGroup.BOOTS, AccessoryBuilder.GOLDEN_BOOTS);

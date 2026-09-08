@@ -1,7 +1,8 @@
-// 1.20.1	2026-09-06T01:13:17.0147326	Item Models: beyondhorizon
+// 1.20.1	2026-09-08T18:31:31.3200566	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
+7bdddcc916af00e66e5f32f4b948745dc944c2dc assets/beyondhorizon/models/item/alchemist_mage_bottle.json
 81e672adaad488959227245db22ca6da1a6c7d5d assets/beyondhorizon/models/item/ampliflying_tome.json
 17ccefc69b8ddac415566364b3271b9f2f30b3a5 assets/beyondhorizon/models/item/ancient_chisel.json
 500c5c8337be0e5a40261a49589de8b6d42258f8 assets/beyondhorizon/models/item/ancient_clock.json
@@ -10,6 +11,8 @@ cabd63f40b0d87a6db691286dc1e3d50cd1b5f95 assets/beyondhorizon/models/item/ancien
 578fb92fc22c69116d34027ce7f34fa8650d7bb2 assets/beyondhorizon/models/item/ankh_eternity.json
 d572da6c9312feee6bbbd87a37d6eb06beef960b assets/beyondhorizon/models/item/ankh_shield.json
 24f8cf89b0bc75ab4a31998afa84b7b1bb582b6c assets/beyondhorizon/models/item/arcana_crystal.json
+5a9dd7452c32e558235db8f445fd83bd7fb1d7c1 assets/beyondhorizon/models/item/arcane_cloak.json
+8160e461efa71cd6228205b1b296f4643d92e183 assets/beyondhorizon/models/item/arcane_gloves.json
 78febe81b88e0da4ea60007990d35aee7011bd44 assets/beyondhorizon/models/item/armor_plate.json
 0f1f8569bf318fc0f988a9301492cd9a01a19625 assets/beyondhorizon/models/item/ashes_of_flame.json
 142c6bc7e213af35d5c2e51239d068ec425b5bb1 assets/beyondhorizon/models/item/berserker_boots.json
@@ -51,6 +54,7 @@ de3c0da14bbfc7ab2ed03c06075a1cfca7f0130b assets/beyondhorizon/models/item/cursed
 b855fdb2c78b573c0e717cb9a9948450b6079604 assets/beyondhorizon/models/item/dark_crystal.json
 0c72a1a96f11e47ede9e9d15a449faf88730f8a9 assets/beyondhorizon/models/item/dark_essence_crystal.json
 5768b4cb01f107fe8acb22721dbf74c9f941ceac assets/beyondhorizon/models/item/dark_repulser.json
+c915c0e1b112b5924b5c1f95492fcdc24cc422d9 assets/beyondhorizon/models/item/dawncore.json
 3f66afefa91f9449a70a66b4c37f25a55ec45c82 assets/beyondhorizon/models/item/death_contract.json
 f59b8406bb7e664a001ca5e500800ba779b34476 assets/beyondhorizon/models/item/debug0.json
 f067ccde0fbe79a96370293f0849fa7134d3cbf4 assets/beyondhorizon/models/item/debug1.json
@@ -110,6 +114,8 @@ de10e118101e898d012161c7b3e58048b63d6369 assets/beyondhorizon/models/item/hoglin
 85fc938aff44af58e5ce4ef0d31f72e6745df9be assets/beyondhorizon/models/item/hoglin_tusk_spear.json
 d4fb31726b490d0411e12756c4c6c0716f1c884a assets/beyondhorizon/models/item/hoglin_tusk_sword.json
 1e88040a163af9aa9659cc324ff424cada251e65 assets/beyondhorizon/models/item/inferno_heart_stone.json
+550dd7db7c4d250b7b4e53922509142c1e102f8f assets/beyondhorizon/models/item/infested_magic_molecules.json
+45dd57ef317d018c6fb1da88fe942c10f0141678 assets/beyondhorizon/models/item/infested_sword.json
 33ab8b1213915d33ded37edc9ffb60deba049ab7 assets/beyondhorizon/models/item/infinity_gem.json
 4982b6ebb0e0cc0b2755b177dea0e167737993a7 assets/beyondhorizon/models/item/iron_plated_boots.json
 a0d9fff7da5ef4f6361e78c61b790175e70b0799 assets/beyondhorizon/models/item/kraken_slayer.json
@@ -129,6 +135,8 @@ b2f43174d163177bf6e76674a3a457ee16329a1d assets/beyondhorizon/models/item/mask_o
 ad7deea38ea7f781b1e24c5223f796ffb35a9719 assets/beyondhorizon/models/item/miner_boots.json
 ed31ccc37159ce9d10539435aa6dc901a8e2864b assets/beyondhorizon/models/item/miner_gloves.json
 60bac3a34a6069cf1860f4e3a320a36c65eb56c2 assets/beyondhorizon/models/item/molten_core_fragmets.json
+c8a868f0dad2115dded1551e368daf3a867147f9 assets/beyondhorizon/models/item/moonlight_flower.json
+e37af01704a8cec9b8854761c5a23d548b5bf6dc assets/beyondhorizon/models/item/moonlight_ring.json
 dafdd78759bb14e2aed8610d97dcf799e25a96b3 assets/beyondhorizon/models/item/null_gem.json
 e86bba503b61d6ac12ff1a92db83b9b2b6f4e2dc assets/beyondhorizon/models/item/null_magic_rune.json
 5b4e47d722e69117ce2e75a8099e362d94179025 assets/beyondhorizon/models/item/obsidian_plate.json

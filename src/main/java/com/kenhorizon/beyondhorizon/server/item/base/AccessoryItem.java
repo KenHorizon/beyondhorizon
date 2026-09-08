@@ -88,6 +88,7 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
         int size = this.accessories.stream().filter(accessory -> !(accessory instanceof AttributeOnlyAccessory)).toList().size();
+        Multimap<Attribute, AttributeModifier> map = HashMultimap.create();
         for (int i = 0; i < this.accessories.size(); i++) {
 
             Accessory accessory = this.accessories.get(i);
@@ -101,7 +102,14 @@ public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloada
             accessory.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
 
             UUID uuid = UUID.nameUUIDFromBytes(Accessory.ACCESSORY_UUID.getBytes());
-            Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, itemStack);
+//            Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, itemStack);
+            if (accessory.isAttributeTooltipEnable()) {
+                ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+                accessory.getAttributeModifier().forEach((attribute, modifier) -> {
+                    builder.put(attribute, modifier);
+                });
+                map.putAll( builder.build());
+            }
             if (!map.isEmpty() && i == (this.accessories.size() - 1)) {
                 tooltip.add(CommonComponents.EMPTY);
                 tooltip.add(Component.translatable(Tooltips.WHEN_WORN).withStyle(Tooltips.TOOLTIP[0]));

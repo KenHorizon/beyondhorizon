@@ -40,6 +40,14 @@ public class AccessoryBuilder implements IReloadable {
             Accessories.KNOCKBACK_RESISTANCE, Accessories.SHIELD, Accessories.PRESERVED, Accessories.UNBOTHERED, Accessories.BAD_APPLE, Accessories.HEMORRHAGE_CONTROL, Accessories.WEIGHTS, Accessories.INVULNERABLE,
             Accessories.SWEET_DREAM, Accessories.UNCURSED, Accessories.VITAMINS, Accessories.LIGHTNESS, Accessories.OWL_SIGHT));
 
+    public static final AccessoryBuilder MOONLIGHT_FLOWER = new AccessoryBuilder(List.of(Accessories.MOONLIGHT_FLOWER_STATS));
+    public static final AccessoryBuilder MOONLIGHT_RING = new AccessoryBuilder(List.of(Accessories.MOONLIGHT_RING_STATS));
+    public static final AccessoryBuilder ARCANE_GLOVES = new AccessoryBuilder(List.of(Accessories.ARCANE_GLOVES_STATS, Accessories.MANA_REPLENISH_2));
+    public static final AccessoryBuilder ARCANE_CLOAK = new AccessoryBuilder(List.of(Accessories.ARCANE_CLOAK_STATS, Accessories.MANA_REPLENISH_1));
+    public static final AccessoryBuilder ALCHEMIST_MAGE_BOTTLE = new AccessoryBuilder(List.of(Accessories.ALCHEMIST_MAGE_BOTTLE_STATS, Accessories.MANA_REPLENISH_1));
+    public static final AccessoryBuilder DAWNCORE = new AccessoryBuilder(List.of(Accessories.DAWNCORE_STATS, Accessories.MANA_REPLENISH_3));
+    public static final AccessoryBuilder INFESTED_SWORD = new AccessoryBuilder(List.of(Accessories.WOUNDED_PHYSICAL));
+    public static final AccessoryBuilder INFESTED_MAGIC_MOLECULES = new AccessoryBuilder(List.of(Accessories.WOUNDED_MAGIC));
     public static final AccessoryBuilder FINE_EDGE = new AccessoryBuilder(List.of(Accessories.CARVE));
     public static final AccessoryBuilder PHANTOM_MIRROR = new AccessoryBuilder(List.of(Accessories.SEETHING_STRIKE));
     public static final AccessoryBuilder SATCTEL_OF_ELIXIR_0 = new AccessoryBuilder(List.of(Accessories.ELIXIR_GRAB_0));

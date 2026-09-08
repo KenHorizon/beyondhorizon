@@ -1,0 +1,13 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 1,
+      "item": "beyondhorizon:ampliflying_tome"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:infested_magic_molecules"
+  }
+}

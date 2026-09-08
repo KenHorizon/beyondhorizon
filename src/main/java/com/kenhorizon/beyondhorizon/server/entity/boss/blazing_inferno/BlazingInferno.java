@@ -12,9 +12,11 @@ import com.kenhorizon.beyondhorizon.client.sound.BossMusic;
 import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRayChargingSound;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
-import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.EruptionAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamDamageTags;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.entity.ai.control.SmartBodyControl;
 import com.kenhorizon.beyondhorizon.server.entity.boss.BHBossEntity;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
@@ -43,7 +45,6 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -1615,9 +1616,9 @@ public class BlazingInferno extends BHBossEntity {
                         this.entity.getX() + radius * Math.sin(-this.entity.getYRot() * Math.PI / 180),
                         this.entity.getY() + 1.4, this.entity.getZ() + radius * Math.cos(-this.entity.getYRot() * Math.PI / 180),
                         (float) ((this.entity.yHeadRot + 90) * Math.PI / 180), (float) (-this.entity.getXRot() * Math.PI / 180), duration);
-                ability.damageConfig(AbstractDeathRayAbility.BeamDamageTags.CURRENT_HEALTH, 1.0F);
+                ability.setBaseDamage(1.0F);
+                ability.damageConfig(new BeamTypeFunction(BeamDamageTags.CURRENT_HEALTH, 0.02F));
                 ability.setCanBurnTarget(true);
-                ability.scaleCurrentHealthDamage(0.2F);
                 ability.setImmunityFrameIgnore(true);
                 this.entity.level().addFreshEntity(ability);
             }

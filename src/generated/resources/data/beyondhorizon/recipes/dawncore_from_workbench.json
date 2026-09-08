@@ -1,0 +1,17 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 1,
+      "item": "beyondhorizon:arcane_gloves"
+    },
+    {
+      "count": 1,
+      "item": "beyondhorizon:arcane_cloak"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:dawncore"
+  }
+}

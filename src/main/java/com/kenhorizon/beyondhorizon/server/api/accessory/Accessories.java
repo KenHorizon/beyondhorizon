@@ -7,8 +7,10 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.GainRand
 import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.StalkerAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.SwiftnessAccessory;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
+import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.tags.BHEffectTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -26,6 +28,35 @@ import java.util.function.Supplier;
  * */
 public class Accessories {
     public static final RegistryObject<Accessory> NONE = registerSkill("none", AccessoryPassiveSkill::new);
+
+    public static final RegistryObject<Accessory> MOONLIGHT_FLOWER_STATS = registerSkill("moonlight_flower_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.MANA_COST.get(), Constant.MANA_REDUCE_0, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> ALCHEMIST_MAGE_BOTTLE_STATS = registerSkill("alchemist_mage_bottle_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.MANA_COST.get(), Constant.MANA_REDUCE_1, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MANA_REGENERATION.get(), Constant.MANA_REGEN_1, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> ARCANE_CLOAK_STATS = registerSkill("arcane_cloak_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.ABILITY_POWER_3, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MANA_COST.get(), Constant.MANA_REDUCE_1, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MAX_MANA.get(), Constant.MAX_MANA_1, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MANA_REGENERATION.get(), Constant.MANA_REGEN_2, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> ARCANE_GLOVES_STATS = registerSkill("alchemist_gloves_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.MANA_COST.get(), Constant.MANA_REDUCE_1, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MAX_MANA.get(), Constant.MAX_MANA_1, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MANA_REGENERATION.get(), Constant.MANA_REGEN_2, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> MOONLIGHT_RING_STATS = registerSkill("moonlight_ring_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.MANA_COST.get(), Constant.MANA_REDUCE_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MAX_MANA.get(), Constant.MAX_MANA_0, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MANA_REGENERATION.get(), Constant.MANA_REGEN_1, AttributeModifier.Operation.ADDITION));
+
+    public static final RegistryObject<Accessory> DAWNCORE_STATS = registerSkill("dawncore_stats", () -> new AttributeOnlyAccessory()
+            .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.ABILITY_POWER_4, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MANA_COST.get(), Constant.MANA_REDUCE_2, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MAX_MANA.get(), Constant.MAX_MANA_1, AttributeModifier.Operation.ADDITION)
+            .addAttributes(BHAttributes.MANA_REGENERATION.get(), Constant.MANA_REGEN_4, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> MAGE_WAND_STATS = registerSkill("mage_wand_stats", () -> new AttributeOnlyAccessory()
             .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.ABILITY_POWER_2, AttributeModifier.Operation.ADDITION));
@@ -178,6 +209,7 @@ public class Accessories {
             .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.ABILITY_POWER_2, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> MAGICAL_OPS = registerSkill("magical_ops", () -> new SinglePassiveAccessory((float) Constant.MAGICAL_OPS)
+            .disableAttributeTooltip()
             .addAttributes(BHAttributes.ABILITY_POWER.get(), Constant.MAGICAL_OPS, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Accessory> POWER_CLAW = registerSkill("power_claw", () -> new AttributeOnlyAccessory()
@@ -239,9 +271,15 @@ public class Accessories {
     public static final RegistryObject<Accessory> UNCURSED = registerSkill("uncursed", () -> new ImmunityEffectAccessory(BHEffectTags.UNCURSED_IMMUNE_TO).removeOnTick());
     public static final RegistryObject<Accessory> PACE = registerSkill("pace", () -> new ImmunityEffectAccessory(BHEffectTags.PACE_IMMUNE_TO).removeOnTick());
 
+    public static final RegistryObject<Accessory> WOUNDED_PHYSICAL = registerSkill("wounded_physical", () -> new WoundedAccessory((int) Constant.WOUNDED_DURATION, BHDamageTypeTags.PHYSICAL_DAMAGE));
+    public static final RegistryObject<Accessory> WOUNDED_MAGIC = registerSkill("wounded_magic", () -> new WoundedAccessory((int) Constant.WOUNDED_DURATION, BHDamageTypeTags.MAGIC_DAMAGE));
+
     public static final RegistryObject<Accessory> VENOM = registerSkill("venom", () -> new ApplyEffectAccessory((int) Constant.VENOM_DURATION, (int) Constant.VENOM_POISON_LEVEL, MobEffects.POISON, BHEffects.LETHAL_POISON.get())
             .chances(Constant.VENOM_INFLICT_CHANCE));
 
+    public static final RegistryObject<Accessory> MANA_REPLENISH_1 = registerSkill("mana_replenish_1", () -> new ManaReplenishAccessory(ManaReplenishAccessory.ManaRestoredType.AUTO));
+    public static final RegistryObject<Accessory> MANA_REPLENISH_2 = registerSkill("mana_replenish_2", () -> new ManaReplenishAccessory(ManaReplenishAccessory.ManaRestoredType.DAMAGE_TAKEN));
+    public static final RegistryObject<Accessory> MANA_REPLENISH_3 = registerSkill("mana_replenish_3", () -> new ManaReplenishAccessory(ManaReplenishAccessory.ManaRestoredType.AUTO));
     public static final RegistryObject<Accessory> ETERNAL_LIFE = registerSkill("eternal_life", ImmuneDeathAccessory::new);
     public static final RegistryObject<Accessory> NULLIFY = registerSkill("nullify", () -> new SinglePassiveAccessory(Constant.JUMP_BOOST));
     public static final RegistryObject<Accessory> JUMP_BOOST = registerSkill("jump_boost", () -> new SinglePassiveAccessory(Constant.JUMP_BOOST));

@@ -47,16 +47,20 @@ public class RecoveryPotionItem extends BasicItem {
     }
 
     @Override
-    public ItemStack finishUsingItem(ItemStack itemStack, Level level, LivingEntity livingEntity) {
-        Player player = livingEntity instanceof Player ? (Player) livingEntity : null;
-        if (player instanceof ServerPlayer) {
-            CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, itemStack);
-        }
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+        this.usePotionItem(entity, level, stack);
+        return stack;
+    }
 
+    public void usePotionItem(LivingEntity entity, Level level, ItemStack stack) {
         if (!level.isClientSide()) {
+            if (entity instanceof Player player && player instanceof ServerPlayer) {
+                CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, stack);
+            }
+
             if (this.health > 0.0F) {
-                livingEntity.heal(this.health);
-                if (!player.isCreative()) {
+                entity.heal(this.health);
+                if (entity instanceof Player player && !player.isCreative()) {
                     if (this.postEffectHealth != null) {
                         this.postEffectHealth.accept(player);
                     } else {
@@ -64,7 +68,7 @@ public class RecoveryPotionItem extends BasicItem {
                     }
                 }
             }
-            if (this.mana > 0.0F) {
+            if (entity instanceof Player player && this.mana > 0.0F) {
                 PlayerDataHelper.getPlayerData(player).ifPresent(handler -> {
                     handler.addMana(this.mana);
                     if (this.postEffectMana != null) {
@@ -72,16 +76,17 @@ public class RecoveryPotionItem extends BasicItem {
                     }
                 });
             }
-        }
 
-        if (player != null) {
-            player.awardStat(Stats.ITEM_USED.get(this));
-            if (!player.getAbilities().instabuild) {
-                itemStack.shrink(1);
+
+            if (entity instanceof Player player) {
+                player.awardStat(Stats.ITEM_USED.get(this));
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
             }
+
         }
-        livingEntity.gameEvent(GameEvent.DRINK);
-        return itemStack;
+        entity.gameEvent(GameEvent.DRINK);
     }
 
     @Override

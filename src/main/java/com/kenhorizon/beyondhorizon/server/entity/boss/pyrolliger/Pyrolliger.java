@@ -9,9 +9,11 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRayChargingSound;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
-import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BurningHexTrapAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamDamageTags;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.entity.ai.*;
 import com.kenhorizon.beyondhorizon.server.entity.ai.ability.DodgeAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ai.control.SmartBodyControl;
@@ -570,9 +572,9 @@ public class Pyrolliger extends BHBossEntity {
                             this.getX() + radius * Math.sin(-this.getYRot() * Math.PI / 180),
                             this.getY() + 1.4, this.getZ() + radius * Math.cos(-this.getYRot() * Math.PI / 180),
                             (float) ((this.yHeadRot + 90) * Math.PI / 180), (float) (-this.getXRot() * Math.PI / 180), duration);
-                    ability.damageConfig(AbstractDeathRayAbility.BeamDamageTags.MISSING_HEALTH, 1.0F);
+                    ability.setBaseDamage(1.0F);
+                    ability.damageConfig(new BeamTypeFunction(BeamDamageTags.CURRENT_HEALTH, 0.02F));
                     ability.setCanBurnTarget(true);
-                    ability.scaleCurrentHealthDamage(0.2F);
                     ability.setImmunityFrameIgnore(true);
                     this.level().addFreshEntity(ability);
                 }

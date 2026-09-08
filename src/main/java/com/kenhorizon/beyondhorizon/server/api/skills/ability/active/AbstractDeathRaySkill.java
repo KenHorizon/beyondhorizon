@@ -1,10 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
+import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
+import com.kenhorizon.beyondhorizon.server.api.accessory.ability.ManaReplenishAccessory;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
-import com.kenhorizon.beyondhorizon.server.entity.ability.AbstractDeathRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.AbstractDeathRayAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import net.minecraft.client.CameraType;
@@ -29,15 +32,15 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
     private CameraType cameraType;
     protected float baseDamage = 1.0F;
     protected boolean canIgnoreFrame = false;
-    protected AbstractDeathRayAbility.BeamDamageTags tagTypes;
+    protected BeamTypeFunction typeFunction;
     protected DamageType types;
     private static final UUID SPEED_MODIFIER_SPRINTING_UUID = UUID.fromString("1a63ada7-7fcd-4695-b8db-0873ced4be94");
     private static final AttributeModifier SPEED_MODIFIER_SPRINTING = new AttributeModifier(SPEED_MODIFIER_SPRINTING_UUID, "Sprinting speed boost", (double)-0.25F, AttributeModifier.Operation.MULTIPLY_TOTAL);
     protected boolean canBurnTarget = false;
 
-    public AbstractDeathRaySkill(float ADScale, float APScale, float baseDamage, boolean ignoreFrame, DamageType types, AbstractDeathRayAbility.BeamDamageTags tags) {
+    public AbstractDeathRaySkill(float ADScale, float APScale, float baseDamage, boolean ignoreFrame, DamageType types, BeamTypeFunction typeFunction) {
         this.baseDamage = baseDamage;
-        this.tagTypes = tags;
+        this.typeFunction = typeFunction;
         this.canIgnoreFrame = ignoreFrame;
         this.types = types;
         this.ADScale = ADScale;
@@ -90,7 +93,8 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
     public void onUsingTick(Level level, LivingEntity entity, ItemStack itemStack, int remainingUseDuration) {
         if (entity instanceof Player player) {
             PlayerData playerData = Capabilities.data(player);
-            if (playerData.getMana() <= 0) {
+            boolean flag = !(!ManaReplenishAccessory.findValidManaPotion(player).isEmpty() && (AccessoryHelper.getAccessory(player, Accessories.MANA_REPLENISH_1.get()) || AccessoryHelper.getAccessory(player, Accessories.MANA_REPLENISH_3.get())));
+            if (playerData.getMana() <= this.getManaCost() && flag) {
                 List<AbstractDeathRayAbility> list = player.level().getEntitiesOfClass(AbstractDeathRayAbility.class, player.getBoundingBox().inflate(2.0D));
                 if (!list.isEmpty()) {
                     for (AbstractDeathRayAbility laserBeam : list) {

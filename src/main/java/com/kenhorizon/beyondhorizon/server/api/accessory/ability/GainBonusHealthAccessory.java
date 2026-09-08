@@ -28,7 +28,7 @@ public class GainBonusHealthAccessory extends AccessoryPassiveSkill {
 
     @Override
     public void onUnequip(Player player, ItemStack itemStack, int slot) {
-        this.removeAttributeModifiers(player, this.getAttributeModifiers());
+        this.removeAttributeModifiers(player, this.getAttributeModifier());
     }
 
     @Override

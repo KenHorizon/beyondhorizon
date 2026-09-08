@@ -8,8 +8,10 @@ import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.enchantment.DamageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -53,6 +55,16 @@ public class BHEnchantments {
                     .minCost(6)
                     .rarity(Enchantment.Rarity.RARE)
                     .category(EnchantmentCategory.BOW)
+            ));
+    public static RegistryObject<Enchantment> HEAVY_SMASH = RegistryHelper.registerEnchantments("heavy_smash",
+            () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()
+                    .maxLevel(5)
+                    .slot(new EquipmentSlot[] {EquipmentSlot.MAINHAND})
+                    .maxCost(20)
+                    .minCost(6)
+                    .rarity(Enchantment.Rarity.RARE)
+                    .category(AdvancedEnchantment.SMASH_ATTACK_WEAPON)
+                    .incompatible(enchantment -> enchantment instanceof ExtendedDamageEnchantment || enchantment == Enchantments.IMPALING)
             ));
     public static RegistryObject<Enchantment> STUNNING = RegistryHelper.registerEnchantments("stunning",
             () -> new AdvancedEnchantment(new AdvancedEnchantment.Builder()

@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.entity.ability;
+package com.kenhorizon.beyondhorizon.server.entity.ability.beam;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
@@ -6,6 +6,7 @@ import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRaySound;
+import com.kenhorizon.beyondhorizon.server.entity.ability.IDeathRayType;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
@@ -55,15 +56,9 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     public float renderYaw;
     public float renderPitch;
     public float baseDamage = 2.0F;
-    public boolean scaleCurrentHealth;
-    public float scaleCurrentHealthDamage = 0.02F;
-    public boolean scaleMaxHealth;
-    public float scaleMaxHealthDamage = 0.02F;
-    public boolean scaleMissingHealth;
-    public float scaleMissingHealthDamage = 0.02F;
     public boolean canIgnoreFrame = false;
     public boolean canBurnTarget = false;
-    public BeamDamageTags beamDamageTags = BeamDamageTags.DEFAULT;
+    public BeamTypeFunction typeFunction = new BeamTypeFunction(BeamDamageTags.DEFAULT, 0.0F);
     public DamageType damageType = DamageType.PHYSICAL_DAMAGE;
     public ControlledAnimation appear = new ControlledAnimation(3);
 
@@ -156,6 +151,15 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     public int[] getColors() {
         return new int[] {this.entityData.get(R), this.entityData.get(G), this.entityData.get(B)};
     }
+
+    public void setBeamTypeFunction(BeamTypeFunction typeFunction) {
+        this.typeFunction = typeFunction;
+    }
+
+    public BeamTypeFunction getBeamTypeFunction() {
+        return this.typeFunction;
+    }
+
     public void setScale(float scale) {
         this.getEntityData().set(SCALE, scale);
     }
@@ -411,15 +415,9 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         this.setScale(nbt.getFloat("scale"));
         this.setColor(nbt.getInt("r"),nbt.getInt("g"),nbt.getInt("b"));
         this.damageType = DamageType.values()[nbt.getInt("damage_type")];
-        this.beamDamageTags = BeamDamageTags.values()[nbt.getInt("damage_types_tags")];
+        this.typeFunction = new BeamTypeFunction(BeamDamageTags.values()[nbt.getInt("beam_type_tags")], nbt.getFloat("beam_type_magnitude"));
         this.setCanBurnTarget(nbt.getBoolean("can_burn_target"));
         this.setImmunityFrameIgnore(nbt.getBoolean("ignore_immunity_frame"));
-        this.setIsScaleCurrentHealth(nbt.getBoolean("scale_with_current_health"));
-        this.setIsScaleMaxHealth(nbt.getBoolean("scale_with_max_health"));
-        this.setIsScaleMissingHealth(nbt.getBoolean("scale_with_missing_health"));
-        this.scaleCurrentHealthDamage(nbt.getFloat("max_current_damage"));
-        this.scaleMissingHealthDamage(nbt.getFloat("max_missing_damage"));
-        this.scaleMaxHealthDamage(nbt.getFloat("max_health_damage"));
     }
 
     @Override
@@ -431,15 +429,10 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         nbt.putFloat("pitch", this.getPitch());
         nbt.putFloat("scale", this.getScale());
         nbt.putInt("damage_type", this.damageType.ordinal());
-        nbt.putInt("damage_types_tags", this.beamDamageTags.ordinal());
+        nbt.putInt("beam_type_tags", this.typeFunction.tags().ordinal());
+        nbt.putFloat("beam_type_magnitude", this.typeFunction.magnitude());
         nbt.putBoolean("can_burn_target", this.isCanBurnTarget());
         nbt.putBoolean("ignore_immunity_frame", this.isImmunityFrameIgnore());
-        nbt.putBoolean("scale_with_current_health", this.isScaleCurrentHealth());
-        nbt.putBoolean("scale_with_missing_health", this.isScaleMissingHealth());
-        nbt.putBoolean("scale_with_max_health", this.isScaleMaxHealth());
-        nbt.putFloat("max_current_damage", this.getScaleCurrentHealthDamage());
-        nbt.putFloat("max_missing_damage", this.getScaleMissingHealthDamage());
-        nbt.putFloat("max_health_damage", this.getScaleMaxHealthDamage());
     }
 
     protected void calculateEndPos() {
@@ -543,15 +536,15 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     }
 
     private float rayDamages(LivingEntity target) {
-        switch (this.beamDamageTags) {
+        switch (this.getBeamTypeFunction().tags()) {
             case MAX_HEALTH -> {
-                return DamageInfo.getMaxHealth(target, new DamageContext(this.getBaseDamage()), this.getScaleMaxHealthDamage());
+                return DamageInfo.getMaxHealth(target, new DamageContext(this.getBaseDamage()), this.getBeamTypeFunction().magnitude());
             }
             case MISSING_HEALTH -> {
-                return DamageInfo.getMissingHealth(target, new DamageContext(this.getBaseDamage()), this.getScaleMissingHealthDamage());
+                return DamageInfo.getMissingHealth(target, new DamageContext(this.getBaseDamage()), this.getBeamTypeFunction().magnitude());
             }
             case CURRENT_HEALTH -> {
-                return DamageInfo.getCurrentHealth(target, new DamageContext(this.getBaseDamage()), this.getScaleCurrentHealthDamage());
+                return DamageInfo.getCurrentHealth(target, new DamageContext(this.getBaseDamage()), this.getBeamTypeFunction().magnitude());
             }
             default -> {
                 return this.getBaseDamage();
@@ -559,64 +552,8 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         }
     }
 
-    public void damageConfig(BeamDamageTags types, float deathLaserBaseDamage) {
-        this.beamDamageTags = types;
-        this.baseDamage = this.baseDamage + deathLaserBaseDamage;
-    }
-
-    public void scaleCurrentHealthDamage(float scaleCurrentHealth) {
-        this.scaleCurrentHealthDamage = Mth.clamp(scaleCurrentHealth, 0.0F, 1.0F);
-    }
-
-    public void scaleMaxHealthDamage(float scaleMaxHealth) {
-        this.scaleMaxHealthDamage = Mth.clamp(scaleMaxHealth, 0.0F, 1.0F);
-    }
-
-    public void scaleMissingHealthDamage(float scaleMissingHealth) {
-        this.scaleMissingHealthDamage = Mth.clamp(scaleMissingHealth, 0.0F, 1.0F);
-    }
-
-    public void setIsScaleCurrentHealth(boolean scaleCurrentHealth) {
-        this.scaleCurrentHealth = scaleCurrentHealth;
-    }
-
-    public void setIsScaleMaxHealth(boolean scaleMaxHealth) {
-        this.scaleMaxHealth = scaleMaxHealth;
-    }
-
-    public void setIsScaleMissingHealth(boolean scaleMissingHealth) {
-        this.scaleMissingHealth = scaleMissingHealth;
-    }
-
-    public boolean isScaleCurrentHealth() {
-        return scaleCurrentHealth;
-    }
-
-    public boolean isScaleMaxHealth() {
-        return scaleMaxHealth;
-    }
-
-    public boolean isScaleMissingHealth() {
-        return scaleMissingHealth;
-    }
-
-    public float getScaleCurrentHealthDamage() {
-        return scaleCurrentHealthDamage;
-    }
-
-    public float getScaleMissingHealthDamage() {
-        return scaleMissingHealthDamage;
-    }
-
-    public float getScaleMaxHealthDamage() {
-        return scaleMaxHealthDamage;
-    }
-
-    public enum BeamDamageTags {
-        DEFAULT,
-        MAX_HEALTH,
-        MISSING_HEALTH,
-        CURRENT_HEALTH;
+    public void damageConfig(final BeamTypeFunction beamTypeFunction) {
+        this.typeFunction = beamTypeFunction;
     }
     public static class DeathLaserBeamHitResult {
         protected BlockHitResult blockHit;

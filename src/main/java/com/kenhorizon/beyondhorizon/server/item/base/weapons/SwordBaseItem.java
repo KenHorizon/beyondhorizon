@@ -36,6 +36,7 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.ForgeMod;
+import net.minecraftforge.common.ToolAction;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -285,6 +286,16 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        for (Skill skill : this.skills) {
+            if (skill.canPerformToolAction(stack, toolAction)) {
+                return true;
+            }
+        }
+        return super.canPerformAction(stack, toolAction);
     }
 
     private boolean isCharged(Player player, ItemStack stack){

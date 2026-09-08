@@ -17,6 +17,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeMap;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -227,4 +228,7 @@ public abstract class Skill extends AbstractAbilityComponents {
         }
     }
 
+    public boolean canPerformToolAction(ItemStack stack, ToolAction toolAction) {
+        return false;
+    }
 }

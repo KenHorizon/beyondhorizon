@@ -102,6 +102,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addEnchantmentDesc(BHEnchantments.SPELL_POWER, "Increase ability power");
         this.addEnchantmentDesc(BHEnchantments.MANA_COST, "Reduce the mana cost of magic item");
         this.addEnchantmentDesc(BHEnchantments.MANA_RECOVERY, "Increase mana regeneration");
+        this.addEnchantmentDesc(BHEnchantments.HEAVY_SMASH, "Increase Smash Attack Damage");
          //
         this.addArmorBonusSet(ArmorAbilityRegistries.WILDFIRE.get(), "Wildfire",
                 "Chance to release a shockwave dealing %s + %s%% total of attack damage",
@@ -150,9 +151,14 @@ public class BHLangProvider extends LanguageProvider {
         this.addAccessory(Accessories.ELIXIR_GRAB_1.get(), "Elixir Grab II", "Gain random buffs II for 30 seconds");
         this.addAccessory(Accessories.ELIXIR_GRAB_2.get(), "Elixir Grab III", "Gain random buffs III for 30 seconds");
         this.addAccessory(Accessories.ELIXIR_GRAB_3.get(), "Elixir Grab IV", "Gain random buffs IV for 30 seconds");
+        this.addAccessory(Accessories.WOUNDED_MAGIC.get(), "Wounded", "Dealing magic damage to target inflict them Wounded Effect for %s seconds");
+        this.addAccessory(Accessories.WOUNDED_PHYSICAL.get(), "Wounded", "Dealing physical damage to target inflict them Wounded Effect for %s seconds");
         this.addAccessory(Accessories.VENOM.get(), "Venom", "Attacks have %.2f%% chance inflict either Poison or Lethal Poison for %s seconds");
         this.addAccessory(Accessories.JUMP_BOOST.get(), "Jump Boost", "Increase the jump height by %s%%");
         this.addAccessory(Accessories.DOUBLE_JUMP.get(), "Double Jump", "Gain additional jump within seconds after jumping");
+        this.addAccessory(Accessories.MANA_REPLENISH_1.get(), "Mana Replenish", "Automatically consumes mana-restoring potions when mana is depleted");
+        this.addAccessory(Accessories.MANA_REPLENISH_2.get(), "Mana Replenish", "Restores mana equal of half of damage taken");
+        this.addAccessory(Accessories.MANA_REPLENISH_3.get(), "Mana Replenish", "Automatically consumes mana-restoring potions when mana is depleted, restores mana equal of damage taken");
         this.addAccessory(Accessories.ETERNAL_LIFE.get(), "Eternal Life", "Revive on death and consume Undying Totem in the inventory");
         this.addAccessory(Accessories.NULLIFY.get(), "Nullify", "Ignore enchantment protection by %s%% at same time your attack effectivness reduced by %s%%");
         this.addAccessory(Accessories.LIFE_SIPHON.get(), "Life Siphon", " Killing enemy will drop soul orb that heal based on 5% missing health, orb stayed for duration of 6 seconds within 3.5 radius the soul automatically collect");

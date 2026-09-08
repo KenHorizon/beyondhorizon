@@ -8,10 +8,12 @@ import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.level.IAbilityInfo;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHChatformatting;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.item.ManaCostType;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.CommonComponents;
@@ -99,9 +101,13 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
         } else {
             tooltips = Tooltips.MANA_COST;
         }
-        tooltip.add(manaText.append(Component.translatable(tooltips, this.getManaCost()).withStyle(BHChatformatting.MANA)));
+
+        double mana = this.getManaCost() * PlayerData.getManaCostReduction(mc.player);
+        double cdr = this.getCooldown() * PlayerData.getCooldownReduction(mc.player);
+        tooltip.add(manaText.append(Component.translatable(tooltips, Maths.format(mana)).withStyle(BHChatformatting.MANA)));
+
         if (this.getCooldown() > 0) {
-            tooltip.add(cdText.append(Component.translatable(Tooltips.COOLDOWN, (int) (this.getCooldown() / 20.0F)).withStyle(BHChatformatting.COOLDOWN)));
+            tooltip.add(cdText.append(Component.translatable(Tooltips.COOLDOWN, Maths.format(cdr / 20.0F)).withStyle(BHChatformatting.COOLDOWN)));
         }
     }
 

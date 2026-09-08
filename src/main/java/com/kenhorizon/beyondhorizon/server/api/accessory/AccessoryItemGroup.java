@@ -13,6 +13,7 @@ public enum AccessoryItemGroup implements IExtensibleEnum {
     HERO_SWORD,
     SPELL_BLADE,
     POWER_GEM,
+    MANA_RECOVERY,
     STRING_BOW,
     FATALITY,
     VITALITY,

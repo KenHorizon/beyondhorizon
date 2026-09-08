@@ -1,7 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.util.ShockwaveUtils;
+import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -9,12 +14,18 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 public class SmashAttackSkills extends WeaponPassiveSkills {
 
@@ -30,46 +41,57 @@ public class SmashAttackSkills extends WeaponPassiveSkills {
         return Component.translatable(this.createId(), Maths.format(this.getMagnitude()));
     }
 
+    @Override
+    public float postMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
+        if (attacker == null || target == null) return context.damage();
+        if (this.canSmashAttack(attacker)) {
+            attacker.resetFallDistance();
+        }
+        return context.damage();
+    }
 
     @Override
     public float preMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (attacker == null || target == null) return context.damage();
         if (this.canSmashAttack(attacker)) {
-            for (LivingEntity targets : attacker.level().getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(3.0D, 3.0D, 3.0D))) {
-                if (targets.isAlive() && !targets.isInvulnerable() && targets != attacker) {
-                    if (!target.level().isClientSide()) {
-                        BlockPos targetPos = targets.getOnPosLegacy();
-                        BlockState blockState = target.level().getBlockState(targetPos);
-                        double d0 = target.getX();
-                        double d1 = target.getY();
-                        double d2 = target.getZ();
-                        BlockPos attackerPos = attacker.blockPosition();
-                        if (targetPos.getX() != attackerPos.getX() || targetPos.getZ() != attackerPos.getZ()) {
-                            double d3 = d0 - (double)targetPos.getX() - 0.5D;
-                            double d5 = d2 - (double)targetPos.getZ() - 0.5D;
-                            double d6 = Math.max(Math.abs(d3), Math.abs(d5));
-                            d0 = (double)targetPos.getX() + 0.5D + d3 / d6 * 0.5D;
-                            d2 = (double)targetPos.getZ() + 0.5D + d5 / d6 * 0.5D;
-                        }
+            double fallDistance = attacker.fallDistance;
+            double damage;
+            double damageBonus = (this.getMagnitude() + (0.5F * EnchantmentHelper.getEnchantmentLevel(BHEnchantments.HEAVY_SMASH.get(), attacker)));
+            if (fallDistance <= 3) {
+                damage = context.add(fallDistance * damageBonus);
+            } else {
+                damage = (damageBonus * 3.0F) + (fallDistance - 3.0F);
+            }
+            for (LivingEntity nearby : attacker.level().getEntitiesOfClass(LivingEntity.class, attacker.getBoundingBox().inflate(3.5D))) {
+                if (nearby.isAlive() && !nearby.isInvulnerable() && nearby != attacker) {
 
-                        float f = (float) Mth.ceil(attacker.fallDistance - 3.0F);
-                        double d4 = Math.min((double)(0.2F + f / 15.0F), 2.5D);
-                        int i = (int) (150.0D * d4);
-                        attacker.level().playSound(null, attacker.blockPosition(), BHSounds.HEAVY_ATTACK.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-                        ShockwaveUtils.doRingShockwave(target, target.position(), 4.0F, 0.0F, 20);
+                    Vec3 direction = nearby.position().subtract(attacker.position());
+                    double knockbackPower = this.getKnockbackPower(attacker, nearby, direction);
+                    Vec3 knockbackVector = direction.normalize().scale(knockbackPower);
+                    if (knockbackPower > 0.0F) {
+                        nearby.push(knockbackVector.x, 0.7F + (0.5F * EnchantmentHelper.getKnockbackBonus(attacker)), knockbackVector.z);
                     }
-                    targets.setDeltaMovement(targets.getDeltaMovement().with(Direction.Axis.Y, 0.009999999776482582));
-                    targets.knockback(0.50F, Mth.sin(attacker.getYRot() * ((float) Math.PI / 180F)), (double) (-Mth.cos(attacker.getYRot() * ((float) Math.PI / 180F))));
+                    if (nearby == target) continue;
+                    nearby.hurt(source, (float) damage);
                 }
             }
-            float damage = context.damage();
-            attacker.resetFallDistance();
-            if (attacker.fallDistance > 3) {
-                damage = context.add(attacker.fallDistance * this.getMagnitude());
+            if (!target.level().isClientSide()) {
+                attacker.level().playSound(null, attacker.blockPosition(), BHSounds.HEAVY_ATTACK.get(), SoundSource.PLAYERS, (attacker.fallDistance > 5.0F ? 2 : 1), 1.0F);
+                ((ServerLevel) attacker.level()).sendParticles(new RingParticleOptions(0, (float) Math.PI / 2f, 33, Colors.WHITE, 110F * (attacker.fallDistance > 5.0F ? 1 : 0.5F), false, RingParticles.Behavior.GROW), target.getX(), target.getY(0.01D), target.getZ(), 1, 0,0, 0, 0);
+                ShockwaveUtils.doRingShockwave(target, target.position(), 2.0F, -0.001F, 20);
             }
-            return damage;
+            return (float) damage;
         } else {
             return context.damage();
         }
+    }
+
+    private double getKnockbackPower(LivingEntity attacker, LivingEntity nearby, Vec3 direction) {
+        return (3.5F - direction.length()) * (0.7F + (0.5F * EnchantmentHelper.getKnockbackBonus(attacker))) * (attacker.fallDistance > 5.0F ? 2 : 1) * (1.0F - nearby.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+    }
+
+    @Override
+    public boolean canPerformToolAction(ItemStack stack, ToolAction toolAction) {
+        return toolAction != ToolActions.SWORD_SWEEP;
     }
 }

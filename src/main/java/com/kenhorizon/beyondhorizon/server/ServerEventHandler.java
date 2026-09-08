@@ -408,7 +408,6 @@ public class ServerEventHandler {
                             player.getAttributes().removeAttributeModifiers(map);
                             if (prevItemStack.getItem() instanceof IAccessoryItem item) {
                                 for (Accessory accessory : item.getAccessories()) {
-                                    accessory.removeAttributeModifiers(player, map);
                                     Optional<IAccessoryEvent> optional = accessory.accessory();
                                     if (optional.isPresent()) {
                                         optional.get().onUnequip(player, prevItemStack, i);

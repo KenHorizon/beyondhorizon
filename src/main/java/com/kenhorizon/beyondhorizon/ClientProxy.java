@@ -1,9 +1,11 @@
 package com.kenhorizon.beyondhorizon;
 
+import com.google.common.collect.ImmutableList;
 import com.kenhorizon.beyondhorizon.client.ClientEventHandler;
 import com.kenhorizon.beyondhorizon.client.ModResouces;
 import com.kenhorizon.beyondhorizon.client.TooltipsEventHandler;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
+import com.kenhorizon.beyondhorizon.client.render.entity.layer.BHEntityLayer;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.HealingOrbRenderer;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.BaseSpawnerRenderer;
 import com.kenhorizon.beyondhorizon.client.render.blockentity.GateDoorRenderer;
@@ -49,6 +51,7 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.resources.sounds.AbstractSoundInstance;
 import net.minecraft.network.chat.Component;
@@ -59,6 +62,7 @@ import net.minecraft.server.packs.repository.Pack;
 import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.DefaultAttributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.raid.Raid;
 import net.minecraft.world.item.*;
@@ -79,8 +83,10 @@ import net.minecraftforge.registries.DataPackRegistryEvent;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @SuppressWarnings({"removal"})
 public class ClientProxy extends ServerProxy {
@@ -212,33 +218,33 @@ public class ClientProxy extends ServerProxy {
             }
         }
     }
-//    @OnlyIn(Dist.CLIENT)
-//    public void addRegisteredLayers(final EntityRenderersEvent.AddLayers event) {
-//        List<EntityType<? extends LivingEntity>> entityTypes = ImmutableList.copyOf(ForgeRegistries.ENTITY_TYPES.getValues().stream()
-//                .filter(DefaultAttributes::hasSupplier)
-//                .map(entityType -> (EntityType<? extends LivingEntity>) entityType)
-//                .collect(Collectors.toList()));
-//        entityTypes.forEach((entityType -> {
-//            addLayerIfApplicable(entityType, event);
-//        }));
-//
-//        for (String skinType : event.getSkins()) {
-//            event.getSkin(skinType).addLayer(new BHEntitiesLayer(event.getSkin(skinType)));
-//        }
-//    }
-//    private void addLayerIfApplicable(EntityType<? extends LivingEntity> entityType, EntityRenderersEvent.AddLayers event) {
-//        LivingEntityRenderer renderer = null;
-//        if (entityType != EntityType.ENDER_DRAGON) {
-//            try {
-//                renderer = event.getRenderer(entityType);
-//            } catch (Exception e) {
-//                BeyondHorizon.LOGGER.warn("Could not apply radiation glow layer to {}, has custom renderer that is not LivingEntityRenderer.", ForgeRegistries.ENTITY_TYPES.getKey(entityType));
-//            }
-//            if (renderer != null) {
-//                renderer.addLayer(new BHEntitiesLayer(renderer));
-//            }
-//        }
-//    }
+    @OnlyIn(Dist.CLIENT)
+    public void addRegisteredLayers(final EntityRenderersEvent.AddLayers event) {
+        List<EntityType<? extends LivingEntity>> entityTypes = ImmutableList.copyOf(ForgeRegistries.ENTITY_TYPES.getValues().stream()
+                .filter(DefaultAttributes::hasSupplier)
+                .map(entityType -> (EntityType<? extends LivingEntity>) entityType)
+                .collect(Collectors.toList()));
+        entityTypes.forEach((entityType -> {
+            addLayerIfApplicable(entityType, event);
+        }));
+
+        for (String skinType : event.getSkins()) {
+            event.getSkin(skinType).addLayer(new BHEntityLayer(event.getSkin(skinType)));
+        }
+    }
+    private void addLayerIfApplicable(EntityType<? extends LivingEntity> entityType, EntityRenderersEvent.AddLayers event) {
+        LivingEntityRenderer renderer = null;
+        if (entityType != EntityType.ENDER_DRAGON) {
+            try {
+                renderer = event.getRenderer(entityType);
+            } catch (Exception e) {
+                BeyondHorizon.LOGGER.warn("{} has custom renderer that is not LivingEntityRenderer.", ForgeRegistries.ENTITY_TYPES.getKey(entityType));
+            }
+            if (renderer != null) {
+                renderer.addLayer(new BHEntityLayer(renderer));
+            }
+        }
+    }
 
     public void onEntityAttributeModification(EntityAttributeModificationEvent event) {
         for (EntityType<? extends LivingEntity> type : event.getTypes()) {

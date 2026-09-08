@@ -25,7 +25,7 @@ public class BHAttributes {
     public static final RegistryObject<Attribute> FLAT_MAGIC_PENETRATION = registerAttributes("flat.magic_penetration", "Magic Penetration", 0.0D, -MAX_VALUE, MAX_VALUE, true);
     public static final RegistryObject<Attribute> PERCENTAGE_MAGIC_PENETRATION = registerAttributes("percentage.magic_penetration", "Magic Penetration", 0.0D, 0.0D, 1.0D, true);
     public static final RegistryObject<Attribute> MAGIC_RESISTANCE = registerAttributes("magic_resistance", 0.0D, 0.0D, MAX_VALUE, true);
-    public static final RegistryObject<Attribute> MANA_COST = registerAttributes("mana_cost", 0.0D, -1.0D, 1.0D, true);
+    public static final RegistryObject<Attribute> MANA_COST = registerAttributes("mana_cost", 0.0D, -MAX_VALUE, 1.0D, true);
     public static final RegistryObject<Attribute> MANA_REGENERATION = registerAttributes("mana_regeneration", 1.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> MAX_MANA = registerAttributes("max_mana", 100.0D, 0.0D, MAX_VALUE, true);
     public static final RegistryObject<Attribute> MINING_SPEED = registerAttributes("mining_speed", 1.0D, 0.0D, MAX_VALUE, true);

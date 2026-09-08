@@ -1,0 +1,17 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 1,
+      "item": "beyondhorizon:greater_mana_potion"
+    },
+    {
+      "count": 1,
+      "item": "beyondhorizon:moonlight_flower"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:alchemist_mage_bottle"
+  }
+}

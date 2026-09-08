@@ -70,6 +70,9 @@ public class Tooltips {
     public static ChatFormatting attributeColorFormat(double amount) {
         return amount > 0.0D ? ATTRIBUTES[0] : ATTRIBUTES[1];
     }
+    public static ChatFormatting attributeColorFormatInverted(double amount) {
+        return amount <= 0.0D ? ATTRIBUTES[0] : ATTRIBUTES[1];
+    }
 
     public static String getBossMessage(EntityType<?> entityType) {
         return String.format("boss.%s.defeated.%s", BeyondHorizon.ID, entityType.getDescriptionId());

@@ -4,12 +4,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.util.AttributePercentage;
+import com.kenhorizon.beyondhorizon.client.util.InvertedAttributeColorFormat;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
 import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.LevelValue;
+import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.datafixers.util.Pair;
@@ -18,6 +20,7 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -73,7 +76,7 @@ public class AttributeTooltips {
                     Attribute attribute = entry.getKey();
                     double amount = attributeEnchantment.getAttributeModifierValue(level, new LevelValue(attributeModifier.getAmount()));
                     double attributeAmount = this.getAttributeAmount(player, itemStack, attribute, amount);
-                    this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, ChatFormatting.GOLD);
+                    this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, ChatFormatting.GOLD, -1);
                 }
             }
         }
@@ -104,7 +107,7 @@ public class AttributeTooltips {
             AttributeModifier attributeModifier = entry.getValue();
             Attribute attribute = entry.getKey();
             double attributeAmount = attributeModifier.getAmount();
-            this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, chatFormatting);
+            this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, chatFormatting, -1);
         }
     }
 
@@ -117,37 +120,57 @@ public class AttributeTooltips {
             double amount = formatAttributeValues(attribute, attributeModifier, attributeAmount);
             ChatFormatting color = colors == null ? Tooltips.attributeColorFormat(attributeAmount) : colors;
             Component displayName = Component.translatable(attribute.getDescriptionId());
-            String isPositive = amount > 0.0D ? "plus" : "take";
+            String isPositive  = amount > 0.0D ? "plus" : "take";
             amount *= attributeAmount > 0.0D ? 1.0D : -1.0D;
-            if (amount == 0.0D) return;
-            if (checkIfPercentage(attribute)) {
-                tooltip.set(startLine, CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), Maths.format(amount), displayName).withStyle(color)));
-            } else {
-                tooltip.set(startLine, CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
+            if (this.alternateColorFormat(attribute)) {
+                color = Tooltips.attributeColorFormatInverted(attributeAmount);
+//                isPositive  = amount > 0.0D ? "plus" : "take";
+                amount = Mth.abs((float) amount);
             }
+            if (amount == 0.0D) return;
+            if (startLine > 0) {
+                if (this.checkIfPercentage(attribute)) {
+                    tooltip.set(startLine, CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), Maths.format(amount), displayName).withStyle(color)));
+                } else {
+                    tooltip.set(startLine, CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
+                }
+            } else {
+                if (this.checkIfPercentage(attribute)) {
+                    tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), Maths.format(amount), displayName).withStyle(color)));
+                } else {
+                    tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
+                }
+            }
+
         } catch (Exception ignored) {
         }
     }
 
-    private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount, ChatFormatting colors) {
-        double amount = formatAttributeValues(attribute, attributeModifier, attributeAmount);
-        ChatFormatting color = colors == null ? Tooltips.attributeColorFormat(attributeAmount) : colors;
-        Component displayName = Component.translatable(attribute.getDescriptionId());
-        String isPositive = amount > 0.0D ? "plus" : "take";
-        amount *= attributeAmount > 0.0D ? 1.0D : -1.0D;
-        if (amount == 0.0D) return;
-        if (checkIfPercentage(attribute)) {
-            tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), Maths.format(amount), displayName).withStyle(color)));
-        } else {
-            tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
-        }
-    }
+//    private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount, ChatFormatting colors) {
+//        double amount = formatAttributeValues(attribute, attributeModifier, attributeAmount);
+//        ChatFormatting color = colors == null ? Tooltips.attributeColorFormat(attributeAmount) : colors;
+//        Component displayName = Component.translatable(attribute.getDescriptionId());
+//        String isPositive;
+//        if (this.alternateColorFormat(attribute)) {
+//            color = Tooltips.attributeColorFormatInverted(attributeAmount);
+//            isPositive = amount <= 0.0D ? "plus" : "take";
+//        } else {
+//            isPositive = amount > 0.0D ? "plus" : "take";
+//        }
+//        amount *= attributeAmount > 0.0D ? 1.0D : -1.0D;
+//        if (amount == 0.0D) return;
+//        if (this.checkIfPercentage(attribute)) {
+//            tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), Maths.format(amount), displayName).withStyle(color)));
+//        } else {
+//            tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
+//        }
+//    }
     private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount, int startLine) {
          makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, null, startLine);
     }
 
     private void makeTooltips(List<Component> tooltip, Attribute attribute, AttributeModifier attributeModifier, double attributeAmount) {
-        makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, null);
+        makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, null, -1);
     }
 
     public void makePotionTooltip(ItemStack itemStack, List<Component> tooltips, int lastAttribueLine) {
@@ -198,6 +221,10 @@ public class AttributeTooltips {
 
     private boolean checkIfPercentage(Attribute attribute) {
         return AttributePercentage.isMatch(attribute);
+    }
+
+    private boolean alternateColorFormat(Attribute attribute) {
+        return InvertedAttributeColorFormat.isMatch(attribute);
     }
 
     private double getAttributeAmount(LivingEntity entity, ItemStack itemStack, Attribute attribute, double attributeAmount) {

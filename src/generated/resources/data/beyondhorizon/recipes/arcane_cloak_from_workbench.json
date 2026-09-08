@@ -1,0 +1,25 @@
+{
+  "type": "beyondhorizon:workbench",
+  "ingredients": [
+    {
+      "count": 1,
+      "item": "beyondhorizon:leather_agility"
+    },
+    {
+      "count": 1,
+      "item": "beyondhorizon:ampliflying_tome"
+    },
+    {
+      "count": 1,
+      "item": "beyondhorizon:aether_wisp"
+    },
+    {
+      "count": 1,
+      "item": "beyondhorizon:alchemist_mage_bottle"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "beyondhorizon:arcane_cloak"
+  }
+}

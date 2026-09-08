@@ -4,6 +4,7 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeReaderR
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.util.AttributePercentage;
 import com.kenhorizon.beyondhorizon.client.util.EmissiveBlocks;
+import com.kenhorizon.beyondhorizon.client.util.InvertedAttributeColorFormat;
 import com.kenhorizon.beyondhorizon.compat.ModLists;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
@@ -127,6 +128,7 @@ public class BeyondHorizon
     private void commonSetup(final FMLCommonSetupEvent event) {
         BeyondHorizon.LOGGER.info("Setting up {} {}!!", BeyondHorizon.NAME, BeyondHorizon.VERSION);
         AttributePercentage.init();
+        InvertedAttributeColorFormat.init();
         EmissiveBlocks.init();
         NetworkHandler.register();
         StackableTagInstance.renderWhenEquipped();

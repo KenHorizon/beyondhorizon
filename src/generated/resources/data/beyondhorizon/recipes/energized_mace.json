@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "beyondhorizon:handle"
+    },
+    "H": {
+      "item": "beyondhorizon:ancient_heavy_core"
+    }
+  },
+  "pattern": [
+    "H",
+    "#"
+  ],
+  "result": {
+    "item": "beyondhorizon:energized_mace"
+  },
+  "show_notification": true
+}

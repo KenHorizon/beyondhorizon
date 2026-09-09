@@ -148,10 +148,12 @@ public class ClientProxy extends ServerProxy {
         //
         EntityRenderers.register(BHEntity.CAMERA_SHAKE.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.BOLT_SHOCK.get(), RenderNothing::new);
+        EntityRenderers.register(BHEntity.LIGHTNING_STRIKE.get(), LightningStrikeRenderer::new);
         EntityRenderers.register(BHEntity.CLEAVE_ABILITY.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.CLEAVE_CONE_ABILITY.get(), RenderNothing::new);
         EntityRenderers.register(BHEntity.INFERNAL_SPEAR.get(), InfernalSpearRenderer::new);
         EntityRenderers.register(BHEntity.PYROBOLT.get(), PyroboltRenderer::new);
+        EntityRenderers.register(BHEntity.MAGIC_BOLT.get(), MagicBoltRenderer::new);
         EntityRenderers.register(BHEntity.BURNING_HEX_TRAP.get(), BurningHexTrapRenderer::new);
         //
         EntityRenderers.register(BHEntity.FAYE_FLARES.get(), FayeFlaresRenderer::new);

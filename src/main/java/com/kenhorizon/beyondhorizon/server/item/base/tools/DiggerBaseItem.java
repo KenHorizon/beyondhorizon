@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.item.ICustomHitSound;
 import com.kenhorizon.beyondhorizon.server.item.ICustomSweepParticle;
 import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
@@ -124,7 +125,6 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems, IReloadab
     private ImmutableList<Skill> registerAllSkills() {
         ImmutableList.Builder<Skill> builder = ImmutableList.builder();
         builder.addAll(this.skillBuilder.getSkills());
-        builder.addAll(this.materials.getSkills());
         return builder.build();
     }
 
@@ -145,7 +145,9 @@ public class DiggerBaseItem extends DiggerItem implements ISkillItems, IReloadab
     }
     @Override
     public void appendHoverText(ItemStack itemStack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-        this.addAbilityTooltip(itemStack, tooltip);
+        if (!this.hasSkill(Skills.NONE.get())) {
+            this.addAbilityTooltip(itemStack, tooltip);
+        }
     }
 
     @Override

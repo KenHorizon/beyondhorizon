@@ -89,9 +89,4 @@ public class SmashAttackSkills extends WeaponPassiveSkills {
     private double getKnockbackPower(LivingEntity attacker, LivingEntity nearby, Vec3 direction) {
         return (3.5F - direction.length()) * (0.7F + (0.5F * EnchantmentHelper.getKnockbackBonus(attacker))) * (attacker.fallDistance > 5.0F ? 2 : 1) * (1.0F - nearby.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
     }
-
-    @Override
-    public boolean canPerformToolAction(ItemStack stack, ToolAction toolAction) {
-        return toolAction != ToolActions.SWORD_SWEEP;
-    }
 }

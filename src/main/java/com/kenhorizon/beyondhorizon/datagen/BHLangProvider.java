@@ -80,7 +80,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addBossMessage(BHEntity.PYROLLIGER.get(), "Ancient seal has been destroyed!, Dark Entity is escaped");
 
         //
-
+        Tooltips.ITEM_LORES.forEach(this::addItemLore);
         //
         this.addEnchantmentDesc(BHEnchantments.LIFESTEAL, "Grant healing equal to percentage of the damage dealt");
         this.addEnchantmentDesc(BHEnchantments.BUTCHERING, "Deal additional damage to animals");
@@ -132,6 +132,7 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.PIERCING_EDEGE.get(), "Piercing Edge", "Increase physical damage dealt by %s (+%s%% target's armor)%% to armored target");
         this.addSkills(Skills.BLAZING_CLEAVE.get(), "Blazing Cleave", "On-hit attack release a powerful shockwave that deal %s%% damage within %s range");
         this.addSkills(Skills.SMASH_ATTACK.get(), "Smash Attack", "After falling 1.5 blocks or more deal extra damage by %s per block fallens");
+        this.addSkills(Skills.MAGIC_MISSILE.get(), "Magic Missile", "Shoot a energized bolt that deal %s magic damage");
         //
         this.addAccessory(Accessories.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100 (6 if attacking, 1 if moving)");
         this.addAccessory(Accessories.ELECTROSHOCK.get(), "Electro Shock", "When fully Energized, your next basic attack strike the target with bolt of lightning dealing bonus 40% damage dealt magic damage of 2.5 radius unit");
@@ -351,16 +352,10 @@ public class BHLangProvider extends LanguageProvider {
         this.add(String.format("death.attack.%s.player", path), player);
         this.add(String.format("death.attack.%s.item", path), item);
     }
-    private void addItemLore(Supplier<? extends Item> item, String... desc) {
-        for (int i = 0; i < desc.length; i++) {
-            if (i == 0) {
-                this.add(Utils.getObjectDescription(item), desc[i]);
-            } else {
-                this.add(Utils.getObjectDescription(item) + "." + i, desc[i]);
-            }
-
-        }
+    private void addItemLore(Supplier<? extends Item> item, String desc) {
+        this.add(Utils.getObjectDescription(item), desc);
     }
+
     private void addPotions(String effect, String name) {
         this.add("item.minecraft.potion.effect." + effect, "Potion of " + name);
         this.add("item.minecraft.lingering_potion.effect." + effect, "Lingering Potion of " + name);

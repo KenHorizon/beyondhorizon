@@ -76,7 +76,7 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
         boolean flag = entity.hurtTime > 0;
         if (entity.deathTime > 0) {
             float alpha = ((float) entity.deathTime / 200.0F);
-            VertexConsumer renderModelExplosion = buffer.getBuffer(BHRenderTypes.explosionDeathEntity(EXPLOSION));
+            VertexConsumer renderModelExplosion = buffer.getBuffer(BHRenderTypes.dustedEffect(EXPLOSION));
             this.model.renderToBuffer(poseStack, renderModelExplosion, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, alpha);
             VertexConsumer renderModelDecal = buffer.getBuffer(entityDecal(entity));
             this.model.renderToBuffer(poseStack, renderModelDecal, packedLight, OverlayTexture.pack(0.0F, flag), 1.0F, 1.0F, 1.0F, 1.0F);

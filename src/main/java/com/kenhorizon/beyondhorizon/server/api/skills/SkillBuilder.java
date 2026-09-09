@@ -1,21 +1,24 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
+import com.google.common.collect.ImmutableSet;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class SkillBuilder implements IReloadable {
     public static final SkillBuilder NONE = new SkillBuilder(SkillTypes.UNIVERSAL, List.of(Skills.NONE));
-    public static final SkillBuilder MACE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.SMASH_ATTACK));
+    public static final SkillBuilder MACE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.SMASH_ATTACK), ToolActions.SWORD_DIG);
     public static final SkillBuilder RADIANT_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.RADIANT));
     public static final SkillBuilder GUARDIAN = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.GUARDIAN_SWORD_TRAIT, Skills.INFERNO_STRIKE));
+    public static final SkillBuilder WAND = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.MAGIC_MISSILE));
     public static final SkillBuilder BLAZING_BEACON = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.INFERNAL_RAY));
     public static final SkillBuilder SOLARFLARE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.GUARDIAN_SWORD_TRAIT, Skills.INFERNO_STRIKE, Skills.INFERNAL_RAY));
     public static final SkillBuilder ELUDICATOR = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.DARK_BLADE));
@@ -36,13 +39,17 @@ public class SkillBuilder implements IReloadable {
     protected List<Optional<Skill>> actionTrait = new ArrayList<>();
     protected List<Skill> filter = new ArrayList<>();
     protected SkillTypes skillTypes;
+    protected Set<ToolAction> toolActions = new HashSet<>();
 
-    public SkillBuilder(SkillTypes skillTypes, List<Supplier<? extends Skill>> skills) {
+    public SkillBuilder(SkillTypes skillTypes, List<Supplier<? extends Skill>> skills, Set<ToolAction> toolActions) {
         this.skillTypes = skillTypes;
+        this.toolActions = toolActions;
         this.suppliers = skills;
         ReloadableHandler.addToReloadList(this);
     }
-
+    public SkillBuilder(SkillTypes skillTypes, List<Supplier<? extends Skill>> skills, ToolAction... toolActions) {
+        this(skillTypes, skills, ImmutableSet.copyOf(toolActions));
+    }
     @Override
     public void reload() {
         this.suppliers.forEach(supplier -> {
@@ -68,6 +75,9 @@ public class SkillBuilder implements IReloadable {
             return isValid;
         }).collect(Collectors.toUnmodifiableList());
 
+    }
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        return this.toolActions.contains(toolAction);
     }
 
     public List<Skill> getSkills() {

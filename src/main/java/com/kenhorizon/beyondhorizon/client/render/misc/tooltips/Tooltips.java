@@ -1,14 +1,27 @@
 package com.kenhorizon.beyondhorizon.client.render.misc.tooltips;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
+import org.antlr.v4.runtime.misc.MultiMap;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.function.Supplier;
 
 public class Tooltips {
+    public static final Multimap<Supplier<? extends Item>, String> ITEM_LORES = HashMultimap.create();
     public static final FormattedCharSequence SPACE = FormattedCharSequence.forward(" ", Style.EMPTY);
     //
     public static final String ADVANCEMENT_MAIN_ROOT = String.format("advancement.%s.story.root", BeyondHorizon.ID);
@@ -62,6 +75,21 @@ public class Tooltips {
     public static final ChatFormatting[] TOOLTIP = {ChatFormatting.GRAY, ChatFormatting.DARK_GRAY};
 
 
+    public static void addTooltipLabel(Supplier<? extends Item> item, String lore) {
+        ITEM_LORES.put(item, lore);
+    }
+
+    public static Multimap<Supplier<? extends Item>, String> getItemLores() {
+        return ITEM_LORES;
+    }
+
+    public static void registerItemLores() {
+        Tooltips.addTooltipLabel(BHItems.WILDFIRE_CORE, "Power of the sun in the palm of my hand");
+        Tooltips.addTooltipLabel(BHItems.ANCIENT_HEAVY_CORE,"Looks like its came from the future");
+        Tooltips.addTooltipLabel(BHItems.DUSK_LEATHER, "Feel of vibrant of dark enery sourging");
+        Tooltips.addTooltipLabel(BHItems.ABYSSAL_TOOTH, "The teeth of entity within the void of end");
+        Tooltips.addTooltipLabel(BHItems.CATALYST_GEM, "The end is near...");
+    }
 
     public static MutableComponent numberMax(int value, int max) {
         return Component.translatable(VALUE_WITH_MAX, value, max);

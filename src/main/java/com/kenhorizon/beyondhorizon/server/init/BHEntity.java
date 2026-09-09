@@ -187,6 +187,20 @@ public class BHEntity {
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
+    public static final RegistryObject<EntityType<MagicBolt>> MAGIC_BOLT = RegistryEntity
+            .<MagicBolt>register("magic_bolt", MagicBolt::new)
+            .lang("Magic Bolt")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
+    public static final RegistryObject<EntityType<LightningStrikeAbility>> LIGHTNING_STRIKE = RegistryEntity
+            .<LightningStrikeAbility>register("lightning_strike", LightningStrikeAbility::new)
+            .lang("Lightning Strike")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
     public static void register(IEventBus eventBus) {
         RegistryEntries.ENTITY_TYPES.register(eventBus);
     }

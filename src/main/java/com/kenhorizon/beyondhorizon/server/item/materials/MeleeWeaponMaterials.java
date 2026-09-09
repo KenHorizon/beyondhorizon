@@ -99,10 +99,9 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
     private final int enchantmentValue;
     private final boolean haveFireResistance;
     private final LazyLoadedValue<Ingredient> repairIngredient;
-    private final SkillBuilder skillBuilder;
 
     MeleeWeaponMaterials(String name, int tier, int durability, float miningSpeed, float attackDamage, int enchantmentValue,
-                         boolean haveFireResistance, Supplier<Ingredient> repairIngredient, SkillBuilder skillBuilder) {
+                         boolean haveFireResistance, Supplier<Ingredient> repairIngredient) {
         this.name = name;
         this.tier = tier;
         this.durability = durability;
@@ -111,33 +110,13 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
         this.enchantmentValue = enchantmentValue;
         this.haveFireResistance = haveFireResistance;
         this.repairIngredient = new LazyLoadedValue<>(repairIngredient);
-        this.skillBuilder = skillBuilder;
     }
 
-    MeleeWeaponMaterials(String name, int tier, int durability, float miningSpeed, float attackDamage, int enchantmentValue, Supplier<Ingredient> repairIngredient, SkillBuilder skillBuilder) {
-        this(name, tier, durability, miningSpeed, attackDamage, enchantmentValue, false, repairIngredient, skillBuilder);
-    }
     MeleeWeaponMaterials(String name, int tier, int durability, float miningSpeed, float attackDamage, int enchantmentValue, Supplier<Ingredient> repairIngredient) {
-        this(name, tier, durability, miningSpeed, attackDamage, enchantmentValue, false, repairIngredient, null);
-    }
-    MeleeWeaponMaterials(String name, int tier, int durability, float miningSpeed, float attackDamage, int enchantmentValue, boolean haveFireResistance, Supplier<Ingredient> repairIngredient) {
-        this(name, tier, durability, miningSpeed, attackDamage, enchantmentValue, haveFireResistance, repairIngredient, null);
-    }
-    MeleeWeaponMaterials(int tier, int durability, float miningSpeed, float attackDamage, int enchantmentValue, boolean haveFireResistance, Supplier<Ingredient> repairIngredient, SkillBuilder skillBuilder) {
-        this(null, tier, durability, miningSpeed, attackDamage, enchantmentValue, haveFireResistance, repairIngredient, skillBuilder);
+        this(name, tier, durability, miningSpeed, attackDamage, enchantmentValue, false, repairIngredient);
     }
 
-    MeleeWeaponMaterials(int tier, int durability, float miningSpeed, float attackDamage, int enchantmentValue, Supplier<Ingredient> repairIngredient, SkillBuilder skillBuilder) {
-        this(null, tier, durability, miningSpeed, attackDamage, enchantmentValue, false, repairIngredient, skillBuilder);
-    }
 
-    MeleeWeaponMaterials(int tier, int durability, float miningSpeed, float attackDamage, int enchantmentValue, boolean haveFireResistance, Supplier<Ingredient> repairIngredient) {
-        this(null, tier, durability, miningSpeed, attackDamage, enchantmentValue, haveFireResistance, repairIngredient, null);
-    }
-
-    MeleeWeaponMaterials(int tier, int durability, float miningSpeed, float attackDamage, int enchantmentValue, Supplier<Ingredient> repairIngredient) {
-        this(null, tier, durability, miningSpeed, attackDamage, enchantmentValue, false, repairIngredient, null);
-    }
 
     @Override
     public String getName() {
@@ -145,23 +124,8 @@ public enum MeleeWeaponMaterials implements IWeaponMaterials, Comparable<MeleeWe
     }
 
     @Override
-    public boolean hasSkills() {
-        return !this.skillBuilder.getSkills().isEmpty();
-    }
-
-    @Override
-    public boolean hasSkills(Skill abilityTrait) {
-        return this.skillBuilder != null && this.skillBuilder.getSkills().contains(abilityTrait);
-    }
-
-    @Override
     public boolean fireImmune() {
         return this.haveFireResistance;
-    }
-
-    @Override
-    public List<Skill> getSkills() {
-        return this.skillBuilder == null ? List.of() : new ArrayList<>(new HashSet<>(this.skillBuilder.getSkills()));
     }
 
     @Override

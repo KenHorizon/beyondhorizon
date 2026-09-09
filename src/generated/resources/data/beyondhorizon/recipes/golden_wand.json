@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "beyondhorizon:ruby"
+    },
+    "H": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    "  #",
+    " H ",
+    "H  "
+  ],
+  "result": {
+    "item": "beyondhorizon:golden_wand"
+  },
+  "show_notification": true
+}

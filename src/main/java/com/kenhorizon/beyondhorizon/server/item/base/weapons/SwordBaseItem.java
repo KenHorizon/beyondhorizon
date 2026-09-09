@@ -6,6 +6,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
+import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.item.*;
 import com.kenhorizon.beyondhorizon.server.item.base.SkillBaseItems;
 import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
@@ -132,7 +133,6 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
     private ImmutableList<Skill> registerAllSkills() {
         ImmutableList.Builder<Skill> builder = ImmutableList.builder();
         builder.addAll(this.skillBuilder.getSkills());
-        builder.addAll(this.materials.getSkills());
         return builder.build();
     }
     private ImmutableList<Optional<Skill>> registerAllActiveSkills() {
@@ -203,7 +203,9 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
 
     @Override
     public void appendHoverText(ItemStack itemStack, @org.jetbrains.annotations.Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
-        this.addAbilityTooltip(itemStack, tooltip);
+        if (!this.hasSkill(Skills.NONE.get())) {
+            this.addAbilityTooltip(itemStack, tooltip);
+        }
     }
 
     @Override
@@ -295,7 +297,11 @@ public class SwordBaseItem extends SwordItem implements ISkillItems, IReloadable
                 return true;
             }
         }
-        return super.canPerformAction(stack, toolAction);
+        if (this.skillBuilder.canPerformAction(stack, toolAction)) {
+            return true;
+        } else {
+            return super.canPerformAction(stack, toolAction);
+        }
     }
 
     private boolean isCharged(Player player, ItemStack stack){

@@ -1,8 +1,10 @@
 package com.kenhorizon.beyondhorizon.client;
 
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.ChatFormatting;
@@ -32,6 +34,11 @@ public class TooltipsEventHandler {
         AttributeTooltips attributeTooltips = new AttributeTooltips();
         int lastAttributeLine = 0;
         String prefix = "attribute.modifier";
+        Tooltips.getItemLores().forEach((item, lores) -> {
+            if (item == null) return;
+            if (itemStack.getItem() != item.get()) return;
+            tooltip.add(1, Component.translatable(Utils.getObjectDescription(item)).withStyle(Tooltips.TOOLTIP[1]));
+        });
         if (BHConfigs.ATTRIBUTE_TOOLTIP_OVERHAUl) {
             for (int i = 0; i < tooltip.size(); i++) {
                 lastAttributeLine = attributeTooltips.getTooltipLine(tooltip, prefix);
@@ -45,12 +52,6 @@ public class TooltipsEventHandler {
             if (set.contains(itemStack)) {
                 set.addTooltips(tooltip, itemStack, player);
             }
-        }
-
-        if (!FMLLoader.isProduction() && itemStack.hasTag() && event.getFlags().isAdvanced()) {
-            // Format NBT debug string
-            String nbtStr = itemStack.getTag().toString();
-            event.getToolTip().add(Component.literal("NBT: " + ChatFormatting.DARK_GRAY + nbtStr).withStyle(ChatFormatting.DARK_PURPLE));
         }
     }
 }

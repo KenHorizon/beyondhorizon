@@ -36,6 +36,7 @@ public class Constant {
     public static final float BRING_IT_DOWN_INCREASED_DAMAGE = 0.75F;
     public static final float ROCK_SOLID_REDUCE = 0.15F;
     public static final float SMASH_ATTACK = 4.0F;
+    public static final float MAGIC_MISSILE_AP_SCALE = 0.50F;
     public static float CORRUPTED_BITE_DAMAGE_SCALE = 0.15F;
     public static float SOUL_SIPHON_CURRENT_HEALTH_DAMAGE = 0.015F;
     public static int LEVEL_SYSTEM_UNLOCKED = 5;
@@ -120,6 +121,7 @@ public class Constant {
     public static float[] STELLAR_AXE = {12.0F, 1.12F, 4.0F};
     public static float[] HEAVENLY_EDGE_DARK_SWORD = {14.0F, 1.22F, 4.0F};
     public static float[] HEAVENLY_EDGE_LIGHT_SWORD = {14.0F, 1.22F, 4.0F};
+    public static float WAND = 4.0F;
     public static float BLAZING_BEACON = 14.0F;
     //
     public static double SHEEN_AD = 3.0;

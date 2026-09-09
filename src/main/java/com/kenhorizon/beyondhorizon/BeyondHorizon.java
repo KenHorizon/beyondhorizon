@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon;
 
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeReaderResourceParser;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.util.AttributePercentage;
 import com.kenhorizon.beyondhorizon.client.util.EmissiveBlocks;
 import com.kenhorizon.beyondhorizon.client.util.InvertedAttributeColorFormat;
@@ -100,6 +101,7 @@ public class BeyondHorizon
         Accessories.register(eventBus);
         ArmorAbilityRegistries.register(eventBus);
         PROXY.serverHandler();
+        Tooltips.registerItemLores();
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(new AnvilPatchHandler());
         MinecraftForge.EVENT_BUS.register(new ServerEventHandler());

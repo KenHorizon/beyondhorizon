@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.client.render;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.blockentity.GateDoorModel;
 import com.kenhorizon.beyondhorizon.client.model.entity.*;
+import com.kenhorizon.beyondhorizon.client.model.entity.ability.EntityCrossModel;
 import com.kenhorizon.beyondhorizon.client.model.item.BlazingBeaconModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -20,6 +21,7 @@ public class BHModelLayers {
     public static final ModelLayerLocation FAYE_WILDFIRE = createLocation("faye_wildfire");
     public static final ModelLayerLocation GATE_DOOR = createLocation("gate_door");
     public static final ModelLayerLocation BASE_SPEAR = createLocation("base_spear");
+    public static final ModelLayerLocation ENTITY_CROSS = createLocation("entity_cross");
     public static final ModelLayerLocation PYROLLIGER = createLocation("pyrolliger");
     public static final ModelLayerLocation DRAGON_HORNET = createLocation("dragon_hornet");
     // Items
@@ -37,6 +39,7 @@ public class BHModelLayers {
         event.registerLayerDefinition(PYROLLIGER, PyrolligerModel::createBodyLayer);
         event.registerLayerDefinition(DRAGON_HORNET, DragonHornetModel::createBodyLayer);
         event.registerLayerDefinition(ITEM_BLAZING_BEACON, BlazingBeaconModel::createBodyLayer);
+        event.registerLayerDefinition(ENTITY_CROSS, EntityCrossModel::createBodyLayer);
     }
     private static ModelLayerLocation createOuterArmor(String model) {
         return createLocation(model, "outer_armor");

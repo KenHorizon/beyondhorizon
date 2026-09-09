@@ -23,6 +23,9 @@ public class RecipeFactory {
         return consumer;
     }
 
+    public void createWand(ItemLike baseIngredients, ItemLike handle, ItemLike output) {
+        this.buildWand(baseIngredients, handle, output).save(this.consumer);
+    }
     public void createSword(TagKey<Item> baseIngredients, ItemLike handle, ItemLike output) {
         this.buildSword(baseIngredients, handle, output).save(this.consumer);
     }
@@ -112,6 +115,25 @@ public class RecipeFactory {
                 .define('#', baseIngredients)
                 .define('H', handle)
                 .unlockedBy(String.format("has_materials_for_%s", this.getName(output)), inventoryTrigger(ItemPredicate.Builder.item().of(baseIngredients).build()));
+    }
+
+    public ShapedRecipeBuilder buildWand(TagKey<Item> baseIngredients, ItemLike handle, ItemLike output) {
+        return ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, output)
+                .pattern("  #")
+                .pattern(" H ")
+                .pattern("H  ")
+                .define('#', baseIngredients)
+                .define('H', handle)
+                .unlockedBy(String.format("has_materials_for_%s", this.getName(output)), inventoryTrigger(ItemPredicate.Builder.item().of(baseIngredients).build()));
+    }
+    public ShapedRecipeBuilder buildWand(ItemLike baseIngredients, ItemLike handle, ItemLike output) {
+        return ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, output)
+                .pattern("  #")
+                .pattern(" H ")
+                .pattern("H  ")
+                .define('#', baseIngredients)
+                .define('H', handle)
+                .unlockedBy(String.format("has_%s", this.getName(baseIngredients)), inventoryTrigger(ItemPredicate.Builder.item().of(baseIngredients).build()));
     }
 
 

@@ -12,5 +12,6 @@ public class MagicItemBuilder {
         public abstract T create(MagicWeaponMaterials materials, Item.Properties properties);
     }
 
+    public static final Factory<MagicWeaponBaseItem> WAND = ((materials, properties) -> new MagicWeaponBaseItem(materials, Constant.WAND, properties, SkillBuilder.WAND));
     public static final Factory<MagicWeaponBaseItem> BlAZING_BEACON = ((materials, properties) -> new MagicWeaponBaseItem(materials, Constant.BLAZING_BEACON, properties, SkillBuilder.BLAZING_BEACON));
 }

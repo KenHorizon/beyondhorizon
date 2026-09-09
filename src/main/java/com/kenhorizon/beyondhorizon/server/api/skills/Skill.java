@@ -149,6 +149,7 @@ public abstract class Skill extends AbstractAbilityComponents {
 
     @Override
     public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
+        if (this == Skills.NONE.get()) return;
         if (this instanceof WeaponActiveSkills && BHConfigs.ALWAYS_SHOW_SKILL_ABILITY) {
             if (!this.isTooltipEnable()) return;
             if (this.isTooltipNameEnable()) {

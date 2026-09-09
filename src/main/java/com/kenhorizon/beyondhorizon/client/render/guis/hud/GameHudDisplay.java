@@ -129,7 +129,8 @@ public class GameHudDisplay extends Gui {
         }
         String health = String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth);
         BlitHelper.drawIcons(guiGraphics, HudSprites.HEALTH, x, y - 1);
-        BlitHelper.drawBorderedStrings(getForgeGui().getMinecraft().font, guiGraphics, health,x + (5 + 9), y, Colors.combineRGB(249, 87, 87));
+//        BlitHelper.drawBorderedStrings(getForgeGui().getMinecraft().font, guiGraphics, health,x + (5 + 9), y, Colors.combineRGB(249, 87, 87));
+        BlitHelper.drawBorderedStrings(getForgeGui().getMinecraft().font, guiGraphics, health,x + (5 + 9), y, Colors.RED);
         this.minecraft.getProfiler().pop();
     }
 

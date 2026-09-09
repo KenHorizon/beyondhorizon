@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "beyondhorizon:ruby"
+    },
+    "H": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "pattern": [
+    "  #",
+    " H ",
+    "H  "
+  ],
+  "result": {
+    "item": "beyondhorizon:diamond_wand"
+  },
+  "show_notification": true
+}

@@ -141,6 +141,7 @@ public class BHItems {
             .tag(BHItemTags.HEALING_ITEM)
             .model(ItemModels.GENERATED)
             .register();
+
     public static final RegistryObject<Item> GREATER_HEALING_POTION = RegistryItems
             .register("greater_healing_potion", p -> new RecoveryPotionItem(50.0F, 0.0F, p))
             .tab(RegistryTabs.Category.TOOLS, RegistryTabs.Category.MISC)
@@ -355,11 +356,58 @@ public class BHItems {
 
     //
 
+    public static final RegistryObject<Item> ANCIENT_HEAVY_CORE = RegistryItems
+            .register("ancient_heavy_core", BasicItem::new)
+            .properties(p -> p.rarity(Rarity.EPIC))
+            .tab(RegistryTabs.Category.MISC)
+            .register();
+
     public static final RegistryObject<Item> PLAYER_TRACKER = RegistryItems
             .register("player_tracker", PlayerTrackerItem::new)
             .properties(p -> p.rarity(Rarity.RARE))
             .tab(RegistryTabs.Category.MISC)
             .model(ItemModels.GENERATED)
+            .register();
+
+    public static final RegistryObject<Item> WOODEN_WAND = RegistryItems
+            .register("wooden_wand", item -> MagicItemBuilder.WAND.create(MagicWeaponMaterials.WOODEN, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
+            .register();
+    public static final RegistryObject<Item> REFINED_WOODEN_WAND = RegistryItems
+            .register("refined_wooden_wand", item -> MagicItemBuilder.WAND.create(MagicWeaponMaterials.REFINED_WOODEN, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
+            .register();
+    public static final RegistryObject<Item> IRON_WAND = RegistryItems
+            .register("iron_wand", item -> MagicItemBuilder.WAND.create(MagicWeaponMaterials.IRON, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
+            .register();
+    public static final RegistryObject<Item> GOLDEN_WAND = RegistryItems
+            .register("golden_wand", item -> MagicItemBuilder.WAND.create(MagicWeaponMaterials.GOLDEN, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
+            .register();
+    public static final RegistryObject<Item> DIAMOND_WAND = RegistryItems
+            .register("diamond_wand", item -> MagicItemBuilder.WAND.create(MagicWeaponMaterials.DIAMOND, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
+            .register();
+    public static final RegistryObject<Item> NETHERITE_WAND = RegistryItems
+            .register("netherite_wand", item -> MagicItemBuilder.WAND.create(MagicWeaponMaterials.NETHERITE, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
+            .register();
+    public static final RegistryObject<Item> ARCANA_WAND = RegistryItems
+            .register("arcana_wand", item -> MagicItemBuilder.WAND.create(MagicWeaponMaterials.NETHERITE, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
+            .register();
+    public static final RegistryObject<Item> MYSTIC_WAND = RegistryItems
+            .register("mystic_wand", item -> MagicItemBuilder.WAND.create(MagicWeaponMaterials.NETHERITE, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
             .register();
 
     public static final RegistryObject<Item> ENERGIZED_MACE = RegistryItems

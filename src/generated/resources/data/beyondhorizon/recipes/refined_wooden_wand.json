@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "beyondhorizon:ruby"
+    },
+    "H": {
+      "item": "beyondhorizon:handle"
+    }
+  },
+  "pattern": [
+    "  #",
+    " H ",
+    "H  "
+  ],
+  "result": {
+    "item": "beyondhorizon:refined_wooden_wand"
+  },
+  "show_notification": true
+}

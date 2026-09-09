@@ -66,6 +66,8 @@ public abstract class ExtendedProjectile extends Projectile {
     private static final EntityDataAccessor<Float> RADIUS = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.FLOAT);
     private static final EntityDataAccessor<Boolean> IGNITE_ATTACK = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> CAN_LIGHT_FIRE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> DESTROY_ON_CONTACT = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Boolean> PIERCE_ATTACK = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> RICOCHET = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> RICOCHET_BOUNCE = SynchedEntityData.defineId(ExtendedProjectile.class, EntityDataSerializers.INT);
     protected int duration = 160;
@@ -74,7 +76,9 @@ public abstract class ExtendedProjectile extends Projectile {
     protected float radius = 1.0F;
     protected float baseDamage = 1.0F;
     protected float speed = 0.25F;
+    protected boolean pierceAttack;
     protected boolean ignitedAttack;
+    protected boolean destroyOnContact;
     protected boolean canLightFire;
     protected boolean inGround;
     protected boolean isCrit;
@@ -95,21 +99,23 @@ public abstract class ExtendedProjectile extends Projectile {
     private int trailPointer = -1;
     public DamageType damageType = DamageType.PHYSICAL_DAMAGE;
     public DamageScaling damageScaling = DamageScaling.NONE;
-    public static final String NBT_RICOCHET_BOUNCE = "RicochetBounce";
-    public static final String NBT_RICOCHET = "Ricochet";
-    public static final String NBT_DURATION = "Duration";
-    public static final String NBT_DAMAGE_TYPE = "DamageType";
-    public static final String NBT_IS_CRIT = "Crit";
-    public static final String NBT_LIFESPAN = "Lifespan";
-    public static final String NBT_FADE = "Fade";
-    public static final String NBT_DAMAGE = "Damage";
-    public static final String NBT_SPEED = "Speed";
-    public static final String NBT_CAN_LIGHT_FIRE = "CanLightFire";
-    public static final String NBT_IS_FIRED = "IsFired";
-    public static final String NBT_POWER = "Power";
-    public static final String NBT_DAMAGE_SCALING = "DamageScaling";
-    public static final String NBT_HP_DAMAGE = "HpDamage";
-    public static final String NBT_RADIUS = "Radius";
+    public static final String NBT_RICOCHET_BOUNCE = "ricochet_bounce";
+    public static final String NBT_RICOCHET = "ricochet";
+    public static final String NBT_DESTROY_ON_CONTACT = "destroy_on_contact";
+    public static final String NBT_PIERCE = "pierce";
+    public static final String NBT_DURATION = "duration";
+    public static final String NBT_DAMAGE_TYPE = "damage_type";
+    public static final String NBT_IS_CRIT = "crit";
+    public static final String NBT_LIFESPAN = "lifespan";
+    public static final String NBT_FADE = "fade";
+    public static final String NBT_DAMAGE = "damage";
+    public static final String NBT_SPEED = "speed";
+    public static final String NBT_CAN_LIGHT_FIRE = "can_light_fire";
+    public static final String NBT_IS_FIRED = "on_fire";
+    public static final String NBT_POWER = "power";
+    public static final String NBT_DAMAGE_SCALING = "damage_scaling";
+    public static final String NBT_HP_DAMAGE = "hp_damage";
+    public static final String NBT_RADIUS = "range";
     public Consumer<ExtendedProjectile> postEffectDamage;
     @Nullable
     protected BlockState lastState;
@@ -152,6 +158,8 @@ public abstract class ExtendedProjectile extends Projectile {
         this.entityData.define(FIRED, true);
         this.entityData.define(IGNITE_ATTACK, false);
         this.entityData.define(CAN_LIGHT_FIRE, false);
+        this.entityData.define(DESTROY_ON_CONTACT, false);
+        this.entityData.define(PIERCE_ATTACK, false);
     }
 
     public void setScalingDamage(float scale, DamageScaling damageScaling) {
@@ -261,6 +269,9 @@ public abstract class ExtendedProjectile extends Projectile {
         super.onHitBlock(hitResult);
         if (!this.level().isClientSide()) {
             Entity entity = this.getOwner();
+            if (this.isDestroyOnContact()) {
+                this.discard();
+            }
             if (this.isCanLightFire()) {
                 if (!(entity instanceof Mob) || ForgeEventFactory.getMobGriefingEvent(this.level(), entity)) {
                     BlockPos blockPos = hitResult.getBlockPos().relative(hitResult.getDirection());
@@ -374,13 +385,42 @@ public abstract class ExtendedProjectile extends Projectile {
     public boolean hurt(DamageSource source, float amount) {
         return false;
     }
+    public void setPierceAttack(boolean pierceAttack) {
+        this.pierceAttack = pierceAttack;
+        this.entityData.set(PIERCE_ATTACK, pierceAttack);
+    }
+
+    public boolean isPierceAttack() {
+        if (!this.level().isClientSide()) {
+            return this.pierceAttack;
+        } else {
+            return this.entityData.get(PIERCE_ATTACK);
+        }
+    }
+
+    public void setDestroyOnContact(boolean destroyOnContact) {
+        this.destroyOnContact = destroyOnContact;
+        this.entityData.set(DESTROY_ON_CONTACT, destroyOnContact);
+    }
+
+    public boolean isDestroyOnContact() {
+        if (!this.level().isClientSide()) {
+            return this.destroyOnContact;
+        } else {
+            return this.entityData.get(DESTROY_ON_CONTACT);
+        }
+    }
 
     public boolean isNoPhysics() {
-        if (!this.level().isClientSide) {
+        if (!this.level().isClientSide()) {
             return this.noPhysics;
         } else {
             return (this.entityData.get(ID_FLAGS) & 2) != 0;
         }
+    }
+
+    public float getDropVelocity() {
+        return 0.1F;
     }
 
     public void setPierceLevel(byte pierceLevel) {
@@ -568,6 +608,7 @@ public abstract class ExtendedProjectile extends Projectile {
         tag.putFloat(NBT_FADE, this.getFade());
         tag.putFloat(NBT_DAMAGE, this.getBaseDamage());
         tag.putFloat(NBT_SPEED, this.getSpeed());
+        tag.putBoolean(NBT_PIERCE, this.isPierceAttack());
         tag.putBoolean(NBT_IS_CRIT, this.isCrit());
         tag.putBoolean(NBT_CAN_LIGHT_FIRE, this.isCanLightFire());
         tag.putBoolean(NBT_IS_FIRED, this.getFired());

@@ -43,6 +43,14 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         RecipeFactory recipeFactory = new RecipeFactory(consumer);
         recipeFactory.createGrid(Items.IRON_NUGGET, BHItems.CHAINMAIL_PLATE.get(), 1);
 
+        netheriteSmithing(consumer, BHItems.DIAMOND_WAND.get(), RecipeCategory.COMBAT, BHItems.NETHERITE_WAND.get());
+
+        recipeFactory.createWand(BHItems.RUBY.get(), Items.STICK, BHItems.WOODEN_WAND.get());
+        recipeFactory.createWand(BHItems.RUBY.get(), BHItems.HANDLE.get(), BHItems.REFINED_WOODEN_WAND.get());
+        recipeFactory.createWand(BHItems.RUBY.get(), Items.IRON_INGOT, BHItems.IRON_WAND.get());
+        recipeFactory.createWand(BHItems.RUBY.get(), Items.GOLD_INGOT, BHItems.GOLDEN_WAND.get());
+        recipeFactory.createWand(BHItems.RUBY.get(), Items.DIAMOND, BHItems.DIAMOND_WAND.get());
+
         recipeFactory.createSword(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_SWORD.get());
         recipeFactory.createPickaxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_PICKAXE.get());
         recipeFactory.createAxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_AXE.get());
@@ -101,6 +109,14 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
 
         recipeFactory.createBlock(BHItems.BLACK_IRON_INGOT.get(), BHBlocks.BLACK_IRON_BLOCK.get());
 
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BHItems.ENERGIZED_MACE.get())
+                .pattern("H")
+                .pattern("#")
+                .define('H', BHItems.ANCIENT_HEAVY_CORE.get())
+                .define('#', BHItems.HANDLE.get())
+                .unlockedBy("has_ancient_heavy_core",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.ANCIENT_HEAVY_CORE.get()).build()))
+                .save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, BHItems.WILDFIRE_CORE.get(), 4)
                 .pattern("WMW")
                 .pattern("MMM")

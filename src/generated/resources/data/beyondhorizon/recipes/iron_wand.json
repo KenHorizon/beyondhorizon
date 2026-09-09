@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "beyondhorizon:ruby"
+    },
+    "H": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    "  #",
+    " H ",
+    "H  "
+  ],
+  "result": {
+    "item": "beyondhorizon:iron_wand"
+  },
+  "show_notification": true
+}

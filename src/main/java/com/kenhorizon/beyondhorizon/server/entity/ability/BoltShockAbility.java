@@ -17,7 +17,7 @@ import java.util.List;
 public class BoltShockAbility extends AbilityEntity {
     public BoltShockAbility(EntityType<?> entityType, Level level) {
         super(entityType, level);
-        this.setDuration(2);
+        this.setDuration(10);
         this.setBaseDamage(2);
         this.setRadius(2.0F);
     }

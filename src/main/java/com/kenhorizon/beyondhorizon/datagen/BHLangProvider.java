@@ -133,6 +133,10 @@ public class BHLangProvider extends LanguageProvider {
         this.addSkills(Skills.BLAZING_CLEAVE.get(), "Blazing Cleave", "On-hit attack release a powerful shockwave that deal %s%% damage within %s range");
         this.addSkills(Skills.SMASH_ATTACK.get(), "Smash Attack", "After falling 1.5 blocks or more deal extra damage by %s per block fallens");
         this.addSkills(Skills.MAGIC_MISSILE.get(), "Magic Missile", "Shoot a energized bolt that deal %s magic damage");
+        this.addSkills(Skills.BOLTSHOCK.get(), "Bolt Shock", "[Attack]: Summon 10 Bolt Shock that deals %s magic damage",
+                "Call a bolt shock from the sky at targeted position dealing %s magic damage");
+        this.addSkills(Skills.THUNDER.get(), "Thunder","[Attack]: Summon 10 Bolt Shock that deals %s magic damage",
+                "Call a lightning bolt from the sky at targeted position after 1 seconds it strike dealing %s magic damage");
         //
         this.addAccessory(Accessories.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100 (6 if attacking, 1 if moving)");
         this.addAccessory(Accessories.ELECTROSHOCK.get(), "Electro Shock", "When fully Energized, your next basic attack strike the target with bolt of lightning dealing bonus 40% damage dealt magic damage of 2.5 radius unit");

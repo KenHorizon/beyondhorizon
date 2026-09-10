@@ -1,17 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.item.materials;
 
-import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
-import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
-import com.kenhorizon.libs.server.IReloadable;
-import com.kenhorizon.libs.server.ReloadableHandler;
+import com.kenhorizon.beyondhorizon.server.item.classify.IWeaponMaterials;
 import net.minecraft.util.LazyLoadedValue;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.function.Supplier;
 
 public enum MagicWeaponMaterials implements IWeaponMaterials,  Comparable<MagicWeaponMaterials> {

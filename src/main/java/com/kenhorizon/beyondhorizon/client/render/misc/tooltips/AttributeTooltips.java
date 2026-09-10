@@ -5,14 +5,9 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.util.AttributePercentage;
 import com.kenhorizon.beyondhorizon.client.util.InvertedAttributeColorFormat;
-import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
-import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
 import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.enchantment.LevelValue;
-import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -36,8 +31,6 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.ForgeMod;
 
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.*;
 
 public class AttributeTooltips {
@@ -122,12 +115,12 @@ public class AttributeTooltips {
             Component displayName = Component.translatable(attribute.getDescriptionId());
             String isPositive  = amount > 0.0D ? "plus" : "take";
             amount *= attributeAmount > 0.0D ? 1.0D : -1.0D;
-            if (this.alternateColorFormat(attribute)) {
+            if (this.alterColorFormat(attribute)) {
                 color = Tooltips.attributeColorFormatInverted(attributeAmount);
-//                isPositive  = amount > 0.0D ? "plus" : "take";
                 amount = Mth.abs((float) amount);
             }
             if (amount == 0.0D) return;
+
             if (startLine > 0) {
                 if (this.checkIfPercentage(attribute)) {
                     tooltip.set(startLine, CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.percent", BeyondHorizon.ID, isPositive), Maths.format(amount), displayName).withStyle(color)));
@@ -141,7 +134,6 @@ public class AttributeTooltips {
                     tooltip.add(CommonComponents.space().append(Component.translatable(String.format("%s.attributes.%s.%s", BeyondHorizon.ID, isPositive, attributeModifier.getOperation().toValue()), Maths.format(amount), displayName).withStyle(color)));
                 }
             }
-
         } catch (Exception ignored) {
         }
     }
@@ -223,7 +215,7 @@ public class AttributeTooltips {
         return AttributePercentage.isMatch(attribute);
     }
 
-    private boolean alternateColorFormat(Attribute attribute) {
+    private boolean alterColorFormat(Attribute attribute) {
         return InvertedAttributeColorFormat.isMatch(attribute);
     }
 

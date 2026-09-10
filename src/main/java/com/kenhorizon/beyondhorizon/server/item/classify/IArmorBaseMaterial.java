@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.item.materials;
+package com.kenhorizon.beyondhorizon.server.item.classify;
 
 import com.google.common.collect.ImmutableMultimap;
 import net.minecraft.world.entity.ai.attributes.Attribute;

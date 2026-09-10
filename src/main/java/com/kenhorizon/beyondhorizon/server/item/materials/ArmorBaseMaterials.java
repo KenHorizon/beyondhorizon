@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
+import com.kenhorizon.beyondhorizon.server.item.classify.IArmorBaseMaterial;
 import net.minecraft.Util;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;

@@ -20,7 +20,7 @@ public class EruptionAbility extends AbilityEntity {
     public static void spawn(Level level, double x, double y, double z, float damage, float radius, int duration, LivingEntity entity) {
         EruptionAbility ability = new EruptionAbility(BHEntity.ERUPTION.get(), level);
         ability.setBaseDamage(damage);
-        ability.setCasterID(entity.getUUID());
+        ability.setCaster(entity);
         ability.setRadius(radius);
         if (duration > 0) {
             ability.setDuration(duration);

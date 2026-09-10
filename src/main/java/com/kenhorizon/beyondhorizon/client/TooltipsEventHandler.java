@@ -50,7 +50,7 @@ public class TooltipsEventHandler {
         attributeTooltips.makeEnchantmentAttributeTooltip(player, tooltip, itemStack);
         for (ArmorAbility set : BHRegistries.ARMOR_ABILITY_KEY.get()) {
             if (set.contains(itemStack)) {
-                set.addTooltips(tooltip, itemStack, player);
+                set.addTooltips(tooltip, itemStack, player, flag);
             }
         }
     }

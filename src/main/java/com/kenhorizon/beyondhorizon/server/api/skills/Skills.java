@@ -2,10 +2,8 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.server.api.DamageTypeFunction;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.*;
-import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.InfernalRaySkill;
-import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.InfernoStrikeSkill;
+import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.*;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.ExtraDamageSkill;
-import com.kenhorizon.beyondhorizon.server.api.skills.ability.active.MagicMissileSkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ability.onhit_effects.OnHitEffectSkills;
 import com.kenhorizon.beyondhorizon.server.api.skills.item_properties.GuardianSwordProperties;
 import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamDamageTags;
@@ -92,6 +90,10 @@ public class Skills {
             .universal());
 
     public static final RegistryObject<Skill> MAGIC_MISSILE = registerSkill("magic_missile", () -> new MagicMissileSkill(Constant.MAGIC_MISSILE_AP_SCALE).universal());
+
+    public static final RegistryObject<Skill> THUNDER = registerSkill("thunder", () -> new ThunderSkill(Constant.THUNDER_AP_SCALE).universal());
+
+    public static final RegistryObject<Skill> BOLTSHOCK = registerSkill("bolt_shock", () -> new BoltShockSkill(Constant.BOLT_SHOCK_AP_SCALE).universal());
 
     public static final RegistryObject<Skill> SMASH_ATTACK = registerSkill("smash_attack", () -> new SmashAttackSkills(Constant.SMASH_ATTACK).melee());
 

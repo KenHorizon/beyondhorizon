@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.item;
+package com.kenhorizon.beyondhorizon.server.item.classify;
 
 import com.kenhorizon.libs.client.WeaponAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;

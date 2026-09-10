@@ -25,7 +25,7 @@ import com.kenhorizon.beyondhorizon.server.capability.*;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.init.*;
-import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
+import com.kenhorizon.beyondhorizon.server.item.classify.ILeftClick;
 import com.kenhorizon.beyondhorizon.server.item.QuiverItem;
 import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
@@ -662,17 +662,11 @@ public class ServerEventHandler {
             }
         }
 
-        Set<ResourceLocation> active = ArmorAbility.ACTIVE_SETS.computeIfAbsent(entity.getUUID(), id -> new HashSet<>());
         for (ArmorAbility set : BHRegistries.ARMOR_ABILITY_KEY.get()) {
-            boolean matches = set.matches(entity);
-            boolean applied = active.contains(set.getResourceId());
-            if (matches && !applied) {
+            if (set.matches(entity)) {
                 set.applyBonus(entity);
-                active.add(set.getResourceId());
-            }
-            if (!matches && applied) {
+            } else {
                 set.removeBonus(entity);
-                active.remove(set.getResourceId());
             }
         }
 

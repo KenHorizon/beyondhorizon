@@ -24,7 +24,7 @@ public class BurningHexTrapAbility extends AbilityEntity {
     public static void spawn(Level level, double x, double y, double z, float damage, LivingEntity entity) {
         BurningHexTrapAbility ability = new BurningHexTrapAbility(BHEntity.BURNING_HEX_TRAP.get(), level);
         ability.setBaseDamage(damage);
-        ability.setCasterID(entity.getUUID());
+        ability.setCaster(entity);
         ability.setPos(x, y, z);
         level.addFreshEntity(ability);
     }

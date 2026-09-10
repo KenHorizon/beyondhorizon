@@ -1,6 +1,6 @@
 package com.kenhorizon.libs.client;
 
-import com.kenhorizon.beyondhorizon.server.item.IArmPose;
+import com.kenhorizon.beyondhorizon.server.item.classify.IArmPose;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

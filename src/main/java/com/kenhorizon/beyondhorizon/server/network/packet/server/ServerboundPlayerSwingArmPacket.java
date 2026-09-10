@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
-import com.kenhorizon.beyondhorizon.server.item.ILeftClick;
+import com.kenhorizon.beyondhorizon.server.item.classify.ILeftClick;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;

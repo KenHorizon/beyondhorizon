@@ -97,7 +97,7 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
         this.setCasterID(caster.getUUID());
     }
 
-    public void setCasterID(UUID id) {
+    private void setCasterID(UUID id) {
         this.entityData.set(CASTER, Optional.of(id));
     }
 
@@ -249,47 +249,37 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     protected void onDuration() {}
 
     protected void onEnd() {
-        BeyondHorizon.LOGGER.info("{}", this.toString());
-    }
-
-    @Override
-    protected AABB makeBoundingBox() {
-        return super.makeBoundingBox().inflate(this.getRadius());
+        BeyondHorizon.LOGGER.info("{}", this);
     }
 
     @Override
     public void handleEntityEvent(byte id) {
         super.handleEntityEvent(id);
-        if (id == 4) {
-//            BeyondHorizon.LOGGER.debug("[Ability entity] Client Sided Started!");
-            this.clientSideStarted = true;
-        }
+    }
+
+    public void clientSide() {
+
     }
 
     @Override
     public void tick() {
         super.tick();
         if (this.level().isClientSide()) {
-            if (this.clientSideStarted) {
-                this.animation.increaseTimer();
-                this.setLifeTime(this.getLifeTime() + 1);
-            }
+            this.clientSide();
+            this.animation.increaseTimer();
+            this.setLifeTime(this.getLifeTime() + 1);
             this.spawnParticles();
         } else {
             if (this.getDelay() <= 0) {
                 this.onDuration();
-                if (!this.sentEventSpike) {
-                    this.level().broadcastEntityEvent(this, (byte) 4);
-                    this.sentEventSpike = true;
-                }
                 if (this.getLifeTime() == (this.getDelay())) {
                     this.onStart();
                 }
-                if (this.getLifeTime() > this.getDuration() - 1) {
+                if (this.getLifeTime() > this.getDuration()) {
                     this.onEnd();
                 }
 
-                if (this.getLifeTime() >= this.getDuration()) {
+                if (this.getLifeTime() >= this.getDuration() + 1) {
                     this.discard();
                 }
                 this.setLifeTime(this.getLifeTime() + 1);
@@ -388,6 +378,6 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
 
     @Override
     public String toString() {
-        return String.format("%s:[Duration:%s - Delay:%s - Damage:%s]", this.getClass().toString(), this.getDuration(), this.getDelay(), this.getBaseDamage());
+        return String.format("%s:[Duration:%s - Delay:%s - Damage:%s - Radius:%s]", this.getClass().getName(), this.getDuration(), this.getDelay(), this.getBaseDamage(), this.getRadius());
     }
 }

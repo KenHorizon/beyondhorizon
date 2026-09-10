@@ -28,7 +28,6 @@ public class FlameStrikeAbility extends AbilityEntity {
         FlameStrikeAbility ability = new FlameStrikeAbility(BHEntity.FLAME_STRIKE.get(), level);
         ability.setBaseDamage(damage);
         ability.setCaster(entity);
-        ability.setCasterID(entity.getUUID());
         ability.setRadius(radius);
         ability.setDuration(duration);
         ability.setPos(x, y, z);
@@ -39,7 +38,6 @@ public class FlameStrikeAbility extends AbilityEntity {
         FlameStrikeAbility ability = new FlameStrikeAbility(BHEntity.FLAME_STRIKE.get(), level);
         ability.setBaseDamage(damage);
         ability.setCaster(entity);
-        ability.setCasterID(entity.getUUID());
         ability.setPos(x, y, z);
         level.addFreshEntity(ability);
     }

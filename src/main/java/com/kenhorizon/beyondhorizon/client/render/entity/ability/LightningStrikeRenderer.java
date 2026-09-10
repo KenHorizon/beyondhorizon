@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
@@ -36,7 +37,11 @@ public class LightningStrikeRenderer extends EntityRenderer<LightningStrikeAbili
         poseStack.pushPose();
 //        this.sparkEffect(entity, partialTicks, poseStack, buffer);
         VertexConsumer builder = buffer.getBuffer(BHRenderTypes.beam(TEXTURE));
-        this.model.renderToBuffer(poseStack, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+        int frames = 32;
+        float flickerSpeed = 1.0F;
+        float flickerEffect = Mth.clamp((float) ((entity.getLifeTime() * flickerSpeed % frames) / frames), 0.0F, 1.0F);
+        poseStack.translate(0, -0.25F, 0);
+        this.model.renderToBuffer(poseStack, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, flickerEffect);
         poseStack.popPose();
 
         if (entity.hasStriked(10)) {
@@ -106,7 +111,7 @@ public class LightningStrikeRenderer extends EntityRenderer<LightningStrikeAbili
     private void sparkEffect(LightningStrikeAbility entity, float partialTicks, PoseStack poseStack, MultiBufferSource buffer) {
         float factor = ((float) entity.getLifeTime() + partialTicks) / entity.getDuration();
         float minimalSpinDegree = Math.min(factor > 0.8F ? (factor - 0.8F) / 0.2F : 0.0F, 1.0F);
-        float spinFactor = 360.0F;
+        float spinFactor = 45.0F;
         RandomSource randoms = RandomSource.create(432L);
         VertexConsumer consumer = buffer.getBuffer(RenderType.lightning());
         poseStack.pushPose();

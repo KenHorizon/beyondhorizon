@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.item.ICustomHitSound;
-import com.kenhorizon.beyondhorizon.server.item.ICustomSweepParticle;
+import com.kenhorizon.beyondhorizon.server.item.classify.ICustomHitSound;
+import com.kenhorizon.beyondhorizon.server.item.classify.ICustomSweepParticle;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;

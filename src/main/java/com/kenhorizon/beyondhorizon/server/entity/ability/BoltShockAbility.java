@@ -26,7 +26,6 @@ public class BoltShockAbility extends AbilityEntity {
         BoltShockAbility ability = new BoltShockAbility(BHEntity.BOLT_SHOCK.get(), level);
         ability.setBaseDamage(damage);
         ability.setCaster(entity);
-        ability.setCasterID(entity.getUUID());
         ability.setPos(x, y, z);
         level.addFreshEntity(ability);
     }

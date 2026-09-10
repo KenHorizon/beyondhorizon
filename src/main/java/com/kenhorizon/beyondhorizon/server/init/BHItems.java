@@ -409,6 +409,16 @@ public class BHItems {
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.HANDHELD)
             .register();
+    public static final RegistryObject<Item> THUNDER_ZAPPER = RegistryItems
+            .register("thunder_zapper", item -> MagicItemBuilder.THUNDER_ZAPPER.create(MagicWeaponMaterials.TIER_ONE, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
+            .register();
+    public static final RegistryObject<Item> STORMSURGE = RegistryItems
+            .register("stormsurge", item -> MagicItemBuilder.STORMSURGE.create(MagicWeaponMaterials.TIER_ONE, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.HANDHELD)
+            .register();
 
     public static final RegistryObject<Item> ENERGIZED_MACE = RegistryItems
             .register("energized_mace", item -> MeleeItemBuilder.ENERGIZED_MACE.create(MeleeWeaponMaterials.TIER_ONE, item))

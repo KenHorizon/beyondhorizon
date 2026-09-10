@@ -13,6 +13,7 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -84,11 +85,31 @@ public abstract class ArmorAbility implements IArmorAbility {
     public void removeBonus(LivingEntity entity) {
     }
 
-    public void addTooltips(List<Component> tooltips, ItemStack itemStack, Player player) {
-        tooltips.add(CommonComponents.space());
-        tooltips.add(Component.translatable(Tooltips.FULL_BONUS_ARMOR_SET).append(CommonComponents.space()).append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.DARK_AQUA)));
-        this.addTooltipPerPiece(tooltips, itemStack, player);
-        this.addTooltipFullBonusSet(tooltips, itemStack, player);
+    public void addTooltips(List<Component> tooltips, ItemStack itemStack, Player player, TooltipFlag flag) {
+        final List<Component> additions = new ArrayList<>();
+        additions.add(CommonComponents.space());
+        additions.add(Component.translatable(Tooltips.FULL_BONUS_ARMOR_SET).append(CommonComponents.space()).append(Component.translatable(this.getDescriptionId()).withStyle(ChatFormatting.DARK_AQUA)));
+        this.addTooltipPerPiece(additions, itemStack, player);
+        this.addTooltipFullBonusSet(additions, itemStack, player);
+        tooltips.addAll(1, additions);
+    }
+    private static int getInsertOffset(boolean advanced, int tooltipSize, ItemStack stack) {
+
+        int offset = 0;
+        if (advanced) {
+            // item id
+            offset++;
+            // tag count
+            if (stack.hasTag()) {
+                offset++;
+            }
+            // durability
+            if (stack.isDamaged()) {
+                offset++;
+            }
+        }
+
+        return Math.max(0, tooltipSize - offset);
     }
     public void addTooltipPerPiece(List<Component> tooltips, ItemStack itemStack, Player player) {
 

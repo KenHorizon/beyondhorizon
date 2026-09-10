@@ -18,7 +18,6 @@ public class SkillBuilder implements IReloadable {
     public static final SkillBuilder MACE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.SMASH_ATTACK), ToolActions.SWORD_DIG);
     public static final SkillBuilder RADIANT_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.RADIANT));
     public static final SkillBuilder GUARDIAN = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.GUARDIAN_SWORD_TRAIT, Skills.INFERNO_STRIKE));
-    public static final SkillBuilder WAND = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.MAGIC_MISSILE));
     public static final SkillBuilder BLAZING_BEACON = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.INFERNAL_RAY));
     public static final SkillBuilder SOLARFLARE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.GUARDIAN_SWORD_TRAIT, Skills.INFERNO_STRIKE, Skills.INFERNAL_RAY));
     public static final SkillBuilder ELUDICATOR = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.DARK_BLADE));
@@ -33,6 +32,12 @@ public class SkillBuilder implements IReloadable {
     public static final SkillBuilder STELLAR_AXE = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.CELESTIAL_STRIKE));
     public static final SkillBuilder HEAVENLY_EDGE_DARK_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.CELESTIAL_STRIKE));
     public static final SkillBuilder HEAVENLY_EDGE_LIGHT_SWORD = new SkillBuilder(SkillTypes.MELEE, List.of(Skills.CELESTIAL_STRIKE));
+    //
+
+    public static final SkillBuilder THUNDERZAPPER = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.BOLTSHOCK));
+    public static final SkillBuilder STORMSURGE = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.THUNDER));
+    public static final SkillBuilder WAND = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.MAGIC_MISSILE));
+     //
 
     protected List<Supplier<? extends Skill>> suppliers = new ArrayList<>();
     protected List<Skill> skills = new ArrayList<>();

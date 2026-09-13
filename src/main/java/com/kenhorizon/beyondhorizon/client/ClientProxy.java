@@ -182,10 +182,14 @@ public class ClientProxy extends ServerProxy {
         registerRaidMobs();
         addItemProperties();
 
-        ItemBlockRenderTypes.setRenderLayer(BHBlocks.IRON_LATTICE.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BHBlocks.BLACK_IRON_LATTICE.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_IRON_LATTICE.get(), RenderType.cutout());
-        ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_BLACK_IRON_LATTICE.get(), RenderType.cutout());
+        RenderType CM = RenderType.cutoutMipped();
+        RenderType C = RenderType.cutout();
+        ItemBlockRenderTypes.setRenderLayer(BHBlocks.IRON_LATTICE.get(), CM);
+        ItemBlockRenderTypes.setRenderLayer(BHBlocks.BLACK_IRON_LATTICE.get(), CM);
+        ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_IRON_LATTICE.get(), CM);
+        ItemBlockRenderTypes.setRenderLayer(BHBlocks.TATTERED_BLACK_IRON_LATTICE.get(), CM);
+        ItemBlockRenderTypes.setRenderLayer(BHBlocks.IRON_GRATE.get(), CM);
+        ItemBlockRenderTypes.setRenderLayer(BHBlocks.BLACK_IRON_GRATE.get(), CM);
     }
 
     private static void registerRaidMobs() {

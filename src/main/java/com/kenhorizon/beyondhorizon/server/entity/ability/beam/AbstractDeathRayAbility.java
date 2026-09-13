@@ -57,7 +57,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     public boolean canIgnoreFrame = false;
     public boolean canBurnTarget = false;
     public BeamTypeFunction typeFunction = new BeamTypeFunction(BeamDamageTags.DEFAULT, 0.0F);
-    public DamageInfoTypes DamageInfoTypes = DamageInfoTypes.PHYSICAL_DAMAGE;
+    public DamageInfoTypes damageInfoTypes = DamageInfoTypes.PHYSICAL_DAMAGE;
     public ControlledAnimation appear = new ControlledAnimation(3);
 
     public boolean on = true;
@@ -138,12 +138,12 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     }
 
     public void setDamageType(DamageInfoTypes DamageInfoTypes) {
-        this.DamageInfoTypes = DamageInfoTypes;
+        this.damageInfoTypes = DamageInfoTypes;
         this.entityData.set(DAMAGE_TYPES, DamageInfoTypes.ordinal());
     }
 
     public DamageInfoTypes getDamageType() {
-        return this.level().isClientSide() ? DamageInfoTypes.values()[this.entityData.get(DAMAGE_TYPES)] : this.DamageInfoTypes;
+        return this.level().isClientSide() ? damageInfoTypes.values()[this.entityData.get(DAMAGE_TYPES)] : this.damageInfoTypes;
     }
 
     public int[] getColors() {
@@ -387,7 +387,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         this.setPitch(nbt.getFloat("pitch"));
         this.setScale(nbt.getFloat("scale"));
         this.setColor(nbt.getInt("r"),nbt.getInt("g"),nbt.getInt("b"));
-        this.DamageInfoTypes = DamageInfoTypes.values()[nbt.getInt("damage_type")];
+        this.damageInfoTypes = damageInfoTypes.values()[nbt.getInt("damage_type")];
         this.typeFunction = new BeamTypeFunction(BeamDamageTags.values()[nbt.getInt("beam_type_tags")], nbt.getFloat("beam_type_magnitude"));
         this.setCanBurnTarget(nbt.getBoolean("can_burn_target"));
         this.setImmunityFrameIgnore(nbt.getBoolean("ignore_immunity_frame"));
@@ -401,7 +401,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         nbt.putFloat("yaw", this.getYaw());
         nbt.putFloat("pitch", this.getPitch());
         nbt.putFloat("scale", this.getScale());
-        nbt.putInt("damage_type", this.DamageInfoTypes.ordinal());
+        nbt.putInt("damage_type", this.damageInfoTypes.ordinal());
         nbt.putInt("beam_type_tags", this.typeFunction.tags().ordinal());
         nbt.putFloat("beam_type_magnitude", this.typeFunction.magnitude());
         nbt.putBoolean("can_burn_target", this.isCanBurnTarget());

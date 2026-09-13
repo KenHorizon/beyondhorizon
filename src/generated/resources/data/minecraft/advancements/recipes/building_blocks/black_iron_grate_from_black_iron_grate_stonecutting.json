@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_black_iron_grate": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "beyondhorizon:black_iron_grate"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:black_iron_grate_from_black_iron_grate_stonecutting"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_black_iron_grate",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:black_iron_grate_from_black_iron_grate_stonecutting"
+    ]
+  },
+  "sends_telemetry_event": false
+}

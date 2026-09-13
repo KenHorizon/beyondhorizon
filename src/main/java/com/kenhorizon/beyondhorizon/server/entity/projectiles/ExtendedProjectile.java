@@ -97,7 +97,7 @@ public abstract class ExtendedProjectile extends Projectile {
 
     private final Vec3[] trailPositions = new Vec3[64];
     private int trailPointer = -1;
-    public DamageInfoTypes DamageInfoTypes = DamageInfoTypes.PHYSICAL_DAMAGE;
+    public DamageInfoTypes damageInfoTypes = DamageInfoTypes.PHYSICAL_DAMAGE;
     public DamageScaling damageScaling = DamageScaling.NONE;
     public static final String NBT_RICOCHET_BOUNCE = "ricochet_bounce";
     public static final String NBT_RICOCHET = "ricochet";
@@ -184,11 +184,11 @@ public abstract class ExtendedProjectile extends Projectile {
     }
 
     public DamageInfoTypes getDamageType() {
-        return DamageInfoTypes;
+        return damageInfoTypes;
     }
 
     public void setDamageType(DamageInfoTypes DamageInfoTypes) {
-        this.DamageInfoTypes = DamageInfoTypes;
+        this.damageInfoTypes = DamageInfoTypes;
     }
 
     @Override
@@ -634,7 +634,7 @@ public abstract class ExtendedProjectile extends Projectile {
         this.setCanLightFire(tag.getBoolean(NBT_CAN_LIGHT_FIRE));
         this.setFired(tag.getBoolean(NBT_IS_FIRED));
         this.setCrit(tag.getBoolean(NBT_IS_CRIT));
-        this.setDamageType(DamageInfoTypes.values()[tag.getInt(NBT_DAMAGE_TYPE)]);
+        this.setDamageType(damageInfoTypes.values()[tag.getInt(NBT_DAMAGE_TYPE)]);
         this.setDamageScaling(DamageScaling.values()[tag.getInt(NBT_DAMAGE_SCALING)]);
         if (tag.contains(NBT_POWER, 9)) {
             ListTag listtag = tag.getList(NBT_POWER, 6);

@@ -18,11 +18,13 @@ import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
+import com.kenhorizon.beyondhorizon.server.item.classify.IArmPose;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilitySlotSelectionPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAcessoryKeyPacket;
 import com.kenhorizon.libs.client.ModelAnimationHandler;
 import com.kenhorizon.libs.client.ModelAnimations;
+import com.kenhorizon.libs.client.WeaponAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;
 import com.kenhorizon.libs.client.event.PlayerModelEvent;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -33,6 +35,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.inventory.*;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
+import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -58,6 +61,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 
@@ -229,6 +233,23 @@ public class ClientEventHandler {
             }
         }
     }
+
+//    @SubscribeEvent(priority = EventPriority.HIGHEST)
+//    public void renderLivingEvent(RenderLivingEvent.Pre<? extends LivingEntity, ? extends EntityModel<? extends LivingEntity>> event) {
+//        if (event.getEntity() instanceof Player player) {
+//            float delta = event.getPartialTick();
+//            ItemStack stack = player.getUseItem();
+//            if (player.isUsingItem() && stack.getItem() instanceof IArmPose poses) {
+//                WeaponAnimations wAnim = poses.getWeaponAnimations(player, stack);
+//                WeaponArmPose wPoses = poses.getWeaponArmPose(player, player.getUsedItemHand());
+//                event.setCanceled(true);
+//                if (event.isCanceled()) {
+//
+//                }
+//            }
+//        }
+//    }
+
     @SubscribeEvent
     public void computeCameraAngles(ViewportEvent.ComputeCameraAngles event) {
         Minecraft minecraft = Minecraft.getInstance();

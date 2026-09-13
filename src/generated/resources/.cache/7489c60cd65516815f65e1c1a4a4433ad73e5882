@@ -1,4 +1,4 @@
-// 1.20.1	2026-09-10T17:12:14.0903705	Item Models: beyondhorizon
+// 1.20.1	2026-09-13T20:05:19.6848664	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -120,6 +120,7 @@ d4fb31726b490d0411e12756c4c6c0716f1c884a assets/beyondhorizon/models/item/hoglin
 550dd7db7c4d250b7b4e53922509142c1e102f8f assets/beyondhorizon/models/item/infested_magic_molecules.json
 45dd57ef317d018c6fb1da88fe942c10f0141678 assets/beyondhorizon/models/item/infested_sword.json
 33ab8b1213915d33ded37edc9ffb60deba049ab7 assets/beyondhorizon/models/item/infinity_gem.json
+b125e3f4deb091bbc5863a3655ba2a117f3f600a assets/beyondhorizon/models/item/iron_plate.json
 4982b6ebb0e0cc0b2755b177dea0e167737993a7 assets/beyondhorizon/models/item/iron_plated_boots.json
 fe968f7683fca09746334c774d904734908764c3 assets/beyondhorizon/models/item/iron_wand.json
 a0d9fff7da5ef4f6361e78c61b790175e70b0799 assets/beyondhorizon/models/item/kraken_slayer.json

@@ -3,7 +3,7 @@
   "category": "building",
   "key": {
     "#": {
-      "item": "minecraft:iron_nugget"
+      "item": "minecraft:chain"
     }
   },
   "pattern": [
@@ -11,6 +11,7 @@
     "##"
   ],
   "result": {
+    "count": 4,
     "item": "beyondhorizon:chainmail_plate"
   },
   "show_notification": true

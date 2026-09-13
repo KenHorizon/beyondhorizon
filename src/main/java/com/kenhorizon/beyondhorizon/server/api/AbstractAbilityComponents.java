@@ -49,7 +49,6 @@ public abstract class AbstractAbilityComponents {
         return this;
     }
 
-
     public abstract String getName();
 
     public String getDescriptionId() {
@@ -88,7 +87,7 @@ public abstract class AbstractAbilityComponents {
     /**
      * <p>Handle adding tooltips to the items
      * <pre>{@code
-     *      ///Item's Tooltip Format///
+     *      Item's Tooltip Format
      *      - Passive Ability
      *      - Active Ability
      *      - Attribute Tooltips

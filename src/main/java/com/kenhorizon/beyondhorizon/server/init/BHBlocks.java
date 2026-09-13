@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.datagen.BHLootTableProvider;
+import com.kenhorizon.beyondhorizon.server.block.BasicBlock;
 import com.kenhorizon.beyondhorizon.server.block.GateBlocks;
 import com.kenhorizon.beyondhorizon.server.block.WorkbenchBlock;
 import com.kenhorizon.beyondhorizon.server.block.arcane.ArcaneBlock;
@@ -32,7 +33,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class BHBlocks {
 
     public static final BlockBehaviour.Properties NETHER_BRICKS = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(2.0F, 6.0F).sound(SoundType.NETHER_BRICKS);
-    public static final BlockBehaviour.Properties SPAWNER_PROPERTIES = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).lightLevel(value -> value.getValue(BaseSpawnerBlock.SPAWNER_STATE).lightLevel()).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(50.0F).sound(BHSoundType.SPAWNER).noOcclusion().isViewBlocking(BHBlocks::never);
+    public static final BlockBehaviour.Properties SPAWNER_PROPERTIES = BlockBehaviour.Properties.of().mapColor(MapColor.NETHER).lightLevel(value -> value.getValue(BaseSpawnerBlock.SPAWNER_STATE).lightLevel()).instrument(NoteBlockInstrument.BASEDRUM).requiresCorrectToolForDrops().strength(50.0F).sound(BHSoundType.SPAWNER).noOcclusion().isViewBlocking(BasicBlock::never);
     public static final BlockBehaviour.Properties WIRED_LANE = BlockBehaviour.Properties.of().mapColor(MapColor.FIRE).strength(1.5F, 6.0F).sound(SoundType.METAL).lightLevel(l -> { return 4; }).requiresCorrectToolForDrops().pushReaction(PushReaction.PUSH_ONLY);
     public static final BlockBehaviour.Properties BLACK_IRON = BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops();
     public static final BlockBehaviour.Properties BLACK_IRON_STEEL = BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(2.5F, 3.0F).sound(SoundType.METAL).requiresCorrectToolForDrops();
@@ -82,7 +83,7 @@ public class BHBlocks {
             .register();
 
     public static final RegistryObject<Block> GATE_PARTS = RegistryBlocks
-            .register("gate_parts", properties -> new GateBlocks.GateParts(BlockBehaviour.Properties.copy(Blocks.IRON_BARS).strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn(BHBlocks::never)))
+            .register("gate_parts", properties -> new GateBlocks.GateParts(BlockBehaviour.Properties.copy(Blocks.IRON_BARS).strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn(BasicBlock::never)))
             .dontCreateItemBlocks()
             .register();
 
@@ -570,6 +571,7 @@ public class BHBlocks {
             .oreDrop(BHItems.RAW_HELLSTONE, 1, 3)
             .register();
 
+
     public static final RegistryObject<Block> BLACK_IRON_ORE = RegistryBlocks
             .register("black_iron_ore", properties -> new DropExperienceBlock(BLACK_IRON))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
@@ -582,6 +584,30 @@ public class BHBlocks {
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .itemName("Block of Black Iron")
             .tier(RegistryBlocks.ToolTiers.IRON)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> BLACK_IRON_GRATE = RegistryBlocks
+            .register("black_iron_grate", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().isValidSpawn(BasicBlock::never).isRedstoneConductor(BasicBlock::never).isSuffocating(BasicBlock::never).isViewBlocking(BasicBlock::never)))
+            .properties(p -> p.strength(1.5F))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+
+    public static final RegistryObject<Block> IRON_SHEET = RegistryBlocks
+            .register("iron_sheet", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> IRON_GRATE = RegistryBlocks
+            .register("iron_grate", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().isValidSpawn(BasicBlock::never).isRedstoneConductor(BasicBlock::never).isSuffocating(BasicBlock::never).isViewBlocking(BasicBlock::never)))
+            .properties(p -> p.strength(1.5F))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()
             .register();
 
@@ -658,15 +684,6 @@ public class BHBlocks {
             .register();
 
 
-    private static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, EntityType<?> entityType) {
-        return false;
-    }
-    public static boolean never(BlockState blockState, BlockGetter iBlockReader, BlockPos blockPos) {
-        return false;
-    }
-    public static boolean always(BlockState blockState, BlockGetter iBlockReader, BlockPos blockPos) {
-        return true;
-    }
     public static void register(IEventBus eventBus) {
         RegistryEntries.BLOCKS.register(eventBus);
     }

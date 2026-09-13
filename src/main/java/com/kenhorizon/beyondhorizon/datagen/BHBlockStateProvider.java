@@ -14,6 +14,9 @@ public class BHBlockStateProvider extends BlockStateBuilder {
     }
     @Override
     protected void registerStatesAndModels() {
+        this.blockWithItem(BHBlocks.IRON_SHEET);
+        this.blockWithItem(BHBlocks.IRON_GRATE);
+        this.blockWithItem(BHBlocks.BLACK_IRON_GRATE);
         this.blockWithItem(BHBlocks.ARCANE_BUDDING_FULL);
         this.blockWithItem(BHBlocks.ARCANE_BUDDING);
         this.blockWithItem(BHBlocks.ARCANE_ROCKS);

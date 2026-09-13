@@ -1,9 +1,9 @@
 package com.kenhorizon.beyondhorizon.configs;
 
+import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.enums.GameHuds;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
-import com.kenhorizon.beyondhorizon.configs.common.ModCommonConfig;
 import com.kenhorizon.beyondhorizon.server.api.handler.anvil_patch.AnvilCostSettings;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -53,13 +53,13 @@ public class BHConfigs {
             ACCESSORY_BUTTON_X = ModClientConfig.ACCESSORY_BUTTON_X.get();
             ACCESSORY_BUTTON_Y = ModClientConfig.ACCESSORY_BUTTON_Y.get();
             //---------------------------------------------------------------------//
-            MOBS_MIN_LEVEL_CAP = ModCommonConfig.MOBS_MIN_LEVEL_CAP.get();
-            MOBS_MAX_LEVEL_CAP = ModCommonConfig.MOBS_MAX_LEVEL_CAP.get();
-            ENABLE_MOB_LEVELS = ModCommonConfig.ENABLE_MOB_LEVELS.get();
-            ENCHANTMENT_BREAK_LEVEL = ModCommonConfig.ENCHANTMENT_BREAK_LEVEL.get();
-            ANVIL_COSTING = ModCommonConfig.ANVIL_COSTING.get();
-            ANVIL_BREAK_CHANCES = ModCommonConfig.ANVIL_BREAK_CHANCES.get();
-            ANVIL_COST_CAP = ModCommonConfig.ANVIL_COST_CAP.get();
+            MOBS_MIN_LEVEL_CAP = ModServerConfig.MOBS_MIN_LEVEL_CAP.get();
+            MOBS_MAX_LEVEL_CAP = ModServerConfig.MOBS_MAX_LEVEL_CAP.get();
+            ENABLE_MOB_LEVELS = ModServerConfig.ENABLE_MOB_LEVELS.get();
+            ENCHANTMENT_BREAK_LEVEL = ModServerConfig.ENCHANTMENT_BREAK_LEVEL.get();
+            ANVIL_COSTING = ModServerConfig.ANVIL_COSTING.get();
+            ANVIL_BREAK_CHANCES = ModServerConfig.ANVIL_BREAK_CHANCES.get();
+            ANVIL_COST_CAP = ModServerConfig.ANVIL_COST_CAP.get();
 
         } catch (Exception e) {
             BeyondHorizon.LOGGER.warn("An exception was caused trying to load the config");

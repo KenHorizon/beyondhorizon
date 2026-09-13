@@ -166,6 +166,7 @@ public class BHItems {
     public static final RegistryObject<Item> DARK_CRYSTAL = basicItem("dark_crystal", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> SHADOWCRUST = basicItem("shadowcrust", RegistryTabs.Category.INGREDIENTS);
 
+    public static final RegistryObject<Item> IRON_PLATE = basicItem("iron_plate", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> CHAINMAIL_PLATE = basicItem("chainmail_plate", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> RUBY = basicItem("ruby", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> AMPLIFLYING_TOME = basicItem("ampliflying_tome", RegistryTabs.Category.INGREDIENTS);

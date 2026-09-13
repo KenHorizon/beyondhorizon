@@ -41,7 +41,6 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
     @Override
     protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
         RecipeFactory recipeFactory = new RecipeFactory(consumer);
-        recipeFactory.createGrid(Items.IRON_NUGGET, BHItems.CHAINMAIL_PLATE.get(), 1);
 
         netheriteSmithing(consumer, BHItems.DIAMOND_WAND.get(), RecipeCategory.COMBAT, BHItems.NETHERITE_WAND.get());
 
@@ -82,6 +81,10 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.END_STONE_TILES.get(), Blocks.END_STONE);
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS,BHBlocks.CHISILLED_END_STONE.get(), Blocks.END_STONE);
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.PLAIN_CHISILLED_END_STONE.get(), Blocks.END_STONE);
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.IRON_GRATE.get(), BHBlocks.IRON_SHEET.get(), 4);
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.IRON_GRATE.get(), Blocks.IRON_BLOCK, 4);
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.IRON_SHEET.get(), Blocks.IRON_BLOCK, 4);
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.BLACK_IRON_GRATE.get(), BHBlocks.BLACK_IRON_GRATE.get(), 4);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STRING, 4)
                 .requires(BHItemTags.WOOL_FUR)
@@ -109,6 +112,36 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
 
         recipeFactory.createBlock(BHItems.BLACK_IRON_INGOT.get(), BHBlocks.BLACK_IRON_BLOCK.get());
 
+        recipeFactory.createGrid(Items.IRON_NUGGET, BHItems.IRON_PLATE.get(), 4);
+        recipeFactory.createGrid(Items.CHAIN, BHItems.CHAINMAIL_PLATE.get(), 4);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BHBlocks.IRON_GRATE.get(), 4)
+                .pattern(" # ")
+                .pattern("# #")
+                .pattern(" # ")
+                .define('#', BHBlocks.IRON_SHEET.get())
+                .unlockedBy("has_materials_for_iron_grate",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHBlocks.IRON_SHEET.get()).build()))
+                .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BHBlocks.BLACK_IRON_GRATE.get(), 4)
+                .pattern(" # ")
+                .pattern("# #")
+                .pattern(" # ")
+                .define('#', BHBlocks.BLACK_IRON_BLOCK.get())
+                .unlockedBy("has_materials_for_black_iron_grate",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHBlocks.BLACK_IRON_BLOCK.get()).build()))
+                .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BHBlocks.IRON_SHEET.get(), 4)
+                .pattern("WMW")
+                .pattern("MWM")
+                .pattern("WMW")
+                .define('W', BHItems.IRON_PLATE.get())
+                .define('M', Items.IRON_INGOT)
+                .unlockedBy("has_materials_for_iron_sheet",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(BHItems.IRON_PLATE.get(), Items.IRON_INGOT).build()))
+                .save(consumer);
         ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BHItems.ENERGIZED_MACE.get())
                 .pattern("H")
                 .pattern("#")

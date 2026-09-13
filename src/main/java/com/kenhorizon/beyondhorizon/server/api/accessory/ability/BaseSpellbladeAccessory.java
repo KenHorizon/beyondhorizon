@@ -23,11 +23,11 @@ public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
     protected int timer;
     protected int attackInterval;
     protected boolean isActive;
-    protected DamageInfoTypes DamageInfoTypes;
+    protected DamageInfoTypes damageInfoTypes;
     public BaseSpellbladeAccessory(int attackInterval, float attackScale, DamageInfoTypes DamageInfoTypes) {
         this.attackScale = attackScale;
         this.attackInterval = Maths.sec(attackInterval);
-        this.DamageInfoTypes = DamageInfoTypes;
+        this.damageInfoTypes = DamageInfoTypes;
     }
 
     protected abstract float spellBladeDamage(LivingEntity attacker, float damage, float damageScale);
@@ -73,7 +73,7 @@ public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
             this.isActive = false;
             target.invulnerableTime = 0;
             float outputDamage = this.spellBladeDamage(attacker, context.damage(), this.attackScale);
-            this.DamageInfoTypes.dealDamage(target, attacker, outputDamage);
+            this.damageInfoTypes.dealDamage(target, attacker, outputDamage);
         }
     }
 }

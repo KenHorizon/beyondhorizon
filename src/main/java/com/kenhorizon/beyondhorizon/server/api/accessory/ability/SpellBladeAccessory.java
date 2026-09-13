@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 

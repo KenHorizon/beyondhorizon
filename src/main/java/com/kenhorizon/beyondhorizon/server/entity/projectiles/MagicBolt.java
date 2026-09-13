@@ -105,6 +105,6 @@ public class MagicBolt extends ExtendedProjectile {
 
     @Override
     public DamageSource setDamageSource() {
-        return BHDamageTypes.applyDamage(DamageInfoTypes.MAGIC_DAMAGE, this, this.getOwner());
+        return BHDamageTypes.applyDamage(damageInfoTypes.MAGIC_DAMAGE, this, this.getOwner());
     }
 }

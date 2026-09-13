@@ -97,6 +97,10 @@ public class MerchantTrades {
             this.maxTrade = maxTrade;
         }
 
+        public RandomizedTradeItem(Item item, int cost, int maxTrade) {
+            this(item, new ItemStack(Items.AIR).getItem(), new ItemStack(Items.AIR).getItem(), cost, maxTrade);
+        }
+
         public ItemStack getWantItem1() {
             return this.wantItem1;
         }

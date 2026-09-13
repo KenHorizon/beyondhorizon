@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "M": {
+      "item": "minecraft:iron_ingot"
+    },
+    "W": {
+      "item": "beyondhorizon:iron_plate"
+    }
+  },
+  "pattern": [
+    "WMW",
+    "MWM",
+    "WMW"
+  ],
+  "result": {
+    "count": 4,
+    "item": "beyondhorizon:iron_sheet"
+  },
+  "show_notification": true
+}

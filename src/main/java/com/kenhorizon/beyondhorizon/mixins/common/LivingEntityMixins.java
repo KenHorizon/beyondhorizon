@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
+import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.libs.server.event.MobEffectModificationEvent;
 import com.kenhorizon.beyondhorizon.server.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
@@ -173,18 +174,22 @@ public abstract class LivingEntityMixins extends EntityMixins implements IBHData
 
     @Inject(at = @At("HEAD"), method = "getDamageAfterMagicAbsorb(Lnet/minecraft/world/damagesource/DamageSource;F)F", cancellable = true)
     private void beyondHorizon$getDamageAfterMagicAbsorb(DamageSource damageSource, float amount, CallbackInfoReturnable<Float> cir) {
-        float flatMagicPen = 0;
-        float perMagicPen = 0;
-        if (damageSource.getEntity() instanceof LivingEntity attacker) {
-            flatMagicPen = (float) attacker.getAttributeValue(BHAttributes.FLAT_MAGIC_PENETRATION.get());
-            perMagicPen = (float) attacker.getAttributeValue(BHAttributes.PERCENTAGE_MAGIC_PENETRATION.get());
-        }
-        if (damageSource.getEntity() instanceof LivingEntity entity && damageSource.getDirectEntity() == entity && damageSource.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
-            this.hurtArmor(damageSource, amount);
-            float armor = (float) this.getAttributeValue(BHAttributes.MAGIC_RESISTANCE.get());
-            float reduceArmor = (armor * (1.0F - perMagicPen)) - flatMagicPen;
-            float resultDamage = CombatRules.getDamageAfterAbsorb(amount, reduceArmor, 0);
-            cir.setReturnValue(resultDamage);
+        if (damageSource.is(DamageTypeTags.BYPASSES_EFFECTS)) {
+            cir.setReturnValue(amount);
+        } else {
+            float flatMagicPen = 0;
+            float perMagicPen = 0;
+            if (damageSource.getEntity() instanceof LivingEntity attacker) {
+                flatMagicPen = (float) attacker.getAttributeValue(BHAttributes.FLAT_MAGIC_PENETRATION.get());
+                perMagicPen = (float) attacker.getAttributeValue(BHAttributes.PERCENTAGE_MAGIC_PENETRATION.get());
+            }
+            if (damageSource.getEntity() instanceof LivingEntity entity && damageSource.getDirectEntity() == entity && damageSource.is(BHDamageTypeTags.MAGIC_DAMAGE)) {
+                this.hurtArmor(damageSource, amount);
+                float armor = (float) this.getAttributeValue(BHAttributes.MAGIC_RESISTANCE.get());
+                float reduceArmor = (armor * (1.0F - perMagicPen)) - flatMagicPen;
+                float resultDamage = CombatRules.getDamageAfterAbsorb(amount, reduceArmor, 0);
+                cir.setReturnValue(resultDamage);
+            }
         }
     }
     @Unique

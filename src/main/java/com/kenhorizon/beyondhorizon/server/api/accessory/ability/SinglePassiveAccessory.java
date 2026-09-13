@@ -9,7 +9,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.SpellDamageSource;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.BurnDamageSource;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
@@ -32,6 +32,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
+import java.lang.annotation.Target;
 import java.util.UUID;
 
 public class SinglePassiveAccessory extends AccessoryPassiveSkill {
@@ -197,7 +198,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
                 }
             }
         }
-        if (this == Accessories.BURN_EFFECT.get() && !(source instanceof SpellDamageSource)) {
+        if (this == Accessories.BURN_EFFECT.get() && !(source instanceof BurnDamageSource)) {
             target.setSecondsOnFire(Constant.FIRE_EFFECT);
         }
         if (this == Accessories.CORRUPTED_BITE.get()) {
@@ -208,7 +209,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
             for (ItemStack armor : target.getArmorSlots()) {
                 if (armor.isEnchanted() && armor.getEnchantmentLevel(Enchantments.ALL_DAMAGE_PROTECTION) > 0) {
                     float damage = context.multiply((this.getMagnitude() * this.getLevel()));
-                    target.hurt(BHDamageTypes.nullify(attacker, null), damage);
+                    target.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.TRUE_DAMAGE, attacker), damage);
                 }
             }
         }
@@ -245,10 +246,10 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
             }
         }
 
-        if (this == Accessories.STING.get() && !(source instanceof SpellDamageSource)) {
+        if (this == Accessories.STING.get() && !(source instanceof BurnDamageSource)) {
             return context.add((this.getMagnitude() * this.getLevel()));
         }
-        if (this == Accessories.LIFE_SIPHON.get() && !(source instanceof SpellDamageSource)) {
+        if (this == Accessories.LIFE_SIPHON.get() && !(source instanceof BurnDamageSource)) {
            return context.add((target.getHealth() * this.getLevel()));
         }
         return context.damage();

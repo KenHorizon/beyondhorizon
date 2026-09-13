@@ -252,9 +252,9 @@ public class BHLangProvider extends LanguageProvider {
         this.addDeathMessage(BHDamageTypes.TRUE_DAMAGE, "%%1$s was consumed", "%1$s was consumed by %2$s", "%1$s was consumed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.BLEED, "%1$s was bleeding to death", "%1$s was bleeding to death while killed by %2$s", "%1$s was bleeding to death while killed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.BLAZING_ROD, "%1$s was evaporated", "%1$s was evaporated by %2$s", "%1$s was evaporated by %2$s using %3$s");
+        this.addDeathMessage(BHDamageTypes.PHYSICAL_BURNING, "%1$s was burned", "%1$s was burned to death by %2$s", "%1$s was consumed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.MAGIC_BURNING, "%1$s was burned", "%1$s was burned to death by %2$s", "%1$s was consumed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.TRUE_DAMAGE_BURNING, "%1$s was burned", "%1$s was burned to death by %2$s", "%1$s was consumed by %2$s using %3$s");
-        this.addDeathMessage(BHDamageTypes.IGNORE_ENCHANTMENT_PROTECTION, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
         //
         this.addAdvancement(Tooltips.ADVANCEMENT_MAIN_ROOT, "Arcane", "The story of secret of worlds and magics");
         this.addAdvancement(Tooltips.ADVANCEMENT_EQUIPPED_ACCESSORY, "Fancy Equipment", "Discover a accessory");

@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.AdvanceDamageSource;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.BurnDamageSource;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import net.minecraft.core.Registry;
@@ -21,7 +22,6 @@ public class BHDamageTypes {
     public static final ResourceKey<DamageType> PHYSICAL_BURNING = createKey("phyiscal_burning");
     public static final ResourceKey<DamageType> MAGIC_BURNING = createKey("magic_burning");
     public static final ResourceKey<DamageType> BLEED = createKey("bleed");
-    public static final ResourceKey<DamageType> IGNORE_ENCHANTMENT_PROTECTION = createKey("ignore_enchantment_protection");
     public static final ResourceKey<DamageType> BLAZING_ROD = createKey("blazing_rod");
     public static final ResourceKey<DamageType> PHYSICAL_DAMAGE = createKey("physical_damage");
     public static final ResourceKey<DamageType> MAGIC_DAMAGE = createKey("magic_damage");
@@ -39,7 +39,6 @@ public class BHDamageTypes {
         context.register(TRUE_DAMAGE_BURNING, new DamageType("true_burning", 0.1F));
         context.register(PHYSICAL_BURNING, new DamageType("physical_burning", 0.1F));
         context.register(MAGIC_BURNING, new DamageType("magic_burning", 0.1F));
-        context.register(IGNORE_ENCHANTMENT_PROTECTION, new DamageType("ignore_enchantment_protection", 0.1F));
         context.register(BLAZING_ROD, new DamageType("blazing_rod", 0.1F));
         context.register(BLEED, new DamageType("bleed", 0.1F));
         context.register(PHYSICAL_DAMAGE, new DamageType("physical_damage", 0.1F));
@@ -61,6 +60,7 @@ public class BHDamageTypes {
     private static DamageSource source(ResourceKey<DamageType> damageType, @Nullable Entity causingEntity, @Nullable Entity directEntity, DamageTags damageTags) {
         return new AdvanceDamageSource(BHDamageTypes.damageTypes.getHolderOrThrow(damageType), causingEntity, directEntity, damageTags);
     }
+
     private static DamageSource source(ResourceKey<DamageType> damageType) {
         return source(damageType, DamageTags.DEFAULT);
     }
@@ -71,6 +71,10 @@ public class BHDamageTypes {
 
     private static DamageSource source(ResourceKey<DamageType> damageType, @Nullable Entity causingEntity, @Nullable Entity directEntity) {
         return source(damageType, causingEntity, directEntity, DamageTags.DEFAULT);
+    }
+
+    private static DamageSource burnSource(ResourceKey<DamageType> damageType) {
+        return new BurnDamageSource(BHDamageTypes.damageTypes.getHolderOrThrow(damageType), DamageTags.DEFAULT);
     }
 
     public static DamageSource applyDamage(DamageInfoTypes damageInfoTypes, DamageTags damageTags, Entity source, Entity cause, boolean noKnockback) {
@@ -119,30 +123,23 @@ public class BHDamageTypes {
     }
 
     public static DamageSource bleed() {
-        return source(BLEED);
+        return burnSource(BLEED);
     }
 
     public static DamageSource burnTrueDamage() {
-        return source(TRUE_DAMAGE_BURNING);
+        return burnSource(TRUE_DAMAGE_BURNING);
     }
 
     public static DamageSource burnPhysical() {
-        return source(PHYSICAL_BURNING);
+        return burnSource(PHYSICAL_BURNING);
     }
 
     public static DamageSource burnMagic() {
-        return source(MAGIC_BURNING);
+        return burnSource(MAGIC_BURNING);
     }
 
     public static DamageSource blazingRod(Entity source, Entity cause) {
         return source(BLAZING_ROD, source, cause);
-    }
-
-    public static DamageSource nullify(Entity source, Entity target) {
-        return source(IGNORE_ENCHANTMENT_PROTECTION, source, target);
-    }
-    public static DamageSource nullify(Entity source) {
-        return source(IGNORE_ENCHANTMENT_PROTECTION, source);
     }
 
     private static ResourceKey<DamageType> createKey(String keyName) {

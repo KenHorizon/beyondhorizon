@@ -26,7 +26,6 @@ public class BHDamageTypesTagProvider extends DamageTypeTagsProvider {
         this.tag(BHDamageTypeTags.BURN_DAMAGE).add(BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(BHDamageTypeTags.TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE, BHDamageTypes.NO_KNOCKBACK_TRUE_DAMAGE, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(DamageTypeTags.BYPASSES_EFFECTS).add(BHDamageTypes.BLEED, BHDamageTypes.TRUE_DAMAGE, BHDamageTypes.TRUE_DAMAGE_BURNING);
-        this.tag(DamageTypeTags.BYPASSES_ENCHANTMENTS).add(BHDamageTypes.IGNORE_ENCHANTMENT_PROTECTION);
         this.tag(DamageTypeTags.IS_EXPLOSION).add(BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING, BHDamageTypes.BLAZING_ROD);
         this.tag(DamageTypeTags.BYPASSES_COOLDOWN).add(BHDamageTypes.BLAZING_ROD, BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(DamageTypeTags.IS_PROJECTILE).add(BHDamageTypes.BLAZING_ROD);

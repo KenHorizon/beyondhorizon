@@ -269,12 +269,15 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
                 this.setLifeTime(this.getLifeTime() + 1);
                 this.spawnParticles();
             } else {
+                if (this.getLifeTime() == (this.getDelay())) {
+                    this.onStart();
+                }
+
                 if (this.getLifeTime() >= this.getDuration()) {
                     this.discard();
                 }
-                this.onDuration();
-                if (this.getLifeTime() == (this.getDelay())) {
-                    this.onStart();
+                if (!this.hasEnded()) {
+                    this.onDuration();
                 }
                 if (this.hasEnded()) {
                     this.onEnd();
@@ -289,7 +292,7 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     }
 
     public boolean hasEnded() {
-        return this.getLifeTime() > (this.getDuration() - 1);
+        return this.getLifeTime() > (this.getDuration() - 2);
     }
 
     @Override

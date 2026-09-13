@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -41,5 +42,17 @@ public class BasicBlock extends Block {
     @Override
     public void appendHoverText(ItemStack itemStack, @Nullable BlockGetter level, List<Component> tooltips, TooltipFlag flag) {
         super.appendHoverText(itemStack, level, tooltips, flag);
+    }
+
+    public static boolean never(BlockState blockState, BlockGetter blockGetter, BlockPos blockPos, EntityType<?> entityType) {
+        return false;
+    }
+
+    public static boolean always(BlockState p_50775_, BlockGetter p_50776_, BlockPos p_50777_) {
+        return true;
+    }
+
+    public static boolean never(BlockState p_50806_, BlockGetter p_50807_, BlockPos p_50808_) {
+        return false;
     }
 }

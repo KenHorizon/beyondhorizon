@@ -11,7 +11,6 @@ import com.kenhorizon.beyondhorizon.client.util.InvertedAttributeColorFormat;
 import com.kenhorizon.beyondhorizon.compat.ModLists;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
-import com.kenhorizon.beyondhorizon.configs.common.ModCommonConfig;
 import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillSlots;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
@@ -62,6 +61,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 @Mod(BeyondHorizon.ID)
+@SuppressWarnings({"deprecation", "removal"})
 public class BeyondHorizon
 {
     public static final String ID = "beyondhorizon";
@@ -74,7 +74,6 @@ public class BeyondHorizon
         IEventBus eventBus = context.getModEventBus();
         final ModLoadingContext modContext = ModLoadingContext.get();
         ModClientConfig.register(modContext);
-        ModCommonConfig.register(modContext);
         ModServerConfig.register(modContext);
         eventBus.addListener(this::commonSetup);
         eventBus.addListener(this::clientSetup);
@@ -173,9 +172,6 @@ public class BeyondHorizon
         BHConfigs.bake(config);
         if (config.getSpec() == ModClientConfig.SPEC) {
             ModClientConfig.reset();
-        }
-        if (config.getSpec() == ModCommonConfig.SPEC) {
-            ModCommonConfig.reset();
         }
         if (config.getSpec() == ModServerConfig.SPEC) {
             ModServerConfig.reset();

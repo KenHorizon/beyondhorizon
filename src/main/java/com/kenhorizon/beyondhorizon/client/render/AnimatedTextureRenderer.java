@@ -29,17 +29,7 @@ public abstract class AnimatedTextureRenderer<T extends Entity> extends EntityRe
         this.TEXTURE_PROGRESS = new ResourceLocation[this.numberOfFrames()];
         this.init();
     }
-    //
-    // minTextX ----------- maxTextX
-    // minTextY
-    // |
-    // |
-    // |
-    // maxTextY
-    //
-    //
-    //
-    //
+    
     public void init() {
         this.minTextureX = (float) this.textureSize() / this.textureWidth();
         this.maxTextureX = this.minTextureX + (float) this.textureSize() / this.textureWidth();

@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.handler.anvil_patch;
 
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.configs.common.ModCommonConfig;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;

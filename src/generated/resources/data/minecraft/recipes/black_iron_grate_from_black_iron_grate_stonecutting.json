@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "count": 4,
+  "ingredient": {
+    "item": "beyondhorizon:black_iron_grate"
+  },
+  "result": "beyondhorizon:black_iron_grate"
+}

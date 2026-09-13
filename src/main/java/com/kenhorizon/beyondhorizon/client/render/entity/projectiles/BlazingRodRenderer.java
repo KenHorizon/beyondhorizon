@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.entity.projectiles;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.mojang.blaze3d.vertex.PoseStack;

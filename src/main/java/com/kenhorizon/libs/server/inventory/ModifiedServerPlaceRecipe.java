@@ -1,8 +1,6 @@
 package com.kenhorizon.libs.server.inventory;
 
 import com.google.common.collect.Lists;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.libs.server.item.recipe.AmountIngredient;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundExtendedPlacedRecipePacket;
 import com.mojang.logging.LogUtils;
@@ -13,7 +11,6 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.StackedContents;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;

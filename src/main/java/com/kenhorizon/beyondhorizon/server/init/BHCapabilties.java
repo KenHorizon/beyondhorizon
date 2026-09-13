@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkill;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillSlots;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessory;

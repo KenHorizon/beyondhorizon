@@ -23,6 +23,16 @@ public class EntityUtils {
         }
     }
 
+    public static boolean isFullHealth(LivingEntity entity) {
+        return entity.getMaxHealth() >= getMaxHealth(entity, 1.0F);
+    }
+    public static double getMaxHealth(LivingEntity entity) {
+        return getMaxHealth(entity, 1.0F);
+    }
+    public static double getMaxHealth(LivingEntity entity, float percent) {
+        return entity.getMaxHealth() * percent;
+    }
+
     public static double getMissingHealth(LivingEntity entity, float percent) {
         return (entity.getMaxHealth() - entity.getHealth()) * percent;
     }

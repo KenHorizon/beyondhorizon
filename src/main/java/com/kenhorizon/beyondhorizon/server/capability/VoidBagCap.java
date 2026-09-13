@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
-import com.kenhorizon.beyondhorizon.server.inventory.VoidBagMenu;
+import com.kenhorizon.beyondhorizon.server.inventory.menu.VoidBagMenu;
 import com.kenhorizon.beyondhorizon.server.item.VoidBagItem;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;

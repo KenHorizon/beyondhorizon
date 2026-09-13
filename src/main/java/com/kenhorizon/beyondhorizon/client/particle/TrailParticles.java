@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.particle;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.BHParticleRenderType;
+import com.kenhorizon.beyondhorizon.client.render.classify.BHParticleRenderType;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

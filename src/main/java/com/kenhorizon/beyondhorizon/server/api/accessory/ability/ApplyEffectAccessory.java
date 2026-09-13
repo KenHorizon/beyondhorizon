@@ -14,6 +14,7 @@ import net.minecraft.world.item.ItemStack;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Consumer;
 
 public class ApplyEffectAccessory extends AccessoryPassiveSkill {
     protected int seconds = 0;

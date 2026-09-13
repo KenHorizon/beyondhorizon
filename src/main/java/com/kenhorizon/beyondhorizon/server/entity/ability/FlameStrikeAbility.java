@@ -84,7 +84,7 @@ public class FlameStrikeAbility extends AbilityEntity {
             if (entityOnRange instanceof LivingEntity targetOnRange) {
                 if (targetOnRange == attacker || targetOnRange == this.getTarget()) continue;
                 if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
-                    targetOnRange.hurt(BHDamageTypes.magicDamage(this), this.getBaseDamage());
+                    targetOnRange.hurt(BHDamageTypes.applyDamage(damageTypes.MAGIC_DAMAGE,this), this.getBaseDamage());
                 }
             }
         }

@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.block.entity;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.BHBaseSpawner;

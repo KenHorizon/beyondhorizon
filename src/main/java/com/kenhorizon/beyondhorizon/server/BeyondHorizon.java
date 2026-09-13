@@ -1,5 +1,7 @@
-package com.kenhorizon.beyondhorizon;
+package com.kenhorizon.beyondhorizon.server;
 
+import com.kenhorizon.beyondhorizon.ServerProxy;
+import com.kenhorizon.beyondhorizon.client.ClientProxy;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeReaderResourceParser;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
@@ -11,7 +13,6 @@ import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.configs.client.ModClientConfig;
 import com.kenhorizon.beyondhorizon.configs.common.ModCommonConfig;
 import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
-import com.kenhorizon.beyondhorizon.server.ServerEventHandler;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillSlots;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;

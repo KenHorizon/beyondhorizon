@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.item.base;
 
 import com.google.common.collect.*;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.api.accessory.*;

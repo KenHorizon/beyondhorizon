@@ -2,8 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.misc.tooltips;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -12,12 +11,7 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.ForgeRegistries;
-import org.antlr.v4.runtime.misc.MultiMap;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.function.Supplier;
 
 public class Tooltips {

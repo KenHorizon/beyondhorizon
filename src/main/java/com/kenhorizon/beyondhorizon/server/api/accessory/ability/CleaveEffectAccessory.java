@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
@@ -45,7 +46,7 @@ public abstract class CleaveEffectAccessory extends AccessoryPassiveSkill {
     @Override
     public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         target.invulnerableTime = 0;
-        target.hurt(BHDamageTypes.physicalDamage(attacker, null), this.dealDamage(target, attacker, context.damage(), itemStack));
+        target.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.PHYSICAL_DAMAGE, attacker, null), this.dealDamage(target, attacker, context.damage(), itemStack));
         target.invulnerableTime = 0;
         this.attackCleave(itemStack, target, attacker, context.damage());
     }

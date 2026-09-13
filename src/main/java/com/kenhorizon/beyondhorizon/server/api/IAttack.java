@@ -69,6 +69,7 @@ public interface IAttack {
      * Handle if player is using attack keys and a success hit is landed
      * */
     default boolean onLeftClickEntity(ItemStack itemStack, Player player, Entity entity) {
+        this.onLeftClick(itemStack, player);
         return false;
     }
 

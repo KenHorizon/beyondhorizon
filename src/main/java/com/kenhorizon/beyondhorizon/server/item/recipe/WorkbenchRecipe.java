@@ -1,9 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.item.recipe;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.beyondhorizon.server.init.BHRecipe;
-import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
+import com.kenhorizon.beyondhorizon.server.inventory.menu.WorkbenchMenu;
 import com.kenhorizon.libs.server.item.recipe.AbstractAmountRecipe;
 import com.kenhorizon.libs.server.item.recipe.AmountIngredient;
 import net.minecraft.core.NonNullList;

@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.ColorCodedText;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import net.minecraft.ChatFormatting;
@@ -100,16 +101,18 @@ public abstract class AbstractAbilityComponents {
      * @param first Determine if on the first added of ability's tooltips passive or either active type
      * */
     public void addTooltip(ItemStack itemStack, List<Component> tooltip, int size, boolean isShiftPressed, boolean first) {
-        if (!this.isTooltipEnable()) return;
-        if (this.isTooltipNameEnable()) {
-            tooltip.add(this.addTooltipTitle());
-        }
-        if (!this.isTooltipDescriptionEnable()) return;
-        boolean flag = size == 1;
-        if (BHConfigs.ADVANCED_TOOLTIP && I18n.exists(this.createId())) {
-            tooltip.addAll(this.addTooltipDescription(itemStack));
-        } else if ((flag || isShiftPressed) && I18n.exists(this.createId())) {
-            tooltip.addAll(this.addTooltipDescription(itemStack));
+        if (this.isTooltipEnable()) {
+            if (this.isTooltipNameEnable()) {
+                tooltip.add(this.addTooltipTitle());
+            }
+            if (!this.isTooltipDescriptionEnable()) return;
+            boolean flag = size == 1;
+            if (BHConfigs.ADVANCED_TOOLTIP && I18n.exists(this.createId())) {
+                tooltip.addAll(this.addTooltipDescription(itemStack));
+            } else if ((flag || isShiftPressed) && I18n.exists(this.createId())) {
+                tooltip.addAll(this.addTooltipDescription(itemStack));
+            }
+            BeyondHorizon.LOGGER.info("{}", tooltip);
         }
     }
 

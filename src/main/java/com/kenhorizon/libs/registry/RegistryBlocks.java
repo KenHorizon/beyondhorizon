@@ -1,7 +1,5 @@
 package com.kenhorizon.libs.registry;
 
-import com.google.common.collect.ImmutableList;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.datagen.BHBlockTagsProvider;
 import com.kenhorizon.beyondhorizon.datagen.BHLootTableProvider;
@@ -9,18 +7,15 @@ import com.kenhorizon.beyondhorizon.server.item.BasicBlockItem;
 import com.kenhorizon.libs.server.ModifiedNonNullFunction;
 import com.kenhorizon.libs.server.ModifiedNonNullUnaryOperator;
 import net.minecraft.core.Direction;
-import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.common.util.NonNullFunction;
 import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 

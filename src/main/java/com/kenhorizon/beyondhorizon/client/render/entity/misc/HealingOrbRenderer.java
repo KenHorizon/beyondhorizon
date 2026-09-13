@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.entity.misc;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.kenhorizon.beyondhorizon.server.entity.misc.HealingOrb;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -19,7 +19,7 @@ import org.joml.Matrix4f;
 
 public class HealingOrbRenderer extends EntityRenderer<HealingOrb> {
     private static final ResourceLocation EXPERIENCE_ORB_LOCATION = BeyondHorizon.resource("textures/entity/orb.png");
-    private static final RenderType RENDER_TYPE =  BHRenderTypes.glowing(EXPERIENCE_ORB_LOCATION);
+    private static final RenderType RENDER_TYPE =  BHRenderTypes.beam(EXPERIENCE_ORB_LOCATION);
 
     public HealingOrbRenderer(EntityRendererProvider.Context context) {
         super(context);

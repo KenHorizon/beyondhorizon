@@ -5,23 +5,21 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BoltShockAbility;
-import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.SpellDamageSource;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -185,8 +183,6 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     @Override
     public void onHitAttack(DamageSource source, ItemStack itemStack, LivingEntity target, LivingEntity attacker, DamageContext context) {
         if (target == null || attacker == null) return;
-        CompoundTag tagA = EntityData.getOrCreateTag(attacker);
-        CompoundTag tagT = EntityData.getOrCreateTag(attacker);
         var stackableTags = Capabilities.stackable(attacker);
         if (this == Accessories.ELECTROSHOCK.get()) {
             if (stackableTags != null) {
@@ -201,11 +197,11 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
                 }
             }
         }
-        if (this == Accessories.BURN_EFFECT.get()) {
+        if (this == Accessories.BURN_EFFECT.get() && !(source instanceof SpellDamageSource)) {
             target.setSecondsOnFire(Constant.FIRE_EFFECT);
         }
         if (this == Accessories.CORRUPTED_BITE.get()) {
-            DamageType.MAGIC_DAMAGE.onHit(target, attacker, (float) context.multiply((this.getMagnitude() * this.getLevel())));
+            DamageInfoTypes.MAGIC_DAMAGE.onHit(target, attacker, (float) context.multiply((this.getMagnitude() * this.getLevel())));
         }
         if (this == Accessories.NULLIFY.get()) {
             target.invulnerableTime = 0;
@@ -223,7 +219,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
 
                 target.invulnerableTime = 0;
                 float outputDamage = context.multiply(this.getMagnitude());
-                target.hurt(BHDamageTypes.trueDamage(attacker, null), outputDamage);
+                target.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.TRUE_DAMAGE, attacker, null), outputDamage);
             }
         }
         if (this == Accessories.FADED_MOON.get()) {
@@ -233,7 +229,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
                 target.invulnerableTime = 0;
                 double mana = attacker.getAttributeValue(BHAttributes.MAX_MANA.get());
                 float outputDamage = (float) (mana * this.getMagnitude());
-                target.hurt(BHDamageTypes.magicDamage(attacker, null), outputDamage);
+                target.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.MAGIC_DAMAGE, attacker, null), outputDamage);
             }
         }
     }
@@ -249,10 +245,10 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
             }
         }
 
-        if (this == Accessories.STING.get()) {
+        if (this == Accessories.STING.get() && !(source instanceof SpellDamageSource)) {
             return context.add((this.getMagnitude() * this.getLevel()));
         }
-        if (this == Accessories.LIFE_SIPHON.get()) {
+        if (this == Accessories.LIFE_SIPHON.get() && !(source instanceof SpellDamageSource)) {
            return context.add((target.getHealth() * this.getLevel()));
         }
         return context.damage();
@@ -279,7 +275,7 @@ public class SinglePassiveAccessory extends AccessoryPassiveSkill {
     @Override
     public boolean canEntiyReceiveDamage(Player player, LivingEntity target, DamageSource source) {
         if (this == Accessories.FIRE_IMMUNITY.get() && source.is(DamageTypeTags.IS_FIRE)) {
-            return source.is(DamageTypes.HOT_FLOOR);
+            return source.is(net.minecraft.world.damagesource.DamageTypes.HOT_FLOOR);
         }
         return false;
     }

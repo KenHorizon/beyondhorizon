@@ -1,7 +1,5 @@
 package com.kenhorizon.beyondhorizon.client.util;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.mojang.datafixers.util.Either;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 

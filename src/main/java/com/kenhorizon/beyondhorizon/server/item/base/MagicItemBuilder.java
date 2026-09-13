@@ -13,6 +13,7 @@ public class MagicItemBuilder {
     }
 
     public static final Factory<MagicWeaponBaseItem> WAND = ((materials, properties) -> new MagicWeaponBaseItem(materials, Constant.WAND, properties, SkillBuilder.WAND));
+    public static final Factory<MagicWeaponBaseItem> NIGHT_RAY = ((materials, properties) -> new MagicWeaponBaseItem(materials, Constant.NIGHT_RAY, properties, SkillBuilder.NIGHT_RAY));
     public static final Factory<MagicWeaponBaseItem> STORMSURGE = ((materials, properties) -> new MagicWeaponBaseItem(materials, Constant.STORMSURGE, properties, SkillBuilder.STORMSURGE));
     public static final Factory<MagicWeaponBaseItem> THUNDER_ZAPPER = ((materials, properties) -> new MagicWeaponBaseItem(materials, Constant.THUNDERZAPPER, properties, SkillBuilder.THUNDERZAPPER));
     public static final Factory<MagicWeaponBaseItem> BlAZING_BEACON = ((materials, properties) -> new MagicWeaponBaseItem(materials, Constant.BLAZING_BEACON, properties, SkillBuilder.BLAZING_BEACON));

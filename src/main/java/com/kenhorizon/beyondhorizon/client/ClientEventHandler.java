@@ -1,8 +1,7 @@
 package com.kenhorizon.beyondhorizon.client;
 
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.ClientProxy;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.BHBossBar;
 import com.kenhorizon.beyondhorizon.client.render.guis.BHAdvancementTab;
@@ -32,9 +31,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.gui.screens.inventory.*;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.GameRenderer;
@@ -275,8 +272,7 @@ public class ClientEventHandler {
             }
             event.addListener(new AccessorySlotButton(eventScreen, x, y));
         }
-        if (eventScreen instanceof AccessorySlotScreen) {
-            AbstractContainerScreen<?> gui = (AbstractContainerScreen<?>) eventScreen;
+        if (eventScreen instanceof AccessorySlotScreen gui) {
             int x = (gui.width - gui.getXSize()) / 2;
             int y = (gui.height - gui.getYSize()) / 2;
             event.addListener(new AccessorySlotButton(eventScreen, x + BHConfigs.ACCESSORY_BUTTON_X, y + BHConfigs.ACCESSORY_BUTTON_Y));

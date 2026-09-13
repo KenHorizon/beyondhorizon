@@ -2,13 +2,11 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
-import net.minecraft.core.particles.ParticleTypes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
 
 public class CleaveConeAbility extends AbstractConeAbility {
     public CleaveConeAbility(EntityType<?> entityType, Level level) {
@@ -17,7 +15,7 @@ public class CleaveConeAbility extends AbstractConeAbility {
         this.setRadius(2.5F);
     }
 
-    public static void spawn(Level level, LivingEntity target, LivingEntity owner, float damage, boolean startWithTarget, DamageType damageType) {
+    public static void spawn(Level level, LivingEntity target, LivingEntity owner, float damage, boolean startWithTarget, DamageInfoTypes DamageInfoTypes) {
         CleaveConeAbility ability = new CleaveConeAbility(BHEntity.CLEAVE_CONE_ABILITY.get(), level);
         ability.setBaseDamage(damage);
         if (startWithTarget) {
@@ -28,7 +26,7 @@ public class CleaveConeAbility extends AbstractConeAbility {
         ability.setConeAtTarget(startWithTarget);
         ability.setTarget(target);
         ability.setCaster(owner);
-        ability.setDamageType(damageType);
+        ability.setDamageType(DamageInfoTypes);
         level.addFreshEntity(ability);
     }
 
@@ -36,17 +34,13 @@ public class CleaveConeAbility extends AbstractConeAbility {
     @Override
     protected void onEnd() {
         LivingEntity user = this.getCaster();
-        if (!this.sentEventSpike) {
-            this.level().broadcastEntityEvent(this, (byte) 4);
-            this.sentEventSpike = true;
-        }
     }
 
 
     @Override
     protected void onHitEntity(EntityHitResult entityHitResult) {
         var entity = entityHitResult.getEntity();
-        entity.hurt(BHDamageTypes.physicalDamage(this), this.getBaseDamage());
+        entity.hurt(BHDamageTypes.applyDamage(this.getDamageType(),this, null), this.getBaseDamage());
     }
 
     @Override

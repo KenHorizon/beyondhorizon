@@ -97,22 +97,6 @@ public class MerchantTrades {
             this.maxTrade = maxTrade;
         }
 
-        public RandomizedTradeItem(Item item1, Item item2, Item tradedItems) {
-            this(item1, item2, tradedItems, 0, 0);
-        }
-
-        public RandomizedTradeItem(Item item1, Item item2, Item tradedItems, int maxTrade) {
-            this(item1, item2, tradedItems, 0, maxTrade);
-        }
-
-        public RandomizedTradeItem(Item item, int cost, int maxTrade) {
-            this(item, new ItemStack(Items.AIR).getItem(), new ItemStack(Items.AIR).getItem(), cost, maxTrade);
-        }
-
-        public RandomizedTradeItem(Item item, int cost) {
-            this(item, new ItemStack(Items.AIR).getItem(), new ItemStack(Items.AIR).getItem(), cost, 0);
-        }
-
         public ItemStack getWantItem1() {
             return this.wantItem1;
         }

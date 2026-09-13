@@ -1,8 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
-import net.minecraft.world.damagesource.DamageSource;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.world.entity.LivingEntity;
 
 public class BaseImmolateAccessory extends AbstractImmolateAccessory {
@@ -35,8 +33,8 @@ public class BaseImmolateAccessory extends AbstractImmolateAccessory {
         }
 
         @Override
-        public DamageType damageType() {
-            return DamageType.TRUE_DAMAGE;
+        public DamageInfoTypes damageType() {
+            return DamageInfoTypes.TRUE_DAMAGE;
         }
 
         @Override

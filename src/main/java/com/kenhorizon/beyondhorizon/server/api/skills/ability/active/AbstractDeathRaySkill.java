@@ -8,7 +8,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.ability.beam.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamTypeFunction;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import net.minecraft.client.CameraType;
 import net.minecraft.world.InteractionHand;
@@ -33,12 +33,12 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
     protected float baseDamage = 1.0F;
     protected boolean canIgnoreFrame = false;
     protected BeamTypeFunction typeFunction;
-    protected DamageType types;
+    protected DamageInfoTypes types;
     private static final UUID SPEED_MODIFIER_SPRINTING_UUID = UUID.fromString("1a63ada7-7fcd-4695-b8db-0873ced4be94");
     private static final AttributeModifier SPEED_MODIFIER_SPRINTING = new AttributeModifier(SPEED_MODIFIER_SPRINTING_UUID, "Sprinting speed boost", (double)-0.25F, AttributeModifier.Operation.MULTIPLY_TOTAL);
     protected boolean canBurnTarget = false;
 
-    public AbstractDeathRaySkill(float ADScale, float APScale, float baseDamage, boolean ignoreFrame, DamageType types, BeamTypeFunction typeFunction) {
+    public AbstractDeathRaySkill(float ADScale, float APScale, float baseDamage, boolean ignoreFrame, DamageInfoTypes types, BeamTypeFunction typeFunction) {
         this.baseDamage = baseDamage;
         this.typeFunction = typeFunction;
         this.canIgnoreFrame = ignoreFrame;
@@ -114,7 +114,7 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
                         player.stopUsingItem();
                     }
                     ItemStack getItemStack = player.getItemInHand(player.getUsedItemHand());
-                    if (!player.getAbilities().instabuild && !list.isEmpty() && player.getTicksUsingItem() % 10 == 0) {
+                    if (!player.getAbilities().instabuild && !list.isEmpty() && player.getTicksUsingItem() % 20 == 0) {
                         playerData.removeMana(this.getManaCost(), true);
                         getItemStack.hurtAndBreak(1, player, (user) -> {
                             user.broadcastBreakEvent(EquipmentSlot.MAINHAND);

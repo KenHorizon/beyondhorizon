@@ -1,7 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
 import com.kenhorizon.beyondhorizon.server.item.*;
@@ -20,17 +18,11 @@ import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryItems;
 import com.kenhorizon.libs.registry.RegistryTabs;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
-import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.function.Supplier;
 
 public class BHItems {
     //
@@ -412,12 +404,17 @@ public class BHItems {
     public static final RegistryObject<Item> THUNDER_ZAPPER = RegistryItems
             .register("thunder_zapper", item -> MagicItemBuilder.THUNDER_ZAPPER.create(MagicWeaponMaterials.TIER_ONE, item))
             .tab(RegistryTabs.Category.COMBAT)
-            .model(ItemModels.HANDHELD)
+            .model(ItemModels.BIG32_INHAND)
             .register();
     public static final RegistryObject<Item> STORMSURGE = RegistryItems
             .register("stormsurge", item -> MagicItemBuilder.STORMSURGE.create(MagicWeaponMaterials.TIER_ONE, item))
             .tab(RegistryTabs.Category.COMBAT)
-            .model(ItemModels.HANDHELD)
+            .model(ItemModels.BIG32_INHAND)
+            .register();
+    public static final RegistryObject<Item> NIGHT_RAY = RegistryItems
+            .register("night_ray", item -> MagicItemBuilder.NIGHT_RAY.create(MagicWeaponMaterials.TIER_ONE, item))
+            .tab(RegistryTabs.Category.COMBAT)
+            .model(ItemModels.BIG32_HANDHELD)
             .register();
 
     public static final RegistryObject<Item> ENERGIZED_MACE = RegistryItems

@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveConeAbility;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
@@ -31,7 +31,7 @@ public class CelestialStrikeSkill extends WeaponPassiveSkills {
     public float preMigitationDamage(DamageContext context, DamageSource source, LivingEntity attacker, LivingEntity target) {
         if (target == null || attacker == null) return context.damage();
         if (attacker instanceof Player player) {
-            CleaveConeAbility.spawn(player.level(), target, attacker, context.multiply(this.getMagnitude()), false, DamageType.PHYSICAL_DAMAGE);
+            CleaveConeAbility.spawn(player.level(), target, attacker, context.multiply(this.getMagnitude()), false, DamageInfoTypes.PHYSICAL_DAMAGE);
         }
         return context.damage();
     }

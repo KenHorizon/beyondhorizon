@@ -1,9 +1,8 @@
-package com.kenhorizon.beyondhorizon;
+package com.kenhorizon.beyondhorizon.client;
 
 import com.google.common.collect.ImmutableList;
-import com.kenhorizon.beyondhorizon.client.ClientEventHandler;
-import com.kenhorizon.beyondhorizon.client.ModResouces;
-import com.kenhorizon.beyondhorizon.client.TooltipsEventHandler;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.ServerProxy;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.entity.layer.BHEntityLayer;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.HealingOrbRenderer;
@@ -167,6 +166,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.ERUPTION.get(), EruptionRenderer::new);
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
         EntityRenderers.register(BHEntity.INFERNAL_RAY.get(), InfernalRayRenderer::new);
+        EntityRenderers.register(BHEntity.TWILIGHT_RAY.get(), TwilightRayRenderer::new);
         EntityRenderers.register(BHEntity.FALLING_BLOCK.get(), BHFallingBlocksRenderer::new);
         EntityRenderers.register(BHEntity.DRAGON_HORNET.get(), DragonHornetRenderer::new);
         EntityRenderers.register(BHEntity.HEALING_ORB.get(), HealingOrbRenderer::new);

@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server;
 
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.Fonts;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
@@ -43,7 +42,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -865,7 +863,7 @@ public class ServerEventHandler {
             boolean isTrueDamage = source.is(BHDamageTypeTags.TRUE_DAMAGE);
             float healingEffectiveness = 1.0F;
             if (source instanceof AdvanceDamageSource advanceDamageSource) {
-                if (advanceDamageSource.getDamageTags() == DamageTags.AOT) {
+                if (advanceDamageSource.getDamageTags() == DamageTags.AREA_OF_EFFECTS) {
                     healingEffectiveness = Constant.AOE_HEALING_EFFECTIVENESS;
                 }
             }

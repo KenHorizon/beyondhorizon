@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
 import com.kenhorizon.beyondhorizon.client.enums.GameHuds;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
@@ -23,9 +23,6 @@ import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class GameHudDisplay extends Gui {
     private final static ResourceLocation ICON_BACKGROUND = BeyondHorizon.resourceGui("sprites/icon/effects/icon_backgrounds.png");

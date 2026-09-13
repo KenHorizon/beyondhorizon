@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
-import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,13 +29,13 @@ public class BaseSpearProjectile extends ExtendedProjectile {
             this.zPower = dz / d0 * 0.1D;
         }
     }
-    public BaseSpearProjectile(EntityType<? extends Projectile> entityType, Level level, DamageType damageType, LivingEntity owner, float damage,
-                                double dx, double dy, double dz) {
+    public BaseSpearProjectile(EntityType<? extends Projectile> entityType, Level level, DamageInfoTypes DamageInfoTypes, LivingEntity owner, float damage,
+                               double dx, double dy, double dz) {
         this(entityType, level, owner.getX(), owner.getY(), owner.getZ(), dx, dy, dz);
         this.setOwner(owner);
         this.setRot(owner.getYRot(), owner.getXRot());
         this.setBaseDamage(damage);
-        this.setDamageType(damageType);
+        this.setDamageType(DamageInfoTypes);
     }
 
     @Override

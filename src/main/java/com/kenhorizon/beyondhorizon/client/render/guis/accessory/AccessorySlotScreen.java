@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.accessory;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.inventory.AccessoryMenu;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.inventory.menu.AccessoryMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
@@ -11,11 +11,8 @@ import net.minecraft.client.gui.screens.recipebook.RecipeUpdateListener;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
-
-import java.awt.*;
 
 public class AccessorySlotScreen extends EffectRenderingInventoryScreen<AccessoryMenu> implements RecipeUpdateListener {
     public static final ResourceLocation ACCESSORY_LOCATION = BeyondHorizon.resourceGui("container/accessory.png");

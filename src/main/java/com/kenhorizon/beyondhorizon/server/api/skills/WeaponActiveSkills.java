@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
@@ -8,7 +8,6 @@ import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.level.IAbilityInfo;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHChatformatting;
 import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.item.ManaCostType;
@@ -216,9 +215,5 @@ public abstract class WeaponActiveSkills extends Skill implements IAttack, IAbil
 
     protected double getScaleBonus(Player player, Attribute attribute, float scaleDamage) {
         return AttributeUtils.getBonus(player, attribute) * scaleDamage;
-    }
-
-    protected double getScaleTotal(Player player, Attribute attribute, float scaleDamage) {
-        return AttributeUtils.getValue(player, attribute) * scaleDamage;
     }
 }

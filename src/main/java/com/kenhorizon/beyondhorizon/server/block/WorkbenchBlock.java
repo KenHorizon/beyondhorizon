@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.block;
 
-import com.kenhorizon.beyondhorizon.server.inventory.WorkbenchMenu;
+import com.kenhorizon.beyondhorizon.server.inventory.menu.WorkbenchMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -25,7 +25,7 @@ public class WorkbenchBlock extends BasicBlock {
     }
 
     @Override
-    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+    public InteractionResult use(BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!level.isClientSide()) {
             player.openMenu(blockState.getMenuProvider(level, blockPos));
         }

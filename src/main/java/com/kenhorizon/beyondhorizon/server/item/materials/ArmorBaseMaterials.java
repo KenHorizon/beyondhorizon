@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.item.materials;
 
 import com.google.common.collect.ImmutableMultimap;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import com.kenhorizon.beyondhorizon.server.item.classify.IArmorBaseMaterial;

@@ -1,8 +1,6 @@
-package com.kenhorizon.beyondhorizon.server.inventory;
+package com.kenhorizon.beyondhorizon.server.inventory.menu;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.*;
-import com.kenhorizon.libs.server.item.recipe.AbstractAmountRecipe;
 import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
 import com.kenhorizon.libs.server.inventory.ExtendedRecipeBookMenu;
 import net.minecraft.network.FriendlyByteBuf;

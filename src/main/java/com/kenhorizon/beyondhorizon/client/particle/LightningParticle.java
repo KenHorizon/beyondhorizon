@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.particle;
 
 import com.kenhorizon.beyondhorizon.client.particle.world.LightningParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.BHParticleRenderType;
+import com.kenhorizon.beyondhorizon.client.render.classify.BHParticleRenderType;
 import com.kenhorizon.beyondhorizon.client.render.LightningBoltData;
 import com.kenhorizon.beyondhorizon.client.render.LightningRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;

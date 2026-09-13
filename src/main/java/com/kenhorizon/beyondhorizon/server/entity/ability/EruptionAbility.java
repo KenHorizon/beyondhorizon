@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.entity.ability;
 
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -49,7 +50,7 @@ public class EruptionAbility extends AbilityEntity {
             if (entityOnRange == attacker) continue;
             if (attacker != null && entityOnRange.isAlliedTo(attacker)) continue;
             if (entityOnRange.isAlive() && !entityOnRange.isInvulnerable()) {
-                entityOnRange.hurt(BHDamageTypes.magicDamage(this, attacker), getBaseDamage());
+                entityOnRange.hurt(BHDamageTypes.applyDamage(damageTypes.MAGIC_DAMAGE, DamageTags.AREA_OF_EFFECTS,this, attacker), getBaseDamage());
             }
         }
     }

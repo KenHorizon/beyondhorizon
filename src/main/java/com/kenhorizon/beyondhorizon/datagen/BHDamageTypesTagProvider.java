@@ -1,5 +1,5 @@
 package com.kenhorizon.beyondhorizon.datagen;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.core.HolderLookup;
@@ -22,15 +22,13 @@ public class BHDamageTypesTagProvider extends DamageTypeTagsProvider {
         this.tag(BHDamageTypeTags.NO_KNOCKBACK_DAMAGE).add(BHDamageTypes.NO_KNOCKBACK_MAGIC_DAMAGE, BHDamageTypes.NO_KNOCKBACK_TRUE_DAMAGE, BHDamageTypes.NO_KNOCKBACK_PHYSICAL_DAMAGE);
         this.tag(BHDamageTypeTags.PHYSICAL_DAMAGE).add(BHDamageTypes.NO_KNOCKBACK_PHYSICAL_DAMAGE, DamageTypes.PLAYER_ATTACK, DamageTypes.TRIDENT, DamageTypes.FALLING_ANVIL, DamageTypes.MOB_ATTACK_NO_AGGRO, DamageTypes.MOB_PROJECTILE, DamageTypes.FALL, DamageTypes.CACTUS, DamageTypes.ARROW, DamageTypes.MOB_ATTACK, DamageTypes.MOB_ATTACK_NO_AGGRO, BHDamageTypes.PHYSICAL_DAMAGE);
         this.tag(BHDamageTypeTags.MAGIC_DAMAGE).add(BHDamageTypes.NO_KNOCKBACK_MAGIC_DAMAGE, BHDamageTypes.MAGIC_DAMAGE, DamageTypes.MAGIC, DamageTypes.INDIRECT_MAGIC, BHDamageTypes.BLAZING_ROD, BHDamageTypes.MAGIC_BURNING);
-        this.tag(BHDamageTypeTags.IS_MAGIC_PENETRATION).add(BHDamageTypes.MAGIC_PENETRATION);
-        this.tag(BHDamageTypeTags.IS_ARMOR_PENETRATION).add(BHDamageTypes.ARMOR_PENETRATION, BHDamageTypes.LETHALITY, BHDamageTypes.TRUE_DAMAGE);
         this.tag(BHDamageTypeTags.IS_TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE).add(DamageTypes.INDIRECT_MAGIC);
         this.tag(BHDamageTypeTags.BURN_DAMAGE).add(BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(BHDamageTypeTags.TRUE_DAMAGE).add(BHDamageTypes.TRUE_DAMAGE, BHDamageTypes.NO_KNOCKBACK_TRUE_DAMAGE, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(DamageTypeTags.BYPASSES_EFFECTS).add(BHDamageTypes.BLEED, BHDamageTypes.TRUE_DAMAGE, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(DamageTypeTags.BYPASSES_ENCHANTMENTS).add(BHDamageTypes.IGNORE_ENCHANTMENT_PROTECTION);
-        this.tag(DamageTypeTags.IS_EXPLOSION).add(BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING, BHDamageTypes.BLAZING_ROD, BHDamageTypes.BEAM);
-        this.tag(DamageTypeTags.BYPASSES_COOLDOWN).add(BHDamageTypes.BLAZING_ROD, BHDamageTypes.BEAM, BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING);
+        this.tag(DamageTypeTags.IS_EXPLOSION).add(BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING, BHDamageTypes.BLAZING_ROD);
+        this.tag(DamageTypeTags.BYPASSES_COOLDOWN).add(BHDamageTypes.BLAZING_ROD, BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING);
         this.tag(DamageTypeTags.IS_PROJECTILE).add(BHDamageTypes.BLAZING_ROD);
         this.tag(BHDamageTypeTags.CANT_STORE_DAMAGE).add(BHDamageTypes.BLEED, BHDamageTypes.PHYSICAL_BURNING, BHDamageTypes.MAGIC_BURNING, BHDamageTypes.TRUE_DAMAGE_BURNING);
 

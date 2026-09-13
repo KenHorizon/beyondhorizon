@@ -47,7 +47,7 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
         if (frame < 0) {
             frame = 6;
         }
-        VertexConsumer ivertexbuilder = bufferIn.getBuffer(BHRenderTypes.glowing(getTextureLocation(ability)));
+        VertexConsumer ivertexbuilder = bufferIn.getBuffer(BHRenderTypes.glowing(this.getTextureLocation(ability)));
         renderStart(ability.getScale(),frame, poseStack, ivertexbuilder, packedLightIn);
         renderBeam(ability.getScale(), length, 180f / (float) Math.PI * yaw, 180f / (float) Math.PI * pitch, frame, poseStack, ivertexbuilder, packedLightIn);
         poseStack.pushPose();
@@ -101,8 +101,8 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
 
     private void drawBeam(float scale, float length, int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
         float minU = 0;
-        float minV = 16 / TEXTURE_HEIGHT + 1 / TEXTURE_HEIGHT * frame;
         float maxU = minU + 20 / TEXTURE_WIDTH;
+        float minV = 16 / TEXTURE_HEIGHT + 1 / TEXTURE_HEIGHT * frame;
         float maxV = minV + 1 / TEXTURE_HEIGHT;
         PoseStack.Pose matrixstack$entry = matrixStackIn.last();
         Matrix4f matrix4f = matrixstack$entry.pose();

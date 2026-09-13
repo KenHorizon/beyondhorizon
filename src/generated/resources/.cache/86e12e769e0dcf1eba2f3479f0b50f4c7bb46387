@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-04T00:49:40.7763799	Block States: beyondhorizon
+// 1.20.1	2026-09-10T22:37:59.5805484	Block States: beyondhorizon
 17cd151282f97d81158206ebc1313412c1276ccc assets/beyondhorizon/blockstates/arcane_budding.json
 f802c5b4146e280c8b94bf18262b16531bcdc957 assets/beyondhorizon/blockstates/arcane_budding_full.json
 0162bce8248518adc18f870dd6603ddeb97ba888 assets/beyondhorizon/blockstates/arcane_rocks.json
@@ -39,6 +39,7 @@ b1eea2cdd76aeabb0275c364e419199e8400cdda assets/beyondhorizon/blockstates/end_gr
 6160de351070a6d98c74b8365cf64a7fdf0a58ec assets/beyondhorizon/blockstates/end_stone_pillar.json
 57f2fc6e436c05789d25a96a8b018abe5f6c5394 assets/beyondhorizon/blockstates/end_stone_tiles.json
 17680950fdb24a850a795c3732337c40ec1a1aa2 assets/beyondhorizon/blockstates/fire_basin.json
+a6937842de2afe823feb65b79966014d029c13fd assets/beyondhorizon/blockstates/forge.json
 3b79a0d713c7ff58931beac305ab719854ce2763 assets/beyondhorizon/blockstates/gate.json
 cfbecf09263c3fdecaf143f59a8affbfc10cf040 assets/beyondhorizon/blockstates/heart_of_the_flame.json
 c20ebb902d8ed826166037ee5fa20b3e4ab68039 assets/beyondhorizon/blockstates/hellstone_bricks.json
@@ -153,6 +154,7 @@ a4b15066e4e7f3f9c18e1d3965c7e047350dbace assets/beyondhorizon/models/block/end_s
 3a51b63495d99304c3ea5c653c9063e506632eaa assets/beyondhorizon/models/block/end_stone_tiles.json
 7e0ae22f9262655d4cac84080c91c525023b42ba assets/beyondhorizon/models/block/fire_basin_lit.json
 0684f508f2ba94c60c5e99fa6a0efcc789d2dbfc assets/beyondhorizon/models/block/fire_basin_unlit.json
+980ec68c0596439bea616ece9a8e11c1809f3442 assets/beyondhorizon/models/block/forge.json
 3c70736bdfd026ef742cb453b01b8bac0da40f13 assets/beyondhorizon/models/block/gate.json
 2e11fb4c5cb05c7a326259a2736c3bc270022a19 assets/beyondhorizon/models/block/hanging_fire_basin_lit.json
 6d78e199c0e890aed7c64c1cccab541e62202897 assets/beyondhorizon/models/block/hanging_fire_basin_unlit.json
@@ -293,6 +295,7 @@ a1d672ec71ba8bb3045e01d0c053a4271d0820f0 assets/beyondhorizon/models/item/end_gr
 88d0f57b058878d65c6402d3a800dc503fcdc218 assets/beyondhorizon/models/item/end_stone_pillar.json
 74f086b0636e40b4cc7cef3701e017beea600d1d assets/beyondhorizon/models/item/end_stone_tiles.json
 c614b53b14075eb7dfd133c71518e7f4ff23334f assets/beyondhorizon/models/item/fire_basin.json
+74956914c3c830cff340f12f3f944fc53b47b1f1 assets/beyondhorizon/models/item/forge.json
 68aa3638026cfefe8da9a8964c988ea04bcdbb08 assets/beyondhorizon/models/item/gate.json
 c1898a9379de0162b250300a2298fbc5097d4515 assets/beyondhorizon/models/item/heart_of_the_flame.json
 4aa864702b335d8ca55442a2533723af1d3bc396 assets/beyondhorizon/models/item/hellstone_bricks.json

@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "bottom": "beyondhorizon:block/forge_bottom",
+    "front": "beyondhorizon:block/forge_front",
+    "side": "beyondhorizon:block/forge_side",
+    "top": "beyondhorizon:block/forge_top"
+  }
+}

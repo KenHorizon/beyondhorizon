@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.entity.projectiles;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.BaseSpearModel;
 import com.kenhorizon.beyondhorizon.client.render.AnimatedTextureRenderer;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;

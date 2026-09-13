@@ -1,9 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
 import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageScaling;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilityEffectPacket;
@@ -24,21 +24,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.*;
 import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class AbilityEntity extends Entity implements ILinkedEntity, TraceableEntity {
+    protected static final byte ID_CLIENT = 4;
     protected float damage = 5.0F;
     protected float radius = 1.0F;
-    protected boolean sentEventSpike = false;
     protected int duration = 120;
     protected int lifespan = 0;
     protected int delay = 0;
-    protected DamageType damageType = DamageType.PHYSICAL_DAMAGE;
+    protected DamageInfoTypes damageTypes = DamageInfoTypes.PHYSICAL_DAMAGE;
     protected DamageScaling damageScaling;
     private float damageTagModifiers = 0.0F;
     private LivingEntity cachedCaster;
@@ -58,7 +56,6 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     public static final String NBT_IGNORE_KNOCKBACK = "ignore_knockback";
     public static final String NBT_IGNORE_IMMUNITY_FRAME = "ignore_immunity_frame";
     public static final String NBT_OWNER = "owner";
-    protected boolean clientSideStarted = false;
 
     public AbilityEntity(EntityType<?> entityType, Level level) {
         super(entityType, level);
@@ -75,16 +72,16 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
         this.entityData.define(IGNORE_IMMUNITY_FRAME, false);
     }
 
-    public void setDamageType(DamageType damageType) {
-        this.damageType = damageType;
-        this.entityData.set(DAMAGE_TYPE, damageType.ordinal());
+    public void setDamageType(DamageInfoTypes DamageInfoTypes) {
+        this.damageTypes = DamageInfoTypes;
+        this.entityData.set(DAMAGE_TYPE, DamageInfoTypes.ordinal());
     }
 
-    public DamageType getDamageType() {
+    public DamageInfoTypes getDamageType() {
         if (this.level().isClientSide()) {
-            return DamageType.values()[this.entityData.get(DAMAGE_TYPE)];
+            return damageTypes.values()[this.entityData.get(DAMAGE_TYPE)];
         } else {
-            return damageType;
+            return damageTypes;
         }
     }
 
@@ -261,34 +258,38 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
 
     }
 
+
     @Override
     public void tick() {
         super.tick();
-        if (this.level().isClientSide()) {
-            this.clientSide();
-            this.animation.increaseTimer();
-            this.setLifeTime(this.getLifeTime() + 1);
-            this.spawnParticles();
-        } else {
-            if (this.getDelay() <= 0) {
+        if (this.getDelay() <= 0) {
+            if (this.level().isClientSide()) {
+                this.clientSide();
+                this.animation.increaseTimer();
+                this.setLifeTime(this.getLifeTime() + 1);
+                this.spawnParticles();
+            } else {
+                if (this.getLifeTime() >= this.getDuration()) {
+                    this.discard();
+                }
                 this.onDuration();
                 if (this.getLifeTime() == (this.getDelay())) {
                     this.onStart();
                 }
-                if (this.getLifeTime() > this.getDuration()) {
+                if (this.hasEnded()) {
                     this.onEnd();
                 }
-
-                if (this.getLifeTime() >= this.getDuration() + 1) {
-                    this.discard();
-                }
                 this.setLifeTime(this.getLifeTime() + 1);
-            } else {
-                if (this.getDelay() > 0) {
-                    this.setDelay(this.getDelay() - 1);
-                }
+            }
+        } else {
+            if (this.getDelay() > 0) {
+                this.setDelay(this.getDelay() - 1);
             }
         }
+    }
+
+    public boolean hasEnded() {
+        return this.getLifeTime() > (this.getDuration() - 1);
     }
 
     @Override

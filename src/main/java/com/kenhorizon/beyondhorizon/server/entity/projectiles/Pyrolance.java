@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -18,8 +18,8 @@ public class Pyrolance extends HomingProjectile {
         super(BHEntity.PYRO_LANCE.get(), level, x, y, z, dx, dy, dz);
     }
 
-    public Pyrolance(Level level, DamageType damageType, LivingEntity owner, float damage, double dx, double dy, double dz, boolean crit) {
-        super(BHEntity.PYRO_LANCE.get(), level, damageType, owner, damage, dx, dy, dz, crit);
+    public Pyrolance(Level level, DamageInfoTypes DamageInfoTypes, LivingEntity owner, float damage, double dx, double dy, double dz, boolean crit) {
+        super(BHEntity.PYRO_LANCE.get(), level, DamageInfoTypes, owner, damage, dx, dy, dz, crit);
     }
 
     public Pyrolance(Level level, LivingEntity shooter) {

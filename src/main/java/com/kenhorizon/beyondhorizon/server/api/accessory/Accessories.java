@@ -254,7 +254,7 @@ public class Accessories {
             .addAttributes(BHAttributes.DAMAGE_TAKEN.get(), Constant.UlTIMA_DAMAGE_TAKEN, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
     public static final RegistryObject<Accessory> TORMENT_STAT = registerSkill("torment_stats", () -> new AttributeOnlyAccessory()
-            .addAttributes(Attributes.MAX_HEALTH, Constant.MAX_HEALTH_1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            .addAttributes(Attributes.MAX_HEALTH, Constant.MAX_HEALTH_1, AttributeModifier.Operation.ADDITION));
 
     public static final RegistryObject<Accessory> KNOWLEDGE_1 = registerSkill("knowledge", () -> new ExperienceAccessory(Constant.KNOWLEDGE_XP_MODIFIER));
 
@@ -307,7 +307,7 @@ public class Accessories {
     public static final RegistryObject<Accessory> ROCK_SOLID = registerSkill("rock_solid", () -> new DamageReductionAccessory(Constant.ROCK_SOLID_REDUCE, DamageReductionAccessory.DamageReductionType.BASIC_ATTACK));
     public static final RegistryObject<Accessory> INFLAME = registerSkill("inflame", () -> new ApplyEffectAccessory(3, 0, BHEffects.INFLAME.get()).showIcon(true).ambient(true));
     public static final RegistryObject<Accessory> STING = registerSkill("sting", () -> new SinglePassiveAccessory(Constant.STING_DAMAGE));
-    public static final RegistryObject<Accessory> TORMENT = registerSkill("torment", () -> new ApplyEffectAccessory(3, 0, BHEffects.TORMENT.get()).showIcon(true).ambient(true));
+    public static final RegistryObject<Accessory> TORMENT = registerSkill("torment", () -> new ApplyEffectAccessory(3, 0, BHEffects.TORMENT.get()).showIcon(true));
     public static final RegistryObject<Accessory> BRING_IT_DOWN = registerSkill("bring_it_down", () -> new BringItDownAccessory(Constant.BRING_IT_DOWN_BASE_DAMAGE, Constant.BRING_IT_DOWN_INCREASED_DAMAGE));
     public static final RegistryObject<Accessory> SEETHING_STRIKE = registerSkill("seething_strike", SeethingStrikeAccessory::new);
     public static final RegistryObject<Accessory> CARVE = registerSkill("carve", CarveAccessory::new);

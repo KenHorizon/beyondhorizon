@@ -1,12 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -33,18 +32,18 @@ public class InfernalSpear extends BaseSpearProjectile {
         this.setDuration(80);
         this.setRadius(2.5F);
     }
-    public InfernalSpear(Level level, DamageType damageType, LivingEntity owner, float damage,
+    public InfernalSpear(Level level, DamageInfoTypes DamageInfoTypes, LivingEntity owner, float damage,
                          double dx, double dy, double dz, boolean crit) {
         this(BHEntity.INFERNAL_SPEAR.get(), level, owner.getX(), owner.getY(), owner.getZ(), dx, dy, dz);
         this.setOwner(owner);
         this.setRot(owner.getYRot(), owner.getXRot());
         this.setBaseDamage(damage);
-        this.setDamageType(damageType);
+        this.setDamageType(DamageInfoTypes);
         this.setCrit(crit);
     }
 
-    public static void spawn(Level level, LivingEntity owner, float damage, DamageType damageType, double dx, double dy, double dz, boolean crit) {
-        InfernalSpear ability = new InfernalSpear(level, damageType, owner, damage, dx, dy, dz, crit);
+    public static void spawn(Level level, LivingEntity owner, float damage, DamageInfoTypes DamageInfoTypes, double dx, double dy, double dz, boolean crit) {
+        InfernalSpear ability = new InfernalSpear(level, DamageInfoTypes, owner, damage, dx, dy, dz, crit);
         double spawnX = ability.getX();
         double spawnY = owner.getY(0.5D) + 0.5D;
         double spawnZ = ability.getZ();

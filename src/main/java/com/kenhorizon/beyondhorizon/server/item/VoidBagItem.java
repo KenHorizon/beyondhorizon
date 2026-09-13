@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.item.tooltips.VoidBagTooltip;
 import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
 import com.kenhorizon.beyondhorizon.server.capability.VoidBagCap;
-import com.kenhorizon.beyondhorizon.server.inventory.VoidBagMenu;
+import com.kenhorizon.beyondhorizon.server.inventory.menu.VoidBagMenu;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

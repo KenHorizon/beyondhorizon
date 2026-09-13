@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BoltShockAbility;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.MagicBolt;
@@ -74,7 +74,9 @@ public class BoltShockSkill extends WeaponActiveSkills {
             double d2 = player.getZ() + vec3.z();
             projectile.shoot(vector3d.x(), vector3d.y(), vector3d.z(), 2.0F, 1.0F);
             projectile.setPosRaw(d0, d1, d2);
-            level.addFreshEntity(projectile);
+            if (level.addFreshEntity(projectile)) {
+                this.addCooldownManaCost(player);
+            }
         }
     }
 

@@ -2,25 +2,17 @@ package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
-import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.ForgeEventFactory;
 
 public class MagicBolt extends ExtendedProjectile {
@@ -113,6 +105,6 @@ public class MagicBolt extends ExtendedProjectile {
 
     @Override
     public DamageSource setDamageSource() {
-        return BHDamageTypes.magicDamage(this, this.getOwner());
+        return BHDamageTypes.applyDamage(DamageInfoTypes.MAGIC_DAMAGE, this, this.getOwner());
     }
 }

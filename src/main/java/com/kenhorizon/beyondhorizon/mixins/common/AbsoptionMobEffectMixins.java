@@ -1,12 +1,10 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import net.minecraft.world.effect.AbsoptionMobEffect;
 import org.spongepowered.asm.mixin.Mixin;
-import net.minecraft.world.effect.AbsoptionMobEffect;
 import net.minecraft.world.entity.LivingEntity;
-import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 

@@ -9,7 +9,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.item_properties.GuardianSw
 import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamDamageTags;
 import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.entity.MobType;
@@ -28,8 +28,12 @@ public class Skills {
     public static final RegistryObject<Skill> INFERNO_STRIKE = registerSkill("inferno_strike", () -> new InfernoStrikeSkill(Constant.INFERNO_STRIKE_SLOW, Constant.INFERNO_STRIKE_SCALE)
             .melee());
 
-    public static final RegistryObject<Skill> INFERNAL_RAY = registerSkill("infernal_ray", () -> new InfernalRaySkill(Constant.INFERNAL_AD, Constant.INFERNAL_AP, Constant.INFERNAL_BASE_DAMAGE, false, DamageType.PHYSICAL_DAMAGE, new BeamTypeFunction(BeamDamageTags.DEFAULT, 0.0F))
+    public static final RegistryObject<Skill> INFERNAL_RAY = registerSkill("infernal_ray", () -> new InfernalRaySkill(Constant.INFERNAL_AD, Constant.INFERNAL_AP, Constant.LASERBEAM_BASEDAMAGE, false, DamageInfoTypes.PHYSICAL_DAMAGE, new BeamTypeFunction(BeamDamageTags.DEFAULT, 0.0F))
             .universal());
+    public static final RegistryObject<Skill> TWILIGHT_RAY = registerSkill("twilight_ray", () -> new TwilightRaySkill(Constant.TWILIGHT, Constant.LASERBEAM_BASEDAMAGE, true, DamageInfoTypes.MAGIC_DAMAGE, new BeamTypeFunction(BeamDamageTags.DEFAULT, 0.0F))
+            .universal());
+
+
 
     public static final RegistryObject<Skill> HEAVY_HITTER = registerSkill("heavy_hitter", () -> new HeavyHitterSkill(Constant.HEAVY_HITTER_DAMAGE_PER_SCALE, Constant.HEAVY_HITTER_DAMAGE)
             .melee());

@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
-import com.kenhorizon.beyondhorizon.server.inventory.QuiverMenu;
+import com.kenhorizon.beyondhorizon.server.inventory.menu.QuiverMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;

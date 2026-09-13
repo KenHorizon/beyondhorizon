@@ -1,19 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
-import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DamageInfo implements IDamageInfo {
     private float preDamage = 0.0F;

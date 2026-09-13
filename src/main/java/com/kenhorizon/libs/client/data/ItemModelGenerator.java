@@ -1,6 +1,6 @@
 package com.kenhorizon.libs.client.data;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.libs.client.model.item.ItemModelDefinition;
 import com.kenhorizon.libs.registry.RegistryItemModels;
 import net.minecraft.resources.ResourceLocation;

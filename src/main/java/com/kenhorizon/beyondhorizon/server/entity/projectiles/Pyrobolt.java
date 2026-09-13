@@ -3,10 +3,9 @@ package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
-import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -43,7 +42,7 @@ public class Pyrobolt extends BaseSpearProjectile {
         this.setDuration(80);
         this.setRadius(2.5F);
     }
-    public Pyrobolt(Level level, DamageType damageType, LivingEntity owner, float damage,
+    public Pyrobolt(Level level, DamageInfoTypes DamageInfoTypes, LivingEntity owner, float damage,
                     double dx, double dy, double dz, boolean crit) {
         this(BHEntity.PYROBOLT.get(), level, owner.getX(), owner.getY(), owner.getZ(), dx, dy, dz);
         if (!(owner instanceof Player)) {
@@ -52,12 +51,12 @@ public class Pyrobolt extends BaseSpearProjectile {
         this.setOwner(owner);
         this.setRot(owner.getYRot(), owner.getXRot());
         this.setBaseDamage(damage);
-        this.setDamageType(damageType);
+        this.setDamageType(DamageInfoTypes);
         this.setCrit(crit);
     }
 
-    public static void spawn(Level level, LivingEntity owner, float damage, DamageType damageType, double dx, double dy, double dz, boolean crit) {
-        Pyrobolt ability = new Pyrobolt(level, damageType, owner, damage, dx, dy, dz, crit);
+    public static void spawn(Level level, LivingEntity owner, float damage, DamageInfoTypes DamageInfoTypes, double dx, double dy, double dz, boolean crit) {
+        Pyrobolt ability = new Pyrobolt(level, DamageInfoTypes, owner, damage, dx, dy, dz, crit);
         double spawnX = ability.getX();
         double spawnY = owner.getY(0.5D) + 0.5D;
         double spawnZ = ability.getZ();

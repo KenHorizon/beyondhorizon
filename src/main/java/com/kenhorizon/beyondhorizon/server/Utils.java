@@ -1,13 +1,9 @@
 package com.kenhorizon.beyondhorizon.server;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.libs.registry.RegistryLanguage;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraftforge.registries.RegistryObject;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Locale;

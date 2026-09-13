@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import net.minecraft.resources.ResourceLocation;
 
 public class HudSprites {

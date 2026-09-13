@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "facing=east,forge_type_station=anvil": {
+      "model": "beyondhorizon:block/forge",
+      "y": 90
+    },
+    "facing=east,forge_type_station=crafting": {
+      "model": "beyondhorizon:block/forge",
+      "y": 90
+    },
+    "facing=east,forge_type_station=smelting": {
+      "model": "beyondhorizon:block/forge",
+      "y": 90
+    },
+    "facing=north,forge_type_station=anvil": {
+      "model": "beyondhorizon:block/forge"
+    },
+    "facing=north,forge_type_station=crafting": {
+      "model": "beyondhorizon:block/forge"
+    },
+    "facing=north,forge_type_station=smelting": {
+      "model": "beyondhorizon:block/forge"
+    },
+    "facing=south,forge_type_station=anvil": {
+      "model": "beyondhorizon:block/forge",
+      "y": 180
+    },
+    "facing=south,forge_type_station=crafting": {
+      "model": "beyondhorizon:block/forge",
+      "y": 180
+    },
+    "facing=south,forge_type_station=smelting": {
+      "model": "beyondhorizon:block/forge",
+      "y": 180
+    },
+    "facing=west,forge_type_station=anvil": {
+      "model": "beyondhorizon:block/forge",
+      "y": 270
+    },
+    "facing=west,forge_type_station=crafting": {
+      "model": "beyondhorizon:block/forge",
+      "y": 270
+    },
+    "facing=west,forge_type_station=smelting": {
+      "model": "beyondhorizon:block/forge",
+      "y": 270
+    }
+  }
+}

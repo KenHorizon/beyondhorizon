@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.sound;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.entity.BHBaseEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;

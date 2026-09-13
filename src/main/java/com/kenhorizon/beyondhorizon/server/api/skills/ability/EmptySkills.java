@@ -6,7 +6,7 @@ import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
 public class EmptySkills extends Skill {
     public EmptySkills() {
         super(ItemAbilityType.PASSIVE);
-        this.tooltipEnable = false;
+        this.setTooltipEnable(false);
         this.universal();
     }
 }

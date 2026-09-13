@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.util.attributes;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.mixins.common.accessor.AttributeAccessor;
 import com.kenhorizon.beyondhorizon.mixins.common.accessor.AttributeRangeAccessor;
 import com.kenhorizon.beyondhorizon.server.util.Maths;

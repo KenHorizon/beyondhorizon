@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.item;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.item.BlazingBeaconModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;

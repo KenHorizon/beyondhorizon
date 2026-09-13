@@ -4,16 +4,13 @@ package com.kenhorizon.beyondhorizon.server.entity.projectiles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
-import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
-import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,9 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
 
 public abstract class HomingProjectile extends ExtendedProjectile {
     protected Vec3 targetPos = Vec3.ZERO;
@@ -49,13 +43,13 @@ public abstract class HomingProjectile extends ExtendedProjectile {
             this.zPower = dz / d0 * 0.1D;
         }
     }
-    public HomingProjectile(EntityType<? extends Projectile> entityType, Level level, DamageType damageType, LivingEntity owner, float damage,
+    public HomingProjectile(EntityType<? extends Projectile> entityType, Level level, DamageInfoTypes DamageInfoTypes, LivingEntity owner, float damage,
                             double dx, double dy, double dz, boolean crit) {
         this(entityType, level, owner.getX(), owner.getY(), owner.getZ(), dx, dy, dz);
         this.setOwner(owner);
         this.setRot(owner.getYRot(), owner.getXRot());
         this.setBaseDamage(damage);
-        this.setDamageType(damageType);
+        this.setDamageType(DamageInfoTypes);
         this.setCrit(crit);
     }
 

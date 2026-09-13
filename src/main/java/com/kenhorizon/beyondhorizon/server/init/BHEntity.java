@@ -144,6 +144,13 @@ public class BHEntity {
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();
 
+    public static final RegistryObject<EntityType<TwilightRayAbility>> TWILIGHT_RAY = RegistryEntity
+            .<TwilightRayAbility>register("twilight_ray", TwilightRayAbility::new)
+            .lang("Twilight Ray")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
     public static final RegistryObject<EntityType<BoltShockAbility>> BOLT_SHOCK = RegistryEntity
             .<BoltShockAbility>register("bolt_shock", BoltShockAbility::new)
             .lang("Bolt Shock")

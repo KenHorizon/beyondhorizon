@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.registry;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;

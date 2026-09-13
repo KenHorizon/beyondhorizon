@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.tags.BHBlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraftforge.common.data.BlockTagsProvider;

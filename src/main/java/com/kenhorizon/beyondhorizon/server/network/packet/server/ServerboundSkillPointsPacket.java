@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import net.minecraft.network.FriendlyByteBuf;

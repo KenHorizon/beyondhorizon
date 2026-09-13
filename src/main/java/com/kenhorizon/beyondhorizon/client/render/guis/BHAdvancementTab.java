@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.guis;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.DisplayInfo;

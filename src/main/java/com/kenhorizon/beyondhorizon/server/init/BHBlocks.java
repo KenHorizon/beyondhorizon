@@ -13,6 +13,7 @@ import com.kenhorizon.beyondhorizon.server.block.AdvancePipeBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneWiredBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
+import com.kenhorizon.beyondhorizon.server.block.the_forge.ForgeBlock;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.core.BlockPos;
@@ -35,6 +36,7 @@ public class BHBlocks {
     public static final BlockBehaviour.Properties WIRED_LANE = BlockBehaviour.Properties.of().mapColor(MapColor.FIRE).strength(1.5F, 6.0F).sound(SoundType.METAL).lightLevel(l -> { return 4; }).requiresCorrectToolForDrops().pushReaction(PushReaction.PUSH_ONLY);
     public static final BlockBehaviour.Properties BLACK_IRON = BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_GRAY).strength(4.5F, 3.0F).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops();
     public static final BlockBehaviour.Properties BLACK_IRON_STEEL = BlockBehaviour.Properties.of().mapColor(MapColor.COLOR_BLACK).strength(2.5F, 3.0F).sound(SoundType.METAL).requiresCorrectToolForDrops();
+    public static final BlockBehaviour.Properties DRAWF_METAL = BlockBehaviour.Properties.of().mapColor(MapColor.METAL).strength(3.5F, 4.0F).sound(SoundType.METAL).requiresCorrectToolForDrops();
 
     public static final RegistryObject<Block> REDSTONE_WIRED = RegistryBlocks
             .register("redstone_wired", properties -> new RedstoneWiredBlock(WIRED_LANE))
@@ -93,6 +95,13 @@ public class BHBlocks {
 
     public static final RegistryObject<Block> DUNGEON_BRICKS = RegistryBlocks
             .register("dungeon_bricks", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.BEDROCK)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
+    public static final RegistryObject<Block> FORGE = RegistryBlocks
+            .register("forge", properties -> new ForgeBlock(DRAWF_METAL))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()

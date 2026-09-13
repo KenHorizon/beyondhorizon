@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.inventory.slot;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;

@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.client.render;
+package com.kenhorizon.beyondhorizon.client.render.classify;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -17,7 +17,7 @@ public interface BHParticleRenderType {
 
     ParticleRenderType PARTICLE_EMISSIVE = new ParticleRenderType() {
         public void begin(BufferBuilder buffer, TextureManager manager) {
-            RenderSystem.depthMask(true);
+            RenderSystem.depthMask(false);
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
             RenderSystem.enableBlend();
             RenderSystem.disableCull();

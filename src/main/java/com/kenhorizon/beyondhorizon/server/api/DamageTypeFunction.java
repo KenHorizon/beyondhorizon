@@ -1,10 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.api;
 
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
@@ -16,7 +16,6 @@ import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 public interface DamageTypeFunction {
@@ -73,7 +72,7 @@ public interface DamageTypeFunction {
         if (attacker instanceof Player player) {
             PlayerData playerData = Capabilities.data(player);
             if (playerData.isCrit()) {
-                target.hurt(BHDamageTypes.trueDamage(attacker, target), context.multiply(magnitude));
+                target.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.TRUE_DAMAGE, attacker), context.multiply(magnitude));
             }
         }
         return context.damage();

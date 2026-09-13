@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.tags;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -9,8 +9,6 @@ import net.minecraft.world.damagesource.DamageType;
 public class BHDamageTypeTags {
     public static final TagKey<DamageType> NO_KNOCKBACK_DAMAGE = create("no_knockback_damage");
     public static final TagKey<DamageType> IS_TRUE_DAMAGE = create("is_true_damage");
-    public static final TagKey<DamageType> IS_ARMOR_PENETRATION = create("is_armor_penetration");
-    public static final TagKey<DamageType> IS_MAGIC_PENETRATION = create("is_magic_penetration");
     public static final TagKey<DamageType> MAGIC_DAMAGE = create("magic_damage");
     public static final TagKey<DamageType> PHYSICAL_DAMAGE = create("physical_damage");
     public static final TagKey<DamageType> BURN_DAMAGE = create("burn_damage");

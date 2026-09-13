@@ -1,16 +1,14 @@
 package com.kenhorizon.beyondhorizon.server.entity.ability.beam;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
-import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
-import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
-import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRaySound;
 import com.kenhorizon.beyondhorizon.server.entity.ability.IDeathRayType;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -59,7 +57,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
     public boolean canIgnoreFrame = false;
     public boolean canBurnTarget = false;
     public BeamTypeFunction typeFunction = new BeamTypeFunction(BeamDamageTags.DEFAULT, 0.0F);
-    public DamageType damageType = DamageType.PHYSICAL_DAMAGE;
+    public DamageInfoTypes DamageInfoTypes = DamageInfoTypes.PHYSICAL_DAMAGE;
     public ControlledAnimation appear = new ControlledAnimation(3);
 
     public boolean on = true;
@@ -139,13 +137,13 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         this.getEntityData().set(B, b);
     }
 
-    public void setDamageType(DamageType damageType) {
-        this.damageType = damageType;
-        this.entityData.set(DAMAGE_TYPES, damageType.ordinal());
+    public void setDamageType(DamageInfoTypes DamageInfoTypes) {
+        this.DamageInfoTypes = DamageInfoTypes;
+        this.entityData.set(DAMAGE_TYPES, DamageInfoTypes.ordinal());
     }
 
-    public DamageType getDamageType() {
-        return this.level().isClientSide() ? DamageType.values()[this.entityData.get(DAMAGE_TYPES)] : this.damageType;
+    public DamageInfoTypes getDamageType() {
+        return this.level().isClientSide() ? DamageInfoTypes.values()[this.entityData.get(DAMAGE_TYPES)] : this.DamageInfoTypes;
     }
 
     public int[] getColors() {
@@ -248,22 +246,13 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
                     if (this.source != null) {
                         if (this.source.isAlliedTo(target)) continue;
                     }
-                    boolean flag;
                     boolean ignoreFrames = this.isImmunityFrameIgnore();
                     float damage = ignoreFrames ? this.rayDamages(target) / 2.0F : this.rayDamages(target);
-                    if (this.getDamageType() == DamageType.PHYSICAL_DAMAGE) {
-                        flag = target.hurt(BHDamageTypes.AOEphysicalDamage(this, null), damage);
-                    } else if (this.getDamageType() == DamageType.MAGIC_DAMAGE) {
-                        flag = target.hurt(BHDamageTypes.AOEmagicDamage(this, null), damage);
-                    } else if (this.getDamageType() == DamageType.TRUE_DAMAGE) {
-                        flag = target.hurt(BHDamageTypes.AOEtrueDamage(this, null), damage);
-                    } else {
-                        flag = false;
-                    }
+                    boolean flag = target.hurt(BHDamageTypes.noKnockbackApplyDamage(this.getDamageType(), DamageTags.AREA_OF_EFFECTS, this), damage);
                     if (flag) {
                         if (ignoreFrames) {
-                            target.hurtDuration = 0;
-                            target.invulnerableTime = 0;
+                            target.hurtDuration = 5;
+                            target.invulnerableTime = 5;
                         }
                         if (this.isCanBurnTarget()) {
                             int fireAspectLevel = EnchantmentHelper.getFireAspect(caster);
@@ -286,22 +275,6 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
 
     protected void onStartParticle() {
         this.start();
-        int particleCount = 4;
-        float[] colors = Colors.getFARGB(Colors.combineRGB(this.getColors()[0],this.getColors()[1],this.getColors()[2]));
-        while (particleCount --> 0) {
-            double radius = 1f;
-            float yaw = (float) (random.nextFloat() * 2 * Math.PI);
-            float pitch = (float) (random.nextFloat() * 2 * Math.PI);
-            double ox = (float) (radius * Math.sin(yaw) * Math.sin(pitch));
-            double oy = (float) (radius * Math.cos(pitch));
-            double oz = (float) (radius * Math.cos(yaw) * Math.sin(pitch));
-            double o2x = (float) (-1 * Math.cos(getYaw()) * Math.cos(getPitch()));
-            double o2y = (float) (-1 * Math.sin(getPitch()));
-            double o2z = (float) (-1 * Math.sin(getYaw()) * Math.cos(getPitch()));
-            TrailParticleOptions.add(level(),
-                    TrailParticles.Behavior.DEFAULT,getX() + o2x + ox, getY() + o2y + oy  + 0.1, getZ() + o2z + oz,
-                    1.25F, 1.0F, colors[0], colors[1], colors[2], 10, new Vec3(this.collidePosX, this.collidePosY, this.collidePosZ));
-        }
     }
 
     protected void start() {
@@ -414,7 +387,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         this.setPitch(nbt.getFloat("pitch"));
         this.setScale(nbt.getFloat("scale"));
         this.setColor(nbt.getInt("r"),nbt.getInt("g"),nbt.getInt("b"));
-        this.damageType = DamageType.values()[nbt.getInt("damage_type")];
+        this.DamageInfoTypes = DamageInfoTypes.values()[nbt.getInt("damage_type")];
         this.typeFunction = new BeamTypeFunction(BeamDamageTags.values()[nbt.getInt("beam_type_tags")], nbt.getFloat("beam_type_magnitude"));
         this.setCanBurnTarget(nbt.getBoolean("can_burn_target"));
         this.setImmunityFrameIgnore(nbt.getBoolean("ignore_immunity_frame"));
@@ -428,7 +401,7 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
         nbt.putFloat("yaw", this.getYaw());
         nbt.putFloat("pitch", this.getPitch());
         nbt.putFloat("scale", this.getScale());
-        nbt.putInt("damage_type", this.damageType.ordinal());
+        nbt.putInt("damage_type", this.DamageInfoTypes.ordinal());
         nbt.putInt("beam_type_tags", this.typeFunction.tags().ordinal());
         nbt.putFloat("beam_type_magnitude", this.typeFunction.magnitude());
         nbt.putBoolean("can_burn_target", this.isCanBurnTarget());

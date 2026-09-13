@@ -1,9 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
+import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
 
 public class ExecuteDamageSkill extends WeaponPassiveSkills {
     public ExecuteDamageSkill(float magnitude) {
@@ -18,11 +21,9 @@ public class ExecuteDamageSkill extends WeaponPassiveSkills {
         }
         return context.damage();
     }
-    private boolean targetInThereshold(LivingEntity target) {
-        return target.getHealth() <= execute(target.getMaxHealth(), (this.getMagnitude() * this.getLevel()));
-    }
 
-    private float execute(float targetMaxHealth, float executeHealth) {
-        return targetMaxHealth * executeHealth;
+    private boolean targetInThereshold(LivingEntity target) {
+        double factor = EntityUtils.getMaxHealth(target, (this.getMagnitude() * this.getLevel()));
+        return target.getHealth() <= factor;
     }
 }

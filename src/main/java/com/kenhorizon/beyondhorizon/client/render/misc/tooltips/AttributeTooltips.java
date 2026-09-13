@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.misc.tooltips;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.util.AttributePercentage;
 import com.kenhorizon.beyondhorizon.client.util.InvertedAttributeColorFormat;
 import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;

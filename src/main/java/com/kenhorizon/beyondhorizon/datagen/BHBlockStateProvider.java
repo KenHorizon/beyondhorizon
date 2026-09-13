@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.libs.client.data.BlockStateBuilder;
@@ -44,6 +44,7 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.PLAIN_CHISILLED_END_STONE);
         this.blockWithItem(BHBlocks.END_GREY_STONE);
         this.blockWithItem(BHBlocks.END_GREY_BRICKS);
+        this.faceBlock(BHBlocks.FORGE);
         this.slabBlocks(BHBlocks.END_GREY_BRICK_SLAB, BHBlocks.END_GREY_BRICKS);
         this.stairsBlocks(BHBlocks.END_GREY_BRICK_STAIRS, BHBlocks.END_GREY_BRICKS);
         this.blockWithItem(BHBlocks.CHIPPED_BRICKS);

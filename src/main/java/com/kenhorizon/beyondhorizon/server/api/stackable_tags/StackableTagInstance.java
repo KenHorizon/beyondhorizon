@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.api.stackable_tags;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundStackableTagsPacket;
@@ -9,7 +8,6 @@ import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +34,18 @@ public class StackableTagInstance {
         if (stackable != null) {
             NetworkHandler.sendAll(new ClientboundStackableTagsPacket(entity.getId(), stackable.getAllRegistry()), entity);
         }
+    }
+
+    public static void renderWhenEquipped() {
+        registerRenderWhenEquipped(ENERGIZE);
+        registerRenderWhenEquipped(SAINT_DEMON_CROWN_STACKS);
+        registerRenderWhenEquipped(SEETHING_STRIKE);
+        registerRenderWhenEquipped(BRING_IT_DOWN);
+    }
+
+    public static void renderAlways() {
+        registerRenderAlways(PHANTOM);
+        registerRenderAlways(CARVE);
     }
 
     public static StackableTags[] TAGS = new StackableTags[] {
@@ -66,15 +76,4 @@ public class StackableTagInstance {
         RENDER_WHEN_EQUIPPED.add(tags.getName());
     }
 
-    public static void renderWhenEquipped() {
-        registerRenderWhenEquipped(ENERGIZE);
-        registerRenderWhenEquipped(SAINT_DEMON_CROWN_STACKS);
-        registerRenderWhenEquipped(SEETHING_STRIKE);
-        registerRenderWhenEquipped(BRING_IT_DOWN);
-    }
-
-    public static void renderAlways() {
-        registerRenderAlways(PHANTOM);
-        registerRenderAlways(CARVE);
-    }
 }

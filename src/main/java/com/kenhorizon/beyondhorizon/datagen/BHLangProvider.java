@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.configs.Configs;
 import com.kenhorizon.beyondhorizon.server.Utils;
@@ -113,7 +113,8 @@ public class BHLangProvider extends LanguageProvider {
         this.add(Tooltips.FULL_BONUS_ARMOR_SET, "Full Bonus set:");
         this.add(Tooltips.MINING_SPEED, "%s Mining Speed");
         this.addSkills(Skills.ENERGIZED.get(), "Energized", "Moving and basic attacking generates Energize stacks, up to 100 (6 if attacking, 1 if moving)");
-        this.addSkills(Skills.INFERNAL_RAY.get(), "Infernal Ray", "Release a powerful Infernal Ray dealing %s %s within 2.5 radius of attacks");
+        this.addSkills(Skills.INFERNAL_RAY.get(), "Infernal Ray", "Release a powerful beam of energy of inferno's heart dealing %s %s within 2.5 radius of attacks");
+        this.addSkills(Skills.TWILIGHT_RAY.get(), "Twilight Ray", "Unleash beam of energy from night sky dealing %s %s within 2.5 radius of attacks");
         this.addSkills(Skills.INFERNO_STRIKE.get(), "Inferno Strike", "Charges while being slowed by %s%% upto 3 seconds",
                 "Recast: Release a Inferno Slash onward dealing (5-%s%% bonus AD) physical damage");
         this.addSkills(Skills.HEAVY_HITTER.get(), "Heavy Hitter", "Deal additional %.2f%% damage dealt per %s%% bonus attack speed", "Bonus Damage: %s%%");
@@ -250,17 +251,10 @@ public class BHLangProvider extends LanguageProvider {
         this.addDeathMessage(BHDamageTypes.MAGIC_DAMAGE, "%1$s was killed by magic", "%1$s was killed by magic whilst trying to escape %2$s", "%1$s was killed by magic whilst trying to escape %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.TRUE_DAMAGE, "%%1$s was consumed", "%1$s was consumed by %2$s", "%1$s was consumed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.BLEED, "%1$s was bleeding to death", "%1$s was bleeding to death while killed by %2$s", "%1$s was bleeding to death while killed by %2$s using %3$s");
-        this.addDeathMessage(BHDamageTypes.BEAM, "%1$s was evaporated", "%1$s was evaporated by %2$s", "%1$s was evaporated by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.BLAZING_ROD, "%1$s was evaporated", "%1$s was evaporated by %2$s", "%1$s was evaporated by %2$s using %3$s");
-        this.addDeathMessage(BHDamageTypes.PET_DAMAGE_PHYSICAL, "%1$s was killed", "%1$s was evaporated by %2$s", "%1$s was evaporated by %2$s using %3$s");
-        this.addDeathMessage(BHDamageTypes.PET_DAMAGE_MAGIC, "%1$s was killed", "%1$s was killed by %2$s", "%1$s was killed by %2$s using %3$s");
-        this.addDeathMessage(BHDamageTypes.PET_DAMAGE_TRUE_DAMAGE, "%1$s was killed", "%1$s was killed by %2$s", "%1$s was killed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.MAGIC_BURNING, "%1$s was burned", "%1$s was burned to death by %2$s", "%1$s was consumed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.TRUE_DAMAGE_BURNING, "%1$s was burned", "%1$s was burned to death by %2$s", "%1$s was consumed by %2$s using %3$s");
         this.addDeathMessage(BHDamageTypes.IGNORE_ENCHANTMENT_PROTECTION, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
-        this.addDeathMessage(BHDamageTypes.LETHALITY, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
-        this.addDeathMessage(BHDamageTypes.MAGIC_PENETRATION, "%1$s was thought protection gonna save it", "%1$s was killed by %2$s", "%1$s was consumed by %2$s using %3$s");
-        //
         //
         this.addAdvancement(Tooltips.ADVANCEMENT_MAIN_ROOT, "Arcane", "The story of secret of worlds and magics");
         this.addAdvancement(Tooltips.ADVANCEMENT_EQUIPPED_ACCESSORY, "Fancy Equipment", "Discover a accessory");
@@ -269,7 +263,6 @@ public class BHLangProvider extends LanguageProvider {
         this.addAdvancement(Tooltips.ADVANCEMENT_NEW_ORES_1, "Hot hot hot...", "Obtain raw hellstone");
         this.addAdvancement(Tooltips.ADVANCEMENT_NEW_ORES_2, "Shine like a star!", "Obtain raw starite");
         this.addAdvancement(Tooltips.ADVANCEMENT_NEW_ORES_3, "Bright as full moon", "Obtain raw luminite");
-
     }
     private void addAdvancement(String advancement, String name, String description) {
         this.add(advancement, name);

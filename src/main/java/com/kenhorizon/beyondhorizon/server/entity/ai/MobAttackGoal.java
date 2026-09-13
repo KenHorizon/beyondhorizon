@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.entity.ai;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.LivingEntity;

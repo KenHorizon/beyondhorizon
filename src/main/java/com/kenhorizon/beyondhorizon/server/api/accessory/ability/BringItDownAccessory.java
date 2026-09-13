@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstan
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
@@ -41,7 +41,7 @@ public class BringItDownAccessory extends StackingSkillAccessory {
                     attacker.level().playSound(null, target.getX(), target.getY(), target.getZ(), BHSounds.HEAVY_ATTACK.get(), SoundSource.MASTER, 1.0F, 1.0F);
                 }
                 if (instance.isFullyStacked()) {
-                    DamageType.PHYSICAL_DAMAGE.onHit(target, attacker, DamageInfo.getMissingHealth(target, new DamageContext(baseDamage), this.increasedDamage));
+                    DamageInfoTypes.PHYSICAL_DAMAGE.onHit(target, attacker, DamageInfo.getMissingHealth(target, new DamageContext(baseDamage), this.increasedDamage));
                     instance.reset();
                 }
             }

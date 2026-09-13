@@ -1,6 +1,6 @@
-package com.kenhorizon.beyondhorizon.server.inventory;
+package com.kenhorizon.beyondhorizon.server.inventory.menu;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
 import com.kenhorizon.beyondhorizon.server.item.QuiverItem;
 import com.mojang.datafixers.util.Pair;

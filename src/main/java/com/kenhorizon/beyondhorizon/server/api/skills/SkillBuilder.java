@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.google.common.collect.ImmutableSet;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.libs.server.IReloadable;
 import com.kenhorizon.libs.server.ReloadableHandler;
 import net.minecraft.world.item.ItemStack;
@@ -36,6 +36,7 @@ public class SkillBuilder implements IReloadable {
 
     public static final SkillBuilder THUNDERZAPPER = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.BOLTSHOCK));
     public static final SkillBuilder STORMSURGE = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.THUNDER));
+    public static final SkillBuilder NIGHT_RAY = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.TWILIGHT_RAY));
     public static final SkillBuilder WAND = new SkillBuilder(SkillTypes.RANGED, List.of(Skills.MAGIC_MISSILE));
      //
 

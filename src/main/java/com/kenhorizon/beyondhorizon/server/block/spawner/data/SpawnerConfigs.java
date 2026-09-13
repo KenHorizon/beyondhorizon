@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.block.spawner.data;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.WeightListed;
 import net.minecraft.core.registries.BuiltInRegistries;

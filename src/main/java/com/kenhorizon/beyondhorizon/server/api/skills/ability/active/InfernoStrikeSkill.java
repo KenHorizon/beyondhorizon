@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
@@ -10,7 +10,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.InfernalSpear;
 import com.kenhorizon.beyondhorizon.server.entity.util.ShockwaveUtils;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import net.minecraft.network.chat.Component;
@@ -75,7 +75,7 @@ public class InfernoStrikeSkill extends WeaponActiveSkills {
                     var pos = player.position().add(rotation.scale(1.6));
                     double dx = pos.x - player.getX();
                     double dz = pos.z - player.getZ();
-                    InfernalSpear.spawn(level, player, (float) damage, DamageType.PHYSICAL_DAMAGE, dx, 0, dz, this.getCastTimeFactor(player) >= 1.0D);
+                    InfernalSpear.spawn(level, player, (float) damage, DamageInfoTypes.PHYSICAL_DAMAGE, dx, 0, dz, this.getCastTimeFactor(player) >= 1.0D);
                     AttributeInstance attributeInstance = player.getAttribute(Attributes.MOVEMENT_SPEED);
                     if (attributeInstance.getModifier(SPEED_MODIFIER_SPRINTING_UUID) != null) {
                         attributeInstance.removeModifier(SPEED_MODIFIER_SPRINTING);

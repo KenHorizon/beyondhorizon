@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,11 +23,11 @@ public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
     protected int timer;
     protected int attackInterval;
     protected boolean isActive;
-    protected DamageType damageType;
-    public BaseSpellbladeAccessory(int attackInterval, float attackScale, DamageType damageType) {
+    protected DamageInfoTypes DamageInfoTypes;
+    public BaseSpellbladeAccessory(int attackInterval, float attackScale, DamageInfoTypes DamageInfoTypes) {
         this.attackScale = attackScale;
         this.attackInterval = Maths.sec(attackInterval);
-        this.damageType = damageType;
+        this.DamageInfoTypes = DamageInfoTypes;
     }
 
     protected abstract float spellBladeDamage(LivingEntity attacker, float damage, float damageScale);
@@ -73,7 +73,7 @@ public abstract class BaseSpellbladeAccessory extends AccessoryPassiveSkill {
             this.isActive = false;
             target.invulnerableTime = 0;
             float outputDamage = this.spellBladeDamage(attacker, context.damage(), this.attackScale);
-            this.damageType.dealDamage(target, attacker, outputDamage);
+            this.DamageInfoTypes.dealDamage(target, attacker, outputDamage);
         }
     }
 }

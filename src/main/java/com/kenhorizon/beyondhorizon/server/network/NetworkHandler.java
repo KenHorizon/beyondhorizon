@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.network;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.network.packet.client.*;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.*;
 import net.minecraft.server.level.ServerPlayer;

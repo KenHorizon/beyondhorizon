@@ -1,13 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 public class ForceImpactSpellBladeAccessory extends BaseSpellbladeAccessory {
 
     public ForceImpactSpellBladeAccessory(int attackInterval, float attackScale) {
-        super(attackInterval, attackScale, DamageType.PHYSICAL_DAMAGE);
+        super(attackInterval, attackScale, DamageInfoTypes.PHYSICAL_DAMAGE);
     }
 
     @Override

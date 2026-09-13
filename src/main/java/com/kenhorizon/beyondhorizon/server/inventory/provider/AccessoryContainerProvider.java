@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.inventory.provider;
 
-import com.kenhorizon.beyondhorizon.server.inventory.AccessoryMenu;
+import com.kenhorizon.beyondhorizon.server.inventory.menu.AccessoryMenu;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;

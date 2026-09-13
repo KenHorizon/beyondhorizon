@@ -34,12 +34,10 @@ public class CleaveAbility extends AbilityEntity {
         level.addFreshEntity(ability);
     }
 
-
     @Override
-    public void handleEntityEvent(byte id) {
-        super.handleEntityEvent(id);
-        if (id == 4) {
-
+    public void clientSide() {
+        super.clientSide();
+        if (this.hasEnded()) {
             float r = Colors.getFARGB(0xFF6500)[0];
             float g = Colors.getFARGB(0xFF6500)[1];
             float b = Colors.getFARGB(0xFF6500)[2];
@@ -51,10 +49,6 @@ public class CleaveAbility extends AbilityEntity {
     @Override
     protected void onEnd() {
         LivingEntity user = this.getCaster();
-        if (!this.sentEventSpike) {
-            this.level().broadcastEntityEvent(this, (byte) 4);
-            this.sentEventSpike = true;
-        }
         this.cleaveAttack();
     }
 
@@ -65,7 +59,7 @@ public class CleaveAbility extends AbilityEntity {
             if (entityOnRange instanceof LivingEntity targetOnRange) {
                 if (targetOnRange == attacker || targetOnRange == this.getTarget()) continue;
                 if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
-                    targetOnRange.hurt(BHDamageTypes.physicalDamage(this), this.getBaseDamage());
+                    targetOnRange.hurt(BHDamageTypes.applyDamage(this.getDamageType(),this, null), this.getBaseDamage());
                 }
             }
         }

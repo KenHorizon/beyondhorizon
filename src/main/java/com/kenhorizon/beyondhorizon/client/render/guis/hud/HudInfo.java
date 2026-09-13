@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.level.IAbilityInfo;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;

@@ -1,22 +1,10 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.libs.datagen.SoundDefinitionFactory;
-import com.kenhorizon.libs.registry.RegistryHelper;
-import com.kenhorizon.libs.registry.RegistryLanguage;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.SoundDefinition;
-import net.minecraftforge.common.data.SoundDefinitionsProvider;
-import net.minecraftforge.registries.RegistryObject;
-
-import java.util.*;
-import java.util.function.Supplier;
 
 public class BHSoundProvider extends SoundDefinitionFactory {
 

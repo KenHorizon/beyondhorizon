@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.block.redstone_lane;
 
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import net.minecraft.core.BlockPos;

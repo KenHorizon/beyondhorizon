@@ -1,19 +1,17 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.world.RoarParticleOptions;
 import com.kenhorizon.beyondhorizon.client.sound.BossMusic;
 import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.server.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -21,7 +19,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.*;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -384,7 +381,7 @@ public abstract class BHBaseEntity extends PathfinderMob {
         return flag;
     }
 
-    public boolean doAreaAttack(float range, float arc, float damageMultiplier, int shieldBreakTicks, float applyKnockbackMultiplier, DamageType damageType) {
+    public boolean doAreaAttack(float range, float arc, float damageMultiplier, int shieldBreakTicks, float applyKnockbackMultiplier, DamageInfoTypes DamageInfoTypes) {
         List<LivingEntity> entitiesHit = this.getEntityLivingBaseNearby(range, 6, range, range);
         float damage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * damageMultiplier;
         for (LivingEntity entityHit : entitiesHit) {
@@ -399,7 +396,7 @@ public abstract class BHBaseEntity extends PathfinderMob {
             float entityRelativeAngle = entityHitAngle - entityAttackingAngle;
             float entityHitDistance = (float) Math.sqrt((entityHit.getZ() - this.getZ()) * (entityHit.getZ() - this.getZ()) + (entityHit.getX() - this.getX()) * (entityHit.getX() - this.getX()));
             if (entityHitDistance <= range && (entityRelativeAngle <= arc / 2 && entityRelativeAngle >= -arc / 2) || (entityRelativeAngle >= 360 - arc / 2 || entityRelativeAngle <= -360 + arc / 2)) {
-                damageType.dealDamage(entityHit, this, damage);
+                DamageInfoTypes.dealDamage(entityHit, this, damage);
                 if (entityHit instanceof Player player) {
                     if (player.isBlocking()) {
                         EntityUtils.disableShield(player, shieldBreakTicks);

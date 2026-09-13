@@ -14,7 +14,8 @@ public class Constant {
     public static final float HEAVY_HITTER_DAMAGE = 0.05F;
     public static final float INFERNAL_AD = 0.15F;
     public static final float INFERNAL_AP = 0.20F;
-    public static final float INFERNAL_BASE_DAMAGE = 1.0F;
+    public static final float TWILIGHT = 0.20F;
+    public static final float LASERBEAM_BASEDAMAGE = 1.0F;
     public static final float INFERNO_STRIKE_SCALE = 0.60F;
     public static final float INFERNO_STRIKE_SLOW = 0.45F;
     public static final int BASE_IMMOLATE_DAMAGE = 1;
@@ -126,8 +127,9 @@ public class Constant {
     public static float[] HEAVENLY_EDGE_DARK_SWORD = {14.0F, 1.22F, 4.0F};
     public static float[] HEAVENLY_EDGE_LIGHT_SWORD = {14.0F, 1.22F, 4.0F};
     public static float WAND = 4.0F;
-    public static float THUNDERZAPPER = 20.0F;
-    public static float STORMSURGE = 30.0F;
+    public static float THUNDERZAPPER = 10.0F;
+    public static float STORMSURGE = 15.0F;
+    public static float NIGHT_RAY = 9.0F;
     public static float BLAZING_BEACON = 14.0F;
     //
     public static double SHEEN_AD = 3.0;

@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.listeners;
 
 import com.google.gson.*;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.ResourceLocation;

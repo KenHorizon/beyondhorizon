@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.entity;
 
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -8,7 +8,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -109,7 +108,7 @@ public class BHLibEntity extends BHBaseEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        boolean flag = source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL);
+        boolean flag = source.is(net.minecraft.world.damagesource.DamageTypes.GENERIC) || source.is(net.minecraft.world.damagesource.DamageTypes.GENERIC_KILL);
         if (!source.is(DamageTypeTags.BYPASSES_ARMOR) && this.allowDamageCap()) {
             amount = Math.min(this.getDamageCap(), amount);
         }
@@ -206,16 +205,16 @@ public class BHLibEntity extends BHBaseEntity {
         this.setDeltaMovement(this.getDeltaMovement().add(new Vec3(0, distance, 0)));
     }
 
-    public boolean checkAndDealDamage(LivingEntity target, float multiplier, double extraRange, DamageType damageType) {
+    public boolean checkAndDealDamage(LivingEntity target, float multiplier, double extraRange, DamageInfoTypes DamageInfoTypes) {
         if (target != null && this.hasLineOfSight(target) && this.distanceTo(target) < this.getBbWidth() + target.getBbWidth() + extraRange) {
             float attackDamage = (float) this.getAttributeValue(Attributes.ATTACK_DAMAGE) * multiplier;
-            boolean flag = damageType.dealDamage(target, this, attackDamage);
+            boolean flag = DamageInfoTypes.dealDamage(target, this, attackDamage);
             if (flag) {
                 target.knockback(0.8D + 0.5D * multiplier, this.getX() - target.getX(), this.getZ() - target.getZ());
                 Entity entity = target.getVehicle();
                 if (entity instanceof LivingEntity) {
                     entity.setDeltaMovement(target.getDeltaMovement());
-                    damageType.dealDamage((LivingEntity) entity, this, attackDamage * 0.5F);
+                    DamageInfoTypes.dealDamage((LivingEntity) entity, this, attackDamage * 0.5F);
                 }
             }
             return flag;

@@ -5,7 +5,7 @@ import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -47,16 +47,16 @@ public abstract class AbstractImmolateAccessory extends AccessoryPassiveSkill {
         return 20L;
     }
 
-    public DamageType damageType() {
-        return DamageType.MAGIC_DAMAGE;
+    public DamageInfoTypes damageType() {
+        return DamageInfoTypes.MAGIC_DAMAGE;
     }
 
-    public void doDealDamage(DamageType damageType, LivingEntity target, LivingEntity attacker, float damage) {
+    public void doDealDamage(DamageInfoTypes DamageInfoTypes, LivingEntity target, LivingEntity attacker, float damage) {
         var combatCore = Capabilities.combat(attacker);
         if (combatCore != null) {
             combatCore.activated();
         }
-        damageType.dealAOEDamage(target, attacker, damage);
+        DamageInfoTypes.dealAOEDamage(target, attacker, damage);
     }
 
     public abstract float getImmolateDamage(LivingEntity affected, LivingEntity source);

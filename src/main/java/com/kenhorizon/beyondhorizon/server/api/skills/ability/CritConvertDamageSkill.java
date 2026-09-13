@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
@@ -56,7 +56,7 @@ public class CritConvertDamageSkill extends WeaponPassiveSkills {
                 crit = 1.0F;
             }
             float damage = (float) Maths.perValue(crit, 0.01D, this.scale);
-            DamageType.MAGIC_DAMAGE.dealDamage(target, attacker, damage);
+            DamageInfoTypes.MAGIC_DAMAGE.dealDamage(target, attacker, damage);
         }
     }
 

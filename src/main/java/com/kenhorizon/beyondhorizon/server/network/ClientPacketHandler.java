@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.client.render.guis.IRecipeUpdateListener;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.client.render.classify.IRecipeUpdateListener;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.api.block.INodeBlock;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerDataHelper;

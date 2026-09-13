@@ -2,7 +2,6 @@ package com.kenhorizon.beyondhorizon.server.enchantment;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
@@ -11,6 +10,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.item.base.weapons.MagicWeaponBaseItem;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
@@ -82,14 +82,14 @@ public class AdvancedEnchantment extends Enchantment implements IAdditionalEncha
             float applyDamage = context.multiply(0.15F * (level + 1));
             if (source.is(BHDamageTypeTags.PHYSICAL_DAMAGE)) {
                 target.invulnerableTime = 0;
-                target.hurt(BHDamageTypes.magicDamage(attacker), applyDamage);
+                target.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.MAGIC_DAMAGE, attacker), applyDamage);
             }
         }
         if (this == BHEnchantments.ECHO.get()) {
             float chances = 10.0F + (5.0F * level);
             if (random.nextFloat() * 100.0F <= chances) {
                 target.invulnerableTime = 0;
-                target.hurt(BHDamageTypes.physicalDamage(attacker), context.divide(2) );
+                target.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.PHYSICAL_DAMAGE, attacker), context.divide(2) );
             }
 
         }

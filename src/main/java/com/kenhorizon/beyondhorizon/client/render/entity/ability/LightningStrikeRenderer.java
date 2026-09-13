@@ -1,11 +1,9 @@
 package com.kenhorizon.beyondhorizon.client.render.entity.ability;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.ability.EntityCrossModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
-import com.kenhorizon.beyondhorizon.client.render.LightningBoltData;
-import com.kenhorizon.beyondhorizon.client.render.LightningRenderer;
 import com.kenhorizon.beyondhorizon.server.entity.ability.LightningStrikeAbility;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -19,9 +17,7 @@ import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.phys.Vec3;
 import org.joml.Matrix4f;
-import org.joml.Vector4f;
 
 public class LightningStrikeRenderer extends EntityRenderer<LightningStrikeAbility> {
     private final EntityCrossModel model;
@@ -35,11 +31,13 @@ public class LightningStrikeRenderer extends EntityRenderer<LightningStrikeAbili
     @Override
     public void render(LightningStrikeAbility entity,float entitYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
-//        this.sparkEffect(entity, partialTicks, poseStack, buffer);
         VertexConsumer builder = buffer.getBuffer(BHRenderTypes.beam(TEXTURE));
         int frames = 32;
-        float flickerSpeed = 1.0F;
-        float flickerEffect = Mth.clamp((float) ((entity.getLifeTime() * flickerSpeed % frames) / frames), 0.0F, 1.0F);
+        float flickerSpeed = 2.02F;
+        float flicker = (float) ((entity.getLifeTime() * flickerSpeed % frames) / frames);
+        float flickerEffect = Mth.clamp(flicker, 0.0F, 1.0F);
+        float rotation = (float) entity.getLifeTime() + partialTicks;
+        poseStack.mulPose(Axis.YP.rotationDegrees(90.0F - (rotation * 2.25F)));
         poseStack.translate(0, -0.25F, 0);
         this.model.renderToBuffer(poseStack, builder, packedLight, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, flickerEffect);
         poseStack.popPose();

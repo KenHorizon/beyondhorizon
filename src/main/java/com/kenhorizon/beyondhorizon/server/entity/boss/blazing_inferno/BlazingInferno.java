@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
@@ -12,7 +12,6 @@ import com.kenhorizon.beyondhorizon.client.sound.BossMusic;
 import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRayChargingSound;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
-import com.kenhorizon.beyondhorizon.server.entity.ability.beam.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.EruptionAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamDamageTags;
@@ -25,7 +24,7 @@ import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingSpear;
 import com.kenhorizon.beyondhorizon.server.entity.util.AnimationTickers;
 import com.kenhorizon.beyondhorizon.server.entity.util.ShockwaveUtils;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DefaultDamageCaps;
 import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.init.*;
@@ -49,7 +48,6 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -381,7 +379,7 @@ public class BlazingInferno extends BHBossEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        boolean flag = source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL);
+        boolean flag = source.is(net.minecraft.world.damagesource.DamageTypes.GENERIC) || source.is(net.minecraft.world.damagesource.DamageTypes.GENERIC_KILL);
         boolean immune = this.isBossImmune();
 
         if (immune) {
@@ -742,7 +740,7 @@ public class BlazingInferno extends BHBossEntity {
                         this.performRangedAttack(5, target, fireRate, velocity, 1.05F, 60);
                     } else if (this.inBetweenHealth(0.10F, 0.05F)) {
                         this.performRangedAttack(6, target, fireRate, velocity, 0.75F, 60);
-                    } else if (this.inBetweenHealth(0.5F, 0.0F)) {
+                    } else if (this.inBetweenHealth(0.05F, 0.0F)) {
                         this.performRangedAttack(10, target, fireRate, velocity, 0.50F, 60);
                     } else {
                         this.performRangedAttack(4, target, fireRate, 1.55F, 60);
@@ -1272,7 +1270,7 @@ public class BlazingInferno extends BHBossEntity {
     private void shootSpear(LivingEntity target, Vec3 position, int timer) {
         BlazingSpear projectile = new BlazingSpear(this.level(), this);
         position = position.yRot(-this.getYRot() * ((float) Math.PI / 180F));
-        projectile.setDamageType(DamageType.PHYSICAL_DAMAGE);
+        projectile.setDamageType(DamageInfoTypes.PHYSICAL_DAMAGE);
         projectile.setBaseDamage(3);
         projectile.setPos(this.getX() - (double) (this.getBbWidth() + 1.0F) * 0.15D * (double) Mth.sin(this.yBodyRot * ((float) Math.PI / 180F)), this.getY() + (double) 1F, this.getZ() + (double) (this.getBbWidth() + 1.0F) * 0.15D * (double) Mth.cos(this.yBodyRot * ((float) Math.PI / 180F)));
         double d0 = position.x;
@@ -1450,7 +1448,7 @@ public class BlazingInferno extends BHBossEntity {
         public boolean canUse() {
             LivingEntity target = this.entity.getTarget();
             return super.canUse() && this.entity.eruptionCooldown.isReadyToUse()
-                    && target != null && target.isAlive() && this.entity.getRandomChances(75) && this.entity.targetDistance < 5;
+                    && target != null && target.isAlive() && this.entity.getRandomChances(55) && this.entity.targetDistance < 5;
         }
 
         @Override
@@ -1624,7 +1622,7 @@ public class BlazingInferno extends BHBossEntity {
             }
             if (this.entity.getAnimationTick() >= 2) {
                 if (target != null) {
-                    this.entity.getLookControl().setLookAt(target.getX(),target.getY() + target.getBbHeight() / 2, target.getZ(), 2.0F, 45.0F);
+                    this.entity.getLookControl().setLookAt(target.getX(),target.getY() + target.getBbHeight() / 2, target.getZ(), 2.0F, 15.0F);
                 }
             }
         }

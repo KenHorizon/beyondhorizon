@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.blockentity;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.blockentity.GateDoorModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.server.block.entity.GateBlockBlockEntity;

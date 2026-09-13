@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
@@ -9,7 +9,6 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRayChargingSound;
 import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
-import com.kenhorizon.beyondhorizon.server.entity.ability.beam.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BurningHexTrapAbility;
 import com.kenhorizon.beyondhorizon.server.entity.ability.beam.BeamDamageTags;
@@ -24,7 +23,7 @@ import com.kenhorizon.beyondhorizon.server.entity.util.AnimationTickers;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntityDataSerializer;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DefaultDamageCaps;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
@@ -602,7 +601,7 @@ public class Pyrolliger extends BHBossEntity {
                 }
                 if (this.getAnimationTick() > 30) {
                     if (target == null) return;
-                    this.checkAndDealDamage(target, 1.0F, 1.0F, DamageType.PHYSICAL_DAMAGE);
+                    this.checkAndDealDamage(target, 1.0F, 1.0F, DamageInfoTypes.PHYSICAL_DAMAGE);
                 }
             }
 
@@ -614,7 +613,7 @@ public class Pyrolliger extends BHBossEntity {
                 if (this.getAnimationTick() == 30) {
                     this.navigation.stop();
                     this.setCantMoved();
-                    this.doAreaAttack(4.0F, 180.0F, 1.25F, Maths.sec(5), 0.0F, DamageType.PHYSICAL_DAMAGE);
+                    this.doAreaAttack(4.0F, 180.0F, 1.25F, Maths.sec(5), 0.0F, DamageInfoTypes.PHYSICAL_DAMAGE);
                 }
             }
         }
@@ -654,7 +653,7 @@ public class Pyrolliger extends BHBossEntity {
         var pos = this.position().add(rotation.scale(1.6));
         double dx = (pos.x) - this.getX();
         double dz = (pos.z) - this.getZ();
-        Pyrobolt projectile = new Pyrobolt(this.level(), DamageType.PHYSICAL_DAMAGE, this, this.getAttackDamage(0.20F),
+        Pyrobolt projectile = new Pyrobolt(this.level(), DamageInfoTypes.PHYSICAL_DAMAGE, this, this.getAttackDamage(0.20F),
                 this.getRandom().triangle(dx,dx  * (this.getRandom().nextFloat() * 4.12F)), 0, this.getRandom().triangle(dz,dz  * (this.getRandom().nextFloat() * 4.12F)), false);
         double spawnX = projectile.getX();
         double spawnY = this.getY(0.5D) + 0.5D;
@@ -726,7 +725,7 @@ public class Pyrolliger extends BHBossEntity {
         var pos = this.position().add(rotation.scale(1.6));
         double dx = (pos.x) - this.getX();
         double dz = (pos.z) - this.getZ();
-        Pyrolance projectile = new Pyrolance(this.level(), DamageType.PHYSICAL_DAMAGE, this, this.getAttackDamage(0.20F),
+        Pyrolance projectile = new Pyrolance(this.level(), DamageInfoTypes.PHYSICAL_DAMAGE, this, this.getAttackDamage(0.20F),
                 this.getRandom().triangle(dx,dx  * (this.getRandom().nextFloat() * 14.12F)), 0, this.getRandom().triangle(dz,dz  * (this.getRandom().nextFloat() * 14.12F)), false);
         projectile.setPos(this.getX() - (double) (this.getBbWidth() + 1.0F) * 0.15D * (double) Mth.sin(this.yBodyRot * ((float) Math.PI / 180F)), this.getY() + (double) 1F, this.getZ() + (double) (this.getBbWidth() + 1.0F) * 0.15D * (double) Mth.cos(this.yBodyRot * ((float) Math.PI / 180F)));
         projectile.setDelay(timer);

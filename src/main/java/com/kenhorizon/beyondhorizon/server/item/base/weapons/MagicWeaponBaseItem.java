@@ -234,14 +234,14 @@ public class MagicWeaponBaseItem extends BasicItem implements ISkillItems, IRelo
     }
 
     @Override
-    public boolean onLeftClickEntity(ItemStack itemStack, Player player, Entity entity) {
+    public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
         for (Skill skill : this.skills) {
             Optional<IAttack> properties = skill.attack();
             if (properties.isPresent()) {
-                return properties.get().onLeftClickEntity(itemStack, player, entity);
+                return properties.get().onLeftClickEntity(stack, player, entity);
             }
         }
-        return super.onLeftClickEntity(itemStack, player, entity);
+        return super.onLeftClickEntity(stack, player, entity);
     }
 
     @Override

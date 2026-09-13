@@ -1,11 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.api.stackable_tags;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 

@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.render.guis;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
-import com.kenhorizon.beyondhorizon.server.inventory.QuiverMenu;
+import com.kenhorizon.beyondhorizon.server.inventory.menu.QuiverMenu;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundQuiverSelectedArrowPacket;
 import net.minecraft.client.gui.GuiGraphics;

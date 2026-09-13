@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.google.common.collect.ImmutableList;
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.util.EffectUtil;

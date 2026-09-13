@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import net.minecraft.network.chat.Style;
 
 public class Fonts {

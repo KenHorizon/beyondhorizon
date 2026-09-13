@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.entity.mobs;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.entity.ai.HurtByNearestTargetGoal;
 import com.kenhorizon.beyondhorizon.server.entity.ai.MobAttackGoal;
@@ -8,13 +7,12 @@ import com.kenhorizon.beyondhorizon.server.entity.ai.MobMoveGoal;
 import com.kenhorizon.beyondhorizon.server.entity.ai.control.FlightMoveControl;
 import com.kenhorizon.beyondhorizon.server.entity.util.AnimationTickers;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageType;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -35,9 +33,6 @@ import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class DragonHornet extends BHLibEntity implements FlyingAnimal {
     public AnimationState animationAttack = new AnimationState();
@@ -65,7 +60,7 @@ public class DragonHornet extends BHLibEntity implements FlyingAnimal {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (source.is(DamageTypes.FALL)) {
+        if (source.is(net.minecraft.world.damagesource.DamageTypes.FALL)) {
             return false;
         }
         return super.hurt(source, amount);
@@ -258,7 +253,7 @@ public class DragonHornet extends BHLibEntity implements FlyingAnimal {
                 }
                 if (this.getAnimationTick() == 36 && target != null) {
                     this.doJumpTarget(1.110F, 0.0F);
-                    boolean flag = this.checkAndDealDamage(target, 1.0F, 2.0F, DamageType.PHYSICAL_DAMAGE);
+                    boolean flag = this.checkAndDealDamage(target, 1.0F, 2.0F, DamageInfoTypes.PHYSICAL_DAMAGE);
                     if (flag) {
                         target.addEffect(new MobEffectInstance(MobEffects.POISON, Maths.sec(3)));
                     }

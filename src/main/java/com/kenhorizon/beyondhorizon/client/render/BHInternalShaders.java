@@ -21,6 +21,7 @@ public class BHInternalShaders {
     public static void setRenderTypeTrailShader(ShaderInstance instance) {
         renderTypeTrailShader = instance;
     }
+
     public static void setPositionMarker(ShaderInstance instance) {
         positionMarker = instance;
     }

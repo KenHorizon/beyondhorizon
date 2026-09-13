@@ -2,5 +2,5 @@ package com.kenhorizon.beyondhorizon.server.level.damagesource;
 
 public enum DamageTags {
     DEFAULT,
-    AOT
+    AREA_OF_EFFECTS
 }

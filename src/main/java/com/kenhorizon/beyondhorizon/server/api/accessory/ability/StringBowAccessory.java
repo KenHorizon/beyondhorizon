@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
@@ -44,7 +45,7 @@ public class StringBowAccessory extends AccessoryPassiveSkill {
             target.knockback(0.4D * (1.0D + Constant.HEAVY_STRING_KNOCKBACK), d0, d1);
             float damageMult = Constant.HEAVY_STRING_DAMAGE;
             target.invulnerableTime = 0;
-            target.hurt(BHDamageTypes.physicalDamage(target, attacker), context.multiply(damageMult));
+            target.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.PHYSICAL_DAMAGE, target, attacker), context.multiply(damageMult));
         }
     }
 

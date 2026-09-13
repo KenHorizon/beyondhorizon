@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.inventory;
+package com.kenhorizon.beyondhorizon.server.inventory.menu;
 
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;

@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.data.RecipeFactory;
 import com.kenhorizon.beyondhorizon.datagen.recipes.WorkbenchRecipeProvider;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;

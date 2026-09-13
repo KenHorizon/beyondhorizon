@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.entity.ability.AbilityEntity;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -30,7 +29,17 @@ public abstract class AnimatedTextureRenderer<T extends Entity> extends EntityRe
         this.TEXTURE_PROGRESS = new ResourceLocation[this.numberOfFrames()];
         this.init();
     }
-
+    //
+    // minTextX ----------- maxTextX
+    // minTextY
+    // |
+    // |
+    // |
+    // maxTextY
+    //
+    //
+    //
+    //
     public void init() {
         this.minTextureX = (float) this.textureSize() / this.textureWidth();
         this.maxTextureX = this.minTextureX + (float) this.textureSize() / this.textureWidth();

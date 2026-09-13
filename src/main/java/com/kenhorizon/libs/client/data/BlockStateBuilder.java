@@ -1,15 +1,13 @@
 package com.kenhorizon.libs.client.data;
 
-import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.datagen.BHBlockStateProvider;
-import com.kenhorizon.beyondhorizon.server.block.AdvancePipeBlock;
 import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import com.kenhorizon.beyondhorizon.server.api.block.AdvanceFenceBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneWiredBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneMode;
-import com.kenhorizon.libs.registry.RegistryBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
@@ -150,6 +148,32 @@ public abstract class BlockStateBuilder extends BlockStateProvider {
     }
 
     public void directionalBlock(Block block, ModelFile model, int angleOffset) {
+        getVariantBuilder(block)
+                .forAllStates(state -> {
+                    return ConfiguredModel.builder()
+                            .modelFile(model)
+                            .rotationY(((int) state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot() + angleOffset) % 360)
+                            .build();
+                });
+    }
+    public void faceBlock(RegistryObject<Block> block) {
+        ResourceLocation front = BeyondHorizon.resource(String.format("block/%s_%s", name(block.get()), "front"));
+        ResourceLocation side = BeyondHorizon.resource(String.format("block/%s_%s", name(block.get()), "side"));
+        ResourceLocation top = BeyondHorizon.resource(String.format("block/%s_%s", name(block.get()), "top"));
+        ResourceLocation bottom = BeyondHorizon.resource(String.format("block/%s_%s", name(block.get()), "bottom"));
+        facingBlock(block.get(), side, front, top, bottom);
+        blockItem(block);
+    }
+
+    private void facingBlock(Block block, ResourceLocation side, ResourceLocation front, ResourceLocation top, ResourceLocation bottom) {
+        facingBlock(block, models().orientableWithBottom(name(block), side, front, bottom, top));
+    }
+
+    private void facingBlock(Block block, ModelFile model) {
+        facingBlock(block, model, 180);
+    }
+
+    private void facingBlock(Block block, ModelFile model, int angleOffset) {
         getVariantBuilder(block)
                 .forAllStates(state -> {
                     return ConfiguredModel.builder()

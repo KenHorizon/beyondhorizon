@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.configs;
 
+import com.kenhorizon.beyondhorizon.client.enums.SkillDisplay;
 import com.kenhorizon.beyondhorizon.configs.server.ModServerConfig;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.enums.GameHuds;
@@ -27,6 +28,7 @@ public class BHConfigs {
     public static boolean SHOW_TOOLTIP_QUIVER = true;
     public static boolean SHOW_TOOLTIP_VOIDBAG = true;
     public static int SCREEN_SHAKE_AMOUNT = 100;
+    public static SkillDisplay SKILL_DISPLAY = SkillDisplay.ICON;
     public static GameHuds GAME_HUD = GameHuds.MOD;
     //SERVER
     public static boolean ENCHANTMENT_BREAK_LEVEL = true;
@@ -38,6 +40,7 @@ public class BHConfigs {
         try {
             BeyondHorizon.LOGGER.info("Syncing all configs here!");
             //---------------------------------------------------------------------//
+            SKILL_DISPLAY = ModClientConfig.SKILL_DISPLAY.get();
             SHOW_TOOLTIP_QUIVER = ModClientConfig.SHOW_TOOLTIP_QUIVER.get();
             SHOW_TOOLTIP_VOIDBAG = ModClientConfig.SHOW_TOOLTIP_VOIDBAG.get();
             ATTRIBUTE_TOOLTIP_OVERHAUl = ModClientConfig.ATTRIBUTE_TOOLTIP_OVERHAUl.get();

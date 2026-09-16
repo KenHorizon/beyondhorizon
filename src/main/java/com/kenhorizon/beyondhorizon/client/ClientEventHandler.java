@@ -18,15 +18,14 @@ import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.item.classify.IArmPose;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilitySlotSelectionPacket;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAcessoryKeyPacket;
 import com.kenhorizon.libs.client.ModelAnimationHandler;
 import com.kenhorizon.libs.client.ModelAnimations;
-import com.kenhorizon.libs.client.WeaponAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;
 import com.kenhorizon.libs.client.event.PlayerModelEvent;
+import com.kenhorizon.libs.client.event.PlayerPoseHandEvent;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
@@ -35,7 +34,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
 import net.minecraft.client.gui.screens.inventory.*;
 import net.minecraft.client.gui.screens.recipebook.RecipeBookComponent;
-import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
@@ -61,7 +59,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.*;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 
@@ -312,7 +309,7 @@ public class ClientEventHandler {
     @SuppressWarnings({"unchecked", "ConstantConditions"})
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
-    public void onPoseHand(PlayerModelEvent event) {
+    public void onPlayerModelEvent(PlayerModelEvent event) {
         LivingEntity entity = (LivingEntity) event.getEntityIn();
         float limbSwing = event.getLimbSwing();
         float limbSwingAmount = event.getLimbSwingAmount();
@@ -345,12 +342,15 @@ public class ClientEventHandler {
                 model.rightArm.xRot = model.rightArm.xRot * 0.5F - (float) Math.PI;
                 model.rightArm.yRot = 0.0F;
                 break;
-            case HOLDING_1:
+            case HOLDING_ALT:
                 model.rightArm.xRot = model.head.xRot - (float) Math.toRadians(80.0F);
                 model.rightArm.yRot = model.head.yRot;
                 break;
             case HOLDING:
                 ModelAnimations.holding(model.rightArm, model.leftArm, model.head, true);
+                break;
+            case STAFF:
+                ModelAnimations.staff(model.rightArm, model.leftArm, model.head, false);
                 break;
             default:
                 model.rightArmPose.applyTransform(model, entity, HumanoidArm.RIGHT);
@@ -362,12 +362,15 @@ public class ClientEventHandler {
                 model.leftArm.xRot = model.leftArm.xRot * 0.5F - (float) Math.PI;
                 model.leftArm.yRot = 0.0F;
                 break;
-            case HOLDING_1:
+            case HOLDING_ALT:
                 model.leftArm.xRot = model.head.xRot - (float) Math.toRadians(80.0F);
                 model.leftArm.yRot = model.head.yRot;
                 break;
             case HOLDING:
                 ModelAnimations.holding(model.rightArm, model.leftArm, model.head, false);
+                break;
+            case STAFF:
+                ModelAnimations.staff(model.rightArm, model.leftArm, model.head, false);
                 break;
             default:
                 model.leftArmPose.applyTransform(model, entity, HumanoidArm.LEFT);

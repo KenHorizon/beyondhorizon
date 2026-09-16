@@ -4,10 +4,7 @@ import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import net.minecraft.resources.ResourceLocation;
 
 public class HudSprites {
-    public static final ResourceLocation HEALTH = BeyondHorizon.resourceGui("sprites/icon/heart.png");
-    public static final ResourceLocation ABSROPTION = BeyondHorizon.resourceGui("sprites/icon/absroption.png");
-    public static final ResourceLocation ARMOR = BeyondHorizon.resourceGui("sprites/icon/armor.png");
-    public static final ResourceLocation MANA = BeyondHorizon.resourceGui("sprites/icon/mana.png");
+    public static final ResourceLocation ICON_BOX = BeyondHorizon.resourceGui("sprites/icon/icon_box.png");
     public static final ResourceLocation BOSS_BAR_HUD_CONTAINER = BeyondHorizon.resourceGui("sprites/bossbar/container.png");
     public static final ResourceLocation BOSS_BAR_HUD = BeyondHorizon.resourceGui("sprites/bossbar/bossbar.png");
 

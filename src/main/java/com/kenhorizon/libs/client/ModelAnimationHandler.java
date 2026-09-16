@@ -15,14 +15,19 @@ public enum ModelAnimationHandler {
                 if (entity instanceof Player player) {
                     WeaponAnimations weaponAnimations = armPose.getWeaponAnimations(player, itemStack);
                     if (entity.getUsedItemHand() == hand && entity.getUseItemRemainingTicks() > 0) {
-                        if (weaponAnimations == WeaponAnimations.HOLDING && hand == entity.getUsedItemHand()) {
-                            return WeaponArmPose.HOLDING;
-                        }
-                        if (weaponAnimations == WeaponAnimations.GUARDIAN_SWORD && hand == entity.getUsedItemHand()) {
-                            return WeaponArmPose.GUARDIAN_SWORD;
-                        }
-                        if (weaponAnimations == WeaponAnimations.HOLDING_ALT && hand == entity.getUsedItemHand()) {
-                            return WeaponArmPose.HOLDING_1;
+                        if (hand == entity.getUsedItemHand()) {
+                            if (weaponAnimations == WeaponAnimations.HOLDING) {
+                                return WeaponArmPose.HOLDING;
+                            }
+                            if (weaponAnimations == WeaponAnimations.GUARDIAN_SWORD) {
+                                return WeaponArmPose.GUARDIAN_SWORD;
+                            }
+                            if (weaponAnimations == WeaponAnimations.HOLDING_ALT) {
+                                return WeaponArmPose.HOLDING_ALT;
+                            }
+                            if (weaponAnimations == WeaponAnimations.STAFF) {
+                                return WeaponArmPose.STAFF;
+                            }
                         }
                     }
                 }

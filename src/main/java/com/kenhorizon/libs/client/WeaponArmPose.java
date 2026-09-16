@@ -3,7 +3,8 @@ package com.kenhorizon.libs.client;
 public enum WeaponArmPose {
     EMPTY(false),
     HOLDING(true),
-    HOLDING_1(false),
+    HOLDING_ALT(false),
+    STAFF(false),
     GUARDIAN_SWORD(true);
     private boolean twoHanded;
 

@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 public class BoltShockAbility extends AbilityEntity {
-    public BoltShockAbility(EntityType<?> entityType, Level level) {
+    public BoltShockAbility(EntityType<? extends AbilityEntity> entityType, Level level) {
         super(entityType, level);
         this.setDuration(20);
         this.setBaseDamage(2);

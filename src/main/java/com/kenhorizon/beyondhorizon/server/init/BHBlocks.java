@@ -1,16 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.datagen.BHLootTableProvider;
-import com.kenhorizon.beyondhorizon.server.block.BasicBlock;
-import com.kenhorizon.beyondhorizon.server.block.GateBlocks;
-import com.kenhorizon.beyondhorizon.server.block.WorkbenchBlock;
+import com.kenhorizon.beyondhorizon.server.block.*;
 import com.kenhorizon.beyondhorizon.server.block.arcane.ArcaneBlock;
 import com.kenhorizon.beyondhorizon.server.block.arcane.ArcaneBudding;
 import com.kenhorizon.beyondhorizon.server.block.basin.FireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.basin.WallFireBasinBlock;
 import com.kenhorizon.beyondhorizon.server.block.fence.LatticeFenceBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneTransmitterBlock;
-import com.kenhorizon.beyondhorizon.server.block.AdvancePipeBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneWiredBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
@@ -588,7 +585,7 @@ public class BHBlocks {
             .register();
 
     public static final RegistryObject<Block> BLACK_IRON_GRATE = RegistryBlocks
-            .register("black_iron_grate", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().isValidSpawn(BasicBlock::never).isRedstoneConductor(BasicBlock::never).isSuffocating(BasicBlock::never).isViewBlocking(BasicBlock::never)))
+            .register("black_iron_grate", properties -> new WaterloggedTransparentBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().isValidSpawn(BasicBlock::never).isRedstoneConductor(BasicBlock::never).isSuffocating(BasicBlock::never).isViewBlocking(BasicBlock::never)))
             .properties(p -> p.strength(1.5F))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
@@ -604,7 +601,7 @@ public class BHBlocks {
             .register();
 
     public static final RegistryObject<Block> IRON_GRATE = RegistryBlocks
-            .register("iron_grate", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().isValidSpawn(BasicBlock::never).isRedstoneConductor(BasicBlock::never).isSuffocating(BasicBlock::never).isViewBlocking(BasicBlock::never)))
+            .register("iron_grate", properties -> new WaterloggedTransparentBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BLOCK).noOcclusion().isValidSpawn(BasicBlock::never).isRedstoneConductor(BasicBlock::never).isSuffocating(BasicBlock::never).isViewBlocking(BasicBlock::never)))
             .properties(p -> p.strength(1.5F))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)

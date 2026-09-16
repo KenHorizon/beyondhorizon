@@ -1,13 +1,16 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ForgeEntityTypeTagsProvider;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;
@@ -27,6 +30,7 @@ public class BHEntityTypeTagsProvider extends EntityTypeTagsProvider {
             this.tag(tags).add((EntityType<?>) object.get());
         });
         this.tag(BHEntityTypeTags.VOID_BANE_AFFECTED).add(EntityType.ENDERMAN, EntityType.ENDER_DRAGON, EntityType.ENDERMITE);
+        this.tag(Tags.EntityTypes.BOSSES).add(BHEntity.BLAZING_INFERNO.get(), BHEntity.PYROLLIGER.get());
         super.addTags(provider);
     }
 

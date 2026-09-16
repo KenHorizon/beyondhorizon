@@ -32,6 +32,8 @@ import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.util.attributes.AttributeModify;
 import com.kenhorizon.beyondhorizon.server.util.attributes.AttributeRegistryHelper;
 import com.kenhorizon.beyondhorizon.server.util.attributes.IAttributeRegistryHelper;
+import com.kenhorizon.libs.registry.RegistryEntries;
+import com.kenhorizon.libs.registry.RegistryHelper;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -176,7 +178,6 @@ public class BeyondHorizon
         if (config.getSpec() == ModServerConfig.SPEC) {
             ModServerConfig.reset();
         }
-
     }
 
     public static ResourceLocation resource(String name) {

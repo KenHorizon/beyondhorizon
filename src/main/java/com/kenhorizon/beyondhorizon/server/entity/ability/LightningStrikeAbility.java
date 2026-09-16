@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class LightningStrikeAbility extends AbilityEntity {
     public long seed;
-    public LightningStrikeAbility(EntityType<?> entityType, Level level) {
+    public LightningStrikeAbility(EntityType<? extends AbilityEntity> entityType, Level level) {
         super(entityType, level);
         this.setDuration(40);
         this.setBaseDamage(2);

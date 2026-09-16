@@ -19,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.TraceableEntity;
+import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.PushReaction;
@@ -29,7 +30,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public abstract class AbilityEntity extends Entity implements ILinkedEntity, TraceableEntity {
+public abstract class AbilityEntity extends Projectile implements ILinkedEntity, TraceableEntity {
     protected static final byte ID_CLIENT = 4;
     protected float damage = 5.0F;
     protected float radius = 1.0F;
@@ -57,8 +58,10 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     public static final String NBT_IGNORE_IMMUNITY_FRAME = "ignore_immunity_frame";
     public static final String NBT_OWNER = "owner";
 
-    public AbilityEntity(EntityType<?> entityType, Level level) {
+    public AbilityEntity(EntityType<? extends Projectile> entityType, Level level) {
         super(entityType, level);
+        this.noPhysics = true;
+        this.blocksBuilding = false;
     }
 
     @Override
@@ -119,6 +122,8 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     public DamageScaling getDamageTags() {
         return this.damageScaling;
     }
+
+
 
     @Override
     protected void addAdditionalSaveData(CompoundTag nbt) {
@@ -262,19 +267,14 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
     @Override
     public void tick() {
         super.tick();
-        if (this.getDelay() <= 0) {
-            if (this.level().isClientSide()) {
-                this.clientSide();
-                this.animation.increaseTimer();
-                this.setLifeTime(this.getLifeTime() + 1);
-                this.spawnParticles();
-            } else {
-                if (this.getLifeTime() == (this.getDelay())) {
-                    this.onStart();
-                }
 
-                if (this.getLifeTime() >= this.getDuration()) {
-                    this.discard();
+        if (this.getLifeTime() > this.getDuration()) {
+            this.discard();
+        }
+        if (this.getDelay() <= 0) {
+            if (!this.level().isClientSide()) {
+                if (this.getLifeTime() == this.getDelay()) {
+                    this.onStart();
                 }
                 if (!this.hasEnded()) {
                     this.onDuration();
@@ -282,7 +282,12 @@ public abstract class AbilityEntity extends Entity implements ILinkedEntity, Tra
                 if (this.hasEnded()) {
                     this.onEnd();
                 }
+            } else {
                 this.setLifeTime(this.getLifeTime() + 1);
+                this.clientSide();
+                this.animation.increaseTimer();
+                this.setLifeTime(this.getLifeTime() + 1);
+                this.spawnParticles();
             }
         } else {
             if (this.getDelay() > 0) {

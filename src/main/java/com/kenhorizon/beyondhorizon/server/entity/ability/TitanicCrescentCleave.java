@@ -9,7 +9,7 @@ import net.minecraft.world.phys.Vec3;
 
 public class TitanicCrescentCleave extends CleaveConeAbility {
 
-    public TitanicCrescentCleave(EntityType<?> entityType, Level level) {
+    public TitanicCrescentCleave(EntityType<? extends AbilityEntity> entityType, Level level) {
         super(entityType, level);
     }
 

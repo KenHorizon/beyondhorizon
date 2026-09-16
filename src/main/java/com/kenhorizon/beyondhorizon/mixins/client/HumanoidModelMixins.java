@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.mixins.client;
 
 import com.kenhorizon.libs.client.event.PlayerModelEvent;
+import com.kenhorizon.libs.client.event.PlayerPoseHandEvent;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.renderer.RenderType;
@@ -25,6 +26,24 @@ public abstract class HumanoidModelMixins extends Model {
     @Inject(method = "setupAnim(Lnet/minecraft/world/entity/LivingEntity;FFFFF)V", at = @At(value = "TAIL"))
     private void setupAnimations(LivingEntity entity, float limbSwing, float limbSwingAmount, float ageInTicks, float yaw, float pitch, CallbackInfo ci) {
         PlayerModelEvent event = new PlayerModelEvent(entity, (HumanoidModel<?>) ((Model) this), limbSwing, limbSwingAmount, ageInTicks, yaw, pitch);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.getResult() == Event.Result.ALLOW) {
+            ci.cancel();
+        }
+    }
+    @Inject(at = @At("HEAD"), method = "Lnet/minecraft/client/model/HumanoidModel;poseRightArm(Lnet/minecraft/world/entity/LivingEntity;)V", cancellable = true)
+    private void citadel_poseRightArm(LivingEntity entity, CallbackInfo ci) {
+        PlayerPoseHandEvent event = new PlayerPoseHandEvent(entity, (HumanoidModel) ((Model) this), false);
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.getResult() == Event.Result.ALLOW) {
+            ci.cancel();
+        }
+    }
+
+
+    @Inject(at = @At("HEAD"), method = "Lnet/minecraft/client/model/HumanoidModel;poseLeftArm(Lnet/minecraft/world/entity/LivingEntity;)V", cancellable = true)
+    private void citadel_poseLeftArm(LivingEntity entity, CallbackInfo ci) {
+        PlayerPoseHandEvent event = new PlayerPoseHandEvent(entity, (HumanoidModel) ((Model) this), true);
         MinecraftForge.EVENT_BUS.post(event);
         if (event.getResult() == Event.Result.ALLOW) {
             ci.cancel();

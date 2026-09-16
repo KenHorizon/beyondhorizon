@@ -24,7 +24,9 @@ public class HudInfo {
     public int scaledWindowHeight;
     public float casttime = 0;
     public float casttimeReduction = 0;
-    public String selectedAbility = "";
+    public String abilityDisplayName = "";
+    public String abilityId = "";
+    public String abilityName = "";
 
 
     public void update() {
@@ -49,7 +51,9 @@ public class HudInfo {
 
         this.casttime = this.getCastTime(player, stacks);
         this.casttimeReduction = (float) AttributeUtils.getValue(player, BHAttributes.CAST_TIME.get());
-        this.selectedAbility = this.getAbilityUsing(stacks);
+        this.abilityDisplayName = this.getAbilityUsing(stacks);
+        this.abilityId = this.getAbilityIdUsing(stacks);
+        this.abilityName = this.getAbilityNameUsing(stacks);
     }
 
     private String getAbilityUsing(ItemStack stack) {
@@ -58,6 +62,28 @@ public class HudInfo {
             if (skills.isPresent()) {
                 Component name = Component.translatable(skills.get().getDescriptionId());
                 return name.getString();
+            } else {
+                return "";
+            }
+        }
+        return "";
+    }
+    private String getAbilityNameUsing(ItemStack stack) {
+        if (stack.getItem() instanceof ISkillItems skillItems) {
+            var skills =  skillItems.getActiveSkill(stack);
+            if (skills.isPresent()) {
+                return skills.get().getName();
+            } else {
+                return "";
+            }
+        }
+        return "";
+    }
+    private String getAbilityIdUsing(ItemStack stack) {
+        if (stack.getItem() instanceof ISkillItems skillItems) {
+            var skills =  skillItems.getActiveSkill(stack);
+            if (skills.isPresent()) {
+                return skills.get().getId();
             } else {
                 return "";
             }

@@ -21,7 +21,7 @@ public abstract class AbstractConeAbility extends AbilityEntity {
     protected final ConePart[] subParts;
     protected boolean coneAtTarget;
 
-    public AbstractConeAbility(EntityType<?> entityType, Level level) {
+    public AbstractConeAbility(EntityType<? extends AbilityEntity> entityType, Level level) {
         super(entityType, level);
         this.setDuration(40);
         this.noPhysics = true;

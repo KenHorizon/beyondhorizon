@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay;
 
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.HudInfo;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.HudSprites;
+import com.kenhorizon.beyondhorizon.client.render.guis.sprites.IconSmallSprites;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import net.minecraft.client.gui.GuiGraphics;
@@ -18,7 +19,7 @@ public class ManaHud extends HudOverlay{
         int x = screenWidth / 2 - 91;
         int y = screenHeight - (gui.leftHeight + 21);
         String value = String.format("%.0f/%.0f", this.hud.mana, this.hud.maxMana);
-        BlitHelper.drawIcons(guiGraphics, HudSprites.MANA, x, y - 1);
+        BlitHelper.drawIcons(guiGraphics, IconSmallSprites.MANA, x, y - 1);
         BlitHelper.drawBorderedStrings(gui.getMinecraft().font, guiGraphics, value,x + (5 + 9), y, Colors.combineRGB(0, 148, 255));
         gui.getMinecraft().getProfiler().pop();
     }

@@ -13,6 +13,16 @@ public class TwilightRayRenderer extends AbstractLaserBeamRenderer {
     }
 
     @Override
+    public float getBeamSize() {
+        return 0.45F;
+    }
+
+    @Override
+    public float getStartRadius() {
+        return 0.32F;
+    }
+
+    @Override
     public ResourceLocation getTextureLocation(AbstractDeathRayAbility ability) {
         return TEXTURE;
     }

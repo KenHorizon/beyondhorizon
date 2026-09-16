@@ -24,14 +24,14 @@ public class ModelAnimations {
         rightHand.xRot = (-(float) Math.PI / 2F) + head.xRot + 0.1F;
         leftHand.xRot = -1.5F + head.xRot;
     }
-
-    public static void darkingSlash(ModelPart rightArm, ModelPart leftArm, boolean rightHanded) {
+    public static void staff(ModelPart rightArm, ModelPart leftArm, ModelPart head, boolean rightHanded) {
         ModelPart rightHand = rightHanded ? rightArm : leftArm;
         ModelPart leftHand = rightHanded ? leftArm : rightArm;
-        rightHand.xRot = rightHand.xRot * 0.5F - (float) Math.PI;
-        rightHand.yRot = 0.0F;
+        rightHand.yRot = (rightHanded ? -0.3F : 0.3F) + head.yRot;
+        leftHand.yRot = (rightHanded ? 0.6F : -0.6F) + head.yRot;
+        rightHand.xRot = (-(float) Math.PI / 2F) + head.xRot + 0.1F;
+        leftHand.xRot = -1.5F + head.xRot;
     }
-
     public static void flyingAnim(AbstractClientPlayer entity, float flightTick, float yaw, float pitch, PlayerModel<?> model) {
         model.leftArm.xRot = 0.0F;
         model.rightArm.xRot = 0.0F;

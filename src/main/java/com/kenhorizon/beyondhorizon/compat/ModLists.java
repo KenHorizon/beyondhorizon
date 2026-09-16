@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.compat;
 
 public class ModLists {
+    public static final String NEAT = "neat";
     public static final String ENCHANTMENT_DESCRIPTION = "enchdesc";
     public static final String ANVIL_FIX = "anvilfix";
     public static final String ATTRIBUTE_FIX = "attributefix";

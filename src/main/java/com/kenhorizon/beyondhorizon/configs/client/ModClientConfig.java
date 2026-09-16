@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.configs.client;
 
 import com.kenhorizon.beyondhorizon.client.enums.GameHuds;
+import com.kenhorizon.beyondhorizon.client.enums.SkillDisplay;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
@@ -22,6 +23,7 @@ public class ModClientConfig {
     public static ForgeConfigSpec.IntValue SCREEN_SHAKE_AMOUNT;
     public static ForgeConfigSpec.IntValue ACCESSORY_BUTTON_X;
     public static ForgeConfigSpec.IntValue ACCESSORY_BUTTON_Y;
+    public static ForgeConfigSpec.EnumValue<SkillDisplay> SKILL_DISPLAY;
     public static ForgeConfigSpec.EnumValue<GameHuds> GAME_HUD;
 
     public static final ForgeConfigSpec SPEC;
@@ -35,6 +37,9 @@ public class ModClientConfig {
 
     public ModClientConfig(ForgeConfigSpec.Builder builder) {
         builder.push("Beyond Horizon | Client Configs");
+        SKILL_DISPLAY = builder
+                .comment("Toggle whether skill render type")
+                .defineEnum("Skill Display", SkillDisplay.ICON, SkillDisplay.DISABLE, SkillDisplay.ICON, SkillDisplay.TEXT);
         MUSIC_BOSS = builder
                 .comment("Toggle the boss theme music when the boss spawn or active")
                 .define("Music", true);

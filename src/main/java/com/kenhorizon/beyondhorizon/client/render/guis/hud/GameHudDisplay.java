@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 
+import com.kenhorizon.beyondhorizon.client.render.guis.sprites.IconSmallSprites;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
 import com.kenhorizon.beyondhorizon.client.enums.GameHuds;
@@ -108,7 +109,7 @@ public class GameHudDisplay extends Gui {
         int x = this.hud.scaledWindowWidth / 2 - 91;
         int y = this.hud.scaledWindowHeight - (this.leftHeight + 11);
         String value = String.format("%.0f", this.hud.armor);
-        BlitHelper.drawIcons(guiGraphics, HudSprites.ARMOR, x, y - 1);
+        BlitHelper.drawIcons(guiGraphics, IconSmallSprites.ARMOR, x, y - 1);
         BlitHelper.drawBorderedStrings(minecraft.font, guiGraphics, value,x + (5 + 9), y, Colors.WHITE);
         minecraft.getProfiler().pop();
     }
@@ -121,13 +122,13 @@ public class GameHudDisplay extends Gui {
         if (this.hud.hasAbsroption) {
             String absorption = String.format("%.0f", this.hud.absorption);
             int abX = x + (5 + 9) - (24 + absorption.length());
-            BlitHelper.drawIcons(guiGraphics, HudSprites.ABSROPTION, abX - (5 + 9), y -1);
+            BlitHelper.drawIcons(guiGraphics, IconSmallSprites.ABSROPTION, abX - (5 + 9), y -1);
             BlitHelper.drawStrings(minecraft.font, guiGraphics, absorption, abX, y, Colors.WHITE, true);
         }
         String health = String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth);
-        BlitHelper.drawIcons(guiGraphics, HudSprites.HEALTH, x, y - 1);
+        BlitHelper.drawIcons(guiGraphics, IconSmallSprites.HEART, x, y - 1);
 //        BlitHelper.drawBorderedStrings(getForgeGui().getMinecraft().font, guiGraphics, health,x + (5 + 9), y, Colors.combineRGB(249, 87, 87));
-        BlitHelper.drawBorderedStrings(getForgeGui().getMinecraft().font, guiGraphics, health,x + (5 + 9), y, Colors.RED);
+        BlitHelper.drawBorderedStrings(getForgeGui().getMinecraft().font, guiGraphics, health,x + (5 + 9), y, Colors.GREEN);
         this.minecraft.getProfiler().pop();
     }
 

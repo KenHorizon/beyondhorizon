@@ -12,7 +12,7 @@ import net.minecraft.world.level.Level;
 import java.util.List;
 
 public class EruptionAbility extends AbilityEntity {
-    public EruptionAbility(EntityType<?> entityType, Level level) {
+    public EruptionAbility(EntityType<? extends AbilityEntity> entityType, Level level) {
         super(entityType, level);
         this.setDuration(100);
         this.setRadius(0.5F);

@@ -9,7 +9,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 
 public class CleaveConeAbility extends AbstractConeAbility {
-    public CleaveConeAbility(EntityType<?> entityType, Level level) {
+    public CleaveConeAbility(EntityType<? extends AbilityEntity> entityType, Level level) {
         super(entityType, level);
         this.setDuration(2);
         this.setRadius(2.5F);

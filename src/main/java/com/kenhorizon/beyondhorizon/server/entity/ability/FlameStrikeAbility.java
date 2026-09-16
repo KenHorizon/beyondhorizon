@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class FlameStrikeAbility extends AbilityEntity {
-    public FlameStrikeAbility(EntityType<?> entityType, Level level) {
+    public FlameStrikeAbility(EntityType<? extends AbilityEntity> entityType, Level level) {
         super(entityType, level);
         this.setDuration(40);
         this.setRadius(2.5F);

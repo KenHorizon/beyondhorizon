@@ -8,12 +8,14 @@ import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.LerpingBossEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.client.event.CustomizeGuiOverlayEvent;
+import net.minecraftforge.client.gui.overlay.ForgeGui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,6 +69,7 @@ public class BHBossBar {
     private int verticalIncrement;
     private int bossbarProgress;
     private ChatFormatting textColor;
+    private int tickCount;
 
     public BHBossBar(ResourceLocation container, ResourceLocation base, ResourceLocation overlay, int height, int baseX, int baseY,
                      int baseTextHeight, int overlayX, int overlayY, int overlayWidth, int overlayHeight, int bossbarProgress, int verticalIncrement, ChatFormatting chatFormatting) {
@@ -115,6 +118,7 @@ public class BHBossBar {
         int textX = screenW / 2 - fontLenght / 2;
         int textY = guiY;
         BlitHelper.drawBorderedStrings(minecraft.font, graphics, bossBarName, textX, textY, this.textColor.getColor().intValue());
+        ++this.tickCount;
         if (this.hasOverlay) {
             minecraft.getProfiler().push("beyondhorizon:bossbar_overlay");
             RenderSystem.setShaderTexture(0, this.overlay);

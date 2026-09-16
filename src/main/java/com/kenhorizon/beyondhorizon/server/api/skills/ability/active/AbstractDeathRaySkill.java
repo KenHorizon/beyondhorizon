@@ -49,7 +49,7 @@ public abstract class AbstractDeathRaySkill extends WeaponActiveSkills {
 
     @Override
     public WeaponAnimations getWeaponAnimations(Player player, ItemStack itemStack) {
-        return WeaponAnimations.HOLDING;
+        return WeaponAnimations.STAFF;
     }
 
 

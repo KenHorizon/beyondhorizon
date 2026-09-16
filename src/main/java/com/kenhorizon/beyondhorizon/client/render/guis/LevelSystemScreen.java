@@ -121,37 +121,11 @@ public class LevelSystemScreen extends Screen {
             this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 1), LevelSystem.AttributePoints.DEXERITY);
             this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 2), LevelSystem.AttributePoints.INTELLIGENGE);
             if (!this.role.isAlreadyReachedRequiredLevel()) {
-                guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, Colors.combineARGB(100, 0, 0,0));
+                guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, Colors.combineARGB(100, 0, 0, 0));
                 String warningText = String.format("You need to be level %s", Constant.LEVEL_SYSTEM_UNLOCKED);
-                BlitHelper.drawStrings(minecraft.font, guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, Colors.combineRGB(200, 0 , 0), true);
+                BlitHelper.drawStrings(minecraft.font, guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, Colors.combineRGB(200, 0, 0), true);
             }
         }
-//        if (this.category == Category.CLASS) {
-//            if (this.subCategory == SubCategory.CLASS_INFO) {
-//                guiGraphics.blit(LOCATION, this.posX + 129, this.posY + 12, 220, 0, 18, 18);
-//                BlitHelper.drawStrings(guiGraphics, activeRole.getName(), this.posX + 7, this.posY + 60, ColorUtil.GRAY);
-//                for (int i = 0; i < activeRole.getRoleDescription().size(); i++) {
-//                    Component text = activeRole.getRoleDescription().get(i);
-//                    BlitHelper.drawStrings(guiGraphics, text, this.posX + 7, this.posY + 12 + (i * 9), ColorUtil.GRAY);
-//                }
-//            } else {
-//                this.addSelectionButton(guiGraphics, this.posX, this.posY, RoleClasses.ASSASSIN.get());
-//                this.addSelectionButton(guiGraphics, this.posX, this.posY + (33 * 1), RoleClasses.MARKSMAN.get());
-//                this.addSelectionButton(guiGraphics, this.posX, this.posY + (33 * 2), RoleClasses.CASTER.get());
-//                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY, RoleClasses.STRIKER.get());
-//                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY + (33 * 1), RoleClasses.VANGUARD.get());
-//                this.addSelectionButton(guiGraphics, this.posX + 83, this.posY + (33 * 2), RoleClasses.SUPPORT.get());
-//                if (!this.role.isUnlockedClassAndTraits()) {
-//                    guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, ColorUtil.combineARGB(100, 0, 0,0));
-//                    String warningText = String.format("You need to be level %s", Constant.CLASS_SYSTEM_UNLOCKED);
-//                    BlitHelper.drawStrings(guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, ColorUtil.combineRGB(200, 0 , 0), true);
-//                }
-//            }
-//        }
-//        if (this.category == Category.TRAIT) {
-//            String warningText = String.format("You need to be level %s", Constant.LEVEL_SYSTEM_UNLOCKED);
-//            BlitHelper.drawStrings(guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, ColorUtil.combineRGB(200, 0 , 0), true);
-//        }
     }
 
     @Override

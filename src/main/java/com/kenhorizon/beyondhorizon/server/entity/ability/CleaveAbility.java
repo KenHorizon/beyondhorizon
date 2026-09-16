@@ -19,7 +19,7 @@ public class CleaveAbility extends AbilityEntity {
         CONE
     }
 
-    public CleaveAbility(EntityType<?> entityType, Level level) {
+    public CleaveAbility(EntityType<? extends AbilityEntity> entityType, Level level) {
         super(entityType, level);
         this.setDuration(2);
         this.setRadius(2.5F);

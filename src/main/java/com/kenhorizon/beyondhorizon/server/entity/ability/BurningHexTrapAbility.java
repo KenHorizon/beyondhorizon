@@ -14,7 +14,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class BurningHexTrapAbility extends AbilityEntity {
-    public BurningHexTrapAbility(EntityType<?> entityType, Level level) {
+    public BurningHexTrapAbility(EntityType<? extends AbilityEntity> entityType, Level level) {
         super(entityType, level);
         this.setDuration(100);
         this.setDelay(40);

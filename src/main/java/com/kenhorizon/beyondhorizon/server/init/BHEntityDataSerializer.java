@@ -10,6 +10,7 @@ public class BHEntityDataSerializer {
 
 
     private static final EntityDataSerializer<Pyrolliger.Mode> REG_PYROLLIGER_MODE = EntityDataSerializer.simpleEnum(Pyrolliger.Mode.class);
+
     public static final RegistryObject<EntityDataSerializer<Pyrolliger.Mode>> PYROLLIGER_MODE =
             RegistryEntries.ENTITY_DATA_SERIALIZER.register("pyrolliger_mode", () -> REG_PYROLLIGER_MODE);
 

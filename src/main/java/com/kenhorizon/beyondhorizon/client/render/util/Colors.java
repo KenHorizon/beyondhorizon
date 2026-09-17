@@ -10,6 +10,8 @@ public class Colors {
     public static int BLUE = combineRGB(0, 0, 255);
     public static int YELLOW = combineRGB(254, 239, 24);
 
+    public static int DARK_RED = combineRGB(45, 0, 0);
+
     public static int BLACK = combineRGB(0, 0 ,0);
     public static int WHITE = combineRGB(255, 255, 255);
 

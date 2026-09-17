@@ -1,6 +1,8 @@
 package com.kenhorizon.beyondhorizon.client;
 
 import com.google.common.collect.ImmutableList;
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay.ArmorHud;
+import com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay.HealthHud;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.ServerProxy;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
@@ -119,6 +121,8 @@ public class ClientProxy extends ServerProxy {
     }
 
     private void registerGuiOverlays(RegisterGuiOverlaysEvent event) {
+        event.registerBelow(VanillaGuiOverlay.PLAYER_HEALTH.id(), "health_hud", new HealthHud());
+        event.registerBelow(VanillaGuiOverlay.ARMOR_LEVEL.id(), "armor_hud", new ArmorHud());
         event.registerBelow(VanillaGuiOverlay.ARMOR_LEVEL.id(), "mana_hud", new ManaHud());
         event.registerBelow(VanillaGuiOverlay.ITEM_NAME.id(), "ability_hud", new AbilityHud());
     }

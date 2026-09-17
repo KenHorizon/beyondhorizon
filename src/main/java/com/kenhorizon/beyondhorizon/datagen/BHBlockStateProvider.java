@@ -43,6 +43,7 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.blockWithItem(BHBlocks.END_STONE_TILES);
         this.axisBlock(BHBlocks.END_STONE_PILLAR);
         this.axisBlock(BHBlocks.END_GREY_PILLAR);
+        this.axisBlock(BHBlocks.STONE_PILLAR);
         this.blockWithItem(BHBlocks.CHISILLED_END_STONE);
         this.blockWithItem(BHBlocks.PLAIN_CHISILLED_END_STONE);
         this.blockWithItem(BHBlocks.END_GREY_STONE);

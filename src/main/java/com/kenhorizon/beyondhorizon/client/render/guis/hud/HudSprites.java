@@ -4,9 +4,14 @@ import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import net.minecraft.resources.ResourceLocation;
 
 public class HudSprites {
+    public static final ResourceLocation HUD_FILL = BeyondHorizon.resourceGui("sprites/fillbar.png");
+    public static final ResourceLocation HUD_BAR = BeyondHorizon.resourceGui("sprites/bar.png");
+
     public static final ResourceLocation ICON_BOX = BeyondHorizon.resourceGui("sprites/icon/icon_box.png");
     public static final ResourceLocation BOSS_BAR_HUD_CONTAINER = BeyondHorizon.resourceGui("sprites/bossbar/container.png");
     public static final ResourceLocation BOSS_BAR_HUD = BeyondHorizon.resourceGui("sprites/bossbar/bossbar.png");
+
+    public final static ResourceLocation ICON_BACKGROUND = BeyondHorizon.resourceGui("sprites/icon/effects/icon_backgrounds.png");
 
     public static final ResourceLocation CAST_TIME = BeyondHorizon.resourceGui("sprites/hud/cast_time.png");
     public static final ResourceLocation CAST_TIME_BACKGROUND = BeyondHorizon.resourceGui("sprites/hud/cast_time_background.png");

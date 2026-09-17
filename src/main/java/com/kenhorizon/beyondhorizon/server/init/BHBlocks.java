@@ -167,6 +167,13 @@ public class BHBlocks {
             .dropSelf()
             .register();
 
+    public static final RegistryObject<Block> STONE_PILLAR = RegistryBlocks
+            .register("stone_pillar", properties -> new RotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STONE)))
+            .mineable(RegistryBlocks.Mineable.PICKAXE)
+            .tier(RegistryBlocks.ToolTiers.STONE)
+            .dropSelf()
+            .register();
+
     public static final RegistryObject<Block> HELLSTONE_BRICKS = RegistryBlocks
             .register("hellstone_bricks", properties -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)

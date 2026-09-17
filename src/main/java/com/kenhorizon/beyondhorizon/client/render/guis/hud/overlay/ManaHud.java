@@ -13,12 +13,13 @@ public class ManaHud extends HudOverlay{
     @Override
     public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         this.hud.update();
-        if (gui.getMinecraft().options.hideGui || !gui.shouldDrawSurvivalElements()) return;
+        if (drawInCreative(gui)) return;
         gui.setupOverlayRenderState(true, false);
         gui.getMinecraft().getProfiler().push("player_mana");
         int x = screenWidth / 2 - 91;
         int y = screenHeight - (gui.leftHeight + 21);
-        String value = String.format("%.0f/%.0f", this.hud.mana, this.hud.maxMana);
+        this.setProgress((float) (this.hud.mana / this.hud.maxMana));
+        String value = String.format("%.0f/%.0f", this.hud.maxMana * this.getProgress(), this.hud.maxMana);
         BlitHelper.drawIcons(guiGraphics, IconSmallSprites.MANA, x, y - 1);
         BlitHelper.drawBorderedStrings(gui.getMinecraft().font, guiGraphics, value,x + (5 + 9), y, Colors.combineRGB(0, 148, 255));
         gui.getMinecraft().getProfiler().pop();

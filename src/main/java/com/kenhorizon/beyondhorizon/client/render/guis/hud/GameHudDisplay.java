@@ -26,7 +26,6 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class GameHudDisplay extends Gui {
-    private final static ResourceLocation ICON_BACKGROUND = BeyondHorizon.resourceGui("sprites/icon/effects/icon_backgrounds.png");
     private final HudInfo hud = new HudInfo();
     private final Minecraft minecraft;
     private int leftHeight = 39;
@@ -38,11 +37,11 @@ public class GameHudDisplay extends Gui {
     @SubscribeEvent(receiveCanceled = true)
     public void onHealthBarRender(RenderGuiOverlayEvent.Pre event) {
         Minecraft minecraft = Minecraft.getInstance();
-        this.renderEffectIcons(event.getGuiGraphics(), event.getPartialTick());
+//        this.renderEffectIcons(event.getGuiGraphics(), event.getPartialTick());
 
         if (BHConfigs.GAME_HUD == GameHuds.VANILLA || minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.PLAYER_HEALTH.type()) return;
         event.setCanceled(true);
-        this.renderPlayerHearts(event.getGuiGraphics(), event.getPartialTick());
+//        this.renderPlayerHearts(event.getGuiGraphics(), event.getPartialTick());
     }
 
     @SubscribeEvent(receiveCanceled = true)
@@ -50,7 +49,7 @@ public class GameHudDisplay extends Gui {
         Minecraft minecraft = Minecraft.getInstance();
         if (BHConfigs.GAME_HUD == GameHuds.VANILLA || minecraft.options.hideGui || !this.shouldDrawSurvivalElements() || event.getOverlay() != VanillaGuiOverlay.ARMOR_LEVEL.type()) return;
         event.setCanceled(true);
-        this.renderArmor(event.getGuiGraphics(), event.getPartialTick());
+//        this.renderArmor(event.getGuiGraphics(), event.getPartialTick());
     }
 
     public void renderEffectIcons(GuiGraphics guiGraphics, float partialTicks) {
@@ -95,7 +94,7 @@ public class GameHudDisplay extends Gui {
             int x = this.hud.scaledWindowWidth / 2 - 91 + (26 * xPos);
             int y = this.hud.scaledWindowHeight - (this.getForgeGui().leftHeight + 52);
             String value = String.format("%s", tag.getStack());
-            BlitHelper.drawBlit(guiGraphics, ICON_BACKGROUND, x, y -1, 0, 0, 24, 24, 24, 24);
+            BlitHelper.drawBlit(guiGraphics, HudSprites.ICON_BACKGROUND, x, y -1, 0, 0, 24, 24, 24, 24);
             BlitHelper.drawBlit(guiGraphics, getAllIcons, x, y - 1, 0, 0, 24, 24, 24, 24);
             int valueLenght = value.length();
             BlitHelper.drawBorderedStrings(minecraft.font, guiGraphics, value,x + (2 + 9) - (valueLenght / 2), y + 12, Colors.WHITE);
@@ -104,7 +103,6 @@ public class GameHudDisplay extends Gui {
     }
 
     public void renderArmor(GuiGraphics guiGraphics, float partialTicks) {
-        minecraft.getProfiler().push("armor");
         this.hud.update();
         int x = this.hud.scaledWindowWidth / 2 - 91;
         int y = this.hud.scaledWindowHeight - (this.leftHeight + 11);
@@ -127,7 +125,6 @@ public class GameHudDisplay extends Gui {
         }
         String health = String.format("%.0f/%.0f", this.hud.health, this.hud.maxHealth);
         BlitHelper.drawIcons(guiGraphics, IconSmallSprites.HEART, x, y - 1);
-//        BlitHelper.drawBorderedStrings(getForgeGui().getMinecraft().font, guiGraphics, health,x + (5 + 9), y, Colors.combineRGB(249, 87, 87));
         BlitHelper.drawBorderedStrings(getForgeGui().getMinecraft().font, guiGraphics, health,x + (5 + 9), y, Colors.GREEN);
         this.minecraft.getProfiler().pop();
     }

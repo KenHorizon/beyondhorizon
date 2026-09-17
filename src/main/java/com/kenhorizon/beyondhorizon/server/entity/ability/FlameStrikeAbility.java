@@ -7,6 +7,7 @@ import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -84,7 +85,7 @@ public class FlameStrikeAbility extends AbilityEntity {
             if (entityOnRange instanceof LivingEntity targetOnRange) {
                 if (targetOnRange == attacker || targetOnRange == this.getTarget()) continue;
                 if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
-                    targetOnRange.hurt(BHDamageTypes.applyDamage(damageTypes.MAGIC_DAMAGE,this), this.getBaseDamage());
+                    targetOnRange.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.MAGIC_DAMAGE,this), this.getBaseDamage());
                 }
             }
         }

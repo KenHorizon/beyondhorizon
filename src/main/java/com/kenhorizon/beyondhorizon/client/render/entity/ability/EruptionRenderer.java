@@ -27,6 +27,6 @@ public class EruptionRenderer extends AnimatedAbilityRenderer<EruptionAbility> {
 
     @Override
     public int numberOfFrames() {
-        return 5;
+        return 6;
     }
 }

@@ -1,4 +1,4 @@
-// 1.20.1	2026-09-13T20:13:21.3177947	Loot Tables
+// 1.20.1	2026-09-17T15:05:44.236936	Loot Tables
 947255dfed5be2c55821eeee5bc219539c73d16a data/beyondhorizon/loot_tables/blocks/arcane_budding.json
 b1a29c20741f4b197c9e1d83cd94bd08141535be data/beyondhorizon/loot_tables/blocks/arcane_budding_full.json
 2a5a5ac428280705f5e861eaa7eddde9d7e8c63a data/beyondhorizon/loot_tables/blocks/arcane_rocks.json
@@ -82,6 +82,7 @@ f7894b7956ebb0f12de0aad402853d7590d280e4 data/beyondhorizon/loot_tables/blocks/s
 831bfa16481b72e6ab661765c58b2d42a807ec43 data/beyondhorizon/loot_tables/blocks/starite_block.json
 21575e1c3f344f6f8a754617c9f176c482827145 data/beyondhorizon/loot_tables/blocks/starite_ore.json
 fe520fc688496f291f778dc0dfd341bf689d71f5 data/beyondhorizon/loot_tables/blocks/starite_rocks.json
+eb612d88275b738f74e63a2188a54932cbc9aab1 data/beyondhorizon/loot_tables/blocks/stone_pillar.json
 5f7a373ab3f160c78afae1ee54b5ab42a287f060 data/beyondhorizon/loot_tables/blocks/tattered_black_iron_lattice.json
 6c066b516016a4fd1d3420493b2dc2ac36e5af4b data/beyondhorizon/loot_tables/blocks/tattered_iron_lattice.json
 5401ad849ca8f1fb18467917522d1d905861e9a9 data/beyondhorizon/loot_tables/blocks/voidstone.json

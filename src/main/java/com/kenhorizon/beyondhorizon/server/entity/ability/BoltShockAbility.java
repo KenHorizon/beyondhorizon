@@ -6,7 +6,10 @@ import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -36,15 +39,19 @@ public class BoltShockAbility extends AbilityEntity {
         level.addFreshEntity(ability);
     }
 
+    public boolean hasStriked(int initialStart) {
+        return this.getLifeTime() > this.getDuration() - initialStart;
+    }
     @Override
     public void clientSide() {
+        RandomSource randoms = RandomSource.create(this.random.nextLong());
         if (this.hasEnded()) {
             int colorCode = Colors.combineRGB(0, 186, 255);
             for (int i = 0; i < 20; ++i) {
-                double d0 = (random.nextFloat() - 1.5F) + random.nextFloat() * this.getRadius();
-                double d1 = (random.nextFloat() - 1.5F) + random.nextFloat() * this.getRadius();
-                double d2 = (random.nextFloat() - 1.5F) + random.nextFloat() * this.getRadius();
-                double dist = random.nextFloat() * this.getRadius();
+                double d0 = (random.nextFloat() - 1.5F) + randoms.nextFloat() * 0.5F;
+                double d1 = (random.nextFloat() - 1.5F) + randoms.nextFloat() * 0.5F;
+                double d2 = (random.nextFloat() - 1.5F) + randoms.nextFloat() * 0.5F;
+                double dist = randoms.nextFloat() * 0.5F;
                 double d3 = d0 * dist;
                 double d4 = d1 * dist;
                 double d5 = d2 * dist;
@@ -72,13 +79,13 @@ public class BoltShockAbility extends AbilityEntity {
             if (entityOnRange instanceof LivingEntity targetOnRange) {
                 if (attacker == null) {
                     if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
-                        targetOnRange.hurt(BHDamageTypes.applyDamage(damageTypes.MAGIC_DAMAGE, DamageTags.AREA_OF_EFFECTS, null, null), this.getBaseDamage());
+                        targetOnRange.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.MAGIC_DAMAGE, DamageTags.AREA_OF_EFFECTS, null, null), this.getBaseDamage());
                     }
                 } else {
                     if (targetOnRange == attacker) continue;
                     if (attacker.isAlliedTo(targetOnRange)) continue;
                     if (targetOnRange.isAlive() && !targetOnRange.isInvulnerable()) {
-                        targetOnRange.hurt(BHDamageTypes.applyDamage(damageTypes.MAGIC_DAMAGE, DamageTags.AREA_OF_EFFECTS,this, attacker), this.getBaseDamage());
+                        targetOnRange.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.MAGIC_DAMAGE, DamageTags.AREA_OF_EFFECTS,this, attacker), this.getBaseDamage());
                     }
                 }
             }

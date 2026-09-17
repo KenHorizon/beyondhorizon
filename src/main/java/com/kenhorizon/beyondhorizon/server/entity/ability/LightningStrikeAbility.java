@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.entity.util.ShockwaveUtils;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -62,9 +63,9 @@ public class LightningStrikeAbility extends AbilityEntity {
            }
            for (int i = 0; i < 20; ++i) {
                RandomSource randoms = RandomSource.create(this.random.nextLong());
-               double d0 = (random.nextFloat() - 1.5F) + randoms.nextFloat() * 2.0F;
-               double d1 = (random.nextFloat() - 1.5F) + randoms.nextFloat() * 2.0F;
-               double d2 = (random.nextFloat() - 1.5F) + randoms.nextFloat() * 2.0F;
+               double d0 = (random.nextFloat() - 1.5F) + (randoms.nextFloat() * 0.5F);
+               double d1 = (random.nextFloat() - 1.5F) + (randoms.nextFloat() * 0.5F);
+               double d2 = (random.nextFloat() - 1.5F) + (randoms.nextFloat() * 0.5F);
                double dist = random.nextFloat() * this.getRadius();
                double d3 = d0 * dist;
                double d4 = d1 * dist;
@@ -98,12 +99,12 @@ public class LightningStrikeAbility extends AbilityEntity {
             if (entityOnRange instanceof LivingEntity nearby) {
                 if (attacker == null) {
                     if (nearby.isAlive() && !nearby.isInvulnerable()) {
-                        nearby.hurt(BHDamageTypes.applyDamage(damageTypes.MAGIC_DAMAGE, DamageTags.AREA_OF_EFFECTS, this, null), this.getBaseDamage());
+                        nearby.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.MAGIC_DAMAGE, DamageTags.AREA_OF_EFFECTS, this, null), this.getBaseDamage());
                     }
                 } else {
                     if (nearby == attacker || attacker.isAlliedTo(nearby)) continue;
                     if (nearby.isAlive() && !nearby.isInvulnerable()) {
-                        nearby.hurt(BHDamageTypes.applyDamage(damageTypes.MAGIC_DAMAGE, DamageTags.AREA_OF_EFFECTS, this, attacker), this.getBaseDamage());
+                        nearby.hurt(BHDamageTypes.applyDamage(DamageInfoTypes.MAGIC_DAMAGE, DamageTags.AREA_OF_EFFECTS, this, attacker), this.getBaseDamage());
                     }
                 }
             }

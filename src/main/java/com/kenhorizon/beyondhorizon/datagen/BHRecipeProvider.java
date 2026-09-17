@@ -85,6 +85,16 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.IRON_GRATE.get(), Blocks.IRON_BLOCK, 4);
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.IRON_SHEET.get(), Blocks.IRON_BLOCK, 4);
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.BLACK_IRON_GRATE.get(), BHBlocks.BLACK_IRON_GRATE.get(), 4);
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.STONE_PILLAR.get(), Blocks.STONE, 4);
+        stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.STONE_PILLAR.get(), Blocks.STONE_BRICKS, 4);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BHBlocks.STONE_PILLAR.get(), 4)
+                .pattern("#")
+                .pattern("#")
+                .define('#', Blocks.STONE_BRICKS)
+                .unlockedBy("has_materials_for_stone_pillar",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(Blocks.STONE_BRICKS).build()))
+                .save(consumer);
 
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Items.STRING, 4)
                 .requires(BHItemTags.WOOL_FUR)

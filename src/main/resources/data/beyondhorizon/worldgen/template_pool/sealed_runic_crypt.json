@@ -1,0 +1,42 @@
+{
+  "name": "beyondhorizon:sealed_runic_crypt",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:sealed_runic_crypt/front",
+        "processors": "beyondhorizon:sealed_runic_crypt_generic_degradation"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:sealed_runic_crypt/back",
+        "processors": "beyondhorizon:sealed_runic_crypt_generic_degradation"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:sealed_runic_crypt/right",
+        "processors": "beyondhorizon:sealed_runic_crypt_generic_degradation"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "element_type": "minecraft:single_pool_element",
+        "projection": "rigid",
+        "location": "beyondhorizon:sealed_runic_crypt/left",
+        "processors": "beyondhorizon:sealed_runic_crypt_generic_degradation"
+      }
+    }
+  ]
+}

@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.entity.ability.BoltShockAbility;
+import com.kenhorizon.beyondhorizon.server.entity.ability.LightningStrikeAbility;
 import com.kenhorizon.beyondhorizon.server.entity.projectiles.MagicBolt;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
@@ -14,11 +15,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -64,19 +68,20 @@ public class BoltShockSkill extends WeaponActiveSkills {
     @Override
     public void abilityUse(ItemStack itemStack, Level level, Player player, InteractionHand hand) {
         player.startUsingItem(hand);
-        if (!level.isClientSide()) {
-            MagicBolt projectile = new MagicBolt(level, player);
-            projectile.setBaseDamage(this.additionalDamage(player, itemStack));
-            Vec3 vector3d = player.getViewVector(1.0F);
-            Vec3 vec3 = player.getHandHoldingItemAngle(itemStack.getItem());
-            double d0 = player.getX() + vec3.x();
-            double d1 = player.getY() + vec3.y() + (player.getBbHeight() / 2) + 0.25D;
-            double d2 = player.getZ() + vec3.z();
-            projectile.shoot(vector3d.x(), vector3d.y(), vector3d.z(), 2.0F, 1.0F);
-            projectile.setPosRaw(d0, d1, d2);
-            if (level.addFreshEntity(projectile)) {
-                this.addCooldownManaCost(player);
-            }
+        double range = 128.0D;
+        HitResult realHitResult = ProjectileUtil.getHitResultOnViewVector(player, Entity::canBeHitByProjectile, range);
+        if(realHitResult.getType() == HitResult.Type.MISS){
+            realHitResult = ProjectileUtil.getHitResultOnViewVector(player, Entity::canBeHitByProjectile, 42);
+        }
+        BlockPos mutableSkyPos = new BlockPos.MutableBlockPos(realHitResult.getLocation().x, realHitResult.getLocation().y + 0.5D, realHitResult.getLocation().z);
+        Vec3 vec3 = mutableSkyPos.getCenter();
+        BoltShockAbility projectile = new BoltShockAbility(level);
+        projectile.setCaster(player);
+        projectile.setBaseDamage(this.additionalDamage(player, itemStack));
+        projectile.setRadius(2.0F);
+        projectile.setPos(vec3);
+        if (level.addFreshEntity(projectile)) {
+            this.addCooldownManaCost(player);
         }
     }
 

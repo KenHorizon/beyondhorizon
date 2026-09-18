@@ -1,10 +1,12 @@
 package com.kenhorizon.beyondhorizon.client.render.util;
 
+import com.google.common.collect.Multimap;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -88,6 +90,22 @@ public class BlitHelper {
         guiGraphics.drawString(font,text.getVisualOrderText(), x, y, color, false);
         // Issues of rendering using minecraft.font where the text are visible on Screen UIs like Inventory, and others
 //        font.drawInBatch8xOutline(text.getVisualOrderText(), x, y, color, borderColor, matrix4f, guiGraphics.bufferSource(), LightTexture.FULL_BRIGHT);
+    }
+
+    public static void drawBorderedStrings(Font font, Component text, int x, int y, int color, Matrix4f matrix4f, MultiBufferSource buffer) {
+        drawBorderedStrings(font, text, x, y, color, Colors.BLACK, matrix4f, buffer);
+    }
+    public static void drawBorderedStrings(Font font, Component text, int x, int y, int color, int borderColor, Matrix4f matrix4f, MultiBufferSource buffer) {
+        int i = adjustColor(borderColor);
+        for (int j = -1; j <= 1; ++j) {
+            for (int k = -1; k <= 1; ++k) {
+                if (j != 0 || k != 0) {
+                    font.drawInBatch(text.getVisualOrderText(), x + j, y + k, i, false, matrix4f, buffer, Font.DisplayMode.NORMAL, 0, 15728880);
+                }
+            }
+        }
+        font.drawInBatch(text.getVisualOrderText(), x, y, color, false, matrix4f, buffer, Font.DisplayMode.NORMAL, 0, 15728880);
+
     }
     private static int adjustColor(int color) {
         return (color & -67108864) == 0 ? color | -16777216 : color;

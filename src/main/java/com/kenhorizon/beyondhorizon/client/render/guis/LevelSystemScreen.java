@@ -77,7 +77,7 @@ public class LevelSystemScreen extends Screen {
 
     @Override
     protected void init() {
-        super.init();
+        this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(BHSounds.LEVEL_SYSTEM_ADD.get(), 1.0F));
         this.player = BeyondHorizon.PROXY.clientPlayer();
         this.scaledWindowWidth = minecraft.getWindow().getGuiScaledWidth();
         this.scaledWindowHeight = minecraft.getWindow().getGuiScaledHeight();

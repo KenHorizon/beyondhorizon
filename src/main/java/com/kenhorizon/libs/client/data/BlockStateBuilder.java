@@ -3,7 +3,7 @@ package com.kenhorizon.libs.client.data;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.datagen.BHBlockStateProvider;
 import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
-import com.kenhorizon.beyondhorizon.server.api.block.AdvanceFenceBlock;
+import com.kenhorizon.beyondhorizon.server.block.AdvanceFenceBlock;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneWiredBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;

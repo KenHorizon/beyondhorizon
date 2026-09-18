@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Rarity;
@@ -8,14 +9,27 @@ import net.minecraft.world.item.Rarity;
 import java.awt.*;
 
 public class BHRarity {
-    public static final Rarity LEGENDARY = Rarity.create("beyondhorizon:legendary", style ->
+    public static final Rarity LEGENDARY = Rarity.create(createName("legendary"), style ->
             style.withColor(getPulsingColor(2000, Colors.GOLD, Colors.YELLOW)));
 
-    public static final Rarity MYTHICAL = Rarity.create("beyondhorizon:mythical", style ->
+    public static final Rarity HELLISH = Rarity.create(createName("hellish"), style ->
             style.withColor(getPulsingColor(2000, Colors.RED, Colors.ORANGE)));
 
-    public static final Rarity TRANSCENDENT = Rarity.create("beyondhorizon:transcendent", style ->
+    public static final Rarity MYTHICAL = Rarity.create(createName("mythical"), style ->
+            style.withColor(getPulsingColor(2000, Colors.RED, Colors.ORANGE)));
+
+    public static final Rarity TRANSCENDENT = Rarity.create(createName("transcendent"), style ->
             style.withColor(Color.HSBtoRGB((System.currentTimeMillis() % 5000) / 5000F, 1F, 1F)));
+
+    public static final Rarity STELLAR = Rarity.create(createName("stellar"), style ->
+            style.withColor(getPulsingColor(2000, Colors.NAVY_BLUE, Colors.CYAN)));
+
+    public static final Rarity COSMIC_PURPLE = Rarity.create(createName("cosmic_purple"), style ->
+            style.withColor(getPulsingColor(2000, Colors.MAGENTA, Colors.LIGHT_MAGENTA)));
+
+    private static String createName(String name) {
+        return String.format("%s:%s", BeyondHorizon.ID, name);
+    }
 
     private static int getPulsingColor(long cycle, int color1, int color2) {
 

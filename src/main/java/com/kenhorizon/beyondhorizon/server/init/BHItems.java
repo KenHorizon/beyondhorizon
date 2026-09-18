@@ -160,10 +160,10 @@ public class BHItems {
     public static final RegistryObject<Item> BLACK_IRON_INGOT = basicItem("black_iron_ingot", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> BLACK_IRON_NUGGET = basicItem("black_iron_nugget", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> CRIMSNITE_INGOT = basicItem("crimsnite_ingot", Rarity.UNCOMMON, RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> HELLSTONE_INGOT = basicItem("hellstone_ingot", Rarity.UNCOMMON, RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> STARITE_INGOT = basicItem("starite_ingot", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> LUMINITE_INGOT = basicItem("luminite_ingot", RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> DARK_CRYSTAL = basicItem("dark_crystal", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> HELLSTONE_INGOT = basicItem("hellstone_ingot", BHRarity.HELLISH, RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> STARITE_INGOT = basicItem("starite_ingot", BHRarity.STELLAR, RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> LUMINITE_INGOT = basicItem("luminite_ingot", BHRarity.COSMIC_PURPLE, RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> DARK_CRYSTAL = basicItem("dark_crystal", BHRarity.COSMIC_PURPLE, RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> SHADOWCRUST = basicItem("shadowcrust", RegistryTabs.Category.INGREDIENTS);
 
     public static final RegistryObject<Item> IRON_PLATE = basicItem("iron_plate", RegistryTabs.Category.INGREDIENTS);
@@ -186,18 +186,18 @@ public class BHItems {
     public static final RegistryObject<Item> CRIMSNITE_SHOVEL = toolItem("crimsnite_shovel", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, MeleeItemBuilder.SHOVEL);
     public static final RegistryObject<Item> CRIMSNITE_HOE = toolItem("crimsnite_hoe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, MeleeItemBuilder.HOE);
 
-    public static final RegistryObject<Item> HELLSTONE_SWORD = swordItem("hellstone_sword", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.SWORD);
-    public static final RegistryObject<Item> HELLSTONE_AXE = toolItem("hellstone_axe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.AXE);
-    public static final RegistryObject<Item> HELLSTONE_PICKAXE = toolItem("hellstone_pickaxe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.PICKAXE);
-    public static final RegistryObject<Item> HELLSTONE_SHOVEL = toolItem("hellstone_shovel", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.SHOVEL);
-    public static final RegistryObject<Item> HELLSTONE_HOE = toolItem("hellstone_hoe", Rarity.UNCOMMON, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.HOE);
+    public static final RegistryObject<Item> HELLSTONE_SWORD = swordItem("hellstone_sword", BHRarity.HELLISH, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.SWORD);
+    public static final RegistryObject<Item> HELLSTONE_AXE = toolItem("hellstone_axe", BHRarity.HELLISH, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.AXE);
+    public static final RegistryObject<Item> HELLSTONE_PICKAXE = toolItem("hellstone_pickaxe", BHRarity.HELLISH, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.PICKAXE);
+    public static final RegistryObject<Item> HELLSTONE_SHOVEL = toolItem("hellstone_shovel",BHRarity.HELLISH, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.SHOVEL);
+    public static final RegistryObject<Item> HELLSTONE_HOE = toolItem("hellstone_hoe", BHRarity.HELLISH, MeleeWeaponMaterials.HELLSTONE, MeleeItemBuilder.HOE);
 
-    public static final RegistryObject<Item> STARITE_CLAYMORE = swordItem("starite_claymore", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.CLAYMORE, ItemModels.BIG32_HANDHELD);
-    public static final RegistryObject<Item> STARITE_SWORD = swordItem("starite_sword", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.SWORD);
-    public static final RegistryObject<Item> STARITE_AXE = toolItem("starite_axe", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.AXE);
-    public static final RegistryObject<Item> STARITE_PICKAXE = toolItem("starite_pickaxe", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.PICKAXE);
-    public static final RegistryObject<Item> STARITE_SHOVEL = toolItem("starite_shovel", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.SHOVEL);
-    public static final RegistryObject<Item> STARITE_HOE = toolItem("starite_hoe", MeleeWeaponMaterials.STARITE, MeleeItemBuilder.HOE);
+    public static final RegistryObject<Item> STARITE_CLAYMORE = swordItem("starite_claymore", BHRarity.STELLAR, MeleeWeaponMaterials.STARITE, MeleeItemBuilder.CLAYMORE, ItemModels.BIG32_HANDHELD);
+    public static final RegistryObject<Item> STARITE_SWORD = swordItem("starite_sword", BHRarity.STELLAR, MeleeWeaponMaterials.STARITE, MeleeItemBuilder.SWORD);
+    public static final RegistryObject<Item> STARITE_AXE = toolItem("starite_axe", BHRarity.STELLAR, MeleeWeaponMaterials.STARITE, MeleeItemBuilder.AXE);
+    public static final RegistryObject<Item> STARITE_PICKAXE = toolItem("starite_pickaxe", BHRarity.STELLAR, MeleeWeaponMaterials.STARITE, MeleeItemBuilder.PICKAXE);
+    public static final RegistryObject<Item> STARITE_SHOVEL = toolItem("starite_shovel", BHRarity.STELLAR, MeleeWeaponMaterials.STARITE, MeleeItemBuilder.SHOVEL);
+    public static final RegistryObject<Item> STARITE_HOE = toolItem("starite_hoe", BHRarity.STELLAR, MeleeWeaponMaterials.STARITE, MeleeItemBuilder.HOE);
 
     public static final RegistryObject<Item> BLACK_IRON_CLAYMORE = swordItem("black_iron_claymore", MeleeWeaponMaterials.BLACK_IRON, MeleeItemBuilder.CLAYMORE, ItemModels.BIG32_HANDHELD);
     public static final RegistryObject<Item> BLACK_IRON_SWORD = swordItem("black_iron_sword", MeleeWeaponMaterials.BLACK_IRON, MeleeItemBuilder.SWORD);
@@ -496,7 +496,7 @@ public class BHItems {
 
     public static final RegistryObject<Item> STELLAR_AXE = RegistryItems
             .register("stellar_axe", item -> MeleeItemBuilder.STELLAR_AXE.create(MeleeWeaponMaterials.TIER_ONE, item))
-            .properties(p -> p.rarity(BHRarity.MYTHICAL))
+            .properties(p -> p.rarity(BHRarity.STELLAR))
             .tab(RegistryTabs.Category.COMBAT)
             .model(ItemModels.BIG32_INHAND)
             .register();

@@ -4,5 +4,6 @@ public class ClientTooltipRegister {
     public static void register() {
         ClientQuiverTooltip.registerFactory();
         ClientVoidBagTooltip.registerFactory();
+        ItemStackNameRarity.registerFactory();
     }
 }

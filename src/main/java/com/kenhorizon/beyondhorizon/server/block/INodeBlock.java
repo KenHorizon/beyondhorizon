@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.api.block;
+package com.kenhorizon.beyondhorizon.server.block;
 
 public interface INodeBlock {
 

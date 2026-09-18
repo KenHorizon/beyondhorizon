@@ -42,10 +42,6 @@ public interface ISkillItems {
         }
         for (int i = 0; i < this.getSkills().size(); i++) {
             Skill skill = this.getSkills().stream().toList().get(i);
-            if (!skill.getAttributeModifiers().isEmpty()) {
-                size--;
-                skill.addTooltipAttributes(itemStack, tooltip);
-            }
             if (skill.isPassive()) {
                 skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
             }
@@ -53,6 +49,11 @@ public interface ISkillItems {
                 if (skill.isActive() && skill == this.getActiveSkill(itemStack).get()) {
                     skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
                 }
+            }
+            if (!skill.getAttributeModifiers().isEmpty() && i == (this.getSkills().size() - 1)) {
+                tooltip.add(CommonComponents.EMPTY);
+                tooltip.add(Component.translatable(Tooltips.WHEN_WORN).withStyle(Tooltips.TOOLTIP[0]));
+                skill.addTooltipAttributes(itemStack, tooltip);
             }
         }
         tooltip.add(CommonComponents.EMPTY);

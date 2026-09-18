@@ -1,4 +1,16 @@
 {
+  "ability_skills.bolt_shock.impact": {
+    "sounds": [
+      "beyondhorizon:generic/skills/bolt_shock/impact"
+    ],
+    "subtitle": "subtitle.beyondhorizon.ability_skills.bolt_shock.impact"
+  },
+  "ability_skills.thunder.impact": {
+    "sounds": [
+      "beyondhorizon:generic/skills/thunder/impact"
+    ],
+    "subtitle": "subtitle.beyondhorizon.ability_skills.thunder.impact"
+  },
   "block.base_spawner.about_to_spawn": {
     "sounds": [
       "beyondhorizon:block/spawner_block/about_to_spawn_item"
@@ -148,6 +160,11 @@
   "generic.level_system.leveled_up": {
     "sounds": [
       "beyondhorizon:generic/level_system_leveled_up"
+    ]
+  },
+  "generic.level_system.open": {
+    "sounds": [
+      "beyondhorizon:generic/level_system_ui_open"
     ]
   },
   "generic.level_system.remove": {

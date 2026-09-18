@@ -764,6 +764,8 @@
   "skills.beyondhorizon.tranny.desc": "Gain Attack Damage equal to %s%% Max HP (%s)",
   "skills.beyondhorizon.twilight_ray": "Twilight Ray",
   "skills.beyondhorizon.twilight_ray.desc": "Unleash beam of energy from night sky dealing %s %s within 2.5 radius of attacks",
+  "subtitle.beyondhorizon.ability_skills.bolt_shock.impact": "Bolt Shock Impact",
+  "subtitle.beyondhorizon.ability_skills.thunder.impact": "Thunder Impact",
   "subtitle.beyondhorizon.block.base_spawner.about_to_spawn": "Ominous item prepares",
   "subtitle.beyondhorizon.block.base_spawner.ambient": "Spawner crackles",
   "subtitle.beyondhorizon.block.base_spawner.ambient.ominous": "Ominous crackling",

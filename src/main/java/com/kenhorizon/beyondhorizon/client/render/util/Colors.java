@@ -23,6 +23,7 @@ public class Colors {
     public static int OLIVE = combineRGB(133, 130, 1);
     public static int MAROON = combineRGB(173, 1, 1);
     public static int VIOLET = combineRGB(255, 94, 254);
+    public static int LIGHT_MAGENTA = combineRGB(206, 132, 255);
     public static int CHARCOAL = combineRGB(57, 69, 81);
 
     public static int MAGENTA = combineRGB(255, 0, 254);

@@ -13,9 +13,13 @@ public class BHSoundProvider extends SoundDefinitionFactory {
     }
     @Override
     public void registerSounds() {
+        this.add(BHSounds.LEVEL_SYSTEM_OPEN, "generic/level_system_ui_open");
         this.add(BHSounds.LEVEL_SYSTEM_ADD, "generic/level_system_add");
         this.add(BHSounds.LEVEL_SYSTEM_REMOVE, "generic/level_system_remove");
         this.add(BHSounds.LEVEL_SYSTEM_LEVELED_UP, "generic/level_system_leveled_up");
+
+        this.add(BHSounds.BOLT_SHOCK_IMPACT, "generic/skills/bolt_shock/impact");
+        this.add(BHSounds.THUNDER_IMPACT, "generic/skills/thunder/impact");
 
         this.add(BHSounds.HEAVY_ATTACK, "generic/heavy_hit/heavyhit", 3);
         this.add(BHSounds.ENTITY_EXECUTED, "generic/entity_executed");

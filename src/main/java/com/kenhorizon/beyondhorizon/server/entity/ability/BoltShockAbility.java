@@ -6,8 +6,11 @@ import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -46,6 +49,7 @@ public class BoltShockAbility extends AbilityEntity {
     public void clientSide() {
         RandomSource randoms = RandomSource.create(this.random.nextLong());
         if (this.hasEnded()) {
+            this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), BHSounds.BOLT_SHOCK_IMPACT.get(), SoundSource.WEATHER, 10000.0F, 0.8F + this.random.nextFloat() * 0.2F, false);
             int colorCode = Colors.combineRGB(0, 186, 255);
             for (int i = 0; i < 20; ++i) {
                 double d0 = (random.nextFloat() - 1.5F) + randoms.nextFloat() * 0.5F;

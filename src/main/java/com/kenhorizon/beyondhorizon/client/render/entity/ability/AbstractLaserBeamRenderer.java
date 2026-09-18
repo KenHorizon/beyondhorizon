@@ -2,6 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.entity.ability;
 
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.kenhorizon.beyondhorizon.server.entity.ability.beam.AbstractDeathRayAbility;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.CameraType;
@@ -92,14 +93,14 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
         }
         matrixStackIn.pushPose();
         Quaternionf sideQuat = side.getRotation();
-        sideQuat.mul(quatFromRotationXYZ(90, 0, 0, true));
+        sideQuat.mul(Maths.quatFromRotationXYZ(90, 0, 0, true));
         matrixStackIn.mulPose(sideQuat);
         matrixStackIn.translate(0, 0, -0.01f);
         renderFlatQuad(scale, frame, matrixStackIn, builder, packedLightIn);
         matrixStackIn.popPose();
     }
 
-    private void drawBeam(float scale, float length, int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
+    protected void drawBeam(float scale, float length, int frame, PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
         float minU = 0;
         float maxU = minU + 20 / TEXTURE_WIDTH;
         float minV = 16 / TEXTURE_HEIGHT + 1 / TEXTURE_HEIGHT * frame;
@@ -113,23 +114,28 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
         drawVertex(matrix4f, matrix3f, builder, this.getBeamSize() * scale, length, 0, maxU, maxV, 1, packedLightIn);
         drawVertex(matrix4f, matrix3f, builder, this.getBeamSize() * scale, offset, 0, maxU, minV, 1, packedLightIn);
     }
+    protected void appendRenderBeam(float scale, float length, float yaw, float pitch, int frame,  PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
 
+    }
     private void renderBeam(float scale,float length, float yaw, float pitch, int frame,  PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
+        Minecraft mc = Minecraft.getInstance();
         matrixStackIn.pushPose();
-        matrixStackIn.mulPose(quatFromRotationXYZ(90, 0, 0, true));
-        matrixStackIn.mulPose(quatFromRotationXYZ(0, 0, yaw - 90f, true));
-        matrixStackIn.mulPose(quatFromRotationXYZ(-pitch, 0, 0, true));
+        matrixStackIn.mulPose(Maths.quatFromRotationXYZ(90, 0, 0, true));
+        matrixStackIn.mulPose(Maths.quatFromRotationXYZ(0, 0, yaw - 90f, true));
+        matrixStackIn.mulPose(Maths.quatFromRotationXYZ(-pitch, 0, 0, true));
         matrixStackIn.pushPose();
         if (!clearerView) {
-            matrixStackIn.mulPose(quatFromRotationXYZ(0, Minecraft.getInstance().gameRenderer.getMainCamera().getXRot() + 90, 0, true));
+            matrixStackIn.mulPose(Maths.quatFromRotationXYZ(0, mc.gameRenderer.getMainCamera().getXRot() + 90, 0, true));
         }
         drawBeam(scale, length, frame, matrixStackIn, builder, packedLightIn);
+        appendRenderBeam(scale, length, yaw, pitch, frame, matrixStackIn, builder, packedLightIn);
         matrixStackIn.popPose();
 
         if (!clearerView) {
             matrixStackIn.pushPose();
-            matrixStackIn.mulPose(quatFromRotationXYZ(0, -Minecraft.getInstance().gameRenderer.getMainCamera().getXRot() - 90, 0, true));
+            matrixStackIn.mulPose(Maths.quatFromRotationXYZ(0, -mc.gameRenderer.getMainCamera().getXRot() - 90, 0, true));
             drawBeam(scale, length, frame, matrixStackIn, builder, packedLightIn);
+            appendRenderBeam(scale, length, yaw, pitch, frame, matrixStackIn, builder, packedLightIn);
             matrixStackIn.popPose();
         }
         matrixStackIn.popPose();
@@ -138,14 +144,6 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
         vertexBuilder.vertex(matrix, offsetX, offsetY, offsetZ).color(1, 1, 1, 1 * alpha).uv(textureX, textureY).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLightIn).normal(normals, 0.0F, 1.0F, 0.0F).endVertex();
     }
 
-    public Quaternionf quatFromRotationXYZ(float x, float y, float z, boolean degrees) {
-        if (degrees) {
-            x *= ((float)Math.PI / 180F);
-            y *= ((float)Math.PI / 180F);
-            z *= ((float)Math.PI / 180F);
-        }
-        return (new Quaternionf()).rotationXYZ(x, y, z);
-    }
 
     public float getBeamSize() {
         return this.beamSize;

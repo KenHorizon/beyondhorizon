@@ -55,7 +55,7 @@ public class AbilityHud extends HudOverlay {
                         if (playerData != null && playerData.isOnCooldown(this.hud.abilityId)) {
                             int[] colors = Colors.getARGB(Colors.LIGHT_GRAY);
                             float pr = playerData.getCooldownPercent(this.hud.abilityId);
-                            guiGraphics.fill(x, y, x + 24, (int) (y + (24 * pr)), Colors.combineARGB(100, colors[0], colors[1], colors[2]));
+                            guiGraphics.fill(x, y, x + 22, (int) (y + (22 * pr)), Colors.combineARGB(100, colors[0], colors[1], colors[2]));
                         }
                     }
                 }

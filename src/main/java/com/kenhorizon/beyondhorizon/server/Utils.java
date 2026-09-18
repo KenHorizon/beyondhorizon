@@ -4,12 +4,55 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Rarity;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Locale;
 import java.util.function.Supplier;
 
 public class Utils {
+
+    public static boolean isVanillaRarity(Rarity rarity) {
+        return rarity == Rarity.COMMON || rarity == Rarity.UNCOMMON || rarity == Rarity.RARE || rarity == Rarity.EPIC;
+    }
+    // Copied from ResourceLocation.decompose
+    public static String[] decompose(String name, char separator) {
+        String[] astring = new String[]{"minecraft", name};
+        int i = name.indexOf(separator);
+        if (i >= 0) {
+            astring[1] = name.substring(i + 1);
+            if (i >= 1) {
+                astring[0] = name.substring(0, i);
+            }
+        }
+
+        return astring;
+    }
+
+    public static String compactNumbers(long number) {
+        if (number < 1000) {
+            return Long.toString(number);
+        }
+
+        String[] suffixes = {"K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"};
+
+        double value = number;
+        int index = -1;
+
+        while (value >= 1000 && index < suffixes.length - 1) {
+            value /= 1000.0;
+            index++;
+        }
+
+        if (value >= 100) {
+            return String.format("%.0f%s", value, suffixes[index]);
+        } else if (value >= 10) {
+            return String.format("%.1f%s", value, suffixes[index]);
+        } else {
+            return String.format("%.2f%s", value, suffixes[index]);
+        }
+    }
+
     public static String getObjectDescription(Supplier<?> itemSupplier) {
         return String.format("item.%s.%s.desc", BeyondHorizon.ID, itemSupplier.get());
     }

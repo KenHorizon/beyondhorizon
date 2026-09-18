@@ -120,7 +120,7 @@ public class BHMobEffect extends MobEffect {
             if (!cancelHeal && entity.getHealth() < entity.getMaxHealth()) {
                 if (entity.tickCount % this.rapidHealingRate == 0) {
                     //BeyondHorizon.LOGGER.debug("Rapid Healing Debug: Rate:{} Limit:{} Minus:{}", this.rapidHealingRate, this.rapidHealingLimitRate, this.rapidHealingMinusRate);
-                    entity.heal(0.1F);
+                    entity.heal(0.1F + (0.1F * amplifier));
                     if (entity.level() instanceof ServerLevel sLevel) {
                         sLevel.sendParticles(ParticleTypes.HEART, entity.getRandomX(0.50D), entity.getRandomY(), entity.getRandomZ(0.50D), 2, 0,0,0, 0.10D);
                     }

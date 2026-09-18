@@ -1,6 +1,5 @@
-package com.kenhorizon.beyondhorizon.server.api.block;
+package com.kenhorizon.beyondhorizon.server.block;
 
-import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.StringRepresentable;

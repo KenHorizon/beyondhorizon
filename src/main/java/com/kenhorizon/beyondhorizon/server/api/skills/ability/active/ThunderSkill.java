@@ -37,14 +37,14 @@ public class ThunderSkill extends WeaponActiveSkills {
 
     @Override
     public WeaponAnimations getWeaponAnimations(Player player, ItemStack itemStack) {
-        return WeaponAnimations.GUARDIAN_SWORD;
+        return WeaponAnimations.STAFF;
     }
 
     @Override
     protected List<MutableComponent> makeTooltips(ItemStack itemStack) {
         List<MutableComponent> list = new ArrayList<>();
         Player player = BeyondHorizon.PROXY.clientPlayer();
-        list.add(Component.translatable(createId(0)));
+        list.add(Component.translatable(createId(0), Maths.format(this.additionalDamage(player, itemStack))));
         list.add(Component.translatable(createId(1), Maths.format(this.additionalDamage(player, itemStack))));
         return list;
     }
@@ -67,7 +67,7 @@ public class ThunderSkill extends WeaponActiveSkills {
         player.startUsingItem(hand);
         double range = 128.0D;
         HitResult realHitResult = ProjectileUtil.getHitResultOnViewVector(player, Entity::canBeHitByProjectile, range);
-        if(realHitResult.getType() == HitResult.Type.MISS){
+        if(realHitResult.getType() == HitResult.Type.MISS) {
             realHitResult = ProjectileUtil.getHitResultOnViewVector(player, Entity::canBeHitByProjectile, 42);
         }
         BlockPos mutableSkyPos = new BlockPos.MutableBlockPos(realHitResult.getLocation().x, realHitResult.getLocation().y + 0.5D, realHitResult.getLocation().z);

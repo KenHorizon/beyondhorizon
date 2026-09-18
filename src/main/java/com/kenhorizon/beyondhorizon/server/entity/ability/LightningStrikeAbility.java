@@ -9,6 +9,7 @@ import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.entity.util.ShockwaveUtils;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageTags;
 import net.minecraft.sounds.SoundEvents;
@@ -76,10 +77,18 @@ public class LightningStrikeAbility extends AbilityEntity {
                    false, RingParticles.Behavior.GROW), this.getX(), this.getY(0.01D), this.getZ(), 0, 0, 0);
        }
         if (this.hasStriked()) {
+            this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), BHSounds.THUNDER_IMPACT.get(), SoundSource.WEATHER, 10000.0F, 0.8F + this.random.nextFloat() * 0.2F, false);
             this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.LIGHTNING_BOLT_THUNDER, SoundSource.WEATHER, 10000.0F, 0.8F + this.random.nextFloat() * 0.2F, false);
             this.level().playLocalSound(this.getX(), this.getY(), this.getZ(), SoundEvents.LIGHTNING_BOLT_IMPACT, SoundSource.WEATHER, 2.0F, 0.5F + this.random.nextFloat() * 0.2F, false);
         }
     }
+
+
+    @Override
+    protected void onDuration() {
+        super.onDuration();
+    }
+
     @Override
     protected void onEnd() {
         this.dealDamage();

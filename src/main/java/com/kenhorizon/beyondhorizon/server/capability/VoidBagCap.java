@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
 import com.kenhorizon.beyondhorizon.server.inventory.menu.VoidBagMenu;
-import com.kenhorizon.beyondhorizon.server.item.VoidBagItem;
+import com.kenhorizon.beyondhorizon.server.level.item.VoidBagItem;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;

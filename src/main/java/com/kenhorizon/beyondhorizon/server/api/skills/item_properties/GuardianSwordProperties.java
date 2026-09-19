@@ -2,9 +2,8 @@ package com.kenhorizon.beyondhorizon.server.api.skills.item_properties;
 
 
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponItemProperties;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.BlazingRod;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.Pyrolance;
-import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
+import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.Pyrolance;
+import com.kenhorizon.beyondhorizon.server.level.entity.util.EntityUtils;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

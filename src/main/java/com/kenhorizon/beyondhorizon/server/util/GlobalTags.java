@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
-import com.kenhorizon.beyondhorizon.server.entity.util.EntityData;
+import com.kenhorizon.beyondhorizon.server.level.entity.util.EntityData;
 import net.minecraft.world.entity.LivingEntity;
 
 public final class GlobalTags {

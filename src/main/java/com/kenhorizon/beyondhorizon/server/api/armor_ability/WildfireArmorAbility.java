@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.api.armor_ability;
 
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
-import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.CleaveAbility;
+import com.kenhorizon.beyondhorizon.server.level.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;

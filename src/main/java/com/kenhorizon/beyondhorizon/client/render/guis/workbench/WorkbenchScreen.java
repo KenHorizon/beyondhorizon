@@ -10,7 +10,7 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.inventory.menu.WorkbenchMenu;
 import com.kenhorizon.libs.server.item.recipe.AmountIngredient;
-import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
+import com.kenhorizon.beyondhorizon.server.level.item.recipe.WorkbenchRecipe;
 import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundExtendedPlaceRecipePacket;
 import com.kenhorizon.libs.server.inventory.IModPlaceRecipe;

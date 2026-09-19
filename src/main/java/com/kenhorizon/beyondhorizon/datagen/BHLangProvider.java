@@ -12,7 +12,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.server.item.PlayerTrackerItem;
+import com.kenhorizon.beyondhorizon.server.level.item.PlayerTrackerItem;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;

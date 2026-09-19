@@ -1,4 +1,4 @@
-// 1.20.1	2026-09-17T15:05:44.236936	Loot Tables
+// 1.20.1	2026-09-19T19:04:55.1902936	Loot Tables
 947255dfed5be2c55821eeee5bc219539c73d16a data/beyondhorizon/loot_tables/blocks/arcane_budding.json
 b1a29c20741f4b197c9e1d83cd94bd08141535be data/beyondhorizon/loot_tables/blocks/arcane_budding_full.json
 2a5a5ac428280705f5e861eaa7eddde9d7e8c63a data/beyondhorizon/loot_tables/blocks/arcane_rocks.json
@@ -89,6 +89,9 @@ eb612d88275b738f74e63a2188a54932cbc9aab1 data/beyondhorizon/loot_tables/blocks/s
 d867defcf4abb6ce131bf1f1f3dc2e7cb7f8b2a0 data/beyondhorizon/loot_tables/blocks/volcanic_mantle.json
 8b972173b1e63fad3771dd6d6010124e223eddc7 data/beyondhorizon/loot_tables/blocks/wall_fire_basin.json
 48d89e7c826d617dd1d08ded3516a74334420742 data/beyondhorizon/loot_tables/blocks/workbench.json
+ea669d852b2a93c64c48a385860d8e1f2baf4e27 data/beyondhorizon/loot_tables/chests/sealed_runic_crypt_left.json
+b61ff056af995d39c53fa4e1f4cfc2936de2c18f data/beyondhorizon/loot_tables/chests/sealed_runic_crypt_middle.json
+f8f44efa08bd3958a92d22db22bc3d022de8526a data/beyondhorizon/loot_tables/chests/sealed_runic_crypt_right.json
 26cb96f19970b13bbd668df930c8442f2b4d7658 data/beyondhorizon/loot_tables/entities/blazing_inferno.json
 8a184673ef5f94be845dc12508fbdb304160d246 data/beyondhorizon/loot_tables/entities/dragon_hornet.json
 424b5658285d16367c6a5ef2ecd84c46ccd8d3ef data/beyondhorizon/loot_tables/entities/faye_flares.json

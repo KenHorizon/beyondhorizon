@@ -6,7 +6,7 @@ import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.api.AbstractAbilityComponents;
-import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
+import com.kenhorizon.beyondhorizon.server.level.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.mojang.logging.LogUtils;
 import net.minecraft.ChatFormatting;

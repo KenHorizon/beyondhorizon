@@ -7,7 +7,7 @@ import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.kenhorizon.beyondhorizon.client.render.util.BeamRenderer;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.Pyrobolt;
+import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.Pyrobolt;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

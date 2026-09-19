@@ -1,8 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
 import com.kenhorizon.beyondhorizon.client.model.animation.PyrolligerAnim;
-import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
-import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.server.level.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

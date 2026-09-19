@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.entity;
 
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.ExtendedThrownWeapon;
+import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.ExtendedThrownWeapon;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;

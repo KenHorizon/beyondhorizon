@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.client.render.entity;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.PyrolligerModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
-import com.kenhorizon.beyondhorizon.server.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.server.level.entity.boss.pyrolliger.Pyrolliger;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;

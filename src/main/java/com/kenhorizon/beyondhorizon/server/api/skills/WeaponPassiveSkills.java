@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
-import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
+import com.kenhorizon.beyondhorizon.server.level.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

@@ -1,8 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.sound;
 
 import com.kenhorizon.beyondhorizon.client.model.util.ControlledAnimation;
-import com.kenhorizon.beyondhorizon.server.entity.BHBaseEntity;
-import com.kenhorizon.beyondhorizon.server.entity.BHLibEntity;
+import com.kenhorizon.beyondhorizon.server.level.entity.BHBaseEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.api.distmarker.Dist;

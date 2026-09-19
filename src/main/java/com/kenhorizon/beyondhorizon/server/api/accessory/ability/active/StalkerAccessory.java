@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryActiveSkill;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.item.ManaCostType;
+import com.kenhorizon.beyondhorizon.server.level.item.ManaCostType;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

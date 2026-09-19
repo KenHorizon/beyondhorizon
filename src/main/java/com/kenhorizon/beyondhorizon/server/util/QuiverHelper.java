@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.util;
 
-import com.kenhorizon.beyondhorizon.server.item.QuiverItem;
+import com.kenhorizon.beyondhorizon.server.level.item.QuiverItem;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.block.spawner;
 
 
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.block.entity.BaseSpawnerBlockEntity;
@@ -9,6 +10,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -94,11 +97,12 @@ public class BaseSpawnerBlock extends BaseEntityBlock {
     @Override
     public void appendHoverText(ItemStack itemStack, @javax.annotation.Nullable BlockGetter blockGetter, List<Component> components, TooltipFlag flag) {
         super.appendHoverText(itemStack, blockGetter, components, flag);
-        Optional<Component> optional = this.getSpawnEntityDisplayName(itemStack);
-        if (optional.isPresent()) {
-            components.add(optional.get());
+        Optional<Component> entityDisplayName = this.getSpawnEntityDisplayName(itemStack);
+        Optional<Component> configFiles = this.getConfigFiles(itemStack);
+        configFiles.ifPresent(components::add);
+        if (entityDisplayName.isPresent()) {
+            components.add(entityDisplayName.get());
         } else {
-
             components.add(CommonComponents.EMPTY);
             components.add(Component.translatable("block.minecraft.spawner.desc1").withStyle(ChatFormatting.GRAY));
             components.add(CommonComponents.space().append(Component.translatable("block.minecraft.spawner.desc2").withStyle(ChatFormatting.BLUE)));
@@ -106,16 +110,29 @@ public class BaseSpawnerBlock extends BaseEntityBlock {
     }
     private Optional<Component> getSpawnEntityDisplayName(ItemStack itemStack) {
         CompoundTag nbts = BlockItem.getBlockEntityData(itemStack);
-        if (nbts != null && nbts.contains("SpawnData", 10)) {
-            String spawnData = nbts.getCompound("SpawnData").getCompound("entity").getString("id");
-            ResourceLocation resourcelocation = ResourceLocation.tryParse(spawnData);
-            if (resourcelocation != null) {
-                return BuiltInRegistries.ENTITY_TYPE.getOptional(resourcelocation).map((p_255782_) -> {
+        if (nbts != null && nbts.contains("SpawnerSpawnData", 10)) {
+            String spawnData = nbts.getCompound("SpawnerSpawnData").getCompound("entity").getString("id");
+            ResourceLocation entityType = ResourceLocation.tryParse(spawnData);
+            if (entityType != null) {
+                return BuiltInRegistries.ENTITY_TYPE.getOptional(entityType).map((p_255782_) -> {
                     return Component.translatable(p_255782_.getDescriptionId()).withStyle(ChatFormatting.GRAY);
                 });
             }
         }
 
+        return Optional.empty();
+    }
+    private Optional<Component> getConfigFiles(ItemStack itemStack) {
+        CompoundTag nbts = BlockItem.getBlockEntityData(itemStack);
+        if (nbts != null) {
+            Tag raw = nbts.get("configs");
+            if (raw instanceof StringTag tag) {
+                String configs = tag.getAsString();
+                ResourceLocation rl = ResourceLocation.tryParse(configs);
+                return Optional.of(Component.literal(String.format("%s", rl)).withStyle(Tooltips.TOOLTIP[0]));
+            }
+
+        }
         return Optional.empty();
     }
 }

@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.client;
 
-import com.kenhorizon.beyondhorizon.server.entity.misc.HealingOrb;
+import com.kenhorizon.beyondhorizon.server.level.entity.misc.HealingOrb;
 import com.kenhorizon.beyondhorizon.server.network.ClientPacketHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.api.distmarker.Dist;

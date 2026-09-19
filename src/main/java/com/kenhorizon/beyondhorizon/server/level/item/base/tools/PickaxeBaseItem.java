@@ -1,0 +1,35 @@
+package com.kenhorizon.beyondhorizon.server.level.item.base.tools;
+
+import com.kenhorizon.beyondhorizon.server.api.skills.SkillBuilder;
+import com.kenhorizon.beyondhorizon.server.level.item.materials.MeleeWeaponMaterials;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
+
+public class PickaxeBaseItem extends DiggerBaseItem {
+    public PickaxeBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, float attackRange, Properties properties, SkillBuilder skillBuilder) {
+        super(materials, attackDamage, attackSpeed, attackRange, BlockTags.MINEABLE_WITH_PICKAXE, properties, skillBuilder);
+    }
+
+    public PickaxeBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, Properties properties, SkillBuilder skillBuilder) {
+        super(materials, attackDamage, attackSpeed, BlockTags.MINEABLE_WITH_PICKAXE, properties, skillBuilder);
+    }
+
+    public PickaxeBaseItem(MeleeWeaponMaterials materials, float attackDamage, float attackSpeed, Properties properties) {
+        super(materials, attackDamage, attackSpeed, BlockTags.MINEABLE_WITH_PICKAXE, properties);
+    }
+
+    public PickaxeBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties) {
+        super(materials, stats, BlockTags.MINEABLE_WITH_PICKAXE, properties);
+    }
+
+    public PickaxeBaseItem(MeleeWeaponMaterials materials, float[] stats, Properties properties, SkillBuilder skillBuilder) {
+        super(materials, stats, BlockTags.MINEABLE_WITH_PICKAXE, properties, skillBuilder);
+    }
+
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+        return ToolActions.DEFAULT_PICKAXE_ACTIONS.contains(toolAction);
+    }
+}

@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.entity.ability;
 
 import com.kenhorizon.beyondhorizon.client.render.AnimatedAbilityRenderer;
-import com.kenhorizon.beyondhorizon.server.entity.ability.EruptionAbility;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.EruptionAbility;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 

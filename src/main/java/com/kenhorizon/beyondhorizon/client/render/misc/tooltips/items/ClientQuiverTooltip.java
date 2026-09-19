@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
-import com.kenhorizon.beyondhorizon.server.item.tooltips.QuiverTooltip;
+import com.kenhorizon.beyondhorizon.server.level.item.tooltips.QuiverTooltip;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -14,6 +14,7 @@ import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEv
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+@SuppressWarnings({"deprecation", "removal"})
 public class ClientQuiverTooltip implements ClientTooltipComponent {
     public static final ResourceLocation TEXTURE_LOCATION = BeyondHorizon.resourceGui("tooltips/quiver.png");
     private final NonNullList<ItemStack> items;

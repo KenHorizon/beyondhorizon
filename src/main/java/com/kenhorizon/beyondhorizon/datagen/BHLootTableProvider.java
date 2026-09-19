@@ -1,7 +1,9 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.datagen.loot.*;
+import com.kenhorizon.beyondhorizon.datagen.loot.entities.*;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.init.BHItems;
+import com.kenhorizon.beyondhorizon.server.init.BHLootTables;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
@@ -12,6 +14,8 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.packs.VanillaChestLoot;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
@@ -30,11 +34,13 @@ import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.NumberProvider;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -43,7 +49,8 @@ public class BHLootTableProvider {
         return new LootTableProvider(output, Set.of(),
                 List.of(
                         new LootTableProvider.SubProviderEntry(Entity::new, LootContextParamSets.ENTITY),
-                        new LootTableProvider.SubProviderEntry(Blocks::new, LootContextParamSets.BLOCK)
+                        new LootTableProvider.SubProviderEntry(Blocks::new, LootContextParamSets.BLOCK),
+                        new LootTableProvider.SubProviderEntry(Chests::new, LootContextParamSets.CHEST)
                 ));
     }
 
@@ -121,6 +128,53 @@ public class BHLootTableProvider {
         @Override
         protected @NotNull Stream<EntityType<?>> getKnownEntityTypes() {
             return RegistryEntries.ENTITY_TYPES.getEntries().stream().map(RegistryObject::get);
+        }
+    }
+
+    public static class Chests extends VanillaChestLoot {
+        @Override
+        public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
+            output.accept(BHLootTables.SEALED_RUNIC_CRYPT_LEFT, LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(this.getRolls(1.0F))
+                            .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(20))
+                            .add(LootItem.lootTableItem(Items.ENCHANTED_GOLDEN_APPLE).setWeight(20)))
+                    .withPool(LootPool.lootPool().setRolls(this.getRolls(1.0F))
+                            .add(LootItem.lootTableItem(Items.EMERALD).setWeight(20)).apply(setCounts(3, 5))
+                            .add(LootItem.lootTableItem(Items.GOLD_INGOT).setWeight(20)).apply(setCounts(3, 5))
+                            .add(LootItem.lootTableItem(BHItems.ANCIENT_HEAVY_CORE.get()).setWeight(20)).apply(setCounts(1))
+            ));
+            output.accept(BHLootTables.SEALED_RUNIC_CRYPT_RIGHT, LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(this.getRolls(1.0F))
+                            .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(20))
+                            .add(LootItem.lootTableItem(Items.ENCHANTED_GOLDEN_APPLE).setWeight(20)))
+                    .withPool(LootPool.lootPool().setRolls(this.getRolls(1.0F))
+                            .add(LootItem.lootTableItem(Items.EMERALD).setWeight(20)).apply(setCounts(3, 5))
+                            .add(LootItem.lootTableItem(Items.GOLD_INGOT).setWeight(20)).apply(setCounts(3, 5))
+                            .add(LootItem.lootTableItem(BHItems.ANCIENT_HEAVY_CORE.get()).setWeight(20)).apply(setCounts(1))
+                    ));
+            output.accept(BHLootTables.SEALED_RUNIC_CRYPT_MIDDLE, LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(this.getRolls(1.0F))
+                            .add(LootItem.lootTableItem(BHItems.CRYPT_DOOR_KEY.get())))
+                    .withPool(LootPool.lootPool().setRolls(this.getRolls(1.0F))
+                            .add(LootItem.lootTableItem(BHItems.TOUGH_CLOTH.get()).setWeight(20))
+                            .add(LootItem.lootTableItem(BHItems.FIREFLY_FAYE.get()).setWeight(20))
+                            .add(LootItem.lootTableItem(BHItems.LEATHER_AGILITY.get()).setWeight(20))
+            ));
+        }
+        public LootItemFunction.Builder setCounts(float min, float max) {
+            return SetItemCountFunction.setCount(UniformGenerator.between(min, max));
+        }
+
+        public LootItemFunction.Builder setCounts(float count) {
+            return setCounts(count, count);
+        }
+
+        public NumberProvider getRolls(float rolls) {
+            return getRolls(rolls, rolls);
+        }
+
+        public NumberProvider getRolls(float min, float max) {
+            return UniformGenerator.between(min, max);
         }
     }
 

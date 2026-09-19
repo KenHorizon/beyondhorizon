@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
-import com.kenhorizon.beyondhorizon.server.entity.ability.CleaveAbility;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.CleaveAbility;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 

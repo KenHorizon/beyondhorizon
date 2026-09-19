@@ -5,7 +5,7 @@ import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
 import com.kenhorizon.beyondhorizon.server.api.AbstractAbilityComponents;
-import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
+import com.kenhorizon.beyondhorizon.server.level.item.ItemAbilityType;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;

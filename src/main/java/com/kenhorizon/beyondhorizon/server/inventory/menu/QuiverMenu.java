@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.inventory.menu;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
-import com.kenhorizon.beyondhorizon.server.item.QuiverItem;
+import com.kenhorizon.beyondhorizon.server.level.item.QuiverItem;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

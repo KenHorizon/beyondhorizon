@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.entity.ability.BoltShockAbility;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.BoltShockAbility;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
@@ -32,7 +32,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import java.lang.annotation.Target;
 import java.util.UUID;
 
 public class SinglePassiveAccessory extends AccessoryPassiveSkill {

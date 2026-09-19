@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.BlazingInfernoModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
+import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.BlazingInferno;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraftforge.api.distmarker.Dist;

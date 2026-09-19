@@ -2,12 +2,9 @@ package com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items;
 
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
-import com.kenhorizon.beyondhorizon.server.item.tooltips.QuiverTooltip;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +12,7 @@ import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEv
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.joml.Matrix4f;
 
+@SuppressWarnings({"deprecation", "removal"})
 public class ItemStackNameRarity implements ClientTooltipComponent, TooltipComponent {
     private final ItemStack stack;
 

@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.client.sound;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.entity.BHBaseEntity;
+import com.kenhorizon.beyondhorizon.server.level.entity.BHBaseEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.sounds.SoundSource;

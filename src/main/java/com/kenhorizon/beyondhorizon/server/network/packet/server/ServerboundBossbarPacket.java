@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
 import com.kenhorizon.beyondhorizon.client.ClientProxy;
-import com.kenhorizon.beyondhorizon.server.entity.BHBossInfo;
+import com.kenhorizon.beyondhorizon.server.level.entity.BHBossInfo;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;

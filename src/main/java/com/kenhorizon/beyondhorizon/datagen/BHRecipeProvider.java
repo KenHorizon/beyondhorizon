@@ -50,17 +50,17 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         recipeFactory.createWand(BHItems.RUBY.get(), Items.GOLD_INGOT, BHItems.GOLDEN_WAND.get());
         recipeFactory.createWand(BHItems.RUBY.get(), Items.DIAMOND, BHItems.DIAMOND_WAND.get());
 
-        recipeFactory.createSword(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_SWORD.get());
-        recipeFactory.createPickaxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_PICKAXE.get());
-        recipeFactory.createAxe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_AXE.get());
-        recipeFactory.createShovel(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_SHOVEL.get());
-        recipeFactory.createHoe(BHItems.HELLSTONE_INGOT.get(), Items.STICK, BHItems.HELLSTONE_HOE.get());
+        recipeFactory.createSword(BHItems.HELLSTONE_INGOT.get(), BHItems.IRON_HANDLE.get(), BHItems.HELLSTONE_SWORD.get());
+        recipeFactory.createPickaxe(BHItems.HELLSTONE_INGOT.get(), BHItems.IRON_HANDLE.get(), BHItems.HELLSTONE_PICKAXE.get());
+        recipeFactory.createAxe(BHItems.HELLSTONE_INGOT.get(), BHItems.IRON_HANDLE.get(), BHItems.HELLSTONE_AXE.get());
+        recipeFactory.createShovel(BHItems.HELLSTONE_INGOT.get(), BHItems.IRON_HANDLE.get(), BHItems.HELLSTONE_SHOVEL.get());
+        recipeFactory.createHoe(BHItems.HELLSTONE_INGOT.get(), BHItems.IRON_HANDLE.get(), BHItems.HELLSTONE_HOE.get());
 
-        recipeFactory.createSword(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_SWORD.get());
-        recipeFactory.createPickaxe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_PICKAXE.get());
-        recipeFactory.createAxe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_AXE.get());
-        recipeFactory.createShovel(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_SHOVEL.get());
-        recipeFactory.createHoe(BHItems.STARITE_INGOT.get(), Items.STICK, BHItems.STARITE_HOE.get());
+        recipeFactory.createSword(BHItems.STARITE_INGOT.get(), BHItems.IRON_HANDLE.get(), BHItems.STARITE_SWORD.get());
+        recipeFactory.createPickaxe(BHItems.STARITE_INGOT.get(), BHItems.IRON_HANDLE.get(), BHItems.STARITE_PICKAXE.get());
+        recipeFactory.createAxe(BHItems.STARITE_INGOT.get(), BHItems.IRON_HANDLE.get(), BHItems.STARITE_AXE.get());
+        recipeFactory.createShovel(BHItems.STARITE_INGOT.get(), BHItems.IRON_HANDLE.get(), BHItems.STARITE_SHOVEL.get());
+        recipeFactory.createHoe(BHItems.STARITE_INGOT.get(), BHItems.IRON_HANDLE.get(), BHItems.STARITE_HOE.get());
 
         recipeFactory.createSword(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_SWORD.get());
         recipeFactory.createPickaxe(BHItems.BLACK_IRON_INGOT.get(), Items.STICK, BHItems.BLACK_IRON_PICKAXE.get());
@@ -87,6 +87,26 @@ public class BHRecipeProvider extends RecipeProvider implements IConditionBuilde
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.BLACK_IRON_GRATE.get(), BHBlocks.BLACK_IRON_GRATE.get(), 4);
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.STONE_PILLAR.get(), Blocks.STONE, 4);
         stonecutterResultFromBase(consumer, RecipeCategory.BUILDING_BLOCKS, BHBlocks.STONE_PILLAR.get(), Blocks.STONE_BRICKS, 4);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BHItems.HANDLE.get())
+                .pattern("#")
+                .pattern("S")
+                .pattern("#")
+                .define('#', Items.STICK)
+                .define('S', Items.STRING)
+                .unlockedBy("has_materials_for_handle",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(Items.STICK).build()))
+                .save(consumer);
+
+        ShapedRecipeBuilder.shaped(RecipeCategory.COMBAT, BHItems.IRON_HANDLE.get())
+                .pattern("N")
+                .pattern("#")
+                .pattern("#")
+                .define('#', Items.IRON_INGOT)
+                .define('N', Items.IRON_NUGGET)
+                .unlockedBy("has_materials_for_handle",
+                        inventoryTrigger(ItemPredicate.Builder.item().of(Items.IRON_INGOT).build()))
+                .save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.BUILDING_BLOCKS, BHBlocks.STONE_PILLAR.get(), 4)
                 .pattern("#")

@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.server.api.data.IItemProperties;
-import com.kenhorizon.beyondhorizon.server.item.ItemAbilityType;
+import com.kenhorizon.beyondhorizon.server.level.item.ItemAbilityType;
 
 import java.util.Optional;
 

@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.inventory.menu.VoidBagMenu;
-import com.kenhorizon.beyondhorizon.server.item.tooltips.VoidBagTooltip;
+import com.kenhorizon.beyondhorizon.server.level.item.tooltips.VoidBagTooltip;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+@SuppressWarnings({"deprecation", "removal"})
 public class ClientVoidBagTooltip implements ClientTooltipComponent {
     public static final ResourceLocation TEXTURE_LOCATION = BeyondHorizon.resourceGui("tooltips/void_bag_tooltip.png");
     private final NonNullList<ItemStack> items;

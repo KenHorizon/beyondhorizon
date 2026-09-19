@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
 import com.kenhorizon.beyondhorizon.client.model.animation.FayeWildfireAnim;
-import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
+import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeWildfire;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

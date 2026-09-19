@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.entity.ability.AbilityEntity;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.AbilityEntity;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

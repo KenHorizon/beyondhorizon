@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.client.render.guis.workbench;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
+import com.kenhorizon.beyondhorizon.server.level.item.recipe.WorkbenchRecipe;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;

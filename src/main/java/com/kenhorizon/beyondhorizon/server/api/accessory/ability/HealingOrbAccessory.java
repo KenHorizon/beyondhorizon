@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
-import com.kenhorizon.beyondhorizon.server.entity.misc.HealingOrb;
-import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
+import com.kenhorizon.beyondhorizon.server.level.entity.misc.HealingOrb;
+import com.kenhorizon.beyondhorizon.server.level.entity.util.EntityUtils;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;

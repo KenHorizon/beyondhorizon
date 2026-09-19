@@ -3,7 +3,10 @@ package com.kenhorizon.beyondhorizon.server.block.spawner.data;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
+import com.kenhorizon.beyondhorizon.server.level.SpawnerSpawnData;
+import com.kenhorizon.beyondhorizon.server.level.entity.EquipmentTable;
 import com.kenhorizon.beyondhorizon.server.util.PlayerDetector;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -19,14 +22,10 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.LootTable;
@@ -36,6 +35,7 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.ForgeEventFactory;
 
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -125,10 +125,11 @@ public class BHBaseSpawner {
     }
     public Optional<UUID> spawnMob(ServerLevel serverLevel, BlockPos blockPos) {
         RandomSource random = serverLevel.getRandom();
-        SpawnData spawnData = this.data.getOrCreateNextSpawnData(this, serverLevel.getRandom());
-        CompoundTag nbtEntityToSpawn = spawnData.entityToSpawn();
-        ListTag nbtPos = nbtEntityToSpawn.getList("Pos", 6);
-        Optional<EntityType<?>> optional = EntityType.by(nbtEntityToSpawn);
+        SpawnerSpawnData spawnData = this.data.getOrCreateNextSpawnData(this, serverLevel.getRandom());
+        CompoundTag entityToSpawn = spawnData.entityToSpawn();
+        ListTag nbtPos = entityToSpawn.getList("Pos", 6);
+        Optional<EntityType<?>> optional = EntityType.by(entityToSpawn);
+        Optional<EquipmentTable> equipments = spawnData.getEquipmentTable();
         if (optional.isEmpty()) {
             return Optional.empty();
         } else {
@@ -143,10 +144,11 @@ public class BHBaseSpawner {
                 if (!inLineOfSight(serverLevel, blockPos.getCenter(), blockPositionVec)) {
                     return Optional.empty();
                 } else {
-                    BlockPos blockPos2 = BlockPos.containing(blockPositionVec);
-                    Entity entity = EntityType.loadEntityRecursive(nbtEntityToSpawn, serverLevel, entityx -> {
-                        entityx.moveTo(blockX, blockY, blockZ, random.nextFloat() * 360.0F, 0.0F);
-                        return entityx;
+                    BlockPos mobSpawnPos = BlockPos.containing(blockPositionVec);
+                    Entity entity = EntityType.loadEntityRecursive(entityToSpawn, serverLevel, entityIn -> {
+                        entityIn.moveTo(blockX, blockY, blockZ, random.nextFloat() * 360.0F, 0.0F);
+                        equipments.ifPresent(equipmentTable -> equipMobsWithEquipments(serverLevel, equipmentTable, entityIn));
+                        return entityIn;
                     });
                     if (entity == null) {
                         return Optional.empty();
@@ -166,9 +168,9 @@ public class BHBaseSpawner {
                             return Optional.empty();
                         } else {
                             addSpawnParticles(serverLevel, blockPos, serverLevel.getRandom());
-                            serverLevel.playSound(null, blockPos2, BHSounds.SPAWNER_SPAWN.get(), SoundSource.BLOCKS, 1.0F, (serverLevel.getRandom().nextFloat() - serverLevel.getRandom().nextFloat()) * 0.2F + 1.0F);
-                            addSpawnParticles(serverLevel, blockPos2, serverLevel.getRandom());
-                            serverLevel.gameEvent(entity, GameEvent.ENTITY_PLACE, blockPos2);
+                            serverLevel.playSound(null, mobSpawnPos, BHSounds.SPAWNER_SPAWN.get(), SoundSource.BLOCKS, 1.0F, (serverLevel.getRandom().nextFloat() - serverLevel.getRandom().nextFloat()) * 0.2F + 1.0F);
+                            addSpawnParticles(serverLevel, mobSpawnPos, serverLevel.getRandom());
+                            serverLevel.gameEvent(entity, GameEvent.ENTITY_PLACE, mobSpawnPos);
                             return Optional.of(entity.getUUID());
                         }
                     }
@@ -177,16 +179,36 @@ public class BHBaseSpawner {
         }
     }
 
-    public void ejectReward(ServerLevel serverLevel, BlockPos blockPos, ResourceLocation resourceLocation) {
-        LootTable lootTable = serverLevel.getServer().getLootData().getLootTable(resourceLocation);
-        LootParams lootParams = new LootParams.Builder(serverLevel).create(LootContextParamSets.EMPTY);
-        ObjectArrayList<ItemStack> objectArrayList = lootTable.getRandomItems(lootParams);
+    public void equipMobsWithEquipments(ServerLevel level, EquipmentTable table, Entity entity) {
+        LootTable lootTable = level.getServer().getLootData().getLootTable(table.getLootTable());
+        BeyondHorizon.LOGGER.info("Loot Table:{}", lootTable.getLootTableId());
+        Map<EquipmentSlot, Float> map = table.getDropChances();
+        LootParams params = new LootParams.Builder(level).create(LootContextParamSets.EMPTY);
+        ObjectArrayList<ItemStack> list = lootTable.getRandomItems(params);
+        BeyondHorizon.LOGGER.info("Equipment Table:{}", table);
+        BeyondHorizon.LOGGER.info("Items:{}", list);
+        if (!list.isEmpty()) {
+            for (ItemStack stacks : list) {
+                EquipmentSlot dedicatedSlots = LivingEntity.getEquipmentSlotForItem(stacks);
+                if (entity instanceof Mob mob) {
+                    mob.setItemSlot(dedicatedSlots, stacks);
+                    mob.setDropChance(dedicatedSlots, map.get(dedicatedSlots));
+                }
+            }
+        }
+    }
+
+
+    public void ejectReward(ServerLevel level, BlockPos pos, ResourceLocation ejectRewards) {
+        LootTable lootTable = level.getServer().getLootData().getLootTable(ejectRewards);
+        LootParams params = new LootParams.Builder(level).create(LootContextParamSets.EMPTY);
+        ObjectArrayList<ItemStack> objectArrayList = lootTable.getRandomItems(params);
         if (!objectArrayList.isEmpty()) {
             for (ItemStack itemStack : objectArrayList) {
-                DefaultDispenseItemBehavior.spawnItem(serverLevel, itemStack, 2, Direction.UP, Vec3.atBottomCenterOf(blockPos).relative(Direction.UP, 1.2));
+                DefaultDispenseItemBehavior.spawnItem(level, itemStack, 2, Direction.UP, Vec3.atBottomCenterOf(pos).relative(Direction.UP, 1.2));
             }
-            serverLevel.playSound(null, blockPos, BHSounds.SPAWNER_EJECT_ITEM.get(), SoundSource.BLOCKS, 1.0F, (serverLevel.getRandom().nextFloat() - serverLevel.getRandom().nextFloat()) * 0.2F + 1.0F);
-            addEjectItemParticles(serverLevel, blockPos, serverLevel.getRandom());
+            level.playSound(null, pos, BHSounds.SPAWNER_EJECT_ITEM.get(), SoundSource.BLOCKS, 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
+            addEjectItemParticles(level, pos, level.getRandom());
         }
     }
 

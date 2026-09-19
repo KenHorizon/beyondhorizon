@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.client.render.entity;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.InfernoShieldModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.InfernoShield;
+import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.InfernoShield;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

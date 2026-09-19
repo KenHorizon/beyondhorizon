@@ -1,0 +1,13 @@
+package com.kenhorizon.beyondhorizon.server.level.item.classify;
+
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
+public interface ILeftClick {
+
+    default boolean preventClickOthers(ItemStack stack, Player player) {
+        return false;
+    }
+
+    boolean onLeftClick(ItemStack stack, Player player);
+}

@@ -55,7 +55,6 @@ public class BHConfigs {
             MUSIC_BOSS = ModClientConfig.MUSIC_BOSS.get();
             ACCESSORY_BUTTON_X = ModClientConfig.ACCESSORY_BUTTON_X.get();
             ACCESSORY_BUTTON_Y = ModClientConfig.ACCESSORY_BUTTON_Y.get();
-            //---------------------------------------------------------------------//
             MOBS_MIN_LEVEL_CAP = ModServerConfig.MOBS_MIN_LEVEL_CAP.get();
             MOBS_MAX_LEVEL_CAP = ModServerConfig.MOBS_MAX_LEVEL_CAP.get();
             ENABLE_MOB_LEVELS = ModServerConfig.ENABLE_MOB_LEVELS.get();

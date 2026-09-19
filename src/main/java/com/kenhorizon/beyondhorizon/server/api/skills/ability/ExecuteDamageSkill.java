@@ -1,12 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
-import com.kenhorizon.beyondhorizon.server.entity.util.EntityUtils;
+import com.kenhorizon.beyondhorizon.server.level.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ItemStack;
 
 public class ExecuteDamageSkill extends WeaponPassiveSkills {
     public ExecuteDamageSkill(float magnitude) {

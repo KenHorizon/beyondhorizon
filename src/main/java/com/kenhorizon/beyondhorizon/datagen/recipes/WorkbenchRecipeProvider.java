@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHRecipe;
 import com.kenhorizon.libs.server.item.recipe.AmountIngredient;
-import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
+import com.kenhorizon.beyondhorizon.server.level.item.recipe.WorkbenchRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.CriterionTriggerInstance;

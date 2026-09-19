@@ -5,7 +5,7 @@ import com.kenhorizon.beyondhorizon.client.model.entity.BaseSpearModel;
 import com.kenhorizon.beyondhorizon.client.render.AnimatedTextureRenderer;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.HomingProjectile;
+import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.HomingProjectile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

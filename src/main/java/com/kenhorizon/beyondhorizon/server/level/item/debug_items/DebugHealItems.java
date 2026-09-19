@@ -1,0 +1,35 @@
+package com.kenhorizon.beyondhorizon.server.level.item.debug_items;
+
+import com.kenhorizon.beyondhorizon.server.level.item.BasicItem;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+public class DebugHealItems extends BasicItem {
+    public DebugHealItems(Properties properties) {
+        super(properties);
+    }
+
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag flag) {
+        tooltip.add(Component.literal("Restore all health and hunger"));
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+        if (!level.isClientSide()) {
+            player.heal(player.getMaxHealth());
+            player.getFoodData().setFoodLevel(20);
+            player.getFoodData().setSaturation(20);
+        }
+        return super.use(level, player, hand);
+    }
+}

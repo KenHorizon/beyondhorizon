@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.inventory.menu;
 
 
 import com.kenhorizon.beyondhorizon.server.init.BHMenu;
-import com.kenhorizon.beyondhorizon.server.item.VoidBagItem;
+import com.kenhorizon.beyondhorizon.server.level.item.VoidBagItem;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;

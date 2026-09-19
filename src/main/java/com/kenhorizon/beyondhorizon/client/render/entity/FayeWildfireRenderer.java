@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.FayeWildfireModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.entity.layer.GenericEmissiveLayer;
-import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeWildfire;
+import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeWildfire;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;

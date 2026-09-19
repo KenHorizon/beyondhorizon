@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
 import com.kenhorizon.beyondhorizon.client.model.animation.BlazingInfernoAnim;
-import com.kenhorizon.beyondhorizon.server.entity.boss.blazing_inferno.BlazingInferno;
+import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

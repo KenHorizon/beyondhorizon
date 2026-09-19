@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
 import com.kenhorizon.beyondhorizon.client.model.animation.FayeFlaresAnim;
-import com.kenhorizon.beyondhorizon.server.entity.mobs.FayeFlares;
+import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeFlares;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

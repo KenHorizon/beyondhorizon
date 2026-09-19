@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.inventory.menu;
 
 import com.kenhorizon.beyondhorizon.server.init.*;
-import com.kenhorizon.beyondhorizon.server.item.recipe.WorkbenchRecipe;
+import com.kenhorizon.beyondhorizon.server.level.item.recipe.WorkbenchRecipe;
 import com.kenhorizon.libs.server.inventory.ExtendedRecipeBookMenu;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.game.ClientboundContainerSetSlotPacket;

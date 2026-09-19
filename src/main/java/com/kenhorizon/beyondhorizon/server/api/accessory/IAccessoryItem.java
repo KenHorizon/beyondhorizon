@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.server.item.base.AccessoryItem;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.monster.EnderMan;

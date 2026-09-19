@@ -1,0 +1,185 @@
+package com.kenhorizon.beyondhorizon.server.level.item.base;
+
+import com.google.common.collect.*;
+import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.api.accessory.*;
+import com.kenhorizon.beyondhorizon.server.level.item.BasicItem;
+import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
+import com.kenhorizon.libs.server.IReloadable;
+import com.kenhorizon.libs.server.ReloadableHandler;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.*;
+
+public class AccessoryItem extends BasicItem implements IAccessoryItem, IReloadable {
+    protected List<Accessory> accessories = ImmutableList.of();
+    protected final AccessoryBuilder builder;
+    protected AccessoryItemGroup accessoryItemGroup;
+
+    private final Multimap<Attribute, AttributeModifier> modifiers = HashMultimap.create();
+    public AccessoryItem(AccessoryItemGroup accessoryItemGroup, Properties properties, AccessoryBuilder builder) {
+        super(properties.stacksTo(1));
+        this.builder = builder;
+        this.accessoryItemGroup = accessoryItemGroup;
+        ReloadableHandler.addToReloadList(this);
+    }
+
+    public AccessoryItem(Properties properties, AccessoryBuilder builder) {
+        this(AccessoryItemGroup.NONE, properties, builder);
+    }
+
+    public AccessoryItem(Properties properties) {
+        this(AccessoryItemGroup.NONE, properties, AccessoryBuilder.NONE);
+    }
+
+    @Override
+    public void reload() {
+        ImmutableList.Builder<Accessory> builder = this.build();
+        this.accessories = builder.build();
+    }
+
+    private ImmutableList.Builder<Accessory> build() {
+        ImmutableList.Builder<Accessory> builder = ImmutableList.builder();
+        builder.addAll(this.builder.getAccessories());
+        return builder;
+    }
+
+
+    @Override
+    public AccessoryItemGroup getItemGroup() {
+        return this.accessoryItemGroup;
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers() {
+        return this.modifiers;
+    }
+
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(ItemStack stack) {
+        return IAccessoryItem.super.getAttributeModifiers(stack);
+    }
+
+    @Override
+    public void inventoryTick(ItemStack itemStack, Level level, Entity entity, int slot, boolean isSelected) {
+        if (entity instanceof Player player) {
+            this.accessories.forEach((accessory) -> {
+                accessory.entityProperties().ifPresent(callback -> {
+                    callback.onItemUpdate(itemStack, level, player, slot, isSelected);
+                });
+            });
+        }
+    }
+
+    @Override
+    public void appendHoverText(ItemStack itemStack, @Nullable Level level, List<Component> tooltip, TooltipFlag isAdvanced) {
+        int size = this.accessories.stream().filter(accessory -> !(accessory instanceof AttributeOnlyAccessory)).toList().size();
+        Multimap<Attribute, AttributeModifier> map = HashMultimap.create();
+        for (int i = 0; i < this.accessories.size(); i++) {
+
+            Accessory accessory = this.accessories.get(i);
+            if (i == 0) {
+                if (this.getItemGroup() != AccessoryItemGroup.NONE) {
+                    tooltip.add(Component.translatable(Tooltips.ACCESSORY).withStyle(ChatFormatting.GOLD).append(CommonComponents.space()).append(Component.translatable(Tooltips.ACCESSORY_TYPE).withStyle(ChatFormatting.GRAY)));
+                } else {
+                    tooltip.add(Component.translatable(Tooltips.ACCESSORY).withStyle(ChatFormatting.GOLD));
+                }
+            }
+            accessory.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+
+            UUID uuid = UUID.nameUUIDFromBytes(Accessory.ACCESSORY_UUID.getBytes());
+//            Multimap<Attribute, AttributeModifier> map = AccessoryHelper.getAttributeModifiers(uuid, itemStack);
+            if (accessory.isAttributeTooltipEnable()) {
+                ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+                accessory.getAttributeModifier().forEach((attribute, modifier) -> {
+                    builder.put(attribute, modifier);
+                });
+                map.putAll( builder.build());
+            }
+            if (!map.isEmpty() && i == (this.accessories.size() - 1)) {
+                tooltip.add(CommonComponents.EMPTY);
+                tooltip.add(Component.translatable(Tooltips.WHEN_WORN).withStyle(Tooltips.TOOLTIP[0]));
+                accessory.addTooltipAttributes(itemStack, tooltip, map);
+            }
+
+        }
+        if (!this.isBasic()) {
+            tooltip.add(CommonComponents.space());
+            if (this.isNameLimitation()) {
+                MutableComponent comp = Component.translatable(itemStack.getDescriptionId());
+                tooltip.add(Component.translatable(Tooltips.ACCESSORY_LIMITED_TO, comp).withStyle(Tooltips.TOOLTIP[1]).withStyle(ChatFormatting.UNDERLINE));
+            } else {
+                tooltip.add(Component.translatable(Tooltips.ACCESSORY_LIMITED_TO, Utils.formattedWords(this.getItemGroup().name())).withStyle(Tooltips.TOOLTIP[1]).withStyle(ChatFormatting.UNDERLINE));
+            }
+            tooltip.add(CommonComponents.EMPTY);
+        }
+    }
+    @Override
+    public boolean has(Accessory skill) {
+        return this.accessories.contains(skill);
+    }
+
+    @Override
+    public List<Accessory> getAccessories() {
+        return ImmutableList.copyOf(this.accessories);
+    }
+
+    @Override
+    public boolean makePiglinsNeutral(Player player) {
+        for (Accessory accessory : this.accessories) {
+            Optional<IEntityProperties> callback = accessory.entityProperties();
+            if (callback.isPresent()) {
+                return callback.get().makePiglinsNeutral();
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean canWalkOnPoweredSnow(Player player) {
+        boolean flag = false;
+        for (Accessory accessory : this.accessories) {
+            Optional<IEntityProperties> callback = accessory.entityProperties();
+            if (callback.isPresent()) {
+                flag = callback.get().canWalkOnPoweredSnow();
+            }
+        }
+        return flag;
+    }
+
+    @Override
+    public boolean isFreezeImmune(Player player) {
+        boolean flag = false;
+        for (Accessory accessory : this.accessories) {
+            Optional<IEntityProperties> callback = accessory.entityProperties();
+            if (callback.isPresent()) {
+                flag = callback.get().isFreezeImmune();
+            }
+        }
+        return flag;
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(UUID uuid, ItemStack stack) {
+        Multimap<Attribute, AttributeModifier> map = HashMultimap.create();
+        ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
+        this.accessories.forEach(accessory -> {
+            builder.putAll(accessory.registerAttributes(uuid, stack));
+        });
+        map = builder.build();
+        return map;
+    }
+}

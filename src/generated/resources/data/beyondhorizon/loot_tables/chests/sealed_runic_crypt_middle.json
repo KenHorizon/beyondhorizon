@@ -1,0 +1,45 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:crypt_door_key"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 1.0,
+        "min": 1.0
+      }
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:tough_cloth",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:firefly_faye",
+          "weight": 20
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:leather_agility",
+          "weight": 20
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 1.0,
+        "min": 1.0
+      }
+    }
+  ],
+  "random_sequence": "beyondhorizon:chests/sealed_runic_crypt_middle"
+}

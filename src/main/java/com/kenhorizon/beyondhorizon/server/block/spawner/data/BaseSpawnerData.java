@@ -4,6 +4,7 @@ package com.kenhorizon.beyondhorizon.server.block.spawner.data;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
+import com.kenhorizon.beyondhorizon.server.level.SpawnerSpawnData;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -47,7 +48,7 @@ public class BaseSpawnerData {
                             Codec.LONG.optionalFieldOf(TAG_COOLDOWN_ENDS_AT, 0L).forGetter(trialSpawnerData -> trialSpawnerData.cooldownEndsAt),
                             Codec.LONG.optionalFieldOf(TAG_NEXT_MOB_SPAWNS_AT, 0L).forGetter(trialSpawnerData -> trialSpawnerData.nextMobSpawnsAt),
                             Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf(TAG_TOTAL_MOBS_SPAWNED, 0).forGetter(trialSpawnerData -> trialSpawnerData.totalMobsSpawned),
-                            SpawnData.CODEC.optionalFieldOf(TAG_SPAWN_DATA).forGetter(trialSpawnerData -> trialSpawnerData.nextSpawnData),
+                            SpawnerSpawnData.CODEC.optionalFieldOf(TAG_SPAWN_DATA).forGetter(trialSpawnerData -> trialSpawnerData.nextSpawnData),
                             ResourceLocation.CODEC.optionalFieldOf(TAG_EJECTING_LOOT_TABLE).forGetter(trialSpawnerData -> trialSpawnerData.ejectingLootTable)
                     )
                     .apply(instance, BaseSpawnerData::new)
@@ -57,9 +58,9 @@ public class BaseSpawnerData {
     protected long cooldownEndsAt;
     protected long nextMobSpawnsAt;
     protected int totalMobsSpawned;
-    protected Optional<SpawnData> nextSpawnData;
+    protected Optional<SpawnerSpawnData> nextSpawnData;
     protected Optional<ResourceLocation> ejectingLootTable;
-    protected SimpleWeightedRandomList<SpawnData> spawnPotentials;
+    protected SimpleWeightedRandomList<SpawnerSpawnData> spawnPotentials;
     @Nullable
     protected Entity displayEntity;
     protected double spin;
@@ -69,7 +70,7 @@ public class BaseSpawnerData {
         this(Collections.emptySet(), Collections.emptySet(), 0L, 0L, 0, Optional.empty(), Optional.empty());
     }
 
-    public BaseSpawnerData(Set<UUID> set, Set<UUID> set2, long cooldownEndsAt, long nextMobSpawnsAt, int totalMobsSpawned, Optional<SpawnData> optionalSpawnData, Optional<ResourceLocation> optionalloottable) {
+    public BaseSpawnerData(Set<UUID> set, Set<UUID> set2, long cooldownEndsAt, long nextMobSpawnsAt, int totalMobsSpawned, Optional<SpawnerSpawnData> optionalSpawnData, Optional<ResourceLocation> optionalloottable) {
         this.detectedPlayers.addAll(set);
         this.currentMobs.addAll(set2);
         this.cooldownEndsAt = cooldownEndsAt;
@@ -84,9 +85,9 @@ public class BaseSpawnerData {
     }
 
     public void setSpawnPotentialsFromConfig(SpawnerConfig trialSpawnerConfig) {
-        SimpleWeightedRandomList<SpawnData> simpleWeightedRandomList = trialSpawnerConfig.spawnPotentialsDefinition();
+        SimpleWeightedRandomList<SpawnerSpawnData> simpleWeightedRandomList = trialSpawnerConfig.spawnPotentialsDefinition();
         if (simpleWeightedRandomList.isEmpty()) {
-            this.spawnPotentials = SimpleWeightedRandomList.single(this.nextSpawnData.orElseGet(SpawnData::new));
+            this.spawnPotentials = SimpleWeightedRandomList.single(this.nextSpawnData.orElseGet(SpawnerSpawnData::new));
         } else {
             this.spawnPotentials = simpleWeightedRandomList;
         }
@@ -111,7 +112,7 @@ public class BaseSpawnerData {
     }
 
     public boolean hasMobToSpawn(BHBaseSpawner baseSpawner) {
-        boolean bl = this.nextSpawnData.isPresent() && ((SpawnData)this.nextSpawnData.get()).getEntityToSpawn().contains("id", 8);
+        boolean bl = this.nextSpawnData.isPresent() && ((SpawnerSpawnData)this.nextSpawnData.get()).getEntityToSpawn().contains("id", 8);
         return bl || !baseSpawner.getConfig().spawnPotentialsDefinition().isEmpty();
     }
 
@@ -163,14 +164,12 @@ public class BaseSpawnerData {
         this.getOrCreateNextSpawnData(trialSpawner, randomSource).getEntityToSpawn().putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(entityType).toString());
     }
 
-    protected SpawnData getOrCreateNextSpawnData(BHBaseSpawner trialSpawner, RandomSource randomSource) {
-        if (this.nextSpawnData.isPresent()) {
-            return this.nextSpawnData.get();
-        } else {
-            this.nextSpawnData = Optional.of(this.spawnPotentials.getRandom(randomSource).map(WeightedEntry.Wrapper::getData).orElseGet(SpawnData::new));
-            trialSpawner.markUpdated();
-            return this.nextSpawnData.get();
+    protected SpawnerSpawnData getOrCreateNextSpawnData(BHBaseSpawner spawner, RandomSource random) {
+        if (this.nextSpawnData.isEmpty()) {
+            this.nextSpawnData = Optional.of(this.spawnPotentials.getRandom(random).map(WeightedEntry.Wrapper::getData).orElseGet(SpawnerSpawnData::new));
+            spawner.markUpdated();
         }
+        return this.nextSpawnData.get();
     }
 
     @Nullable
@@ -198,7 +197,7 @@ public class BaseSpawnerData {
         this.nextSpawnData.ifPresent(
                 spawnData -> compoundTag.put(
                         TAG_SPAWN_DATA,
-                        SpawnData.CODEC.encodeStart(NbtOps.INSTANCE, spawnData)
+                        SpawnerSpawnData.CODEC.encodeStart(NbtOps.INSTANCE, spawnData)
                                 .result()
                                 .orElseThrow(() -> new IllegalStateException("Invalid SpawnData"))
                 )

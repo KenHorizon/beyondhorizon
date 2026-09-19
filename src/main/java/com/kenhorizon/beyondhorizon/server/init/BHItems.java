@@ -2,15 +2,17 @@ package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryBuilder;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryItemGroup;
-import com.kenhorizon.beyondhorizon.server.item.*;
-import com.kenhorizon.beyondhorizon.server.item.base.*;
-import com.kenhorizon.beyondhorizon.server.item.base.armor.ArmorBaseItem;
-import com.kenhorizon.beyondhorizon.server.item.base.tools.DiggerBaseItem;
-import com.kenhorizon.beyondhorizon.server.item.base.weapons.SwordBaseItem;
-import com.kenhorizon.beyondhorizon.server.item.debug_items.*;
-import com.kenhorizon.beyondhorizon.server.item.materials.ArmorBaseMaterials;
-import com.kenhorizon.beyondhorizon.server.item.materials.MagicWeaponMaterials;
-import com.kenhorizon.beyondhorizon.server.item.materials.MeleeWeaponMaterials;
+import com.kenhorizon.beyondhorizon.server.level.item.*;
+import com.kenhorizon.beyondhorizon.server.level.item.base.AccessoryItem;
+import com.kenhorizon.beyondhorizon.server.level.item.base.MagicItemBuilder;
+import com.kenhorizon.beyondhorizon.server.level.item.base.MeleeItemBuilder;
+import com.kenhorizon.beyondhorizon.server.level.item.base.armor.ArmorBaseItem;
+import com.kenhorizon.beyondhorizon.server.level.item.base.tools.DiggerBaseItem;
+import com.kenhorizon.beyondhorizon.server.level.item.base.weapons.SwordBaseItem;
+import com.kenhorizon.beyondhorizon.server.level.item.debug_items.*;
+import com.kenhorizon.beyondhorizon.server.level.item.materials.ArmorBaseMaterials;
+import com.kenhorizon.beyondhorizon.server.level.item.materials.MagicWeaponMaterials;
+import com.kenhorizon.beyondhorizon.server.level.item.materials.MeleeWeaponMaterials;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.libs.client.model.item.ItemModels;
@@ -145,6 +147,7 @@ public class BHItems {
     public static final RegistryObject<Item> REFINED_ARCANA_CRYSTAL = basicItem("refined_arcana_crystal", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> GOLD_RING = basicItem("gold_ring", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> HANDLE = basicItem("handle", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> IRON_HANDLE = basicItem("iron_handle", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> STINGER = basicItem("stinger", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> HOGLIN_TUSK = basicItem("hoglin_tusk", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> DUSK_LEATHER = basicItem("dusk_leather", RegistryTabs.Category.INGREDIENTS);
@@ -164,7 +167,9 @@ public class BHItems {
     public static final RegistryObject<Item> STARITE_INGOT = basicItem("starite_ingot", BHRarity.STELLAR, RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> LUMINITE_INGOT = basicItem("luminite_ingot", BHRarity.COSMIC_PURPLE, RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> DARK_CRYSTAL = basicItem("dark_crystal", BHRarity.COSMIC_PURPLE, RegistryTabs.Category.INGREDIENTS);
-    public static final RegistryObject<Item> SHADOWCRUST = basicItem("shadowcrust", RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> SHADOWCRUST = basicItem("shadowcrust", BHRarity.COSMIC_PURPLE, RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> VAULT_KEY = basicItem("vault_key", Rarity.UNCOMMON, RegistryTabs.Category.INGREDIENTS);
+    public static final RegistryObject<Item> CRYPT_DOOR_KEY = basicItem("crypt_door_key", Rarity.UNCOMMON, RegistryTabs.Category.INGREDIENTS);
 
     public static final RegistryObject<Item> IRON_PLATE = basicItem("iron_plate", RegistryTabs.Category.INGREDIENTS);
     public static final RegistryObject<Item> CHAINMAIL_PLATE = basicItem("chainmail_plate", RegistryTabs.Category.INGREDIENTS);
@@ -179,7 +184,7 @@ public class BHItems {
     public static final RegistryObject<Item> WILDFIRE_BOOTS = armorItem("wildfire_boots", ArmorItem.Type.BOOTS, BHRarity.LEGENDARY, ArmorBaseMaterials.WILDFIRE);
 
     public static final RegistryObject<Item> FLINT_KNIFE = swordItem("flint_knife", MeleeWeaponMaterials.FLINT, MeleeItemBuilder.KNIFE);
-    //
+
     public static final RegistryObject<Item> CRIMSNITE_SWORD = swordItem("crimsnite_sword", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, MeleeItemBuilder.SWORD);
     public static final RegistryObject<Item> CRIMSNITE_AXE = toolItem("crimsnite_axe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, MeleeItemBuilder.AXE);
     public static final RegistryObject<Item> CRIMSNITE_PICKAXE = toolItem("crimsnite_pickaxe", Rarity.UNCOMMON, MeleeWeaponMaterials.CRIMSNITE, MeleeItemBuilder.PICKAXE);

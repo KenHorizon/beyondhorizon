@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.capability;
 
-import com.kenhorizon.beyondhorizon.server.item.QuiverItem;
+import com.kenhorizon.beyondhorizon.server.level.item.QuiverItem;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;

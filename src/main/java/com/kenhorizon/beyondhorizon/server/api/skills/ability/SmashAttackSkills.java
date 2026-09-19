@@ -4,7 +4,7 @@ import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
-import com.kenhorizon.beyondhorizon.server.entity.util.ShockwaveUtils;
+import com.kenhorizon.beyondhorizon.server.level.entity.util.ShockwaveUtils;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;

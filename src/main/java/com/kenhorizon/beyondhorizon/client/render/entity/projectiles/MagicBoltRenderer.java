@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.entity.projectiles;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
-import com.kenhorizon.beyondhorizon.server.entity.projectiles.MagicBolt;
+import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.MagicBolt;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

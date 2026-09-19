@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.entity.ability;
 
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
-import com.kenhorizon.beyondhorizon.server.entity.ability.beam.AbstractDeathRayAbility;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;

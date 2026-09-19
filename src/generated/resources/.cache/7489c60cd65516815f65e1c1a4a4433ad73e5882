@@ -1,4 +1,4 @@
-// 1.20.1	2026-09-13T20:05:19.6848664	Item Models: beyondhorizon
+// 1.20.1	2026-09-19T19:04:55.186293	Item Models: beyondhorizon
 13994e6625b38a1d5bc460ac16bcf656af48bfa2 assets/beyondhorizon/models/item/abyssal_tooth.json
 7a351689e064aa46ef109a645984e585fc8dfc54 assets/beyondhorizon/models/item/adhesive_bandage.json
 ce0e51e4f857b99375939313d6c1aa32f9e43df5 assets/beyondhorizon/models/item/aether_wisp.json
@@ -46,6 +46,7 @@ e7c02872b78721a92aec53757346a036aa4c63b6 assets/beyondhorizon/models/item/crimsn
 40a6554ee8ab00ded22b0318f8f9c8ea1437993a assets/beyondhorizon/models/item/crimsnite_pickaxe.json
 a0103b5dfcebbafab0478934ee5a83b05875d36b assets/beyondhorizon/models/item/crimsnite_shovel.json
 a4a27f02fdc7a79051f3fbc9dc821f3bba09abdb assets/beyondhorizon/models/item/crimsnite_sword.json
+cc5bd162b28cbf1ebfbf95ad00c0364ac6d2fc97 assets/beyondhorizon/models/item/crypt_door_key.json
 08f3f24e998dbe7a32d05f1080008929b8e553c2 assets/beyondhorizon/models/item/crystallized_plate.json
 775cdbc7976d4fbb83576a08caa7162987b7d0ff assets/beyondhorizon/models/item/cursed_apple.json
 b087597c66d43451f6cf518fe969e7a42c47e2b2 assets/beyondhorizon/models/item/cursed_blindfold.json
@@ -120,6 +121,7 @@ d4fb31726b490d0411e12756c4c6c0716f1c884a assets/beyondhorizon/models/item/hoglin
 550dd7db7c4d250b7b4e53922509142c1e102f8f assets/beyondhorizon/models/item/infested_magic_molecules.json
 45dd57ef317d018c6fb1da88fe942c10f0141678 assets/beyondhorizon/models/item/infested_sword.json
 33ab8b1213915d33ded37edc9ffb60deba049ab7 assets/beyondhorizon/models/item/infinity_gem.json
+e262bba804b287f42d1e932dc6a8f81be17a0b46 assets/beyondhorizon/models/item/iron_handle.json
 b125e3f4deb091bbc5863a3655ba2a117f3f600a assets/beyondhorizon/models/item/iron_plate.json
 4982b6ebb0e0cc0b2755b177dea0e167737993a7 assets/beyondhorizon/models/item/iron_plated_boots.json
 fe968f7683fca09746334c774d904734908764c3 assets/beyondhorizon/models/item/iron_wand.json
@@ -209,6 +211,7 @@ e0bd8e88ca0c20d0700251b0ec0580bc1a0f71b4 assets/beyondhorizon/models/item/twilig
 cad29a26297570a181e0e814979fe06819076f21 assets/beyondhorizon/models/item/twilight_sword.json
 ae16808a8f32bd65d5f0c3fefc23cb27d56b2d49 assets/beyondhorizon/models/item/ultima.json
 12cb0db145a6cec5e5d92822f58a2cd11cb243ab assets/beyondhorizon/models/item/unstable_runic_tome.json
+4a1182159c4f88326e298e2d4e88946384501304 assets/beyondhorizon/models/item/vault_key.json
 604d72d4a4e892b05266d1ab21ad191c3981ddeb assets/beyondhorizon/models/item/vitality_stone.json
 f686f70b3152320e6fc1068bb48927e6476e1cdd assets/beyondhorizon/models/item/vitamins.json
 118c1565790fdc6d4e66ac9a45743838f70f9e96 assets/beyondhorizon/models/item/void_bag.json

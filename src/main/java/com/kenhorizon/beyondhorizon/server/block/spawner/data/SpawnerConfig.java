@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.block.spawner.data;
 
+import com.kenhorizon.beyondhorizon.server.level.SpawnerSpawnData;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -8,7 +9,7 @@ import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
-public record SpawnerConfig(int requiredPlayerRange, int spawnRange, float totalMobs, float simultaneousMobs, float totalMobsAddedPerPlayer, float simultaneousMobsAddedPerPlayer, int ticksBetweenSpawn, int targetCooldownLength, SimpleWeightedRandomList<SpawnData> spawnPotentialsDefinition, SimpleWeightedRandomList<ResourceLocation> lootTablesToEject) {
+public record SpawnerConfig(int requiredPlayerRange, int spawnRange, float totalMobs, float simultaneousMobs, float totalMobsAddedPerPlayer, float simultaneousMobsAddedPerPlayer, int ticksBetweenSpawn, int targetCooldownLength, SimpleWeightedRandomList<SpawnerSpawnData> spawnPotentialsDefinition, SimpleWeightedRandomList<ResourceLocation> lootTablesToEject) {
     public static SpawnerConfig DEFAULT = new SpawnerConfig(
             14,
             4,
@@ -32,6 +33,7 @@ public record SpawnerConfig(int requiredPlayerRange, int spawnRange, float total
     public static final String COOLDOWN = "target_cooldown_length";
     public static final String SPAWN_POTENTIALS = "spawn_potentials";
     public static final String LOOT_TABLET_TO_EJECT = "loot_tables_to_eject";
+
     public static MapCodec<SpawnerConfig> MAP_CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                             Codec.intRange(1, 128).optionalFieldOf(REQUIRED_PLAYER_RANGE, DEFAULT.requiredPlayerRange).forGetter(SpawnerConfig::requiredPlayerRange),
@@ -48,7 +50,7 @@ public record SpawnerConfig(int requiredPlayerRange, int spawnRange, float total
                             Codec.intRange(0, Integer.MAX_VALUE)
                                     .optionalFieldOf(COOLDOWN, DEFAULT.targetCooldownLength)
                                     .forGetter(SpawnerConfig::targetCooldownLength),
-                            SpawnData.LIST_CODEC.optionalFieldOf(SPAWN_POTENTIALS, SimpleWeightedRandomList.empty()).forGetter(SpawnerConfig::spawnPotentialsDefinition),
+                            SpawnerSpawnData.LIST_CODEC.optionalFieldOf(SPAWN_POTENTIALS, SimpleWeightedRandomList.empty()).forGetter(SpawnerConfig::spawnPotentialsDefinition),
                             SimpleWeightedRandomList.wrappedCodecAllowingEmpty(ResourceLocation.CODEC)
                                     .optionalFieldOf(LOOT_TABLET_TO_EJECT, SimpleWeightedRandomList.empty())
                                     .forGetter(SpawnerConfig::lootTablesToEject)
@@ -83,7 +85,7 @@ public record SpawnerConfig(int requiredPlayerRange, int spawnRange, float total
         private float totalMobsAddedPerPlayer = 2.0F;
         private float simultaneousMobsAddedPerPlayer = 1.0F;
         private int ticksBetweenSpawn = 40;
-        private SimpleWeightedRandomList<SpawnData> spawnPotentialsDefinition = SimpleWeightedRandomList.empty();
+        private SimpleWeightedRandomList<SpawnerSpawnData> spawnPotentialsDefinition = SimpleWeightedRandomList.empty();
         private SimpleWeightedRandomList<ResourceLocation> lootTablesToEject;
 
         public Builder() {
@@ -120,7 +122,7 @@ public record SpawnerConfig(int requiredPlayerRange, int spawnRange, float total
             return this;
         }
 
-        public Builder spawnPotentialsDefinition(final SimpleWeightedRandomList<SpawnData> spawnPotentialsDefinition) {
+        public Builder spawnPotentialsDefinition(final SimpleWeightedRandomList<SpawnerSpawnData> spawnPotentialsDefinition) {
             this.spawnPotentialsDefinition = spawnPotentialsDefinition;
             return this;
         }

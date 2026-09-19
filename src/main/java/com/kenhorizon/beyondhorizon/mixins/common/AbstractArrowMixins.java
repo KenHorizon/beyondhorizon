@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
 import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
-import com.kenhorizon.beyondhorizon.server.item.QuiverItem;
+import com.kenhorizon.beyondhorizon.server.level.item.QuiverItem;
 import com.kenhorizon.beyondhorizon.server.util.QuiverHelper;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -11,8 +11,6 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.AbstractArrow.Pickup;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.entity.projectile.AbstractArrow;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

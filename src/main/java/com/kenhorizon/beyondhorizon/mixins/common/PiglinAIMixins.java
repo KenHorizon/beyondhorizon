@@ -1,8 +1,6 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
-import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
-import com.kenhorizon.beyondhorizon.server.item.base.armor.ArmorBaseItem;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.piglin.PiglinAi;

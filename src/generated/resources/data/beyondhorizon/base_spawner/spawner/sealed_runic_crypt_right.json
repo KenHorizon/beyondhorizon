@@ -1,0 +1,26 @@
+{
+  "loot_tables_to_eject": [
+    {
+      "data": "beyondhorizon:chests/sealed_runic_crypt_right",
+      "weight": 3
+    }
+  ],
+  "simultaneous_mobs": 1.0,
+  "simultaneous_mobs_added_per_player": 0.5,
+  "spawn_potentials": [
+    {
+      "data": {
+        "entity": {
+          "id": "minecraft:zombie"
+        },
+        "equipment": {
+          "loot_table": "beyondhorizon:chests/common_equipments",
+          "slot_drop_chances": 0.0
+        }
+      },
+      "weight": 1
+    }
+  ],
+  "ticks_between_spawn": 20,
+  "total_mobs": 3.0
+}

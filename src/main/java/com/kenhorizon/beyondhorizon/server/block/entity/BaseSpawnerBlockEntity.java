@@ -1,12 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.block.entity;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.Utils;
 import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
 import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.BHBaseSpawner;
 import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
-import com.kenhorizon.beyondhorizon.server.listeners.SpawnerBuilderListener;
+import com.kenhorizon.beyondhorizon.server.level.listeners.SpawnerBuilderListener;
 import com.kenhorizon.beyondhorizon.server.util.PlayerDetector;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -29,6 +30,7 @@ public class BaseSpawnerBlockEntity extends BlockEntity implements BHBaseSpawner
         super(BHBlockEntity.BASE_SPAWNER.get(), blockPos, blockState);
         this.spawner = new BHBaseSpawner(this, PlayerDetector.NO_CREATIVE_PLAYERS, PlayerDetector.EntitySelector.SELECT_FROM_LEVEL);
     }
+
     @Override
     public void load(CompoundTag nbt) {
         super.load(nbt);
@@ -37,10 +39,12 @@ public class BaseSpawnerBlockEntity extends BlockEntity implements BHBaseSpawner
             .getOrThrow(false, error -> BeyondHorizon.LOGGER.error("Failed to parse spawner: {}", error));
         Tag raw = nbt.get("configs");
         if (raw instanceof StringTag stringTag) {
-            ResourceLocation resourceLocation = ResourceLocation.tryParse(stringTag.getAsString());
-            this.spawner.setConfig(SpawnerBuilderListener.get(resourceLocation));
+            String[] parse = Utils.decompose(stringTag.getAsString(), ':');
+            String spawnerConfigs = String.format("%s:spawner/%s", parse[0], parse[1]);
+            ResourceLocation configSpawner = ResourceLocation.tryParse(spawnerConfigs);
+            this.spawner.setConfig(SpawnerBuilderListener.get(configSpawner));
             this.spawner.setData(packed.getData());
-            this.spawner.getData().setSpawnPotentialsFromConfig(SpawnerBuilderListener.get(resourceLocation));
+            this.spawner.getData().setSpawnPotentialsFromConfig(SpawnerBuilderListener.get(configSpawner));
         }
         this.spawner.codec()
                 .parse(NbtOps.INSTANCE, nbt.get("configs"))

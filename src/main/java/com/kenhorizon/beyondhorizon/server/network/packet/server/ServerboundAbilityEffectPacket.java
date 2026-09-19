@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.network.packet.server;
 
-import com.kenhorizon.beyondhorizon.server.entity.ILinkedEntity;
+import com.kenhorizon.beyondhorizon.server.level.entity.ILinkedEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;

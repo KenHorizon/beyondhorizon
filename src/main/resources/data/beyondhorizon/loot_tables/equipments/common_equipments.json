@@ -1,0 +1,25 @@
+{
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "name": "beyondhorizon:equipments/tier/chainmail"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "beyondhorizon:equipments/tier/iron"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "beyondhorizon:equipments/tier/golden"
+        },
+        {
+          "type": "minecraft:loot_table",
+          "name": "beyondhorizon:equipments/tier/diamond"
+        }
+      ]
+    }
+  ]
+}

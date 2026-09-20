@@ -15,7 +15,8 @@ public class BHLootTables {
     public static final ResourceLocation SEALED_RUNIC_CRYPT_RIGHT = register("chests/sealed_runic_crypt_right");
     public static final ResourceLocation SEALED_RUNIC_CRYPT_MIDDLE = register("chests/sealed_runic_crypt_middle");
 
-    public static final ResourceLocation COMMON_EQUIPMENTS = register("chests/common_equipments");
+    public static final ResourceLocation COMMON_EQUIPMENTS = register("equipments/common_equipments");
+    public static final ResourceLocation COMMON_MELEE = register("equipments/melee");
 
     private static ResourceLocation register(String id) {
         return register(BeyondHorizon.resource(id));

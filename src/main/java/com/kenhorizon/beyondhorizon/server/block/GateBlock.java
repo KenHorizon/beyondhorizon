@@ -35,14 +35,14 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class GateBlocks extends BaseEntityBlock {
+public class GateBlock extends BaseEntityBlock {
     public static final BooleanProperty ATTACHED = BlockStateProperties.ATTACHED;
     public static final BooleanProperty OPEN = BlockStateProperties.OPEN;
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     private static final VoxelShape CLOSED = Block.box(0.0D, 0.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
 
-    public GateBlocks(Properties properties) {
+    public GateBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.stateDefinition.any().setValue(ATTACHED, Boolean.FALSE).setValue(LIT, Boolean.FALSE).setValue(OPEN, Boolean.FALSE));
     }

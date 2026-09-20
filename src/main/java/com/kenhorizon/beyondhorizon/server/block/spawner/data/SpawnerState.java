@@ -34,19 +34,19 @@ public enum SpawnerState implements StringRepresentable {
         this.isCapableOfSpawning = bl;
     }
 
-    SpawnerState tickAndGetNext(BlockPos blockPos, BHBaseSpawner spawner, ServerLevel serverLevel) {
+    SpawnerState tickAndGetNext(BlockPos blockPos, BHBaseSpawner spawner, ServerLevel level) {
         BaseSpawnerData data = spawner.getData();
         SpawnerConfig config = spawner.getConfig();
         SpawnerState state;
         switch(this) {
             case INACTIVE:
-                state = data.getOrCreateDisplayEntity(spawner, serverLevel, WAITING_FOR_PLAYERS) == null ? this : WAITING_FOR_PLAYERS;
+                state = data.getOrCreateDisplayEntity(spawner, level, WAITING_FOR_PLAYERS) == null ? this : WAITING_FOR_PLAYERS;
                 break;
             case WAITING_FOR_PLAYERS:
                 if (!data.hasMobToSpawn(spawner)) {
                     state = INACTIVE;
                 } else {
-                    data.tryDetectPlayers(serverLevel, blockPos, spawner);
+                    data.tryDetectPlayers(level, blockPos, spawner);
                     state = data.detectedPlayers.isEmpty() ? this : ACTIVE;
                 }
                 break;
@@ -55,21 +55,21 @@ public enum SpawnerState implements StringRepresentable {
                     state = INACTIVE;
                 } else {
                     int i = data.countAdditionalPlayers(blockPos);
-                    data.tryDetectPlayers(serverLevel, blockPos, spawner);
+                    data.tryDetectPlayers(level, blockPos, spawner);
                     if (data.hasFinishedSpawningAllMobs(config, i)) {
                         if (data.haveAllCurrentMobsDied()) {
-                            data.cooldownEndsAt = serverLevel.getGameTime() + (long)config.targetCooldownLength();
+                            data.cooldownEndsAt = level.getGameTime() + (long)config.targetCooldownLength();
                             data.totalMobsSpawned = 0;
                             data.nextMobSpawnsAt = 0L;
                             state = WAITING_FOR_REWARD_EJECTION;
                             break;
                         }
-                    } else if (data.isReadyToSpawnNextMob(serverLevel, config, i)) {
-                        spawner.spawnMob(serverLevel, blockPos).ifPresent(uuid -> {
+                    } else if (data.isReadyToSpawnNextMob(level, config, i)) {
+                        spawner.spawnMob(level, blockPos).ifPresent(uuid -> {
                             data.currentMobs.add(uuid);
                             ++data.totalMobsSpawned;
-                            data.nextMobSpawnsAt = serverLevel.getGameTime() + (long)config.ticksBetweenSpawn();
-                            data.spawnPotentials.getRandom(serverLevel.getRandom()).ifPresent(data1 -> {
+                            data.nextMobSpawnsAt = level.getGameTime() + (long)config.ticksBetweenSpawn();
+                            data.spawnPotentials.getRandom(level.getRandom()).ifPresent(data1 -> {
                                 data.nextSpawnData = Optional.of(data1.getData());
                                 spawner.markUpdated();
                             });
@@ -80,32 +80,32 @@ public enum SpawnerState implements StringRepresentable {
                 }
                 break;
             case WAITING_FOR_REWARD_EJECTION:
-                if (data.isReadyToOpenShutter(serverLevel, config, 40.0F)) {
-                    serverLevel.playSound(null, blockPos, BHSounds.SPAWNER_OPEN_SHUTTER.get(), SoundSource.BLOCKS);
+                if (data.isReadyToOpenShutter(level, config, DELAY_BEFORE_EJECT_AFTER_KILLING_LAST_MOB)) {
+                    level.playSound(null, blockPos, BHSounds.SPAWNER_OPEN_SHUTTER.get(), SoundSource.BLOCKS);
                     state = EJECTING_REWARD;
                 } else {
                     state = this;
                 }
                 break;
             case EJECTING_REWARD:
-                if (!data.isReadyToEjectItems(serverLevel, config, (float)TIME_BETWEEN_EACH_EJECTION)) {
+                if (!data.isReadyToEjectItems(level, config, (float) TIME_BETWEEN_EACH_EJECTION)) {
                     state = this;
                 } else if (data.detectedPlayers.isEmpty()) {
-                    serverLevel.playSound(null, blockPos, BHSounds.SPAWNER_CLOSE_SHUTTER.get(), SoundSource.BLOCKS);
+                    level.playSound(null, blockPos, BHSounds.SPAWNER_CLOSE_SHUTTER.get(), SoundSource.BLOCKS);
                     data.ejectingLootTable = Optional.empty();
                     state = COOLDOWN;
                 } else {
                     if (data.ejectingLootTable.isEmpty()) {
-                        data.ejectingLootTable = config.lootTablesToEject().getRandomValue(serverLevel.getRandom());
+                        data.ejectingLootTable = config.lootTablesToEject().getRandomValue(level.getRandom());
                     }
 
-                    data.ejectingLootTable.ifPresent(location -> spawner.ejectReward(serverLevel, blockPos, location));
+                    data.ejectingLootTable.ifPresent(location -> spawner.ejectReward(level, blockPos, location));
                     data.detectedPlayers.remove(data.detectedPlayers.iterator().next());
                     state = this;
                 }
                 break;
             case COOLDOWN:
-                if (data.isCooldownFinished(serverLevel)) {
+                if (data.isCooldownFinished(level)) {
                     data.cooldownEndsAt = 0L;
                     state = WAITING_FOR_PLAYERS;
                 } else {

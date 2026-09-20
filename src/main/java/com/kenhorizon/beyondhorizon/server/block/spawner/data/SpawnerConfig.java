@@ -20,7 +20,7 @@ public record SpawnerConfig(int requiredPlayerRange, int spawnRange, float total
             40,
             36000,
             SimpleWeightedRandomList.empty(),
-            SimpleWeightedRandomList.<ResourceLocation>builder().add(BuiltInLootTables.ANCIENT_CITY, 1).add(BuiltInLootTables.BASTION_TREASURE, 1).build()
+            SimpleWeightedRandomList.<ResourceLocation>builder().add(BuiltInLootTables.EMPTY, 1).build()
     );
 
     public static final String REQUIRED_PLAYER_RANGE = "required_player_range";

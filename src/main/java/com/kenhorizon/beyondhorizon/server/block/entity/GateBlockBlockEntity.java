@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.block.entity;
 
-import com.kenhorizon.beyondhorizon.server.block.GateBlocks;
+import com.kenhorizon.beyondhorizon.server.block.GateBlock;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import net.minecraft.core.BlockPos;
@@ -74,10 +74,10 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
 
     public void tick(Level level, BlockPos blockPos, BlockState blockState, GateBlockBlockEntity entity) {
         this.tickCount++;
-        if (blockState.getBlock() instanceof GateBlocks) {
-            if (blockState.getValue(GateBlocks.LIT)) {
+        if (blockState.getBlock() instanceof GateBlock) {
+            if (blockState.getValue(GateBlock.LIT)) {
                 ++entity.animationTick;
-                if (!blockState.getValue(GateBlocks.OPEN)) {
+                if (!blockState.getValue(GateBlock.OPEN)) {
                     if (entity.animationTick == 1) {
                         this.level.blockEvent(blockPos, this.getBlockState().getBlock(), 1, 0);
                         this.particle(level, blockPos, 20);
@@ -85,12 +85,12 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
                     }
                     if (entity.animationTick >= 20) {
                         if (!level.isClientSide()) {
-                            level.setBlock(blockPos, blockState.setValue(GateBlocks.OPEN, Boolean.TRUE), 2);
+                            level.setBlock(blockPos, blockState.setValue(GateBlock.OPEN, Boolean.TRUE), 2);
                             for (int i = 0; i <= 5; i++) {
                                 BlockPos blockpos2 = blockPos.above(i);
                                 BlockState blockstate = level.getBlockState(blockpos2);
                                 if (blockstate.is(BHBlocks.GATE_PARTS.get())) {
-                                    level.setBlock(blockpos2, blockstate.setValue(GateBlocks.GateParts.OPEN, Boolean.TRUE), 2);
+                                    level.setBlock(blockpos2, blockstate.setValue(GateBlock.GateParts.OPEN, Boolean.TRUE), 2);
                                 }
                             }
                         }
@@ -104,8 +104,8 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
                 }
             }
 
-            if (!blockState.getValue(GateBlocks.LIT)) {
-                if (blockState.getValue(GateBlocks.OPEN)) {
+            if (!blockState.getValue(GateBlock.LIT)) {
+                if (blockState.getValue(GateBlock.OPEN)) {
                     if (entity.animationTick == 0) {
                         this.resetAnimationState(entity);
                         this.level.blockEvent(blockPos, this.getBlockState().getBlock(), 2, 0);
@@ -114,12 +114,12 @@ public class GateBlockBlockEntity extends BHBlockEntityBase<GateBlockBlockEntity
                     ++entity.animationTick;
                     if (entity.animationTick >= 20) {
                         if (!level.isClientSide()) {
-                            level.setBlock(blockPos, blockState.setValue(GateBlocks.OPEN, Boolean.FALSE), 2);
+                            level.setBlock(blockPos, blockState.setValue(GateBlock.OPEN, Boolean.FALSE), 2);
                             for (int i = 0; i <= 5; i++) {
                                 BlockPos blockpos2 = blockPos.above(i);
                                 BlockState blockstate = level.getBlockState(blockpos2);
                                 if (blockstate.is(BHBlocks.GATE_PARTS.get())) {
-                                    level.setBlock(blockpos2, blockstate.setValue(GateBlocks.GateParts.OPEN, Boolean.FALSE), 2);
+                                    level.setBlock(blockpos2, blockstate.setValue(GateBlock.GateParts.OPEN, Boolean.FALSE), 2);
                                 }
                             }
                         }

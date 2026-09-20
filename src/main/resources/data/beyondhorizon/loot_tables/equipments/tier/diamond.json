@@ -7,18 +7,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:leather_helmet"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:iron_helmet"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:golden_helmet"
-        },
-        {
-          "type": "minecraft:item",
           "name": "minecraft:diamond_helmet"
         }
       ],
@@ -42,18 +30,6 @@
     {
       "rolls": 1,
       "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:leather_chestplate"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:iron_chestplate"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:golden_chestplate"
-        },
         {
           "type": "minecraft:item",
           "name": "minecraft:diamond_chestplate"
@@ -81,18 +57,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:leather_leggings"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:iron_leggings"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:golden_leggings"
-        },
-        {
-          "type": "minecraft:item",
           "name": "minecraft:diamond_leggings"
         }
       ],
@@ -116,18 +80,6 @@
     {
       "rolls": 1,
       "entries": [
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:leather_boots"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:iron_boots"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:golden_boots"
-        },
         {
           "type": "minecraft:item",
           "name": "minecraft:diamond_boots"

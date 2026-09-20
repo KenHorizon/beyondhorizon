@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.level.SpawnerSpawnData;
+import com.kenhorizon.beyondhorizon.server.util.WeightListed;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -21,6 +22,7 @@ import net.minecraft.util.random.SimpleWeightedRandomList;
 import net.minecraft.util.random.WeightedEntry;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.SpawnData;
 import org.jetbrains.annotations.Nullable;
@@ -29,7 +31,6 @@ import java.util.*;
 import java.util.function.Function;
 
 public class BaseSpawnerData {
-
     private static final String TAG_REGISTERED = "registered_players";
     private static final String TAG_CURRENT_MOBS = "current_mobs";
     private static final String TAG_COOLDOWN_ENDS_AT = "cooldown_ends_at";
@@ -45,8 +46,10 @@ public class BaseSpawnerData {
             instance -> instance.group(
                             BaseSpawnerData.CODEC_SET.optionalFieldOf(TAG_REGISTERED, Sets.<UUID>newHashSet()).forGetter(trialSpawnerData -> trialSpawnerData.detectedPlayers),
                             BaseSpawnerData.CODEC_SET.optionalFieldOf(TAG_CURRENT_MOBS, Sets.<UUID>newHashSet()).forGetter(trialSpawnerData -> trialSpawnerData.currentMobs),
-                            Codec.LONG.optionalFieldOf(TAG_COOLDOWN_ENDS_AT, 0L).forGetter(trialSpawnerData -> trialSpawnerData.cooldownEndsAt),
-                            Codec.LONG.optionalFieldOf(TAG_NEXT_MOB_SPAWNS_AT, 0L).forGetter(trialSpawnerData -> trialSpawnerData.nextMobSpawnsAt),
+                            Codec.LONG.optionalFieldOf(TAG_COOLDOWN_ENDS_AT, 0L)
+                                    .forGetter(trialSpawnerData -> trialSpawnerData.cooldownEndsAt),
+                            Codec.LONG.optionalFieldOf(TAG_NEXT_MOB_SPAWNS_AT, 0L)
+                                    .forGetter(trialSpawnerData -> trialSpawnerData.nextMobSpawnsAt),
                             Codec.intRange(0, Integer.MAX_VALUE).optionalFieldOf(TAG_TOTAL_MOBS_SPAWNED, 0).forGetter(trialSpawnerData -> trialSpawnerData.totalMobsSpawned),
                             SpawnerSpawnData.CODEC.optionalFieldOf(TAG_SPAWN_DATA).forGetter(trialSpawnerData -> trialSpawnerData.nextSpawnData),
                             ResourceLocation.CODEC.optionalFieldOf(TAG_EJECTING_LOOT_TABLE).forGetter(trialSpawnerData -> trialSpawnerData.ejectingLootTable)
@@ -146,22 +149,22 @@ public class BaseSpawnerData {
         }
     }
 
-    public boolean isReadyToOpenShutter(ServerLevel serverLevel, SpawnerConfig trialSpawnerConfig, float f) {
-        long l = this.cooldownEndsAt - trialSpawnerConfig.targetCooldownLength();
-        return (float)serverLevel.getGameTime() >= (float)l + f;
+    public boolean isReadyToOpenShutter(ServerLevel level, SpawnerConfig config, float timeBetweenOpen) {
+        long l = this.cooldownEndsAt - config.targetCooldownLength();
+        return (float)level.getGameTime() >= (float)l + timeBetweenOpen;
     }
 
-    public boolean isReadyToEjectItems(ServerLevel serverLevel, SpawnerConfig trialSpawnerConfig, float f) {
-        long l = this.cooldownEndsAt - trialSpawnerConfig.targetCooldownLength();
-        return (float)(serverLevel.getGameTime() - l) % f == 0.0F;
+    public boolean isReadyToEjectItems(ServerLevel level, SpawnerConfig config, float timeBetweenEjections) {
+        long cooldownStartedAt = this.cooldownEndsAt - config.targetCooldownLength();
+        return (float)(level.getGameTime() - cooldownStartedAt) % timeBetweenEjections == 0.0F;
     }
 
     public boolean isCooldownFinished(ServerLevel serverLevel) {
         return serverLevel.getGameTime() >= this.cooldownEndsAt;
     }
 
-    public void setEntityId(BHBaseSpawner trialSpawner, RandomSource randomSource, EntityType<?> entityType) {
-        this.getOrCreateNextSpawnData(trialSpawner, randomSource).getEntityToSpawn().putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(entityType).toString());
+    public void setEntityId(BHBaseSpawner spawner, RandomSource randomSource, EntityType<?> entityType) {
+        this.getOrCreateNextSpawnData(spawner, randomSource).getEntityToSpawn().putString("id", BuiltInRegistries.ENTITY_TYPE.getKey(entityType).toString());
     }
 
     protected SpawnerSpawnData getOrCreateNextSpawnData(BHBaseSpawner spawner, RandomSource random) {
@@ -193,15 +196,7 @@ public class BaseSpawnerData {
         if (trialSpawnerState == SpawnerState.ACTIVE) {
             compoundTag.putLong(TAG_NEXT_MOB_SPAWNS_AT, this.nextMobSpawnsAt);
         }
-
-        this.nextSpawnData.ifPresent(
-                spawnData -> compoundTag.put(
-                        TAG_SPAWN_DATA,
-                        SpawnerSpawnData.CODEC.encodeStart(NbtOps.INSTANCE, spawnData)
-                                .result()
-                                .orElseThrow(() -> new IllegalStateException("Invalid SpawnData"))
-                )
-        );
+        this.nextSpawnData.ifPresent(spawnData -> compoundTag.put(TAG_SPAWN_DATA, SpawnerSpawnData.CODEC.encodeStart(NbtOps.INSTANCE, spawnData).result().orElseThrow(() -> new IllegalStateException("Invalid SpawnData"))));
         return compoundTag;
     }
 

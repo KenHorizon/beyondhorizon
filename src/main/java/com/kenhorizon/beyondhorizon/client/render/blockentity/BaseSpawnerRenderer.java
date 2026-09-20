@@ -14,9 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 
 public class BaseSpawnerRenderer implements BlockEntityRenderer<BaseSpawnerBlockEntity> {
-
     private final EntityRenderDispatcher entityRenderer;
-
     public BaseSpawnerRenderer(BlockEntityRendererProvider.Context context) {
         this.entityRenderer = context.getEntityRenderer();
     }
@@ -43,7 +41,6 @@ public class BaseSpawnerRenderer implements BlockEntityRenderer<BaseSpawnerBlock
                 poseStack.scale(f, f, f);
                 this.entityRenderer.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, partialTick, poseStack, pBuffer, packedLight);
             }
-
         }
         poseStack.popPose();
     }

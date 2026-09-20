@@ -5,8 +5,8 @@
       "weight": 3
     }
   ],
-  "simultaneous_mobs": 1.0,
-  "simultaneous_mobs_added_per_player": 0.5,
+  "simultaneous_mobs": 3.0,
+  "simultaneous_mobs_added_per_player": 3.0,
   "spawn_potentials": [
     {
       "data": {
@@ -14,7 +14,7 @@
           "id": "minecraft:zombie"
         },
         "equipment": {
-          "loot_table": "beyondhorizon:chests/common_equipments",
+          "loot_table": "beyondhorizon:equipments/melee",
           "slot_drop_chances": 0.0
         }
       },
@@ -22,5 +22,5 @@
     }
   ],
   "ticks_between_spawn": 20,
-  "total_mobs": 3.0
+  "total_mobs": 5.0
 }

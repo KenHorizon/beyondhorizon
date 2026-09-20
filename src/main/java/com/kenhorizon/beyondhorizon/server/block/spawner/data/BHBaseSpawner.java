@@ -11,6 +11,7 @@ import com.kenhorizon.beyondhorizon.server.util.PlayerDetector;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import it.unimi.dsi.fastutil.objects.ObjectListIterator;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
@@ -181,12 +182,12 @@ public class BHBaseSpawner {
 
     public void equipMobsWithEquipments(ServerLevel level, EquipmentTable table, Entity entity) {
         LootTable lootTable = level.getServer().getLootData().getLootTable(table.getLootTable());
-        BeyondHorizon.LOGGER.info("Loot Table:{}", lootTable.getLootTableId());
+//        BeyondHorizon.LOGGER.info("Loot Table:{}", lootTable.getLootTableId());
         Map<EquipmentSlot, Float> map = table.getDropChances();
         LootParams params = new LootParams.Builder(level).create(LootContextParamSets.EMPTY);
         ObjectArrayList<ItemStack> list = lootTable.getRandomItems(params);
-        BeyondHorizon.LOGGER.info("Equipment Table:{}", table);
-        BeyondHorizon.LOGGER.info("Items:{}", list);
+//        BeyondHorizon.LOGGER.info("Equipment Table:{}", table);
+//        BeyondHorizon.LOGGER.info("Items:{}", list);
         if (!list.isEmpty()) {
             for (ItemStack stacks : list) {
                 EquipmentSlot dedicatedSlots = LivingEntity.getEquipmentSlotForItem(stacks);
@@ -202,14 +203,17 @@ public class BHBaseSpawner {
     public void ejectReward(ServerLevel level, BlockPos pos, ResourceLocation ejectRewards) {
         LootTable lootTable = level.getServer().getLootData().getLootTable(ejectRewards);
         LootParams params = new LootParams.Builder(level).create(LootContextParamSets.EMPTY);
-        ObjectArrayList<ItemStack> objectArrayList = lootTable.getRandomItems(params);
-        if (!objectArrayList.isEmpty()) {
-            for (ItemStack itemStack : objectArrayList) {
-                DefaultDispenseItemBehavior.spawnItem(level, itemStack, 2, Direction.UP, Vec3.atBottomCenterOf(pos).relative(Direction.UP, 1.2));
+        ObjectArrayList<ItemStack> lootDrops = lootTable.getRandomItems(params);
+        if (!lootDrops.isEmpty()) {
+            ObjectListIterator<ItemStack> var0 = lootDrops.iterator();
+            while (var0.hasNext()) {
+                ItemStack stack = var0.next();
+                DefaultDispenseItemBehavior.spawnItem(level, stack, 2, Direction.UP, Vec3.atBottomCenterOf(pos).relative(Direction.UP, 1.2));
             }
             level.playSound(null, pos, BHSounds.SPAWNER_EJECT_ITEM.get(), SoundSource.BLOCKS, 1.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
-            addEjectItemParticles(level, pos, level.getRandom());
+            level.levelEvent(3014, pos, 0);
         }
+        addEjectItemParticles(level, pos, level.getRandom());
     }
 
     public void tickClient(Level level, BlockPos blockPos) {
@@ -234,9 +238,9 @@ public class BHBaseSpawner {
     }
 
     public void tickServer(ServerLevel serverLevel, BlockPos blockPos) {
-        SpawnerState trialSpawnerState = this.getState();
+        SpawnerState state = this.getState();
         if (!this.canSpawnInLevel(serverLevel)) {
-            if (trialSpawnerState.isCapableOfSpawning()) {
+            if (state.isCapableOfSpawning()) {
                 this.data.reset();
                 this.setState(serverLevel, SpawnerState.INACTIVE);
             }
@@ -245,9 +249,9 @@ public class BHBaseSpawner {
                 this.data.nextMobSpawnsAt = serverLevel.getGameTime() + this.config.ticksBetweenSpawn();
             }
 
-            SpawnerState trialSpawnerState2 = trialSpawnerState.tickAndGetNext(blockPos, this, serverLevel);
-            if (trialSpawnerState2 != trialSpawnerState) {
-                this.setState(serverLevel, trialSpawnerState2);
+            SpawnerState next = state.tickAndGetNext(blockPos, this, serverLevel);
+            if (next != state) {
+                this.setState(serverLevel, next);
             }
         }
     }

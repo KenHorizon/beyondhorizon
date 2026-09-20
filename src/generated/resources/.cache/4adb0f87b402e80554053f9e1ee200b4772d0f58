@@ -1,7 +1,7 @@
-// 1.20.1	2026-09-19T21:07:42.9288276	Beyond Horizon: Datapack Registries
-7db9d9636dc266c674933cffa644fb2b6242e438 data/beyondhorizon/base_spawner/spawner/sealed_runic_crypt_left.json
-75b78ae7716f876810c99edfb3fe89717e22a346 data/beyondhorizon/base_spawner/spawner/sealed_runic_crypt_middle.json
-91bb4b2772c88c9b6c7e5dfc7a0c1a8efdcd9d86 data/beyondhorizon/base_spawner/spawner/sealed_runic_crypt_right.json
+// 1.20.1	2026-09-20T15:14:18.8253062	Beyond Horizon: Datapack Registries
+66ed9d1af306b9a07253723a979fb967d9a6a31c data/beyondhorizon/base_spawner/spawner/sealed_runic_crypt_left.json
+fd44119e68d719f42bbd1f405490b80d594b7592 data/beyondhorizon/base_spawner/spawner/sealed_runic_crypt_middle.json
+73de798e7498ebb34f207076a1222724500292bd data/beyondhorizon/base_spawner/spawner/sealed_runic_crypt_right.json
 7e16db83ce654b730a82919c9ba614b52fffa31f data/beyondhorizon/base_spawner/spawner/testing_phase.json
 308ca6500b1886799fdbf8df916b5f2f99d7a2f0 data/beyondhorizon/damage_type/blazing_rod.json
 2b581616c48fe0c833f919ad5ab58fb8db354e51 data/beyondhorizon/damage_type/bleed.json

@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.datagen.BHLootTableProvider;
 import com.kenhorizon.beyondhorizon.server.block.*;
 import com.kenhorizon.beyondhorizon.server.block.arcane.ArcaneBlock;
 import com.kenhorizon.beyondhorizon.server.block.arcane.ArcaneBudding;
@@ -14,16 +13,11 @@ import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock
 import com.kenhorizon.beyondhorizon.server.block.the_forge.ForgeBlock;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -73,14 +67,14 @@ public class BHBlocks {
             .register();
 
     public static final RegistryObject<Block> GATE = RegistryBlocks
-            .register("gate", properties -> new GateBlocks(BlockBehaviour.Properties.copy(Blocks.IRON_BARS)))
+            .register("gate", properties -> new GateBlock(BlockBehaviour.Properties.copy(Blocks.IRON_BARS)))
             .mineable(RegistryBlocks.Mineable.PICKAXE)
             .tier(RegistryBlocks.ToolTiers.STONE)
             .dropSelf()
             .register();
 
     public static final RegistryObject<Block> GATE_PARTS = RegistryBlocks
-            .register("gate_parts", properties -> new GateBlocks.GateParts(BlockBehaviour.Properties.copy(Blocks.IRON_BARS).strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn(BasicBlock::never)))
+            .register("gate_parts", properties -> new GateBlock.GateParts(BlockBehaviour.Properties.copy(Blocks.IRON_BARS).strength(-1.0F, 3600000.0F).noLootTable().isValidSpawn(BasicBlock::never)))
             .dontCreateItemBlocks()
             .register();
 

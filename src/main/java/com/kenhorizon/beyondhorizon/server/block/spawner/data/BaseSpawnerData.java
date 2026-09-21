@@ -150,8 +150,8 @@ public class BaseSpawnerData {
     }
 
     public boolean isReadyToOpenShutter(ServerLevel level, SpawnerConfig config, float timeBetweenOpen) {
-        long l = this.cooldownEndsAt - config.targetCooldownLength();
-        return (float)level.getGameTime() >= (float)l + timeBetweenOpen;
+        long cooldownStartedAt = this.cooldownEndsAt - config.targetCooldownLength();
+        return (float)level.getGameTime() >= (float)cooldownStartedAt + timeBetweenOpen;
     }
 
     public boolean isReadyToEjectItems(ServerLevel level, SpawnerConfig config, float timeBetweenEjections) {

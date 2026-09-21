@@ -52,6 +52,7 @@ public class MobAttackGoal<T extends BHLibEntity> extends Goal {
         super.start();
         this.entity.setAnimation(this.start);
         this.entity.getNavigation().stop();
+        this.entity.setAggressive(true);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
+import net.minecraft.util.RandomSource;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -26,6 +27,8 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
     private final ModelPart rightLegBone;
     private final ModelPart leftLeg;
     private final ModelPart leftLegBone;
+    private boolean idleBlinking;
+    private final RandomSource randoms = RandomSource.create();
 
     public PyrolligerModel(ModelPart root) {
         this.root = root.getChild("root");
@@ -99,6 +102,20 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
         this.resetModelDefault();
         this.sword.visible = entity.isVisibleSword();
         this.headLook(this.head, yaw, pitch);
+        if (!entity.isAggressive()) {
+            this.animate(PyrolligerAnim.IDLE1, ageInTicks, 0.50F);
+            if (entity.tickCount % 100L == 0) {
+                if (this.randoms.nextFloat() * 100.0F < (float) 50) {
+                    this.idleBlinking = !this.idleBlinking;
+                }
+            }
+            if (this.idleBlinking) {
+                this.animate(PyrolligerAnim.IDLE2, ageInTicks, 1.0F);
+            }
+            if (entity.tickCount % 20L == 0 && idleBlinking) {
+                this.idleBlinking = false;
+            }
+        }
         if (entity.walkAnimation.isMoving() && entity.getMode() == Pyrolliger.Mode.RANGED) {
             this.animateWalk(PyrolligerAnim.WALKING_RANGED, limbSwing, limbSwingAmount, 1.0F, 1.0F);
         }

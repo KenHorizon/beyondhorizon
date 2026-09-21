@@ -14,11 +14,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "minecraft:iron_axe"
+          "name": "minecraft:diamond_sword"
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:diamond_axe"
+          "name": "minecraft:diamond_sword"
         }
       ],
       "functions": [

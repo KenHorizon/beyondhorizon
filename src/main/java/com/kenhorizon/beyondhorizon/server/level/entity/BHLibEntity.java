@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.level.entity;
 
 import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
 import net.minecraft.commands.arguments.EntityAnchorArgument;
@@ -18,6 +19,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class BHLibEntity extends BHBaseEntity {
     public static final int ID_ANIMATION_EMPTY = 0;
@@ -29,10 +31,9 @@ public class BHLibEntity extends BHBaseEntity {
     public static final String NBT_CANT_DESPAWN = "CantDespawn";
     public static final EntityDataAccessor<Integer> ANIMATION_STATE = SynchedEntityData.defineId(BHLibEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> CANT_DESPAWN = SynchedEntityData.defineId(BHLibEntity.class, EntityDataSerializers.BOOLEAN);
+    private final Map<Integer, AnimationState> IDLE_MANAGE = Maps.newHashMap();
 
-
-    public BHLibEntity(EntityType<? extends PathfinderMob> entityType, Level level)
-    {
+    public BHLibEntity(EntityType<? extends PathfinderMob> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -40,6 +41,13 @@ public class BHLibEntity extends BHBaseEntity {
         return damagesource.getEntity() != null ? distanceToSqr(damagesource.getEntity()) : -1;
     }
 
+    public void setIdleAnim(int id, AnimationState animationState) {
+        IDLE_MANAGE.put(id, animationState);
+    }
+
+    public Map<Integer, AnimationState> getIdleManager() {
+        return IDLE_MANAGE;
+    }
 
     public void setExp(int xpPoints) {
         this.xpReward = xpPoints;
@@ -51,6 +59,11 @@ public class BHLibEntity extends BHBaseEntity {
 
     public int getAnimationTick() {
         return animationTick;
+    }
+
+    protected void playAnimation(AnimationState anim) {
+        this.stopAnimations();
+        anim.startIfStopped(this.tickCount);
     }
 
     @Override

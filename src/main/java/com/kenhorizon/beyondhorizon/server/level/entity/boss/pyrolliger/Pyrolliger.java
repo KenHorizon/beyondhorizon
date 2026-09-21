@@ -148,6 +148,8 @@ public class Pyrolliger extends BHBossEntity {
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
+        this.setIdleAnim(ID_IDLE1, animationIdle1);
+        this.setIdleAnim(ID_IDLE2, animationIdle2);
     }
 
     @Override
@@ -429,7 +431,7 @@ public class Pyrolliger extends BHBossEntity {
                 if (this.entity.isUltCanBeCast() && this.entity.isRanged()) {
                     return false;
                 }
-                return super.canUse() && this.entity.attack2Cooldown.isReadyToUse();
+                return super.canUse() && this.entity.attack2Cooldown.isReadyToUse() && this.entity.getRandomChances(75);
             }
 
             @Override
@@ -481,6 +483,7 @@ public class Pyrolliger extends BHBossEntity {
         this.burningHexTrapCooldown.cooldownTick();
         this.dodgeCooldown.cooldownTick();
         this.pyrolanceCooldown.cooldownTick();
+
     }
 
     public boolean isUltForRangedReady() {
@@ -602,7 +605,7 @@ public class Pyrolliger extends BHBossEntity {
                 if (this.getAnimationTick() == 30) {
                     this.setAttackCount(this.getAttackCount() + 1);
                 }
-                if (this.getAnimationTick() > 30) {
+                if (this.getAnimationTick() >= 30) {
                     if (target == null) return;
                     this.checkAndDealDamage(target, 1.0F, 1.0F, DamageInfoTypes.PHYSICAL_DAMAGE);
                 }
@@ -743,60 +746,46 @@ public class Pyrolliger extends BHBossEntity {
     @Override
     public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
         if (ANIMATION_STATE.equals(accessor)) {
+            this.getIdleManager().forEach((id, anim) -> {
+                if (this.getAnimationState(id)) {
+                    anim.start(this.tickCount);
+                }
+            });
             if (this.getAnimationState(ID_ANIMATION_EMPTY)) {
                 this.stopAnimations();
             }
             if (this.getAnimationState(ID_PYROBOLT1)) {
-                this.stopAnimations();
-                this.animationPyrobolt1.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationPyrobolt1);
             }
             if (this.getAnimationState(ID_PYROLANCE)) {
-                this.stopAnimations();
-                this.animationPyrolance.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationPyrolance);
             }
             if (this.getAnimationState(ID_BURNING_HEX_TRAP)) {
-                this.stopAnimations();
-                this.animationBurningHexTrap.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationBurningHexTrap);
             }
             if (this.getAnimationState(ID_DRACONIC_FIRELORD)) {
-                this.stopAnimations();
-                this.animationRangedUlt.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationRangedUlt);
             }
             if (this.getAnimationState(ID_BURNING_POINT)) {
-                this.stopAnimations();
-                this.animationMeleeUlt.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationMeleeUlt);
             }
             if (this.getAnimationState(ID_DODGE)) {
-                this.stopAnimations();
-                this.animationDodge.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationDodge);
             }
             if (this.getAnimationState(ID_TRANSITION_STANCE_RANGED)) {
-                this.stopAnimations();
-                this.animationStanceRanged.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationStanceRanged);
             }
             if (this.getAnimationState(ID_TRANSITION_STANCE_MELEE)) {
-                this.stopAnimations();
-                this.animationStanceMelee.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationStanceMelee);
             }
             if (this.getAnimationState(ID_ATTACK_1)) {
-                this.stopAnimations();
-                this.animationAtk1.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationAtk1);
             }
             if (this.getAnimationState(ID_ATTACK_2)) {
-                this.stopAnimations();
-                this.animationAtk2.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationAtk3);
             }
             if (this.getAnimationState(ID_ATTACK_3)) {
-                this.stopAnimations();
-                this.animationAtk3.startIfStopped(this.tickCount);
-            }
-            if (this.getAnimationState(ID_IDLE1)) {
-                this.stopAnimations();
-                this.animationIdle1.startIfStopped(this.tickCount);
-            }
-            if (this.getAnimationState(ID_IDLE2)) {
-                this.stopAnimations();
-                this.animationIdle2.startIfStopped(this.tickCount);
+                this.playAnimation(this.animationAtk3);
             }
         }
         super.onSyncedDataUpdated(accessor);

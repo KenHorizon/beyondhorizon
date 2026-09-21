@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.client.model.blockentity;
 
 
 import com.kenhorizon.beyondhorizon.client.model.animation.GateDoorAnimations;
-import com.kenhorizon.beyondhorizon.server.block.entity.GateBlockBlockEntity;
+import com.kenhorizon.beyondhorizon.server.level.block.entity.GateBlockBlockEntity;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;

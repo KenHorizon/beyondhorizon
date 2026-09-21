@@ -29,7 +29,7 @@ import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRen
 import com.kenhorizon.beyondhorizon.client.render.shaders.BakedModelShadeLayerFullbright;
 import com.kenhorizon.beyondhorizon.client.util.EmissiveBlocks;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
-import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfig;
+import com.kenhorizon.beyondhorizon.server.level.block.spawner.data.SpawnerConfig;
 import com.kenhorizon.beyondhorizon.server.level.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.InfernoShield;

@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
+import com.kenhorizon.beyondhorizon.server.level.block.redstone_lane.RedstoneLaneBlock;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.libs.client.data.BlockStateBuilder;
 import net.minecraft.data.PackOutput;

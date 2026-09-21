@@ -1,19 +1,12 @@
 package com.kenhorizon.beyondhorizon.client.util;
 
-import com.google.common.collect.ImmutableList;
-import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
-import com.kenhorizon.beyondhorizon.server.block.basin.FireBasinBlock;
-import com.kenhorizon.beyondhorizon.server.block.spawner.BaseSpawnerBlock;
-import com.kenhorizon.beyondhorizon.server.block.spawner.data.BHBaseSpawner;
-import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
+import com.kenhorizon.beyondhorizon.server.level.block.BHBlockProperties;
+import com.kenhorizon.beyondhorizon.server.level.block.basin.FireBasinBlock;
+import com.kenhorizon.beyondhorizon.server.level.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.SpawnerBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.List;

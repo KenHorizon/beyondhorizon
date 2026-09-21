@@ -2,12 +2,12 @@ package com.kenhorizon.libs.client.data;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.datagen.BHBlockStateProvider;
-import com.kenhorizon.beyondhorizon.server.block.BHBlockProperties;
-import com.kenhorizon.beyondhorizon.server.block.AdvanceFenceBlock;
-import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneWiredBlock;
-import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerState;
-import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneBlock;
-import com.kenhorizon.beyondhorizon.server.block.redstone_lane.RedstoneLaneMode;
+import com.kenhorizon.beyondhorizon.server.level.block.BHBlockProperties;
+import com.kenhorizon.beyondhorizon.server.level.block.AdvanceFenceBlock;
+import com.kenhorizon.beyondhorizon.server.level.block.redstone_lane.RedstoneWiredBlock;
+import com.kenhorizon.beyondhorizon.server.level.block.spawner.data.SpawnerState;
+import com.kenhorizon.beyondhorizon.server.level.block.redstone_lane.RedstoneLaneBlock;
+import com.kenhorizon.beyondhorizon.server.level.block.redstone_lane.RedstoneLaneMode;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;

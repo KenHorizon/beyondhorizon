@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.block.spawner.data.SpawnerConfigs;
+import com.kenhorizon.beyondhorizon.server.level.block.spawner.data.SpawnerConfigs;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.level.world.BHBiomesModifier;
 import com.kenhorizon.beyondhorizon.server.level.world.BHConfiguredFeatures;

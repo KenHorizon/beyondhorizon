@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.render.blockentity;
 
-import com.kenhorizon.beyondhorizon.server.block.spawner.data.BHBaseSpawner;
-import com.kenhorizon.beyondhorizon.server.block.spawner.data.BaseSpawnerData;
-import com.kenhorizon.beyondhorizon.server.block.entity.BaseSpawnerBlockEntity;
+import com.kenhorizon.beyondhorizon.server.level.block.spawner.data.BHBaseSpawner;
+import com.kenhorizon.beyondhorizon.server.level.block.spawner.data.BaseSpawnerData;
+import com.kenhorizon.beyondhorizon.server.level.block.entity.BaseSpawnerBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;

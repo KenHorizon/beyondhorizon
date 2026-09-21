@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.network;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.classify.IRecipeUpdateListener;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
-import com.kenhorizon.beyondhorizon.server.block.INodeBlock;
+import com.kenhorizon.beyondhorizon.server.level.block.INodeBlock;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerDataHelper;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.IStackableInstance;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;

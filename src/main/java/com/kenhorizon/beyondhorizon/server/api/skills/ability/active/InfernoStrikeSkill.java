@@ -10,7 +10,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.level.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.InfernalSpear;
 import com.kenhorizon.beyondhorizon.server.level.entity.util.ShockwaveUtils;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import net.minecraft.network.chat.Component;

@@ -1,6 +1,5 @@
 package com.kenhorizon.beyondhorizon.server.level.block.spawner.data;
 
-import com.kenhorizon.beyondhorizon.server.level.SpawnerSpawnData;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

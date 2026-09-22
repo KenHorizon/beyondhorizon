@@ -9,7 +9,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.item_properties.GuardianSw
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamDamageTags;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.world.entity.MobType;

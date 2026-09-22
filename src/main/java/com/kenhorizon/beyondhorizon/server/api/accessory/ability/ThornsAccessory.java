@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;

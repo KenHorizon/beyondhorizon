@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.level.damagesource;
+package com.kenhorizon.beyondhorizon.server.damagesource;
 
 import net.minecraft.core.Holder;
 import net.minecraft.world.damagesource.DamageSource;

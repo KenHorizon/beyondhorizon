@@ -3,7 +3,6 @@ package com.kenhorizon.beyondhorizon.server.level.block.spawner.data;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHLootTables;
 import com.kenhorizon.beyondhorizon.server.level.entity.EquipmentTable;
-import com.kenhorizon.beyondhorizon.server.level.SpawnerSpawnData;
 import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.WeightListed;
 import net.minecraft.core.registries.BuiltInRegistries;

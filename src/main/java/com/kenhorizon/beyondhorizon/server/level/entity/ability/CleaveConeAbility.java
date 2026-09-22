@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.level.entity.ability;
 
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;

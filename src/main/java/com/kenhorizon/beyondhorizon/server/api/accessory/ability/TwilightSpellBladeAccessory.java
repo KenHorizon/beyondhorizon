@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import net.minecraft.world.entity.LivingEntity;
 
 public class TwilightSpellBladeAccessory extends BaseSpellbladeAccessory {

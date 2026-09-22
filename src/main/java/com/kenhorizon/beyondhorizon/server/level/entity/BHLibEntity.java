@@ -1,10 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.level.entity;
 
-import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Maps;
-import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
-import net.minecraft.commands.arguments.EntityAnchorArgument;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -62,8 +59,16 @@ public class BHLibEntity extends BHBaseEntity {
     }
 
     protected void playAnimation(AnimationState anim) {
-        this.stopAnimations();
-        anim.startIfStopped(this.tickCount);
+        this.playAnimation(anim, false);
+    }
+
+    protected void playAnimation(AnimationState anim, boolean overlay) {
+        if (overlay) {
+            anim.start(this.tickCount);
+        } else {
+            this.stopAnimations();
+            anim.startIfStopped(this.tickCount);
+        }
     }
 
     @Override

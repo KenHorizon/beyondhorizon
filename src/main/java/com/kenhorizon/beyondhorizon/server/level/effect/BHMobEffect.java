@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.effect;
+package com.kenhorizon.beyondhorizon.server.level.effect;
 
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;

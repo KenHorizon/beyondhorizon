@@ -4,7 +4,6 @@ package com.kenhorizon.beyondhorizon.server.level.block.spawner.data;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.SpawnerSpawnData;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

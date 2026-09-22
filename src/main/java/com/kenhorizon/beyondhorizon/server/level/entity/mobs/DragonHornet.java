@@ -7,7 +7,7 @@ import com.kenhorizon.beyondhorizon.server.level.entity.ai.MobMoveGoal;
 import com.kenhorizon.beyondhorizon.server.level.entity.ai.control.FlightMoveControl;
 import com.kenhorizon.beyondhorizon.server.level.entity.util.AnimationTickers;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;

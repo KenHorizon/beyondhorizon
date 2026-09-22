@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.level.entity.boss.pyrolliger;
 
+import com.google.common.collect.Maps;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
@@ -9,14 +10,12 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRayChargingSound;
 import com.kenhorizon.beyondhorizon.server.level.entity.BHBossInfo;
+import com.kenhorizon.beyondhorizon.server.level.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.BurningHexTrapAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamDamageTags;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamTypeFunction;
-import com.kenhorizon.beyondhorizon.server.level.entity.ai.HurtByNearestTargetGoal;
-import com.kenhorizon.beyondhorizon.server.level.entity.ai.MobAttackGoal;
-import com.kenhorizon.beyondhorizon.server.level.entity.ai.MobMoveGoal;
-import com.kenhorizon.beyondhorizon.server.level.entity.ai.NaturalHealingGoal;
+import com.kenhorizon.beyondhorizon.server.level.entity.ai.*;
 import com.kenhorizon.beyondhorizon.server.level.entity.ai.ability.DodgeAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ai.control.SmartBodyControl;
 import com.kenhorizon.beyondhorizon.server.level.entity.boss.BHBossEntity;
@@ -26,7 +25,7 @@ import com.kenhorizon.beyondhorizon.server.level.entity.util.AnimationTickers;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHEntityDataSerializer;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DefaultDamageCaps;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
@@ -49,6 +48,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.player.Player;
@@ -59,7 +59,9 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Pyrolliger extends BHBossEntity {
     public enum Mode {
@@ -72,6 +74,7 @@ public class Pyrolliger extends BHBossEntity {
     protected Pyrolliger.Mode mode = Mode.RANGED;
     private final DodgeAbility dodgeAbility = new DodgeAbility(this);
     public static int animationId = 1;
+    private Map<LivingEntity, LivingEntity> TELEPORT_AGGRO = Maps.newHashMap();
     public AnimationState animationIdle1 = new AnimationState();
     public AnimationState animationIdle2 = new AnimationState();
     public AnimationState animationPyrobolt1 = new AnimationState();
@@ -85,6 +88,7 @@ public class Pyrolliger extends BHBossEntity {
     public AnimationState animationAtk1 = new AnimationState();
     public AnimationState animationAtk2 = new AnimationState();
     public AnimationState animationAtk3 = new AnimationState();
+    public AnimationState animationTeleport = new AnimationState();
 
     // Animation Id
     public static final int ID_DODGE = createAnimationID();
@@ -120,6 +124,7 @@ public class Pyrolliger extends BHBossEntity {
     public AnimationTickers attack3Cooldown = AnimationTickers.create(Maths.sec(3));
     public AnimationTickers idle1Cooldown = AnimationTickers.create(Maths.sec(3));
     public AnimationTickers idle2Cooldown = AnimationTickers.create(Maths.sec(3));
+    public AnimationTickers meleeManaGain = AnimationTickers.create(Maths.sec(1));
 
     public static final String NBT_MANA = "mana";
     public static final String NBT_MAX_MANA = "max_mana";
@@ -187,8 +192,9 @@ public class Pyrolliger extends BHBossEntity {
     }
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        if (this.getMode() == Mode.MELEE) {
+        if (this.getMode() == Mode.MELEE && this.meleeManaGain.isReadyToUse()) {
             this.addMana(1);
+            this.meleeManaGain.setCooldown();
         }
         return super.hurt(source, amount);
     }
@@ -310,6 +316,17 @@ public class Pyrolliger extends BHBossEntity {
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(0, new NaturalHealingGoal(this));
         this.goalSelector.addGoal(1, new MobMoveGoal(this, false, 1.0F));
+        this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0F) {
+            @Override
+            public boolean canUse() {
+                if (this.mob instanceof BHLibEntity entity) {
+                    if (entity.getAnimationState(ID_ANIMATION_EMPTY)) {
+                        return super.canUse();
+                    }
+                }
+                return false;
+            }
+        });
 
         this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_DRACONIC_FIRELORD, ID_TRANSITION_STANCE_MELEE, 30, Maths.sec(10)) {
             @Override
@@ -440,6 +457,21 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.attack2Cooldown.setCooldown();
             }
         });
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_ATTACK_3, ID_ANIMATION_EMPTY, 30, Maths.sec(2)) {
+            @Override
+            public boolean canUse() {
+                if (this.entity.isUltCanBeCast() && this.entity.isRanged()) {
+                    return false;
+                }
+                return super.canUse() && this.entity.attack3Cooldown.isReadyToUse() && this.entity.getRandomChances(75);
+            }
+
+            @Override
+            public void stop() {
+                super.stop();
+                this.entity.attack3Cooldown.setCooldown();
+            }
+        });
         this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
         this.goalSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.goalSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractGolem.class, true));
@@ -473,6 +505,7 @@ public class Pyrolliger extends BHBossEntity {
             }
         }
         float progressMana = (float) this.getMana() / this.getMaxMana();
+        this.meleeManaGain.cooldownTick();
         this.idle1Cooldown.cooldownTick();
         this.idle2Cooldown.cooldownTick();
         this.attack1Cooldown.cooldownTick();
@@ -607,7 +640,7 @@ public class Pyrolliger extends BHBossEntity {
                 }
                 if (this.getAnimationTick() >= 30) {
                     if (target == null) return;
-                    this.checkAndDealDamage(target, 1.0F, 1.0F, DamageInfoTypes.PHYSICAL_DAMAGE);
+                    this.checkAndDealDamage(target, 1.0F, 1.5F, DamageInfoTypes.PHYSICAL_DAMAGE);
                 }
             }
 
@@ -617,6 +650,20 @@ public class Pyrolliger extends BHBossEntity {
                     this.getLookControl().setLookAt(target, 30, 30);
                 }
                 if (this.getAnimationTick() == 30) {
+                    this.navigation.stop();
+                    this.setCantMoved();
+                    this.doAreaAttack(4.0F, 180.0F, 1.25F, Maths.sec(5), 0.0F, DamageInfoTypes.PHYSICAL_DAMAGE);
+                }
+            }
+            if (this.getAnimationState(ID_ATTACK_3)) {
+                if (this.getAnimationTick() == 30) {
+                    for (Map.Entry<LivingEntity, LivingEntity> entry : TELEPORT_AGGRO.entrySet()) {
+                        if (entry.getKey() instanceof Mob mob) {
+                            mob.setTarget(entry.getValue());
+                        }
+                    }
+                    TELEPORT_AGGRO.clear();
+                    this.animationTeleport.stop();
                     this.navigation.stop();
                     this.setCantMoved();
                     this.doAreaAttack(4.0F, 180.0F, 1.25F, Maths.sec(5), 0.0F, DamageInfoTypes.PHYSICAL_DAMAGE);
@@ -636,6 +683,21 @@ public class Pyrolliger extends BHBossEntity {
                 } else {
                     this.shootLance(target, new Vec3(i, 1, 0), Maths.sec(2));
                 }
+            }
+        }
+        if (this.getAnimationState(ID_ATTACK_3)) {
+            List<LivingEntity> entityOnRange = this.getEntitiesNearby(LivingEntity.class, 10.0D);
+            for (LivingEntity entity : entityOnRange) {
+                if (entity instanceof Mob isMob) {
+                    if (isMob.getTarget() == this) {
+                        TELEPORT_AGGRO.put(isMob, isMob.getTarget());
+                        isMob.setTarget(null);
+                    }
+                }
+            }
+            this.playAnimation(this.animationTeleport, true);
+            if (target != null) {
+                this.doJumpTarget(target, 0.545D, 0);
             }
         }
     }
@@ -782,7 +844,7 @@ public class Pyrolliger extends BHBossEntity {
                 this.playAnimation(this.animationAtk1);
             }
             if (this.getAnimationState(ID_ATTACK_2)) {
-                this.playAnimation(this.animationAtk3);
+                this.playAnimation(this.animationAtk2);
             }
             if (this.getAnimationState(ID_ATTACK_3)) {
                 this.playAnimation(this.animationAtk3);
@@ -806,6 +868,7 @@ public class Pyrolliger extends BHBossEntity {
     @Override
     public AnimationState[] getAnimations() {
         return new AnimationState[] {
+                this.animationTeleport,
                 this.animationIdle1,
                 this.animationIdle2,
                 this.animationAtk1,

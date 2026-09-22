@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.level.damagesource;
+package com.kenhorizon.beyondhorizon.server.damagesource;
 
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;

@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.effect;
+package com.kenhorizon.beyondhorizon.server.level.effect;
 
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;

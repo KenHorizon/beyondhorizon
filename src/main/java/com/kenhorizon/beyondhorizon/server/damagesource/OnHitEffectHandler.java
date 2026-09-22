@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.level.damagesource;
+package com.kenhorizon.beyondhorizon.server.damagesource;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;

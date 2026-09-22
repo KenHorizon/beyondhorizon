@@ -10,7 +10,7 @@ import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEnchantments;
 import com.kenhorizon.beyondhorizon.server.level.item.base.weapons.MagicWeaponBaseItem;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;

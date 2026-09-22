@@ -2,8 +2,8 @@ package com.kenhorizon.beyondhorizon.server.level.entity.projectiles;
 
 import com.google.common.collect.Lists;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageScaling;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageScaling;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

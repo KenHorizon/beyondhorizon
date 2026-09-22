@@ -1,24 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.DamageTypeFunction;
-import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
-import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfo;
-import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
-import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
-import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobType;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.monster.warden.Warden;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.phys.Vec3;
 
 public class ExtraDamageSkill extends WeaponPassiveSkills {
     private final DamageTypeFunction damageFunction;

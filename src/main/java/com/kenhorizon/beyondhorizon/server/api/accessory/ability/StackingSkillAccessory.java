@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 
 public abstract class StackingSkillAccessory extends AccessoryPassiveSkill implements IStackIconOverlay {
     private final StackableTags stackableTags;

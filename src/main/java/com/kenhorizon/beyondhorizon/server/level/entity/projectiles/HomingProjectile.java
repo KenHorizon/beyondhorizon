@@ -4,7 +4,7 @@ package com.kenhorizon.beyondhorizon.server.level.entity.projectiles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;

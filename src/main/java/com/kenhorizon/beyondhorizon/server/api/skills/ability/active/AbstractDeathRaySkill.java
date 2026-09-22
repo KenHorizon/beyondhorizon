@@ -8,7 +8,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamTypeFunction;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import net.minecraft.client.CameraType;
 import net.minecraft.world.InteractionHand;

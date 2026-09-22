@@ -4,7 +4,6 @@ import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.level.SpawnerSpawnData;
 import com.kenhorizon.beyondhorizon.server.level.entity.EquipmentTable;
 import com.kenhorizon.beyondhorizon.server.util.PlayerDetector;
 import com.mojang.serialization.Codec;

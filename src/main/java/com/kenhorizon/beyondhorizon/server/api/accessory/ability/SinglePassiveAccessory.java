@@ -8,8 +8,8 @@ import com.kenhorizon.beyondhorizon.server.level.entity.ability.BoltShockAbility
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.BurnDamageSource;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.BurnDamageSource;
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;

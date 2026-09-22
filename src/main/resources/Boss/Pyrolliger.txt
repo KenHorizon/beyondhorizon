@@ -24,25 +24,27 @@ All attacks of pyrolliger inflict burning hex that burn the and reduce healing r
 Pyro Gem - the pyrollger summon a gem above and shoot pryo lance for every 15 seconds
 
 Ranged:
-Pyrobolt - the pyrolliger summon 20 pyrobolt over the course of 1 second at current position at random directions /
-Teleport - pyrollger will teleport away from the player if the player is too close to the pyrolliger within 5 seconds
+// Pyrobolt - the pyrolliger summon 20 pyrobolt over the course of 1 second at current position at random directions /
+// Teleport - pyrollger will teleport away from the player if the player is too close to the pyrolliger within 5 seconds
 Circular Pyro Slash - the pyrolliger 5 summon flaming slash to target interval within 2 seconds per attack
-Hex Trap - the pyrolliger randomly place 10 burning hex trap that last for 5/10 seconds /
-Pyro Lance - the pyrolliger summon 20 pyro lance that charge and home to player /
+// Hex Trap - the pyrolliger randomly place 10 burning hex trap that last for 5/10 seconds /
+// Pyro Lance - the pyrolliger summon 20 pyro lance that charge and home to player /
 
 Utilmate: Dragonic Firelord - the pyrolliger will charge upto 3 seconds, after will release a dragonic head that fire devasting pryomanic death ray
 
 Melee:
 Pyrolliger will equip Draconic Elder Sword
 
-Slash and Dash - the pyrolliger look at nearest target and dash to targeted position and after reaching the position will release a Circular pyro slash
+// Slash and Dash - the pyrolliger look at nearest target and dash to targeted position and after reaching the position will release a Circular pyro slash
 Cross Blade Pyro Blast - the pyrolliger release X pattern of 10 burning hex trap to position target
 Hail rain - Summon a portal that fire flaming sword for every 1 seconds
-Attack 1 - the pyrolliger use the sword and slashing 3 times, each slash it dash litte 
-Attack 2 - the pyrolliger will do arc damage within 180 degree
-Attack 3 - the pyrolliger will release a Pyrobolt after 2 seconds and after 3 seconds will release Circular Pyro Slash, then later will dash and do arc attack
+// Melee Attack 1 - the pyrolliger use the sword and slashing 3 times, each slash it dash litte 
+// Melee Attack 2 - the pyrolliger will do arc damage within 180 degree
+Melee Attack 3 - the pyrolliger will teleport to targeted entity after briefly 1 second delay will do arc damage within 180 similar as Melee Attack 2
 
 Ultimate: Burning Point - the pyrolliger charge upto 5 seconds and later will release a devasting flash point explosion
+
+Note: All Melee Attack inherit a 100% of Pyrolliger's Attack Damage
 
 Loot:
 Draconic Elder Sword (30%)

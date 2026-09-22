@@ -24,11 +24,11 @@ import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.BlazingRod;
 import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.BlazingSpear;
 import com.kenhorizon.beyondhorizon.server.level.entity.util.AnimationTickers;
 import com.kenhorizon.beyondhorizon.server.level.entity.util.ShockwaveUtils;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DefaultDamageCaps;
 import com.kenhorizon.beyondhorizon.server.level.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.init.*;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageScaling;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageScaling;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -48,6 +48,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -379,7 +380,7 @@ public class BlazingInferno extends BHBossEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        boolean flag = source.is(net.minecraft.world.damagesource.DamageTypes.GENERIC) || source.is(net.minecraft.world.damagesource.DamageTypes.GENERIC_KILL);
+        boolean flag = source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL);
         boolean immune = this.isBossImmune();
 
         if (immune) {
@@ -390,9 +391,6 @@ public class BlazingInferno extends BHBossEntity {
             }
             if (source.getEntity() instanceof AbstractArrow) {
                 amount *= 0.75F;
-            }
-            if (source.getEntity() instanceof AbstractGolem) {
-                amount *= 0.25F;
             }
             if (this.isHalfHealth() && !this.isEnraged() && !flag) {
                 this.setAnimation(ID_ENRAGED_PHASE);

@@ -5,7 +5,7 @@ import com.kenhorizon.beyondhorizon.client.sound.BossMusic;
 import com.kenhorizon.beyondhorizon.client.sound.BossMusicPlayer;
 import com.kenhorizon.beyondhorizon.server.level.entity.misc.BHFallingBlocks;
 import com.kenhorizon.beyondhorizon.server.level.entity.util.EntityUtils;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;

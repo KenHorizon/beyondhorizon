@@ -6,7 +6,7 @@ import com.kenhorizon.beyondhorizon.server.level.entity.ability.InfernalRayAbili
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.level.item.base.weapons.MagicWeaponBaseItem;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

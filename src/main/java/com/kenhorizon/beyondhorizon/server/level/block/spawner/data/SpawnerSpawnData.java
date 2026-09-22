@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.level;
+package com.kenhorizon.beyondhorizon.server.level.block.spawner.data;
 
 import com.kenhorizon.beyondhorizon.server.level.entity.EquipmentTable;
 import com.mojang.serialization.Codec;

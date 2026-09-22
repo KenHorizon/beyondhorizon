@@ -1,4 +1,4 @@
-package com.kenhorizon.beyondhorizon.server.level.damagesource;
+package com.kenhorizon.beyondhorizon.server.damagesource;
 
 import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
 import net.minecraft.world.entity.LivingEntity;

@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableInfo;
 import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.level.damagesource.OnHitEffectHandler;
+import com.kenhorizon.beyondhorizon.server.damagesource.OnHitEffectHandler;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;

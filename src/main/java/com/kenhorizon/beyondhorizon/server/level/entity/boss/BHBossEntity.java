@@ -14,6 +14,7 @@ import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -107,6 +108,9 @@ public class BHBossEntity extends BHLibEntity implements Enemy {
 
                 if (amount <= 0) return false;
             }
+        }
+        if (source.getEntity() instanceof AbstractGolem) {
+            amount *= 0.25F;
         }
         return super.hurt(source, amount);
     }

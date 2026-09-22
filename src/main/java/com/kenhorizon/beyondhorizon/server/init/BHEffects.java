@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.server.effect.*;
+import com.kenhorizon.beyondhorizon.server.level.effect.*;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.world.effect.MobEffect;

@@ -949,7 +949,9 @@ public class ServerEventHandler {
                 }
             }
             damageDealt *= (float) attacker.getAttributeValue(BHAttributes.DAMAGE_DEALT.get());
-            attackerCombatData.activated();
+            if (attackerCombatData != null) {
+                attackerCombatData.activated();
+            }
         }
         if (target != null) {
             IDamageInfo damageInfo = Capabilities.damageInfo(target);

@@ -1,15 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.level.entity.ai;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 
-public class AggroHurtByTargetGoal extends HurtByTargetGoal {
+public class SmartHurtByTargetGoal extends HurtByTargetGoal {
     private int forcedAggroTime;
     private float intensity;
-    public AggroHurtByTargetGoal(PathfinderMob mob, Class<?>... ToIgnoreDamage) {
+    public SmartHurtByTargetGoal(PathfinderMob mob, Class<?>... ToIgnoreDamage) {
         super(mob, ToIgnoreDamage);
     }
 

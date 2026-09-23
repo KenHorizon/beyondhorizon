@@ -5,12 +5,13 @@ import com.kenhorizon.beyondhorizon.client.model.entity.FayeWildfireModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.entity.layer.GenericEmissiveLayer;
 import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeWildfire;
+import com.kenhorizon.libs.client.AdvanceMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 
-public class FayeWildfireRenderer extends MobRenderer<FayeWildfire, FayeWildfireModel> {
+public class FayeWildfireRenderer extends AdvanceMobRenderer<FayeWildfire, FayeWildfireModel> {
     public static final ResourceLocation TEXTURE = BeyondHorizon.resource("textures/entity/flares/faye_wildfire.png");
     public static final ResourceLocation LAYER_LOCATION = BeyondHorizon.resource("textures/entity/flares/faye_wildfire_skull.png");
 

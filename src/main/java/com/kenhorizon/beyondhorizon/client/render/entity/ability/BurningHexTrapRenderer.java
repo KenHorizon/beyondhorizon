@@ -43,11 +43,12 @@ public class BurningHexTrapRenderer extends AnimatedAbilityRenderer<BurningHexTr
         RenderSystem.setShader(GameRenderer::getRendertypeEntityTranslucentShader);
         float factor = ((float) entity.getLifeTime() / (entity.getDuration() + entity.getDelay()));
         float scale = (entity.getRadius() * (1.0F - factor));
-        poseStack.scale(1.0F + scale, 1.0F, 1.0F + scale);
+
         RenderSystem.setShaderColor(1, 1, 1, 1.0F - factor);
         poseStack.mulPose(Axis.YP.rotationDegrees(90.0F - entity.getYRot()));
         poseStack.translate(0.0D, -0.95D, 0.0D);
         renderParts(poseStack, vertexConsumer, radius, height, alpha, minTextureX, maxTextureX, minTextureY, maxTextureY, packedLight);
         poseStack.popPose();
+        RenderSystem.setShaderColor(1, 1, 1, 1.0F);
     }
 }

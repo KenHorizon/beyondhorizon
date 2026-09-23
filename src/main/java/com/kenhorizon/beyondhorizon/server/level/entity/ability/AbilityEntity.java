@@ -268,8 +268,9 @@ public abstract class AbilityEntity extends Projectile implements ILinkedEntity,
     public void tick() {
         super.tick();
 
-        if (this.getLifeTime() > this.getDuration()) {
+        if (this.getLifeTime() >= this.getDuration() + 1) {
             this.discard();
+            return;
         }
         if (this.getDelay() <= 0) {
             if (!this.level().isClientSide()) {
@@ -283,10 +284,8 @@ public abstract class AbilityEntity extends Projectile implements ILinkedEntity,
                     this.onEnd();
                 }
             } else {
-                this.setLifeTime(this.getLifeTime() + 1);
                 this.clientSide();
                 this.animation.increaseTimer();
-                this.setLifeTime(this.getLifeTime() + 1);
                 this.spawnParticles();
             }
         } else {
@@ -294,10 +293,11 @@ public abstract class AbilityEntity extends Projectile implements ILinkedEntity,
                 this.setDelay(this.getDelay() - 1);
             }
         }
+        this.setLifeTime(this.getLifeTime() + 1);
     }
 
     public boolean hasEnded() {
-        return this.getLifeTime() > (this.getDuration() - 2);
+        return this.getLifeTime() > (this.getDuration());
     }
 
     @Override

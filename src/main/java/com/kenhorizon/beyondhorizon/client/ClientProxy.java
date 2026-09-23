@@ -171,6 +171,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.BLAZING_INFERNO_RAY.get(), BlazingInfernoRayRenderer::new);
         EntityRenderers.register(BHEntity.INFERNAL_RAY.get(), InfernalRayRenderer::new);
         EntityRenderers.register(BHEntity.TWILIGHT_RAY.get(), TwilightRayRenderer::new);
+        EntityRenderers.register(BHEntity.DRAGONIC_BREATH.get(), DragonicBreathRenderer::new);
         EntityRenderers.register(BHEntity.FALLING_BLOCK.get(), BHFallingBlocksRenderer::new);
         EntityRenderers.register(BHEntity.DRAGON_HORNET.get(), DragonHornetRenderer::new);
         EntityRenderers.register(BHEntity.HEALING_ORB.get(), HealingOrbRenderer::new);

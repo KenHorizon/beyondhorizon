@@ -15,6 +15,7 @@ import com.kenhorizon.beyondhorizon.server.level.entity.ability.BlazingInfernoRa
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.BurningHexTrapAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamDamageTags;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamTypeFunction;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.DragonicBreathAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ai.*;
 import com.kenhorizon.beyondhorizon.server.level.entity.ai.ability.DodgeAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ai.control.SmartBodyControl;
@@ -46,11 +47,14 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.BodyRotationControl;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.animal.AbstractGolem;
+import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -77,6 +81,8 @@ public class Pyrolliger extends BHBossEntity {
     private Map<LivingEntity, LivingEntity> TELEPORT_AGGRO = Maps.newHashMap();
     public AnimationState animationIdle1 = new AnimationState();
     public AnimationState animationIdle2 = new AnimationState();
+    public AnimationState animationDeath1 = new AnimationState();
+    public AnimationState animationDeath2 = new AnimationState();
     public AnimationState animationPyrobolt1 = new AnimationState();
     public AnimationState animationPyrolance = new AnimationState();
     public AnimationState animationRangedUlt = new AnimationState();
@@ -110,13 +116,15 @@ public class Pyrolliger extends BHBossEntity {
     public static final int ID_HEX_EYE = createAnimationID();
     public static final int ID_HAIL_RAIN = createAnimationID();
     public static final int ID_BURNING_POINT = createAnimationID();
+    public static final int ID_DEATH_MELEE = createAnimationID();
+    public static final int ID_DEATH_RANGED = createAnimationID();
     //
     public static final int ID_TRANSITION_STANCE_RANGED = createAnimationID();
     public static final int ID_TRANSITION_STANCE_MELEE = createAnimationID();
     // Ability Cooldowns
     public AnimationTickers dodgeCooldown = AnimationTickers.create(Maths.sec(7));
-    public AnimationTickers pyroboltCooldown = AnimationTickers.create(Maths.sec(3));
-    public AnimationTickers pyrolanceCooldown = AnimationTickers.create(Maths.sec(4));
+    public AnimationTickers pyroboltCooldown = AnimationTickers.create(Maths.sec(6));
+    public AnimationTickers pyrolanceCooldown = AnimationTickers.create(Maths.sec(10));
     public AnimationTickers burningHexTrapCooldown = AnimationTickers.create(Maths.sec(52));
 
     public AnimationTickers attack1Cooldown = AnimationTickers.create(Maths.sec(3));
@@ -124,7 +132,7 @@ public class Pyrolliger extends BHBossEntity {
     public AnimationTickers attack3Cooldown = AnimationTickers.create(Maths.sec(3));
     public AnimationTickers idle1Cooldown = AnimationTickers.create(Maths.sec(3));
     public AnimationTickers idle2Cooldown = AnimationTickers.create(Maths.sec(3));
-    public AnimationTickers meleeManaGain = AnimationTickers.create(Maths.sec(1));
+    public AnimationTickers meleeManaGain = AnimationTickers.create(10);
 
     public static final String NBT_MANA = "mana";
     public static final String NBT_MAX_MANA = "max_mana";
@@ -153,8 +161,6 @@ public class Pyrolliger extends BHBossEntity {
         this.setPathfindingMalus(BlockPathTypes.UNPASSABLE_RAIL, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.DANGER_FIRE, 0.0F);
         this.setPathfindingMalus(BlockPathTypes.DAMAGE_FIRE, 0.0F);
-        this.setIdleAnim(ID_IDLE1, animationIdle1);
-        this.setIdleAnim(ID_IDLE2, animationIdle2);
     }
 
     @Override
@@ -192,11 +198,12 @@ public class Pyrolliger extends BHBossEntity {
     }
     @Override
     public boolean hurt(DamageSource source, float amount) {
+        boolean flag = super.hurt(source, amount);
         if (this.getMode() == Mode.MELEE && this.meleeManaGain.isReadyToUse()) {
             this.addMana(1);
             this.meleeManaGain.setCooldown();
         }
-        return super.hurt(source, amount);
+        return flag;
     }
 
     public void setAttackCount(int v) {
@@ -311,22 +318,24 @@ public class Pyrolliger extends BHBossEntity {
 
     @Override
     protected void registerGoals() {
-        super.registerGoals();
+        this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 16.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        this.goalSelector.addGoal(0, new NaturalHealingGoal(this));
-        this.goalSelector.addGoal(1, new MobMoveGoal(this, false, 1.0F));
-        this.goalSelector.addGoal(1, new RandomStrollGoal(this, 1.0F) {
-            @Override
-            public boolean canUse() {
-                if (this.mob instanceof BHLibEntity entity) {
-                    if (entity.getAnimationState(ID_ANIMATION_EMPTY)) {
-                        return super.canUse();
-                    }
-                }
-                return false;
-            }
-        });
+        this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
+        this.goalSelector.addGoal(1, new NaturalHealingGoal(this));
+        this.goalSelector.addGoal(2, new MobMoveGoal(this, false, 1.0F));
+//        this.goalSelector.addGoal(2, new MobAvoidTargetGoal<>(this, 8.0F, 1.2F) {
+//            @Override
+//            public boolean canUse() {
+//                boolean flag = this.entity instanceof Pyrolliger;
+//                return super.canUse() && flag && ((Pyrolliger) this.entity).getMode() == Mode.RANGED;
+//            }
+//        });
+        this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0F, 80));
+
+        this.targetSelector.addGoal(1, new SmartHurtByTargetGoal(this));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractGolem.class, true));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
 
         this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_DRACONIC_FIRELORD, ID_TRANSITION_STANCE_MELEE, 30, Maths.sec(10)) {
             @Override
@@ -370,13 +379,14 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.dodgeCooldown.setCooldown();
             }
         });
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_BURNING_HEX_TRAP, ID_ANIMATION_EMPTY, 30, Maths.sec(5)) {
+        this.goalSelector.addGoal(3, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_BURNING_HEX_TRAP, ID_ANIMATION_EMPTY, 30, Maths.sec(3)) {
             @Override
             public boolean canUse() {
-                if (this.entity.isUltCanBeCast() || this.entity.isMelee()) {
+                if (!this.entity.isUltCanBeCast() && this.entity.isRanged()) {
+                    return super.canUse() && !this.entity.isUltCanBeCast() && this.entity.burningHexTrapCooldown.isReadyToUse();
+                } else {
                     return false;
                 }
-                return super.canUse() && !this.entity.isUltCanBeCast() && this.entity.burningHexTrapCooldown.isReadyToUse();
             }
 
             @Override
@@ -385,13 +395,14 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.burningHexTrapCooldown.setCooldown();
             }
         });
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PYROBOLT1, ID_ANIMATION_EMPTY, 20, Maths.sec(5)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PYROBOLT1, ID_ANIMATION_EMPTY, 20, Maths.sec(1)) {
             @Override
             public boolean canUse() {
-                if (this.entity.isUltCanBeCast() || this.entity.isMelee()) {
+                if (!this.entity.isUltCanBeCast() && this.entity.isRanged()) {
+                    return super.canUse() && this.entity.pyroboltCooldown.isReadyToUse();
+                } else {
                     return false;
                 }
-                return super.canUse() && this.entity.pyroboltCooldown.isReadyToUse();
             }
 
             @Override
@@ -400,13 +411,14 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.pyroboltCooldown.setCooldown();
             }
         });
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PYROLANCE, ID_ANIMATION_EMPTY, 30, Maths.sec(5)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PYROLANCE, ID_ANIMATION_EMPTY, 30, Maths.sec(2)) {
             @Override
             public boolean canUse() {
-                if (this.entity.isUltCanBeCast() || this.entity.isMelee()) {
+                if (!this.entity.isUltCanBeCast() && this.entity.isRanged()) {
                     return false;
+                } else {
+                    return super.canUse() && this.entity.pyrolanceCooldown.isReadyToUse();
                 }
-                return super.canUse() && this.entity.pyrolanceCooldown.isReadyToUse();
             }
 
             @Override
@@ -419,10 +431,10 @@ public class Pyrolliger extends BHBossEntity {
         this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_ATTACK_1, ID_ANIMATION_EMPTY, 30, Maths.sec(2)) {
             @Override
             public boolean canUse() {
-                if (this.entity.isUltCanBeCast() || this.entity.isRanged()) {
-                    return false;
+                if (!this.entity.isUltCanBeCast() && this.entity.isMelee()) {
+                    return super.canUse() && this.entity.attack1Cooldown.isReadyToUse() && this.entity.inRangeOf(7.5D);
                 }
-                return super.canUse() && this.entity.attack1Cooldown.isReadyToUse();
+                return false;
             }
 
             @Override
@@ -445,10 +457,12 @@ public class Pyrolliger extends BHBossEntity {
         this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_ATTACK_2, ID_ANIMATION_EMPTY, 30, Maths.sec(2)) {
             @Override
             public boolean canUse() {
-                if (this.entity.isUltCanBeCast() && this.entity.isRanged()) {
+                if (!this.entity.isUltCanBeCast() && this.entity.isMelee()) {
+                    return super.canUse() && this.entity.attack2Cooldown.isReadyToUse() && this.entity.getRandomChances(75) && this.entity.inRangeOf(3.5D);
+
+                } else {
                     return false;
                 }
-                return super.canUse() && this.entity.attack2Cooldown.isReadyToUse() && this.entity.getRandomChances(75);
             }
 
             @Override
@@ -460,10 +474,11 @@ public class Pyrolliger extends BHBossEntity {
         this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_ATTACK_3, ID_ANIMATION_EMPTY, 30, Maths.sec(2)) {
             @Override
             public boolean canUse() {
-                if (this.entity.isUltCanBeCast() && this.entity.isRanged()) {
+                if (!this.entity.isUltCanBeCast() && this.entity.isMelee()) {
+                    return super.canUse() && this.entity.attack3Cooldown.isReadyToUse() && this.entity.getRandomChances(75);
+                } else {
                     return false;
                 }
-                return super.canUse() && this.entity.attack3Cooldown.isReadyToUse() && this.entity.getRandomChances(75);
             }
 
             @Override
@@ -472,9 +487,6 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.attack3Cooldown.setCooldown();
             }
         });
-        this.targetSelector.addGoal(1, new HurtByNearestTargetGoal(this));
-        this.goalSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
-        this.goalSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractGolem.class, true));
     }
 
     public boolean isMelee() {
@@ -488,9 +500,9 @@ public class Pyrolliger extends BHBossEntity {
     @Override
     public void tick() {
         super.tick();
-        if (this.getMode() == Mode.RANGED && this.tickCount % 20 == 0) {
-            this.addMana(1);
-        }
+//        if (this.tickCount % 20 == 0) {
+//            this.addMana(1);
+//        }
 
         if (this.getAnimationState(ID_TRANSITION_STANCE_MELEE)) {
             if (this.getAnimationTick() == 30) {
@@ -570,19 +582,16 @@ public class Pyrolliger extends BHBossEntity {
             }
         } else {
             if (this.getAnimationState(ID_DODGE)) {
-                if (this.getMode() == Mode.RANGED) {
-                    getNavigation().stop();
-                    if (this.getAnimationTick() == 2) {
-                        dodgeYaw = (float) Math.toRadians(targetAngle + 90 + random.nextFloat() * 150 - 75);
-                    }
-                    if (this.getAnimationTick() == 6 && (onGround() || isInLava() || isInWater())) {
-                        float speed = 1.7f;
-                        Vec3 m = getDeltaMovement().add(speed * Math.cos(dodgeYaw), 0, speed * Math.sin(dodgeYaw));
-                        setDeltaMovement(m.x, 0.6, m.z);
-                    }
-                    if (target != null) lookControl.setLookAt(target, 30, 30);
+                this.getNavigation().stop();
+                if (this.getAnimationTick() == 2) {
+                    dodgeYaw = (float) Math.toRadians(targetAngle + 90 + random.nextFloat() * 150 - 75);
                 }
-
+                if (this.getAnimationTick() == 6 && (onGround() || isInLava() || isInWater())) {
+                    float speed = 1.7f;
+                    Vec3 m = getDeltaMovement().add(speed * Math.cos(dodgeYaw), 0, speed * Math.sin(dodgeYaw));
+                    setDeltaMovement(m.x, 0.6, m.z);
+                }
+                if (target != null) lookControl.setLookAt(target, 30, 30);
             }
             if (this.getAnimationState(ID_PYROBOLT1)) {
                 if (this.getAnimationTick() <= 60 && target != null) {
@@ -606,7 +615,7 @@ public class Pyrolliger extends BHBossEntity {
                     BeyondHorizon.PROXY.playSound(new DeathRayChargingSound(this, BHSounds.BLAZING_INFERNO_DEATH_RAY.get()));
                     float radius = 0.80F;
                     int duration = 80;
-                    BlazingInfernoRayAbility ability = new BlazingInfernoRayAbility(this.level(), this,
+                    DragonicBreathAbility ability = new DragonicBreathAbility(this.level(), this,
                             this.getX() + radius * Math.sin(-this.getYRot() * Math.PI / 180),
                             this.getY() + 1.4, this.getZ() + radius * Math.cos(-this.getYRot() * Math.PI / 180),
                             (float) ((this.yHeadRot + 90) * Math.PI / 180), (float) (-this.getXRot() * Math.PI / 180), duration);
@@ -629,7 +638,6 @@ public class Pyrolliger extends BHBossEntity {
                     this.getLookControl().setLookAt(target, 30, 30);
                 }
                 if (this.getAnimationTick() < 20) {
-                    this.navigation.stop();
                     this.setCantMoved();
                 }
                 if (this.getAnimationTick() == 20) {
@@ -650,7 +658,6 @@ public class Pyrolliger extends BHBossEntity {
                     this.getLookControl().setLookAt(target, 30, 30);
                 }
                 if (this.getAnimationTick() == 30) {
-                    this.navigation.stop();
                     this.setCantMoved();
                     this.doAreaAttack(4.0F, 180.0F, 1.25F, Maths.sec(5), 0.0F, DamageInfoTypes.PHYSICAL_DAMAGE);
                 }
@@ -697,7 +704,8 @@ public class Pyrolliger extends BHBossEntity {
             }
             this.playAnimation(this.animationTeleport, true);
             if (target != null) {
-                this.doJumpTarget(target, 0.545D, 0);
+//                this.teleportAtBack(target);
+                this.doJumpTarget(target, 0.445D, 0);
             }
         }
     }
@@ -730,7 +738,7 @@ public class Pyrolliger extends BHBossEntity {
             var entity = proj.getOwner();
             if (entity instanceof LivingEntity living && living == this) {
                 if (this.getMode() == Mode.RANGED) {
-                    this.addMana(1);
+//                    this.addMana(1);
                 }
             }
         };
@@ -849,8 +857,24 @@ public class Pyrolliger extends BHBossEntity {
             if (this.getAnimationState(ID_ATTACK_3)) {
                 this.playAnimation(this.animationAtk3);
             }
+            if (this.getAnimationState(ID_DEATH_MELEE)) {
+                this.playAnimation(this.animationDeath1);
+            }
+            if (this.getAnimationState(ID_DEATH_MELEE)) {
+                this.playAnimation(this.animationDeath2);
+            }
         }
         super.onSyncedDataUpdated(accessor);
+    }
+
+    @Override
+    public int getAnimationDeath() {
+        return this.getMode() == Mode.MELEE ? ID_DEATH_MELEE : ID_DEATH_RANGED;
+    }
+
+    @Override
+    protected int getDeathDuration() {
+        return Maths.sec(3);
     }
 
     @Override
@@ -881,6 +905,8 @@ public class Pyrolliger extends BHBossEntity {
                 this.animationMeleeUlt,
                 this.animationStanceRanged,
                 this.animationStanceMelee,
+                this.animationDeath1,
+                this.animationDeath2,
                 this.animationBurningHexTrap
         };
     }

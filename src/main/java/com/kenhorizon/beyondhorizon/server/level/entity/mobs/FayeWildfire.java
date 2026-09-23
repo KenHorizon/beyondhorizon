@@ -7,7 +7,7 @@ import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.level.entity.BHLibEntity;
 import com.kenhorizon.beyondhorizon.server.level.entity.CameraShake;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.InfernalRayAbility;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.InfernalRayAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamDamageTags;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.level.entity.ai.HurtByNearestTargetGoal;

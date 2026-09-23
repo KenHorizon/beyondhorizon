@@ -47,8 +47,8 @@ public class BurningHexTrapAbility extends AbilityEntity {
 
     @Override
     protected void onDuration() {
-        if (this.level().isClientSide()) {
-            if (this.tickCount % 10 == 0) {
+        if (!this.level().isClientSide()) {
+            if (this.getLifeTime() % 10 == 0) {
                 this.checkEntityHit();
             }
         }
@@ -58,8 +58,10 @@ public class BurningHexTrapAbility extends AbilityEntity {
     protected void onHitEntity(EntityHitResult hitResult) {
         var afflicted = hitResult.getEntity();
         if (afflicted instanceof LivingEntity entity) {
-            if (this.getDamageType().dealDamage(entity, this.getCaster(), this.getBaseDamage(), true)) {
-                entity.addEffect(new MobEffectInstance(BHEffects.BURNING_HEX.get(), Maths.sec(5)));
+            if (entity != this.getCaster()) {
+                if (this.getDamageType().dealDamage(entity, this.getCaster(), this.getBaseDamage(), true)) {
+                    entity.addEffect(new MobEffectInstance(BHEffects.BURNING_HEX.get(), Maths.sec(5)));
+                }
             }
         }
     }

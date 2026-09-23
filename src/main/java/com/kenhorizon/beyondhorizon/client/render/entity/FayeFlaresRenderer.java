@@ -4,12 +4,13 @@ import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.FayeFlaresModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeFlares;
+import com.kenhorizon.libs.client.AdvanceMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 
-public class FayeFlaresRenderer extends MobRenderer<FayeFlares, FayeFlaresModel> {
+public class FayeFlaresRenderer extends AdvanceMobRenderer<FayeFlares, FayeFlaresModel> {
     public static final ResourceLocation TEXTURE = BeyondHorizon.resource("textures/entity/flares/faye_flares.png");
 
     public FayeFlaresRenderer(EntityRendererProvider.Context context) {

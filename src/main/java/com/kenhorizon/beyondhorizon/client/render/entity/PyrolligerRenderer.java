@@ -3,13 +3,15 @@ package com.kenhorizon.beyondhorizon.client.render.entity;
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.PyrolligerModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
+import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.level.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.libs.client.AdvanceMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 
-public class PyrolligerRenderer extends MobRenderer<Pyrolliger, PyrolligerModel> {
+public class PyrolligerRenderer extends AdvanceMobRenderer<Pyrolliger, PyrolligerModel> {
     public static final ResourceLocation TEXTURE = BeyondHorizon.resource("textures/entity/illager/pryolliger/pyrolliger.png");
 
     public PyrolligerRenderer(EntityRendererProvider.Context context) {
@@ -18,7 +20,7 @@ public class PyrolligerRenderer extends MobRenderer<Pyrolliger, PyrolligerModel>
 
     @Override
     protected int getBlockLightLevel(Pyrolliger entity, BlockPos blockPos) {
-        return 15;
+        return entity.isOnFire() ? 15 : 0;
     }
 
     @Override

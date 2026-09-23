@@ -17,6 +17,7 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class BHLibEntity extends BHBaseEntity {
     public static final int ID_ANIMATION_EMPTY = 0;
@@ -60,6 +61,10 @@ public class BHLibEntity extends BHBaseEntity {
 
     protected void playAnimation(AnimationState anim) {
         this.playAnimation(anim, false);
+    }
+
+    protected void stopAnimation(AnimationState anim) {
+        anim.stop();
     }
 
     protected void playAnimation(AnimationState anim, boolean overlay) {
@@ -121,7 +126,7 @@ public class BHLibEntity extends BHBaseEntity {
 
     public void setCantMoved() {
         this.setDeltaMovement(0, this.getDeltaMovement().y(), 0);
-        this.navigation.stop();
+        this.getNavigation().stop();
     }
 
     @Override
@@ -175,8 +180,15 @@ public class BHLibEntity extends BHBaseEntity {
     }
 
     public void doDodge(int chance) {
+        doDodge(chance, null);
+    }
+
+    public void doDodge(int chance, Consumer<LivingEntity> postEffect) {
         if (this.getRandomChances(chance)) return;
         this.performDodge();
+        if (postEffect != null) {
+            postEffect.accept(this);
+        }
     }
 
     private void performDodge() {
@@ -216,6 +228,12 @@ public class BHLibEntity extends BHBaseEntity {
         double posY = y;
         double posZ = (pos.z() - this.getZ()) * distance;
         this.setDeltaMovement(posX, posY, posZ);
+    }
+
+
+    public void teleportAtBack(LivingEntity target) {
+        Vec3 pos = target.position();
+        this.teleportTo(pos.x, pos.y, pos.z);
     }
 
     public void doJump(double distance) {

@@ -40,7 +40,7 @@ Cross Blade Pyro Blast - the pyrolliger release X pattern of 10 burning hex trap
 Hail rain - Summon a portal that fire flaming sword for every 1 seconds
 // Melee Attack 1 - the pyrolliger use the sword and slashing 3 times, each slash it dash litte 
 // Melee Attack 2 - the pyrolliger will do arc damage within 180 degree
-Melee Attack 3 - the pyrolliger will teleport to targeted entity after briefly 1 second delay will do arc damage within 180 similar as Melee Attack 2
+// Melee Attack 3 - the pyrolliger will teleport to targeted entity after briefly 1 second delay will do arc damage within 180 similar as Melee Attack 2
 
 Ultimate: Burning Point - the pyrolliger charge upto 5 seconds and later will release a devasting flash point explosion
 

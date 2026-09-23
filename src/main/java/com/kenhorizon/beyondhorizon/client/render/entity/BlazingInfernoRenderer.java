@@ -5,6 +5,7 @@ import com.kenhorizon.beyondhorizon.client.model.entity.BlazingInfernoModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.BlazingInferno;
+import com.kenhorizon.libs.client.AdvanceMobRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -25,7 +26,7 @@ import org.joml.Matrix4f;
 import com.mojang.math.Axis;
 
 @OnlyIn(Dist.CLIENT)
-public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingInfernoModel> {
+public class BlazingInfernoRenderer extends AdvanceMobRenderer<BlazingInferno, BlazingInfernoModel> {
     public static final ResourceLocation TEXTURE = BeyondHorizon.resource("textures/entity/blazing_inferno/blazing_inferno.png");
     public static final ResourceLocation TEXTURE_ENRAGED = BeyondHorizon.resource("textures/entity/blazing_inferno/blazing_inferno_enraged.png");
     public static final ResourceLocation TEXTURE_INACTIVE = BeyondHorizon.resource("textures/entity/blazing_inferno/blazing_inferno_inactive.png");
@@ -145,11 +146,6 @@ public class BlazingInfernoRenderer extends MobRenderer<BlazingInferno, BlazingI
     protected float getWhiteOverlayProgress(BlazingInferno entity, float partialTicks) {
         float isShockwave = entity.getShockwaveProgress(partialTicks);
         return (int)(isShockwave * 10.0F) % 2 == 0 ? 0.0F : Mth.clamp(isShockwave, 0.5F, 1.0F);
-    }
-
-    @Override
-    protected float getFlipDegrees(BlazingInferno entity) {
-        return 0;
     }
 
     @Override

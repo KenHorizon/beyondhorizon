@@ -128,6 +128,8 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
         this.animate(entity.animationAtk1, PyrolligerAnim.ATTACK1, ageInTicks);
         this.animate(entity.animationAtk2, PyrolligerAnim.ATTACK2, ageInTicks);
         this.animate(entity.animationAtk3, PyrolligerAnim.ATTACK3, ageInTicks);
+        this.animate(entity.animationDeath1, PyrolligerAnim.DEATH_MELEE, ageInTicks);
+        this.animate(entity.animationDeath2, PyrolligerAnim.DEATH_RANGED, ageInTicks);
     }
 
     @Override

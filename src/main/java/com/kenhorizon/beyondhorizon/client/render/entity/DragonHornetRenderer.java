@@ -4,11 +4,12 @@ import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.DragonHornetModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
 import com.kenhorizon.beyondhorizon.server.level.entity.mobs.DragonHornet;
+import com.kenhorizon.libs.client.AdvanceMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
 
-public class DragonHornetRenderer extends MobRenderer<DragonHornet, DragonHornetModel> {
+public class DragonHornetRenderer extends AdvanceMobRenderer<DragonHornet, DragonHornetModel> {
     public static final ResourceLocation TEXTURE = BeyondHorizon.resource("textures/entity/dragon_hornet.png");
 
     public DragonHornetRenderer(EntityRendererProvider.Context context) {

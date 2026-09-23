@@ -117,7 +117,7 @@ public abstract class AbstractLaserBeamRenderer extends EntityRenderer<AbstractD
     protected void appendRenderBeam(float scale, float length, float yaw, float pitch, int frame,  PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
 
     }
-    private void renderBeam(float scale,float length, float yaw, float pitch, int frame,  PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
+    private void renderBeam(float scale, float length, float yaw, float pitch, int frame,  PoseStack matrixStackIn, VertexConsumer builder, int packedLightIn) {
         Minecraft mc = Minecraft.getInstance();
         matrixStackIn.pushPose();
         matrixStackIn.mulPose(Maths.quatFromRotationXYZ(90, 0, 0, true));

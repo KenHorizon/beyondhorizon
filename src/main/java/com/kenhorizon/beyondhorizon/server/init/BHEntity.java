@@ -2,6 +2,10 @@ package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.server.level.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.*;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.CleaveAbility;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.DragonicBreathAbility;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.InfernalRayAbility;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.TwilightRayAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.level.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.beyondhorizon.server.level.entity.misc.HealingOrb;
@@ -147,6 +151,13 @@ public class BHEntity {
     public static final RegistryObject<EntityType<TwilightRayAbility>> TWILIGHT_RAY = RegistryEntity
             .<TwilightRayAbility>register("twilight_ray", TwilightRayAbility::new)
             .lang("Twilight Ray")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .register();
+
+    public static final RegistryObject<EntityType<DragonicBreathAbility>> DRAGONIC_BREATH = RegistryEntity
+            .<DragonicBreathAbility>register("dragonic_breath", DragonicBreathAbility::new)
+            .lang("Dragonic Breath")
             .mobCategory(MobCategory.MISC)
             .properties(p -> p.sized(0.5F, 0.5F))
             .register();

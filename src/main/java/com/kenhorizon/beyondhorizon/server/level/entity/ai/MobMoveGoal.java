@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.level.entity.ai;
 
+import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.level.entity.BHLibEntity;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.EntitySelector;
@@ -17,8 +18,8 @@ public class MobMoveGoal extends Goal {
     private int delayCounter;
     protected final double moveSpeed;
 
-    public MobMoveGoal(BHLibEntity boss, boolean followingTargetEvenIfNotSeen, double moveSpeed) {
-        this.entity = boss;
+    public MobMoveGoal(BHLibEntity entity, boolean followingTargetEvenIfNotSeen, double moveSpeed) {
+        this.entity = entity;
         this.followingTargetEvenIfNotSeen = followingTargetEvenIfNotSeen;
         this.moveSpeed = moveSpeed;
         this.setFlags(EnumSet.of(Flag.LOOK, Flag.MOVE));
@@ -27,9 +28,12 @@ public class MobMoveGoal extends Goal {
     @Override
     public boolean canUse() {
         LivingEntity target = this.entity.getTarget();
-        return target != null && target.isAlive();
+        if (target != null) {
+            this.path = this.entity.getNavigation().createPath(target, 0);
+            return target.isAlive();
+        }
+        return false;
     }
-
 
     @Override
     public void stop() {

@@ -1,6 +1,5 @@
-package com.kenhorizon.beyondhorizon.server.level.entity.ability;
+package com.kenhorizon.beyondhorizon.server.level.entity.ability.beam;
 
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.AbstractDeathRayAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import net.minecraft.world.entity.EntityType;

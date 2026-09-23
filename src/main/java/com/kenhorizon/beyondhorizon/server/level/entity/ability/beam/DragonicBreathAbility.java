@@ -1,8 +1,7 @@
-package com.kenhorizon.beyondhorizon.server.level.entity.ability;
+package com.kenhorizon.beyondhorizon.server.level.entity.ability.beam;
 
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.AbstractDeathRayAbility;
-import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeWildfire;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -10,22 +9,22 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class TwilightRayAbility extends AbstractDeathRayAbility {
-    public TwilightRayAbility(EntityType<?> entityType, Level level) {
+public class DragonicBreathAbility extends AbstractDeathRayAbility {
+    public DragonicBreathAbility(EntityType<?> entityType, Level level) {
         super(entityType, level);
-        this.setColor(255, 116, 0);
+        this.setColor(255, 0, 0);
         this.setScale(0.5F);
     }
 
-    public TwilightRayAbility(Level world, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration) {
-        super(BHEntity.TWILIGHT_RAY.get(), world, caster, x, y, z, yaw, pitch, duration);
-        this.setColor(255, 116, 0);
+    public DragonicBreathAbility(Level world, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration) {
+        super(BHEntity.DRAGONIC_BREATH.get(), world, caster, x, y, z, yaw, pitch, duration);
+        this.setColor(255, 0, 0);
         this.setScale(0.5F);
     }
 
-    public TwilightRayAbility(Level world, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration, float range) {
-        super(BHEntity.TWILIGHT_RAY.get(), world, caster, x, y, z, yaw, pitch, duration, range);
-        this.setColor(255, 116, 0);
+    public DragonicBreathAbility(Level world, LivingEntity caster, double x, double y, double z, float yaw, float pitch, int duration, float range) {
+        super(BHEntity.DRAGONIC_BREATH.get(), world, caster, x, y, z, yaw, pitch, duration, range);
+        this.setColor(255, 0, 0);
         this.setScale(0.5F);
     }
 
@@ -50,10 +49,10 @@ public class TwilightRayAbility extends AbstractDeathRayAbility {
             float motionY = random.nextFloat() * 0.08F;
             float motionX = velocity * Mth.cos(yaw);
             float motionZ = velocity * Mth.sin(yaw);
-            level().addParticle(ParticleTypes.WHITE_ASH, collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
+            level().addParticle(ParticleTypes.FLAME, collidePosX, collidePosY + 0.1, collidePosZ, motionX, motionY, motionZ);
         }
         for (int i = 0; i < amount / 2; i++) {
-            level().addParticle(ParticleTypes.CLOUD, collidePosX, collidePosY + 0.1, collidePosZ, 0, 0, 0);
+            level().addParticle(ParticleTypes.FLAME, collidePosX, collidePosY + 0.1, collidePosZ, 0, 0, 0);
         }
     }
 }

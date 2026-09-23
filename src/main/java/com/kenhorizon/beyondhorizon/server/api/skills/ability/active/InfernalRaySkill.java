@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
 import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.InfernalRayAbility;
+import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.InfernalRayAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.level.item.base.weapons.MagicWeaponBaseItem;

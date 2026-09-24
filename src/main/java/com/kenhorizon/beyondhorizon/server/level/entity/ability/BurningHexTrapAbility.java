@@ -7,11 +7,18 @@ import com.kenhorizon.beyondhorizon.server.init.BHEffects;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BurningHexTrapAbility extends AbilityEntity {
     public BurningHexTrapAbility(EntityType<? extends AbilityEntity> entityType, Level level) {
@@ -26,6 +33,9 @@ public class BurningHexTrapAbility extends AbilityEntity {
         ability.setBaseDamage(damage);
         ability.setCaster(entity);
         ability.setPos(x, y, z);
+        ability.setDuration(100);
+        ability.setDelay(40);
+        ability.setRadius(3.5F);
         level.addFreshEntity(ability);
     }
 

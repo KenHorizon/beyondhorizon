@@ -15,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -75,6 +76,10 @@ public abstract class AbilityEntity extends Projectile implements ILinkedEntity,
         this.entityData.define(IGNORE_IMMUNITY_FRAME, false);
     }
 
+    public boolean isInfinte() {
+        return this.getDuration() == -1;
+    }
+
     public void setDamageType(DamageInfoTypes DamageInfoTypes) {
         this.damageTypes = DamageInfoTypes;
         this.entityData.set(DAMAGE_TYPE, DamageInfoTypes.ordinal());
@@ -82,7 +87,7 @@ public abstract class AbilityEntity extends Projectile implements ILinkedEntity,
 
     public DamageInfoTypes getDamageType() {
         if (this.level().isClientSide()) {
-            return damageTypes.values()[this.entityData.get(DAMAGE_TYPE)];
+            return DamageInfoTypes.values()[this.entityData.get(DAMAGE_TYPE)];
         } else {
             return damageTypes;
         }
@@ -268,7 +273,7 @@ public abstract class AbilityEntity extends Projectile implements ILinkedEntity,
     public void tick() {
         super.tick();
 
-        if (this.getLifeTime() >= this.getDuration() + 1) {
+        if (!this.isInfinte() && this.getLifeTime() >= this.getDuration() + 1) {
             this.discard();
             return;
         }

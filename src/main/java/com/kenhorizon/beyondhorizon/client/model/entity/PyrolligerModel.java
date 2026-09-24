@@ -111,10 +111,18 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
             }
         }
         if (entity.walkAnimation.isMoving() && entity.getMode() == Pyrolliger.Mode.RANGED) {
-            this.animateWalk(PyrolligerAnim.WALKING_RANGED, limbSwing, limbSwingAmount, 1.0F, 1.0F);
+            if (entity.isRunning()) {
+                this.animateWalk(PyrolligerAnim.RUNNING, limbSwing, limbSwingAmount, 1.0F, 1.0F);
+            } else {
+                this.animateWalk(PyrolligerAnim.WALKING_RANGED, limbSwing, limbSwingAmount, 1.0F, 1.0F);
+            }
         }
         if (entity.walkAnimation.isMoving() && entity.getMode() == Pyrolliger.Mode.MELEE) {
-            this.animateWalk(PyrolligerAnim.WALKING_MELEE, limbSwing, limbSwingAmount, 1.0F, 1.0F);
+            if (entity.isRunning()) {
+                this.animateWalk(PyrolligerAnim.RUNNING, limbSwing, limbSwingAmount, 1.0F, 1.0F);
+            } else {
+                this.animateWalk(PyrolligerAnim.WALKING_MELEE, limbSwing, limbSwingAmount, 1.0F, 1.0F);
+            }
         }
         this.animate(entity.animationIdle1, PyrolligerAnim.IDLE1, ageInTicks);
         this.animate(entity.animationIdle2, PyrolligerAnim.IDLE2, ageInTicks);

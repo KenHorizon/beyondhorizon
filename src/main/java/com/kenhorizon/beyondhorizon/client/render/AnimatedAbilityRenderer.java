@@ -69,7 +69,12 @@ public abstract class AnimatedAbilityRenderer<T extends AbilityEntity> extends E
         this.vertex(matrix4f, matrix3f, vertexConsumer, radius, height, -radius, maxTextureX, minTextureY, nX, nY, nZ, packedLight, alpha);
     }
     protected void vertex(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer consumer, float x, float y, float z, float textureX, float textureY, float nX, float nY, float nZ, int packedLight, float alpha) {
-        consumer.vertex(matrix4f, (float) x, (float) y, (float) z).color(1.0F, 1.0F, 1.0F, alpha).uv(textureX, textureY).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(packedLight).normal(matrix3f, (float)nX, (float)nY, (float)nZ).endVertex();
+        consumer.vertex(matrix4f, (float) x, (float) y, (float) z)
+                .color(1.0F, 1.0F, 1.0F, alpha)
+                .uv(textureX, textureY)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(packedLight)
+                .normal(matrix3f, (float)nX, (float)nY, (float)nZ).endVertex();
     }
 
     public int textureWidth() {

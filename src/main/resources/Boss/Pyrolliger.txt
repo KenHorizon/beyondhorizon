@@ -30,13 +30,13 @@ Circular Pyro Slash - the pyrolliger 5 summon flaming slash to target interval w
 // Hex Trap - the pyrolliger randomly place 10 burning hex trap that last for 5/10 seconds /
 // Pyro Lance - the pyrolliger summon 20 pyro lance that charge and home to player /
 
-Utilmate: Dragonic Firelord - the pyrolliger will charge upto 3 seconds, after will release a dragonic head that fire devasting pryomanic death ray
+Utilmate: Dragonic Firelord - the pyrolliger will charge upto 3 seconds, after will release a dragonic head that fire devasting Dragonic Breath
 
 Melee:
 Pyrolliger will equip Draconic Elder Sword
 
 // Slash and Dash - the pyrolliger look at nearest target and dash to targeted position and after reaching the position will release a Circular pyro slash
-Cross Blade Pyro Blast - the pyrolliger release X pattern of 10 burning hex trap to position target
+//Hex Trap - the pyrolliger randomly place 10 burning hex trap that last for 5/10 seconds
 Hail rain - Summon a portal that fire flaming sword for every 1 seconds
 // Melee Attack 1 - the pyrolliger use the sword and slashing 3 times, each slash it dash litte 
 // Melee Attack 2 - the pyrolliger will do arc damage within 180 degree
@@ -48,11 +48,8 @@ Note: All Melee Attack inherit a 100% of Pyrolliger's Attack Damage
 
 Loot:
 Draconic Elder Sword (30%)
-
-
-Aftermath:
-Arc Evoker and Arc Mage are now spawning in raid
-Ruined Arc Illager Castle are now accessable
+Ashes of Flame
+Dragonic Flame Essence 6-10
 
 
 

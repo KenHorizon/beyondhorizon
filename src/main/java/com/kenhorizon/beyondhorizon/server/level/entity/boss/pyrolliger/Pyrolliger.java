@@ -42,6 +42,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -53,6 +54,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
+import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -78,6 +80,8 @@ public class Pyrolliger extends BHBossEntity {
     protected Pyrolliger.Mode mode = Mode.RANGED;
     private final DodgeAbility dodgeAbility = new DodgeAbility(this);
     public static int animationId = 1;
+    public static final float SPRINT_SPEED_MODIFIER = 1.2F;
+    public static final float WALK_SPEED_MODIFIER = 0.7F;
     private Map<LivingEntity, LivingEntity> TELEPORT_AGGRO = Maps.newHashMap();
     public AnimationState animationIdle1 = new AnimationState();
     public AnimationState animationIdle2 = new AnimationState();
@@ -108,6 +112,7 @@ public class Pyrolliger extends BHBossEntity {
     public static final int ID_PYRO_GEM = createAnimationID();
     public static final int ID_PYRO_SLASH = createAnimationID();
     // MELEE
+    public static final int ID_SLASH_AND_DASH = createAnimationID();
     public static final int ID_ATTACK_1 = createAnimationID();
     public static final int ID_ATTACK_2 = createAnimationID();
     public static final int ID_ATTACK_3 = createAnimationID();
@@ -127,6 +132,7 @@ public class Pyrolliger extends BHBossEntity {
     public AnimationTickers pyrolanceCooldown = AnimationTickers.create(Maths.sec(10));
     public AnimationTickers burningHexTrapCooldown = AnimationTickers.create(Maths.sec(52));
 
+    public AnimationTickers slashAndDashCooldown = AnimationTickers.create(Maths.sec(3));
     public AnimationTickers attack1Cooldown = AnimationTickers.create(Maths.sec(3));
     public AnimationTickers attack2Cooldown = AnimationTickers.create(Maths.sec(3));
     public AnimationTickers attack3Cooldown = AnimationTickers.create(Maths.sec(3));
@@ -141,8 +147,8 @@ public class Pyrolliger extends BHBossEntity {
     private static final EntityDataAccessor<Integer> ATTACK_COUNT = SynchedEntityData.defineId(Pyrolliger.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MANA = SynchedEntityData.defineId(Pyrolliger.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> MAX_MANA = SynchedEntityData.defineId(Pyrolliger.class, EntityDataSerializers.INT);
+    private static final EntityDataAccessor<Boolean> RUNNING = SynchedEntityData.defineId(Pyrolliger.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> VISIBLE_SWORD = SynchedEntityData.defineId(Pyrolliger.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> USING_ATTACK1 = SynchedEntityData.defineId(Pyrolliger.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Pyrolliger.Mode> MODE = SynchedEntityData.defineId(Pyrolliger.class, BHEntityDataSerializer.PYROLLIGER_MODE.get());
     private final BHBossInfo abilityMana = new BHBossInfo(this, Component.empty(), 3);
     public Pyrolliger(EntityType<? extends PathfinderMob> entityType, Level level) {
@@ -171,8 +177,8 @@ public class Pyrolliger extends BHBossEntity {
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(USING_ATTACK1, false);
         this.entityData.define(VISIBLE_SWORD, false);
+        this.entityData.define(RUNNING, false);
         this.entityData.define(ATTACK_COUNT, 0);
         this.entityData.define(MANA, 0);
         this.entityData.define(MAX_MANA, 100);
@@ -206,28 +212,28 @@ public class Pyrolliger extends BHBossEntity {
         return flag;
     }
 
-    public void setAttackCount(int v) {
-        this.entityData.set(ATTACK_COUNT, v);
+    public void setAttackCount(int attackCount) {
+        this.entityData.set(ATTACK_COUNT, attackCount);
     }
 
     public int getAttackCount() {
         return this.entityData.get(ATTACK_COUNT);
     }
 
-    public void setVisibleSword(boolean v) {
-        this.entityData.set(VISIBLE_SWORD, v);
+    public void setVisibleSword(boolean visibleSword) {
+        this.entityData.set(VISIBLE_SWORD, visibleSword);
     }
 
     public boolean isVisibleSword() {
         return this.entityData.get(VISIBLE_SWORD);
     }
 
-    public void setUsingAttack1(boolean v) {
-        this.entityData.set(USING_ATTACK1, v);
+    public void setRunning(boolean running) {
+        this.entityData.set(RUNNING, running);
     }
 
-    public boolean isUsingAttack1() {
-        return this.entityData.get(USING_ATTACK1);
+    public boolean isRunning() {
+        return this.entityData.get(RUNNING);
     }
 
     @Override
@@ -322,21 +328,14 @@ public class Pyrolliger extends BHBossEntity {
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 16.0F));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(1, new NaturalHealingGoal(this));
-        this.goalSelector.addGoal(2, new MobMoveGoal(this, false, 1.0F));
-//        this.goalSelector.addGoal(2, new MobAvoidTargetGoal<>(this, 8.0F, 1.2F) {
-//            @Override
-//            public boolean canUse() {
-//                boolean flag = this.entity instanceof Pyrolliger;
-//                return super.canUse() && flag && ((Pyrolliger) this.entity).getMode() == Mode.RANGED;
-//            }
-//        });
+        this.goalSelector.addGoal(6, new PyrolligerMoveGoal(this, SPRINT_SPEED_MODIFIER, WALK_SPEED_MODIFIER));
+        this.goalSelector.addGoal(1, new MobAvoidTargetGoal<>(this, 12.0F, 1.2F));
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0F, 80));
 
         this.targetSelector.addGoal(1, new SmartHurtByTargetGoal(this));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractGolem.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
-
         this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_DRACONIC_FIRELORD, ID_TRANSITION_STANCE_MELEE, 30, Maths.sec(10)) {
             @Override
             public boolean canUse() {
@@ -362,7 +361,7 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.setMode(Mode.RANGED);
             }
         });
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_DODGE, ID_ANIMATION_EMPTY, 30, Maths.sec(5)) {
+        this.goalSelector.addGoal(6, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_DODGE, ID_ANIMATION_EMPTY, 20, Maths.sec(1)) {
             @Override
             public boolean canUse() {
                 if (this.entity.isUltCanBeCast()) {
@@ -379,10 +378,10 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.dodgeCooldown.setCooldown();
             }
         });
-        this.goalSelector.addGoal(3, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_BURNING_HEX_TRAP, ID_ANIMATION_EMPTY, 30, Maths.sec(3)) {
+        this.goalSelector.addGoal(3, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_BURNING_HEX_TRAP, ID_ANIMATION_EMPTY, Maths.sec(5), Maths.sec(5)) {
             @Override
             public boolean canUse() {
-                if (!this.entity.isUltCanBeCast() && this.entity.isRanged()) {
+                if (!this.entity.isUltCanBeCast()) {
                     return super.canUse() && !this.entity.isUltCanBeCast() && this.entity.burningHexTrapCooldown.isReadyToUse();
                 } else {
                     return false;
@@ -395,7 +394,7 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.burningHexTrapCooldown.setCooldown();
             }
         });
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PYROBOLT1, ID_ANIMATION_EMPTY, 20, Maths.sec(1)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PYROBOLT1, ID_ANIMATION_EMPTY, Maths.sec(5), Maths.sec(5)) {
             @Override
             public boolean canUse() {
                 if (!this.entity.isUltCanBeCast() && this.entity.isRanged()) {
@@ -411,7 +410,7 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.pyroboltCooldown.setCooldown();
             }
         });
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PYROLANCE, ID_ANIMATION_EMPTY, 30, Maths.sec(2)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PYROLANCE, ID_ANIMATION_EMPTY, Maths.sec(5), Maths.sec(5)) {
             @Override
             public boolean canUse() {
                 if (!this.entity.isUltCanBeCast() && this.entity.isRanged()) {
@@ -428,6 +427,26 @@ public class Pyrolliger extends BHBossEntity {
             }
         });
         // Melee attacks
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_SLASH_AND_DASH, ID_ANIMATION_EMPTY, 30, Maths.sec(2)) {
+            @Override
+            public boolean canUse() {
+                if (!this.entity.isUltCanBeCast() && this.entity.isMelee()) {
+                    return super.canUse() && this.entity.slashAndDashCooldown.isReadyToUse() && this.entity.inRangeOf(7.5D);
+                }
+                return false;
+            }
+
+            @Override
+            public void start() {
+                super.start();
+            }
+
+            @Override
+            public void stop() {
+                super.stop();
+                this.entity.slashAndDashCooldown.setCooldown();
+            }
+        });
         this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_ATTACK_1, ID_ANIMATION_EMPTY, 30, Maths.sec(2)) {
             @Override
             public boolean canUse() {
@@ -439,7 +458,6 @@ public class Pyrolliger extends BHBossEntity {
 
             @Override
             public void start() {
-                this.entity.setUsingAttack1(true);
                 super.start();
             }
 
@@ -449,7 +467,6 @@ public class Pyrolliger extends BHBossEntity {
                 if (this.entity.getAttackCount() >= 3) {
                     this.entity.attack1Cooldown.setCooldown();
                     this.entity.setAttackCount(0);
-                    this.entity.setUsingAttack1(false);
                 }
             }
         });
@@ -500,9 +517,9 @@ public class Pyrolliger extends BHBossEntity {
     @Override
     public void tick() {
         super.tick();
-//        if (this.tickCount % 20 == 0) {
-//            this.addMana(1);
-//        }
+        if (this.tickCount % 20L == 0) {
+            this.addMana(1);
+        }
 
         if (this.getAnimationState(ID_TRANSITION_STANCE_MELEE)) {
             if (this.getAnimationTick() == 30) {
@@ -605,8 +622,9 @@ public class Pyrolliger extends BHBossEntity {
                 if (this.getAnimationTick() <= 60 && target != null) {
                     this.getLookControl().setLookAt(target, 30, 30);
                 }
+                int count = 10;
                 if (this.getAnimationTick() == Maths.sec(4)) {
-                    this.createLinearHexTrap(10);
+                    this.createLinearHexTrap(count);
                 }
             }
             if (this.getAnimationState(ID_DRACONIC_FIRELORD)) {
@@ -746,22 +764,13 @@ public class Pyrolliger extends BHBossEntity {
         this.level().addFreshEntity(projectile);
 
     }
-    private void createCircularHexTrap(int count) {
-        for (int i = 0; i < count; i++) {
-            float angle = i * Mth.PI / (count / 2);
-            for (int k = 0; k < 8; ++k) {
-                double d2 = 1.15D * (double) (k + 1);
-                this.createHexTrap(this.getX() + (double) Mth.cos(angle) * 1.25D * d2, this.getZ() + (double) Mth.sin(angle) * 1.25D * d2, this.getY(), this.getY() + 2);
-            }
-        }
-    }
-
     private void createLinearHexTrap(int count) {
         Vec3 rotation = this.getLookAngle().normalize();
-        var pos = this.position().add(rotation.scale(1.6));
-        double d0 = Math.min(pos.y(), this.getY());
-        double d1 = Math.min(pos.y(), this.getY()) + 1;
-        float f = (float) Mth.atan2(pos.z() - this.getZ(), pos.x() - this.getX());
+        RandomSource randoms = RandomSource.create(random.nextLong());
+        int randomNms = randoms.nextIntBetweenInclusive(-32, 32);
+        float f = (float) Mth.atan2((this.getZ() + randomNms) - this.getZ(), (this.getX() + randomNms) - this.getX());
+        double d0 = this.getY();
+        double d1 = this.getY() + 1.0D;
         for (int i = 0; i < count; ++i) {
             double d2 = 1.25 * (i + 1);
             this.createHexTrap(this.getX() + Mth.cos(f) * d2, this.getZ() + Mth.sin(f) * d2, d0, d1);
@@ -849,6 +858,9 @@ public class Pyrolliger extends BHBossEntity {
                 this.playAnimation(this.animationStanceMelee);
             }
             if (this.getAnimationState(ID_ATTACK_1)) {
+                this.playAnimation(this.animationAtk1);
+            }
+            if (this.getAnimationState(ID_SLASH_AND_DASH)) {
                 this.playAnimation(this.animationAtk1);
             }
             if (this.getAnimationState(ID_ATTACK_2)) {

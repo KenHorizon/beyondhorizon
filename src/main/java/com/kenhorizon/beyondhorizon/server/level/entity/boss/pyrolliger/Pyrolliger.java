@@ -10,8 +10,6 @@ import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.sound.DeathRayChargingSound;
 import com.kenhorizon.beyondhorizon.server.level.entity.BHBossInfo;
-import com.kenhorizon.beyondhorizon.server.level.entity.BHLibEntity;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.BlazingInfernoRayAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.BurningHexTrapAbility;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamDamageTags;
 import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamTypeFunction;
@@ -53,8 +51,6 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.animal.AbstractGolem;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
@@ -65,7 +61,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -105,7 +100,7 @@ public class Pyrolliger extends BHBossEntity {
     public static final int ID_IDLE1 = createAnimationID();
     public static final int ID_IDLE2 = createAnimationID();
     // RANGED
-    public static final int ID_PYROBOLT1 = createAnimationID();
+    public static final int ID_PYROBOLT = createAnimationID();
     public static final int ID_DRACONIC_FIRELORD = createAnimationID();
     public static final int ID_PYROLANCE = createAnimationID();
     public static final int ID_BURNING_HEX_TRAP = createAnimationID();
@@ -129,8 +124,8 @@ public class Pyrolliger extends BHBossEntity {
     // Ability Cooldowns
     public AnimationTickers dodgeCooldown = AnimationTickers.create(Maths.sec(7));
     public AnimationTickers pyroboltCooldown = AnimationTickers.create(Maths.sec(6));
-    public AnimationTickers pyrolanceCooldown = AnimationTickers.create(Maths.sec(10));
-    public AnimationTickers burningHexTrapCooldown = AnimationTickers.create(Maths.sec(52));
+    public AnimationTickers pyrolanceCooldown = AnimationTickers.create(Maths.sec(6));
+    public AnimationTickers burningHexTrapCooldown = AnimationTickers.create(Maths.sec(12));
 
     public AnimationTickers slashAndDashCooldown = AnimationTickers.create(Maths.sec(3));
     public AnimationTickers attack1Cooldown = AnimationTickers.create(Maths.sec(3));
@@ -394,7 +389,7 @@ public class Pyrolliger extends BHBossEntity {
                 this.entity.burningHexTrapCooldown.setCooldown();
             }
         });
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PYROBOLT1, ID_ANIMATION_EMPTY, Maths.sec(5), Maths.sec(5)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_PYROBOLT, ID_ANIMATION_EMPTY, Maths.sec(5), Maths.sec(5)) {
             @Override
             public boolean canUse() {
                 if (!this.entity.isUltCanBeCast() && this.entity.isRanged()) {
@@ -570,7 +565,7 @@ public class Pyrolliger extends BHBossEntity {
                 this.level().addParticle(ParticleTypes.FLAME, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
 
             }
-            if (this.getAnimationState(ID_PYROBOLT1)) {
+            if (this.getAnimationState(ID_PYROBOLT)) {
                 if (this.getAnimationTick() == 1) {
                     int particleCount = 64;
                     while (particleCount --> 0) {
@@ -610,7 +605,7 @@ public class Pyrolliger extends BHBossEntity {
                 }
                 if (target != null) lookControl.setLookAt(target, 30, 30);
             }
-            if (this.getAnimationState(ID_PYROBOLT1)) {
+            if (this.getAnimationState(ID_PYROBOLT)) {
                 if (this.getAnimationTick() <= 60 && target != null) {
                     this.getLookControl().setLookAt(target, 30, 30);
                 }
@@ -619,12 +614,9 @@ public class Pyrolliger extends BHBossEntity {
                 }
             }
             if (this.getAnimationState(ID_BURNING_HEX_TRAP)) {
-                if (this.getAnimationTick() <= 60 && target != null) {
-                    this.getLookControl().setLookAt(target, 30, 30);
-                }
                 int count = 10;
-                if (this.getAnimationTick() == Maths.sec(4)) {
-                    this.createLinearHexTrap(count);
+                if (this.getAnimationTick() >= Maths.sec(4) + count) {
+                    this.createLinearHexTrap(target);
                 }
             }
             if (this.getAnimationState(ID_DRACONIC_FIRELORD)) {
@@ -764,16 +756,22 @@ public class Pyrolliger extends BHBossEntity {
         this.level().addFreshEntity(projectile);
 
     }
-    private void createLinearHexTrap(int count) {
-        Vec3 rotation = this.getLookAngle().normalize();
+    private void createLinearHexTrap(LivingEntity target) {
+        boolean flag = target != null && target.isAlive();
+        double x = flag ? target.getX() : this.getX();
+        double z = flag ? target.getZ() : this.getZ();
         RandomSource randoms = RandomSource.create(random.nextLong());
-        int randomNms = randoms.nextIntBetweenInclusive(-32, 32);
-        float f = (float) Mth.atan2((this.getZ() + randomNms) - this.getZ(), (this.getX() + randomNms) - this.getX());
         double d0 = this.getY();
         double d1 = this.getY() + 1.0D;
-        for (int i = 0; i < count; ++i) {
-            double d2 = 1.25 * (i + 1);
-            this.createHexTrap(this.getX() + Mth.cos(f) * d2, this.getZ() + Mth.sin(f) * d2, d0, d1);
+        RandomSource random = RandomSource.create();
+        int randomNms = random.nextIntBetweenInclusive(-32, 32);
+        float f1 = (float) Mth.atan2((this.getZ() + randomNms) - this.getZ(), (this.getX() + randomNms) - this.getX());
+        for (int i = 0; i < 12; ++i) {
+            double d2 = (double) (i + 1);
+            this.createHexTrap(this.getX() + (double) Mth.cos(f1) * d2, this.getZ() + (double) Mth.sin(f1) * d2, d0, d1);
+            this.createHexTrap(this.getX() - (double) Mth.cos(f1) * d2, this.getZ() + (double) Mth.sin(f1) * d2, d0, d1);
+            this.createHexTrap(this.getX() + (double) Mth.cos(f1) * d2, this.getZ() - (double) Mth.sin(f1) * d2, d0, d1);
+            this.createHexTrap(this.getX() - (double) Mth.cos(f1) * d2, this.getZ() - (double) Mth.sin(f1) * d2, d0, d1);
         }
     }
 
@@ -802,7 +800,8 @@ public class Pyrolliger extends BHBossEntity {
         } while (blockpos.getY() >= Mth.floor(minY) - 1);
 
         if (flag) {
-            BurningHexTrapAbility.spawn(this.level(), blockpos.getX() + 0.5, (double) blockpos.getY() + d0, (double) blockpos.getZ() + 0.5, this.getAttackDamage(), this);
+            int seconds = !this.isHalfHealth() ? Maths.sec(5) : Maths.sec(10);
+            BurningHexTrapAbility.spawn(this.level(), blockpos.getX() + 0.5, (double) blockpos.getY() + d0, (double) blockpos.getZ() + 0.5, this.getAttackDamage(), seconds, this);
         }
     }
     private void shootLance(LivingEntity target, Vec3 position, int timer) {
@@ -833,7 +832,7 @@ public class Pyrolliger extends BHBossEntity {
             if (this.getAnimationState(ID_ANIMATION_EMPTY)) {
                 this.stopAnimations();
             }
-            if (this.getAnimationState(ID_PYROBOLT1)) {
+            if (this.getAnimationState(ID_PYROBOLT)) {
                 this.playAnimation(this.animationPyrobolt1);
             }
             if (this.getAnimationState(ID_PYROLANCE)) {

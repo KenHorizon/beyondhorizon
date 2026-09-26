@@ -4,17 +4,61 @@ import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
 public class RenderUtils {
 
-    private static final ResourceLocation TEXTURE = BeyondHorizon.resource("textures/entity/effect/sheet.png");
-    public static final RenderType SHEET = BHRenderTypes.beam(TEXTURE);
+    private static final ResourceLocation FILLED_TEXTURE = BeyondHorizon.resource("textures/entity/effect/sheet.png");
+    private static final ResourceLocation OUTLINE_TEXTURE = BeyondHorizon.resource("textures/entity/effect/beam.png");
+    public static final RenderType SHEET = BHRenderTypes.beam(FILLED_TEXTURE);
+    public static final RenderType OUTLINE = BHRenderTypes.beam(OUTLINE_TEXTURE);
+
+
+
+    public static void circleOutline(PoseStack poseStack, VertexConsumer vertex, float radius, int segments,
+                                     float r, float g, float b, float a) {
+        poseStack.pushPose();
+        PoseStack.Pose pose = poseStack.last();
+        Matrix4f matrix = pose.pose();
+        Matrix3f normal = pose.normal();
+        float angleStep = (float) (Math.PI * 2.0 / segments);
+        float height = 3.01F;
+        float texture = 1.0F;
+        float v1 = 0.0F;
+        float v2 = texture * 0.5F;
+        for (int i = 0; i < segments; i++) {
+            float angle1 = i * angleStep;
+            float angle2 = (i + 1) * angleStep;
+            float x1 = (float) (Math.cos(angle1) * radius);
+            float x2 = (float) (Math.cos(angle2) * radius);
+            float z1 = (float) (Math.sin(angle1) * radius);
+            float z2 = (float) (Math.sin(angle2) * radius);
+            float u1 = (float) i / segments;
+            float u2 = (float) (i + 1) / segments;
+            float normX = (x1 + x2) * 0.5F;
+            float normZ = (z1 + z2) * 0.5F;
+
+            draw(matrix, normal, vertex, x1, 0.0F, z1, u1, v2, normX, 0.0F, normZ, r, g, b, a);
+            draw(matrix, normal, vertex, x2, 0.0F, z2, u2, v2, normX, 0.0F, normZ, r, g, b, a);
+            draw(matrix, normal, vertex, x2, height, z2, u2, v1, normX, 0.0F, normZ, r, g, b, a);
+            draw(matrix, normal, vertex, x1, height, z1, u1, v1, normX, 0.0F, normZ, r, g, b, a);
+        }
+        poseStack.popPose();
+
+    }
+
+    public static void addQuads(Matrix4f matrix4f, Matrix3f matrix3f, VertexConsumer vertexConsumer,
+                                   float radius, float height, float r, float g, float b, float a) {
+        draw(matrix4f, matrix3f, vertexConsumer, -radius, height, -radius, 1, 0, 0, 1.0F ,0, r, g, b, a);
+        draw(matrix4f, matrix3f, vertexConsumer, -radius, height, radius, 0, 1, 0, 1.0F ,0, r, g, b, a);
+        draw(matrix4f, matrix3f, vertexConsumer, radius, height, radius, 1, 1, 0, 1.0F ,0, r, g, b, a);
+        draw(matrix4f, matrix3f, vertexConsumer, radius, height, -radius, 0, 0, 0, 1.0F ,0, r, g, b, a);
+    }
 
     public static void circle(PoseStack poseStack, VertexConsumer vertex, float radius, int segments,
                                      float r, float g, float b, float a) {

@@ -98,12 +98,16 @@ public class BeamRenderer {
         poseStack.translate(0D, yOffset, 0D);
         poseStack.translate(0D, 1, 0D);
         poseStack.mulPose(Axis.XP.rotationDegrees(180));
-        renderPart(poseStack, buffer.getBuffer(BHRenderTypes.beam(texture)), R, G, B, beamAlpha * 0.4f, beamHeight, -glowRadius, -glowRadius, glowRadius, -glowRadius, -beamRadius, glowRadius, glowRadius, glowRadius);
+        renderPart(poseStack, buffer.getBuffer(BHRenderTypes.beam(texture)), R, G, B, beamAlpha * 0.4f, beamHeight,
+                -glowRadius, -glowRadius, glowRadius, -glowRadius, -beamRadius, glowRadius, glowRadius, glowRadius);
         poseStack.mulPose(Axis.XP.rotationDegrees(-180));
-        renderPart(poseStack, buffer.getBuffer(BHRenderTypes.beam(texture)), R, G, B, beamAlpha * 0.4f, beamHeight, -glowRadius, -glowRadius, glowRadius, -glowRadius, -beamRadius, glowRadius, glowRadius, glowRadius);
+        renderPart(poseStack, buffer.getBuffer(BHRenderTypes.beam(texture)), R, G, B, beamAlpha * 0.4f, beamHeight,
+                -glowRadius, -glowRadius, glowRadius, -glowRadius, -beamRadius, glowRadius, glowRadius, glowRadius);
         poseStack.popPose();
     }
-    private static void renderPart(PoseStack stack, VertexConsumer builder, float red, float green, float blue, float alpha, float height, float radius_1, float radius_2, float radius_3, float radius_4, float radius_5, float radius_6, float radius_7, float radius_8) {
+    private static void renderPart(PoseStack stack, VertexConsumer builder, float red, float green, float blue, float alpha,
+                                   float height, float radius_1, float radius_2, float radius_3, float radius_4, float radius_5,
+                                   float radius_6, float radius_7, float radius_8) {
         PoseStack.Pose matrixEntry = stack.last();
         Matrix4f matrix4f = matrixEntry.pose();
         Matrix3f matrix3f = matrixEntry.normal();
@@ -113,14 +117,22 @@ public class BeamRenderer {
         renderQuad(matrix4f, matrix3f, builder, red, green, blue, alpha, height, radius_5, radius_6, radius_1, radius_2);
     }
 
-    private static void renderQuad(Matrix4f pose, Matrix3f normal, VertexConsumer builder, float red, float green, float blue, float alpha, float y, float z1, float texu1, float z, float texu) {
+    private static void renderQuad(Matrix4f pose, Matrix3f normal, VertexConsumer builder, float red, float green,
+                                   float blue, float alpha, float y, float z1, float texu1, float z, float texu) {
         addVertex(pose, normal, builder, red, green, blue, alpha, y, z1, texu1, 1f, 0f);
         addVertex(pose, normal, builder, red, green, blue, alpha, 0f, z1, texu1, 1f, 1f);
         addVertex(pose, normal, builder, red, green, blue, alpha, 0f, z, texu, 0f, 1f);
         addVertex(pose, normal, builder, red, green, blue, alpha, y, z, texu, 0f, 0f);
     }
 
-    private static void addVertex(Matrix4f pose, Matrix3f normal, VertexConsumer builder, float red, float green, float blue, float alpha, float y, float x, float z, float texu, float texv) {
-        builder.vertex(pose, x, y, z).color(red, green, blue, alpha).uv(texu, texv).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(15728880).normal(normal, 0.0F, 1.0F, 0.0F).endVertex();
+    private static void addVertex(Matrix4f pose, Matrix3f normal, VertexConsumer builder, float red, float green,
+                                  float blue, float alpha, float y, float x, float z, float texu, float texv) {
+        builder.vertex(pose, x, y, z)
+                .color(red, green, blue, alpha)
+                .uv(texu, texv)
+                .overlayCoords(OverlayTexture.NO_OVERLAY)
+                .uv2(15728880)
+                .normal(normal, 0.0F, 1.0F, 0.0F)
+                .endVertex();
     }
 }

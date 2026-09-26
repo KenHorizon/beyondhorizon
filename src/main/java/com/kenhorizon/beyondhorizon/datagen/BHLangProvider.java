@@ -82,27 +82,27 @@ public class BHLangProvider extends LanguageProvider {
         //
         Tooltips.ITEM_LORES.forEach(this::addItemLore);
         //
-        this.addEnchantmentDesc(BHEnchantments.LIFESTEAL, "Grant healing equal to percentage of the damage dealt");
-        this.addEnchantmentDesc(BHEnchantments.BUTCHERING, "Deal additional damage to animals");
         this.addEnchantmentDesc(BHEnchantments.AQUATIC_BANE, "Increased post-mitigation damage dealt by percentage to aquatic creatures");
-        this.addEnchantmentDesc(BHEnchantments.ILLAGER_BANE, "Increased post-mitigation damage dealt by percentage to illagers");
-        this.addEnchantmentDesc(BHEnchantments.VOID_BANE, "Increased post-mitigation damage dealt by percentage to enderman");
-        this.addEnchantmentDesc(BHEnchantments.DYNAMO_HIT, "Increased critical damage but reduce attack effectiviness");
         this.addEnchantmentDesc(BHEnchantments.ARMOR_PENETRATION, "Gain armor penetration");
-        this.addEnchantmentDesc(BHEnchantments.CRITICAL_HIT, "Increased critical chances");
+        this.addEnchantmentDesc(BHEnchantments.BUTCHERING, "Deal additional damage to animals");
         this.addEnchantmentDesc(BHEnchantments.CRITICAL_DAMAGE, "Increased critical strike damage");
+        this.addEnchantmentDesc(BHEnchantments.CRITICAL_HIT, "Increased critical chances");
         this.addEnchantmentDesc(BHEnchantments.DRAGON_SLAYER, "Increased damage dealt and Increased damage against to dragons");
-        this.addEnchantmentDesc(BHEnchantments.VIBRANCY, "Increased total max health");
-        this.addEnchantmentDesc(BHEnchantments.SWIFTNESS, "Increased total movement speed");
-        this.addEnchantmentDesc(BHEnchantments.SPELL_BLADE, "Convert percentage of the physical damage dealt into magic damage");
-        this.addEnchantmentDesc(BHEnchantments.ECHO, "Small chances to attack twice");
         this.addEnchantmentDesc(BHEnchantments.DRAW_SPEED, "Reduce use time while using bow");
-        this.addEnchantmentDesc(BHEnchantments.STUNNING, "Chance to stun the target");
-        this.addEnchantmentDesc(BHEnchantments.SMELTER, "Chance to auto smelt the item");
-        this.addEnchantmentDesc(BHEnchantments.SPELL_POWER, "Increase ability power");
+        this.addEnchantmentDesc(BHEnchantments.DYNAMO_HIT, "Increased critical damage but reduce attack effectiviness");
+        this.addEnchantmentDesc(BHEnchantments.ECHO, "Small chances to attack twice");
+        this.addEnchantmentDesc(BHEnchantments.HEAVY_SMASH, "Increase Smash Attack Damage");
+        this.addEnchantmentDesc(BHEnchantments.ILLAGER_BANE, "Increased post-mitigation damage dealt by percentage to illagers");
+        this.addEnchantmentDesc(BHEnchantments.LIFESTEAL, "Grant healing equal to percentage of the damage dealt");
         this.addEnchantmentDesc(BHEnchantments.MANA_COST, "Reduce the mana cost of magic item");
         this.addEnchantmentDesc(BHEnchantments.MANA_RECOVERY, "Increase mana regeneration");
-        this.addEnchantmentDesc(BHEnchantments.HEAVY_SMASH, "Increase Smash Attack Damage");
+        this.addEnchantmentDesc(BHEnchantments.SMELTER, "Chance to auto smelt the item");
+        this.addEnchantmentDesc(BHEnchantments.SPELL_BLADE, "Convert percentage of the physical damage dealt into magic damage");
+        this.addEnchantmentDesc(BHEnchantments.SPELL_POWER, "Increase ability power");
+        this.addEnchantmentDesc(BHEnchantments.STUNNING, "Chance to stun the target");
+        this.addEnchantmentDesc(BHEnchantments.SWIFTNESS, "Increased total movement speed");
+        this.addEnchantmentDesc(BHEnchantments.VIBRANCY, "Increased total max health");
+        this.addEnchantmentDesc(BHEnchantments.VOID_BANE, "Increased post-mitigation damage dealt by percentage to enderman");
          //
         this.addArmorBonusSet(ArmorAbilityRegistries.WILDFIRE.get(), "Wildfire",
                 "Chance to release a shockwave dealing %s + %s%% total of attack damage",

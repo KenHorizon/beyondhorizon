@@ -38,11 +38,12 @@ public class BurningHexTrapRenderer extends AnimatedAbilityRenderer<BurningHexTr
     @Override
     public void render(BurningHexTrapAbility entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         float radius = 0.05F * 12.85F;
-        VertexConsumer vertexConsumer1 = buffer.getBuffer(RenderUtils.SHEET);
+        VertexConsumer vertexConsumer1 = buffer.getBuffer(RenderUtils.OUTLINE);
         float scale = entity.getRadius();
         poseStack.pushPose();
         poseStack.scale(1.0F + scale, 1.0F, 1.0F + scale);
-        RenderUtils.circle(poseStack, vertexConsumer1, radius, 32, 1.0F, 0, 0, 0.30F);
+        RenderUtils.circleOutline(poseStack, vertexConsumer1, radius, 32, 1.0F, 0, 0, 0.50F);
+        RenderSystem.setShaderColor(1, 1, 1, 1.0F);
         poseStack.popPose();
         poseStack.pushPose();
         RenderSystem.disableBlend();

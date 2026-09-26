@@ -29,16 +29,18 @@ public class BurningHexTrapAbility extends AbilityEntity {
     }
 
     public static void spawn(Level level, double x, double y, double z, float damage, LivingEntity entity) {
+        spawn(level, x, y, z, damage, Maths.sec(5), entity);
+    }
+    public static void spawn(Level level, double x, double y, double z, float damage, int duration, LivingEntity entity) {
         BurningHexTrapAbility ability = new BurningHexTrapAbility(BHEntity.BURNING_HEX_TRAP.get(), level);
         ability.setBaseDamage(damage);
         ability.setCaster(entity);
         ability.setPos(x, y, z);
-        ability.setDuration(100);
+        ability.setDuration(duration);
         ability.setDelay(40);
         ability.setRadius(3.5F);
         level.addFreshEntity(ability);
     }
-
     @Override
     public void clientSide() {
         super.clientSide();
@@ -46,12 +48,14 @@ public class BurningHexTrapAbility extends AbilityEntity {
             float[] colors = Colors.getFARGB(Colors.RED);
             float[] colors1 = Colors.getFARGB(Colors.YELLOW);
             this.level().addParticle(new TrailParticleOptions(this.getDuration(), colors[0], colors[1], colors[2], colors[3], 1.0F,
-                            TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(this.getRandomX(0.5D), this.getY() + 5.0D, this.getRandomZ(0.5D))),
-                    this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+                            TrailParticles.Behavior.FADE_N_SHRINK,
+                            new Vec3(this.getRandomX(0.5D) + this.getRadius(), this.getY() + 5.0D, this.getRandomZ(0.5D)  + this.getRadius())),
+                    this.getRandomX(0.5D) + this.getRadius(), this.getY() + 5.0D, this.getRandomZ(0.5D)  + this.getRadius(), 0.0D, 0.0D, 0.0D);
 
             this.level().addParticle(new TrailParticleOptions(this.getDuration(), colors1[0], colors1[1], colors1[2], colors1[3], 1.0F,
-                            TrailParticles.Behavior.FADE_N_SHRINK, new Vec3(this.getRandomX(0.5D), this.getY() + 5.0D, this.getRandomZ(0.5D))),
-                    this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), 0.0D, 0.0D, 0.0D);
+                            TrailParticles.Behavior.FADE_N_SHRINK,
+                            new Vec3(this.getRandomX(0.5D) + this.getRadius(), this.getY() + 5.0D, this.getRandomZ(0.5D)  + this.getRadius())),
+                    this.getRandomX(0.5D) + this.getRadius(), this.getY() + 5.0D, this.getRandomZ(0.5D)  + this.getRadius(), 0.0D, 0.0D, 0.0D);
         }
     }
 

@@ -6,7 +6,7 @@ import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.client.util.ResourceUtils;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;

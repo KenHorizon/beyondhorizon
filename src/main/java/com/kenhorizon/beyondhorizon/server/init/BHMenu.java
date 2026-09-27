@@ -1,6 +1,9 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.server.inventory.menu.*;
+import com.kenhorizon.beyondhorizon.server.world.inventory.menu.AccessoryMenu;
+import com.kenhorizon.beyondhorizon.server.world.inventory.menu.QuiverMenu;
+import com.kenhorizon.beyondhorizon.server.world.inventory.menu.VoidBagMenu;
+import com.kenhorizon.beyondhorizon.server.world.inventory.menu.WorkbenchMenu;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;

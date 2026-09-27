@@ -7,9 +7,8 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.GainRand
 import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.StalkerAccessory;
 import com.kenhorizon.beyondhorizon.server.api.accessory.ability.active.SwiftnessAccessory;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
+import com.kenhorizon.beyondhorizon.server.world.level.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import com.kenhorizon.beyondhorizon.server.tags.BHEffectTags;
 import com.kenhorizon.beyondhorizon.server.util.Constant;

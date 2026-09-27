@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.sound;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;

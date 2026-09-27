@@ -3,28 +3,19 @@ package com.kenhorizon.beyondhorizon.client;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.AttributeTooltips;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items.ItemStackNameRarity;
-import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
-import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
-import com.kenhorizon.beyondhorizon.server.init.BHRarity;
-import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
+import com.kenhorizon.beyondhorizon.server.world.level.registry.BHRegistries;
 import com.mojang.datafixers.util.Either;
-import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;
 import net.minecraft.network.chat.*;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.tooltip.TooltipComponent;
 import net.minecraft.world.item.*;
 import net.minecraftforge.client.event.RenderTooltipEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.loading.FMLLoader;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +38,7 @@ public class TooltipsEventHandler {
         Tooltips.getItemLores().forEach((item, lores) -> {
             if (item == null) return;
             if (itemStack.getItem() != item.get()) return;
-            tooltip.add(1, Component.translatable(Utils.getObjectDescription(item)).withStyle(Tooltips.TOOLTIP[1]));
+            tooltip.add(1, Component.translatable(Helpers.getObjectDescription(item)).withStyle(Tooltips.TOOLTIP[1]));
         });
         if (BHConfigs.ATTRIBUTE_TOOLTIP_OVERHAUl) {
             for (int i = 0; i < tooltip.size(); i++) {
@@ -71,7 +62,7 @@ public class TooltipsEventHandler {
         List<Either<FormattedText, TooltipComponent>> elements = event.getTooltipElements();
         if (!stack.isEmpty()) {
             Rarity rarity = stack.getRarity();
-            String[] name = Utils.decompose(rarity.name(), ':');
+            String[] name = Helpers.decompose(rarity.name(), ':');
             if (Objects.equals(name[0], BeyondHorizon.ID)) {
                 if (!elements.isEmpty()) {
                     if (elements.get(0).left().isPresent()) {

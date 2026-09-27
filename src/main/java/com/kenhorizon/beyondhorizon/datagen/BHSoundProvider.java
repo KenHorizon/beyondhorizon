@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.libs.datagen.SoundDefinitionFactory;
 import net.minecraft.data.PackOutput;

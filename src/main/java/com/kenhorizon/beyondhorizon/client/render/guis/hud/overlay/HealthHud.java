@@ -1,11 +1,9 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay;
 
-import com.kenhorizon.beyondhorizon.client.render.guis.hud.HudSprites;
 import com.kenhorizon.beyondhorizon.client.render.guis.sprites.IconSmallSprites;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
-import com.kenhorizon.beyondhorizon.server.Utils;
-import net.minecraft.Util;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -30,7 +28,7 @@ public class HealthHud extends HudOverlay {
             BlitHelper.drawStrings(font, guiGraphics, absorption, abX, y, Colors.WHITE, true);
         }
         this.setProgress(Mth.clamp((float) (this.hud.health / this.hud.maxHealth), 0.0F, 1.0F));
-        String health = String.format("%s/%s", Utils.compactNumbers((long) (this.hud.maxHealth * this.getProgress())), Utils.compactNumbers((long) this.hud.maxHealth));
+        String health = String.format("%s/%s", Helpers.compactNumbers((long) (this.hud.maxHealth * this.getProgress())), Helpers.compactNumbers((long) this.hud.maxHealth));
         BlitHelper.drawIcons(guiGraphics, IconSmallSprites.HEART, x, y - 1);
         BlitHelper.drawBorderedStrings(font, guiGraphics, health,x + (5 + 9), y, Colors.GREEN);
 //        BlitHelper.drawBlit(guiGraphics, HudSprites.HUD_BAR, x, y - 5, 0, 0, 124, 16, 124, 16);

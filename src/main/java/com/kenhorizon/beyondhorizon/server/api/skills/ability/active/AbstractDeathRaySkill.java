@@ -6,9 +6,9 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.ability.ManaReplenishAc
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.AbstractDeathRayAbility;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamTypeFunction;
-import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.AbstractDeathRayAbility;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.BeamTypeFunction;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import net.minecraft.client.CameraType;
 import net.minecraft.world.InteractionHand;

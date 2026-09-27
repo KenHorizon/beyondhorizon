@@ -1,13 +1,12 @@
 package com.kenhorizon.beyondhorizon.client.render;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 
@@ -58,6 +57,21 @@ public class RenderUtils {
         draw(matrix4f, matrix3f, vertexConsumer, -radius, height, radius, 0, 1, 0, 1.0F ,0, r, g, b, a);
         draw(matrix4f, matrix3f, vertexConsumer, radius, height, radius, 1, 1, 0, 1.0F ,0, r, g, b, a);
         draw(matrix4f, matrix3f, vertexConsumer, radius, height, -radius, 0, 0, 0, 1.0F ,0, r, g, b, a);
+    }
+
+    public static void crossModel(PoseStack poseStack, VertexConsumer vertex,
+                                  float r, float g, float b, float a) {
+        poseStack.pushPose();
+        PoseStack.Pose pose = poseStack.last();
+        Matrix4f matrix = pose.pose();
+        Matrix3f normal = pose.normal();
+        draw(matrix, normal, vertex, -16, 0, -16, 1, 0, 0, 1.0F ,0, r, g, b, a);
+        draw(matrix, normal, vertex, -16, 16, 16, 0, 1, 0, 1.0F ,0, r, g, b, a);
+        poseStack.pushPose();
+        poseStack.popPose();
+        draw(matrix, normal, vertex, 16, 16, 16, 1, 1, 0, 1.0F ,0, r, g, b, a);
+        draw(matrix, normal, vertex, 16, 0, -16, 0, 0, 0, 1.0F ,0, r, g, b, a);
+        poseStack.popPose();
     }
 
     public static void circle(PoseStack poseStack, VertexConsumer vertex, float radius, int segments,

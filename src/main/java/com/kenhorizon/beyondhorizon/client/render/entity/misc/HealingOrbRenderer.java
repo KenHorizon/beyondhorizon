@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.render.entity.misc;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
-import com.kenhorizon.beyondhorizon.server.level.entity.misc.HealingOrb;
+import com.kenhorizon.beyondhorizon.server.world.entity.misc.HealingOrb;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

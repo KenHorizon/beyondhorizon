@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client;
 
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.BHBossBar;
 import com.kenhorizon.beyondhorizon.client.render.guis.BHAdvancementTab;
@@ -14,13 +14,13 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.level.entity.BHBossInfo;
-import com.kenhorizon.beyondhorizon.server.level.entity.CameraShake;
+import com.kenhorizon.beyondhorizon.server.world.entity.BHBossInfo;
+import com.kenhorizon.beyondhorizon.server.world.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import com.kenhorizon.beyondhorizon.server.init.BHEffects;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAbilitySlotSelectionPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAcessoryKeyPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.server.ServerboundAbilitySlotSelectionPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.server.ServerboundAcessoryKeyPacket;
 import com.kenhorizon.libs.client.ModelAnimationHandler;
 import com.kenhorizon.libs.client.ModelAnimations;
 import com.kenhorizon.libs.client.WeaponArmPose;

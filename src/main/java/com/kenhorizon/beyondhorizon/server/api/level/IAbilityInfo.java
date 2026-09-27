@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.level;
 
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
+import com.kenhorizon.beyondhorizon.server.world.utils.AttributeUtils;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 

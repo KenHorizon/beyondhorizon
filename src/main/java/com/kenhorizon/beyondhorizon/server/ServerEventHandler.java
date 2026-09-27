@@ -1,14 +1,15 @@
 package com.kenhorizon.beyondhorizon.server;
 
 import com.google.common.collect.Multimap;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.Fonts;
 import com.kenhorizon.beyondhorizon.server.api.skills.ISkillItems;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
-import com.kenhorizon.beyondhorizon.server.enchantment.*;
-import com.kenhorizon.beyondhorizon.server.damagesource.AdvanceDamageSource;
-import com.kenhorizon.beyondhorizon.server.damagesource.DamageTags;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerLevelSystemPacket;
-import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.AdvanceDamageSource;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.DamageTags;
+import com.kenhorizon.beyondhorizon.server.world.item.enchantment.*;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.client.ClientboundPlayerLevelSystemPacket;
+import com.kenhorizon.beyondhorizon.server.world.level.registry.BHRegistries;
 import com.kenhorizon.beyondhorizon.server.util.*;
 import com.kenhorizon.libs.server.event.MobEffectModificationEvent;
 import com.kenhorizon.beyondhorizon.client.particle.world.DamageIndicatorOptions;
@@ -24,16 +25,16 @@ import com.kenhorizon.beyondhorizon.server.capability.*;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.init.*;
-import com.kenhorizon.beyondhorizon.server.level.item.classify.ILeftClick;
-import com.kenhorizon.beyondhorizon.server.level.item.QuiverItem;
+import com.kenhorizon.beyondhorizon.server.world.item.classify.ILeftClick;
+import com.kenhorizon.beyondhorizon.server.world.item.QuiverItem;
 import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
 import com.kenhorizon.beyondhorizon.server.api.level.IDamageInfo;
-import com.kenhorizon.beyondhorizon.server.level.listeners.SpawnerBuilderListener;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryPacket;
+import com.kenhorizon.beyondhorizon.server.world.listeners.SpawnerBuilderListener;
+import com.kenhorizon.beyondhorizon.server.world.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.client.ClientboundAccessoryPacket;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundPlayerSwingArmPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.client.ClientboundPlayerDataPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.server.ServerboundPlayerSwingArmPacket;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.critereon.LocationPredicate;
@@ -347,8 +348,8 @@ public class ServerEventHandler {
             var fromStackEnchantment = EnchantmentHelper.getEnchantments(from);
             UUID uuid = ExtendedEnchantmentHelper.getSlotUuid(slotContext);
             for (var enchants : fromStackEnchantment.entrySet()) {
-                if (enchants.getKey() instanceof IAttributeEnchantment instance) {
-                    Multimap<Attribute, AttributeModifier> map = ExtendedEnchantmentHelper.getAttributeModifiers(uuid, from);
+                if (enchants.getKey() instanceof IAttributeEnchantment) {
+                    Multimap<Attribute, AttributeModifier> map = ExtendedEnchantmentHelper.getAttributeModifiers(uuid, from, enchants.getValue());
                     entity.getAttributes().removeAttributeModifiers(map);
                 }
             }
@@ -366,8 +367,8 @@ public class ServerEventHandler {
             var toStackEnchantment = EnchantmentHelper.getEnchantments(to);
             UUID uuid = ExtendedEnchantmentHelper.getSlotUuid(slotContext);
             for (var enchants : toStackEnchantment.entrySet()) {
-                if (enchants.getKey() instanceof IAttributeEnchantment instance) {
-                    Multimap<Attribute, AttributeModifier> map = ExtendedEnchantmentHelper.getAttributeModifiers(uuid, to);
+                if (enchants.getKey() instanceof IAttributeEnchantment) {
+                    Multimap<Attribute, AttributeModifier> map = ExtendedEnchantmentHelper.getAttributeModifiers(uuid, to, enchants.getValue());
                     entity.getAttributes().addTransientAttributeModifiers(map);
                 }
             }

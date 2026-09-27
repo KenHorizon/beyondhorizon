@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.hud;
 
 import com.kenhorizon.beyondhorizon.client.render.guis.sprites.IconSmallSprites;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
 import com.kenhorizon.beyondhorizon.client.enums.GameHuds;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;

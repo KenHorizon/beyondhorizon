@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import net.minecraft.world.effect.AbsoptionMobEffect;
 import org.spongepowered.asm.mixin.Mixin;

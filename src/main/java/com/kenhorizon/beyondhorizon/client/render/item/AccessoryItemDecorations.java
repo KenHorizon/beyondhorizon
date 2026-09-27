@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.client.render.item;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryActiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;

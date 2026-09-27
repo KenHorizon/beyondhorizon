@@ -1,9 +1,9 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.accessory;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundAccessoryInventoryPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundInventoryPacket;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.world.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.client.ClientboundAccessoryInventoryPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.client.ClientboundInventoryPacket;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;

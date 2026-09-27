@@ -1,25 +1,11 @@
 package com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay;
 
-import com.kenhorizon.beyondhorizon.client.api.IStackIconOverlay;
-import com.kenhorizon.beyondhorizon.client.render.guis.hud.HudSprites;
 import com.kenhorizon.beyondhorizon.client.render.guis.sprites.IconSmallSprites;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
-import com.kenhorizon.beyondhorizon.client.util.ResourceUtils;
-import com.kenhorizon.beyondhorizon.configs.BHConfigs;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
-import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryStackHandler;
-import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
-import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTagInstance;
-import com.kenhorizon.beyondhorizon.server.api.stackable_tags.StackableTags;
-import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 
 public class ArmorHud extends HudOverlay {

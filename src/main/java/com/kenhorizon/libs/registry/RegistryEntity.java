@@ -1,6 +1,6 @@
 package com.kenhorizon.libs.registry;
 
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import com.kenhorizon.beyondhorizon.datagen.BHEntityTypeTagsProvider;
 import com.kenhorizon.libs.server.ModifiedNonNullFunction;
 import com.kenhorizon.libs.server.ModifiedNonNullUnaryOperator;
@@ -34,7 +34,7 @@ public class RegistryEntity<T extends Entity> {
         for (int i = 0; i < array.length; ++i) {
             builderName.append(i == 0 ? array[i] : " " + array[i]);
         }
-        return Utils.capitalize(builderName.toString());
+        return Helpers.capitalize(builderName.toString());
     }
 
     protected <M extends EntityType<?>> void buildInternal(Builder<T> builder, RegistryObject<M> entry) {

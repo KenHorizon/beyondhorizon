@@ -1,12 +1,11 @@
 package com.kenhorizon.beyondhorizon.client.render.entity;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.FayeFlaresModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
-import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeFlares;
+import com.kenhorizon.beyondhorizon.server.world.entity.mobs.FayeFlares;
 import com.kenhorizon.libs.client.AdvanceMobRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 

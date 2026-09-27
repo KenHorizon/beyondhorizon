@@ -1,14 +1,12 @@
 package com.kenhorizon.beyondhorizon.server.api.stackable_tags;
 
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import com.kenhorizon.beyondhorizon.server.init.BHChatformatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-
-import java.util.Map;
 
 public class StackableInfo {
     private final StackableTags stackableTags;
@@ -25,7 +23,7 @@ public class StackableInfo {
     }
 
     public MutableComponent getDisplayName() {
-        return Component.literal(Utils.builderName(this.stackableTags.getName())).withStyle(BHChatformatting.EFFECTS);
+        return Component.literal(Helpers.builderName(this.stackableTags.getName())).withStyle(BHChatformatting.EFFECTS);
     }
 
     public int getStacks() {

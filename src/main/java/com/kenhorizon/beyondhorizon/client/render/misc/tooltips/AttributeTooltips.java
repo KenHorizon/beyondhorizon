@@ -2,12 +2,11 @@ package com.kenhorizon.beyondhorizon.client.render.misc.tooltips;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.util.AttributePercentage;
 import com.kenhorizon.beyondhorizon.client.util.InvertedAttributeColorFormat;
-import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
-import com.kenhorizon.beyondhorizon.server.enchantment.IAttributeEnchantment;
-import com.kenhorizon.beyondhorizon.server.enchantment.LevelValue;
+import com.kenhorizon.beyondhorizon.server.world.item.enchantment.AdvancedEnchantment;
+import com.kenhorizon.beyondhorizon.server.world.item.enchantment.IAttributeEnchantment;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
@@ -64,10 +63,10 @@ public class AttributeTooltips {
             int level = enchantmentEntry.getValue();
             if (enchantmentEntry.getKey() instanceof IAttributeEnchantment attributeEnchantment) {
                 UUID uuid = UUID.nameUUIDFromBytes(AdvancedEnchantment.ENCHANTMENT_UUID.getBytes());
-                for (Map.Entry<Attribute, AttributeModifier> entry : attributeEnchantment.getAttributeModifiers(uuid, itemStack).entries()) {
+                for (Map.Entry<Attribute, AttributeModifier> entry : attributeEnchantment.getAttributeModifiers(uuid, itemStack, level).entries()) {
                     AttributeModifier attributeModifier = entry.getValue();
                     Attribute attribute = entry.getKey();
-                    double amount = attributeEnchantment.getAttributeModifierValue(level, new LevelValue(attributeModifier.getAmount()));
+                    double amount = attributeModifier.getAmount();
                     double attributeAmount = this.getAttributeAmount(player, itemStack, attribute, amount);
                     this.makeTooltips(tooltip, attribute, attributeModifier, attributeAmount, ChatFormatting.GOLD, -1);
                 }

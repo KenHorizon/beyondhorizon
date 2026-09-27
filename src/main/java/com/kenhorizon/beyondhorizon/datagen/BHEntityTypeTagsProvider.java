@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.beyondhorizon.server.tags.BHEntityTypeTags;
 import net.minecraft.core.HolderLookup;
@@ -10,7 +10,6 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.ForgeEntityTypeTagsProvider;
 import net.minecraftforge.registries.RegistryObject;
 
 import javax.annotation.Nullable;

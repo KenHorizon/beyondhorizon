@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.render.guis;
 
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.inventory.menu.VoidBagMenu;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.world.inventory.menu.VoidBagMenu;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;

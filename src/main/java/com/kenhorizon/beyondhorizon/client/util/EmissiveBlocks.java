@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.util;
 
-import com.kenhorizon.beyondhorizon.server.level.block.BHBlockProperties;
-import com.kenhorizon.beyondhorizon.server.level.block.basin.FireBasinBlock;
-import com.kenhorizon.beyondhorizon.server.level.block.spawner.data.SpawnerState;
+import com.kenhorizon.beyondhorizon.server.world.block.BHBlockProperties;
+import com.kenhorizon.beyondhorizon.server.world.block.basin.FireBasinBlock;
+import com.kenhorizon.beyondhorizon.server.world.block.spawner.data.SpawnerState;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.Property;

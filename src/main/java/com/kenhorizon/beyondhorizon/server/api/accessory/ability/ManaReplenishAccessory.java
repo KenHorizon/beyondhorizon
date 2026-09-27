@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.level.item.RecoveryPotionItem;
+import com.kenhorizon.beyondhorizon.server.world.item.RecoveryPotionItem;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;

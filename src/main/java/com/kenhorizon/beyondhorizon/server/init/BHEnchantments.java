@@ -1,14 +1,13 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.server.enchantment.AdvancedEnchantment;
-import com.kenhorizon.beyondhorizon.server.enchantment.ExtendedDamageEnchantment;
-import com.kenhorizon.beyondhorizon.server.enchantment.SmelterEnchantment;
+import com.kenhorizon.beyondhorizon.server.world.item.enchantment.AdvancedEnchantment;
+import com.kenhorizon.beyondhorizon.server.world.item.enchantment.ExtendedDamageEnchantment;
+import com.kenhorizon.beyondhorizon.server.world.item.enchantment.SmelterEnchantment;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.enchantment.DamageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.item.enchantment.Enchantments;

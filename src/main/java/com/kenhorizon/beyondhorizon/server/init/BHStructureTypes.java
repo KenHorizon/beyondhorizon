@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.server.level.world.structures.GenericJigsawStructure;
+import com.kenhorizon.beyondhorizon.server.world.level.structures.GenericJigsawStructure;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraftforge.eventbus.api.IEventBus;

@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.api.stackable_tags;
 
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundStackableTagsPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.client.ClientboundStackableTagsPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.world.entity.LivingEntity;

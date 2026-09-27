@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
-import com.kenhorizon.beyondhorizon.server.level.utils.AttributeUtils;
+import com.kenhorizon.beyondhorizon.server.world.utils.AttributeUtils;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.ChatFormatting;

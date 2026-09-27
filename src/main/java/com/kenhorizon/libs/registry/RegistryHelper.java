@@ -1,7 +1,7 @@
 package com.kenhorizon.libs.registry;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -55,7 +55,7 @@ public class RegistryHelper {
         for (int i = 0; i < array.length; ++i) {
             splitName.append(i == 0 ? array[i] : " " + array[i]);
         }
-        RegistryLanguage.ADD_MOB_EFFECT_TRANSLATION.put(object, Utils.capitalize(splitName.toString()));
+        RegistryLanguage.ADD_MOB_EFFECT_TRANSLATION.put(object, Helpers.capitalize(splitName.toString()));
     }
 
     public static void registerAttribiuteLang(String name, RegistryObject<Attribute> attributes) {
@@ -64,7 +64,7 @@ public class RegistryHelper {
         for (int i = 0; i < array.length; ++i) {
             splitName.append(i == 0 ? array[i] : " " + array[i]);
         }
-        RegistryLanguage.ADD_ATTRIBUTE_TRANSLATION.put(attributes, Utils.capitalize(splitName.toString()));
+        RegistryLanguage.ADD_ATTRIBUTE_TRANSLATION.put(attributes, Helpers.capitalize(splitName.toString()));
     }
 
     private static void registerEnchantmentLang(String name, RegistryObject<Enchantment> object) {
@@ -73,7 +73,7 @@ public class RegistryHelper {
         for (int i = 0; i < array.length; ++i) {
             splitName.append(i == 0 ? array[i] : " " + array[i]);
         }
-        RegistryLanguage.ADD_ENCHANTMENT_TRANSLATION.put(object, Utils.capitalize(splitName.toString()));
+        RegistryLanguage.ADD_ENCHANTMENT_TRANSLATION.put(object, Helpers.capitalize(splitName.toString()));
     }
 
 //    public static <T extends Block> NonNullConsumer<? super T> casingConnectivity(BiConsumer<T, CasingConnectivity> consumer) {

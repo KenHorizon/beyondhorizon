@@ -1,9 +1,9 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.configs.Configs;
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.Accessory;
 import com.kenhorizon.beyondhorizon.server.api.armor_ability.ArmorAbility;
@@ -12,7 +12,7 @@ import com.kenhorizon.beyondhorizon.server.api.skills.Skill;
 import com.kenhorizon.beyondhorizon.server.api.skills.Skills;
 import com.kenhorizon.beyondhorizon.server.init.*;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.server.level.item.PlayerTrackerItem;
+import com.kenhorizon.beyondhorizon.server.world.item.PlayerTrackerItem;
 import com.kenhorizon.libs.registry.RegistryLanguage;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
@@ -96,9 +96,11 @@ public class BHLangProvider extends LanguageProvider {
         this.addEnchantmentDesc(BHEnchantments.LIFESTEAL, "Grant healing equal to percentage of the damage dealt");
         this.addEnchantmentDesc(BHEnchantments.MANA_COST, "Reduce the mana cost of magic item");
         this.addEnchantmentDesc(BHEnchantments.MANA_RECOVERY, "Increase mana regeneration");
+        this.addEnchantmentDesc(BHEnchantments.PHYSICAL_PROTECTION, "Reduce incoming physical damage");
         this.addEnchantmentDesc(BHEnchantments.SMELTER, "Chance to auto smelt the item");
         this.addEnchantmentDesc(BHEnchantments.SPELL_BLADE, "Convert percentage of the physical damage dealt into magic damage");
         this.addEnchantmentDesc(BHEnchantments.SPELL_POWER, "Increase ability power");
+        this.addEnchantmentDesc(BHEnchantments.SPELL_PROTECTION, "Reduce incoming magic damage");
         this.addEnchantmentDesc(BHEnchantments.STUNNING, "Chance to stun the target");
         this.addEnchantmentDesc(BHEnchantments.SWIFTNESS, "Increased total movement speed");
         this.addEnchantmentDesc(BHEnchantments.VIBRANCY, "Increased total max health");
@@ -350,7 +352,7 @@ public class BHLangProvider extends LanguageProvider {
         this.add(String.format("death.attack.%s.item", path), item);
     }
     private void addItemLore(Supplier<? extends Item> item, String desc) {
-        this.add(Utils.getObjectDescription(item), desc);
+        this.add(Helpers.getObjectDescription(item), desc);
     }
 
     private void addPotions(String effect, String name) {

@@ -1,12 +1,12 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.level.block.spawner.data.SpawnerConfigs;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.world.block.spawner.data.SpawnerConfigs;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
-import com.kenhorizon.beyondhorizon.server.level.world.BHBiomesModifier;
-import com.kenhorizon.beyondhorizon.server.level.world.BHConfiguredFeatures;
-import com.kenhorizon.beyondhorizon.server.level.world.BHPlacedFeatured;
-import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
+import com.kenhorizon.beyondhorizon.server.world.level.BHBiomesModifier;
+import com.kenhorizon.beyondhorizon.server.world.level.BHConfiguredFeatures;
+import com.kenhorizon.beyondhorizon.server.world.level.BHPlacedFeatured;
+import com.kenhorizon.beyondhorizon.server.world.level.registry.BHRegistries;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;

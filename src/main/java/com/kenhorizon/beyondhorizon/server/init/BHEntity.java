@@ -1,20 +1,21 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.server.level.entity.CameraShake;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.*;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.CleaveAbility;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.DragonicBreathAbility;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.InfernalRayAbility;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.TwilightRayAbility;
-import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.BlazingInferno;
-import com.kenhorizon.beyondhorizon.server.level.entity.boss.pyrolliger.Pyrolliger;
-import com.kenhorizon.beyondhorizon.server.level.entity.misc.HealingOrb;
-import com.kenhorizon.beyondhorizon.server.level.entity.mobs.DragonHornet;
-import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeWildfire;
-import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.InfernoShield;
-import com.kenhorizon.beyondhorizon.server.level.entity.misc.BHFallingBlocks;
-import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeFlares;
-import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.*;
+import com.kenhorizon.beyondhorizon.server.world.entity.CameraShake;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.*;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.CleaveAbility;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.DragonicBreathAbility;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.InfernalRayAbility;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.TwilightRayAbility;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.blazing_inferno.BlazingInferno;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.pyrolliger.PyroGem;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.server.world.entity.misc.HealingOrb;
+import com.kenhorizon.beyondhorizon.server.world.entity.mobs.DragonHornet;
+import com.kenhorizon.beyondhorizon.server.world.entity.mobs.FayeWildfire;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.blazing_inferno.InfernoShield;
+import com.kenhorizon.beyondhorizon.server.world.entity.misc.BHFallingBlocks;
+import com.kenhorizon.beyondhorizon.server.world.entity.mobs.FayeFlares;
+import com.kenhorizon.beyondhorizon.server.world.entity.projectiles.*;
 import com.kenhorizon.libs.registry.RegistryEntity;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.world.entity.EntityType;
@@ -41,6 +42,14 @@ public class BHEntity {
             .properties(p -> p.sized(0.6F, 1.95F))
             .properties(EntityType.Builder::fireImmune)
             .tag(Tags.EntityTypes.BOSSES)
+            .register();
+
+    public static final RegistryObject<EntityType<PyroGem>> PYRO_GEM = RegistryEntity
+            .<PyroGem>register("pyro_gem", PyroGem::new)
+            .lang("Pyro Gem")
+            .mobCategory(MobCategory.MISC)
+            .properties(p -> p.sized(0.5F, 0.5F))
+            .properties(EntityType.Builder::fireImmune)
             .register();
 
     public static final RegistryObject<EntityType<FayeFlares>> FAYE_FLARES = RegistryEntity

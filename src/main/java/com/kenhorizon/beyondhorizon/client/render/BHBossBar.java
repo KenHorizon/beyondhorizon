@@ -1,9 +1,9 @@
 package com.kenhorizon.beyondhorizon.client.render;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.HudSprites;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
-import com.kenhorizon.beyondhorizon.server.level.entity.BHBossInfo;
+import com.kenhorizon.beyondhorizon.server.world.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import com.kenhorizon.libs.registry.RegistryHelper;
 import com.mojang.blaze3d.systems.RenderSystem;

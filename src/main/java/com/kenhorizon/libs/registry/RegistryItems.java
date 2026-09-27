@@ -1,13 +1,11 @@
 package com.kenhorizon.libs.registry;
 
 import com.google.common.collect.ImmutableList;
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import com.kenhorizon.beyondhorizon.datagen.BHItemTagsProvider;
-import com.kenhorizon.libs.client.model.item.ItemModelDefinition;
 import com.kenhorizon.libs.client.model.item.ItemModels;
 import com.kenhorizon.libs.server.ModifiedNonNullFunction;
 import com.kenhorizon.libs.server.ModifiedNonNullUnaryOperator;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.util.NonNullFunction;
@@ -43,7 +41,7 @@ public class RegistryItems<T extends Item> {
         for (int i = 0; i < array.length; ++i) {
             builderName.append(i == 0 ? array[i] : " " + array[i]);
         }
-        return Utils.capitalize(builderName.toString());
+        return Helpers.capitalize(builderName.toString());
     }
 
     protected void buildInternal(Builder<T> builder) {

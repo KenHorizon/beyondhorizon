@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.inventory.menu.VoidBagMenu;
-import com.kenhorizon.beyondhorizon.server.level.item.tooltips.VoidBagTooltip;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.world.inventory.menu.VoidBagMenu;
+import com.kenhorizon.beyondhorizon.server.world.item.tooltips.VoidBagTooltip;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;

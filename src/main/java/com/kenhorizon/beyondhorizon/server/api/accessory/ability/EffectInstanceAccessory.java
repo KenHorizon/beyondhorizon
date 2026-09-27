@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
@@ -20,7 +20,7 @@ public class EffectInstanceAccessory extends AccessoryPassiveSkill {
 
     @Override
     protected MutableComponent makeTooltip(ItemStack itemStack) {
-        String effectCat = Utils.formattedWords(this.category.name());
+        String effectCat = Helpers.formattedWords(this.category.name());
         return Component.translatable(this.createId(), effectCat, Maths.format(100.0F * this.getMagnitude()));
     }
 

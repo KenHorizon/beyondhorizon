@@ -1,16 +1,16 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.particle.RingParticles;
 import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
 import com.kenhorizon.beyondhorizon.client.particle.world.RingParticleOptions;
 import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
-import com.kenhorizon.beyondhorizon.server.level.entity.CameraShake;
-import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.InfernalSpear;
-import com.kenhorizon.beyondhorizon.server.level.entity.util.ShockwaveUtils;
-import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.world.entity.CameraShake;
+import com.kenhorizon.beyondhorizon.server.world.entity.projectiles.InfernalSpear;
+import com.kenhorizon.beyondhorizon.server.world.entity.util.ShockwaveUtils;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.libs.client.WeaponAnimations;
 import net.minecraft.network.chat.Component;

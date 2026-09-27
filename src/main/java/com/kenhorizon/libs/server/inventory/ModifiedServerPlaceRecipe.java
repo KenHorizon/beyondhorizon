@@ -1,8 +1,8 @@
 package com.kenhorizon.libs.server.inventory;
 
 import com.google.common.collect.Lists;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundExtendedPlacedRecipePacket;
+import com.kenhorizon.beyondhorizon.server.world.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.client.ClientboundExtendedPlacedRecipePacket;
 import com.mojang.logging.LogUtils;
 import it.unimi.dsi.fastutil.ints.IntArrayList;
 import it.unimi.dsi.fastutil.ints.IntList;

@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
 import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
-import com.kenhorizon.beyondhorizon.server.level.item.QuiverItem;
+import com.kenhorizon.beyondhorizon.server.world.item.QuiverItem;
 import com.kenhorizon.beyondhorizon.server.util.QuiverHelper;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;

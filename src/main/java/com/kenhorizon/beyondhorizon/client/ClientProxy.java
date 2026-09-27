@@ -3,8 +3,8 @@ package com.kenhorizon.beyondhorizon.client;
 import com.google.common.collect.ImmutableList;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay.ArmorHud;
 import com.kenhorizon.beyondhorizon.client.render.guis.hud.overlay.HealthHud;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.ServerProxy;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.ServerProxy;
 import com.kenhorizon.beyondhorizon.client.keybinds.Keybinds;
 import com.kenhorizon.beyondhorizon.client.render.entity.layer.BHEntityLayer;
 import com.kenhorizon.beyondhorizon.client.render.entity.misc.HealingOrbRenderer;
@@ -29,19 +29,20 @@ import com.kenhorizon.beyondhorizon.client.render.entity.misc.BHFallingBlocksRen
 import com.kenhorizon.beyondhorizon.client.render.shaders.BakedModelShadeLayerFullbright;
 import com.kenhorizon.beyondhorizon.client.util.EmissiveBlocks;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
-import com.kenhorizon.beyondhorizon.server.level.block.spawner.data.SpawnerConfig;
-import com.kenhorizon.beyondhorizon.server.level.entity.BHBossInfo;
-import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.BlazingInferno;
-import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.InfernoShield;
-import com.kenhorizon.beyondhorizon.server.level.entity.boss.pyrolliger.Pyrolliger;
-import com.kenhorizon.beyondhorizon.server.level.entity.mobs.DragonHornet;
-import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeFlares;
-import com.kenhorizon.beyondhorizon.server.level.entity.mobs.FayeWildfire;
+import com.kenhorizon.beyondhorizon.server.world.block.spawner.data.SpawnerConfig;
+import com.kenhorizon.beyondhorizon.server.world.entity.BHBossInfo;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.blazing_inferno.BlazingInferno;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.blazing_inferno.InfernoShield;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.pyrolliger.PyroGem;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.server.world.entity.mobs.DragonHornet;
+import com.kenhorizon.beyondhorizon.server.world.entity.mobs.FayeFlares;
+import com.kenhorizon.beyondhorizon.server.world.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.init.*;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundAccessoryInventoryPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.server.ServerboundAccessoryInventoryPacket;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
+import com.kenhorizon.beyondhorizon.server.world.level.registry.BHRegistries;
 import com.kenhorizon.libs.client.data.ModelOverrides;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -158,6 +159,7 @@ public class ClientProxy extends ServerProxy {
         EntityRenderers.register(BHEntity.PYROBOLT.get(), PyroboltRenderer::new);
         EntityRenderers.register(BHEntity.MAGIC_BOLT.get(), MagicBoltRenderer::new);
         EntityRenderers.register(BHEntity.BURNING_HEX_TRAP.get(), BurningHexTrapRenderer::new);
+        EntityRenderers.register(BHEntity.PYRO_GEM.get(), PyroGemRenderer::new);
         //
         EntityRenderers.register(BHEntity.FAYE_FLARES.get(), FayeFlaresRenderer::new);
         EntityRenderers.register(BHEntity.FAYE_WILDFIRE.get(), FayeWildfireRenderer::new);
@@ -217,6 +219,7 @@ public class ClientProxy extends ServerProxy {
         event.put(BHEntity.FAYE_FLARES.get(), FayeFlares.createAttributes());
         event.put(BHEntity.BLAZING_INFERNO.get(), BlazingInferno.createAttributes());
         event.put(BHEntity.PYROLLIGER.get(), Pyrolliger.createAttributes());
+        event.put(BHEntity.PYRO_GEM.get(), PyroGem.createAttributes());
         event.put(BHEntity.INFERNO_SHIELD.get(), InfernoShield.createAttributes());
         event.put(BHEntity.DRAGON_HORNET.get(), DragonHornet.createAttributes());
     }

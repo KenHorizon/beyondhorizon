@@ -2,14 +2,12 @@ package com.kenhorizon.beyondhorizon.server.api.level_system;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.api.IAttack;
-import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundLevelSystemPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerDataPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.client.ClientboundPlayerLevelSystemPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.client.ClientboundLevelSystemPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.client.ClientboundPlayerDataPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.client.ClientboundPlayerLevelSystemPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -22,7 +20,6 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -42,7 +39,7 @@ public class LevelSystem {
         }
 
         public String getName() {
-            return Utils.capitalize(this.name().toLowerCase(Locale.ROOT));
+            return Helpers.capitalize(this.name().toLowerCase(Locale.ROOT));
         }
     }
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();

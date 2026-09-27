@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.server.level.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.network.syncher.EntityDataSerializer;
 import net.minecraftforge.eventbus.api.IEventBus;

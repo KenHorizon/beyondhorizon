@@ -1,10 +1,10 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.damagesource.AdvanceDamageSource;
-import com.kenhorizon.beyondhorizon.server.damagesource.BurnDamageSource;
-import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
-import com.kenhorizon.beyondhorizon.server.damagesource.DamageTags;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.AdvanceDamageSource;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.BurnDamageSource;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.DamageTags;
 import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.registries.Registries;

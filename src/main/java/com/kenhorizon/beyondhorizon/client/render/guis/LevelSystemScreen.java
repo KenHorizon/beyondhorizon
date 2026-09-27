@@ -1,14 +1,14 @@
 package com.kenhorizon.beyondhorizon.client.render.guis;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.util.BlitHelper;
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
 import com.kenhorizon.beyondhorizon.server.api.level_system.LevelSystem;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
-import com.kenhorizon.beyondhorizon.server.network.NetworkHandler;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundConsumePointsPacket;
-import com.kenhorizon.beyondhorizon.server.network.packet.server.ServerboundSkillPointsPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.NetworkHandler;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.server.ServerboundConsumePointsPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.server.ServerboundSkillPointsPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.blaze3d.systems.RenderSystem;

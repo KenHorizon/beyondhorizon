@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.api.accessory;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
 import com.kenhorizon.beyondhorizon.server.api.level.IAbilityInfo;
@@ -8,8 +8,8 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.api.IAttack;
 import com.kenhorizon.beyondhorizon.server.api.IEntityProperties;
 import com.kenhorizon.beyondhorizon.server.init.BHChatformatting;
-import com.kenhorizon.beyondhorizon.server.level.item.ItemAbilityType;
-import com.kenhorizon.beyondhorizon.server.level.item.ManaCostType;
+import com.kenhorizon.beyondhorizon.server.world.item.ItemAbilityType;
+import com.kenhorizon.beyondhorizon.server.world.item.ManaCostType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.CommonComponents;

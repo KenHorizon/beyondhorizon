@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.client.render.misc.tooltips.items;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.capability.QuiverItemStackHandler;
-import com.kenhorizon.beyondhorizon.server.level.item.tooltips.QuiverTooltip;
+import com.kenhorizon.beyondhorizon.server.world.item.tooltips.QuiverTooltip;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent;

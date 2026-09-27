@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponActiveSkills;
-import com.kenhorizon.beyondhorizon.server.level.entity.projectiles.MagicBolt;
+import com.kenhorizon.beyondhorizon.server.world.entity.projectiles.MagicBolt;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.libs.client.WeaponAnimations;

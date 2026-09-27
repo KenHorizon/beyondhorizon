@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.google.common.collect.Sets;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collections;

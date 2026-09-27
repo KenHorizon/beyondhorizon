@@ -1,0 +1,75 @@
+package com.kenhorizon.beyondhorizon.server.world.entity.ability;
+
+import com.kenhorizon.beyondhorizon.client.particle.TrailParticles;
+import com.kenhorizon.beyondhorizon.client.particle.world.TrailParticleOptions;
+import com.kenhorizon.beyondhorizon.client.render.util.Colors;
+import com.kenhorizon.beyondhorizon.server.init.BHEffects;
+import com.kenhorizon.beyondhorizon.server.init.BHEntity;
+import com.kenhorizon.beyondhorizon.server.util.Maths;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+
+public class BurningHexTrapAbility extends AbilityEntity {
+    public BurningHexTrapAbility(EntityType<? extends AbilityEntity> entityType, Level level) {
+        super(entityType, level);
+        this.setDuration(100);
+        this.setDelay(40);
+        this.setRadius(2.0F);
+    }
+
+    public static void spawn(Level level, double x, double y, double z, float damage, LivingEntity entity) {
+        spawn(level, x, y, z, damage, Maths.sec(5), entity);
+    }
+    public static void spawn(Level level, double x, double y, double z, float damage, int duration, LivingEntity entity) {
+        BurningHexTrapAbility ability = new BurningHexTrapAbility(BHEntity.BURNING_HEX_TRAP.get(), level);
+        ability.setBaseDamage(damage);
+        ability.setCaster(entity);
+        ability.setPos(x, y, z);
+        ability.setDuration(duration);
+        ability.setDelay(40);
+        ability.setRadius(2.0F);
+        level.addFreshEntity(ability);
+    }
+    @Override
+    public void clientSide() {
+        super.clientSide();
+        if (this.tickCount % 5 == 0) {
+            float[] colors = Colors.getFARGB(Colors.RED);
+            float[] colors1 = Colors.getFARGB(Colors.YELLOW);
+            this.level().addParticle(new TrailParticleOptions(this.getDuration(), colors[0], colors[1], colors[2], colors[3], 1.0F,
+                            TrailParticles.Behavior.FADE_N_SHRINK,
+                            new Vec3(this.getRandomX(0.5D) + this.getRadius(), this.getY() + 5.0D, this.getRandomZ(0.5D)  + this.getRadius())),
+                    this.getRandomX(0.5D) + this.getRadius(), this.getY() + 5.0D, this.getRandomZ(0.5D)  + this.getRadius(), 0.0D, 0.0D, 0.0D);
+
+            this.level().addParticle(new TrailParticleOptions(this.getDuration(), colors1[0], colors1[1], colors1[2], colors1[3], 1.0F,
+                            TrailParticles.Behavior.FADE_N_SHRINK,
+                            new Vec3(this.getRandomX(0.5D) + this.getRadius(), this.getY() + 5.0D, this.getRandomZ(0.5D)  + this.getRadius())),
+                    this.getRandomX(0.5D) + this.getRadius(), this.getY() + 5.0D, this.getRandomZ(0.5D)  + this.getRadius(), 0.0D, 0.0D, 0.0D);
+        }
+    }
+
+    @Override
+    protected void onDuration() {
+        if (!this.level().isClientSide()) {
+            if (this.getLifeTime() % 10 == 0) {
+                this.checkEntityHit();
+            }
+        }
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult hitResult) {
+        var afflicted = hitResult.getEntity();
+        if (afflicted instanceof LivingEntity entity) {
+            if (entity != this.getCaster()) {
+                if (this.getDamageType().dealDamage(entity, this.getCaster(), this.getBaseDamage(), true)) {
+                    entity.addEffect(new MobEffectInstance(BHEffects.BURNING_HEX.get(), Maths.sec(5)));
+                }
+            }
+        }
+    }
+}

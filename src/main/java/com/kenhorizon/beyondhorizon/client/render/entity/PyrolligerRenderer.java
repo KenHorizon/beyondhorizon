@@ -1,13 +1,15 @@
 package com.kenhorizon.beyondhorizon.client.render.entity;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.entity.PyrolligerModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
-import com.kenhorizon.beyondhorizon.server.level.entity.boss.blazing_inferno.BlazingInferno;
-import com.kenhorizon.beyondhorizon.server.level.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.client.render.RenderUtils;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.libs.client.AdvanceMobRenderer;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 
@@ -21,6 +23,18 @@ public class PyrolligerRenderer extends AdvanceMobRenderer<Pyrolliger, Pyrollige
     @Override
     protected int getBlockLightLevel(Pyrolliger entity, BlockPos blockPos) {
         return entity.isOnFire() ? 15 : 0;
+    }
+
+    @Override
+    public void render(Pyrolliger entity, float yaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
+        super.render(entity, yaw, partialTicks, poseStack, buffer, packedLight);
+        if (entity.isSecondPhase()) {
+            poseStack.pushPose();
+            float rotation = (float) entity.tickCount + partialTicks;
+            poseStack.mulPose(Axis.YP.rotationDegrees(rotation * 2.25F - 180.0F));
+            RenderUtils.circleOutline(poseStack, buffer.getBuffer(RenderUtils.OUTLINE), 1, 32, 1.0F, 0, 0, 1.0F);
+            poseStack.popPose();
+        }
     }
 
     @Override

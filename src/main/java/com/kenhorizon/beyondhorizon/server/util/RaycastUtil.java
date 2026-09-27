@@ -25,18 +25,18 @@ import java.util.Random;
 import java.util.UUID;
 
 public class RaycastUtil {
-    public static Entity getEntityLookedAt(Entity entity) {
-        return getEntityLookedAt(entity, 32);
+    public static Entity getEntityLookedAt(Entity holder) {
+        return getEntityLookedAt(holder, 32);
     }
 
-    public static Entity getEntityLookedAt(Entity entity, double radius) {
+    public static Entity getEntityLookedAt(Entity holder, double radius) {
         Entity foundEntity = null;
-        HitResult pos = raycast(entity, radius);
-        Vec3 positionVector = entity.getEyePosition();
+        HitResult pos = raycast(holder, radius);
+        Vec3 positionVector = holder.getEyePosition();
         double distance = pos.getLocation().distanceTo(positionVector);
-        Vec3 lookVector = entity.getLookAngle();
+        Vec3 lookVector = holder.getLookAngle();
         Vec3 reachVector = positionVector.add(lookVector.x * radius, lookVector.y * radius, lookVector.z * radius);
-        List<Entity> entitiesInBoundingBox = entity.level().getEntities(entity, entity.getBoundingBox().inflate(lookVector.x * radius, lookVector.y * radius, lookVector.z * radius).expandTowards(1F, 1F, 1F));
+        List<Entity> entitiesInBoundingBox = holder.level().getEntities(holder, holder.getBoundingBox().inflate(lookVector.x * radius, lookVector.y * radius, lookVector.z * radius).expandTowards(1F, 1F, 1F));
         double minDistance = distance;
 
         for (Entity entityInBoundingBox : entitiesInBoundingBox) {

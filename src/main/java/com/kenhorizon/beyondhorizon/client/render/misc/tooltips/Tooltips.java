@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.client.render.misc.tooltips;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

@@ -1,11 +1,11 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability.active;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.Utils;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.TwilightRayAbility;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.beam.BeamTypeFunction;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.TwilightRayAbility;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
-import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -32,7 +32,7 @@ public class TwilightRaySkill extends AbstractDeathRaySkill {
         Player player = BeyondHorizon.PROXY.clientPlayer();
         double bonusAp = this.getScaleBonus(player, BHAttributes.ABILITY_POWER.get(), this.APScale);
         double bonusAd = this.getScaleBonus(player, Attributes.ATTACK_DAMAGE, this.ADScale);
-        list.add(Component.translatable(createId(0), Maths.format(bonusAd + bonusAp), Utils.formattedWords(this.types.name())));
+        list.add(Component.translatable(createId(0), Maths.format(bonusAd + bonusAp), Helpers.formattedWords(this.types.name())));
         return list;
     }
 

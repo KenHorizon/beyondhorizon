@@ -1,8 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
 import com.kenhorizon.beyondhorizon.client.render.util.Colors;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import net.minecraft.ChatFormatting;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.Rarity;
 

@@ -2,9 +2,9 @@ package com.kenhorizon.beyondhorizon.server.api.accessory.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryPassiveSkill;
 import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
-import com.kenhorizon.beyondhorizon.server.level.entity.util.EntityData;
+import com.kenhorizon.beyondhorizon.server.world.entity.util.EntityData;
 import com.kenhorizon.beyondhorizon.server.api.level.ICombatData;
-import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.core.particles.ParticleTypes;

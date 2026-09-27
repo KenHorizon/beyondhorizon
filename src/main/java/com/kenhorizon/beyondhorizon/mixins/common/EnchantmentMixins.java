@@ -1,6 +1,7 @@
 package com.kenhorizon.beyondhorizon.mixins.common;
 
-import com.kenhorizon.beyondhorizon.server.enchantment.*;
+import com.kenhorizon.beyondhorizon.server.world.item.enchantment.IAdditionalEnchantment;
+import com.kenhorizon.beyondhorizon.server.world.item.enchantment.IAttributeEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;

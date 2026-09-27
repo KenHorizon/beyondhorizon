@@ -1,8 +1,8 @@
 package com.kenhorizon.beyondhorizon.server.api.skills.ability;
 
 import com.kenhorizon.beyondhorizon.server.api.skills.WeaponPassiveSkills;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.CleaveConeAbility;
-import com.kenhorizon.beyondhorizon.server.damagesource.DamageInfoTypes;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.CleaveConeAbility;
+import com.kenhorizon.beyondhorizon.server.world.level.damagesource.DamageInfoTypes;
 import com.kenhorizon.beyondhorizon.server.util.DamageContext;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import net.minecraft.network.chat.Component;

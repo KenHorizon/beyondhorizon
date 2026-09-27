@@ -1,9 +1,9 @@
 package com.kenhorizon.libs.registry;
 
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import com.kenhorizon.beyondhorizon.datagen.BHBlockTagsProvider;
 import com.kenhorizon.beyondhorizon.datagen.BHLootTableProvider;
-import com.kenhorizon.beyondhorizon.server.level.item.BasicBlockItem;
+import com.kenhorizon.beyondhorizon.server.world.item.BasicBlockItem;
 import com.kenhorizon.libs.server.ModifiedNonNullFunction;
 import com.kenhorizon.libs.server.ModifiedNonNullUnaryOperator;
 import net.minecraft.core.Direction;
@@ -49,7 +49,7 @@ public class RegistryBlocks<T extends Block> {
         for (int i = 0; i < array.length; ++i) {
             builderName.append(i == 0 ? array[i] : " " + array[i]);
         }
-        return Utils.capitalize(builderName.toString());
+        return Helpers.capitalize(builderName.toString());
     }
 
 

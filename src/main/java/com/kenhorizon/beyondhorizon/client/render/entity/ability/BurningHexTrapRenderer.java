@@ -3,15 +3,13 @@ package com.kenhorizon.beyondhorizon.client.render.entity.ability;
 import com.kenhorizon.beyondhorizon.client.render.AnimatedAbilityRenderer;
 import com.kenhorizon.beyondhorizon.client.render.BHRenderTypes;
 import com.kenhorizon.beyondhorizon.client.render.RenderUtils;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.level.entity.ability.BurningHexTrapAbility;
+import com.kenhorizon.beyondhorizon.server.world.entity.ability.BurningHexTrapAbility;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.BlockPos;
 
@@ -45,19 +43,21 @@ public class BurningHexTrapRenderer extends AnimatedAbilityRenderer<BurningHexTr
         RenderUtils.circleOutline(poseStack, vertexConsumer1, radius, 32, 1.0F, 0, 0, 0.50F);
         RenderSystem.setShaderColor(1, 1, 1, 1.0F);
         poseStack.popPose();
-        poseStack.pushPose();
-        RenderSystem.disableBlend();
-        float rotation = (float) entity.tickCount + partialTicks;
-        poseStack.mulPose(Axis.YP.rotationDegrees(rotation * 2.25F - 90.0F));
-        RenderSystem.setShader(GameRenderer::getRendertypeEntityTranslucentShader);
-        float factor = ((float) entity.getLifeTime() / (entity.getDuration()));
-        poseStack.scale(1.0F + scale, 1.0F, 1.0F + scale);
-        RenderSystem.setShaderColor(1, 1, 1, 1.0F - factor);
-        poseStack.mulPose(Axis.YP.rotationDegrees(90.0F - entity.getYRot()));
-        poseStack.translate(0.0D, -0.95D, 0.0D);
-        VertexConsumer vertexConsumer = buffer.getBuffer(BHRenderTypes.glowing(this.getTexture()));
-        renderParts(poseStack, vertexConsumer, radius, height, alpha, minTextureX, maxTextureX, minTextureY, maxTextureY, packedLight);
-        poseStack.popPose();
-        RenderSystem.setShaderColor(1, 1, 1, 1.0F);
+        if (entity.getDelay() <= 0) {
+            poseStack.pushPose();
+            RenderSystem.disableBlend();
+            float rotation = (float) entity.tickCount + partialTicks;
+            poseStack.mulPose(Axis.YP.rotationDegrees(rotation * 2.25F - 90.0F));
+            RenderSystem.setShader(GameRenderer::getRendertypeEntityTranslucentShader);
+            float factor = ((float) entity.getLifeTime() / (entity.getDuration()));
+            poseStack.scale(1.0F + scale, 1.0F, 1.0F + scale);
+            RenderSystem.setShaderColor(1, 1, 1, 1.0F - factor);
+            poseStack.mulPose(Axis.YP.rotationDegrees(90.0F - entity.getYRot()));
+            poseStack.translate(0.0D, -0.95D, 0.0D);
+            VertexConsumer vertexConsumer = buffer.getBuffer(BHRenderTypes.glowing(this.getTexture()));
+            renderParts(poseStack, vertexConsumer, radius, height, alpha, minTextureX, maxTextureX, minTextureY, maxTextureY, packedLight);
+            poseStack.popPose();
+            RenderSystem.setShaderColor(1, 1, 1, 1.0F);
+        }
     }
 }

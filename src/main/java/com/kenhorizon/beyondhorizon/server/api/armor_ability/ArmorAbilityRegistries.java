@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.armor_ability;
 
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
-import com.kenhorizon.beyondhorizon.server.registry.BHRegistries;
+import com.kenhorizon.beyondhorizon.server.world.level.registry.BHRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.RegistryObject;

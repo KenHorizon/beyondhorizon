@@ -1,9 +1,9 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.init.BHItems;
-import com.kenhorizon.beyondhorizon.server.level.item.util.IconUtils;
+import com.kenhorizon.beyondhorizon.server.world.item.util.IconUtils;
 import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;

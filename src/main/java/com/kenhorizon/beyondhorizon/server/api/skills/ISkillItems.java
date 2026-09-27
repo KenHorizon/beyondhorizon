@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.api.skills;
 
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
@@ -43,11 +43,11 @@ public interface ISkillItems {
         for (int i = 0; i < this.getSkills().size(); i++) {
             Skill skill = this.getSkills().stream().toList().get(i);
             if (skill.isPassive()) {
-                skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+                skill.addTooltip(itemStack, tooltip, size, Helpers.isShiftPressed(), i == 0);
             }
             if (this.getActiveSkill(itemStack).isPresent()) {
                 if (skill.isActive() && skill == this.getActiveSkill(itemStack).get()) {
-                    skill.addTooltip(itemStack, tooltip, size, Utils.isShiftPressed(), i == 0);
+                    skill.addTooltip(itemStack, tooltip, size, Helpers.isShiftPressed(), i == 0);
                 }
             }
             if (!skill.getAttributeModifiers().isEmpty() && i == (this.getSkills().size() - 1)) {

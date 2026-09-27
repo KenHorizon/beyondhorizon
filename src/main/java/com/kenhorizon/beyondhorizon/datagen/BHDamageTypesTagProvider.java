@@ -1,5 +1,5 @@
 package com.kenhorizon.beyondhorizon.datagen;
-import com.kenhorizon.beyondhorizon.server.BeyondHorizon;
+import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.server.init.BHDamageTypes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.core.HolderLookup;

@@ -2,7 +2,7 @@ package com.kenhorizon.beyondhorizon.mixins.common;
 
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.libs.server.event.MobEffectModificationEvent;
-import com.kenhorizon.beyondhorizon.server.level.entity.util.IBHDataEntity;
+import com.kenhorizon.beyondhorizon.server.world.entity.util.IBHDataEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHAttributes;
 import com.kenhorizon.beyondhorizon.server.tags.BHDamageTypeTags;
 import net.minecraft.core.Holder;

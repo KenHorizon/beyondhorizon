@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.client.model.entity;
 
 import com.kenhorizon.beyondhorizon.client.model.animation.PyrolligerAnim;
-import com.kenhorizon.beyondhorizon.server.level.entity.boss.pyrolliger.Pyrolliger;
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.pyrolliger.Pyrolliger;
 import com.kenhorizon.libs.client.model.entity.AdvanceEntityModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
@@ -65,17 +65,17 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
 
         PartDefinition nose = head.addOrReplaceChild("nose", CubeListBuilder.create().texOffs(60, 18).addBox(-1.0F, -1.0F, -2.0F, 2.0F, 4.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -2.0F, -4.0F));
 
-        PartDefinition leftArm = body.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(22, 58).mirror().addBox(-1.0F, -1.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(5.0F, -11.0F, 0.0F));
+        PartDefinition leftArm = body.addOrReplaceChild("leftArm", CubeListBuilder.create().texOffs(22, 58).mirror().addBox(-1.0F, -1.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(5.0F, -11.0F, 0.0F));
 
-        PartDefinition leftArmBone = leftArm.addOrReplaceChild("leftArmBone", CubeListBuilder.create().texOffs(56, 40).mirror().addBox(-2.0F, 0.0F, -4.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(1.0F, 5.0F, 2.0F));
+        PartDefinition leftArmBone = leftArm.addOrReplaceChild("leftArmBone", CubeListBuilder.create().texOffs(56, 40).mirror().addBox(-1.25F, -0.45F, -1.475F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)).mirror(false), PartPose.offset(0.25F, 5.45F, -0.525F));
 
-        PartDefinition rightArm = body.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(22, 58).addBox(-3.0F, -1.0F, -2.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-5.0F, -11.0F, 0.0F));
+        PartDefinition rightArm = body.addOrReplaceChild("rightArm", CubeListBuilder.create().texOffs(22, 58).addBox(-3.0F, -1.0F, -2.0F, 4.0F, 7.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-5.0F, -11.0F, 0.0F));
 
-        PartDefinition rightArmBone = rightArm.addOrReplaceChild("rightArmBone", CubeListBuilder.create().texOffs(56, 40).addBox(-2.0F, -0.15F, -4.0F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.0F, 5.15F, 2.0F));
+        PartDefinition rightArmBone = rightArm.addOrReplaceChild("rightArmBone", CubeListBuilder.create().texOffs(56, 40).addBox(-2.75F, -0.3926F, -2.5069F, 4.0F, 6.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-0.25F, 5.45F, 0.525F));
 
         PartDefinition sword = rightArmBone.addOrReplaceChild("sword", CubeListBuilder.create().texOffs(0, 48).addBox(-0.5F, -1.0022F, -8.3293F, 1.0F, 2.0F, 10.0F, new CubeDeformation(0.0F))
                 .texOffs(0, 0).addBox(-0.5F, -2.0022F, -28.3293F, 1.0F, 4.0F, 18.0F, new CubeDeformation(0.0F))
-                .texOffs(22, 48).addBox(-0.5F, -4.0022F, -10.3293F, 1.0F, 8.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, 3.5515F, 2.783F));
+                .texOffs(22, 48).addBox(-0.5F, -4.0022F, -10.3293F, 1.0F, 8.0F, 2.0F, new CubeDeformation(0.0F)), PartPose.offset(-0.75F, 3.3089F, 4.2761F));
 
         PartDefinition cube_r1 = sword.addOrReplaceChild("cube_r1", CubeListBuilder.create().texOffs(12, 60).addBox(-1.0F, -2.0F, -1.0F, 2.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -0.0022F, -10.3293F, -0.7854F, 0.0F, 0.0F));
 
@@ -138,6 +138,7 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
         this.animate(entity.animationAtk3, PyrolligerAnim.ATTACK3, ageInTicks);
         this.animate(entity.animationDeath1, PyrolligerAnim.DEATH_MELEE, ageInTicks);
         this.animate(entity.animationDeath2, PyrolligerAnim.DEATH_RANGED, ageInTicks);
+        this.animate(entity.animationSecondPhase, PyrolligerAnim.DEATH_RANGED, ageInTicks);
     }
 
     @Override

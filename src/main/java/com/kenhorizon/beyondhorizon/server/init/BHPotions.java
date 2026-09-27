@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.datagen.BHLangProvider;
-import com.kenhorizon.beyondhorizon.server.Utils;
+import com.kenhorizon.beyondhorizon.server.util.Helpers;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import com.kenhorizon.libs.registry.RegistryLanguage;
@@ -42,19 +41,19 @@ public class BHPotions {
 
 
     private static <T extends Potion> RegistryObject<Potion> potion(String name, Supplier<T> supplier) {
-        RegistryLanguage.ADD_POTION_TRANSLATION.put(name, Utils.builderName(name));
+        RegistryLanguage.ADD_POTION_TRANSLATION.put(name, Helpers.builderName(name));
         return RegistryEntries.POTIONS.register(name, supplier);
     }
 
     private static <T extends Potion> RegistryObject<Potion> potionLong(String name, Supplier<T> supplier) {
         String registryName = "long_" + name;
-        RegistryLanguage.ADD_POTION_TRANSLATION.put(name, Utils.builderName(name));
+        RegistryLanguage.ADD_POTION_TRANSLATION.put(name, Helpers.builderName(name));
         return RegistryEntries.POTIONS.register(registryName, supplier);
     }
 
     private static <T extends Potion> RegistryObject<Potion> potionStrong(String name, Supplier<T> supplier) {
         String registryName = "strong_" + name;
-        RegistryLanguage.ADD_POTION_TRANSLATION.put(registryName, Utils.builderName(name));
+        RegistryLanguage.ADD_POTION_TRANSLATION.put(registryName, Helpers.builderName(name));
         return RegistryEntries.POTIONS.register(registryName, supplier);
     }
 

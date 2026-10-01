@@ -10,6 +10,7 @@ import com.kenhorizon.beyondhorizon.server.world.entity.ILinkedEntity;
 import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.BeamDamageTags;
 import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.BeamTypeFunction;
 import com.kenhorizon.beyondhorizon.server.world.entity.ability.beam.InfernalRayAbility;
+import com.kenhorizon.beyondhorizon.server.world.entity.ai.CopyOwnerTargetGoal;
 import com.kenhorizon.beyondhorizon.server.world.entity.ai.MobAttackGoal;
 import com.kenhorizon.beyondhorizon.server.world.entity.boss.blazing_inferno.BlazingInferno;
 import com.kenhorizon.beyondhorizon.server.world.entity.projectiles.BlazingRod;
@@ -17,6 +18,7 @@ import com.kenhorizon.beyondhorizon.server.world.entity.util.AnimationTickers;
 import com.kenhorizon.beyondhorizon.server.world.entity.util.EntityUtils;
 import com.kenhorizon.beyondhorizon.server.world.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.world.network.packet.server.ServerboundAbilityEffectPacket;
+import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -74,7 +76,7 @@ public class PyroGem extends BHLibEntity implements ILinkedEntity {
     public PyroGem(Level level, LivingEntity caster) {
         super(BHEntity.PYRO_GEM.get(), level);
         this.setOwner(caster);
-        this.setPos(caster.getX(), caster.getY(), caster.getZ());
+        this.setPos(caster.getX(), caster.getY() + 2.0D, caster.getZ());
     }
 
     public static AttributeSupplier createAttributes() {
@@ -85,11 +87,12 @@ public class PyroGem extends BHLibEntity implements ILinkedEntity {
 
     @Override
     protected void registerGoals() {
+        this.goalSelector.addGoal(3, new CopyOwnerTargetGoal<>(this));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractGolem.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, AbstractVillager.class, true));
 
-        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_ATTACK, ID_ANIMATION_EMPTY, 30, Maths.sec(3)) {
+        this.goalSelector.addGoal(1, new MobAttackGoal<>(this, ID_ANIMATION_EMPTY, ID_ATTACK, ID_ANIMATION_EMPTY,  Maths.sec(3), Maths.sec(3)) {
             @Override
             public boolean canUse() {
                 return super.canUse() && this.entity.attackCooldown.isReadyToUse();
@@ -135,7 +138,7 @@ public class PyroGem extends BHLibEntity implements ILinkedEntity {
                 }
                 if (this.entity.getAnimationTick() >= 2) {
                     if (target != null) {
-                        this.entity.getLookControl().setLookAt(target.getX(),target.getY() + target.getBbHeight() / 2, target.getZ(), 1.0F, 5.0F);
+                        this.entity.getLookControl().setLookAt(target.getX(),target.getY() + target.getBbHeight() / 2, target.getZ(), 2.0F, 15.0F);
                     }
                 }
             }
@@ -218,57 +221,48 @@ public class PyroGem extends BHLibEntity implements ILinkedEntity {
         super.tick();
         attackCooldown.cooldownTick();
         specialAttackCooldown.cooldownTick();
-        super.tick();
         this.reapplyPosition();
-        LivingEntity owner;
+        LivingEntity owner = this.getUsingEntity();
         if (this.getUsingEntity() == null) {
             owner = this.getOwner();
-        } else {
-            owner = this.getUsingEntity();
         }
         if (owner != null && !owner.isAlive()) this.discard();
         if (owner != null) {
-            if (this.level().isClientSide()) {
-                for (int i = 0; i < 2; i++) {
-                    this.level().addParticle(new TrailParticleOptions(20, 1.0F, 0.0F, 0.0F, 1.0F, 1.0F, TrailParticles.Behavior.SHRINK, owner.position().add(0, owner.getBbHeight() * 0.5D, 0)), this.getRandomX(0.25D), this.getY() + (this.getBbHeight() / 2), this.getRandomZ(0.25D), 0, 0, 0);
-                }
-            }
-            Entity entity = this.getEntityId() == -1 ? null : level().getEntity(this.getEntityId());
-            if (owner instanceof PathfinderMob mob) {
-                if (mob.getTarget() != null) {
-                    this.setTarget(mob.getTarget());
-                }
-            }
             if (owner.deathTime > 0) {
                 this.kill();
             }
-            this.pyroGemTicks(entity != null ? entity : owner);
-        }
-    }
+            if (this.level().isClientSide()) {
+                Vec3 pos = owner.position()
+                        .add(owner.getDeltaMovement().scale(0.10F))
+                        .add(0, owner.getBbHeight() * 0.5D, 0);
 
-    @Override
-    public void onStartAnimation() {
-        LivingEntity owner;
-        if (this.getUsingEntity() == null) {
-            owner = this.getOwner();
-        } else {
-            owner = this.getUsingEntity();
-        }
-        if (owner != null) {
-
-            Entity entity = this.getEntityId() == -1 ? null : level().getEntity(this.getEntityId());
-            if (this.getAnimationState(ID_ATTACK)) {
-                for (int i = 0; i < 3 ;i++) {
-                    this.shoot(owner, 1.0F, 1.54F);
+                for (int i = 0; i < 2; i++) {
+                    this.level().addParticle(new TrailParticleOptions(10, 1.0F, 0.0F, 0.0F, 1.0F, 1.0F,
+                            TrailParticles.Behavior.SHRINK,
+                                    pos),
+                            this.getRandomX(0.25D), this.getY() + (this.getBbHeight() / 2), this.getRandomZ(0.25D),
+                            0, 0, 0);
+                }
+            } else {
+                Entity entity = this.getEntityId() == -1 ? null : level().getEntity(this.getEntityId());
+                this.pyroGemTicks(entity != null ? entity : owner);
+                if (!this.level().isClientSide()) {
+                    if (this.getAnimationState(ID_ATTACK)) {
+                        if (this.getAnimationTick() == Maths.sec(2)) {
+                            for (int i = 0; i < 3 ;i++) {
+                                this.shoot(owner, 1.0F, 1.54F);
+                            }
+                        }
+                    }
                 }
             }
         }
     }
+
 
     public void setOwner(LivingEntity entity) {
         this.setEntityUUID(entity.getUUID());
         this.setEntityId(entity.getId());
-        this.cachedCaster = entity;
     }
 
     private void setEntityId(int id) {
@@ -280,23 +274,12 @@ public class PyroGem extends BHLibEntity implements ILinkedEntity {
     }
 
     private void pyroGemTicks(Entity entity) {
-        Vec3 orbitBy = new Vec3(0.0D, 2.0D, 0.0D);
+        Vec3 orbitBy = new Vec3(0.0D, 3.0D, 0.0D);
         Vec3 orbitTarget = entity.position().add(0, entity.getBbHeight() * 0.25D, 0).add(orbitBy).subtract(this.position());
-        this.setDeltaMovement(orbitTarget.scale(0.30F));
+        this.setDeltaMovement(orbitTarget.scale(1.25F));
         this.noPhysics = true;
     }
 
-    protected static float lerpRotation(float currentRotation, float targetRotation) {
-        while(targetRotation - currentRotation < -180.0F) {
-            currentRotation -= 360.0F;
-        }
-
-        while(targetRotation - currentRotation >= 180.0F) {
-            currentRotation += 360.0F;
-        }
-
-        return Mth.lerp(0.2F, currentRotation, targetRotation);
-    }
     @Override
     public void link(Entity entity) {
         if (entity instanceof LivingEntity) {

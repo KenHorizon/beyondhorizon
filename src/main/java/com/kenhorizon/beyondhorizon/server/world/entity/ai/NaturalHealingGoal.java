@@ -17,7 +17,7 @@ public class NaturalHealingGoal extends Goal {
         this.maxHealthRecovery = maxHealthRecovery;
     }
     public NaturalHealingGoal(BHBaseEntity entity) {
-        this(entity, COOLDOWN, 0.10F);
+        this(entity, COOLDOWN, 0.50F);
     }
 
     @Override

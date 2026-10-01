@@ -1,5 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.world.entity.ability.beam;
 
+import com.kenhorizon.beyondhorizon.server.world.entity.boss.pyrolliger.PyroGem;
 import com.kenhorizon.beyondhorizon.server.world.entity.mobs.FayeWildfire;
 import com.kenhorizon.beyondhorizon.server.init.BHEntity;
 import net.minecraft.world.entity.EntityType;
@@ -33,6 +34,13 @@ public class InfernalRayAbility extends AbstractDeathRayAbility {
             this.setPitch((float) (-caster.getXRot() * Math.PI / 180.0D));
             Vec3 vecOffset1 = new Vec3(0, 0, 0.6).yRot((float) Math.toRadians(-caster.getYRot()));
             Vec3 vecOffset2 = new Vec3(1.2, 0, 0).yRot(-getYaw()).xRot(getPitch());
+            this.setPos(caster.getX() + vecOffset1.x() + vecOffset2.x(), caster.getY() + (caster.getBbHeight() / 2) + vecOffset1.y() + vecOffset2.y(), caster.getZ() + vecOffset1.z() + vecOffset2.z());
+
+        } else if (this.caster instanceof PyroGem) {
+            this.setYaw((float) ((caster.yHeadRot + 90) * Math.PI / 180.0D));
+            this.setPitch((float) (-caster.getXRot() * Math.PI / 180.0D));
+            Vec3 vecOffset1 = new Vec3(0, 0, 0.3).yRot((float) Math.toRadians(-caster.getYRot()));
+            Vec3 vecOffset2 = new Vec3(0.2, 0, 0).yRot(-getYaw()).xRot(getPitch());
             this.setPos(caster.getX() + vecOffset1.x() + vecOffset2.x(), caster.getY() + (caster.getBbHeight() / 2) + vecOffset1.y() + vecOffset2.y(), caster.getZ() + vecOffset1.z() + vecOffset2.z());
 
         } else {

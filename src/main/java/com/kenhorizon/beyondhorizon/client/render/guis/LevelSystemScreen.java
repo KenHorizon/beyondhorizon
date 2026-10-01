@@ -99,8 +99,8 @@ public class LevelSystemScreen extends Screen {
             boolean cantGainExp = this.role.getLevel() >= this.role.maxLevel;
             guiGraphics.blit(LOCATION, this.posX + 149, this.posY + 10, 176, cantGainExp ? 0 : 12, 12, 12);
             guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 166, 131, 6);
-            guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 172, (int) (this.role.expProgress * 131), 6);
             guiGraphics.blit(LOCATION, this.posX + (20 - 6), this.posY + (42), 79, 178, 8, 8);
+            guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 172, (int) (this.role.expProgress * 131), 6);
             String pts = String.format("%s", this.role.getPoints());
             String level = "Lvl: ";
             String levelPTS = String.format("%s", this.role.getLevel());

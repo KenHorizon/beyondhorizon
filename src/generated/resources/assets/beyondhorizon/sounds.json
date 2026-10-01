@@ -353,5 +353,50 @@
       "beyondhorizon:mob/inferno_shield/impact4"
     ],
     "subtitle": "subtitle.beyondhorizon.mob.inferno_shield.impact"
+  },
+  "mob.pyrolliger.cast": {
+    "sounds": [
+      "beyondhorizon:mob/pyrolliger/cast"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.pyrolliger.cast"
+  },
+  "mob.pyrolliger.death": {
+    "sounds": [
+      "beyondhorizon:mob/pyrolliger/death1",
+      "beyondhorizon:mob/pyrolliger/death2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.pyrolliger.death"
+  },
+  "mob.pyrolliger.hurt": {
+    "sounds": [
+      "beyondhorizon:mob/pyrolliger/hurt1",
+      "beyondhorizon:mob/pyrolliger/hurt2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.pyrolliger.hurt"
+  },
+  "mob.pyrolliger.idle": {
+    "sounds": [
+      "beyondhorizon:mob/pyrolliger/idle1",
+      "beyondhorizon:mob/pyrolliger/idle2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.pyrolliger.idle"
+  },
+  "mob.pyrolliger.prepare_ranged": {
+    "sounds": [
+      "beyondhorizon:mob/pyrolliger/prepare_ranged_attack"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.pyrolliger.prepare_ranged"
+  },
+  "mob.pyrolliger.prepare_summon": {
+    "sounds": [
+      "beyondhorizon:mob/pyrolliger/prepare_summon"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.pyrolliger.prepare_summon"
+  },
+  "mob.pyrolliger.teleport": {
+    "sounds": [
+      "beyondhorizon:mob/pyrolliger/teleport"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.pyrolliger.teleport"
   }
 }

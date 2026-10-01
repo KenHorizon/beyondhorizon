@@ -16,11 +16,11 @@ public class MobAttackGoal<T extends BHLibEntity> extends Goal {
     protected final int seeTick;
     protected final int maxDuration;
 
-    public MobAttackGoal(T entity, int animation, int start1, int end, int seeTick, int maxDuration, boolean isLoop) {
+    public MobAttackGoal(T entity, int animation, int start, int end, int seeTick, int maxDuration, boolean isLoop) {
         this.entity = entity;
         this.isLoop = isLoop;
         this.animation = animation;
-        this.start = start1;
+        this.start = start;
         this.end = end;
         this.seeTick = seeTick;
         this.maxDuration = maxDuration;

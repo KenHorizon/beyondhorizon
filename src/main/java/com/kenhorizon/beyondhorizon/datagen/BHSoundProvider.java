@@ -54,6 +54,14 @@ public class BHSoundProvider extends SoundDefinitionFactory {
         this.add(BHSounds.INFERNO_SHIELD_BREAK, "mob/inferno_shield/break", 3);
         this.add(BHSounds.INFERNO_SHIELD_IMPACT, "mob/inferno_shield/impact", 4);
 
+        this.add(BHSounds.PYROLLIGER_IDLE, "mob/pyrolliger/idle", 2);
+        this.add(BHSounds.PYROLLIGER_HURT, "mob/pyrolliger/hurt", 2);
+        this.add(BHSounds.PYROLLIGER_DEATH, "mob/pyrolliger/death", 2);
+        this.add(BHSounds.PYROLLIGER_PREPARE_RANGED, "mob/pyrolliger/prepare_ranged_attack");
+        this.add(BHSounds.PYROLLIGER_PREPARE_SUMMON, "mob/pyrolliger/prepare_summon");
+        this.add(BHSounds.PYROLLIGER_TELEPORT, "mob/pyrolliger/teleport");
+        this.add(BHSounds.PYROLLIGER_CAST, "mob/pyrolliger/cast");
+
         this.add(BHSounds.SPAWNER_HIT, "block/spawner_block/break", 3);
         this.add(BHSounds.SPAWNER_BREAK, "block/spawner_block/break", 3);
         this.add(BHSounds.SPAWNER_FALL, "block/spawner_block/step", 5);

@@ -61,6 +61,14 @@ public class BHSounds {
     public static RegistryObject<SoundEvent> INFERNO_SHIELD_IMPACT = RegistryHelper.registerSounds("mob.inferno_shield.impact", "Shiled impact");
     public static RegistryObject<SoundEvent> INFERNO_SHIELD_BREAK = RegistryHelper.registerSounds("mob.inferno_shield.break", "Shield Break");
 
+    public static RegistryObject<SoundEvent> PYROLLIGER_IDLE = RegistryHelper.registerSounds("mob.pyrolliger.idle", "Pyrolliger grump");
+    public static RegistryObject<SoundEvent> PYROLLIGER_HURT = RegistryHelper.registerSounds("mob.pyrolliger.hurt", "Pyrolliger hurt");
+    public static RegistryObject<SoundEvent> PYROLLIGER_DEATH = RegistryHelper.registerSounds("mob.pyrolliger.death", "Pyrolliger died");
+    public static RegistryObject<SoundEvent> PYROLLIGER_CAST = RegistryHelper.registerSounds("mob.pyrolliger.cast", "Pyrolliger casting");
+    public static RegistryObject<SoundEvent> PYROLLIGER_PREPARE_RANGED = RegistryHelper.registerSounds("mob.pyrolliger.prepare_ranged", "Pyrolliger preparing attack");
+    public static RegistryObject<SoundEvent> PYROLLIGER_PREPARE_SUMMON = RegistryHelper.registerSounds("mob.pyrolliger.prepare_summon", "Pyrolliger preparing to summon");
+    public static RegistryObject<SoundEvent> PYROLLIGER_TELEPORT = RegistryHelper.registerSounds("mob.pyrolliger.teleport", "Pyrolliger teleport");
+
     public static RegistryObject<SoundEvent> HEAVY_ATTACK = RegistryHelper.registerSounds("generic.heavy_attack", "Heavy attack");
     public static RegistryObject<SoundEvent> ENTITY_EXECUTED = RegistryHelper.registerSounds("generic.entity_executed", "Entity has been executed");
 

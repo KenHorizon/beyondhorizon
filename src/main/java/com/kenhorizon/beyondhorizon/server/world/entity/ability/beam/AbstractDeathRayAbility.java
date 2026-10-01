@@ -251,8 +251,8 @@ public class AbstractDeathRayAbility extends Entity implements IDeathRayType {
                     boolean flag = target.hurt(BHDamageTypes.noKnockbackApplyDamage(this.getDamageType(), DamageTags.AREA_OF_EFFECTS, this), damage);
                     if (flag) {
                         if (ignoreFrames) {
-                            target.hurtDuration = 5;
-                            target.invulnerableTime = 5;
+                            target.hurtDuration = 0;
+                            target.invulnerableTime = 0;
                         }
                         if (this.isCanBurnTarget()) {
                             int fireAspectLevel = EnchantmentHelper.getFireAspect(caster);

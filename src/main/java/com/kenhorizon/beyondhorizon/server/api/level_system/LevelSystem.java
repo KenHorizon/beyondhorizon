@@ -43,6 +43,7 @@ public class LevelSystem {
         }
     }
     protected final Multimap<Attribute, AttributeModifier> attributeModifiers = HashMultimap.create();
+    public static final int LEVEL_CAP = 100;
     public static final String REQUIRED_LEVEL_TAGS = "RequiredLevel";
     public static final String DEX_TAGS = "Dex";
     public static final String INT_TAGS = "Int";
@@ -93,12 +94,8 @@ public class LevelSystem {
     }
 
     public void setLevel(int level) {
-        int cap = 100;
-        if (this.isPlayer) {
-            cap = 30;
-        }
-        if (level >= cap) {
-            level = cap;
+        if (level >= LEVEL_CAP) {
+            level = LEVEL_CAP;
         }
         this.levels = level;
         this.makeDirty = true;

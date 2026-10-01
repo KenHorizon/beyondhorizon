@@ -41,14 +41,10 @@ public class PyroGemRenderer extends EntityRenderer<PyroGem> {
     @Override
     public void render(PyroGem entity, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         poseStack.pushPose();
-        float rotation = (float) entity.tickCount + partialTicks;
-        poseStack.mulPose(Axis.YP.rotationDegrees(rotation * 2.25F - 180.0F));
-        RenderUtils.circleOutline(poseStack, buffer.getBuffer(RenderUtils.OUTLINE), 1, 32, 1.0F, 0, 0, 1.0F);
-        poseStack.popPose();
-
-        poseStack.pushPose();
         poseStack.translate(0.0D, 1.25D, 0.0D);
         poseStack.scale(-1.0F, -1.0F, 1.0F);
+        float rotation = (float) entity.tickCount + partialTicks;
+        poseStack.mulPose(Axis.YP.rotationDegrees(rotation * 2.25F - 45.0F));
         VertexConsumer builder = buffer.getBuffer(RenderType.entityCutoutNoCull(getTextureLocation(entity)));
         model.renderToBuffer(poseStack, builder, 240, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
         poseStack.popPose();

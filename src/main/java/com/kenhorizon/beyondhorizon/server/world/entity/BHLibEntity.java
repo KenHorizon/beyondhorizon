@@ -67,8 +67,8 @@ public class BHLibEntity extends BHBaseEntity {
         anim.stop();
     }
 
-    protected void playAnimation(AnimationState anim, boolean overlay) {
-        if (overlay) {
+    protected void playAnimation(AnimationState anim, boolean overlap) {
+        if (overlap) {
             anim.start(this.tickCount);
         } else {
             this.stopAnimations();
@@ -131,7 +131,6 @@ public class BHLibEntity extends BHBaseEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        boolean flag = source.is(net.minecraft.world.damagesource.DamageTypes.GENERIC) || source.is(net.minecraft.world.damagesource.DamageTypes.GENERIC_KILL);
         if (!source.is(DamageTypeTags.BYPASSES_ARMOR) && this.allowDamageCap()) {
             amount = Math.min(this.getDamageCap(), amount);
         }

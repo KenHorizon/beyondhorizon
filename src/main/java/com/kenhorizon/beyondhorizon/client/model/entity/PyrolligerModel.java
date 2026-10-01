@@ -105,10 +105,6 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
         this.headLook(this.head, yaw, pitch);
         if (!entity.isAggressive()) {
             this.animate(PyrolligerAnim.IDLE1, ageInTicks, 0.50F);
-
-            if (entity.tickCount % 100L == 0) {
-                this.animate(PyrolligerAnim.IDLE2, ageInTicks, 1.0F);
-            }
         }
         if (entity.walkAnimation.isMoving() && entity.getMode() == Pyrolliger.Mode.RANGED) {
             if (entity.isRunning()) {
@@ -124,7 +120,6 @@ public class PyrolligerModel extends AdvanceEntityModel<Pyrolliger> {
                 this.animateWalk(PyrolligerAnim.WALKING_MELEE, limbSwing, limbSwingAmount, 1.0F, 1.0F);
             }
         }
-        this.animate(entity.animationIdle1, PyrolligerAnim.IDLE1, ageInTicks);
         this.animate(entity.animationIdle2, PyrolligerAnim.IDLE2, ageInTicks);
         this.animate(entity.animationPyrobolt1, PyrolligerAnim.FIREBALL1, ageInTicks);
         this.animate(entity.animationPyrolance, PyrolligerAnim.FIREBALL2, ageInTicks);

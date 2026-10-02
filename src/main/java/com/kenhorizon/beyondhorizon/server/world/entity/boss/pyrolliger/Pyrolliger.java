@@ -882,7 +882,7 @@ public class Pyrolliger extends BHBossEntity {
                 if (this.getAnimationTick() % (initialFireRate + i) == 0) {
                     this.doRoarParticle(this.getX(), this.getEyeY(), this.getZ(), 10, 255, 0, 0, 1.0F, 1.0F, 5.0F, 0.1F);
                     if (!this.isSilent()) {
-                        this.level().playSound((Player) null, this, BHSounds.FAYE_FLARES_SHOOT.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
+                        this.level().playSound((Player) null, this, BHSounds.PYROLLIGER_RANGED_ATTACK.get(), SoundSource.HOSTILE, 3.0F, 1.0F);
                     }
                     this.shoot(target);
                 }

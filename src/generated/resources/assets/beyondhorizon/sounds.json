@@ -393,6 +393,13 @@
     ],
     "subtitle": "subtitle.beyondhorizon.mob.pyrolliger.prepare_summon"
   },
+  "mob.pyrolliger.shoot": {
+    "sounds": [
+      "beyondhorizon:mob/pyrolliger/shoot1",
+      "beyondhorizon:mob/pyrolliger/shoot2"
+    ],
+    "subtitle": "subtitle.beyondhorizon.mob.pyrolliger.shoot"
+  },
   "mob.pyrolliger.teleport": {
     "sounds": [
       "beyondhorizon:mob/pyrolliger/teleport"

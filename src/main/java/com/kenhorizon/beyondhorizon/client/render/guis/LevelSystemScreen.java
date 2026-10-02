@@ -8,7 +8,7 @@ import com.kenhorizon.beyondhorizon.server.capability.Capabilities;
 import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.world.network.NetworkHandler;
 import com.kenhorizon.beyondhorizon.server.world.network.packet.server.ServerboundConsumePointsPacket;
-import com.kenhorizon.beyondhorizon.server.world.network.packet.server.ServerboundSkillPointsPacket;
+import com.kenhorizon.beyondhorizon.server.world.network.packet.server.ServerboundLevelPointsPacket;
 import com.kenhorizon.beyondhorizon.server.util.Constant;
 import com.kenhorizon.beyondhorizon.server.util.Maths;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -21,35 +21,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.*;
-import java.util.function.Predicate;
 
 public class LevelSystemScreen extends Screen {
-    public enum Category {
-        ATTRIBUTES(LevelSystem::isAlreadyReachedRequiredLevel);
-
-        private Predicate<LevelSystem> levelRequired;
-        private boolean subCategory;
-        Category(Predicate<LevelSystem> levelRequired, boolean subCategory) {
-            this.levelRequired = levelRequired;
-            this.subCategory = subCategory;
-        }
-        Category(Predicate<LevelSystem> levelRequired) {
-            this(levelRequired, false);
-        }
-        public Predicate<LevelSystem> getFilter() {
-            return levelRequired;
-        }
-
-        public boolean isSubCategory() {
-            return subCategory;
-        }
-    }
-
-    public enum SubCategory {
-        NONE,
-        CLASS_INFO
-    }
-
     public record AttributePoint(int x, int y, LevelSystem.AttributePoints attributePoints) {}
     public record AttributeRemovePoints(int x, int y, LevelSystem.AttributePoints attributePoints) {}
 
@@ -63,8 +36,7 @@ public class LevelSystemScreen extends Screen {
     private int scaledWindowHeight;
     private LevelSystem role;
     private Player player;
-    private LevelSystemScreen.Category category = Category.ATTRIBUTES;
-    private LevelSystemScreen.SubCategory subCategory = SubCategory.NONE;
+    private float expProgress;
     public List<AttributePoint> attributePoints = new ArrayList<>();
     public List<AttributeRemovePoints> attributeRemovePoints = new ArrayList<>();
     public static final ResourceLocation LOCATION = BeyondHorizon.resourceGui("level_system/level_system.png");
@@ -77,7 +49,7 @@ public class LevelSystemScreen extends Screen {
 
     @Override
     protected void init() {
-        this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(BHSounds.LEVEL_SYSTEM_ADD.get(), 1.0F));
+        this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(BHSounds.LEVEL_SYSTEM_OPEN.get(), 1.0F, 3.0F));
         this.player = BeyondHorizon.PROXY.clientPlayer();
         this.scaledWindowWidth = minecraft.getWindow().getGuiScaledWidth();
         this.scaledWindowHeight = minecraft.getWindow().getGuiScaledHeight();
@@ -94,37 +66,35 @@ public class LevelSystemScreen extends Screen {
         int y = this.posY + 10;
         RenderSystem.enableBlend();
         guiGraphics.blit(LOCATION, this.posX, this.posY, 0, 0, this.imageW, this.imageH);
-        if (this.subCategory == SubCategory.NONE) {
-            guiGraphics.blit(LOCATION, this.posX + 126, this.posY + 10, 200, 0, 20, 12);
-            boolean cantGainExp = this.role.getLevel() >= this.role.maxLevel;
-            guiGraphics.blit(LOCATION, this.posX + 149, this.posY + 10, 176, cantGainExp ? 0 : 12, 12, 12);
-            guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 166, 131, 6);
-            guiGraphics.blit(LOCATION, this.posX + (20 - 6), this.posY + (42), 79, 178, 8, 8);
-            guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 172, (int) (this.role.expProgress * 131), 6);
-            String pts = String.format("%s", this.role.getPoints());
-            String level = "Lvl: ";
-            String levelPTS = String.format("%s", this.role.getLevel());
-            int levelString = level.length();
-            String xpRequired = String.format("%s/%s", Maths.format(this.role.getExpProgress()), Maths.format(this.role.getXpNeededForNextLevel()));
-            BlitHelper.drawStrings(minecraft.font, guiGraphics, xpRequired, this.posX + 20, this.posY + 34, Colors.GREEN);
-            BlitHelper.drawStrings(minecraft.font,guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 136, this.posY + 12, Colors.WHITE);
-            BlitHelper.drawStrings(minecraft.font,guiGraphics, player.getName(), x, y, Colors.WHITE);
-            BlitHelper.drawStrings(minecraft.font,guiGraphics, level, x, y + 10, Colors.WHITE);
-            BlitHelper.drawStrings(minecraft.font,guiGraphics, levelPTS, x + 10 + 4 + levelString, y + 10 , Colors.GREEN);
-        }
 
-        if (this.category == Category.ATTRIBUTES) {
-            this.addButtonSkill(guiGraphics, this.posX, this.posY, LevelSystem.AttributePoints.STRENGHT);
-            this.addButtonSkill(guiGraphics, this.posX, this.posY + (33 * 1), LevelSystem.AttributePoints.VITALITY);
-            this.addButtonSkill(guiGraphics, this.posX, this.posY + (33 * 2), LevelSystem.AttributePoints.CONSTITUION);
-            this.addButtonSkill(guiGraphics, this.posX + 83, this.posY, LevelSystem.AttributePoints.AGILITY);
-            this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 1), LevelSystem.AttributePoints.DEXERITY);
-            this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 2), LevelSystem.AttributePoints.INTELLIGENGE);
-            if (!this.role.isAlreadyReachedRequiredLevel()) {
-                guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, Colors.combineARGB(100, 0, 0, 0));
-                String warningText = String.format("You need to be level %s", Constant.LEVEL_SYSTEM_UNLOCKED);
-                BlitHelper.drawStrings(minecraft.font, guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, Colors.combineRGB(200, 0, 0), true);
-            }
+        this.expProgress = this.role.expProgress;
+        guiGraphics.blit(LOCATION, this.posX + 126, this.posY + 10, 200, 0, 20, 12);
+        boolean cantGainExp = this.role.getLevel() >= this.role.maxLevel;
+        guiGraphics.blit(LOCATION, this.posX + 149, this.posY + 10, 176, cantGainExp ? 0 : 12, 12, 12);
+        guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 166, 131, 6);
+        guiGraphics.blit(LOCATION, this.posX + (20 - 6), this.posY + (42), 79, 178, 8, 8);
+        guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 172, (int) (this.expProgress * 131), 6);
+        String pts = String.format("%s", this.role.getPoints());
+        String level = "Lvl: ";
+        String levelPTS = String.format("%s", this.role.getLevel());
+        int levelString = level.length();
+        String xpRequired = String.format("%s/%s", Maths.format(this.role.getExpProgress()), Maths.format(this.role.getXpNeededForNextLevel()));
+        BlitHelper.drawStrings(minecraft.font, guiGraphics, xpRequired, this.posX + 20, this.posY + 34, Colors.GREEN);
+        BlitHelper.drawStrings(minecraft.font,guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 136, this.posY + 12, Colors.WHITE);
+        BlitHelper.drawStrings(minecraft.font,guiGraphics, player.getName(), x, y, Colors.WHITE);
+        BlitHelper.drawStrings(minecraft.font,guiGraphics, level, x, y + 10, Colors.WHITE);
+        BlitHelper.drawStrings(minecraft.font,guiGraphics, levelPTS, x + 10 + 4 + levelString, y + 10 , Colors.GREEN);
+
+        this.addButtonSkill(guiGraphics, this.posX, this.posY, LevelSystem.AttributePoints.STRENGHT);
+        this.addButtonSkill(guiGraphics, this.posX, this.posY + (33 * 1), LevelSystem.AttributePoints.VITALITY);
+        this.addButtonSkill(guiGraphics, this.posX, this.posY + (33 * 2), LevelSystem.AttributePoints.CONSTITUION);
+        this.addButtonSkill(guiGraphics, this.posX + 83, this.posY, LevelSystem.AttributePoints.AGILITY);
+        this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 1), LevelSystem.AttributePoints.DEXERITY);
+        this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 2), LevelSystem.AttributePoints.INTELLIGENGE);
+        if (!this.role.isAlreadyReachedRequiredLevel()) {
+            guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, Colors.combineARGB(100, 0, 0, 0));
+            String warningText = String.format("You need to be level %s", Constant.LEVEL_SYSTEM_UNLOCKED);
+            BlitHelper.drawStrings(minecraft.font, guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, Colors.combineRGB(200, 0, 0), true);
         }
     }
 
@@ -164,11 +134,11 @@ public class LevelSystemScreen extends Screen {
         } else {
             int levelAddX = this.posX + 149;
             int levelAddY = this.posY + 10;
-            this.mouseClickedCategory(mouseX, mouseY);
-            if (this.category == Category.ATTRIBUTES) {
-                this.addPoints(mouseX, mouseY, levelAddX, levelAddY);
-                this.mouseSkillSetsRemovePoints(this.attributeRemovePoints, mouseX, mouseY);
-            }
+
+            this.addPoints(mouseX, mouseY, levelAddX, levelAddY);
+            this.attributeAddPoints(this.attributePoints, mouseX, mouseY);
+            this.attributeRemovePoints(this.attributeRemovePoints, mouseX, mouseY);
+
             return super.mouseClicked(mouseX, mouseY, button);
         }
     }
@@ -180,56 +150,27 @@ public class LevelSystemScreen extends Screen {
         }
     }
 
-    private void mouseSkillSets(List<AttributePoint> list, double mouseX, double mouseY) {
+    private void attributeAddPoints(List<AttributePoint> list, double mouseX, double mouseY) {
         if (this.role.getPoints() > 0) {
             for (int i = 0; i < list.size(); i++) {
                 AttributePoint sets = list.get(i);
-                if (this.buttonCooldown == 0 && mouseX >= sets.x() && mouseX <= sets.x() + 12 && mouseY >= sets.y() && mouseY <= sets.y() + 12) {
-                    NetworkHandler.sendToServer(new ServerboundSkillPointsPacket(this.player.getId(), sets.attributePoints(), 1));
+                if (this.buttonCooldown <= 0 && mouseX >= sets.x() && mouseX <= sets.x() + 12 && mouseY >= sets.y() && mouseY <= sets.y() + 12) {
+                    NetworkHandler.sendToServer(new ServerboundLevelPointsPacket(this.player.getId(), sets.attributePoints(), 1));
                     this.buttonCooldown = this.buttonCooldownMax;
                 }
             }
         }
     }
 
-    private void mouseSkillSetsRemovePoints(List<AttributeRemovePoints> list, double mouseX, double mouseY) {
+    private void attributeRemovePoints(List<AttributeRemovePoints> list, double mouseX, double mouseY) {
         for (AttributeRemovePoints sets : list) {
             int pts = this.role.getPointOfSkills(sets.attributePoints());
             if (pts > 0 && this.buttonCooldown == 0 && mouseX >= sets.x() && mouseX <= sets.x() + 12 && mouseY >= sets.y() && mouseY <= sets.y() + 12) {
                 this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(BHSounds.LEVEL_SYSTEM_REMOVE.get(), 1.0F));
-                NetworkHandler.sendToServer(new ServerboundSkillPointsPacket(this.player.getId(), sets.attributePoints(), -1));
+                NetworkHandler.sendToServer(new ServerboundLevelPointsPacket(this.player.getId(), sets.attributePoints(), -1));
                 this.buttonCooldown = this.buttonCooldownMax;
             }
         }
-    }
-
-    private void mouseClickedCategory(double mouseX, double mouseY) {
-        List<LevelSystemScreen.Category> list = Arrays.stream(Category.values()).toList();
-        for (int i = 0; i < list.size(); i++) {
-            LevelSystemScreen.Category categorySelected = list.get(i);
-            if (this.checkCategory(categorySelected, mouseX, mouseY)) {
-                this.category = categorySelected;
-                this.subCategory = SubCategory.NONE;
-            }
-        }
-    }
-
-    private boolean checkCategory(LevelSystemScreen.Category category, double mouseX, double mouseY) {
-        int x = this.getTabX(category);
-        int y = this.getTabY(category);
-        return mouseX >= x && mouseX <= x + 26 && mouseY >= y && mouseY <= y + 28;
-    }
-
-    private int getTabX(LevelSystemScreen.Category category) {
-        List<LevelSystemScreen.Category> list = Arrays.stream(Category.values()).toList();
-        int index = list.indexOf(category);
-        return this.posX - 26;
-    }
-
-    private int getTabY(LevelSystemScreen.Category category) {
-        List<LevelSystemScreen.Category> list = Arrays.stream(Category.values()).toList();
-        int index = list.indexOf(category);
-        return this.posY + (6 + (28 * index));
     }
 
     @Override

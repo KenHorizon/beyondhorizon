@@ -12,17 +12,17 @@ import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
 
-public class ServerboundSkillPointsPacket {
+public class ServerboundLevelPointsPacket {
     private final int index;
     private final int amount;
     private final LevelSystem.AttributePoints attributePoints;
-    public ServerboundSkillPointsPacket(int index, LevelSystem.AttributePoints attributePoints, int amount) {
+    public ServerboundLevelPointsPacket(int index, LevelSystem.AttributePoints attributePoints, int amount) {
         this.index = index;
         this.amount = amount;
         this.attributePoints = attributePoints;
     }
 
-    public ServerboundSkillPointsPacket(FriendlyByteBuf buf) {
+    public ServerboundLevelPointsPacket(FriendlyByteBuf buf) {
         this.index = buf.readInt();
         this.amount = buf.readInt();
         this.attributePoints = buf.readEnum(LevelSystem.AttributePoints.class);

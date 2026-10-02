@@ -62,6 +62,7 @@ public class BHSounds {
     public static RegistryObject<SoundEvent> INFERNO_SHIELD_BREAK = RegistryHelper.registerSounds("mob.inferno_shield.break", "Shield Break");
 
     public static RegistryObject<SoundEvent> PYROLLIGER_IDLE = RegistryHelper.registerSounds("mob.pyrolliger.idle", "Pyrolliger grump");
+    public static RegistryObject<SoundEvent> PYROLLIGER_RANGED_ATTACK = RegistryHelper.registerSounds("mob.pyrolliger.shoot", "Pyrolliger shoot");
     public static RegistryObject<SoundEvent> PYROLLIGER_HURT = RegistryHelper.registerSounds("mob.pyrolliger.hurt", "Pyrolliger hurt");
     public static RegistryObject<SoundEvent> PYROLLIGER_DEATH = RegistryHelper.registerSounds("mob.pyrolliger.death", "Pyrolliger died");
     public static RegistryObject<SoundEvent> PYROLLIGER_CAST = RegistryHelper.registerSounds("mob.pyrolliger.cast", "Pyrolliger casting");

@@ -49,7 +49,7 @@ public class NetworkHandler {
         net.registerMessage(id(), ServerboundGrabbedItemPacket.class, ServerboundGrabbedItemPacket::write, ServerboundGrabbedItemPacket::new, ServerboundGrabbedItemPacket::handle);
         net.registerMessage(id(), ServerboundOpenLevelSystemPacket.class, ServerboundOpenLevelSystemPacket::write, ServerboundOpenLevelSystemPacket::new, ServerboundOpenLevelSystemPacket::handle);
         net.registerMessage(id(), ServerboundConsumePointsPacket.class, ServerboundConsumePointsPacket::write, ServerboundConsumePointsPacket::new, ServerboundConsumePointsPacket::handle);
-        net.registerMessage(id(), ServerboundSkillPointsPacket.class, ServerboundSkillPointsPacket::write, ServerboundSkillPointsPacket::new, ServerboundSkillPointsPacket::handle);
+        net.registerMessage(id(), ServerboundLevelPointsPacket.class, ServerboundLevelPointsPacket::write, ServerboundLevelPointsPacket::new, ServerboundLevelPointsPacket::handle);
         net.registerMessage(id(), ServerboundBossbarPacket.class, ServerboundBossbarPacket::write, ServerboundBossbarPacket::new, ServerboundBossbarPacket::handle);
         net.registerMessage(id(), ServerboundAbilityEffectPacket.class, ServerboundAbilityEffectPacket::write, ServerboundAbilityEffectPacket::new, ServerboundAbilityEffectPacket::handle);
         net.registerMessage(id(), ServerboundPlayerSwingArmPacket.class, ServerboundPlayerSwingArmPacket::write, ServerboundPlayerSwingArmPacket::new, ServerboundPlayerSwingArmPacket::handle);

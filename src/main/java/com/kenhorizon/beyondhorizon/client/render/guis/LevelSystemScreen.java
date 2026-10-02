@@ -56,6 +56,7 @@ public class LevelSystemScreen extends Screen {
         this.posX = (this.scaledWindowWidth - this.imageW) / 2;
         this.posY = (this.scaledWindowHeight - this.imageH) / 2;
         this.role = Capabilities.levelSystem(this.player);
+
     }
 
     @Override

@@ -147,8 +147,13 @@ public class PyroGem extends BHLibEntity implements ILinkedEntity {
 
     @Override
     public boolean hurt(DamageSource source, float amount) {
-        return false;
+        if (this.isGenericDamage(source)) {
+            return super.hurt(source, amount);
+        } else {
+            return false;
+        }
     }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();

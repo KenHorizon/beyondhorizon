@@ -370,7 +370,6 @@ public class Pyrolliger extends BHBossEntity {
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         this.goalSelector.addGoal(1, new NaturalHealingGoal(this));
         this.goalSelector.addGoal(6, new PyrolligerMoveGoal(this, SPRINT_SPEED_MODIFIER, WALK_SPEED_MODIFIER));
-        this.goalSelector.addGoal(1, new MobAvoidTargetGoal<>(this, 12.0F, 1.2F));
         this.goalSelector.addGoal(5, new RandomStrollGoal(this, 1.0F, 80));
 
         this.targetSelector.addGoal(1, new SmartHurtByTargetGoal(this));
@@ -622,9 +621,9 @@ public class Pyrolliger extends BHBossEntity {
 
         if (this.tickCount % 20L == 0) {
             this.addMana(1);
-            this.hexRandoms = RandomSource.create(this.random.nextLong());
         }
 
+        this.hexRandoms = RandomSource.create(this.random.nextLong());
         if (this.getAnimationState(ID_TRANSITION_SECOND_PHASE)) {
             if (this.getAnimationTick() == Maths.sec(2.5F)) {
                 this.setSecondPhase(true);
@@ -915,7 +914,7 @@ public class Pyrolliger extends BHBossEntity {
     private void createLinearHexTrap(int count) {
         double d0 = this.getY();
         double d1 = this.getY() + 1.0D;
-        int range = 8;
+        int range = 4;
         for (int i = 0; i < count; i++) {
             int randomNms = this.hexRandoms.nextIntBetweenInclusive(-range, range);
             float f1 = (float) Mth.atan2(this.getZ() - i, this.getX() - i);

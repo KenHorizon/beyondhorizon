@@ -1,6 +1,6 @@
 package com.kenhorizon.beyondhorizon.server.world.block;
 
-import com.kenhorizon.beyondhorizon.server.world.block.entity.GateBlockBlockEntity;
+import com.kenhorizon.beyondhorizon.server.world.block.blockentity.GateBlockBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import net.minecraft.core.BlockPos;

@@ -26,6 +26,7 @@ import java.util.List;
 public class BHConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> OW_BLACK_IRON_FEATURE = registerKey("overworld_black_iron_ore_feature");
     public static final ResourceKey<ConfiguredFeature<?, ?>> OW_CRIMSNITE_FEATURE = registerKey("overworld_crimsnite_ore_feature");
+    public static final ResourceKey<ConfiguredFeature<?, ?>> OW_ARCANE_FEATURE = registerKey("overworld_arcane_rocks_feature");
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> OW_LUMINITE_GEODE_FEATURE = registerKey("overworld_luminite_geode_feature");
     public static final ResourceKey<ConfiguredFeature<?, ?>> OW_STARITE_GEODE_FEATURE = registerKey("overworld_starite_geode_feature");
@@ -43,9 +44,12 @@ public class BHConfiguredFeatures {
                 OreConfiguration.target(deepslateOreReplaceables, BHBlocks.BLACK_IRON_ORE.get().defaultBlockState()));
         List<OreConfiguration.TargetBlockState> oreCrimsnite = List.of(
                 OreConfiguration.target(deepslateOreReplaceables, BHBlocks.CRIMSNITE_ORE.get().defaultBlockState()));
+        List<OreConfiguration.TargetBlockState> oreArcane = List.of(
+                OreConfiguration.target(deepslateOreReplaceables, BHBlocks.ARCANE_ROCKS.get().defaultBlockState()));
 
         register(context, OW_BLACK_IRON_FEATURE, Feature.ORE, new OreConfiguration(oreBlackIron, 9));
         register(context, OW_CRIMSNITE_FEATURE, Feature.ORE, new OreConfiguration(oreCrimsnite, 7));
+        register(context, OW_ARCANE_FEATURE, Feature.ORE, new OreConfiguration(oreArcane, 12));
 
         register(context, OW_STARITE_GEODE_FEATURE, Feature.GEODE,
                 new GeodeConfiguration(new GeodeBlockSettings(BlockStateProvider.simple(Blocks.AIR),

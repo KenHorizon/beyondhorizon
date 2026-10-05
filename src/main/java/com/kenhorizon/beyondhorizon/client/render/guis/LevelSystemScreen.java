@@ -18,7 +18,9 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 
@@ -27,6 +29,7 @@ public class LevelSystemScreen extends Screen {
     public record AttributeRemovePoints(int x, int y, LevelSystem.AttributePoints attributePoints) {}
 
     private int buttonCooldown;
+    private int buttonClicked;
     private final int buttonCooldownMax = 5;
     private int posX;
     private int posY;
@@ -36,7 +39,7 @@ public class LevelSystemScreen extends Screen {
     private int scaledWindowHeight;
     private LevelSystem role;
     private Player player;
-    private float expProgress;
+    private boolean holdButton = false;
     public List<AttributePoint> attributePoints = new ArrayList<>();
     public List<AttributeRemovePoints> attributeRemovePoints = new ArrayList<>();
     public static final ResourceLocation LOCATION = BeyondHorizon.resourceGui("level_system/level_system.png");
@@ -49,7 +52,6 @@ public class LevelSystemScreen extends Screen {
 
     @Override
     protected void init() {
-        this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(BHSounds.LEVEL_SYSTEM_OPEN.get(), 1.0F, 3.0F));
         this.player = BeyondHorizon.PROXY.clientPlayer();
         this.scaledWindowWidth = minecraft.getWindow().getGuiScaledWidth();
         this.scaledWindowHeight = minecraft.getWindow().getGuiScaledHeight();
@@ -67,36 +69,52 @@ public class LevelSystemScreen extends Screen {
         int y = this.posY + 10;
         RenderSystem.enableBlend();
         guiGraphics.blit(LOCATION, this.posX, this.posY, 0, 0, this.imageW, this.imageH);
-
-        this.expProgress = this.role.expProgress;
         guiGraphics.blit(LOCATION, this.posX + 126, this.posY + 10, 200, 0, 20, 12);
         boolean cantGainExp = this.role.getLevel() >= this.role.maxLevel;
-        guiGraphics.blit(LOCATION, this.posX + 149, this.posY + 10, 176, cantGainExp ? 0 : 12, 12, 12);
+        this.renderGreenButtons(guiGraphics, this.posX + 149, this.posY + 10, mouseX, mouseY, partialTick, cantGainExp);
         guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 166, 131, 6);
         guiGraphics.blit(LOCATION, this.posX + (20 - 6), this.posY + (42), 79, 178, 8, 8);
-        guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 172, (int) (this.expProgress * 131), 6);
+        guiGraphics.blit(LOCATION, this.posX + 20, this.posY + 43, 79, 172, (int) (this.role.getExpProgress() * 131), 6);
         String pts = String.format("%s", this.role.getPoints());
         String level = "Lvl: ";
         String levelPTS = String.format("%s", this.role.getLevel());
         int levelString = level.length();
-        String xpRequired = String.format("%s/%s", Maths.format(this.role.getExpProgress()), Maths.format(this.role.getXpNeededForNextLevel()));
+        String xpRequired = String.format("%s/%s", Maths.format(Mth.ceil(this.role.getExpProgress() * this.role.getXpNeededForNextLevel())), Maths.format(this.role.getXpNeededForNextLevel()));
         BlitHelper.drawStrings(minecraft.font, guiGraphics, xpRequired, this.posX + 20, this.posY + 34, Colors.GREEN);
         BlitHelper.drawStrings(minecraft.font,guiGraphics, pts, this.posX - (this.font.width(pts) / 2) + 136, this.posY + 12, Colors.WHITE);
         BlitHelper.drawStrings(minecraft.font,guiGraphics, player.getName(), x, y, Colors.WHITE);
         BlitHelper.drawStrings(minecraft.font,guiGraphics, level, x, y + 10, Colors.WHITE);
-        BlitHelper.drawStrings(minecraft.font,guiGraphics, levelPTS, x + 10 + 4 + levelString, y + 10 , Colors.GREEN);
-
-        this.addButtonSkill(guiGraphics, this.posX, this.posY, LevelSystem.AttributePoints.STRENGHT);
-        this.addButtonSkill(guiGraphics, this.posX, this.posY + (33 * 1), LevelSystem.AttributePoints.VITALITY);
-        this.addButtonSkill(guiGraphics, this.posX, this.posY + (33 * 2), LevelSystem.AttributePoints.CONSTITUION);
-        this.addButtonSkill(guiGraphics, this.posX + 83, this.posY, LevelSystem.AttributePoints.AGILITY);
-        this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 1), LevelSystem.AttributePoints.DEXERITY);
-        this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 2), LevelSystem.AttributePoints.INTELLIGENGE);
+        BlitHelper.drawBorderedStrings(minecraft.font,guiGraphics, levelPTS, x + 16 + levelString, y + 10 , Colors.GREEN);
+        this.addButtonSkill(guiGraphics, this.posX, this.posY, mouseX, mouseY, partialTick, LevelSystem.AttributePoints.STRENGHT);
+        this.addButtonSkill(guiGraphics, this.posX, this.posY + (33 * 1), mouseX, mouseY, partialTick, LevelSystem.AttributePoints.VITALITY);
+        this.addButtonSkill(guiGraphics, this.posX, this.posY + (33 * 2), mouseX, mouseY, partialTick, LevelSystem.AttributePoints.CONSTITUION);
+        this.addButtonSkill(guiGraphics, this.posX + 83, this.posY, mouseX, mouseY, partialTick, LevelSystem.AttributePoints.AGILITY);
+        this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 1), mouseX, mouseY, partialTick, LevelSystem.AttributePoints.DEXERITY);
+        this.addButtonSkill(guiGraphics, this.posX + 83, this.posY + (33 * 2), mouseX, mouseY, partialTick, LevelSystem.AttributePoints.INTELLIGENGE);
         if (!this.role.isAlreadyReachedRequiredLevel()) {
             guiGraphics.fill(this.posX, this.posY, this.posX + this.imageW, this.posY + this.imageH, Colors.combineARGB(100, 0, 0, 0));
             String warningText = String.format("You need to be level %s", Constant.LEVEL_SYSTEM_UNLOCKED);
             BlitHelper.drawStrings(minecraft.font, guiGraphics, warningText, (this.scaledWindowWidth - this.font.width(warningText)) / 2, this.scaledWindowHeight / 2, Colors.combineRGB(200, 0, 0), true);
         }
+    }
+
+    private void renderGreenButtons(GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY, float partialTick, boolean disable) {
+        this.renderButtons(guiGraphics, x, y, mouseX, mouseY, partialTick, disable, false);
+    }
+
+    private void renderRedButtons(GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY, float partialTick, boolean disable) {
+        this.renderButtons(guiGraphics, x, y, mouseX, mouseY, partialTick, disable, true);
+    }
+
+    private void renderButtons(GuiGraphics guiGraphics, int x, int y, int mouseX, int mouseY, float partialTick, boolean disable, boolean reverse) {
+        boolean isHovered = mouseX >= x && mouseX <= x + 12 && mouseY >= y && mouseY <= y + 12;
+        int UV = 1;
+        if (disable) {
+            UV = 0;
+        } else if (isHovered) {
+            UV = 2;
+        }
+        guiGraphics.blit(LOCATION, x, y, reverse ? 188 : 176, 12 * UV, 12, 12);
     }
 
     @Override
@@ -105,15 +123,24 @@ public class LevelSystemScreen extends Screen {
         if (this.buttonCooldown > 0) {
             this.buttonCooldown--;
         }
+        if (this.holdButton) {
+            this.buttonClicked++;
+            if (this.buttonClicked >= 5) {
+                this.buttonClicked = 0;
+
+                this.addPoints();
+            }
+        }
+
     }
 
-    private void addButtonSkill(GuiGraphics guiGraphics, int x, int y, LevelSystem.AttributePoints attributePoints) {
+    private void addButtonSkill(GuiGraphics guiGraphics, int x, int y, int mx, int my, float partialTick, LevelSystem.AttributePoints attributePoints) {
         int pts = this.role.getPointOfSkills(attributePoints);
         int attributePts = this.role.getPoints();
         guiGraphics.blit(LOCATION, x + 7, y + 60, 0, 166, 79, 32);
         String text = attributePoints.getName();
         String lvl = String.format("%s", pts);
-        BlitHelper.drawStrings(minecraft.font,guiGraphics, text, x + 12, y + 65, Colors.WHITE, false);
+        BlitHelper.drawBorderedStrings(minecraft.font,guiGraphics, text, x + 12, y + 65, Colors.WHITE);
         int colorPts = pts > 0 ? Colors.WHITE : Colors.combineRGB(255, 0, 0);
         int lvlPY = y + 76;
         BlitHelper.drawStrings(minecraft.font,guiGraphics, "lvl:", x + 12, lvlPY, Colors.WHITE, false);
@@ -121,8 +148,11 @@ public class LevelSystemScreen extends Screen {
         PoseStack poseStack = guiGraphics.pose();
         poseStack.pushPose();
         poseStack.translate(0, 0, 200.0F);
-        guiGraphics.blit(LOCATION, x + 7 + 48, y + 64 + 10, 176, attributePts > 0 ? 12 : 0, 12, 12);
-        guiGraphics.blit(LOCATION, x + 7 + 62, y + 64 + 10, 188, pts > 0 ? 12 : 0, 12, 12);
+//        guiGraphics.blit(LOCATION, x + 7 + 48, y + 64 + 10, 176, attributePts > 0 ? 12 : 0, 12, 12);
+//        guiGraphics.blit(LOCATION, x + 7 + 62, y + 64 + 10, 188, pts > 0 ? 12 : 0, 12, 12);
+
+        this.renderGreenButtons(guiGraphics, x + 7 + 48, y + 64 + 10, mx, my, partialTick, attributePts <= 0);
+        this.renderRedButtons(guiGraphics, x + 7 + 62, y + 64 + 10, mx, my, partialTick, pts <= 0);
         poseStack.popPose();
         this.attributePoints.add(new AttributePoint(x + 7 + 48, y + 64 + 10, attributePoints));
         this.attributeRemovePoints.add(new AttributeRemovePoints(x + 7 + 62, y + 64 + 10, attributePoints));
@@ -130,13 +160,19 @@ public class LevelSystemScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        boolean leftClick = button == GLFW.GLFW_MOUSE_BUTTON_LEFT;
+        boolean rightClick = button == GLFW.GLFW_MOUSE_BUTTON_RIGHT;
         if (!this.role.isAlreadyReachedRequiredLevel()) {
             return false;
         } else {
             int levelAddX = this.posX + 149;
             int levelAddY = this.posY + 10;
-
-            this.addPoints(mouseX, mouseY, levelAddX, levelAddY);
+            if (leftClick && (mouseX >= levelAddX && mouseX <= levelAddX + 12 && mouseY >= levelAddY && mouseY <= levelAddY + 12)) {
+                this.addPoints();
+                this.holdButton = true;
+                this.buttonClicked = 0;
+                return true;
+            }
             this.attributeAddPoints(this.attributePoints, mouseX, mouseY);
             this.attributeRemovePoints(this.attributeRemovePoints, mouseX, mouseY);
 
@@ -144,13 +180,28 @@ public class LevelSystemScreen extends Screen {
         }
     }
 
-    private void addPoints(double mouseX, double mouseY, int levelAddX, int levelAddY) {
-        if (mouseX >= levelAddX && mouseX <= levelAddX + 12 && mouseY >= levelAddY && mouseY <= levelAddY + 12) {
-            this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(BHSounds.LEVEL_SYSTEM_ADD.get(), 1.0F));
-            NetworkHandler.sendToServer(new ServerboundConsumePointsPacket(this.player.getId(), 30));
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        boolean leftClick = button == GLFW.GLFW_MOUSE_BUTTON_LEFT;
+        boolean rightClick = button == GLFW.GLFW_MOUSE_BUTTON_RIGHT;
+        if (!this.role.isAlreadyReachedRequiredLevel()) {
+            return false;
+        } else {
+            int levelAddX = this.posX + 149;
+            int levelAddY = this.posY + 10;
+            if (leftClick && (mouseX >= levelAddX && mouseX <= levelAddX + 12 && mouseY >= levelAddY && mouseY <= levelAddY + 12)) {
+                this.holdButton = false;
+                this.buttonClicked = 0;
+                return true;
+            }
+            return super.mouseReleased(mouseX, mouseY, button);
         }
     }
 
+    private void addPoints() {
+        this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(BHSounds.LEVEL_SYSTEM_ADD.get(), 1.0F));
+        NetworkHandler.sendToServer(new ServerboundConsumePointsPacket(this.player.getId(), 30));
+    }
     private void attributeAddPoints(List<AttributePoint> list, double mouseX, double mouseY) {
         if (this.role.getPoints() > 0) {
             for (int i = 0; i < list.size(); i++) {

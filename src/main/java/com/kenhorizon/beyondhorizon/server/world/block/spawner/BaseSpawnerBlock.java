@@ -4,7 +4,7 @@ package com.kenhorizon.beyondhorizon.server.world.block.spawner;
 import com.kenhorizon.beyondhorizon.client.render.misc.tooltips.Tooltips;
 import com.kenhorizon.beyondhorizon.server.world.block.BHBlockProperties;
 import com.kenhorizon.beyondhorizon.server.world.block.spawner.data.SpawnerState;
-import com.kenhorizon.beyondhorizon.server.world.block.entity.BaseSpawnerBlockEntity;
+import com.kenhorizon.beyondhorizon.server.world.block.blockentity.BaseSpawnerBlockEntity;
 import com.kenhorizon.beyondhorizon.server.init.BHBlockEntity;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;

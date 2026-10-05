@@ -1,7 +1,7 @@
 package com.kenhorizon.beyondhorizon.server.init;
 
-import com.kenhorizon.beyondhorizon.server.world.block.entity.BaseSpawnerBlockEntity;
-import com.kenhorizon.beyondhorizon.server.world.block.entity.GateBlockBlockEntity;
+import com.kenhorizon.beyondhorizon.server.world.block.blockentity.BaseSpawnerBlockEntity;
+import com.kenhorizon.beyondhorizon.server.world.block.blockentity.GateBlockBlockEntity;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;

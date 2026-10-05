@@ -19,6 +19,7 @@ public class BHPlacedFeatured {
     public static final ResourceKey<PlacedFeature> CRIMSNITE_ORES_FEATURES = createKey("crimsnite_ores_features");
     public static final ResourceKey<PlacedFeature> LUMINITE_GEODE_FEATURES = createKey("luminite_geode_features");
     public static final ResourceKey<PlacedFeature> STARITE_GEODE_FEATURES = createKey("starite_geode_features");
+    public static final ResourceKey<PlacedFeature> ARCANE_ROCKS_FEATURES = createKey("arcane_rocks_features");
 
     public static void bootstrap(BootstapContext<PlacedFeature> context) {
         HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures = context.lookup(Registries.CONFIGURED_FEATURE);
@@ -30,6 +31,10 @@ public class BHPlacedFeatured {
                         HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(-64), VerticalAnchor.absolute(16))));
 
         register(context, CRIMSNITE_ORES_FEATURES, configuredFeatures.getOrThrow(BHConfiguredFeatures.OW_CRIMSNITE_FEATURE),
+                BHPlacementUtils.commonOrePlacement(16, // veins per chunk
+                        HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(-64), VerticalAnchor.absolute(16))));
+
+        register(context, ARCANE_ROCKS_FEATURES, configuredFeatures.getOrThrow(BHConfiguredFeatures.OW_ARCANE_FEATURE),
                 BHPlacementUtils.commonOrePlacement(16, // veins per chunk
                         HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(-64), VerticalAnchor.absolute(16))));
 

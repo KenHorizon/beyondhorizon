@@ -49,7 +49,6 @@ import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -78,9 +77,9 @@ public class BeyondHorizon
         ModServerConfig.register(modContext);
         eventBus.addListener(this::commonSetup);
         eventBus.addListener(this::clientSetup);
+        eventBus.addListener(this::completeSetup);
         eventBus.addListener(this::reloadListener);
         eventBus.addListener(this::registerLayerDefinitions);
-        eventBus.addListener(this::completeSetup);
         eventBus.addListener(this::onConfigLoad);
         eventBus.addListener(this::onRegisterCapabilities);
         BHAttributes.register(eventBus);
@@ -143,7 +142,7 @@ public class BeyondHorizon
     }
 
     private void modCompatible() {
-        if (!ModList.get().isLoaded(ModLists.ATTRIBUTE_FIX)) {
+        if (!ModLists.isAttributeFixLoaded()) {
             IAttributeRegistryHelper<Attribute> register = new AttributeRegistryHelper();
             AttributeModify.load(register).applyChanges(register);
         }
@@ -152,6 +151,7 @@ public class BeyondHorizon
     }
 
     private void completeSetup(FMLLoadCompleteEvent event) {
+        event.enqueueWork(ModLists::afterAllModsLoaded);
         event.enqueueWork(() -> {
             PROXY.post();
         });

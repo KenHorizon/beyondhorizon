@@ -170,6 +170,7 @@ public class LevelSystem {
     }
 
     public void addExpPoints(int amount) {
+        this.makeDirty = true;
         this.expProgress += amount / this.expRequired;
         while (this.expProgress < 0.0F) {
             float f = this.expProgress * (float) this.getXpNeededForNextLevel();

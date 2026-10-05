@@ -3,6 +3,7 @@ package com.kenhorizon.beyondhorizon.server.init;
 import com.google.common.collect.Sets;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 
 import java.util.Collections;
 import java.util.Set;
@@ -14,6 +15,10 @@ public class BHLootTables {
     public static final ResourceLocation SEALED_RUNIC_CRYPT_LEFT = register("chests/sealed_runic_crypt_left");
     public static final ResourceLocation SEALED_RUNIC_CRYPT_RIGHT = register("chests/sealed_runic_crypt_right");
     public static final ResourceLocation SEALED_RUNIC_CRYPT_MIDDLE = register("chests/sealed_runic_crypt_middle");
+
+
+    public static final ResourceLocation INJECT_SIMPLE_DUNEGON = register("inject/" + BuiltInLootTables.SIMPLE_DUNGEON.getPath());
+    public static final ResourceLocation INJECT_JUNGLE_TEMPLE = register("inject/" + BuiltInLootTables.JUNGLE_TEMPLE.getPath());
 
     public static final ResourceLocation COMMON_EQUIPMENTS = register("equipments/common_equipments");
     public static final ResourceLocation COMMON_MELEE = register("equipments/melee");

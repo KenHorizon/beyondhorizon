@@ -8,6 +8,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.Projectile;
@@ -135,6 +136,10 @@ public class BHLibEntity extends BHBaseEntity {
             amount = Math.min(this.getDamageCap(), amount);
         }
         return super.hurt(source, amount);
+    }
+
+    protected boolean isGenericDamage(DamageSource source) {
+        return source.is(DamageTypes.GENERIC) || source.is(DamageTypes.GENERIC_KILL);
     }
 
     public void setAnimation(int animation) {

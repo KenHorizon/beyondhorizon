@@ -14,6 +14,7 @@ import com.kenhorizon.beyondhorizon.server.api.accessory.Accessories;
 import com.kenhorizon.beyondhorizon.server.api.accessory.AccessoryHelper;
 import com.kenhorizon.beyondhorizon.server.api.accessory.IAccessoryItem;
 import com.kenhorizon.beyondhorizon.server.api.entity.player.PlayerData;
+import com.kenhorizon.beyondhorizon.server.init.BHSounds;
 import com.kenhorizon.beyondhorizon.server.world.entity.BHBossInfo;
 import com.kenhorizon.beyondhorizon.server.world.entity.CameraShake;
 import com.kenhorizon.beyondhorizon.server.init.BHCapabilties;
@@ -38,6 +39,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.block.BlockRenderDispatcher;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -190,19 +192,20 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public void onKeyPressClient(InputEvent.Key event) {
-        Minecraft minecraft = Minecraft.getInstance();
-        Options options = minecraft.options;
-        Player player = minecraft.player;
+        Minecraft mc = Minecraft.getInstance();
+        Options options = mc.options;
+        Player player = mc.player;
 
         if (event.getKey() == Keybinds.LEVEL_SYSTEM.getKey().getValue() && BeyondHorizon.PROXY.isKeyPressed(Keybinds.LEVEL_SYSTEM)) {
+            mc.getSoundManager().play(SimpleSoundInstance.forUI(BHSounds.LEVEL_SYSTEM_OPEN.get(), 1.0F, 3.0F));
             BeyondHorizon.PROXY.openScreen(new LevelSystemScreen());
         }
         for (int i = 0; i < 9; ++i) {
             boolean flag = BeyondHorizon.PROXY.isKeyDown(Keybinds.ACCESSORY_SLOTS);
             if (options.keyHotbarSlots[i].consumeClick()) {
                 if (player.isSpectator()) {
-                    minecraft.gui.getSpectatorGui().onHotbarSelected(i);
-                } else if (minecraft.screen != null || !flag) {
+                    mc.gui.getSpectatorGui().onHotbarSelected(i);
+                } else if (mc.screen != null || !flag) {
                     player.getInventory().selected = i;
                 } else {
                     if (AccessoryHelper.getInventory(player).resolve().isPresent()) {

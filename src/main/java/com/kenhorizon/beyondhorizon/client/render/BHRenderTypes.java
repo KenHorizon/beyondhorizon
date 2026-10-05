@@ -41,9 +41,16 @@ public class BHRenderTypes extends RenderType {
         return MARKER.apply(resourceLocation);
     }
 
-    public static RenderType swril(ResourceLocation resourceLocation, float pU, float pV) {
-        RenderType.CompositeState state = RenderType.CompositeState.builder().setShaderState(RENDERTYPE_ENERGY_SWIRL_SHADER).setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false)).setTexturingState(new RenderStateShard.OffsetTexturingStateShard(pU, pV)).setTransparencyState(ADDITIVE_TRANSPARENCY).setCullState(NO_CULL).setLightmapState(LIGHTMAP).setOverlayState(OVERLAY).createCompositeState(false);
-        return RenderType.create("swirl", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false, state);
+    public static RenderType beam(ResourceLocation resourceLocation, float pU, float pV) {
+        RenderType.CompositeState state = RenderType.CompositeState.builder()
+                .setShaderState(RENDERTYPE_BEACON_BEAM_SHADER)
+                .setTexturingState(new RenderStateShard.OffsetTexturingStateShard(pU, pV))
+                .setTextureState(new RenderStateShard.TextureStateShard(resourceLocation, false, false))
+                .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
+                .setWriteMaskState(RenderStateShard.COLOR_WRITE)
+                .setCullState(NO_CULL).setOverlayState(OVERLAY)
+                .createCompositeState(false);
+        return RenderType.create("beam_moving_texture", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false, state);
     }
 
     public static RenderType movingTexture(ResourceLocation resourceLocation, float pU, float pV) {

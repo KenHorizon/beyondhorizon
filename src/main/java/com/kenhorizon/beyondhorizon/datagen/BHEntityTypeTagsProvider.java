@@ -29,6 +29,7 @@ public class BHEntityTypeTagsProvider extends EntityTypeTagsProvider {
             this.tag(tags).add((EntityType<?>) object.get());
         });
         this.tag(BHEntityTypeTags.VOID_BANE_AFFECTED).add(EntityType.ENDERMAN, EntityType.ENDER_DRAGON, EntityType.ENDERMITE);
+        this.tag(BHEntityTypeTags.UNAFFECTED_BY_LEVELS).add(BHEntity.PYRO_GEM.get());
         this.tag(Tags.EntityTypes.BOSSES).add(BHEntity.BLAZING_INFERNO.get(), BHEntity.PYROLLIGER.get());
         super.addTags(provider);
     }

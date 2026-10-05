@@ -1,7 +1,6 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
-import com.kenhorizon.beyondhorizon.server.world.block.redstone_lane.RedstoneLaneBlock;
 import com.kenhorizon.beyondhorizon.server.init.BHBlocks;
 import com.kenhorizon.libs.client.data.BlockStateBuilder;
 import net.minecraft.data.PackOutput;
@@ -14,11 +13,10 @@ public class BHBlockStateProvider extends BlockStateBuilder {
     }
     @Override
     protected void registerStatesAndModels() {
+        this.blockWithItem(BHBlocks.EVOKING_ALTAR_PARTS);
         this.blockWithItem(BHBlocks.IRON_SHEET);
         this.blockWithItem(BHBlocks.IRON_GRATE);
         this.blockWithItem(BHBlocks.BLACK_IRON_GRATE);
-        this.blockWithItem(BHBlocks.ARCANE_BUDDING_FULL);
-        this.blockWithItem(BHBlocks.ARCANE_BUDDING);
         this.blockWithItem(BHBlocks.ARCANE_ROCKS);
         this.blockWithItem(BHBlocks.VOIDSTONE);
         this.blockWithItem(BHBlocks.LUMINITE_ORE);
@@ -102,13 +100,6 @@ public class BHBlockStateProvider extends BlockStateBuilder {
         this.latticeBlock(BHBlocks.BLACK_IRON_LATTICE, BHBlocks.BLACK_IRON_BLOCK, "black_iron_lattice_post", "black_iron_lattice");
         this.latticeBlock(BHBlocks.TATTERED_BLACK_IRON_LATTICE, BHBlocks.BLACK_IRON_BLOCK, "black_iron_lattice_post", "tattered_black_iron_lattice");
 
-        this.redstoneWiredBlock(BHBlocks.REDSTONE_WIRED);
-
-        this.redstoneLaneWithItem((RedstoneLaneBlock) BHBlocks.REDSTONE_LANE_I.get());
-        this.redstoneLaneWithItem((RedstoneLaneBlock) BHBlocks.REDSTONE_LANE_L.get());
-        this.redstoneLaneWithItem((RedstoneLaneBlock) BHBlocks.REDSTONE_LANE_T.get());
-
-        this.redstoneTransmitter(BHBlocks.REDSTONE_LANE_TRANSMITTER);
 
     }
 }

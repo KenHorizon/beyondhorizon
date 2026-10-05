@@ -11,12 +11,9 @@ public class AlexCaveModHelper {
     public static final ResourceLocation IRRADIATED = mod("irradiated");
 
     public static ResourceLocation mod(String rl) {
-        return ModCompats.getMod(ModLists.ALEX_CAVES).getRL(rl);
+        return ResourceLocation.fromNamespaceAndPath(ModLists.ALEX_CAVES, rl);
     }
 
-    public static boolean isLoaded() {
-        return ModCompats.getMod(ModLists.ALEX_CAVES).isModLoaded();
-    }
 
     public static boolean isIrradiated(LivingEntity entity) {
         return entity.hasEffect(RegistryHelper.getValueOrThrow(ForgeRegistries.MOB_EFFECTS, IRRADIATED));

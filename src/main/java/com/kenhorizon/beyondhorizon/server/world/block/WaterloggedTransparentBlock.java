@@ -17,7 +17,8 @@ import org.jetbrains.annotations.Nullable;
 public class WaterloggedTransparentBlock extends TransparentBlock implements SimpleWaterloggedBlock {
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public WaterloggedTransparentBlock(Properties properties) {
-        super(properties);this.registerDefaultState((BlockState)this.defaultBlockState().setValue(WATERLOGGED, false));
+        super(properties);
+        this.registerDefaultState((BlockState)this.defaultBlockState().setValue(WATERLOGGED, false));
     }
 
     @Override

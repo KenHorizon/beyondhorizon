@@ -1,0 +1,155 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:vitality_stone"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:tough_cloth"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:firefly_faye"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:sapphire_crystal"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:spectral_cloak"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:mage_wand"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:ruminative_beads"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:null_magic_rune"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:doran_blade"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:doran_ring"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:doran_shield"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:doran_bow"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:doran_helm"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 5.0,
+        "min": 3.0
+      }
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:doran_blade"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:doran_ring"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:doran_shield"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:doran_bow"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:doran_helm"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 4.0,
+        "min": 3.0
+      }
+    },
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:steel_sigil"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:obsidian_plate"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:light_string_bow"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "beyondhorizon:heavy_string_bow"
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 5.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "beyondhorizon:healing_potion",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "add": false,
+              "count": {
+                "type": "minecraft:uniform",
+                "max": 5.0,
+                "min": 2.0
+              },
+              "function": "minecraft:set_count"
+            }
+          ],
+          "name": "beyondhorizon:greater_healing_potion"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 3.0,
+        "min": 2.0
+      }
+    }
+  ],
+  "random_sequence": "beyondhorizon:inject/chests/simple_dungeon"
+}

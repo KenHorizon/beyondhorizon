@@ -3,7 +3,7 @@ package com.kenhorizon.beyondhorizon.client.render.blockentity;
 import com.kenhorizon.beyondhorizon.BeyondHorizon;
 import com.kenhorizon.beyondhorizon.client.model.blockentity.GateDoorModel;
 import com.kenhorizon.beyondhorizon.client.render.BHModelLayers;
-import com.kenhorizon.beyondhorizon.server.world.block.entity.GateBlockBlockEntity;
+import com.kenhorizon.beyondhorizon.server.world.block.blockentity.GateBlockBlockEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;

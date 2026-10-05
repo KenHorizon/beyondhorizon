@@ -1,9 +1,9 @@
 package com.kenhorizon.beyondhorizon.datagen;
 
 import com.kenhorizon.beyondhorizon.datagen.loot.entities.*;
-import com.kenhorizon.beyondhorizon.server.init.BHEntity;
-import com.kenhorizon.beyondhorizon.server.init.BHItems;
-import com.kenhorizon.beyondhorizon.server.init.BHLootTables;
+import com.kenhorizon.beyondhorizon.server.init.*;
+import com.kenhorizon.beyondhorizon.server.tags.BHItemTags;
+import com.kenhorizon.beyondhorizon.server.tags.BHStructureTags;
 import com.kenhorizon.libs.registry.RegistryBlocks;
 import com.kenhorizon.libs.registry.RegistryEntries;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
@@ -15,7 +15,9 @@ import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.data.loot.packs.VanillaChestLoot;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Item;
@@ -23,14 +25,14 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.saveddata.maps.MapDecoration;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
-import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
-import net.minecraft.world.level.storage.loot.functions.LootingEnchantFunction;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
+import net.minecraft.world.level.storage.loot.functions.*;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.*;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
@@ -56,11 +58,6 @@ public class BHLootTableProvider {
 
     public static class Entity extends EntityLootSubProvider {
         static List<EntityLootDropBuilder> LOOT_DROP_BUILDERS = new ArrayList<>();
-//        private final BlazingInfernoLootTable BLAZING_INFERNO = new BlazingInfernoLootTable(BHEntity.BLAZING_INFERNO.get());
-//        private final FayeFlaresLootTable FAYE_FLARES = new FayeFlaresLootTable(BHEntity.FAYE_FLARES.get());
-//        private final FayeWildfireLootTable FAYE_WILDFIRE = new FayeWildfireLootTable(BHEntity.FAYE_WILDFIRE.get());
-//        private final PyrolligerLootTable PYROLLIGER = new PyrolligerLootTable(BHEntity.PYROLLIGER.get());
-//        private final DragonHornetLootTable DRAGON_HORNET = new DragonHornetLootTable(BHEntity.DRAGON_HORNET.get());
         static {
             LOOT_DROP_BUILDERS.add(new BlazingInfernoLootTable(BHEntity.BLAZING_INFERNO.get()));
             LOOT_DROP_BUILDERS.add(new FayeFlaresLootTable(BHEntity.FAYE_FLARES.get()));
@@ -132,8 +129,93 @@ public class BHLootTableProvider {
     }
 
     public static class Chests extends VanillaChestLoot {
+
+        public static LootPool.Builder basicItemAccessory() {
+            return LootPool.lootPool().setRolls(UniformGenerator.between(3.0F, 5.0F))
+                    .add(LootItem.lootTableItem(BHItems.VITALITY_STONE.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.TOUGH_CLOTH.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.FIREFLY_FAYE.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.SAPPHIRE_CRYSTAL.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.SPECTRAL_CLOAK.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.MAGE_WAND.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.RUMINATIVE_BEADS.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.NULL_MAGIC_RUNE.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.DORAN_BLADE.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.DORAN_RING.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.DORAN_SHIELD.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.DORAN_BOW.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.DORAN_HELM.get())
+                            .setWeight(1));
+        }
+        public static LootPool.Builder doransItem() {
+            return LootPool.lootPool().setRolls(UniformGenerator.between(3.0F, 4.0F))
+                    .add(LootItem.lootTableItem(BHItems.DORAN_BLADE.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.DORAN_RING.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.DORAN_SHIELD.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.DORAN_BOW.get())
+                            .setWeight(1))
+                    .add(LootItem.lootTableItem(BHItems.DORAN_HELM.get())
+                            .setWeight(1));
+        }
         @Override
         public void generate(BiConsumer<ResourceLocation, LootTable.Builder> output) {
+            output.accept(BHLootTables.INJECT_JUNGLE_TEMPLE, LootTable.lootTable()
+                    .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(1, 1))
+                            .add(LootItem.lootTableItem(Items.MAP)
+                                    .apply(ExplorationMapFunction.makeExplorationMap()
+                                            .setDestination(BHStructureTags.ON_SEALED_RELIC_CRYPT)
+                                            .setMapDecoration(MapDecoration.Type.RED_X)
+                                            .setZoom((byte) 1)
+                                            .setSkipKnownStructures(false))
+                                    .apply(SetNameFunction.setName(Component.translatable("filled_map.buried_treasure")))
+                                    .setWeight(1)))
+                    .withPool(basicItemAccessory())
+                    .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2, 3))
+                            .add(LootItem.lootTableItem(BHItems.STEEL_SIGIL.get())
+                                    .setWeight(1))
+                            .add(LootItem.lootTableItem(BHItems.HEALING_POTION.get())
+                                    .apply(setCounts(2, 5))
+                                    .setWeight(5))
+                            .add(LootItem.lootTableItem(BHItems.GREATER_HEALING_POTION.get())
+                                    .apply(setCounts(2, 5))
+                                    .setWeight(1))
+                    ));
+
+            output.accept(BHLootTables.INJECT_SIMPLE_DUNEGON, LootTable.lootTable()
+                    .withPool(basicItemAccessory())
+                    .withPool(doransItem())
+                    .withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2, 3))
+                            .add(LootItem.lootTableItem(BHItems.STEEL_SIGIL.get())
+                                    .setWeight(1))
+                            .add(LootItem.lootTableItem(BHItems.OBSIDIAN_PLATE.get())
+                                    .setWeight(1))
+                            .add(LootItem.lootTableItem(BHItems.LIGHT_STRING_BOW.get())
+                                    .setWeight(1))
+                            .add(LootItem.lootTableItem(BHItems.HEAVY_STRING_BOW.get())
+                                    .setWeight(1))
+                            .add(LootItem.lootTableItem(BHItems.HEALING_POTION.get())
+                                    .apply(setCounts(2, 5))
+                                    .setWeight(5))
+                            .add(LootItem.lootTableItem(BHItems.GREATER_HEALING_POTION.get())
+                                    .apply(setCounts(2, 5))
+                                    .setWeight(1))
+                    ));
+
             output.accept(BHLootTables.SEALED_RUNIC_CRYPT_LEFT, LootTable.lootTable()
                     .withPool(LootPool.lootPool().setRolls(this.getRolls(1.0F))
                             .add(LootItem.lootTableItem(Items.GOLDEN_APPLE).setWeight(20)).apply(setCounts(3, 5))
@@ -175,6 +257,7 @@ public class BHLootTableProvider {
                             .add(LootItem.lootTableItem(BHItems.LEATHER_AGILITY.get()).setWeight(20))
             ));
         }
+
         public LootItemFunction.Builder setCounts(float min, float max) {
             return SetItemCountFunction.setCount(UniformGenerator.between(min, max));
         }

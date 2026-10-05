@@ -43,6 +43,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -75,11 +76,18 @@ import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.structure.Structure;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
+import net.minecraft.world.level.storage.loot.entries.LootTableReference;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.*;
@@ -97,6 +105,28 @@ public class ServerEventHandler {
     @SubscribeEvent
     public void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(new SpawnerBuilderListener(event.getConditionContext()));
+    }
+
+    @SubscribeEvent
+    public void onLootTableLoad(LootTableLoadEvent event) {
+        LootTable lt = event.getTable();
+        ResourceLocation rl = event.getName();
+        if (rl.equals(BuiltInLootTables.SIMPLE_DUNGEON)) {
+            lt.addPool(generateLootPool(BHLootTables.INJECT_SIMPLE_DUNEGON));
+        } else if (rl.equals(BuiltInLootTables.JUNGLE_TEMPLE)) {
+            lt.addPool(generateLootPool(BHLootTables.INJECT_JUNGLE_TEMPLE));
+        }
+    }
+
+    private LootPool generateLootPool(ResourceLocation lootName) {
+        return LootPool.lootPool().add(generateLootEntry(lootName))
+                .setBonusRolls(UniformGenerator.between(0, 1))
+                .name(BeyondHorizon.ID + "_inject")
+                .build();
+    }
+
+    private static LootPoolEntryContainer.Builder<?> generateLootEntry(ResourceLocation lootName) {
+        return LootTableReference.lootTableReference(lootName).setWeight(1);
     }
 
     @SubscribeEvent
@@ -1242,9 +1272,9 @@ public class ServerEventHandler {
             if (blockState.requiresCorrectToolForDrops()) {
                 miningEfficiency = player.getAttributeValue(BHAttributes.MINING_EFFICIENCY.get());
             } else {
-                miningEfficiency = 1.0D;
+                miningEfficiency = 0.0D;
             }
-            float bonusMiningSpeed = (float) (originalSpeed * miningSpeed * miningEfficiency);
+            float bonusMiningSpeed = (float) ((originalSpeed * miningSpeed));
             if (AccessoryHelper.getInventory(player).resolve().isPresent()) {
                 var handler = AccessoryHelper.getInventory(player).resolve().get();
                 var stacks = handler.getStacks();
